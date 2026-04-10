@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "label": "Portfolio",
+      "href": "/portfolio",
+      "children": [
+        { "label": "Weddings", "href": "/portfolio/weddings" },
+        { "label": "Pre-Weddings", "href": "/portfolio/pre-weddings" },
+        { "label": "Events", "href": "/portfolio/events" },
+        { "label": "Portraits", "href": "/portfolio/portraits" },
+        { "label": "Civil Ceremony", "href": "/portfolio/civil-ceremony" }
+      ]
+    },
+    { "label": "Services", "href": "/services" },
+    { "label": "Pricing", "href": "/pricing" },
+    { "label": "Location Guide", "href": "/location-guide" },
+    { "label": "Blog", "href": "/blog" },
+    { "label": "About", "href": "/about" }
+  ]
+}

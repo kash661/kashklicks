@@ -1,0 +1,108 @@
+---
+import Nav from './Nav.astro';
+import MobileMenu from './MobileMenu.astro';
+
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+---
+
+<header
+  id="site-header"
+  class:list={[
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    transparent ? 'bg-transparent' : 'bg-bg/95 backdrop-blur-sm border-b border-border',
+  ]}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 group">
+        <span class="font-heading text-2xl font-bold text-text-primary group-hover:text-accent transition-colors">
+          KashKlicks
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden lg:block">
+        <Nav />
+      </div>
+
+      <!-- Book Now CTA + Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <a
+          href="/contact"
+          class="hidden sm:inline-flex px-5 py-2.5 bg-accent text-bg text-sm font-medium rounded hover:bg-accent-hover transition-colors"
+        >
+          Book Now
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-toggle"
+          class="lg:hidden p-2 text-text-primary hover:text-accent transition-colors"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <svg class="w-6 h-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="w-6 h-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <MobileMenu />
+</header>
+
+<!-- Spacer to prevent content from hiding behind fixed header -->
+<div class="h-20"></div>
+
+<script>
+  // Header scroll effect
+  const header = document.getElementById('site-header');
+  if (header) {
+    const isTransparent = header.classList.contains('bg-transparent');
+    if (isTransparent) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.remove('bg-transparent');
+          header.classList.add('bg-bg/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+        } else {
+          header.classList.add('bg-transparent');
+          header.classList.remove('bg-bg/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+        }
+      }, { passive: true });
+    }
+  }
+
+  // Mobile menu toggle
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.contains('translate-x-0');
+    if (isOpen) {
+      menu?.classList.remove('translate-x-0');
+      menu?.classList.add('translate-x-full');
+      iconOpen?.classList.remove('hidden');
+      iconClose?.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    } else {
+      menu?.classList.remove('translate-x-full');
+      menu?.classList.add('translate-x-0');
+      iconOpen?.classList.add('hidden');
+      iconClose?.classList.remove('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+</script>

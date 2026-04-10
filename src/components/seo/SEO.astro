@@ -1,0 +1,60 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noIndex?: boolean;
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    author: string;
+    tags?: string[];
+  };
+}
+
+const {
+  title,
+  description,
+  canonicalUrl = new URL(Astro.url.pathname, Astro.site).href,
+  ogImage = new URL('/og-default.jpg', Astro.site).href,
+  ogType = 'website',
+  noIndex = false,
+  article,
+} = Astro.props;
+
+const fullTitle = title === 'Home'
+  ? 'KashKlicks Studios | Toronto Wedding Photographer & Videographer'
+  : `${title} | KashKlicks Studios`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:type" content={ogType} />
+<meta property="og:locale" content="en_CA" />
+<meta property="og:site_name" content="KashKlicks Studios" />
+
+{article && (
+  <>
+    <meta property="article:published_time" content={article.publishedTime} />
+    {article.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+    <meta property="article:author" content={article.author} />
+    {article.tags?.map((tag) => <meta property="article:tag" content={tag} />)}
+  </>
+)}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

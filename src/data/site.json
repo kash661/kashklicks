@@ -1,0 +1,24 @@
+{
+  "name": "KashKlicks Studios",
+  "tagline": "Moments fade. Memories don't.",
+  "description": "Toronto wedding photographer and videographer specializing in cinematic pre-wedding and wedding photography in the GTA.",
+  "url": "https://kashklicks.ca",
+  "email": "hello@kashklicks.ca",
+  "phone": "",
+  "location": {
+    "city": "Toronto",
+    "region": "Ontario",
+    "regionCode": "ON",
+    "country": "Canada",
+    "countryCode": "CA",
+    "lat": 43.6532,
+    "lng": -79.3832
+  },
+  "social": {
+    "instagram": "https://instagram.com/kash.klicks",
+    "instagramHandle": "@kash.klicks",
+    "pinterest": "https://pinterest.com/kashklicks",
+    "youtube": "https://youtube.com/@kashklicks"
+  },
+  "areasServed": ["Toronto", "Mississauga", "Brampton", "Markham", "Vaughan", "Oakville", "Burlington", "GTA"]
+}

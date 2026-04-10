@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Button from '../components/ui/Button.astro';
+
+const services = [
+  {
+    title: 'Pre-Wedding & Engagement',
+    slug: 'pre-wedding',
+    description: 'Your love story deserves to be told beautifully — before the big day. Our pre-wedding sessions capture the connection between you and your partner through cinematic photography and filmmaking at Toronto\'s most stunning locations.',
+    includes: [
+      'Professional photography & optional videography',
+      'Location scouting and guidance',
+      'Outfit and styling consultation',
+      'High-resolution edited photos',
+      'Custom cinematic films (select packages)',
+      'Private online gallery',
+    ],
+    startingAt: 350,
+    image: 'pre-wedding',
+  },
+  {
+    title: 'Wedding Day Coverage',
+    slug: 'wedding',
+    description: 'From getting ready to the last dance — we capture every moment of your wedding day with the same cinematic, honest approach. Unobtrusive coverage that lets you be fully present while we handle the memories.',
+    includes: [
+      'Full-day or partial-day coverage',
+      'Ceremony and reception photography',
+      'Getting ready and detail shots',
+      'Candid and directed moments',
+      'High-resolution edited photos',
+      'Private online gallery',
+    ],
+    startingAt: null,
+    image: 'wedding',
+  },
+  {
+    title: 'Events & Celebrations',
+    slug: 'celebrations',
+    description: 'Birthdays, bridal showers, baby showers, corporate events — every gathering has moments worth preserving. Our event coverage is relaxed, natural, and designed to capture the energy of your celebration.',
+    includes: [
+      'Minimum 2 hours coverage',
+      'Unlimited edited photos',
+      'Candid and group shots',
+      'Detail and décor photography',
+      'Private online gallery',
+      '2-week delivery',
+    ],
+    startingAt: 550,
+    image: 'celebrations',
+  },
+  {
+    title: 'Portraits',
+    slug: 'portraits',
+    description: 'Individual, couple, or family portraits with an editorial, cinematic touch. Whether it\'s for a special occasion or just because — we create images that feel like you.',
+    includes: [
+      '1-2 hour session',
+      'Location or studio setting',
+      'Posing and direction guidance',
+      'High-resolution edited photos',
+      'Private online gallery',
+    ],
+    startingAt: 350,
+    image: 'portraits',
+  },
+  {
+    title: 'Civil Ceremony',
+    slug: 'civil-ceremony',
+    description: 'Intimate doesn\'t mean less important. We capture the beauty and emotion of your civil ceremony — at city hall, a courthouse, or any intimate venue — with the same care and artistry as a full wedding.',
+    includes: [
+      'Ceremony coverage',
+      'Couple portraits after the ceremony',
+      'High-resolution edited photos',
+      'Quick turnaround delivery',
+      'Private online gallery',
+    ],
+    startingAt: null,
+    image: 'civil-ceremony',
+  },
+];
+
+const serviceSchemas = services.map((s) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: s.title,
+  description: s.description,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'KashKlicks Studios',
+  },
+  areaServed: { '@type': 'City', name: 'Toronto' },
+  ...(s.startingAt && {
+    offers: {
+      '@type': 'Offer',
+      price: s.startingAt,
+      priceCurrency: 'CAD',
+    },
+  }),
+}));
+---
+
+<BaseLayout
+  title="Services"
+  description="Wedding photography, pre-wedding sessions, event coverage, portraits, and civil ceremony photography in Toronto and the GTA. View our services and what's included."
+  jsonLd={serviceSchemas}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services' },
+    ]} />
+
+    <SectionHeading
+      title="What We Do"
+      subtitle="Photography and videography services for every chapter of your love story"
+    />
+
+    <div class="space-y-24">
+      {services.map((service, i) => (
+        <section class:list={['grid grid-cols-1 lg:grid-cols-2 gap-12 items-center', i % 2 === 1 && 'lg:flex-row-reverse']}>
+          <!-- TODO: Replace with real service images -->
+          <div class:list={['aspect-[4/3] bg-bg-card rounded-lg', i % 2 === 1 && 'lg:order-2']} />
+
+          <div class:list={[i % 2 === 1 && 'lg:order-1']}>
+            <h2 class="font-heading text-3xl font-bold text-text-primary">{service.title}</h2>
+            <p class="mt-4 text-text-secondary leading-relaxed">{service.description}</p>
+
+            <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mt-8 mb-4">What's Included</h3>
+            <ul class="space-y-3">
+              {service.includes.map((item) => (
+                <li class="flex items-start gap-3 text-sm text-text-secondary">
+                  <svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div class="mt-8 flex items-center gap-6">
+              {service.startingAt && (
+                <p class="text-text-muted text-sm">
+                  Starting at <span class="text-text-primary font-bold text-lg">${service.startingAt}</span>
+                </p>
+              )}
+              <Button href="/pricing" variant="outline" size="sm">See Packages</Button>
+              <Button href="/contact" variant="primary" size="sm">Book Now</Button>
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

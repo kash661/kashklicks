@@ -1,0 +1,16 @@
+---
+// GLightbox wrapper — loads CSS/JS only on pages that need it
+---
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
+<script>
+  import GLightbox from 'glightbox';
+  GLightbox({
+    selector: '.glightbox',
+    loop: true,
+    touchNavigation: true,
+    closeOnOutsideClick: true,
+    skin: 'clean',
+  });
+</script>

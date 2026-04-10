@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import TestimonialCard from '../components/ui/TestimonialCard.astro';
+import PricingCard from '../components/ui/PricingCard.astro';
+import Button from '../components/ui/Button.astro';
+import { Image } from 'astro:assets';
+
+import testimonials from '../data/testimonials.json';
+import packages from '../data/packages.json';
+import portfolio from '../data/portfolio.json';
+import site from '../data/site.json';
+
+import heroImage from '../assets/images/hero/hero-main.jpg';
+
+// Dynamic portfolio image imports
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/*.jpg',
+  { eager: true }
+);
+
+const featuredWork = portfolio.filter((p) => p.featured);
+const popularPackages = packages
+  .filter((p) => p.popular)
+  .sort((a, b) => a.order - b.order)
+  .slice(0, 3);
+
+const reviewSchemas = testimonials.map((t) => ({
+  '@type': 'Review',
+  reviewRating: {
+    '@type': 'Rating',
+    ratingValue: t.rating,
+    bestRating: 5,
+  },
+  author: { '@type': 'Person', name: t.name },
+  reviewBody: t.quote,
+}));
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: site.url,
+};
+
+const jsonLd = [websiteSchema, ...reviewSchemas.map((r) => ({ '@context': 'https://schema.org', ...r }))];
+---
+
+<BaseLayout
+  title="Home"
+  description="KashKlicks Studios — Toronto wedding photographer & videographer. Cinematic pre-wedding, wedding, and engagement photography across the GTA and Canada."
+  transparentHeader={true}
+  jsonLd={jsonLd}
+>
+  <!-- ═══ HERO ═══ -->
+  <section class="relative h-screen flex items-center justify-center -mt-20">
+    <!-- TODO: Replace with real content -->
+    <Image
+      src={heroImage}
+      alt="Couple at sunset — KashKlicks Studios Toronto wedding photography"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+      widths={[768, 1200, 1920]}
+      sizes="100vw"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-bg/40 via-bg/20 to-bg" />
+
+    <div class="relative text-center px-4 max-w-4xl mx-auto">
+      <p class="text-accent text-sm tracking-[0.3em] uppercase mb-6">Toronto | Canada Wide</p>
+      <h1 class="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+        Moments fade.<br />
+        <span class="text-accent">Memories don't.</span>
+      </h1>
+      <p class="mt-6 text-text-secondary text-lg sm:text-xl max-w-2xl mx-auto">
+        Cinematic wedding & pre-wedding photography and videography that captures your story as it truly is — effortless, honest, and timeless.
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        <Button href="/pricing" variant="primary" size="lg">Prices & Availability</Button>
+        <Button href="/portfolio" variant="outline" size="lg">View Our Work</Button>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURED LOVE STORIES ═══ -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <SectionHeading
+      title="Love Stories"
+      subtitle="A glimpse into some of our favourite sessions"
+    />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      {featuredWork.map((entry) => {
+        const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+        const img = portfolioImages[imgPath]?.default;
+        return img ? (
+          <a href={`/portfolio/${entry.category === 'pre-wedding' ? 'pre-weddings' : entry.category}`} class="group block">
+            <div class="relative overflow-hidden rounded-lg aspect-[2/3]">
+              <Image
+                src={img}
+                alt={`${entry.couple} — ${entry.location}`}
+                widths={[300, 500]}
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 20vw"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <h3 class="font-heading text-lg font-bold">{entry.couple}</h3>
+                <p class="text-xs text-text-secondary">{entry.location}</p>
+              </div>
+            </div>
+          </a>
+        ) : null;
+      })}
+    </div>
+
+    <div class="text-center mt-12">
+      <Button href="/portfolio" variant="outline">View All Work</Button>
+    </div>
+  </section>
+
+  <!-- ═══ POPULAR PACKAGES ═══ -->
+  <section class="bg-bg-elevated py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading
+        title="Popular Packages"
+        subtitle="Investment in memories that last a lifetime"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {popularPackages.map((pkg) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.id === 'pre-wedding-full'}
+          />
+        ))}
+      </div>
+
+      <div class="text-center mt-12">
+        <Button href="/pricing" variant="outline">See All Packages</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BRAND STATEMENT ═══ -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 py-24 text-center">
+    <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+      Capturing love, honestly.
+    </h2>
+    <p class="mt-8 text-text-secondary text-lg leading-relaxed max-w-3xl mx-auto">
+      KashKlicks Studios is a Toronto-based photography & videography company specializing in capturing love.
+      We believe in effortless, honest, and cinematic coverage — with calm direction, beautiful light, and timeless editing.
+      Each session is unique, thoughtfully planned, and directed to tell your story as it truly is.
+    </p>
+    <div class="mt-10">
+      <Button href="/about" variant="secondary">More About Us</Button>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="bg-bg-elevated py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading
+        title="Kind Words"
+        subtitle="What our clients say about working with us"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {testimonials.slice(0, 3).map((t) => (
+          <TestimonialCard
+            name={t.name}
+            event={t.event}
+            quote={t.quote}
+            rating={t.rating}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ INSTAGRAM ═══ -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <div class="text-center mb-12">
+      <p class="text-accent text-sm tracking-[0.2em] uppercase mb-2">Follow Along</p>
+      <a
+        href={site.social.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-heading text-2xl font-bold hover:text-accent transition-colors"
+      >
+        {site.social.instagramHandle}
+      </a>
+    </div>
+    <!-- TODO: Replace with real Instagram images -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+      {[1,2,3,4,5,6].map((i) => (
+        <a
+          href={site.social.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="aspect-square bg-bg-card rounded overflow-hidden group"
+        >
+          <div class="w-full h-full bg-bg-card group-hover:opacity-80 transition-opacity" />
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ FINAL CTA ═══ -->
+  <section class="bg-bg-elevated py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <h2 class="font-heading text-4xl sm:text-5xl font-bold">
+        Ready to say <span class="text-accent italic">yes</span> to forever?
+      </h2>
+      <p class="mt-6 text-text-secondary text-lg">
+        Let's create something beautiful together. Book your free consultation today.
+      </p>
+      <div class="mt-10">
+        <Button href="/contact" variant="primary" size="lg">Get in Touch</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

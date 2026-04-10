@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import ContactForm from '../components/forms/ContactForm.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+
+import faq from '../data/faq.json';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.answer,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with KashKlicks Studios for wedding, pre-wedding, and event photography in Toronto. Free consultation included. We respond within 24 hours."
+  jsonLd={faqSchema}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Contact', href: '/contact' },
+    ]} />
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-16">
+      <!-- Form -->
+      <div class="lg:col-span-3">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-text-primary mb-4">
+          Let's create something beautiful
+        </h1>
+        <p class="text-text-secondary text-lg mb-10">
+          Tell us about your vision. We'll get back to you within 24 hours with a free consultation.
+        </p>
+
+        <ContactForm />
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-2">
+        <div class="bg-bg-elevated border border-border rounded-lg p-8 sticky top-28">
+          <h2 class="font-heading text-xl font-bold text-text-primary mb-6">Quick Info</h2>
+
+          <div class="space-y-6 text-sm">
+            <div>
+              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Based In</p>
+              <p class="text-text-primary">Toronto, Ontario, Canada</p>
+            </div>
+            <div>
+              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Serving</p>
+              <p class="text-text-primary">GTA & Canada-wide</p>
+            </div>
+            <div>
+              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Response Time</p>
+              <p class="text-text-primary">Within 24 hours</p>
+            </div>
+            <div>
+              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Follow Along</p>
+              <a href="https://instagram.com/kash.klicks" target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-hover transition-colors">
+                @kash.klicks
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="mt-24">
+      <SectionHeading
+        title="Frequently Asked Questions"
+        subtitle="Common questions about working with us"
+      />
+
+      <div class="max-w-3xl mx-auto space-y-4">
+        {faq.map((item) => (
+          <details class="group bg-bg-card border border-border rounded-lg">
+            <summary class="flex items-center justify-between cursor-pointer p-6 text-text-primary font-medium hover:text-accent transition-colors">
+              {item.question}
+              <svg class="w-5 h-5 text-text-muted shrink-0 ml-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="px-6 pb-6 text-text-secondary leading-relaxed">
+              {item.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

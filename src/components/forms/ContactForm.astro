@@ -1,0 +1,156 @@
+---
+interface Props {
+  formspreeId?: string;
+}
+
+const { formspreeId = 'YOUR_FORMSPREE_ID' } = Astro.props;
+---
+
+<!-- TODO: Replace YOUR_FORMSPREE_ID with actual Formspree endpoint -->
+<form
+  action={`https://formspree.io/f/${formspreeId}`}
+  method="POST"
+  class="space-y-6"
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <label for="name" class="block text-sm font-medium text-text-secondary mb-2">Your Name *</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+        placeholder="First & last name"
+      />
+    </div>
+    <div>
+      <label for="email" class="block text-sm font-medium text-text-secondary mb-2">Email *</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+        placeholder="you@email.com"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <label for="phone" class="block text-sm font-medium text-text-secondary mb-2">Phone</label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+        placeholder="(416) 555-1234"
+      />
+    </div>
+    <div>
+      <label for="date" class="block text-sm font-medium text-text-secondary mb-2">Event Date</label>
+      <input
+        type="date"
+        id="date"
+        name="event_date"
+        class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <label for="event_type" class="block text-sm font-medium text-text-secondary mb-2">Event Type</label>
+      <select
+        id="event_type"
+        name="event_type"
+        class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors"
+      >
+        <option value="">Select type...</option>
+        <option value="pre-wedding">Pre-Wedding / Engagement</option>
+        <option value="wedding">Wedding</option>
+        <option value="civil-ceremony">Civil Ceremony</option>
+        <option value="birthday">Birthday / Celebration</option>
+        <option value="portrait">Portrait</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div>
+      <label for="budget" class="block text-sm font-medium text-text-secondary mb-2">Budget Range</label>
+      <select
+        id="budget"
+        name="budget"
+        class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors"
+      >
+        <option value="">Select range...</option>
+        <option value="under-500">Under $500</option>
+        <option value="500-1000">$500 - $1,000</option>
+        <option value="1000-1500">$1,000 - $1,500</option>
+        <option value="1500-plus">$1,500+</option>
+        <option value="custom">Custom / Not sure</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label for="venue" class="block text-sm font-medium text-text-secondary mb-2">Venue / Location</label>
+    <input
+      type="text"
+      id="venue"
+      name="venue"
+      class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+      placeholder="Where is your event?"
+    />
+  </div>
+
+  <div>
+    <label for="referral" class="block text-sm font-medium text-text-secondary mb-2">How did you find us?</label>
+    <select
+      id="referral"
+      name="referral"
+      class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors"
+    >
+      <option value="">Select...</option>
+      <option value="instagram">Instagram</option>
+      <option value="google">Google</option>
+      <option value="facebook">Facebook</option>
+      <option value="reddit">Reddit</option>
+      <option value="referral">Friend / Referral</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-medium text-text-secondary mb-2">Tell us your story *</label>
+    <textarea
+      id="message"
+      name="message"
+      required
+      rows="5"
+      class="w-full bg-bg-card border border-border rounded px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors resize-y"
+      placeholder="Tell us about your vision, your day, or anything you'd like us to know..."
+    ></textarea>
+  </div>
+
+  <div class="flex items-start gap-3">
+    <input
+      type="checkbox"
+      id="newsletter"
+      name="newsletter"
+      class="mt-1 accent-accent"
+    />
+    <label for="newsletter" class="text-sm text-text-muted">
+      Keep me updated with tips, behind-the-scenes, and special offers
+    </label>
+  </div>
+
+  <button
+    type="submit"
+    class="w-full sm:w-auto px-8 py-3 bg-accent text-bg font-medium rounded hover:bg-accent-hover transition-colors"
+  >
+    Send Message
+  </button>
+
+  <p class="text-xs text-text-muted">We'll get back to you within 24 hours. Free consultation included.</p>
+</form>

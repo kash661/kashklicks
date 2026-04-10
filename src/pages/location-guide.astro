@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import LocationCard from '../components/ui/LocationCard.astro';
+import Button from '../components/ui/Button.astro';
+
+import locations from '../data/locations.json';
+
+const locationImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/locations/*.jpg',
+  { eager: true }
+);
+---
+
+<BaseLayout
+  title="Toronto Location Guide"
+  description="Top photography locations in Toronto and the GTA for pre-wedding, engagement, and portrait sessions. Detailed guides with parking, permits, and best times to shoot."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Location Guide', href: '/location-guide' },
+    ]} />
+
+    <SectionHeading
+      title="Toronto Location Guide"
+      subtitle="Our favourite photography spots across the GTA — tried, tested, and loved"
+    />
+
+    <p class="max-w-3xl mx-auto text-center text-text-secondary mb-16">
+      Choosing the right location makes all the difference. Here are our go-to spots for pre-wedding, engagement,
+      and portrait sessions in Toronto and the surrounding area. Each one has been personally scouted for the best
+      light, variety, and overall vibe.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {locations.map((loc) => {
+        const imgPath = `/src/assets/images/locations/${loc.image}`;
+        const img = locationImages[imgPath]?.default;
+        return img ? (
+          <LocationCard
+            name={loc.name}
+            area={loc.area}
+            vibe={loc.vibe}
+            bestFor={loc.bestFor}
+            walkingLevel={loc.walkingLevel}
+            walkingNote={loc.walkingNote}
+            permits={loc.permits}
+            parking={loc.parking}
+            idealIf={loc.idealIf}
+            image={img}
+          />
+        ) : null;
+      })}
+    </div>
+
+    <div class="text-center mt-16">
+      <h2 class="font-heading text-2xl font-bold text-text-primary mb-4">Not sure where to shoot?</h2>
+      <p class="text-text-secondary mb-8">Location guidance is included with every package. We'll help you find the perfect spot.</p>
+      <Button href="/contact" variant="primary" size="lg">Book a Consultation</Button>
+    </div>
+  </div>
+</BaseLayout>

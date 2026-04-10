@@ -1,0 +1,52 @@
+[
+  {
+    "id": "shuba-rob",
+    "couple": "Shuba + Rob",
+    "category": "pre-wedding",
+    "location": "RC Harris, Scarborough",
+    "coverImage": "shuba-rob-cover.jpg",
+    "images": ["shuba-rob-cover.jpg"],
+    "featured": true,
+    "testimonialId": null
+  },
+  {
+    "id": "alex-aziz",
+    "couple": "Alex + Aziz",
+    "category": "pre-wedding",
+    "location": "King St W, Toronto",
+    "coverImage": "alex-aziz-cover.jpg",
+    "images": ["alex-aziz-cover.jpg"],
+    "featured": true,
+    "testimonialId": null
+  },
+  {
+    "id": "ayushi-parth",
+    "couple": "Ayushi + Parth",
+    "category": "pre-wedding",
+    "location": "Guild Park, Scarborough",
+    "coverImage": "ayushi-parth-cover.jpg",
+    "images": ["ayushi-parth-cover.jpg"],
+    "featured": true,
+    "testimonialId": null
+  },
+  {
+    "id": "priyanka-saurav",
+    "couple": "Priyanka + Saurav",
+    "category": "pre-wedding",
+    "location": "University of Toronto",
+    "coverImage": "priyanka-saurav-cover.jpg",
+    "images": ["priyanka-saurav-cover.jpg"],
+    "featured": true,
+    "testimonialId": null
+  },
+  {
+    "id": "meghna-puneeth",
+    "couple": "Meghna + Puneeth",
+    "category": "pre-wedding",
+    "location": "Toronto Music Garden",
+    "coverImage": "meghna-puneeth-cover.jpg",
+    "images": ["meghna-puneeth-cover.jpg"],
+    "featured": true,
+    "testimonialId": null
+  }
+]

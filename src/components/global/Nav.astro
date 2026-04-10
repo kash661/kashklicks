@@ -1,0 +1,48 @@
+---
+import navigation from '../../data/navigation.json';
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="flex items-center gap-8">
+  {navigation.items.map((item) => (
+    <div class="relative group">
+      <a
+        href={item.href}
+        class:list={[
+          'text-sm font-medium transition-colors py-2',
+          currentPath.startsWith(item.href)
+            ? 'text-accent'
+            : 'text-text-secondary hover:text-text-primary',
+        ]}
+      >
+        {item.label}
+        {item.children && (
+          <svg class="inline-block w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        )}
+      </a>
+
+      {item.children && (
+        <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+          <div class="bg-bg-elevated border border-border rounded-lg py-2 min-w-[180px] shadow-xl">
+            {item.children.map((child) => (
+              <a
+                href={child.href}
+                class:list={[
+                  'block px-4 py-2 text-sm transition-colors',
+                  currentPath === child.href
+                    ? 'text-accent bg-accent-muted'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-card',
+                ]}
+              >
+                {child.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  ))}
+</nav>

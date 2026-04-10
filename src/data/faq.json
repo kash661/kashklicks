@@ -1,0 +1,32 @@
+[
+  {
+    "question": "Are raw files available?",
+    "answer": "Yes! Raw photo files are available as an add-on for +$35 and raw video files for +$50.",
+    "category": "Delivery"
+  },
+  {
+    "question": "Are there travel fees?",
+    "answer": "Travel fees are applied based on location. Sessions within the GTA are typically included, and we'll discuss any additional fees upfront during your consultation.",
+    "category": "Booking"
+  },
+  {
+    "question": "What's the best time to shoot?",
+    "answer": "The best light is always during early mornings and late afternoons — what photographers call 'golden hour.' Overcast days are also fantastic for outdoor shoots. For indoor and studio sessions, timing is more flexible.",
+    "category": "Logistics"
+  },
+  {
+    "question": "Do you help with location selection?",
+    "answer": "Absolutely. We prioritize areas with the best natural light first, then consider the location itself. We'll help you find a spot that gives you a variety of backdrops and scenes — often from just one location. Check out our location guide for inspiration.",
+    "category": "Logistics"
+  },
+  {
+    "question": "Will you help us with posing?",
+    "answer": "Short answer: YES, we got you! We're firm believers in 'prompting vs posing.' Instead of stiff, awkward poses, we guide you through natural activities and movements that keep things casual, flowing, and fun. The result? Photos that look and feel like you.",
+    "category": "Logistics"
+  },
+  {
+    "question": "What if it rains or we need to reschedule?",
+    "answer": "Rain doesn't stop us — we'll shoot at covered outdoor spots or move indoors to your home or our studio space. If you do need to reschedule, just give us a minimum of 48 hours' notice. Fees may apply for last-minute changes.",
+    "category": "Booking"
+  }
+]

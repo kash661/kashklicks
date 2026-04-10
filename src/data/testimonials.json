@@ -1,0 +1,37 @@
+[
+  {
+    "id": "shania-vishal",
+    "name": "Shania & Vishal",
+    "event": "Pre-Wedding",
+    "quote": "Captured every moment so beautifully without ever making it feel staged or forced. The photos feel so natural and real — exactly what we wanted.",
+    "rating": 5
+  },
+  {
+    "id": "ryans-1st",
+    "name": "Ryan's Family",
+    "event": "Birthday",
+    "quote": "Exceptional talent, professionalism, and dedication in photography. Every single photo exceeded our expectations.",
+    "rating": 5
+  },
+  {
+    "id": "reema",
+    "name": "Reema",
+    "event": "Pre-Wedding",
+    "quote": "He made it super chill, so we could get some natural shots. No awkward posing — just real moments that looked incredible.",
+    "rating": 5
+  },
+  {
+    "id": "monica",
+    "name": "Monica",
+    "event": "Portrait",
+    "quote": "Every image told its own story. This is photography with heart, soul, and a beautifully artistic touch. Truly one of a kind.",
+    "rating": 5
+  },
+  {
+    "id": "roxana-preet",
+    "name": "Roxana & Preet",
+    "event": "Pre-Wedding",
+    "quote": "The perfect blend of providing instruction when needed while also being able to just fall back and capture the most natural, beautiful moments.",
+    "rating": 5
+  }
+]

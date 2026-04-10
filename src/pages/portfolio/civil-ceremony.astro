@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import GalleryGrid from '../../components/gallery/GalleryGrid.astro';
+import Lightbox from '../../components/gallery/Lightbox.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import Button from '../../components/ui/Button.astro';
+
+import portfolio from '../../data/portfolio.json';
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/*.jpg',
+  { eager: true }
+);
+
+const entries = portfolio.filter((p) => p.category === 'civil-ceremony');
+const galleryImages = entries.flatMap((entry) =>
+  entry.images.map((imgName) => {
+    const imgPath = `/src/assets/images/portfolio/${imgName}`;
+    const img = portfolioImages[imgPath]?.default;
+    return img ? { src: img, alt: `Civil ceremony photography by KashKlicks Studios` } : null;
+  }).filter(Boolean)
+) as { src: ImageMetadata; alt: string }[];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: 'Civil Ceremony Photography — KashKlicks Studios',
+  description: 'Intimate civil ceremony photography in Toronto by KashKlicks Studios.',
+  url: new URL('/portfolio/civil-ceremony', Astro.site).href,
+};
+---
+
+<BaseLayout
+  title="Civil Ceremony Photography"
+  description="Intimate civil ceremony photography in Toronto. Capturing the beauty of your courthouse or city hall wedding."
+  jsonLd={schema}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Civil Ceremony', href: '/portfolio/civil-ceremony' },
+    ]} />
+
+    <SectionHeading
+      title="Civil Ceremonies"
+      subtitle="Intimate, beautiful moments — no matter the venue"
+    />
+
+    {galleryImages.length > 0 ? (
+      <GalleryGrid images={galleryImages} gallery="civil-ceremony" columns={3} />
+    ) : (
+      <p class="text-center text-text-muted py-12">Civil ceremony gallery coming soon — check back for our latest work.</p>
+    )}
+
+    <div class="text-center mt-16">
+      <p class="text-text-secondary mb-6">Planning a civil ceremony?</p>
+      <Button href="/contact" variant="primary">Book Coverage</Button>
+    </div>
+  </div>
+
+  <Lightbox />
+</BaseLayout>

@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import GalleryGrid from '../../components/gallery/GalleryGrid.astro';
+import Lightbox from '../../components/gallery/Lightbox.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import Button from '../../components/ui/Button.astro';
+
+import portfolio from '../../data/portfolio.json';
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/*.jpg',
+  { eager: true }
+);
+
+const entries = portfolio.filter((p) => p.category === 'portrait');
+const galleryImages = entries.flatMap((entry) =>
+  entry.images.map((imgName) => {
+    const imgPath = `/src/assets/images/portfolio/${imgName}`;
+    const img = portfolioImages[imgPath]?.default;
+    return img ? { src: img, alt: `Portrait photography by KashKlicks Studios` } : null;
+  }).filter(Boolean)
+) as { src: ImageMetadata; alt: string }[];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: 'Portrait Photography Gallery — KashKlicks Studios',
+  description: 'Portrait photography in Toronto by KashKlicks Studios.',
+  url: new URL('/portfolio/portraits', Astro.site).href,
+};
+---
+
+<BaseLayout
+  title="Portrait Photography"
+  description="Professional portrait photography in Toronto. Individual, couple, and family portraits with a cinematic, editorial touch."
+  jsonLd={schema}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Portraits', href: '/portfolio/portraits' },
+    ]} />
+
+    <SectionHeading
+      title="Portraits"
+      subtitle="Individual, couple, and family portraits with an editorial touch"
+    />
+
+    {galleryImages.length > 0 ? (
+      <GalleryGrid images={galleryImages} gallery="portraits" columns={3} />
+    ) : (
+      <p class="text-center text-text-muted py-12">Portrait gallery coming soon — stay tuned.</p>
+    )}
+
+    <div class="text-center mt-16">
+      <p class="text-text-secondary mb-6">Want stunning portraits?</p>
+      <Button href="/contact" variant="primary">Book a Session</Button>
+    </div>
+  </div>
+
+  <Lightbox />
+</BaseLayout>

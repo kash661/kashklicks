@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import PricingCard from '../components/ui/PricingCard.astro';
+import Button from '../components/ui/Button.astro';
+
+import packages from '../data/packages.json';
+
+const preWeddingPackages = packages.filter((p) => p.category === 'Pre-Wedding').sort((a, b) => a.order - b.order);
+const weddingPackages = packages.filter((p) => p.category === 'Wedding').sort((a, b) => a.order - b.order);
+const eventPackages = packages.filter((p) => p.category === 'Events');
+
+const offerSchemas = packages.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Offer',
+  name: p.name,
+  description: p.description,
+  price: p.price,
+  priceCurrency: p.currency,
+  availability: 'https://schema.org/InStock',
+  seller: {
+    '@type': 'LocalBusiness',
+    name: 'KashKlicks Studios',
+  },
+}));
+---
+
+<BaseLayout
+  title="Pricing"
+  description="KashKlicks Studios pricing and packages. Wedding day coverage from $1,200, pre-wedding sessions from $350. View all packages, add-ons, and book your free consultation."
+  jsonLd={offerSchemas}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Pricing', href: '/pricing' },
+    ]} />
+
+    <SectionHeading
+      title="Investment"
+      subtitle="Transparent pricing for every type of session. Free consultation included with all packages."
+    />
+
+    <!-- Pre-Wedding Packages -->
+    <div class="mb-20">
+      <h2 class="font-heading text-2xl font-bold text-text-primary mb-8">Pre-Wedding & Engagement</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {preWeddingPackages.map((pkg) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.id === 'pre-wedding-full'}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Wedding Day -->
+    <div class="mb-20">
+      <h2 class="font-heading text-2xl font-bold text-text-primary mb-8">Wedding Day</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {weddingPackages.map((pkg) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.id === 'wedding-full'}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Events -->
+    <div class="mb-20">
+      <h2 class="font-heading text-2xl font-bold text-text-primary mb-8">Events & Celebrations</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {eventPackages.map((pkg) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            description={pkg.description}
+            highlights={pkg.highlights}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Add-ons -->
+    <div class="mb-20 bg-bg-elevated rounded-lg p-8 border border-border">
+      <h2 class="font-heading text-2xl font-bold text-text-primary mb-6">Add-Ons</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="flex items-start gap-4">
+          <span class="text-accent font-bold">+$35</span>
+          <div>
+            <p class="text-text-primary font-medium">Raw Photo Files</p>
+            <p class="text-sm text-text-muted">All unedited photo files delivered digitally</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="text-accent font-bold">+$50</span>
+          <div>
+            <p class="text-text-primary font-medium">Raw Video Files</p>
+            <p class="text-sm text-text-muted">All unedited video footage delivered digitally</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="text-accent font-bold">+$100/hr</span>
+          <div>
+            <p class="text-text-primary font-medium">Second Photographer</p>
+            <p class="text-sm text-text-muted">Additional coverage from a second angle</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="text-accent font-bold">Custom</span>
+          <div>
+            <p class="text-text-primary font-medium">Custom Package</p>
+            <p class="text-sm text-text-muted">Need something specific? Let's build your perfect package</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="mb-20 max-w-3xl mx-auto">
+      <h2 class="font-heading text-2xl font-bold text-text-primary mb-6 text-center">Good to Know</h2>
+      <ul class="space-y-4 text-text-secondary">
+        <li class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+          <span><strong class="text-text-primary">Free consultation</strong> — Every booking starts with a no-pressure chat to understand your vision</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+          <span><strong class="text-text-primary">Location guidance included</strong> — We help you find the perfect spot for your session</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+          <span><strong class="text-text-primary">Travel fees</strong> — Sessions within the GTA are typically included. We'll discuss any additional fees upfront</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+          <span><strong class="text-text-primary">Available Canada-wide</strong> — Based in Toronto, but we travel for love</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center py-12">
+      <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Not sure which package?</h2>
+      <p class="text-text-secondary mb-8">Book a free consultation and we'll help you find the perfect fit.</p>
+      <Button href="/contact" variant="primary" size="lg">Book Free Consultation</Button>
+    </div>
+  </div>
+</BaseLayout>

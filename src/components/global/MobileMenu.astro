@@ -1,0 +1,52 @@
+---
+import navigation from '../../data/navigation.json';
+
+const currentPath = Astro.url.pathname;
+---
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 top-20 bg-bg z-40 translate-x-full transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto"
+>
+  <nav class="px-6 py-8 space-y-2">
+    {navigation.items.map((item) => (
+      <div>
+        <a
+          href={item.href}
+          class:list={[
+            'block py-3 text-lg font-medium transition-colors',
+            currentPath.startsWith(item.href) ? 'text-accent' : 'text-text-primary',
+          ]}
+        >
+          {item.label}
+        </a>
+        {item.children && (
+          <div class="pl-4 space-y-1 mb-2">
+            {item.children.map((child) => (
+              <a
+                href={child.href}
+                class:list={[
+                  'block py-2 text-sm transition-colors',
+                  currentPath === child.href
+                    ? 'text-accent'
+                    : 'text-text-secondary hover:text-text-primary',
+                ]}
+              >
+                {child.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+
+    <div class="pt-6 border-t border-border">
+      <a
+        href="/contact"
+        class="block w-full py-3 bg-accent text-bg text-center font-medium rounded hover:bg-accent-hover transition-colors"
+      >
+        Book Now
+      </a>
+    </div>
+  </nav>
+</div>

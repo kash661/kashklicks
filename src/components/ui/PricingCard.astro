@@ -1,0 +1,58 @@
+---
+interface Props {
+  name: string;
+  price: number;
+  description: string;
+  highlights: string[];
+  popular?: boolean;
+  id: string;
+}
+
+const { name, price, description, highlights, popular = false, id } = Astro.props;
+---
+
+<div class:list={[
+  'relative bg-bg-card border rounded-lg p-8 flex flex-col',
+  popular ? 'border-accent' : 'border-border hover:border-border-hover',
+  'transition-colors',
+]}>
+  {popular && (
+    <span class="absolute -top-3 left-6 bg-accent text-bg text-xs font-medium px-3 py-1 rounded-full">
+      Popular
+    </span>
+  )}
+
+  <h3 class="font-heading text-2xl font-bold text-text-primary">{name}</h3>
+  <p class="mt-2 text-text-secondary text-sm leading-relaxed">{description}</p>
+
+  <div class="mt-6 mb-6">
+    <span class="text-sm text-text-muted">Starting at</span>
+    <div class="flex items-baseline gap-1">
+      <span class="text-4xl font-bold text-text-primary">${price.toLocaleString()}</span>
+      <span class="text-text-muted text-sm">CAD</span>
+    </div>
+  </div>
+
+  <ul class="space-y-3 mb-8 flex-1">
+    {highlights.map((item) => (
+      <li class="flex items-start gap-3 text-sm text-text-secondary">
+        <svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        {item}
+      </li>
+    ))}
+  </ul>
+
+  <a
+    href={`/contact?package=${id}`}
+    class:list={[
+      'block text-center py-3 rounded font-medium text-sm transition-colors',
+      popular
+        ? 'bg-accent text-bg hover:bg-accent-hover'
+        : 'border border-accent text-accent hover:bg-accent hover:text-bg',
+    ]}
+  >
+    Book This Package
+  </a>
+</div>

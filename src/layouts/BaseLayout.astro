@@ -1,0 +1,96 @@
+---
+import SEO from '../components/seo/SEO.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import site from '../data/site.json';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  jsonLd?: Record<string, any> | Record<string, any>[];
+  transparentHeader?: boolean;
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    author: string;
+    tags?: string[];
+  };
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  ogType,
+  canonicalUrl,
+  noIndex,
+  jsonLd,
+  transparentHeader = false,
+  article,
+} = Astro.props;
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  url: site.url,
+  image: `${site.url}/og-default.jpg`,
+  description: site.description,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.location.city,
+    addressRegion: site.location.regionCode,
+    addressCountry: site.location.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.location.lat,
+    longitude: site.location.lng,
+  },
+  priceRange: '$$',
+  areaServed: site.areasServed,
+  sameAs: [site.social.instagram, site.social.pinterest, site.social.youtube],
+};
+---
+
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="/fonts/PlayfairDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <SEO
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      ogType={ogType}
+      canonicalUrl={canonicalUrl}
+      noIndex={noIndex}
+      article={article}
+    />
+
+    <!-- Organization Schema (site-wide) -->
+    <JsonLd schema={organizationSchema} />
+
+    <!-- Page-specific JSON-LD -->
+    {jsonLd && <JsonLd schema={jsonLd} />}
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header transparent={transparentHeader} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

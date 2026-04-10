@@ -1,0 +1,108 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  publishDate: Date;
+  updatedDate?: Date;
+  author?: string;
+  coverImage?: string;
+  coverImageAlt?: string;
+  tags?: string[];
+}
+
+const {
+  title,
+  description,
+  publishDate,
+  updatedDate,
+  author = 'Akash',
+  coverImage,
+  coverImageAlt,
+  tags = [],
+} = Astro.props;
+
+const blogPostSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  author: {
+    '@type': 'Person',
+    name: author,
+  },
+  datePublished: publishDate.toISOString(),
+  ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+  ...(coverImage && { image: coverImage }),
+  publisher: {
+    '@type': 'Organization',
+    name: 'KashKlicks Studios',
+    url: 'https://kashklicks.ca',
+  },
+};
+
+const formattedDate = publishDate.toLocaleDateString('en-CA', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  jsonLd={blogPostSchema}
+  article={{
+    publishedTime: publishDate.toISOString(),
+    modifiedTime: updatedDate?.toISOString(),
+    author,
+    tags,
+  }}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Blog', href: '/blog' },
+      { label: title, href: Astro.url.pathname },
+    ]} />
+
+    <header class="mb-12">
+      <div class="flex items-center gap-3 text-sm text-text-muted mb-4">
+        <time datetime={publishDate.toISOString()}>{formattedDate}</time>
+        {tags.length > 0 && (
+          <>
+            <span>·</span>
+            <div class="flex gap-2">
+              {tags.map((tag) => (
+                <span class="text-accent">{tag}</span>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <h1 class="font-heading text-4xl sm:text-5xl font-bold leading-tight">{title}</h1>
+      <p class="mt-4 text-lg text-text-secondary">{description}</p>
+    </header>
+
+    <div class="prose prose-invert prose-lg max-w-none
+      prose-headings:font-heading prose-headings:text-text-primary
+      prose-p:text-text-secondary prose-p:leading-relaxed
+      prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-text-primary
+      prose-blockquote:border-accent prose-blockquote:text-text-secondary
+      prose-img:rounded-lg
+    ">
+      <slot />
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-border">
+      <p class="text-text-muted text-sm">Written by {author}</p>
+      <a href="/blog" class="inline-block mt-4 text-accent hover:text-accent-hover transition-colors">
+        ← Back to Blog
+      </a>
+    </footer>
+  </article>
+</BaseLayout>

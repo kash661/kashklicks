@@ -1,0 +1,34 @@
+---
+import GalleryImage from './GalleryImage.astro';
+
+interface GalleryItem {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  images: GalleryItem[];
+  gallery?: string;
+  columns?: 2 | 3 | 4;
+}
+
+const { images, gallery = 'gallery', columns = 3 } = Astro.props;
+
+const colClasses = {
+  2: 'columns-1 sm:columns-2',
+  3: 'columns-1 sm:columns-2 lg:columns-3',
+  4: 'columns-1 sm:columns-2 lg:columns-3 xl:columns-4',
+};
+---
+
+<div class={`${colClasses[columns]} gap-4`}>
+  {images.map((img) => (
+    <div class="break-inside-avoid mb-4">
+      <GalleryImage
+        src={img.src}
+        alt={img.alt}
+        gallery={gallery}
+      />
+    </div>
+  ))}
+</div>
