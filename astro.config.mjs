@@ -8,4 +8,14 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   integrations: [sitemap()],
+  image: {
+    experimentalLayout: 'constrained',
+  },
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
+  experimental: {
+    clientPrerender: true,
+  },
 });

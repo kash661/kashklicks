@@ -17,7 +17,7 @@ const { name, price, description, highlights, popular = false, id } = Astro.prop
   'transition-colors',
 ]}>
   {popular && (
-    <span class="absolute -top-3 left-6 bg-accent text-bg text-xs font-medium px-3 py-1 rounded-full">
+    <span class="absolute -top-3 left-6 bg-accent text-text-on-accent text-xs font-medium px-3 py-1 rounded-full">
       Popular
     </span>
   )}
@@ -49,8 +49,8 @@ const { name, price, description, highlights, popular = false, id } = Astro.prop
     class:list={[
       'block text-center py-3 rounded font-medium text-sm transition-colors',
       popular
-        ? 'bg-accent text-bg hover:bg-accent-hover'
-        : 'border border-accent text-accent hover:bg-accent hover:text-bg',
+        ? 'bg-accent text-text-on-accent hover:bg-accent-hover'
+        : 'border border-accent text-accent hover:bg-accent hover:text-text-on-accent',
     ]}
   >
     Book This Package

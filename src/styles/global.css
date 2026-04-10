@@ -59,22 +59,40 @@
 
 /* ── Design Tokens ── */
 @theme {
-  --color-bg: #0a0a0a;
-  --color-bg-elevated: #141414;
-  --color-bg-card: #1a1a1a;
-  --color-bg-card-hover: #222222;
-  --color-text-primary: #f5f0eb;
-  --color-text-secondary: #a39e98;
-  --color-text-muted: #6b6560;
-  --color-accent: #c8956c;
-  --color-accent-hover: #d4a57c;
-  --color-accent-muted: rgba(200, 149, 108, 0.2);
-  --color-border: #2a2725;
-  --color-border-hover: #3d3835;
-  --color-overlay: rgba(10, 10, 10, 0.8);
+  /* Backgrounds — light, airy, warm */
+  --color-bg: #FDFBF7;
+  --color-bg-elevated: #F5F0EB;
+  --color-bg-card: #FFFFFF;
+  --color-bg-card-hover: #F9F6F2;
 
+  /* Text — warm charcoal, not pure black */
+  --color-text-primary: #2C2824;
+  --color-text-secondary: #6B6560;
+  --color-text-muted: #A39E98;
+
+  /* Accent — warm gold (unchanged), hover darkens on light bg */
+  --color-accent: #c8956c;
+  --color-accent-hover: #B8824F;
+  --color-accent-muted: rgba(200, 149, 108, 0.12);
+
+  /* Borders — subtle warm gray */
+  --color-border: #E8E2DA;
+  --color-border-hover: #D4CCC2;
+
+  /* Overlay stays dark for lightboxes */
+  --color-overlay: rgba(44, 40, 36, 0.75);
+
+  /* White text on accent-colored elements */
+  --color-text-on-accent: #FFFFFF;
+
+  /* Typography */
   --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+
+  /* Animation tokens */
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+  --animate-fade-up: fade-up 0.6s ease-out forwards;
+  --animate-scale-in: scale-in 0.5s ease-out forwards;
 }
 
 /* ── Base Styles ── */
@@ -98,27 +116,51 @@ h1, h2, h3, h4, h5, h6 {
 
 ::selection {
   background-color: var(--color-accent);
-  color: var(--color-bg);
+  color: #FFFFFF;
 }
 
 /* ── Scroll Fade-In Animation ── */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .fade-in {
   opacity: 0;
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: fade-up 0.6s ease-out forwards;
 }
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
 
 /* ── Image Loading Transition ── */
 img {
   transition: opacity 0.3s ease;
+}
+
+/* Scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-hover) var(--color-bg);
+}
+
+/* Editorial prose utility */
+.prose-editorial {
+  max-width: 72ch;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
 }

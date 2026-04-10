@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import SEO from '../components/seo/SEO.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/global/Header.astro';
@@ -68,6 +69,8 @@ const organizationSchema = {
 
     <!-- Preload critical fonts -->
     <link rel="preload" href="/fonts/PlayfairDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/PlayfairDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <ClientRouter />
     <link rel="preload" href="/fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <SEO
@@ -88,9 +91,19 @@ const organizationSchema = {
   </head>
   <body class="min-h-screen flex flex-col">
     <Header transparent={transparentHeader} />
-    <main class="flex-1">
+    <main class="flex-1" transition:animate="fade">
       <slot />
     </main>
     <Footer />
+    <script>
+      document.addEventListener('astro:page-load', () => {
+        const lightboxElements = document.querySelectorAll('.glightbox');
+        if (lightboxElements.length > 0) {
+          import('glightbox').then(({ default: GLightbox }) => {
+            GLightbox({ selector: '.glightbox', loop: true, touchNavigation: true, closeOnOutsideClick: true, skin: 'clean' });
+          });
+        }
+      });
+    </script>
   </body>
 </html>
