@@ -1,187 +1,186 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import TestimonialCard from '../components/ui/TestimonialCard.astro';
-import Button from '../components/ui/Button.astro';
 import { Image } from 'astro:assets';
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
 import testimonials from '../data/testimonials.json';
-import portfolio from '../data/portfolio.json';
-import site from '../data/site.json';
 
+// Hero image
 import heroImage from '../assets/images/hero/hero-main.jpg';
 
-// Dynamic portfolio image imports
-const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/images/portfolio/*.jpg',
-  { eager: true }
-);
+// Curated gallery images (best-of across shoots)
+import gallery1 from '../assets/images/portfolio/ayushi-parth/03.jpg';
+import gallery2 from '../assets/images/portfolio/alex-aziz/05.jpg';
+import gallery3 from '../assets/images/portfolio/shuba-rob/02.jpg';
+import gallery4 from '../assets/images/portfolio/meghna-puneeth/04.jpg';
+import gallery5 from '../assets/images/portfolio/priyanka-saurav/03.jpg';
+import gallery6 from '../assets/images/portfolio/anushka-anthony/01.jpg';
+import gallery7 from '../assets/images/portfolio/mania-hitesh/02.jpg';
 
-const featuredWork = portfolio.filter((p) => p.featured).slice(0, 3);
+// Pick one testimonial
+const testimonial = testimonials[0];
 
-const reviewSchemas = testimonials.map((t) => ({
-  '@type': 'Review',
-  reviewRating: {
-    '@type': 'Rating',
-    ratingValue: t.rating,
-    bestRating: 5,
-  },
-  author: { '@type': 'Person', name: t.name },
-  reviewBody: t.quote,
-}));
-
-const websiteSchema = {
+// JSON-LD structured data
+const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: site.name,
-  url: site.url,
+  name: 'AD Photography',
+  url: 'https://kashklicks.ca',
+  description: 'Warm, candid wedding and civil ceremony photography in Toronto and across Canada.',
 };
-
-const jsonLd = [websiteSchema, ...reviewSchemas.map((r) => ({ '@context': 'https://schema.org', ...r }))];
 ---
 
 <BaseLayout
-  title="Home"
-  description="AD Photography. Toronto wedding photographer and videographer. Cinematic pre-wedding, wedding, and engagement photography across the GTA and Canada."
+  title="AD Photography"
+  description="Warm, candid wedding and civil ceremony photography in Toronto and across Canada."
   transparentHeader={true}
   showSplash={true}
   jsonLd={jsonLd}
 >
-  <!-- ═══ HERO ═══ -->
-  <section class="relative h-screen flex items-end -mt-20 lg:-mt-24">
+  <!-- ═══ 1. HERO ═══ -->
+  <section class="relative h-screen w-full overflow-hidden bg-surface-container">
     <Image
       src={heroImage}
-      alt="Couple at sunset, AD Photography Toronto wedding photography"
+      alt="Wedding photography by AD Photography"
       class="absolute inset-0 w-full h-full object-cover"
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-      widths={[768, 1200, 1920]}
+      widths={[768, 1280, 1920]}
       sizes="100vw"
+      quality={85}
+      loading="eager"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[var(--color-background)]" />
-
-    <div class="relative container-editorial pb-16 sm:pb-20 lg:pb-24">
-      <h1 class="text-display-lg text-on-dark max-w-4xl">
-        Warm, candid wedding and civil ceremony photography with quiet luxury.
-      </h1>
-      <div class="mt-8">
-        <Button href="/portfolio" variant="secondary" class="text-on-dark border-white/30 hover:border-white/60">View Portfolio</Button>
-      </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+    <div class="absolute bottom-12 left-8 md:left-16 gallery-caption text-on-dark/90">
+      <p class="font-medium">Ayushi & Parth</p>
+      <p class="text-on-dark/60">Toronto, 2025</p>
     </div>
   </section>
 
-  <!-- ═══ INTRO / THE APPROACH ═══ -->
-  <section style="padding-block: var(--spacing-section);">
-    <div class="container-editorial">
-      <div class="grid-editorial">
-        <div class="col-span-12 lg:col-span-5 reveal">
-          <p class="text-label-md text-on-surface-muted">The Approach</p>
-          <h2 class="text-heading-lg italic mt-4 text-on-surface">An observant eye for the unscripted.</h2>
-        </div>
-        <div class="col-span-12 lg:col-start-7 lg:col-span-6 reveal stagger-1">
-          <p class="text-body-lg text-on-surface-variant">
-            We photograph the moments between moments. The glance across the room, the quiet laugh, the unplanned gesture that says everything. Our work is rooted in patience, close observation, and a deep respect for what is already happening.
-          </p>
-          <p class="text-body-md text-on-surface-variant mt-6">
-            Every session is shaped by calm, minimal direction. We guide when it helps and step back when the real story is unfolding. The result is a collection that feels like you, not like a shoot.
-          </p>
-        </div>
+  <!-- ═══ 2. PHOTO PAIR + TEXT MOMENT ═══ -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="grid-editorial">
+      <div class="col-span-12 md:col-span-7 hover-zoom reveal-left">
+        <Image
+          src={gallery1}
+          alt="Candid wedding moment"
+          class="w-full h-auto parallax-img"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 58vw"
+          quality={80}
+        />
       </div>
-    </div>
-  </section>
-
-  <!-- ═══ CURATED COLLECTIONS ═══ -->
-  <section class="bg-surface-dim" style="padding-block: var(--spacing-section);">
-    <div class="container-editorial">
-      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 reveal">
-        <div>
-          <p class="text-label-md text-on-surface-muted">Featured Work</p>
-          <h2 class="text-heading-lg text-on-surface mt-2">Curated Collections</h2>
-        </div>
-        <a href="/portfolio" class="text-label-md text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">
-          View All Collections &rarr;
-        </a>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {featuredWork.map((entry, i) => {
-          const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
-          const img = portfolioImages[imgPath]?.default;
-          return img ? (
-            <a href={`/portfolio/${entry.slug}`} class={`group block reveal stagger-${i + 1}`}>
-              <div class="aspect-[2/3] overflow-hidden bg-surface-container">
-                <Image
-                  src={img}
-                  alt={`${entry.couple}, ${entry.location}`}
-                  widths={[400, 600]}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  class="w-full h-full object-cover cubic-ease group-hover:scale-[1.02]"
-                  style="transition-duration: var(--duration-slow);"
-                  loading="lazy"
-                />
-              </div>
-              <h3 class="text-heading-md text-on-surface mt-4">{entry.couple}</h3>
-              <p class="text-label-md text-on-surface-muted mt-1">{entry.location}</p>
-            </a>
-          ) : null;
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ APPROACH PILLARS ═══ -->
-  <section style="padding-block: var(--spacing-section);">
-    <div class="container-editorial">
-      <p class="text-label-md text-on-surface-muted text-center mb-12 reveal">Our Approach</p>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
-        <div class="text-center reveal stagger-1">
-          <h3 class="text-heading-lg italic text-on-surface">Intimate</h3>
-          <p class="text-body-md text-on-surface-variant mt-4">
-            Small, intentional sessions that put connection first. No large production crews, no chaos. Just you, your people, and a photographer who pays attention.
-          </p>
-        </div>
-        <div class="text-center reveal stagger-2">
-          <h3 class="text-heading-lg italic text-on-surface">Candid</h3>
-          <p class="text-body-md text-on-surface-variant mt-4">
-            Real expressions, real laughter, real emotion. We capture what is actually happening, not a rehearsed version of it. Every image earns its place.
-          </p>
-        </div>
-        <div class="text-center reveal stagger-3">
-          <h3 class="text-heading-lg italic text-on-surface">Calm</h3>
-          <p class="text-body-md text-on-surface-variant mt-4">
-            A steady, grounded presence on your day. We move quietly, direct gently, and never rush. The best moments come when everyone feels at ease.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ TESTIMONIAL ═══ -->
-  <section class="bg-surface-dim" style="padding-block: var(--spacing-section);">
-    <div class="container-editorial flex flex-col items-center text-center reveal">
-      <p class="text-label-md text-on-surface-muted mb-8">{site.name}</p>
-      <div class="max-w-3xl">
-        <TestimonialCard
-          name={testimonials[0].name}
-          event={testimonials[0].event}
-          quote={testimonials[0].quote}
-          rating={testimonials[0].rating}
+      <div class="col-span-12 md:col-span-5 md:mt-24 hover-zoom reveal-right stagger-2">
+        <Image
+          src={gallery2}
+          alt="Intimate pre-wedding portrait"
+          class="w-full h-auto parallax-img"
+          widths={[640, 960]}
+          sizes="(max-width: 768px) 100vw, 42vw"
+          quality={80}
         />
       </div>
     </div>
+    <div class="container-editorial mt-16 max-w-2xl">
+      <p class="text-body-lg text-on-surface-variant reveal stagger-1">
+        Quiet moments, real connection. No posing, no pretending.
+      </p>
+    </div>
   </section>
 
-  <!-- ═══ CTA ═══ -->
-  <section class="bg-surface-dark" style="padding-block: var(--spacing-section);">
+  <!-- ═══ 3. FULL-BLEED SINGLE IMAGE ═══ -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="w-full hover-zoom scale-reveal">
+      <Image
+        src={gallery3}
+        alt="Wedding celebration"
+        class="w-full h-auto parallax-img"
+        widths={[960, 1440, 1920]}
+        sizes="100vw"
+        quality={80}
+      />
+    </div>
+  </section>
+
+  <!-- ═══ 4. INVESTMENT CTA ═══ -->
+  <section class="py-[var(--spacing-section)] bg-background">
     <div class="container-editorial text-center reveal">
-      <p class="text-label-sm text-on-dark-variant">Availability is limited</p>
-      <h2 class="text-display-md text-on-dark mt-4">Start the Conversation</h2>
-      <p class="text-body-lg text-on-dark-variant mt-6 max-w-2xl mx-auto">
-        Whether you are planning a wedding, a civil ceremony, or an intimate celebration, we would love to hear your story. Reach out and let's talk about what you are envisioning.
+      <p class="text-label-md text-on-surface-variant mb-6">Investment</p>
+      <h2 class="text-heading-lg text-on-surface mb-8">Collections start at $500</h2>
+      <Button href="/investment" variant="primary">View Collections</Button>
+    </div>
+  </section>
+
+  <!-- ═══ 5. TWO MORE PHOTOS (MAGAZINE SPREAD) ═══ -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="grid-editorial">
+      <div class="col-span-12 md:col-span-8 hover-zoom reveal-left">
+        <Image
+          src={gallery4}
+          alt="Candid moment during ceremony"
+          class="w-full h-auto parallax-img"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 66vw"
+          quality={80}
+        />
+      </div>
+      <div class="col-span-12 md:col-span-4 flex flex-col gap-6 reveal-right stagger-2">
+        <div class="hover-zoom">
+          <Image
+            src={gallery5}
+            alt="Pre-wedding portrait"
+            class="w-full h-auto parallax-img"
+            widths={[480, 640]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+            quality={80}
+          />
+        </div>
+        <div class="hover-zoom stagger-3">
+          <Image
+            src={gallery6}
+            alt="Couple portrait"
+            class="w-full h-auto parallax-img"
+            widths={[480, 640]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+            quality={80}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. REVIEW ═══ -->
+  <section class="py-[var(--spacing-section)] bg-surface-dim">
+    <div class="container-editorial text-center max-w-3xl reveal">
+      <blockquote class="text-quote text-on-surface mb-8">
+        "{testimonial.quote}"
+      </blockquote>
+      <p class="text-label-md text-on-surface-variant">
+        {testimonial.name} &middot; {testimonial.event}
       </p>
-      <div class="mt-10">
-        <Button href="/contact" variant="primary">Inquire Now</Button>
+    </div>
+  </section>
+
+  <!-- ═══ 7. CONTACT CTA ═══ -->
+  <section class="py-[var(--spacing-section)] bg-surface-dark">
+    <div class="container-editorial text-center reveal">
+      <h2 class="text-heading-lg text-on-dark mb-4">Start the Conversation</h2>
+      <p class="text-body-lg text-on-dark-variant mb-10">
+        Let's talk about your day. No obligations, just a conversation.
+      </p>
+      <Button href="/contact" variant="secondary">Get in Touch</Button>
+    </div>
+  </section>
+
+  <!-- ═══ 8. FINAL IMAGE ═══ -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <div class="hover-zoom scale-reveal">
+        <Image
+          src={gallery7}
+          alt="Wedding moment"
+          class="w-full h-auto parallax-img"
+          widths={[960, 1440, 1920]}
+          sizes="(max-width: 768px) 100vw, 90vw"
+          quality={80}
+        />
       </div>
     </div>
   </section>
