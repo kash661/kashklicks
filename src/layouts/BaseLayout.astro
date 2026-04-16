@@ -4,6 +4,8 @@ import SEO from '../components/seo/SEO.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/global/Header.astro';
 import Footer from '../components/global/Footer.astro';
+import SoundToggle from '../components/global/SoundToggle.astro';
+import SplashOverlay from '../components/global/SplashOverlay.astro';
 import site from '../data/site.json';
 import '../styles/global.css';
 
@@ -16,6 +18,7 @@ interface Props {
   noIndex?: boolean;
   jsonLd?: Record<string, any> | Record<string, any>[];
   transparentHeader?: boolean;
+  showSplash?: boolean;
   article?: {
     publishedTime: string;
     modifiedTime?: string;
@@ -33,6 +36,7 @@ const {
   noIndex,
   jsonLd,
   transparentHeader = false,
+  showSplash = false,
   article,
 } = Astro.props;
 
@@ -68,10 +72,9 @@ const organizationSchema = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Preload critical fonts -->
-    <link rel="preload" href="/fonts/PlayfairDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/PlayfairDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/CormorantGaramond-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <ClientRouter />
-    <link rel="preload" href="/fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <SEO
       title={title}
@@ -89,21 +92,44 @@ const organizationSchema = {
     <!-- Page-specific JSON-LD -->
     {jsonLd && <JsonLd schema={jsonLd} />}
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col bg-background text-on-surface">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:bg-primary focus:text-on-dark focus:px-4 focus:py-2 focus:outline-none">
+      Skip to content
+    </a>
+
+    {showSplash && <SplashOverlay />}
+
     <Header transparent={transparentHeader} />
-    <main class="flex-1" transition:animate="fade">
+    <main id="main-content" class="flex-1" transition:animate="fade">
       <slot />
     </main>
     <Footer />
+
+    <SoundToggle />
+
     <script>
-      document.addEventListener('astro:page-load', () => {
+      import { initScrollReveal } from '../scripts/scroll-reveal';
+      import { initSoundState } from '../scripts/sound-manager';
+
+      function initPage() {
+        initScrollReveal();
+        initSoundState();
+
         const lightboxElements = document.querySelectorAll('.glightbox');
         if (lightboxElements.length > 0) {
           import('glightbox').then(({ default: GLightbox }) => {
             GLightbox({ selector: '.glightbox', loop: true, touchNavigation: true, closeOnOutsideClick: true, skin: 'clean' });
           });
         }
-      });
+      }
+
+      initPage();
+      document.addEventListener('astro:after-swap', initPage);
     </script>
+
+    <!-- Cloudflare Web Analytics -->
+    <!-- TODO: Replace YOUR_CF_ANALYTICS_TOKEN with your Cloudflare Web Analytics token.
+         Get it from: Cloudflare Dashboard > Analytics & Logs > Web Analytics > Add a site > Copy the token -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script>
   </body>
 </html>

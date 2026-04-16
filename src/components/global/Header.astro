@@ -12,48 +12,47 @@ const { transparent = false } = Astro.props;
 <header
   id="site-header"
   class:list={[
-    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-    transparent ? 'bg-transparent' : 'bg-bg/95 backdrop-blur-sm border-b border-border',
+    'fixed top-0 left-0 right-0 z-50 cubic-ease',
+    transparent ? 'bg-transparent header-transparent' : 'bg-background/80 backdrop-blur-[20px] shadow-ambient header-solid',
   ]}
+  style="transition-duration: var(--duration-slow);"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
+  <div class="container-editorial">
+    <div class="flex items-center justify-between h-20 lg:h-24">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2 group">
-        <span class="font-heading text-2xl font-bold text-text-primary group-hover:text-accent transition-colors">
+      <a href="/" class="flex items-center group">
+        <span class:list={[
+          'header-logo font-serif text-2xl lg:text-[1.625rem] tracking-tight cubic-ease',
+          transparent ? 'text-on-dark' : 'text-on-surface',
+        ]} style="transition-duration: var(--duration-hover);">
           KashKlicks
         </span>
       </a>
 
       <!-- Desktop Nav -->
       <div class="hidden lg:block">
-        <Nav />
+        <Nav transparent={transparent} />
       </div>
 
-      <!-- Book Now CTA + Mobile Toggle -->
-      <div class="flex items-center gap-4">
-        <a
-          href="/contact"
-          class="hidden sm:inline-flex px-5 py-2.5 bg-accent text-text-on-accent text-sm font-medium rounded hover:bg-accent-hover transition-colors"
-        >
-          Book Now
-        </a>
-
-        <!-- Mobile Menu Button -->
-        <button
-          id="mobile-menu-toggle"
-          class="lg:hidden p-2 text-text-primary hover:text-accent transition-colors"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-        >
-          <svg class="w-6 h-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg class="w-6 h-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-toggle"
+        class:list={[
+          'lg:hidden p-2 cubic-ease',
+          transparent ? 'text-on-dark' : 'text-on-surface',
+        ]}
+        style="transition-duration: var(--duration-hover);"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg class="w-6 h-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg class="w-6 h-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -61,48 +60,117 @@ const { transparent = false } = Astro.props;
 </header>
 
 <!-- Spacer to prevent content from hiding behind fixed header -->
-<div class="h-20"></div>
+<div class="h-20 lg:h-24"></div>
 
 <script>
-  // Header scroll effect
-  const header = document.getElementById('site-header');
-  if (header) {
-    const isTransparent = header.classList.contains('bg-transparent');
-    if (isTransparent) {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          header.classList.remove('bg-transparent');
-          header.classList.add('bg-bg/95', 'backdrop-blur-sm', 'border-b', 'border-border');
-        } else {
-          header.classList.add('bg-transparent');
-          header.classList.remove('bg-bg/95', 'backdrop-blur-sm', 'border-b', 'border-border');
-        }
-      }, { passive: true });
+  function initHeader() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+
+    const isTransparent = header.classList.contains('header-transparent');
+    const logo = header.querySelector('.header-logo') as HTMLElement | null;
+    const navLinks = header.querySelectorAll('.nav-link');
+    const toggleBtn = document.getElementById('mobile-menu-toggle');
+
+    function applyTransparentMode() {
+      header.classList.add('bg-transparent', 'header-transparent');
+      header.classList.remove('bg-background/80', 'backdrop-blur-[20px]', 'shadow-ambient', 'header-solid');
+      logo?.classList.remove('text-on-surface');
+      logo?.classList.add('text-on-dark');
+      navLinks.forEach((link) => {
+        link.classList.remove('text-on-surface-variant');
+        link.classList.add('text-on-dark-variant');
+      });
+      toggleBtn?.classList.remove('text-on-surface');
+      toggleBtn?.classList.add('text-on-dark');
     }
-  }
 
-  // Mobile menu toggle
-  const toggle = document.getElementById('mobile-menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  const iconOpen = document.getElementById('menu-icon-open');
-  const iconClose = document.getElementById('menu-icon-close');
+    function applySolidMode() {
+      header.classList.remove('bg-transparent', 'header-transparent');
+      header.classList.add('bg-background/80', 'backdrop-blur-[20px]', 'shadow-ambient', 'header-solid');
+      logo?.classList.add('text-on-surface');
+      logo?.classList.remove('text-on-dark');
+      navLinks.forEach((link) => {
+        link.classList.add('text-on-surface-variant');
+        link.classList.remove('text-on-dark-variant');
+      });
+      toggleBtn?.classList.add('text-on-surface');
+      toggleBtn?.classList.remove('text-on-dark');
+    }
 
-  toggle?.addEventListener('click', () => {
-    const isOpen = menu?.classList.contains('translate-x-0');
-    if (isOpen) {
-      menu?.classList.remove('translate-x-0');
-      menu?.classList.add('translate-x-full');
+    if (isTransparent) {
+      let scrolled = false;
+      const onScroll = () => {
+        const shouldBeScrolled = window.scrollY > 50;
+        if (shouldBeScrolled === scrolled) return;
+        scrolled = shouldBeScrolled;
+        if (scrolled) {
+          applySolidMode();
+        } else {
+          applyTransparentMode();
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // Mobile menu toggle
+    const menu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+
+    function closeMenu() {
+      menu?.classList.remove('menu-open');
       iconOpen?.classList.remove('hidden');
       iconClose?.classList.add('hidden');
-      toggle.setAttribute('aria-expanded', 'false');
+      toggleBtn?.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
-    } else {
-      menu?.classList.remove('translate-x-full');
-      menu?.classList.add('translate-x-0');
+      toggleBtn?.focus();
+    }
+
+    function openMenu() {
+      menu?.classList.add('menu-open');
       iconOpen?.classList.add('hidden');
       iconClose?.classList.remove('hidden');
-      toggle.setAttribute('aria-expanded', 'true');
+      toggleBtn?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
+      const firstLink = menu?.querySelector('a') as HTMLElement | null;
+      firstLink?.focus();
     }
-  });
+
+    toggleBtn?.addEventListener('click', () => {
+      const isOpen = menu?.classList.contains('menu-open');
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu?.classList.contains('menu-open')) {
+        closeMenu();
+      }
+    });
+
+    // Focus trap within mobile menu when open
+    menu?.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const focusable = menu.querySelectorAll<HTMLElement>('a, button, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  initHeader();
+  document.addEventListener('astro:after-swap', initHeader);
 </script>
