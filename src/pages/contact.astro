@@ -2,9 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import ContactForm from '../components/forms/ContactForm.astro';
-import SectionHeading from '../components/ui/SectionHeading.astro';
+import FAQAccordion from '../components/ui/FAQAccordion.astro';
 
 import faq from '../data/faq.json';
+import site from '../data/site.json';
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -18,83 +19,91 @@ const faqSchema = {
     },
   })),
 };
+
+const contactPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact AD Photography',
+  description: 'Book your Toronto wedding or pre-wedding photography session',
+  url: `${site.url}/contact`,
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    name: site.name,
+    email: site.email,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: site.location.city,
+      addressRegion: site.location.regionCode,
+      addressCountry: site.location.countryCode,
+    },
+    areaServed: site.areasServed,
+  },
+};
 ---
 
 <BaseLayout
-  title="Contact"
-  description="Get in touch with KashKlicks Studios for wedding, pre-wedding, and event photography in Toronto. Free consultation included. We respond within 24 hours."
-  jsonLd={faqSchema}
+  title="Inquiry"
+  description="Get in touch with AD Photography for wedding, pre-wedding, and event photography in Toronto. Free consultation included. We respond within 24 hours."
+  jsonLd={[faqSchema, contactPageSchema]}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- Hero -->
+  <section class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-element);">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Contact', href: '/contact' },
+      { label: 'Inquiry', href: '/contact' },
     ]} />
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-16">
-      <!-- Form -->
-      <div class="lg:col-span-3">
-        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-text-primary mb-4">
-          Let's create something beautiful
-        </h1>
-        <p class="text-text-secondary text-lg mb-10">
-          Tell us about your vision. We'll get back to you within 24 hours with a free consultation.
-        </p>
+    <h1 class="text-display-md max-w-2xl reveal stagger-1">
+      Let's capture the <em>fleeting moments.</em>
+    </h1>
+    <p class="text-body-lg text-on-surface-variant mt-4 reveal stagger-2" style="max-width: 50ch;">
+      Currently booking for 2026 and beyond. Tell us about your day and we'll be in touch within 24 hours.
+    </p>
+  </section>
 
-        <ContactForm />
-      </div>
-
-      <!-- Sidebar -->
-      <div class="lg:col-span-2">
-        <div class="bg-bg-elevated border border-border rounded-lg p-8 sticky top-28">
-          <h2 class="font-heading text-xl font-bold text-text-primary mb-6">Quick Info</h2>
-
-          <div class="space-y-6 text-sm">
-            <div>
-              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Based In</p>
-              <p class="text-text-primary">Toronto, Ontario, Canada</p>
-            </div>
-            <div>
-              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Serving</p>
-              <p class="text-text-primary">GTA & Canada-wide</p>
-            </div>
-            <div>
-              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Response Time</p>
-              <p class="text-text-primary">Within 24 hours</p>
-            </div>
-            <div>
-              <p class="text-text-muted uppercase tracking-wider text-xs mb-1">Follow Along</p>
-              <a href="https://instagram.com/kash.klicks" target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-hover transition-colors">
-                @kash.klicks
-              </a>
-            </div>
+  <!-- Form Section: Asymmetric Grid -->
+  <section class="grid-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
+    <!-- Left: Brand Statement -->
+    <div class="col-span-12 lg:col-span-5 reveal stagger-1">
+      <div class="bg-surface-dark text-on-dark p-10 lg:p-12 h-full flex flex-col justify-between" style="min-height: 480px;">
+        <div>
+          <p class="text-label-sm text-on-dark-variant tracking-widest uppercase">AD Photography</p>
+          <p class="text-heading-lg text-on-dark mt-6" style="max-width: 20ch;">Moments fade. Memories don't.</p>
+        </div>
+        <div class="space-y-4 text-on-dark-variant">
+          <div>
+            <p class="text-label-sm text-on-dark-variant uppercase tracking-widest mb-1">Based In</p>
+            <p class="text-body-lg text-on-dark">Toronto, Ontario</p>
+          </div>
+          <div>
+            <p class="text-label-sm text-on-dark-variant uppercase tracking-widest mb-1">Serving</p>
+            <p class="text-body-lg text-on-dark">GTA & Canada-wide</p>
+          </div>
+          <div>
+            <p class="text-label-sm text-on-dark-variant uppercase tracking-widest mb-1">Email</p>
+            <a href={`mailto:${site.email}`} class="text-body-lg text-on-dark hover:text-on-dark-variant cubic-ease" style="transition-duration: var(--duration-hover);">
+              {site.email}
+            </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- FAQ Section -->
-    <section class="mt-24">
-      <SectionHeading
-        title="Frequently Asked Questions"
-        subtitle="Common questions about working with us"
-      />
+    <!-- Right: Form -->
+    <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2">
+      <ContactForm />
+    </div>
+  </section>
 
-      <div class="max-w-3xl mx-auto space-y-4">
-        {faq.map((item) => (
-          <details class="group bg-bg-card border border-border rounded-lg">
-            <summary class="flex items-center justify-between cursor-pointer p-6 text-text-primary font-medium hover:text-accent transition-colors">
-              {item.question}
-              <svg class="w-5 h-5 text-text-muted shrink-0 ml-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </summary>
-            <div class="px-6 pb-6 text-text-secondary leading-relaxed">
-              {item.answer}
-            </div>
-          </details>
-        ))}
+  <!-- FAQ Section -->
+  <section class="bg-surface-dim" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+    <div class="grid-editorial">
+      <div class="col-span-12 lg:col-span-4 reveal stagger-1">
+        <h2 class="text-heading-lg">Frequently Asked<br />Questions</h2>
       </div>
-    </section>
-  </div>
+      <div class="col-span-12 lg:col-span-7 lg:col-start-6 border-t border-ghost reveal stagger-2">
+        <FAQAccordion items={faq} />
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="Page Not Found"
+  description="The page you're looking for doesn't exist. Explore our photography portfolio, services, or get in touch."
+  noIndex={true}
+>
+  <section class="container-editorial flex flex-col items-center justify-center text-center" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);">
+    <p class="text-label-sm text-on-surface-muted tracking-widest uppercase reveal stagger-1">404</p>
+    <h1 class="text-display-md mt-6 reveal stagger-2">
+      Page not found.
+    </h1>
+    <p class="text-body-lg text-on-surface-variant mt-6 max-w-md reveal stagger-3">
+      Whatever you were looking for isn't here. Let's get you back to the work.
+    </p>
+
+    <div class="mt-12 reveal stagger-4">
+      <Button href="/" variant="primary">Return Home</Button>
+    </div>
+
+    <nav aria-label="Quick links" class="mt-16 pt-8 border-t border-ghost reveal stagger-5">
+      <ul class="flex items-center justify-center gap-8 text-label-md">
+        <li><a href="/portfolio" class="text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Portfolio</a></li>
+        <li><a href="/services" class="text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Services</a></li>
+        <li><a href="/contact" class="text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Contact</a></li>
+        <li><a href="/blog" class="text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Blog</a></li>
+      </ul>
+    </nav>
+  </section>
+</BaseLayout>

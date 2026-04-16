@@ -24,15 +24,15 @@ const schema = {
 };
 ---
 
-<nav aria-label="Breadcrumb" class="text-sm text-text-muted mb-8">
+<nav aria-label="Breadcrumb" class="text-label-sm text-on-surface-muted mb-8">
   <ol class="flex items-center gap-2">
     {items.map((item, index) => (
       <li class="flex items-center gap-2">
-        {index > 0 && <span class="text-border">/</span>}
+        {index > 0 && <span class="text-on-surface-muted" aria-hidden="true">/</span>}
         {index === items.length - 1 ? (
-          <span class="text-text-secondary">{item.label}</span>
+          <span class="text-on-surface-variant" aria-current="page">{item.label}</span>
         ) : (
-          <a href={item.href} class="hover:text-accent transition-colors">{item.label}</a>
+          <a href={item.href} class="hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{item.label}</a>
         )}
       </li>
     ))}

@@ -1,14 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-import SectionHeading from '../components/ui/SectionHeading.astro';
 import Button from '../components/ui/Button.astro';
+import { Image } from 'astro:assets';
+
+const serviceImages: Record<string, ImageMetadata> = {
+  'pre-wedding': (await import('../assets/images/portfolio/shuba-rob-cover.jpg')).default,
+  'wedding': (await import('../assets/images/portfolio/priyanka-saurav-cover.jpg')).default,
+  'celebrations': (await import('../assets/images/portfolio/meghna-puneeth-cover.jpg')).default,
+  'portraits': (await import('../assets/images/portfolio/alex-aziz-cover.jpg')).default,
+  'civil-ceremony': (await import('../assets/images/portfolio/ayushi-parth-cover.jpg')).default,
+};
 
 const services = [
   {
     title: 'Pre-Wedding & Engagement',
     slug: 'pre-wedding',
-    description: 'Your love story deserves to be told beautifully — before the big day. Our pre-wedding sessions capture the connection between you and your partner through cinematic photography and filmmaking at Toronto\'s most stunning locations.',
+    description: 'Your love story deserves to be told beautifully, before the big day even arrives. Our pre-wedding sessions capture the connection between you and your partner through cinematic photography and filmmaking at Toronto\'s most stunning locations.',
     includes: [
       'Professional photography & optional videography',
       'Location scouting and guidance',
@@ -23,7 +31,7 @@ const services = [
   {
     title: 'Wedding Day Coverage',
     slug: 'wedding',
-    description: 'From getting ready to the last dance — we capture every moment of your wedding day with the same cinematic, honest approach. Unobtrusive coverage that lets you be fully present while we handle the memories.',
+    description: 'From getting ready to the last dance, we capture every moment of your wedding day with the same cinematic, honest approach. Unobtrusive coverage that lets you be fully present while we handle the memories.',
     includes: [
       'Full-day or partial-day coverage',
       'Ceremony and reception photography',
@@ -32,18 +40,18 @@ const services = [
       'High-resolution edited photos',
       'Private online gallery',
     ],
-    startingAt: null,
+    startingAt: 1200,
     image: 'wedding',
   },
   {
     title: 'Events & Celebrations',
     slug: 'celebrations',
-    description: 'Birthdays, bridal showers, baby showers, corporate events — every gathering has moments worth preserving. Our event coverage is relaxed, natural, and designed to capture the energy of your celebration.',
+    description: 'Birthdays, bridal showers, baby showers, corporate events. Every gathering has moments worth preserving. Our event coverage is relaxed, natural, and designed to capture the energy of your celebration.',
     includes: [
       'Minimum 2 hours coverage',
       'Unlimited edited photos',
       'Candid and group shots',
-      'Detail and décor photography',
+      'Detail and decor photography',
       'Private online gallery',
       '2-week delivery',
     ],
@@ -53,7 +61,7 @@ const services = [
   {
     title: 'Portraits',
     slug: 'portraits',
-    description: 'Individual, couple, or family portraits with an editorial, cinematic touch. Whether it\'s for a special occasion or just because — we create images that feel like you.',
+    description: 'Individual, couple, or family portraits with an editorial, cinematic touch. Whether it\'s for a special occasion or just because, we create images that feel like you.',
     includes: [
       '1-2 hour session',
       'Location or studio setting',
@@ -67,7 +75,7 @@ const services = [
   {
     title: 'Civil Ceremony',
     slug: 'civil-ceremony',
-    description: 'Intimate doesn\'t mean less important. We capture the beauty and emotion of your civil ceremony — at city hall, a courthouse, or any intimate venue — with the same care and artistry as a full wedding.',
+    description: 'Intimate doesn\'t mean less important. We capture the beauty and emotion of your civil ceremony, whether at city hall, a courthouse, or any intimate venue, with the same care and artistry as a full wedding.',
     includes: [
       'Ceremony coverage',
       'Couple portraits after the ceremony',
@@ -75,7 +83,7 @@ const services = [
       'Quick turnaround delivery',
       'Private online gallery',
     ],
-    startingAt: null,
+    startingAt: 350,
     image: 'civil-ceremony',
   },
 ];
@@ -87,7 +95,7 @@ const serviceSchemas = services.map((s) => ({
   description: s.description,
   provider: {
     '@type': 'LocalBusiness',
-    name: 'KashKlicks Studios',
+    name: 'AD Photography',
   },
   areaServed: { '@type': 'City', name: 'Toronto' },
   ...(s.startingAt && {
@@ -105,47 +113,72 @@ const serviceSchemas = services.map((s) => ({
   description="Wedding photography, pre-wedding sessions, event coverage, portraits, and civil ceremony photography in Toronto and the GTA. View our services and what's included."
   jsonLd={serviceSchemas}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
       { label: 'Services', href: '/services' },
     ]} />
 
-    <SectionHeading
-      title="What We Do"
-      subtitle="Photography and videography services for every chapter of your love story"
-    />
+    <header class="max-w-3xl" style="margin-bottom: var(--spacing-section);">
+      <h1 class="text-display-md reveal stagger-1">What We Do</h1>
+      <p class="text-body-lg text-on-surface-variant mt-4 reveal stagger-2" style="max-width: 55ch;">
+        Photography and videography services for every chapter of your love story.
+      </p>
+    </header>
 
-    <div class="space-y-24">
+    <div class="space-y-0">
       {services.map((service, i) => (
-        <section class:list={['grid grid-cols-1 lg:grid-cols-2 gap-12 items-center', i % 2 === 1 && 'lg:flex-row-reverse']}>
-          <!-- TODO: Replace with real service images -->
-          <div class:list={['aspect-[4/3] bg-bg-card rounded-lg', i % 2 === 1 && 'lg:order-2']} />
+        <section
+          class:list={[
+            'grid-editorial items-center',
+            i % 2 === 0 ? 'bg-background' : 'bg-surface-dim',
+          ]}
+          style={`padding-top: var(--spacing-block); padding-bottom: var(--spacing-block); margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem));`}
+        >
+          <!-- Image -->
+          <div class:list={[
+            'col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal stagger-1',
+            i % 2 === 1 ? 'lg:col-start-8' : '',
+          ]}>
+            <Image
+              src={serviceImages[service.image] || serviceImages['pre-wedding']}
+              alt={`${service.title} photography by AD Photography`}
+              widths={[400, 600, 800]}
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
 
-          <div class:list={[i % 2 === 1 && 'lg:order-1']}>
-            <h2 class="font-heading text-3xl font-bold text-text-primary">{service.title}</h2>
-            <p class="mt-4 text-text-secondary leading-relaxed">{service.description}</p>
+          <!-- Content -->
+          <div class:list={[
+            'col-span-12 lg:col-span-5 reveal stagger-2',
+            i % 2 === 1 ? 'lg:col-start-2 lg:row-start-1' : 'lg:col-start-7',
+          ]}>
+            <h2 class="text-heading-lg">{service.title}</h2>
+            <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{service.description}</p>
 
-            <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mt-8 mb-4">What's Included</h3>
+            <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
             <ul class="space-y-3">
               {service.includes.map((item) => (
-                <li class="flex items-start gap-3 text-sm text-text-secondary">
-                  <svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
+                <li class="text-body-lg text-on-surface-variant pl-5 relative">
+                  <span class="absolute left-0 top-0 text-on-surface-muted" aria-hidden="true">/</span>
                   {item}
                 </li>
               ))}
             </ul>
 
-            <div class="mt-8 flex items-center gap-6">
+            <div class="mt-10 flex items-center gap-8">
               {service.startingAt && (
-                <p class="text-text-muted text-sm">
-                  Starting at <span class="text-text-primary font-bold text-lg">${service.startingAt}</span>
+                <p class="text-on-surface-muted text-label-sm">
+                  Starting at <span class="text-on-surface text-heading-md">${service.startingAt}</span>
                 </p>
               )}
-              <Button href="/pricing" variant="outline" size="sm">See Packages</Button>
-              <Button href="/contact" variant="primary" size="sm">Book Now</Button>
+            </div>
+
+            <div class="flex items-center gap-4 mt-6">
+              <Button href="/pricing" variant="secondary">See Packages</Button>
+              <Button href="/contact" variant="primary">Book Now</Button>
             </div>
           </div>
         </section>

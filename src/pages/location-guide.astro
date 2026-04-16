@@ -1,64 +1,90 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-import SectionHeading from '../components/ui/SectionHeading.astro';
 import LocationCard from '../components/ui/LocationCard.astro';
 import Button from '../components/ui/Button.astro';
 
 import locations from '../data/locations.json';
+import site from '../data/site.json';
 
 const locationImages = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/images/locations/*.jpg',
   { eager: true }
 );
+
+const locationListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Best Photography Locations in Toronto',
+  description: 'Curated photography locations in Toronto and the GTA by AD Photography',
+  url: `${site.url}/location-guide`,
+  numberOfItems: locations.length,
+  itemListElement: locations.map((loc, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'Place',
+      name: loc.name,
+      description: loc.vibe,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: loc.area,
+        addressRegion: 'ON',
+        addressCountry: 'CA',
+      },
+    },
+  })),
+};
 ---
 
 <BaseLayout
   title="Toronto Location Guide"
   description="Top photography locations in Toronto and the GTA for pre-wedding, engagement, and portrait sessions. Detailed guides with parking, permits, and best times to shoot."
+  jsonLd={locationListSchema}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
       { label: 'Location Guide', href: '/location-guide' },
     ]} />
 
-    <SectionHeading
-      title="Toronto Location Guide"
-      subtitle="Our favourite photography spots across the GTA — tried, tested, and loved"
-    />
+    <header class="max-w-3xl" style="margin-bottom: var(--spacing-block);">
+      <h1 class="text-display-md reveal stagger-1">Toronto Location Guide</h1>
+      <p class="text-body-lg text-on-surface-variant mt-4 reveal stagger-2" style="max-width: 55ch;">
+        Our favourite photography spots across the GTA, tried, tested, and loved. Each one has been personally scouted for the best light, variety, and overall vibe.
+      </p>
+    </header>
 
-    <p class="max-w-3xl mx-auto text-center text-text-secondary mb-16">
-      Choosing the right location makes all the difference. Here are our go-to spots for pre-wedding, engagement,
-      and portrait sessions in Toronto and the surrounding area. Each one has been personally scouted for the best
-      light, variety, and overall vibe.
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {locations.map((loc) => {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+      {locations.map((loc, i) => {
         const imgPath = `/src/assets/images/locations/${loc.image}`;
         const img = locationImages[imgPath]?.default;
         return img ? (
-          <LocationCard
-            name={loc.name}
-            area={loc.area}
-            vibe={loc.vibe}
-            bestFor={loc.bestFor}
-            walkingLevel={loc.walkingLevel}
-            walkingNote={loc.walkingNote}
-            permits={loc.permits}
-            parking={loc.parking}
-            idealIf={loc.idealIf}
-            image={img}
-          />
+          <div class="reveal" style={`transition-delay: ${(i % 3) * 100 + 100}ms;`}>
+            <LocationCard
+              name={loc.name}
+              area={loc.area}
+              vibe={loc.vibe}
+              bestFor={loc.bestFor}
+              walkingLevel={loc.walkingLevel}
+              walkingNote={loc.walkingNote}
+              permits={loc.permits}
+              parking={loc.parking}
+              idealIf={loc.idealIf}
+              image={img}
+            />
+          </div>
         ) : null;
       })}
     </div>
 
-    <div class="text-center mt-16">
-      <h2 class="font-heading text-2xl font-bold text-text-primary mb-4">Not sure where to shoot?</h2>
-      <p class="text-text-secondary mb-8">Location guidance is included with every package. We'll help you find the perfect spot.</p>
-      <Button href="/contact" variant="primary" size="lg">Book a Consultation</Button>
-    </div>
+    <!-- CTA -->
+    <section class="bg-surface-dim mt-24 py-16 px-8 text-center" style="margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem));">
+      <h2 class="text-heading-lg reveal stagger-1">Not sure where to shoot?</h2>
+      <p class="text-body-lg text-on-surface-variant mt-4 mb-8 reveal stagger-2">Location guidance is included with every package. We'll help you find the perfect spot.</p>
+      <div class="reveal stagger-3">
+        <Button href="/contact" variant="primary">Book a Consultation</Button>
+      </div>
+    </section>
   </div>
 </BaseLayout>
