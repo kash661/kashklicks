@@ -1,0 +1,99 @@
+---
+// src/components/global/SplashOverlay.astro
+// Full-viewport gateway page. Shows once per session.
+import { Image } from 'astro:assets';
+import heroImage from '../../assets/images/hero/hero-main.jpg';
+---
+
+<div
+  id="splash-overlay"
+  class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-surface-dark"
+  role="dialog"
+  aria-label="Welcome to KashKlicks Studios"
+  aria-modal="true"
+>
+  <!-- Background image with Ken Burns -->
+  <div class="absolute inset-0 overflow-hidden">
+    <Image
+      src={heroImage}
+      alt=""
+      class="w-full h-full object-cover opacity-40"
+      style="animation: kenburns 8s var(--ease-gallery) forwards;"
+      widths={[1200, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+
+  <!-- Content -->
+  <div class="relative text-center px-6">
+    <h1 class="text-display-lg text-on-dark">KashKlicks</h1>
+    <p class="text-label-md text-on-dark-variant mt-4">Moments fade. Memories don't.</p>
+    <div id="splash-cta" class="mt-12 opacity-0" style="transition: opacity var(--duration-splash) var(--ease-gallery);">
+      <button
+        id="splash-enter"
+        class="px-8 py-4 bg-primary text-on-dark text-label-md hover:bg-primary-hover cubic-ease"
+        style="transition-duration: var(--duration-hover);"
+      >
+        View the Collection
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes kenburns {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+  }
+</style>
+
+<script>
+  import { playAmbientLoop, stopAmbient } from '../../scripts/sound-manager';
+
+  function initSplash() {
+    const overlay = document.getElementById('splash-overlay');
+    const cta = document.getElementById('splash-cta');
+    const enterBtn = document.getElementById('splash-enter');
+    if (!overlay) return;
+
+    // Check if already seen this session
+    if (sessionStorage.getItem('kk-splash-seen') === 'true') {
+      overlay.remove();
+      return;
+    }
+
+    // Prevent scrolling while splash is visible
+    document.body.style.overflow = 'hidden';
+
+    // Start ambient sound if user has opted in
+    playAmbientLoop();
+
+    // Reveal CTA after 3.5 seconds
+    setTimeout(() => {
+      if (cta) cta.style.opacity = '1';
+    }, 3500);
+
+    // Enter site
+    enterBtn?.addEventListener('click', () => {
+      stopAmbient();
+      overlay.style.transition = `opacity var(--duration-splash) var(--ease-gallery)`;
+      overlay.style.opacity = '0';
+      sessionStorage.setItem('kk-splash-seen', 'true');
+      document.body.style.overflow = '';
+
+      setTimeout(() => {
+        overlay.remove();
+      }, 1200);
+    });
+
+    // Also allow Enter key
+    enterBtn?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') enterBtn.click();
+    });
+  }
+
+  initSplash();
+</script>

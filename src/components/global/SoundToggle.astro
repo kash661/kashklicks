@@ -1,0 +1,57 @@
+---
+// src/components/global/SoundToggle.astro
+// Opt-in sound toggle. Bottom-right corner. Muted by default.
+---
+
+<button
+  id="sound-toggle"
+  class="fixed bottom-6 right-6 z-40 w-11 h-11 flex items-center justify-center text-on-surface-muted hover:text-on-surface transition-colors cubic-ease"
+  aria-label="Toggle ambient sound"
+  aria-pressed="false"
+  style="transition-duration: var(--duration-hover);"
+>
+  <!-- Muted icon (default) -->
+  <svg id="sound-off-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+  </svg>
+  <!-- Unmuted icon (hidden by default) -->
+  <svg id="sound-on-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728" />
+  </svg>
+</button>
+
+<script>
+  import { initSoundState, isSoundEnabled, setSoundEnabled } from '../../scripts/sound-manager';
+
+  function initSoundToggle() {
+    const btn = document.getElementById('sound-toggle');
+    const offIcon = document.getElementById('sound-off-icon');
+    const onIcon = document.getElementById('sound-on-icon');
+    if (!btn || !offIcon || !onIcon) return;
+
+    initSoundState();
+    updateIcons();
+
+    btn.addEventListener('click', () => {
+      setSoundEnabled(!isSoundEnabled());
+      updateIcons();
+    });
+
+    function updateIcons() {
+      const on = isSoundEnabled();
+      btn!.setAttribute('aria-pressed', on ? 'true' : 'false');
+      offIcon!.classList.toggle('hidden', on);
+      onIcon!.classList.toggle('hidden', !on);
+    }
+
+    // Hide toggle if user prefers reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      btn.style.display = 'none';
+    }
+  }
+
+  initSoundToggle();
+  document.addEventListener('astro:after-swap', initSoundToggle);
+</script>
