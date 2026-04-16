@@ -1,0 +1,33 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  type?: string;
+  label: string;
+  required?: boolean;
+}
+
+const { id, name, type = 'text', label, required = false } = Astro.props;
+---
+
+<div class="relative pt-5">
+  <input
+    type={type}
+    id={id}
+    name={name}
+    required={required}
+    aria-required={required ? 'true' : undefined}
+    aria-describedby={`${id}-error`}
+    placeholder=" "
+    class="peer w-full bg-transparent border-0 border-b border-ghost text-on-surface text-body-lg pb-2 focus:border-primary focus:outline-none cubic-ease"
+    style="transition-duration: var(--duration-hover);"
+  />
+  <label
+    for={id}
+    class="absolute left-0 top-5 text-body-md text-on-surface-muted cubic-ease pointer-events-none peer-placeholder-shown:top-5 peer-placeholder-shown:text-body-md peer-focus:top-0 peer-focus:text-label-sm peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-label-sm"
+    style="transition-duration: var(--duration-hover);"
+  >
+    {label}
+  </label>
+  <p id={`${id}-error`} class="form-error-msg mt-1 text-xs hidden" role="alert" style="color: #9e422c;"></p>
+</div>

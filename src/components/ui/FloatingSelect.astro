@@ -1,0 +1,30 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  options: { value: string; label: string }[];
+  required?: boolean;
+}
+
+const { id, name, label, options, required = false } = Astro.props;
+---
+
+<div class="relative pt-5">
+  <p class="text-label-sm text-on-surface-muted mb-2">{label}</p>
+  <select
+    id={id}
+    name={name}
+    required={required}
+    class="w-full bg-transparent border-0 border-b border-ghost text-on-surface text-body-lg pb-2 focus:border-primary focus:outline-none cubic-ease appearance-none cursor-pointer"
+    style="transition-duration: var(--duration-hover);"
+  >
+    <option value="">Select an experience</option>
+    {options.map((opt) => (
+      <option value={opt.value}>{opt.label}</option>
+    ))}
+  </select>
+  <svg class="absolute right-0 bottom-3 w-4 h-4 text-on-surface-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+  </svg>
+</div>
