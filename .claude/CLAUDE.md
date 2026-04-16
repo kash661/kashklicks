@@ -1,327 +1,243 @@
-# KashKlicks Studios - Development Guide
+# AD Photography — The Digital Curator
 
 ## Project Overview
+Photography & videography portfolio/business website for AD Photography (Akash).
+Built with Astro, deployed on Cloudflare Pages. Live at kashklicks.ca.
 
-**Tech Stack:** Astro 5.18+ | Tailwind CSS 4.2+ | Sharp | GLightbox
-**Deployment:** Static site (SSG) on Cloudflare Pages
-**Fonts:** Playfair Display (headings), DM Sans (body) — self-hosted woff2 in `/public/fonts/`
-**Image Pipeline:** `astro:assets` Image component + Sharp for responsive/optimized images
-**Live Site:** [kashklicks.ca](https://kashklicks.ca)
+**Creative North Star:** "The Digital Curator" — the site should feel like walking through a hushed, sun-drenched gallery. Every design decision serves the photograph. The interface is quiet, architectural, and intentional.
 
----
+Primary objectives:
+1. Showcase work through an editorial gallery experience
+2. Convert visitors into booked clients via transparent pricing and clear CTAs
+3. Grow organically through SEO, blog content, location guides, and social proof
+
+**Design Spec:** `docs/superpowers/specs/2026-04-16-digital-curator-redesign.md`
+**Implementation Plan:** `docs/superpowers/plans/2026-04-16-digital-curator-redesign.md`
+
+## Tech Stack
+- **Framework**: Astro 5.18+ (SSG)
+- **Styling**: Tailwind CSS 4.2+ (via Vite plugin) + custom design tokens in `@theme`
+- **Image Pipeline**: `astro:assets` Image component + Sharp
+- **Lightbox**: GLightbox
+- **Sitemap**: @astrojs/sitemap
+- **Fonts**: 3 serif moods + 2 sans options, self-hosted woff2 (see Typography below)
+- **Package Manager**: pnpm
+- **Deployment**: Cloudflare Pages
+- **CMS**: Astro Content Collections (blog) + JSON data files
 
 ## Brand Identity
+- **Name**: AD Photography (logo text: "AD")
+- **Tagline**: "Moments fade. Memories don't."
+- **Location**: Toronto, GTA + Canada-wide
+- **Specialties**: Pre-wedding, wedding, civil ceremony, celebrations, portraits — photo AND video/film
+- **Tone**: Warm, personal, honest, cinematic — never corporate, never stiff, never "wedding template"
 
-- **Brand:** KashKlicks Studios — Akash's photography & videography brand
-- **Tagline:** "Moments fade. Memories don't."
-- **Location:** Toronto, serving the entire GTA (Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington) + Canada-wide
-- **Specialties:** Pre-wedding, wedding photography, civil ceremonies, celebrations, portraits
-- **Tone:** Warm, personal, honest, cinematic — never corporate or stiff. Speak like a friend who happens to be a great photographer.
+## Design System: The Digital Curator
 
----
+### Color Palette (Stone/Taupe — Zero Gold)
 
-## Design Philosophy — Light & Airy
+| Token | Hex | Usage |
+|---|---|---|
+| `background` | `#faf9f6` | Primary canvas ("gallery wall") |
+| `surface` | `#ffffff` | Cards, elevated containers |
+| `surface-dim` | `#f4f4f0` | Section alternation, alternate rows |
+| `surface-container` | `#e4e2e1` | Image placeholders, gradients |
+| `surface-dark` | `#2c2824` | Splash, CTA sections, footer |
+| `on-surface` | `#1a1a18` | Primary text |
+| `on-surface-variant` | `#5c605c` | Secondary text, labels |
+| `on-surface-muted` | `#afb3ae` | Placeholder, disabled |
+| `on-dark` | `#faf9f6` | Text on dark surfaces |
+| `on-dark-variant` | `#d4ccc2` | Secondary text on dark |
+| `primary` | `#5f5e5e` | Buttons, links |
+| `primary-hover` | `#4a4948` | Hover state |
 
-> The site should feel like sunlight on film — soft, luminous, inviting.
+### Typography — Font Mood System
 
-### Color Palette (Light Direction)
+Three swappable serif + sans pairings. Switch by changing `--font-serif` and `--font-sans` in global.css `@theme`.
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| Background | `#FDFBF7` | Page background — warm off-white/cream |
-| Surface | `#FFFFFF` | Cards, elevated surfaces |
-| Text Primary | `#2C2824` | Headings, body text — warm dark, NOT pure black |
-| Text Secondary | `#7A7067` | Captions, metadata, secondary copy |
-| Accent | `#c8956c` | CTAs, highlights, hover states — warm gold |
-| Accent Hover | `#b8845b` | Darker gold for hover/active states |
-| Border | `#E8E2DA` | Subtle warm gray dividers and borders |
+| Mood | Serif (Headings) | Sans (Body) |
+|---|---|---|
+| `cormorant` (default) | Cormorant Garamond | Inter |
+| `fraunces` | Fraunces | Inter |
+| `bodoni` | Bodoni Moda | Instrument Sans |
 
-### Design Principles
+**Type scale classes** (defined in global.css, use these instead of raw Tailwind text sizes):
+- `text-display-lg` — Splash page, hero statements (clamp 3rem-5.5rem, serif)
+- `text-display-md` — Page titles (clamp 2.25rem-4rem, serif)
+- `text-heading-lg` — Section headings (clamp 1.75rem-2.5rem, serif)
+- `text-heading-md` — Sub-section headings (clamp 1.25rem-1.75rem, serif)
+- `text-body-lg` — Primary body (1.125rem, sans, line-height 1.7)
+- `text-body-md` — Secondary body (1rem, sans)
+- `text-label-md` — Nav, labels, captions (0.8125rem, sans, ALL-CAPS, tracking 0.1em)
+- `text-label-sm` — Micro labels (0.6875rem, sans, ALL-CAPS, tracking 0.12em)
+- `text-quote` — Pull quotes, testimonials (clamp 1.5rem-2.25rem, serif italic)
 
-1. **Photography is always the hero.** UI recedes. White space is a luxury that lets images breathe.
-2. **Art-piece aesthetic.** This is a creative business — the website itself should feel like art. Use asymmetric layouts, editorial typography, full-bleed images.
-3. **Light and airy.** Every element should feel weightless. Generous padding, soft shadows (if any), luminous backgrounds.
-4. **Warm and welcoming.** The visitor should feel like they're being invited into a beautiful space, not sold to.
+### Layout System
 
-### Animation Guidelines
+- **Grid**: `grid-editorial` — 12-column grid, 24px gutters, 1440px max, responsive padding
+- **Container**: `container-editorial` — 1440px max, responsive padding (no grid)
+- **Asymmetry is the rule**: headings on cols 1-5, body on cols 7-12 (or reversed). Never center everything.
+- **Spacing tokens**: `--spacing-section` (80-160px), `--spacing-block` (48-96px), `--spacing-element` (24px), `--spacing-tight` (8px)
 
-- Subtle, purposeful animations only
-- Fade-in on scroll (stagger child elements for rhythm)
-- Gentle hover reveals on portfolio cards
-- Parallax on hero images (subtle — max 10-15% offset)
-- No jarring transitions, no bounce effects, no autoplay video
+### Motion
 
-### Industry References
+- **Easing**: `cubic-ease` class or `var(--ease-gallery)` — `cubic-bezier(0.22, 1, 0.36, 1)`
+- **Durations**: `--duration-slow` (600ms), `--duration-hover` (500ms), `--duration-page` (800ms), `--duration-splash` (1200ms)
+- **Scroll reveal**: Add `reveal` class to elements. Add `stagger-1` through `stagger-5` for sequential delays. Powered by IntersectionObserver in `src/scripts/scroll-reveal.ts`.
+- **Page transitions**: Astro View Transitions (fade). Sound plays on transition if enabled.
 
-These are proven patterns from industry leaders — use them as inspiration:
-- Flothemes (wedding photographer themes)
-- Squarespace Brine template aesthetic
-- ShowIt wedding themes
-- All use light palettes with generous whitespace and let photos dominate
+### Sound System
 
----
+Opt-in ambient sound. Muted by default. Toggle in bottom-right corner.
+- `src/scripts/sound-manager.ts` — lazy audio loading, sessionStorage state
+- `src/components/global/SoundToggle.astro` — toggle button
+- Sound files in `public/sounds/` (currently placeholders)
 
-## Creative Guidelines
+### Splash Page
 
-### Be Bold, Be Data-Driven
+- `src/components/global/SplashOverlay.astro`
+- Full-viewport gateway, shows once per session (sessionStorage)
+- Hidden by default (`display: none`), JS reveals on first visit only
+- Ken Burns background, CTA reveals after 3.5s delay
+- Only loaded on homepage via `showSplash={true}` prop on BaseLayout
 
-Every design decision must be **both creative AND backed by evidence**. Push the design — don't play it safe — but ground bold choices in what works.
+## Hard Rules — Do's and Don'ts
 
-### Proven UX Patterns to Follow
+### DO:
+- Use asymmetry. Offset headings from body text across the grid.
+- Embrace the void. If it feels empty, it's correct. Negative space is luxury.
+- Slow everything down. 600ms minimum transitions.
+- Let photographs be the hero. Interface is supporting architecture.
+- Use tonal layering for depth (lighter surfaces on darker ones).
+- Separate sections with surface color shifts or 64px+ white space.
 
-- **CTAs above the fold** convert 17% better (Nielsen Norman Group)
-- **Social proof near conversion points** increases trust and booking rates
-- **F-pattern scanning** for text-heavy pages (blog, services, FAQ)
-- **Z-pattern scanning** for landing pages (home, portfolio landing)
-- **White space increases comprehension by 20%** (Wichita State University study)
-- **Image-to-text ratio:** Photography sites should be 70%+ imagery on portfolio/gallery pages
-- **Three-click rule:** Any key action (book, contact, view work) should be reachable in 3 clicks or fewer
+### DON'T:
+- **No rounded corners.** 0px radius everywhere. Non-negotiable.
+- **No gold, no metallic effects.** Zero. Not even subtle warm accents.
+- **No 1px solid borders** to section content. Use space or color shifts.
+- **No standard 3-column card grids.** Vary column widths.
+- **No em dashes or en dashes** in any copy. Use commas, periods, or restructure.
+- **No auto-playing sound.** Always muted by default.
+- **No hover-dependent functionality.** Hover is enhancement only.
+- **No Google Fonts CDN calls.** All fonts self-hosted as woff2.
+- **No SectionHeading component.** Use inline serif headings + label-md subtitles.
 
-### Design Decisions Checklist
-
-Before implementing any design change, ask:
-1. Does this let the photography shine?
-2. Is there data or a proven pattern supporting this choice?
-3. Does this feel warm and inviting, or cold and corporate?
-4. Would this feel at home in a high-end photography portfolio?
-5. Is the white space generous enough?
-
----
-
-## UX Best Practices
-
-### Navigation & Wayfinding
-
-- **Every page needs obvious next-steps** — buttons, links, visual cues for what to do next
-- **Multiple CTAs per page:** "Book Now", "View My Work", "See Packages" — never make users hunt
-- **Sticky header** with prominent "Book Now" CTA
-- **Contact form 1 click away** from every page
-- **Cross-link aggressively:** Blog <-> Location Guide <-> Services <-> Portfolio <-> Pricing
-- **Breadcrumbs** on all inner pages for orientation
-
-### Content Flow
-
-- **Progressive disclosure:** Don't overwhelm — reveal as users scroll
-- **Visual hierarchy:** One clear focal point per viewport
-- **Scannable content:** Short paragraphs, clear headings, bullet points for details
-- **Strong page endings:** Every page ends with a clear CTA section, never a dead end
-
-### Mobile Experience
-
-- **Mobile-first responsive design** — 60%+ of wedding industry traffic is mobile
-- Touch targets minimum 44x44px
-- Hamburger menu with full-screen overlay
-- Swipeable galleries
-- Tap-to-call on phone numbers
-
-### Performance Targets
-
-| Metric | Target | Why |
-|--------|--------|-----|
-| LCP | < 2s | Core Web Vital — impacts SEO ranking |
-| INP | < 100ms | Core Web Vital — interaction responsiveness |
-| CLS | < 0.1 | Core Web Vital — visual stability |
-| Total page weight | < 3MB | Fast load on mobile networks |
-| Image format | WebP/AVIF | 30-50% smaller than JPEG at same quality |
-
----
-
-## SEO & Organic Growth Strategy
-
-### Technical SEO (Every Page)
-
-- Unique `<title>` tag (50-60 chars, keyword + brand)
-- Unique `<meta name="description">` (150-160 chars, compelling + keyword-rich)
-- Open Graph tags (`og:title`, `og:description`, `og:image`, `og:url`)
-- Canonical URL
-- JSON-LD structured data
-
-### Schema Types to Use
-
-- `LocalBusiness` — site-wide (Toronto photographer)
-- `WebSite` — homepage with search action
-- `FAQPage` — contact/FAQ section
-- `ImageGallery` — portfolio pages
-- `Service` + `Offer` — services and pricing pages
-- `Person` — about page
-- `BlogPosting` — each blog post
-- `Review` — testimonials
-
-### Target Keywords
-
-**Primary:**
-- "Toronto wedding photographer"
-- "GTA wedding photography"
-- "Toronto pre-wedding photography"
-- "Toronto engagement photographer"
-
-**Secondary / Long-tail:**
-- "[Location] photography Toronto" (e.g., "Aga Khan Museum photography")
-- "Best wedding photographer GTA"
-- "Affordable wedding photography Toronto"
-- "Civil ceremony photographer Toronto"
-- "South Asian wedding photographer Toronto"
-
-### Blog Content Strategy
-
-Write content that real people search for:
-
-| Content Type | Example Topics | Target Keywords |
-|-------------|----------------|-----------------|
-| Location Guides | "10 Best Pre-Wedding Photo Spots in Toronto" | "best photography locations Toronto" |
-| What to Wear | "What to Wear for Your Engagement Shoot" | "what to wear pre-wedding shoot" |
-| Seasonal | "Fall Engagement Photos in Toronto" | "fall engagement photos Toronto" |
-| Planning Tips | "How to Plan Your Wedding Photography Timeline" | "wedding photography timeline" |
-| Client Stories | "Priya & Raj's Aga Khan Museum Pre-Wedding" | Location + event type keywords |
-| Behind the Scenes | "A Day in the Life of a Toronto Wedding Photographer" | Brand awareness |
-
-### Internal Linking Rules
-
-- Every blog post links to: Services, Portfolio, Contact
-- Every location guide links to: relevant portfolio work, booking CTA
-- Portfolio pages link to: related services, pricing, similar galleries
-- Services links to: portfolio proof, pricing, booking
-
-### Image SEO
-
-- All `alt` text must be descriptive and keyword-aware
-- Format: "[Subject description] — [location] [event type] photography by KashKlicks Studios"
-- Example: `alt="Bride and groom first look at Aga Khan Museum — Toronto wedding photography by KashKlicks Studios"`
-- Sitemap auto-generated via `@astrojs/sitemap`
-
----
-
-## Packages & Transparency
-
-### Pricing Philosophy
-
-- **All pricing displayed openly** — no "contact for pricing" (except truly custom work)
-- Transparency builds trust and filters inquiries to serious clients
-- Show value clearly: what's included in each tier
-
-### Service Categories
-
-1. **Pre-Wedding / Engagement** — 5 tiers from basic to premium
-2. **Wedding Day** — 3 tiers (photography-focused)
-3. **Civil Ceremony** — dedicated packages
-4. **Events & Celebrations** — flexible packages
-
-### Contact Form Fields
-
-Capture everything needed to qualify and respond quickly:
-- Name, Email, Phone
-- Event Date, Event Type
-- Budget Range
-- Venue (if known)
-- How did you hear about us? (referral source — important for tracking growth)
-
-### FAQ Section
-
-Address real concerns transparently:
-- Do I get raw/unedited files?
-- Are travel fees included?
-- What's your rescheduling/cancellation policy?
-- I'm not comfortable posing — will you help?
-- How long until I get my photos?
-- Do you do same-day edits?
-
----
-
-## Hosting Recommendation
-
-| Feature | Cloudflare Pages | Vercel | Netlify |
-|---------|-----------------|--------|---------|
-| Free tier bandwidth | **Unlimited** | 100GB | 100GB |
-| Free builds/month | 500 | 6000 | 300 |
-| Edge CDN | Global (275+ cities) | Global | Global |
-| Custom domain SSL | Free | Free | Free |
-| Analytics | Free basic | Paid | Paid |
-| Forms | Workers (code needed) | Serverless functions | Built-in |
-| Best for | **Image-heavy static sites** | Framework deploys | JAMstack + forms |
-
-**Recommendation: Stay with Cloudflare Pages.** Unlimited bandwidth is critical for a photography site serving high-res images. Best price/quality ratio. For forms, use Formspree or Cloudflare Workers.
-
----
-
-## File & Image Conventions
-
-### Directory Structure
+## File Structure
 
 ```
 src/
-  assets/images/
-    hero/           — Homepage hero images
-    portfolio/      — Portfolio covers and galleries
-    locations/      — Location guide photos
-    about/          — Portrait/about page images
-    placeholder/    — Instagram/temp placeholders
-  data/             — JSON data files (site config, packages, portfolio, locations, FAQ, testimonials, nav)
-  content/blog/     — Markdown blog posts (Astro content collections)
+  assets/images/          — All images (processed by Astro image pipeline)
+    hero/, portfolio/, locations/, about/, placeholder/
+  data/                   — JSON data files
+    site.json, packages.json, portfolio.json, locations.json,
+    testimonials.json, faq.json, navigation.json
+  content/blog/           — Markdown blog posts (Astro content collections)
+  content.config.ts       — Blog collection schema (at src/ root)
+  scripts/
+    scroll-reveal.ts      — IntersectionObserver for .reveal elements
+    sound-manager.ts      — Lazy audio system, sessionStorage state
   components/
-    ui/             — Reusable UI components (Button, SectionHeading, PricingCard, etc.)
-    global/         — Header, Nav, MobileMenu, Footer
-    seo/            — SEO, JsonLd, Breadcrumbs
-    forms/          — ContactForm
-    gallery/        — GalleryGrid, GalleryImage, Lightbox
-  layouts/          — BaseLayout, BlogLayout
-  pages/            — All routes
-  styles/           — global.css
+    ui/                   — Button, PricingCard, TestimonialCard, LocationCard,
+                            PortfolioCard, FAQAccordion, FloatingInput,
+                            FloatingSelect, FloatingTextarea
+    global/               — Header, Nav, MobileMenu, Footer, SoundToggle, SplashOverlay
+    seo/                  — SEO, JsonLd, Breadcrumbs
+    forms/                — ContactForm (uses Floating* components)
+    gallery/              — GalleryGrid, GalleryImage, Lightbox, YouTubeEmbed
+    portfolio/            — RelatedGalleries
+  layouts/                — BaseLayout, BlogLayout
+  pages/                  — All routes
+  styles/global.css       — Design tokens (@theme), type scale, layout utilities, animations
+public/
+  fonts/                  — Self-hosted woff2 (13 files: 3 serif families + 2 sans)
+  sounds/                 — Ambient sound files (placeholder)
+  _headers, _redirects    — Cloudflare Pages config
+  favicon.svg, og-default.jpg
 ```
 
-### Existing Components
+## Component API Quick Reference
 
-Reuse these — do not duplicate functionality:
+### Button.astro
+```
+Props: href?, variant ('primary'|'secondary'|'ghost'), class?
+```
 
-| Component | Path |
-|-----------|------|
-| Button | `src/components/ui/Button.astro` |
-| SectionHeading | `src/components/ui/SectionHeading.astro` |
-| PricingCard | `src/components/ui/PricingCard.astro` |
-| TestimonialCard | `src/components/ui/TestimonialCard.astro` |
-| LocationCard | `src/components/ui/LocationCard.astro` |
-| PortfolioCard | `src/components/ui/PortfolioCard.astro` |
-| ContactForm | `src/components/forms/ContactForm.astro` |
-| SEO | `src/components/seo/SEO.astro` |
-| JsonLd | `src/components/seo/JsonLd.astro` |
-| Breadcrumbs | `src/components/seo/Breadcrumbs.astro` |
-| GalleryGrid | `src/components/gallery/GalleryGrid.astro` |
-| GalleryImage | `src/components/gallery/GalleryImage.astro` |
-| Lightbox | `src/components/gallery/Lightbox.astro` |
-| BaseLayout | `src/layouts/BaseLayout.astro` |
-| BlogLayout | `src/layouts/BlogLayout.astro` |
+### PortfolioCard.astro
+```
+Props: couple, location, category, coverImage (ImageMetadata), href
+```
 
----
+### PricingCard.astro
+```
+Props: name, price (number|null), salePrice?, description, highlights (string[]),
+       popular?, featured?, custom?, id
+```
+
+### TestimonialCard.astro
+```
+Props: name, event, quote, rating
+Renders: serif italic quote, label-md attribution. No card container.
+```
+
+### FAQAccordion.astro
+```
+Props: items ({question, answer}[])
+Renders: details/summary accordion, serif headings, rotating + icon
+```
+
+### FloatingInput.astro / FloatingTextarea.astro
+```
+Props: id, name, label, type? ('text'), required?, rows? (textarea only)
+Renders: bottom-border input with floating label
+```
+
+### FloatingSelect.astro
+```
+Props: id, name, label, options ({value, label}[]), required?
+```
+
+### BaseLayout.astro
+```
+Props: title, description, ogImage?, ogType?, canonicalUrl?, noIndex?,
+       jsonLd?, transparentHeader? (false), showSplash? (false), article?
+```
+
+## Data Architecture
+- **Blog**: Astro Content Collections (Markdown in `src/content/blog/`, schema in `src/content.config.ts`)
+- **Portfolio, Packages, Testimonials, Locations, FAQ, Nav**: JSON files in `src/data/`
+- **Site Config**: `src/data/site.json` (name, URL, location, social links, areas served)
+
+## SEO Infrastructure (Preserve Always)
+- Schema.org structured data: LocalBusiness, ImageGallery, BlogPosting, Service, OfferCatalog, Review, VideoObject, FAQPage
+- OpenGraph and Twitter Card meta tags on every page
+- Canonical URLs and sitemap generation (@astrojs/sitemap)
+- Breadcrumb navigation with schema markup
+- All existing URLs must be maintained (no broken links on redesign)
+
+## Performance Budget
+
+| Metric | Target |
+|---|---|
+| LCP | < 2.5s |
+| FID/INP | < 100ms |
+| CLS | < 0.1 |
+| Above-fold page weight | < 500KB |
+| Font files (active mood) | < 80KB |
+| Sound files (all) | < 150KB |
+
+Image targets: Hero 150KB AVIF, thumbnail 40KB, cover 20KB. Astro generates AVIF/WebP at serve time. Use `surface-container` (#e4e2e1) as placeholder background during load.
 
 ## Known Issues
+- ContactForm: Formspree ID is placeholder (`YOUR_FORMSPREE_ID`)
+- Sound files: silent placeholders, need real ambient sounds
+- Cloudflare Analytics: token is placeholder (`YOUR_CF_ANALYTICS_TOKEN`)
+- /og-default.jpg: may need updating for new brand
+- Some portfolio entries have `startingAt: null` for pricing
+- Old "KashKlicks" references may remain in blog content, docs, and .claude/ config files
 
-These need attention in future work:
-
-- `ContactForm.astro` — Formspree ID is placeholder (`YOUR_FORMSPREE_ID`)
-- `index.astro` — Instagram section uses empty placeholder divs
-- `services.astro` — Service images are empty placeholder divs
-- `blog/index.astro` — Blog cards show empty div instead of cover images
-- `/og-default.jpg` — Referenced in SEO component but may not exist in `/public/`
-- Civil ceremony and wedding day services show `startingAt: null`
-- Portfolio entries only have 1 cover image each — no individual gallery pages yet
-- Dark-to-light palette migration not yet done (design tokens in `global.css` need updating)
-
----
-
-## Live Site Photo Inventory
-
-84 unique photos found on the current Webflow site (kashklicks.ca), all hosted on Webflow CDN. Key breakdown:
-
-| Page | Unique Photos | Notes |
-|------|--------------|-------|
-| Homepage | 23 | Hero slider, portfolio preview grid, testimonials |
-| Services | 11 | Service category headers and feature images |
-| Location Guide | 25 | Most image-heavy page — location-specific shots |
-| Pricing | 8 | Mostly logos/icons, 1 testimonial background |
-| Contact | 1 | Newsletter checkbox icon |
-| Blog | 1 | Check icon |
-| Footer (all pages) | 2 | Instagram grid preview images |
-| Site-wide | 13 | Logos, icons, shared feature images |
-
-**Note:** Portfolio and About pages load content dynamically via JavaScript — their images aren't in the static HTML. A headless browser crawl would be needed to capture those.
-
-All photos use the naming convention from the camera (e.g., `XT953811.jpg`, `DSCF6054.jpg`, `Preet-146.jpeg`). When migrating to Astro, rename images descriptively for SEO (e.g., `toronto-engagement-aga-khan-museum.jpg`).
+## Priority Stack
+1. Core Web Vitals / page speed (photography = image-heavy, perf is existential)
+2. SEO fundamentals (organic growth is the primary acquisition channel)
+3. Visual quality (editorial gallery aesthetic — the site IS the portfolio)
+4. Conversion paths (transparent pricing, clear CTAs, inquiry flow)
+5. Content velocity (blog cadence, portfolio updates, location guides)
