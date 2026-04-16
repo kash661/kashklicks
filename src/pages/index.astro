@@ -1,13 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHeading from '../components/ui/SectionHeading.astro';
 import TestimonialCard from '../components/ui/TestimonialCard.astro';
-import PricingCard from '../components/ui/PricingCard.astro';
 import Button from '../components/ui/Button.astro';
 import { Image } from 'astro:assets';
 
 import testimonials from '../data/testimonials.json';
-import packages from '../data/packages.json';
 import portfolio from '../data/portfolio.json';
 import site from '../data/site.json';
 
@@ -19,11 +16,7 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
-const featuredWork = portfolio.filter((p) => p.featured);
-const popularPackages = packages
-  .filter((p) => p.popular)
-  .sort((a, b) => a.order - b.order)
-  .slice(0, 3);
+const featuredWork = portfolio.filter((p) => p.featured).slice(0, 3);
 
 const reviewSchemas = testimonials.map((t) => ({
   '@type': 'Review',
@@ -48,186 +41,147 @@ const jsonLd = [websiteSchema, ...reviewSchemas.map((r) => ({ '@context': 'https
 
 <BaseLayout
   title="Home"
-  description="KashKlicks Studios — Toronto wedding photographer & videographer. Cinematic pre-wedding, wedding, and engagement photography across the GTA and Canada."
+  description="KashKlicks Studios. Toronto wedding photographer and videographer. Cinematic pre-wedding, wedding, and engagement photography across the GTA and Canada."
   transparentHeader={true}
+  showSplash={true}
   jsonLd={jsonLd}
 >
   <!-- ═══ HERO ═══ -->
-  <section class="relative h-screen flex items-center justify-center -mt-20">
-    <!-- TODO: Replace with real content -->
+  <section class="relative h-screen flex items-end -mt-20 lg:-mt-24">
     <Image
       src={heroImage}
-      alt="Couple at sunset — KashKlicks Studios Toronto wedding photography"
+      alt="Couple at sunset, KashKlicks Studios Toronto wedding photography"
       class="absolute inset-0 w-full h-full object-cover"
       loading="eager"
+      fetchpriority="high"
+      decoding="async"
       widths={[768, 1200, 1920]}
       sizes="100vw"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[#FDFBF7]" />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[var(--color-background)]" />
 
-    <div class="relative text-center px-4 max-w-4xl mx-auto text-white">
-      <p class="text-accent text-sm tracking-[0.3em] uppercase mb-6">Toronto | Canada Wide</p>
-      <h1 class="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
-        Moments fade.<br />
-        <span class="text-accent">Memories don't.</span>
+    <div class="relative container-editorial pb-16 sm:pb-20 lg:pb-24">
+      <h1 class="text-display-lg text-on-dark max-w-4xl">
+        Warm, candid wedding and civil ceremony photography with quiet luxury.
       </h1>
-      <p class="mt-6 text-white/80 text-lg sm:text-xl max-w-2xl mx-auto">
-        Cinematic wedding & pre-wedding photography and videography that captures your story as it truly is — effortless, honest, and timeless.
-      </p>
-      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-        <Button href="/pricing" variant="primary" size="lg">Prices & Availability</Button>
-        <Button href="/portfolio" variant="outline" size="lg">View Our Work</Button>
-      </div>
-    </div>
-
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-      <svg class="w-6 h-6 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-      </svg>
-    </div>
-  </section>
-
-  <!-- ═══ FEATURED LOVE STORIES ═══ -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-    <SectionHeading
-      title="Love Stories"
-      subtitle="A glimpse into some of our favourite sessions"
-    />
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-      {featuredWork.map((entry) => {
-        const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
-        const img = portfolioImages[imgPath]?.default;
-        return img ? (
-          <a href={`/portfolio/${entry.category === 'pre-wedding' ? 'pre-weddings' : entry.category}`} class="group block">
-            <div class="relative overflow-hidden rounded-lg aspect-[2/3]">
-              <Image
-                src={img}
-                alt={`${entry.couple} — ${entry.location}`}
-                widths={[300, 500]}
-                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 20vw"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <h3 class="font-heading text-lg font-bold text-white">{entry.couple}</h3>
-                <p class="text-xs text-white/80">{entry.location}</p>
-              </div>
-            </div>
-          </a>
-        ) : null;
-      })}
-    </div>
-
-    <div class="text-center mt-12">
-      <Button href="/portfolio" variant="outline">View All Work</Button>
-    </div>
-  </section>
-
-  <!-- ═══ POPULAR PACKAGES ═══ -->
-  <section class="bg-bg-elevated py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionHeading
-        title="Popular Packages"
-        subtitle="Investment in memories that last a lifetime"
-      />
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {popularPackages.map((pkg) => (
-          <PricingCard
-            id={pkg.id}
-            name={pkg.name}
-            price={pkg.price}
-            description={pkg.description}
-            highlights={pkg.highlights}
-            popular={pkg.id === 'pre-wedding-full'}
-          />
-        ))}
-      </div>
-
-      <div class="text-center mt-12">
-        <Button href="/pricing" variant="outline">See All Packages</Button>
+      <div class="mt-8">
+        <Button href="/portfolio" variant="secondary" class="text-on-dark border-white/30 hover:border-white/60">View Portfolio</Button>
       </div>
     </div>
   </section>
 
-  <!-- ═══ BRAND STATEMENT ═══ -->
-  <section class="max-w-4xl mx-auto px-4 sm:px-6 py-24 text-center">
-    <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-      Capturing love, honestly.
-    </h2>
-    <p class="mt-8 text-text-secondary text-lg leading-relaxed max-w-3xl mx-auto">
-      KashKlicks Studios is a Toronto-based photography & videography company specializing in capturing love.
-      We believe in effortless, honest, and cinematic coverage — with calm direction, beautiful light, and timeless editing.
-      Each session is unique, thoughtfully planned, and directed to tell your story as it truly is.
-    </p>
-    <div class="mt-10">
-      <Button href="/about" variant="secondary">More About Us</Button>
-    </div>
-  </section>
-
-  <!-- ═══ TESTIMONIALS ═══ -->
-  <section class="bg-bg-elevated py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionHeading
-        title="Kind Words"
-        subtitle="What our clients say about working with us"
-      />
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {testimonials.slice(0, 3).map((t) => (
-          <TestimonialCard
-            name={t.name}
-            event={t.event}
-            quote={t.quote}
-            rating={t.rating}
-          />
-        ))}
+  <!-- ═══ INTRO / THE APPROACH ═══ -->
+  <section style="padding-block: var(--spacing-section);">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <div class="col-span-12 lg:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted">The Approach</p>
+          <h2 class="text-heading-lg italic mt-4 text-on-surface">An observant eye for the unscripted.</h2>
+        </div>
+        <div class="col-span-12 lg:col-start-7 lg:col-span-6 reveal stagger-1">
+          <p class="text-body-lg text-on-surface-variant">
+            We photograph the moments between moments. The glance across the room, the quiet laugh, the unplanned gesture that says everything. Our work is rooted in patience, close observation, and a deep respect for what is already happening.
+          </p>
+          <p class="text-body-md text-on-surface-variant mt-6">
+            Every session is shaped by calm, minimal direction. We guide when it helps and step back when the real story is unfolding. The result is a collection that feels like you, not like a shoot.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ INSTAGRAM ═══ -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-    <div class="text-center mb-12">
-      <p class="text-accent text-sm tracking-[0.2em] uppercase mb-2">Follow Along</p>
-      <a
-        href={site.social.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-heading text-2xl font-bold hover:text-accent transition-colors"
-      >
-        {site.social.instagramHandle}
-      </a>
-    </div>
-    <!-- TODO: Replace with real Instagram images -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-      {[1,2,3,4,5,6].map((i) => (
-        <a
-          href={site.social.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="aspect-square bg-bg-card rounded overflow-hidden group"
-        >
-          <div class="w-full h-full bg-bg-card group-hover:opacity-80 transition-opacity" />
+  <!-- ═══ CURATED COLLECTIONS ═══ -->
+  <section class="bg-surface-dim" style="padding-block: var(--spacing-section);">
+    <div class="container-editorial">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 reveal">
+        <div>
+          <p class="text-label-md text-on-surface-muted">Featured Work</p>
+          <h2 class="text-heading-lg text-on-surface mt-2">Curated Collections</h2>
+        </div>
+        <a href="/portfolio" class="text-label-md text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">
+          View All Collections &rarr;
         </a>
-      ))}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredWork.map((entry, i) => {
+          const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+          const img = portfolioImages[imgPath]?.default;
+          return img ? (
+            <a href={`/portfolio/${entry.slug}`} class={`group block reveal stagger-${i + 1}`}>
+              <div class="aspect-[2/3] overflow-hidden bg-surface-container">
+                <Image
+                  src={img}
+                  alt={`${entry.couple}, ${entry.location}`}
+                  widths={[400, 600]}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  class="w-full h-full object-cover cubic-ease group-hover:scale-[1.02]"
+                  style="transition-duration: var(--duration-slow);"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="text-heading-md text-on-surface mt-4">{entry.couple}</h3>
+              <p class="text-label-md text-on-surface-muted mt-1">{entry.location}</p>
+            </a>
+          ) : null;
+        })}
+      </div>
     </div>
   </section>
 
-  <!-- ═══ FINAL CTA ═══ -->
-  <section class="bg-bg-elevated py-24">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-      <h2 class="font-heading text-4xl sm:text-5xl font-bold">
-        Ready to say <span class="text-accent italic">yes</span> to forever?
-      </h2>
-      <p class="mt-6 text-text-secondary text-lg">
-        Let's create something beautiful together. Book your free consultation today.
+  <!-- ═══ APPROACH PILLARS ═══ -->
+  <section style="padding-block: var(--spacing-section);">
+    <div class="container-editorial">
+      <p class="text-label-md text-on-surface-muted text-center mb-12 reveal">Our Approach</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <div class="text-center reveal stagger-1">
+          <h3 class="text-heading-lg italic text-on-surface">Intimate</h3>
+          <p class="text-body-md text-on-surface-variant mt-4">
+            Small, intentional sessions that put connection first. No large production crews, no chaos. Just you, your people, and a photographer who pays attention.
+          </p>
+        </div>
+        <div class="text-center reveal stagger-2">
+          <h3 class="text-heading-lg italic text-on-surface">Candid</h3>
+          <p class="text-body-md text-on-surface-variant mt-4">
+            Real expressions, real laughter, real emotion. We capture what is actually happening, not a rehearsed version of it. Every image earns its place.
+          </p>
+        </div>
+        <div class="text-center reveal stagger-3">
+          <h3 class="text-heading-lg italic text-on-surface">Calm</h3>
+          <p class="text-body-md text-on-surface-variant mt-4">
+            A steady, grounded presence on your day. We move quietly, direct gently, and never rush. The best moments come when everyone feels at ease.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIAL ═══ -->
+  <section class="bg-surface-dim" style="padding-block: var(--spacing-section);">
+    <div class="container-editorial flex flex-col items-center text-center reveal">
+      <p class="text-label-md text-on-surface-muted mb-8">{site.name}</p>
+      <div class="max-w-3xl">
+        <TestimonialCard
+          name={testimonials[0].name}
+          event={testimonials[0].event}
+          quote={testimonials[0].quote}
+          rating={testimonials[0].rating}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-surface-dark" style="padding-block: var(--spacing-section);">
+    <div class="container-editorial text-center reveal">
+      <p class="text-label-sm text-on-dark-variant">Availability is limited</p>
+      <h2 class="text-display-md text-on-dark mt-4">Start the Conversation</h2>
+      <p class="text-body-lg text-on-dark-variant mt-6 max-w-2xl mx-auto">
+        Whether you are planning a wedding, a civil ceremony, or an intimate celebration, we would love to hear your story. Reach out and let's talk about what you are envisioning.
       </p>
       <div class="mt-10">
-        <Button href="/contact" variant="primary" size="lg">Get in Touch</Button>
+        <Button href="/contact" variant="primary">Inquire Now</Button>
       </div>
     </div>
   </section>
