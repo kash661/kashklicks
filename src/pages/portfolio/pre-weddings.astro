@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
-import GalleryGrid from '../../components/gallery/GalleryGrid.astro';
-import Lightbox from '../../components/gallery/Lightbox.astro';
-import SectionHeading from '../../components/ui/SectionHeading.astro';
+import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
 
 import portfolio from '../../data/portfolio.json';
@@ -14,20 +12,26 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 );
 
 const entries = portfolio.filter((p) => p.category === 'pre-wedding');
-const galleryImages = entries.flatMap((entry) =>
-  entry.images.map((imgName) => {
-    const imgPath = `/src/assets/images/portfolio/${imgName}`;
-    const img = portfolioImages[imgPath]?.default;
-    return img ? { src: img, alt: `${entry.couple} — pre-wedding photography at ${entry.location}` } : null;
-  }).filter(Boolean)
-) as { src: ImageMetadata; alt: string }[];
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  name: 'Pre-Wedding Photography Gallery — KashKlicks Studios',
+  name: 'Pre-Wedding Photography Gallery, AD Photography',
   description: 'Pre-wedding and engagement photography in Toronto and the GTA.',
   url: new URL('/portfolio/pre-weddings', Astro.site).href,
+  creator: {
+    '@type': 'LocalBusiness',
+    name: 'AD Photography',
+  },
+  image: entries.map((entry) => ({
+    '@type': 'ImageObject',
+    name: `${entry.couple}, Pre-Wedding`,
+    description: `Pre-wedding photography of ${entry.couple} at ${entry.location}`,
+    contentLocation: {
+      '@type': 'Place',
+      name: entry.location,
+    },
+  })),
 };
 ---
 
@@ -36,29 +40,80 @@ const schema = {
   description="Cinematic pre-wedding and engagement photography in Toronto. View our portfolio of love stories captured at iconic GTA locations."
   jsonLd={schema}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <Breadcrumbs items={[
-      { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Pre-Weddings', href: '/portfolio/pre-weddings' },
-    ]} />
+  <!-- Hero -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Portfolio', href: '/portfolio' },
+        { label: 'Pre-Weddings', href: '/portfolio/pre-weddings' },
+      ]} />
 
-    <SectionHeading
-      title="Pre-Wedding Stories"
-      subtitle="Cinematic engagement and pre-wedding sessions across Toronto and beyond"
-    />
-
-    {galleryImages.length > 0 ? (
-      <GalleryGrid images={galleryImages} gallery="pre-weddings" columns={3} />
-    ) : (
-      <p class="text-center text-text-muted py-12">Gallery coming soon — check back for our latest pre-wedding sessions.</p>
-    )}
-
-    <div class="text-center mt-16">
-      <p class="text-text-secondary mb-6">Ready to plan your pre-wedding session?</p>
-      <Button href="/contact" variant="primary">Book a Consultation</Button>
+      <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
+        <h1 class="text-display-md">Pre-Wedding Stories</h1>
+        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
+          Cinematic engagement and pre-wedding sessions across Toronto and beyond.
+          No shot lists, no stiff poses. Just you two and the kind of light that makes everything feel real.
+        </p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <Lightbox />
+  <!-- Grid -->
+  <section class="pb-[var(--spacing-section)]">
+    <div class="container-editorial">
+      {entries.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+          {entries.map((entry, i) => {
+            const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+            const img = portfolioImages[imgPath]?.default;
+            return img ? (
+              <div class={`stagger-${(i % 5) + 1}`}>
+                <PortfolioCard
+                  couple={entry.couple}
+                  location={entry.location}
+                  category={entry.category}
+                  coverImage={img}
+                  href={`/portfolio/${entry.slug ?? entry.id}`}
+                />
+              </div>
+            ) : null;
+          })}
+        </div>
+      ) : (
+        <div class="text-center py-[var(--spacing-section)]">
+          <p class="text-body-lg text-on-surface-muted">New work coming soon. Check back or browse our other galleries.</p>
+          <div class="mt-[var(--spacing-element)]">
+            <Button href="/portfolio" variant="secondary">View All Work</Button>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Philosophy Quote -->
+  <section class="py-[var(--spacing-section)] bg-surface">
+    <div class="container-editorial">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <p class="text-quote">
+          "The best pre-wedding sessions happen when you forget the camera is there."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reserve CTA -->
+  <section class="bg-surface-dark py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <div class="max-w-2xl mx-auto text-center reveal">
+        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
+        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
+          Ready to plan your pre-wedding session? Let's find the perfect location and make it yours.
+        </p>
+        <div class="mt-[var(--spacing-block)]">
+          <Button href="/contact" variant="primary">Book a Consultation</Button>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -1,0 +1,49 @@
+---
+import PortfolioCard from '../ui/PortfolioCard.astro';
+import portfolio from '../../data/portfolio.json';
+
+interface Props {
+  currentId: string;
+  category: string;
+}
+
+const { currentId, category } = Astro.props;
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/**/*.jpg',
+  { eager: true }
+);
+
+const related = portfolio
+  .filter((entry) => entry.category === category && entry.id !== currentId)
+  .slice(0, 3);
+
+// Resolve cover images for related entries
+const resolvedRelated = related
+  .map((entry) => {
+    const subfolderPath = `/src/assets/images/portfolio/${entry.id}/${entry.coverImage}`;
+    const flatPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+    const coverImg = portfolioImages[subfolderPath]?.default || portfolioImages[flatPath]?.default;
+    return coverImg ? { ...entry, resolvedCover: coverImg } : null;
+  })
+  .filter(Boolean) as (typeof related[number] & { resolvedCover: ImageMetadata })[];
+---
+
+{resolvedRelated.length > 0 && (
+  <section class="py-[var(--spacing-section)]">
+    <h2 class="text-heading-lg mb-[var(--spacing-block)] reveal">More Stories</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+      {resolvedRelated.map((entry, i) => (
+        <div class={`stagger-${(i % 5) + 1}`}>
+          <PortfolioCard
+            couple={entry.couple}
+            location={entry.location}
+            category={entry.category}
+            coverImage={entry.resolvedCover}
+            href={`/portfolio/${entry.slug ?? entry.id}`}
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+)}

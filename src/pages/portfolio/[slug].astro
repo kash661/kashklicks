@@ -1,0 +1,226 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import GalleryImage from '../../components/gallery/GalleryImage.astro';
+import Lightbox from '../../components/gallery/Lightbox.astro';
+import YouTubeEmbed from '../../components/gallery/YouTubeEmbed.astro';
+import RelatedGalleries from '../../components/portfolio/RelatedGalleries.astro';
+import Button from '../../components/ui/Button.astro';
+import portfolio from '../../data/portfolio.json';
+import site from '../../data/site.json';
+import { Image } from 'astro:assets';
+
+export function getStaticPaths() {
+  return portfolio.map((entry) => ({
+    params: { slug: entry.slug ?? entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/**/*.jpg',
+  { eager: true }
+);
+
+// Resolve images - try subfolder first, then flat
+const galleryImages = entry.images.map((imgName: string) => {
+  const subfolderPath = `/src/assets/images/portfolio/${entry.id}/${imgName}`;
+  const flatPath = `/src/assets/images/portfolio/${imgName}`;
+  const img = portfolioImages[subfolderPath]?.default || portfolioImages[flatPath]?.default;
+  return img ? { src: img, alt: `${entry.couple}, ${entry.location} photography by AD Photography` } : null;
+}).filter(Boolean) as { src: ImageMetadata; alt: string }[];
+
+// Category label mapping
+const categoryLabels: Record<string, string> = {
+  'pre-wedding': 'Pre-Weddings',
+  'wedding': 'Weddings',
+  'civil-ceremony': 'Civil Ceremony',
+};
+const categoryLabel = categoryLabels[entry.category] || entry.category;
+const categorySlug = entry.category === 'pre-wedding' ? 'pre-weddings' : entry.category;
+
+// SEO
+const pageTitle = `${entry.couple} | ${categoryLabel} Photography`;
+const pageDescription = entry.story?.body?.slice(0, 155) ||
+  `${categoryLabel} photography of ${entry.couple} at ${entry.location}. View the full gallery by AD Photography, Toronto wedding photographer.`;
+
+// Format date
+const formattedDate = entry.date
+  ? new Date(entry.date + 'T00:00:00').toLocaleDateString('en-CA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+
+// Structured data
+const schemas: any[] = [{
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: `${entry.couple}, ${categoryLabel} Photography at ${entry.location}`,
+  description: pageDescription,
+  url: `${site.url}/portfolio/${entry.slug ?? entry.id}`,
+  datePublished: entry.date,
+  creator: { '@type': 'LocalBusiness', name: 'AD Photography', url: site.url },
+  contentLocation: {
+    '@type': 'Place',
+    name: entry.location,
+    address: { '@type': 'PostalAddress', addressRegion: 'ON', addressCountry: 'CA' }
+  },
+}];
+
+if (entry.youtubeUrl) {
+  const videoId = entry.youtubeUrl.includes('youtu.be/')
+    ? entry.youtubeUrl.split('youtu.be/')[1]?.split('?')[0]
+    : new URL(entry.youtubeUrl).searchParams.get('v');
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: `${entry.couple}, Pre-Wedding Film`,
+    description: `Pre-wedding film of ${entry.couple} at ${entry.location} by AD Photography.`,
+    thumbnailUrl: galleryImages[0]?.src?.src ? `${site.url}${galleryImages[0].src.src}` : undefined,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}`,
+    uploadDate: entry.date,
+  });
+}
+
+// Split gallery images for bento layout
+const heroImage = galleryImages[0];
+const remainingImages = galleryImages.slice(1);
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} jsonLd={schemas}>
+
+  <!-- Full-width Hero Image -->
+  {heroImage && (
+    <section class="w-full overflow-hidden" style="max-height: 85vh;">
+      <Image
+        src={heroImage.src}
+        alt={heroImage.alt}
+        widths={[800, 1200, 1800, 2400]}
+        sizes="100vw"
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+    </section>
+  )}
+
+  <!-- Collection Header -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Portfolio', href: '/portfolio' },
+        { label: categoryLabel, href: `/portfolio/${categorySlug}` },
+        { label: entry.couple, href: `/portfolio/${entry.slug ?? entry.id}` },
+      ]} />
+
+      <div class="mt-[var(--spacing-block)] reveal">
+        <h1 class="text-display-md">{entry.couple}</h1>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-[var(--spacing-element)]">
+          <span class="text-label-md text-on-surface-variant">{entry.location}</span>
+          {formattedDate && (
+            <span class="text-label-md text-on-surface-muted">{formattedDate}</span>
+          )}
+          <span class="text-label-sm text-on-surface-muted">{categoryLabel}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Story Section -->
+  {entry.story && (
+    <section class="pb-[var(--spacing-section)]">
+      <div class="container-editorial">
+        <div class="grid-editorial reveal">
+          <!-- Story text: left 5 cols -->
+          <div class="col-span-12 lg:col-span-5">
+            <h2 class="text-heading-lg">{entry.story.headline}</h2>
+            <div class="mt-[var(--spacing-element)] space-y-4">
+              {entry.story.body.split('\n\n').map((paragraph: string) => (
+                <p class="text-body-md text-on-surface-variant">{paragraph}</p>
+              ))}
+            </div>
+          </div>
+          <!-- Pull quote: right side -->
+          <div class="col-span-12 lg:col-span-5 lg:col-start-8 flex items-center">
+            {entry.story.pullQuote && (
+              <blockquote class="text-quote">
+                "{entry.story.pullQuote}"
+              </blockquote>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Location Description -->
+  {entry.locationDescription && (
+    <section class="pb-[var(--spacing-block)]">
+      <div class="container-editorial">
+        <div class="max-w-2xl reveal">
+          <span class="text-label-md text-on-surface-muted">About the Location</span>
+          <p class="text-body-md text-on-surface-variant mt-[var(--spacing-tight)]">{entry.locationDescription}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Film Embed -->
+  {entry.hasFilm && entry.youtubeUrl && (
+    <section class="pb-[var(--spacing-section)]">
+      <div class="container-editorial reveal">
+        <h2 class="text-heading-md mb-[var(--spacing-element)]">The Film</h2>
+        <YouTubeEmbed url={entry.youtubeUrl} title={`${entry.couple} — Film by AD Photography`} />
+      </div>
+    </section>
+  )}
+
+  <!-- Bento Gallery Grid -->
+  {remainingImages.length > 0 && (
+    <section class="pb-[var(--spacing-section)]">
+      <div class="container-editorial">
+        <div class="grid grid-cols-2 lg:grid-cols-3 auto-rows-auto" style="gap: var(--spacing-tight);">
+          {remainingImages.map((img, i) => {
+            // Create a bento pattern: every 4th image spans 2 cols
+            const spanTwo = i % 5 === 0;
+            return (
+              <div class={spanTwo ? 'col-span-2' : 'col-span-1'}>
+                <GalleryImage
+                  src={img.src}
+                  alt={img.alt}
+                  gallery={entry.id}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Related Galleries -->
+  <div class="container-editorial">
+    <RelatedGalleries currentId={entry.id} category={entry.category} />
+  </div>
+
+  <!-- Reserve CTA -->
+  <section class="bg-surface-dark py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <div class="max-w-2xl mx-auto text-center reveal">
+        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
+        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
+          Every session is unique, just like yours. Let's create something beautiful together.
+        </p>
+        <div class="mt-[var(--spacing-block)]">
+          <Button href="/contact" variant="primary">Get in Touch</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Lightbox />
+</BaseLayout>

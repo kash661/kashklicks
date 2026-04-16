@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
-import GalleryGrid from '../../components/gallery/GalleryGrid.astro';
-import Lightbox from '../../components/gallery/Lightbox.astro';
-import SectionHeading from '../../components/ui/SectionHeading.astro';
+import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
 
 import portfolio from '../../data/portfolio.json';
@@ -14,20 +12,26 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 );
 
 const entries = portfolio.filter((p) => p.category === 'civil-ceremony');
-const galleryImages = entries.flatMap((entry) =>
-  entry.images.map((imgName) => {
-    const imgPath = `/src/assets/images/portfolio/${imgName}`;
-    const img = portfolioImages[imgPath]?.default;
-    return img ? { src: img, alt: `Civil ceremony photography by KashKlicks Studios` } : null;
-  }).filter(Boolean)
-) as { src: ImageMetadata; alt: string }[];
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  name: 'Civil Ceremony Photography — KashKlicks Studios',
-  description: 'Intimate civil ceremony photography in Toronto by KashKlicks Studios.',
+  name: 'Civil Ceremony Photography, AD Photography',
+  description: 'Intimate civil ceremony photography in Toronto by AD Photography.',
   url: new URL('/portfolio/civil-ceremony', Astro.site).href,
+  creator: {
+    '@type': 'LocalBusiness',
+    name: 'AD Photography',
+  },
+  image: entries.map((entry) => ({
+    '@type': 'ImageObject',
+    name: `${entry.couple}, Civil Ceremony`,
+    description: `Civil ceremony photography of ${entry.couple} at ${entry.location}`,
+    contentLocation: {
+      '@type': 'Place',
+      name: entry.location,
+    },
+  })),
 };
 ---
 
@@ -36,29 +40,80 @@ const schema = {
   description="Intimate civil ceremony photography in Toronto. Capturing the beauty of your courthouse or city hall wedding."
   jsonLd={schema}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <Breadcrumbs items={[
-      { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Civil Ceremony', href: '/portfolio/civil-ceremony' },
-    ]} />
+  <!-- Hero -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Portfolio', href: '/portfolio' },
+        { label: 'Civil Ceremony', href: '/portfolio/civil-ceremony' },
+      ]} />
 
-    <SectionHeading
-      title="Civil Ceremonies"
-      subtitle="Intimate, beautiful moments — no matter the venue"
-    />
-
-    {galleryImages.length > 0 ? (
-      <GalleryGrid images={galleryImages} gallery="civil-ceremony" columns={3} />
-    ) : (
-      <p class="text-center text-text-muted py-12">Civil ceremony gallery coming soon — check back for our latest work.</p>
-    )}
-
-    <div class="text-center mt-16">
-      <p class="text-text-secondary mb-6">Planning a civil ceremony?</p>
-      <Button href="/contact" variant="primary">Book Coverage</Button>
+      <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
+        <h1 class="text-display-md">Civil Ceremonies</h1>
+        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
+          Intimate, beautiful moments, no matter the venue. Small ceremonies deserve
+          the same attention to detail as the grandest celebrations.
+        </p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <Lightbox />
+  <!-- Grid -->
+  <section class="pb-[var(--spacing-section)]">
+    <div class="container-editorial">
+      {entries.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+          {entries.map((entry, i) => {
+            const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+            const img = portfolioImages[imgPath]?.default;
+            return img ? (
+              <div class={`stagger-${(i % 5) + 1}`}>
+                <PortfolioCard
+                  couple={entry.couple}
+                  location={entry.location}
+                  category={entry.category}
+                  coverImage={img}
+                  href={`/portfolio/${entry.slug ?? entry.id}`}
+                />
+              </div>
+            ) : null;
+          })}
+        </div>
+      ) : (
+        <div class="text-center py-[var(--spacing-section)]">
+          <p class="text-body-lg text-on-surface-muted">New work coming soon. Check back or browse our other galleries.</p>
+          <div class="mt-[var(--spacing-element)]">
+            <Button href="/portfolio" variant="secondary">View All Work</Button>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Philosophy Quote -->
+  <section class="py-[var(--spacing-section)] bg-surface">
+    <div class="container-editorial">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <p class="text-quote">
+          "The size of the ceremony has nothing to do with the size of the love."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reserve CTA -->
+  <section class="bg-surface-dark py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <div class="max-w-2xl mx-auto text-center reveal">
+        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
+        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
+          Planning a civil ceremony? Let's make sure every moment is preserved.
+        </p>
+        <div class="mt-[var(--spacing-block)]">
+          <Button href="/contact" variant="primary">Book Coverage</Button>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

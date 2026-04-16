@@ -12,15 +12,18 @@ const { src, alt, gallery = 'gallery' } = Astro.props;
 
 <a
   href={src.src}
-  class="glightbox block overflow-hidden rounded-lg group cursor-pointer"
+  class="glightbox block overflow-hidden group cursor-pointer"
   data-gallery={gallery}
+  aria-label={`View full size: ${alt}`}
+  role="button"
 >
   <Image
     src={src}
     alt={alt}
     widths={[400, 600, 800, 1200]}
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+    class="w-full h-auto object-cover cubic-ease"
+    style="transition-duration: var(--duration-slow);"
     loading="lazy"
   />
 </a>

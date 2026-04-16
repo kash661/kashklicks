@@ -11,22 +11,22 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
-const entries = portfolio.filter((p) => p.category === 'wedding');
+const entries = portfolio.filter((p) => p.hasFilm === true || (p.youtubeUrl && p.youtubeUrl !== null));
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  name: 'Wedding Photography Gallery, AD Photography',
-  description: 'Wedding day photography in Toronto and the GTA by AD Photography.',
-  url: new URL('/portfolio/weddings', Astro.site).href,
+  name: 'Wedding Films, AD Photography',
+  description: 'Cinematic wedding and pre-wedding films by AD Photography in Toronto and the GTA.',
+  url: new URL('/portfolio/films', Astro.site).href,
   creator: {
     '@type': 'LocalBusiness',
     name: 'AD Photography',
   },
   image: entries.map((entry) => ({
     '@type': 'ImageObject',
-    name: `${entry.couple}, Wedding`,
-    description: `Wedding photography of ${entry.couple} at ${entry.location}`,
+    name: `${entry.couple}, Film`,
+    description: `Cinematic film of ${entry.couple} at ${entry.location}`,
     contentLocation: {
       '@type': 'Place',
       name: entry.location,
@@ -36,8 +36,8 @@ const schema = {
 ---
 
 <BaseLayout
-  title="Wedding Photography"
-  description="Beautiful wedding day photography in Toronto and the GTA. Timeless, cinematic coverage of your most important day."
+  title="Films"
+  description="Cinematic wedding and pre-wedding films by AD Photography. Watch love stories unfold from Toronto and the GTA."
   jsonLd={schema}
 >
   <!-- Hero -->
@@ -46,14 +46,14 @@ const schema = {
       <Breadcrumbs items={[
         { label: 'Home', href: '/' },
         { label: 'Portfolio', href: '/portfolio' },
-        { label: 'Weddings', href: '/portfolio/weddings' },
+        { label: 'Films', href: '/portfolio/films' },
       ]} />
 
       <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
-        <h1 class="text-display-md">Wedding Day Stories</h1>
+        <h1 class="text-display-md">Our Films</h1>
         <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
-          Timeless coverage of your most important day. Every ceremony, every detail,
-          every look that says more than words ever could.
+          Cinematic stories from our sessions. Motion, sound, and feeling brought together
+          in a way that still photography alone cannot capture.
         </p>
       </div>
     </div>
@@ -82,7 +82,7 @@ const schema = {
         </div>
       ) : (
         <div class="text-center py-[var(--spacing-section)]">
-          <p class="text-body-lg text-on-surface-muted">New work coming soon. Check back or browse our other galleries.</p>
+          <p class="text-body-lg text-on-surface-muted">New films coming soon. We're currently editing some beautiful stories. Check back soon or browse our photography portfolio.</p>
           <div class="mt-[var(--spacing-element)]">
             <Button href="/portfolio" variant="secondary">View All Work</Button>
           </div>
@@ -96,7 +96,7 @@ const schema = {
     <div class="container-editorial">
       <div class="max-w-3xl mx-auto text-center reveal">
         <p class="text-quote">
-          "Your wedding day moves fast. The images should make you stop and feel it all over again."
+          "Film lets you hear the laugh, feel the wind, and remember the silence between the words."
         </p>
       </div>
     </div>
@@ -108,10 +108,10 @@ const schema = {
       <div class="max-w-2xl mx-auto text-center reveal">
         <h2 class="text-display-md text-on-dark">Reserve your date</h2>
         <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
-          Looking for wedding day coverage? Let's talk about your vision.
+          Want a cinematic film of your story? Let's talk.
         </p>
         <div class="mt-[var(--spacing-block)]">
-          <Button href="/contact" variant="primary">Let's Talk</Button>
+          <Button href="/contact" variant="primary">Book a Consultation</Button>
         </div>
       </div>
     </div>

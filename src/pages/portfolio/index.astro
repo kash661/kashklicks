@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
-import JsonLd from '../../components/seo/JsonLd.astro';
-import SectionHeading from '../../components/ui/SectionHeading.astro';
+import PortfolioCard from '../../components/ui/PortfolioCard.astro';
+import Button from '../../components/ui/Button.astro';
 import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
@@ -13,84 +13,121 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 );
 
 const categories = [
-  { id: 'all', label: 'All' },
+  { id: 'all', label: 'All Work' },
   { id: 'pre-wedding', label: 'Pre-Weddings' },
   { id: 'wedding', label: 'Weddings' },
-  { id: 'event', label: 'Events' },
-  { id: 'portrait', label: 'Portraits' },
   { id: 'civil-ceremony', label: 'Civil Ceremony' },
+  { id: 'films', label: 'Films' },
 ];
 
 const gallerySchema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  name: 'KashKlicks Studios Portfolio',
-  description: 'Wedding, pre-wedding, and event photography portfolio by KashKlicks Studios in Toronto.',
+  name: 'AD Photography Portfolio',
+  description: 'Wedding, pre-wedding, and event photography portfolio by AD Photography in Toronto.',
   url: new URL('/portfolio', Astro.site).href,
+  creator: {
+    '@type': 'LocalBusiness',
+    name: 'AD Photography',
+  },
 };
 ---
 
 <BaseLayout
   title="Portfolio"
-  description="Browse our wedding, pre-wedding, and event photography portfolio. Cinematic love stories captured across Toronto and the GTA."
+  description="Browse our wedding, pre-wedding, and civil ceremony photography portfolio. Love stories captured across Toronto and the GTA."
   jsonLd={gallerySchema}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <Breadcrumbs items={[
-      { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
-    ]} />
+  <!-- Hero -->
+  <section class="py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Portfolio', href: '/portfolio' },
+      ]} />
 
-    <SectionHeading
-      title="Our Work"
-      subtitle="Every couple, every moment — uniquely yours"
-    />
-
-    <!-- Filter Bar -->
-    <div class="flex flex-wrap justify-center gap-3 mb-12" id="portfolio-filters">
-      {categories.map((cat) => (
-        <button
-          class="filter-btn px-4 py-2 text-sm rounded-full border border-border text-text-secondary hover:text-accent hover:border-accent transition-colors data-[active]:bg-accent data-[active]:text-text-on-accent data-[active]:border-accent"
-          data-filter={cat.id}
-          data-active={cat.id === 'all' ? '' : undefined}
-        >
-          {cat.label}
-        </button>
-      ))}
+      <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
+        <h1 class="text-display-md">Capturing the Unspoken</h1>
+        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
+          The glances that say everything. The hands that hold on a little tighter.
+          The moments between the moments. This is where we live.
+        </p>
+      </div>
     </div>
+  </section>
 
-    <!-- Portfolio Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4" id="portfolio-grid">
-      {portfolio.map((entry) => {
-        const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
-        const img = portfolioImages[imgPath]?.default;
-        const categorySlug = entry.category === 'pre-wedding' ? 'pre-weddings' : entry.category === 'civil-ceremony' ? 'civil-ceremony' : `${entry.category}s`;
-        return img ? (
-          <a
-            href={`/portfolio/${categorySlug}`}
-            class="portfolio-item group block"
-            data-category={entry.category}
+  <!-- Filter + Grid -->
+  <section class="pb-[var(--spacing-section)]">
+    <div class="container-editorial">
+
+      <!-- Filter Tabs -->
+      <div class="flex flex-wrap gap-6 mb-[var(--spacing-block)]" id="portfolio-filters" role="group" aria-label="Filter portfolio by category">
+        {categories.map((cat) => (
+          <button
+            class="filter-btn text-label-md text-on-surface-muted cubic-ease pb-2 border-b-2 border-transparent data-[active]:text-on-surface data-[active]:border-on-surface"
+            style="transition-duration: var(--duration-hover);"
+            data-filter={cat.id}
+            data-active={cat.id === 'all' ? '' : undefined}
+            aria-pressed={cat.id === 'all' ? 'true' : 'false'}
           >
-            <div class="relative overflow-hidden rounded-lg aspect-[2/3]">
-              <Image
-                src={img}
-                alt={`${entry.couple} — ${entry.location}`}
-                widths={[300, 500]}
-                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 20vw"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Portfolio Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal" id="portfolio-grid">
+        {portfolio.map((entry, i) => {
+          const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+          const img = portfolioImages[imgPath]?.default;
+          const hasFilm = entry.hasFilm === true || (entry.youtubeUrl && entry.youtubeUrl !== null);
+          return img ? (
+            <div
+              class={`portfolio-item stagger-${(i % 5) + 1}`}
+              data-category={entry.category}
+              data-film={hasFilm ? '' : undefined}
+            >
+              <PortfolioCard
+                couple={entry.couple}
+                location={entry.location}
+                category={entry.category}
+                coverImage={img}
+                href={`/portfolio/${entry.slug ?? entry.id}`}
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <h3 class="font-heading text-lg font-bold text-white">{entry.couple}</h3>
-                <p class="text-xs text-white/80">{entry.location}</p>
-              </div>
             </div>
-          </a>
-        ) : null;
-      })}
+          ) : null;
+        })}
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Philosophy Quote -->
+  <section class="py-[var(--spacing-section)] bg-surface">
+    <div class="container-editorial">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <p class="text-quote">
+          "A photograph is not about what you see. It is about what you felt in the fraction of a second
+          before you pressed the shutter."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reserve CTA -->
+  <section class="bg-surface-dark py-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <div class="max-w-2xl mx-auto text-center reveal">
+        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
+        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
+          Every season fills up. If our work speaks to you, let's start a conversation
+          before your date is gone.
+        </p>
+        <div class="mt-[var(--spacing-block)]">
+          <Button href="/contact" variant="primary">Get in Touch</Button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script>
     const buttons = document.querySelectorAll('.filter-btn');
@@ -98,15 +135,24 @@ const gallerySchema = {
 
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        buttons.forEach((b) => b.removeAttribute('data-active'));
+        buttons.forEach((b) => {
+          b.removeAttribute('data-active');
+          b.setAttribute('aria-pressed', 'false');
+        });
         btn.setAttribute('data-active', '');
+        btn.setAttribute('aria-pressed', 'true');
 
         const filter = btn.getAttribute('data-filter');
         items.forEach((item) => {
-          if (filter === 'all' || item.getAttribute('data-category') === filter) {
-            (item as HTMLElement).style.display = '';
+          const el = item as HTMLElement;
+          if (filter === 'all') {
+            el.style.display = '';
+          } else if (filter === 'films') {
+            el.style.display = el.hasAttribute('data-film') ? '' : 'none';
+          } else if (item.getAttribute('data-category') === filter) {
+            el.style.display = '';
           } else {
-            (item as HTMLElement).style.display = 'none';
+            el.style.display = 'none';
           }
         });
       });

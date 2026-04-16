@@ -1,0 +1,35 @@
+---
+interface Props {
+  url: string;
+  title: string;
+}
+
+const { url, title } = Astro.props;
+
+// Extract video ID from youtube.com/watch?v= or youtu.be/ formats
+let videoId = '';
+if (url.includes('youtu.be/')) {
+  videoId = url.split('youtu.be/')[1]?.split(/[?&#]/)[0] ?? '';
+} else {
+  try {
+    videoId = new URL(url).searchParams.get('v') ?? '';
+  } catch {
+    videoId = '';
+  }
+}
+
+const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
+---
+
+{videoId && (
+  <div class="aspect-video overflow-hidden bg-surface-container">
+    <iframe
+      src={embedUrl}
+      title={title}
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      class="w-full h-full border-0"
+    ></iframe>
+  </div>
+)}
