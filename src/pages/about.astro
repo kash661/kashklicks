@@ -5,98 +5,161 @@ import Button from '../components/ui/Button.astro';
 import { Image } from 'astro:assets';
 
 import portraitImage from '../assets/images/about/akash-portrait.jpg';
+import site from '../data/site.json';
 
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Akash',
-  jobTitle: 'Wedding Photographer & Videographer',
+  jobTitle: 'Photographer & Videographer',
   worksFor: {
     '@type': 'LocalBusiness',
-    name: 'KashKlicks Studios',
+    name: 'AD Photography',
   },
-  url: 'https://kashklicks.ca/about',
-  sameAs: ['https://instagram.com/kash.klicks'],
+  url: `${site.url}/about`,
+  sameAs: [site.social.instagram],
 };
 ---
 
 <BaseLayout
-  title="About"
-  description="Meet Akash, the photographer behind KashKlicks Studios. Based in Toronto, specializing in cinematic wedding and pre-wedding photography with a Fujifilm system."
+  title="The Experience"
+  description="Meet Akash, the photographer behind AD Photography. Based in Toronto, specializing in cinematic wedding and pre-wedding photography with a Fujifilm system."
   jsonLd={personSchema}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- Hero -->
+  <section class="container-editorial" style="padding-top: var(--spacing-section);">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'About', href: '/about' },
+      { label: 'The Experience', href: '/about' },
     ]} />
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      <!-- Portrait -->
-      <div class="relative">
-        <!-- TODO: Replace with real content -->
-        <Image
-          src={portraitImage}
-          alt="Akash — photographer and founder of KashKlicks Studios"
-          widths={[400, 600, 800]}
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          class="w-full rounded-lg"
-          loading="eager"
-        />
-      </div>
+    <h1 class="text-display-lg reveal" style="margin-top: var(--spacing-block); max-width: 10ch;">The Quiet Observer</h1>
+  </section>
 
-      <!-- Content -->
-      <div>
-        <p class="text-accent text-sm tracking-[0.2em] uppercase mb-4">The Photographer</p>
-        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-text-primary">Hey, I'm Akash.</h1>
-
-        <div class="mt-8 space-y-6 text-text-secondary leading-relaxed">
-          <p>
-            I'm a Toronto-based wedding and pre-wedding photographer and videographer, and the founder of KashKlicks Studios.
+  <!-- Bio + Portrait -->
+  <section class="container-editorial" style="padding-top: var(--spacing-block);">
+    <div class="grid-editorial items-start">
+      <div class="col-span-5">
+        <div class="reveal stagger-1" style="display: flex; flex-direction: column; gap: var(--spacing-element);">
+          <p class="text-body-lg text-on-surface-variant">
+            I am a Toronto-based wedding and pre-wedding photographer and videographer, and the founder of AD Photography.
             What started as a love for capturing candid moments has grown into a full creative practice built around one idea:
             your photos should feel like <em>you</em>.
           </p>
-          <p>
-            I shoot with Fujifilm — for the colours, the tones, and the way it renders skin. My style is cinematic and editorial
-            but never stiff. I believe in <strong>prompting, not posing</strong> — guiding you through natural movements and real
+          <p class="text-body-lg text-on-surface-variant">
+            I shoot with Fujifilm for the colours, the tones, and the way it renders skin. My style is cinematic and editorial
+            but never stiff. I believe in prompting, not posing: guiding you through natural movements and real
             moments instead of asking you to hold a smile for the camera.
           </p>
-          <p>
-            South Asian weddings hold a special place in my work. The colours, the energy, the emotion — there's nothing quite
-            like it. But whether it's a pre-wedding session at Scarborough Bluffs or a civil ceremony downtown, I bring the same
+          <p class="text-body-lg text-on-surface-variant">
+            South Asian weddings hold a special place in my work. The colours, the energy, the emotion. There is nothing quite
+            like it. But whether it is a pre-wedding session at Scarborough Bluffs or a civil ceremony downtown, I bring the same
             calm direction, attention to light, and commitment to telling your story honestly.
           </p>
-          <p>
+          <p class="text-body-lg text-on-surface-variant">
             Every session starts with a conversation. I want to know who you are, what matters to you, and how you want to
-            remember this chapter. From there, I handle the planning — locations, timing, creative direction — so you can
+            remember this chapter. From there, I handle the planning: locations, timing, creative direction. So you can
             just show up and be present.
           </p>
         </div>
+      </div>
+      <div class="col-span-6 col-start-7 reveal stagger-2">
+        <Image
+          src={portraitImage}
+          alt="Akash, photographer and founder of AD Photography"
+          widths={[400, 600, 800]}
+          sizes="(max-width: 639px) 100vw, 50vw"
+          class="w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
 
-        <div class="mt-10 flex flex-wrap gap-4">
-          <Button href="/portfolio" variant="outline">See My Work</Button>
-          <Button href="/contact" variant="primary">Let's Connect</Button>
+  <!-- Approach Pillars -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <p class="text-label-md text-on-surface-muted reveal">The Approach</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 reveal stagger-1" style="margin-top: var(--spacing-block); gap: var(--spacing-block);">
+        <div>
+          <h2 class="text-heading-lg italic">The Curated Frame</h2>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 38ch;">
+            Every image is a deliberate composition. I look for geometry, negative space, and the interplay of light and shadow to build frames that feel considered and quiet.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-heading-lg italic">Natural Luminosity</h2>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 38ch;">
+            Light is the foundation. I chase soft window light, golden hour warmth, and the gentle diffusion of overcast skies. The goal is always warmth without harshness.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-heading-lg italic">Timeless Aesthetic</h2>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 38ch;">
+            No trends, no heavy filters. The editing is clean and warm, built to age beautifully. These photos should look just as compelling in twenty years as they do today.
+          </p>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Philosophy Section -->
-    <section class="mt-24 max-w-4xl mx-auto text-center">
-      <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">How I Work</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
-        <div class="bg-bg-card border border-border rounded-lg p-8">
-          <h3 class="font-heading text-xl font-bold text-accent mb-3">Effortless</h3>
-          <p class="text-text-secondary text-sm">No awkward posing. Just natural guidance, real moments, and photos that feel like you.</p>
+  <!-- Our Process -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <div class="col-span-4">
+          <p class="text-label-md text-on-surface-muted reveal">Our Process</p>
+          <h2 class="text-heading-lg reveal stagger-1" style="margin-top: var(--spacing-element);">How It Works</h2>
         </div>
-        <div class="bg-bg-card border border-border rounded-lg p-8">
-          <h3 class="font-heading text-xl font-bold text-accent mb-3">Honest</h3>
-          <p class="text-text-secondary text-sm">I capture what's real. The laughter, the quiet glances, the in-between moments that matter most.</p>
-        </div>
-        <div class="bg-bg-card border border-border rounded-lg p-8">
-          <h3 class="font-heading text-xl font-bold text-accent mb-3">Cinematic</h3>
-          <p class="text-text-secondary text-sm">Beautiful light, intentional composition, and timeless editing that elevates every frame.</p>
+        <div class="col-span-7 col-start-6">
+          <div class="reveal stagger-2" style="display: flex; flex-direction: column; gap: var(--spacing-block);">
+            <div>
+              <p class="text-label-sm text-on-surface-muted">01</p>
+              <h3 class="text-heading-md" style="margin-top: 4px;">The Conversation</h3>
+              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
+                We start with a free consultation. No scripts, no pressure. Just a real conversation about who you are, what you are celebrating, and how you want to remember it.
+              </p>
+            </div>
+            <div>
+              <p class="text-label-sm text-on-surface-muted">02</p>
+              <h3 class="text-heading-md" style="margin-top: 4px;">The Planning</h3>
+              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
+                I handle locations, timing, and creative direction. You will get a curated mood board and a clear plan so you know exactly what to expect. All you need to do is show up.
+              </p>
+            </div>
+            <div>
+              <p class="text-label-sm text-on-surface-muted">03</p>
+              <h3 class="text-heading-md" style="margin-top: 4px;">The Session</h3>
+              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
+                On the day, I guide you through natural prompts and movements. No stiff posing. The energy stays relaxed, fun, and focused on the two of you.
+              </p>
+            </div>
+            <div>
+              <p class="text-label-sm text-on-surface-muted">04</p>
+              <h3 class="text-heading-md" style="margin-top: 4px;">The Delivery</h3>
+              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
+                Your gallery is hand-edited, colour-graded, and delivered within 1 to 3 weeks through a private online gallery. Every image is treated with the same care.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-surface-dark" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial text-center">
+      <h2 class="text-display-md text-on-dark reveal">Let's find the light.</h2>
+      <p class="text-body-lg text-on-dark-variant reveal stagger-1" style="margin-top: var(--spacing-element); max-width: 48ch; margin-left: auto; margin-right: auto;">
+        Every session starts with a conversation. Tell me about your vision and we will build something beautiful together.
+      </p>
+      <div class="reveal stagger-2" style="margin-top: var(--spacing-block);">
+        <Button href="/contact" variant="primary">Start the Conversation</Button>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
