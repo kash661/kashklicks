@@ -109,10 +109,12 @@ const organizationSchema = {
 
     <script>
       import { initScrollReveal } from '../scripts/scroll-reveal';
+      import { initParallax } from '../scripts/parallax';
       import { initSoundState } from '../scripts/sound-manager';
 
       function initPage() {
         initScrollReveal();
+        initParallax();
         initSoundState();
 
         const lightboxElements = document.querySelectorAll('.glightbox');
