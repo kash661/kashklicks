@@ -1,98 +1,152 @@
 @import "tailwindcss";
 
-/* ── Font Faces ── */
+/* ══════════════════════════════════════
+   THE DIGITAL CURATOR — Design System
+   KashKlicks Studios
+   ══════════════════════════════════════ */
+
+/* ── Font Faces: Mood "cormorant" (default) ── */
 @font-face {
-  font-family: 'Playfair Display';
-  src: url('/fonts/PlayfairDisplay-Regular.woff2') format('woff2');
+  font-family: 'Cormorant Garamond';
+  src: url('/fonts/CormorantGaramond-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'Playfair Display';
-  src: url('/fonts/PlayfairDisplay-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  src: url('/fonts/PlayfairDisplay-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  src: url('/fonts/PlayfairDisplay-Italic.woff2') format('woff2');
+  font-family: 'Cormorant Garamond';
+  src: url('/fonts/CormorantGaramond-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'DM Sans';
-  src: url('/fonts/DMSans-Regular.woff2') format('woff2');
+  font-family: 'Cormorant Garamond';
+  src: url('/fonts/CormorantGaramond-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Font Faces: Mood "fraunces" ── */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'DM Sans';
-  src: url('/fonts/DMSans-Medium.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
+/* ── Font Faces: Mood "bodoni" ── */
 @font-face {
-  font-family: 'DM Sans';
-  src: url('/fonts/DMSans-Bold.woff2') format('woff2');
+  font-family: 'Bodoni Moda';
+  src: url('/fonts/BodoniModa-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('/fonts/BodoniModa-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('/fonts/BodoniModa-Bold.woff2') format('woff2');
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Font Faces: Sans options ── */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('/fonts/InstrumentSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('/fonts/InstrumentSans-Medium.woff2') format('woff2');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 /* ── Design Tokens ── */
 @theme {
-  /* Backgrounds — light, airy, warm */
-  --color-bg: #FDFBF7;
-  --color-bg-elevated: #F5F0EB;
-  --color-bg-card: #FFFFFF;
-  --color-bg-card-hover: #F9F6F2;
+  /* Surfaces — tonal layering, paper on paper */
+  --color-background: #faf9f6;
+  --color-surface: #ffffff;
+  --color-surface-dim: #f4f4f0;
+  --color-surface-container: #e4e2e1;
+  --color-surface-dark: #2c2824;
 
-  /* Text — warm charcoal, not pure black */
-  --color-text-primary: #2C2824;
-  --color-text-secondary: #6B6560;
-  --color-text-muted: #A39E98;
+  /* Text hierarchy */
+  --color-on-surface: #1a1a18;
+  --color-on-surface-variant: #5c605c;
+  --color-on-surface-muted: #afb3ae;
+  --color-on-dark: #faf9f6;
+  --color-on-dark-variant: #d4ccc2;
 
-  /* Accent — warm gold (unchanged), hover darkens on light bg */
-  --color-accent: #c8956c;
-  --color-accent-hover: #B8824F;
-  --color-accent-muted: rgba(200, 149, 108, 0.12);
+  /* Interactive */
+  --color-primary: #5f5e5e;
+  --color-primary-hover: #4a4948;
 
-  /* Borders — subtle warm gray */
-  --color-border: #E8E2DA;
-  --color-border-hover: #D4CCC2;
+  /* Overlay for lightbox */
+  --color-overlay: rgba(44, 40, 36, 0.85);
 
-  /* Overlay stays dark for lightboxes */
-  --color-overlay: rgba(44, 40, 36, 0.75);
+  /* Font families — mood system */
+  --font-serif: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* White text on accent-colored elements */
-  --color-text-on-accent: #FFFFFF;
+  /* Spacing scale */
+  --spacing-section: clamp(80px, 10vw, 160px);
+  --spacing-block: clamp(48px, 6vw, 96px);
+  --spacing-element: 24px;
+  --spacing-tight: 8px;
 
-  /* Typography */
-  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+  /* Motion tokens */
+  --ease-gallery: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-slow: 600ms;
+  --duration-hover: 500ms;
+  --duration-page: 800ms;
+  --duration-splash: 1200ms;
 
-  /* Animation tokens */
-  --animate-fade-in: fade-in 0.6s ease-out forwards;
-  --animate-fade-up: fade-up 0.6s ease-out forwards;
-  --animate-scale-in: scale-in 0.5s ease-out forwards;
+  /* Animation keyframes */
+  --animate-fade-up: fade-up var(--duration-slow) var(--ease-gallery) forwards;
+  --animate-fade-in: fade-in var(--duration-slow) var(--ease-gallery) forwards;
 }
 
 /* ── Base Styles ── */
@@ -101,66 +155,257 @@ html {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+  font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+  font-family: var(--font-serif);
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 ::selection {
-  background-color: var(--color-accent);
-  color: #FFFFFF;
+  background-color: var(--color-surface-container);
+  color: var(--color-on-surface);
 }
 
-/* ── Scroll Fade-In Animation ── */
+/* ── Type Scale Utilities ── */
+.text-display-lg {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.text-display-md {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 4.5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.text-heading-lg {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.text-heading-md {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.text-body-lg {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.text-body-md {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.text-label-md {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.text-label-sm {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.text-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* ── Layout Utilities ── */
+.grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 4vw, 6rem);
+}
+
+@media (max-width: 639px) {
+  .grid-editorial {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.container-editorial {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 4vw, 6rem);
+}
+
+/* ── Keyframes ── */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.95); }
+  from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
 }
 
-.fade-in {
+/* Scroll reveal — applied by IntersectionObserver */
+.reveal {
   opacity: 0;
-  animation: fade-up 0.6s ease-out forwards;
+  transform: translateY(20px);
+  transition: opacity var(--duration-slow) var(--ease-gallery),
+              transform var(--duration-slow) var(--ease-gallery);
 }
 
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-/* ── Image Loading Transition ── */
+.stagger-1 { transition-delay: 100ms; }
+.stagger-2 { transition-delay: 200ms; }
+.stagger-3 { transition-delay: 300ms; }
+.stagger-4 { transition-delay: 400ms; }
+.stagger-5 { transition-delay: 500ms; }
+
+/* ── Image Loading ── */
 img {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--duration-slow) var(--ease-gallery);
 }
 
-/* Scrollbar */
+/* ── Ambient Shadow (floating elements only) ── */
+.shadow-ambient {
+  box-shadow: 0 4px 32px rgba(26, 26, 24, 0.04);
+}
+
+/* ── Ghost Border ── */
+.border-ghost {
+  border-color: rgba(175, 179, 174, 0.15);
+}
+
+/* ── Scrollbar ── */
 html {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-border-hover) var(--color-bg);
+  scrollbar-color: var(--color-surface-container) var(--color-background);
 }
 
-/* Editorial prose utility */
+/* ── Prose (blog content) ── */
 .prose-editorial {
-  max-width: 72ch;
+  max-width: 65ch;
   font-size: 1.125rem;
   line-height: 1.8;
-  letter-spacing: 0.01em;
+}
+
+.prose-editorial h2,
+.prose-editorial h3,
+.prose-editorial h4 {
+  font-family: var(--font-serif);
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+}
+
+.prose-editorial p {
+  margin-bottom: 1.5em;
+}
+
+.prose-editorial blockquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--color-surface-container);
+  margin: 2em 0;
+}
+
+.prose-editorial a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--duration-hover) var(--ease-gallery);
+}
+
+.prose-editorial a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Focus Indicators ── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid rgba(95, 94, 94, 0.5);
+  outline-offset: 2px;
+}
+
+/* ── Screen Reader Only ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Gallery transition easing ── */
+.cubic-ease {
+  transition-timing-function: var(--ease-gallery);
 }
