@@ -306,6 +306,68 @@ h1, h2, h3, h4, h5, h6 {
 .stagger-4 { transition-delay: 400ms; }
 .stagger-5 { transition-delay: 500ms; }
 
+/* Directional reveal variants */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity var(--duration-slow) var(--ease-gallery),
+              transform var(--duration-slow) var(--ease-gallery);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity var(--duration-slow) var(--ease-gallery),
+              transform var(--duration-slow) var(--ease-gallery);
+}
+
+.reveal-left.revealed,
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Parallax container */
+.parallax-img {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* Hover zoom for gallery images (desktop only) */
+.hover-zoom {
+  overflow: hidden;
+}
+
+.hover-zoom img {
+  transition: transform var(--duration-slow) var(--ease-gallery);
+}
+
+.hover-zoom:hover img {
+  transform: scale(1.03);
+}
+
+/* Scale-on-scroll: starts slightly smaller, JS adds .scaled */
+.scale-reveal {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity var(--duration-slow) var(--ease-gallery),
+              transform var(--duration-slow) var(--ease-gallery);
+}
+
+.scale-reveal.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Gallery placard caption */
+.gallery-caption {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
 /* ── Image Loading ── */
 img {
   transition: opacity var(--duration-slow) var(--ease-gallery);
@@ -376,6 +438,23 @@ html {
   }
   .reveal {
     opacity: 1;
+    transform: none;
+  }
+
+  .reveal-left,
+  .reveal-right,
+  .scale-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .parallax-img {
+    will-change: auto;
+    transform: none !important;
+  }
+
+  .hover-zoom:hover img {
     transform: none;
   }
 }
