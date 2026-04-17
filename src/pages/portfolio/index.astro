@@ -94,13 +94,13 @@ const gallerySchema = {
   <!-- ═══ HERO ═══ -->
   <section style="padding-top: var(--spacing-block);">
     <div class="container-editorial">
-      <div class="grid-editorial items-center" style="min-height: 80vh;">
+      <div class="grid-editorial items-center" style="min-height: 80svh;">
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Portfolio</p>
-          <h1 class="text-display-md char-reveal" style="max-width: 16ch;">
+          <h1 class="text-display-md char-reveal measure-medium">
             Toronto wedding <em>photography portfolio.</em>
           </h1>
-          <p class="text-body-lg text-on-surface-variant mt-8" style="max-width: 45ch;">
+          <p class="text-body-lg text-on-surface-variant mt-8 measure-wide">
             The glances that say everything. The hands that hold on a little tighter. The moments between the moments. Every story is a chapter, and each one deserves its own voice.
           </p>
         </div>
@@ -162,7 +162,7 @@ const gallerySchema = {
             ]}>
               <p class="text-label-md text-on-surface-muted eyebrow-rule">{chapter.eyebrow}</p>
               <h3 class="text-display-md mt-4">{chapter.title}</h3>
-              <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 42ch;">{chapter.description}</p>
+              <p class="text-body-lg text-on-surface-variant mt-6 measure-wide">{chapter.description}</p>
               <div class="mt-10">
                 <a
                   href={chapter.href}
@@ -191,7 +191,7 @@ const gallerySchema = {
           <h2 class="text-display-md char-reveal">Recent work.</h2>
         </div>
         <div class="col-span-12 md:col-span-4 md:col-start-9 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-body-md text-on-surface-variant" style="max-width: 32ch;">
+          <p class="text-body-md text-on-surface-variant measure-wide">
             A curated selection across every chapter, in order of release.
           </p>
         </div>
@@ -217,14 +217,18 @@ const gallerySchema = {
     </div>
   </section>
 
-  <!-- ═══ PHILOSOPHY ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="max-w-3xl mx-auto text-center reveal">
-        <p class="text-quote">
-          "A photograph is not about what you see. It is about what you felt in the fraction of a second before you pressed the shutter."
-        </p>
-      </div>
+  <!-- ═══ BREAKER · IN THEIR WORDS ═══
+       Dark-band couple testimonial. Palette inversion + pure typography
+       interrupt the gallery-grid rhythm before the final CTA. Matches
+       the homepage Breaker 1 grammar but sourced from a real couple
+       voice rather than Kash's. -->
+  <section class="breaker-quote" aria-label="Testimonial from a couple">
+    <div class="breaker-quote__inner">
+      <span class="breaker-rule" aria-hidden="true"></span>
+      <blockquote class="breaker-quote__text">
+        Captured every moment so beautifully without ever making it feel staged or forced. The photos feel so natural and real, exactly what we wanted.
+      </blockquote>
+      <p class="breaker-quote__attribution">Shania &amp; Vishal, Pre-Wedding</p>
     </div>
   </section>
 
@@ -235,7 +239,7 @@ const gallerySchema = {
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
           <h2 class="text-display-md text-on-surface">Your story, next.</h2>
-          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
+          <p class="text-body-lg text-on-surface-variant mt-4 measure-wide">
             Every season fills quickly. If my work speaks to you, let's start a conversation before your date is gone.
           </p>
           <div class="mt-8">
