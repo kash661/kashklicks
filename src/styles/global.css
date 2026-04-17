@@ -307,6 +307,120 @@ h1, h2, h3, h4, h5, h6 {
   animation: chevron-bounce 2s var(--ease-gallery) infinite;
 }
 
+/* ── Section breakers — structural pattern breaks between repeating sections.
+   Deliberately different: no eyebrow, no char-reveal, no fade-up stagger.
+   They interrupt the "heading + body + images" drumbeat so the reader's
+   rhythm resets before the next editorial chapter. */
+
+/* Breaker 1 — quiet pull quote on a dark band. Palette inversion is
+   intentional; the darkness is the break. */
+.breaker-quote {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 55svh;
+  padding-block: var(--spacing-section);
+  padding-inline: clamp(1.5rem, 6vw, 8rem);
+  background: var(--color-surface-dark);
+  color: var(--color-on-dark);
+}
+
+.breaker-quote__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 48rem;
+}
+
+.breaker-rule {
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-on-dark) 45%, transparent);
+  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.breaker-quote__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3.8vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.32;
+  color: var(--color-on-dark);
+  max-width: 26ch;
+}
+
+@media (min-width: 640px) {
+  .breaker-quote__text {
+    max-width: 32ch;
+  }
+}
+
+.breaker-quote__attribution {
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-dark-variant);
+}
+
+/* Breaker 2 — horizontal marquee of destinations. Continuous right-to-left
+   motion on a different axis than anything else on the page. */
+.breaker-marquee {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  background: var(--color-background);
+  border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 25%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 25%, transparent);
+}
+
+.breaker-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: breaker-marquee-scroll 55s linear infinite;
+  will-change: transform;
+}
+
+.breaker-marquee__set {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.75rem, 5vw, 3.5rem);
+  padding-right: clamp(1.75rem, 5vw, 3.5rem);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(2rem, 7.5vw, 5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--color-on-surface);
+}
+
+.breaker-marquee__dot {
+  font-style: normal;
+  color: var(--color-on-surface-muted);
+  font-size: 0.55em;
+  transform: translateY(-0.2em);
+}
+
+@keyframes breaker-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breaker-marquee__track {
+    animation: none;
+    transform: translateX(-10%);
+  }
+}
+
 /* Top-of-viewport scroll progress hairline — grounds the reader without
    a visible HUD. Fills as the document scrolls. */
 .scroll-progress {
