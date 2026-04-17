@@ -458,20 +458,19 @@ const personSchema = {
   @media (max-width: 767px) {
     .travel-collage {
       aspect-ratio: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
+      display: block;
     }
     .collage-main {
+      position: static;
       width: 100%;
       margin: 0;
+      aspect-ratio: 3 / 2;
     }
+    /* On mobile, only the primary (badged) image — the accents clutter
+       the layout and the badge gets lost. */
     .collage-accent {
-      position: static;
-      aspect-ratio: 2 / 3;
+      display: none;
     }
-    .collage-accent-tr { width: 60%; align-self: flex-end; }
-    .collage-accent-bl { width: 45%; align-self: flex-start; }
   }
 
   /* Travel log email signup */
