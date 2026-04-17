@@ -17,8 +17,9 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Local tooling
-.claude/settings.local.json
-.claude/skills/forms/
-src/assets/images/portfolio/.originals/
+# Local tooling (Claude / superpowers / etc — not site code)
+.claude/
+.superpowers/
 .council/
+docs/superpowers/
+src/assets/images/portfolio/.originals/
