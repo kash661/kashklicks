@@ -19,5 +19,6 @@ Thumbs.db
 
 # Local tooling
 .claude/settings.local.json
+.claude/skills/forms/
 src/assets/images/portfolio/.originals/
 .council/
