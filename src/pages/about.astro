@@ -46,8 +46,9 @@ const personSchema = {
     ]} />
 
     <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-top: var(--spacing-block);">About Kash</p>
-    <h1 class="text-display-lg char-reveal" style="margin-top: var(--spacing-element); max-width: 20ch;">
-      <span class="block">Kash, Toronto Wedding Photographer</span>
+    <h1 class="text-display-lg char-reveal about-hero-title" style="margin-top: var(--spacing-element); max-width: 22ch;">
+      <span class="block">Kash,</span>
+      <span class="block">Toronto Wedding Photographer</span>
       <span class="block text-body-lg italic text-on-surface-variant" style="margin-top: var(--spacing-element); letter-spacing: 0; font-weight: 400;">
         Cinematic, honest, unhurried. A solo eye behind every frame.
       </span>
@@ -298,6 +299,16 @@ const personSchema = {
 </BaseLayout>
 
 <style>
+  /* About hero title: smaller mobile font so "Toronto Wedding Photographer"
+     doesn't break awkwardly on a 375-430px viewport. */
+  @media (max-width: 640px) {
+    .about-hero-title {
+      font-size: clamp(2.25rem, 10vw, 2.75rem);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+    }
+  }
+
   /* Process zig-zag timeline */
   .process-wrap {
     position: relative;
