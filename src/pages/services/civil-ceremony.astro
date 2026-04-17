@@ -5,6 +5,7 @@ import PricingCard from '../../components/ui/PricingCard.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
+import ShareButton from '../../components/ui/ShareButton.astro';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
@@ -29,7 +30,7 @@ const civilFaq = faqData.filter((q: any) => !q.services || q.services.includes('
 
 const civilService = {
   title: 'Civil Ceremony',
-  description: 'Intimate doesn\'t mean less important. We capture the beauty and emotion of your civil ceremony, whether at city hall, a courthouse, or any intimate venue, with the same care and artistry as a full wedding.',
+  description: 'Intimate doesn\'t mean less important. I capture the beauty and emotion of your civil ceremony, whether at city hall, a courthouse, or any intimate venue, with the same care and artistry as a full wedding.',
   includes: [
     'Ceremony coverage',
     'Couple portraits after the ceremony',
@@ -104,6 +105,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <p class="text-label-md text-on-surface-muted mb-4 reveal eyebrow-rule eyebrow-rule-center">Civil Ceremony</p>
         <h1 class="text-display-md reveal stagger-1">Toronto Civil Ceremony Photography</h1>
         <p class="text-quote text-on-surface-variant reveal stagger-2 mt-6 mx-auto" style="max-width: 28ch;">Every venue tells a story.</p>
+        <div class="mt-8 flex justify-center reveal stagger-3">
+          <ShareButton
+            variant="labeled"
+            url="/services/civil-ceremony"
+            title="Toronto Civil Ceremony Photography — AD Photography"
+            text="Intimate civil ceremony coverage from $500."
+            label="Share"
+          />
+        </div>
       </div>
 
       <!-- 6-image mosaic: 3 portraits + 3 landscapes matching reference -->
@@ -144,7 +154,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           />
         </div>
         <div class="col-span-12 lg:col-span-5 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
-          <p class="text-label-md text-on-surface-muted eyebrow-rule">What We Offer</p>
+          <p class="text-label-md text-on-surface-muted eyebrow-rule">What I Offer</p>
           <h2 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">{civilService.title}</h2>
           <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{civilService.description}</p>
           <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
@@ -201,8 +211,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           <div class="md:pr-12 md:text-right">
             <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
             <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
-            <h3 class="text-heading-lg font-serif">We Plan Together</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">We walk through your venue, timing, and coverage needs so everything runs smoothly on the day.</p>
+            <h3 class="text-heading-lg font-serif">Planning Together</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">I walk through your venue, timing, and coverage needs so everything runs smoothly on the day.</p>
           </div>
           <div class="hidden md:block"></div>
         </div>
@@ -214,7 +224,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
             <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
             <h3 class="text-heading-lg font-serif">Your Ceremony Day</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">We capture everything. Simple and beautiful. You stay fully present while we handle the memories.</p>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">I capture everything. Simple and beautiful. You stay fully present while I handle the memories.</p>
           </div>
         </div>
 
@@ -236,7 +246,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
         <BookingLink variant="primary" label="Book Your Call" />
         <div class="flex flex-col items-center mt-12">
-          <p class="text-body-md text-on-surface-variant mb-3">See our package below.</p>
+          <p class="text-body-md text-on-surface-variant mb-3">See my package below.</p>
           <div class="scroll-chevron">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 9l6 6 6-6" />
@@ -272,9 +282,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
       </div>
 
       <div class="text-center mt-16 reveal">
-        <p class="text-label-sm text-on-surface-muted mb-2">Have questions? We'll get back to you within 24 hours, guaranteed.</p>
+        <p class="text-label-sm text-on-surface-muted mb-2">Have questions? I'll get back to you within 24 hours, guaranteed.</p>
         <div class="mt-6">
-          <a href="/contact?service=civil-ceremony" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Us</a>
+          <a href="/contact?service=civil-ceremony" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Me</a>
         </div>
       </div>
     </div>
@@ -295,15 +305,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
         <div class="bg-surface-dim p-10 reveal stagger-1">
           <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
-          <p class="text-body-md text-on-surface-variant">We help you find the perfect spot. Light first, location second. One great spot can give you a dozen different looks.</p>
+          <p class="text-body-md text-on-surface-variant">I help you find the perfect spot. Light first, location second. One great spot can give you a dozen different looks.</p>
         </div>
         <div class="bg-surface-dim p-10 reveal stagger-2">
           <p class="text-heading-md font-serif italic mb-3">Travel fees</p>
-          <p class="text-body-md text-on-surface-variant">Travel fees apply based on your venue location. We discuss this upfront during your consultation so there are no surprises.</p>
+          <p class="text-body-md text-on-surface-variant">Travel fees apply based on your venue location. I discuss this upfront during your consultation so there are no surprises.</p>
         </div>
         <div class="bg-surface-dim p-10 reveal stagger-3">
           <p class="text-heading-md font-serif italic mb-3">Canada-wide</p>
-          <p class="text-body-md text-on-surface-variant">Based in Toronto, but we travel for love. We have shot across Ontario and beyond. If you are planning a destination ceremony, let's talk.</p>
+          <p class="text-body-md text-on-surface-variant">Based in Toronto, but I travel for love. I've shot across Ontario and beyond. If you are planning a destination ceremony, let's talk.</p>
         </div>
       </div>
     </div>

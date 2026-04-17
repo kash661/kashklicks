@@ -7,7 +7,7 @@ interface Props {
   eyebrow?: string;
 }
 
-const { images, locationName, eyebrow = 'From our sessions here' } = Astro.props;
+const { images, locationName, eyebrow = 'From my sessions here' } = Astro.props;
 
 const loop = [...images, ...images];
 ---

@@ -20,3 +20,4 @@ Thumbs.db
 # Local tooling
 .claude/settings.local.json
 src/assets/images/portfolio/.originals/
+.council/

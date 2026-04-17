@@ -6,6 +6,8 @@ import { Image } from 'astro:assets';
 
 import portraitImage from '../assets/images/about/akash-portrait.jpg';
 import travelMadeiraImage from '../assets/images/about/travel-madeira.jpg';
+import travelMadeira2Image from '../assets/images/about/travel-madeira-2.jpg';
+import travelPortugal3Image from '../assets/images/about/travel-portugal-3.jpg';
 import site from '../data/site.json';
 
 const personSchema = {
@@ -13,6 +15,7 @@ const personSchema = {
   '@type': 'Person',
   '@id': `${site.url}/about#person`,
   name: 'Akash Desai',
+  alternateName: 'Kash',
   givenName: 'Akash',
   familyName: 'Desai',
   jobTitle: 'Photographer & Videographer',
@@ -33,22 +36,22 @@ const personSchema = {
 ---
 
 <BaseLayout
-  title="About AD, Toronto Wedding Photographer"
-  description="Meet AD, the photographer behind AD Photography. Based in Toronto, specializing in cinematic wedding and pre-wedding photography with a Fujifilm system."
+  title="About Kash | Toronto Wedding Photographer"
+  description="Meet Kash, the photographer behind AD Photography. Based in Toronto, specializing in cinematic wedding and pre-wedding photography with a Fujifilm system."
   jsonLd={personSchema}
 >
   <!-- Hero -->
   <section class="container-editorial" style="padding-top: var(--spacing-section);">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'The Experience', href: '/about/' },
+      { label: 'About Kash', href: '/about/' },
     ]} />
 
-    <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-top: var(--spacing-block);">The Experience</p>
-    <h1 class="text-display-lg char-reveal" style="margin-top: var(--spacing-element); max-width: 16ch;">
-      <span class="block">The Quiet Observer</span>
+    <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-top: var(--spacing-block);">About Kash</p>
+    <h1 class="text-display-lg char-reveal" style="margin-top: var(--spacing-element); max-width: 20ch;">
+      <span class="block">Kash, Toronto Wedding Photographer</span>
       <span class="block text-body-lg italic text-on-surface-variant" style="margin-top: var(--spacing-element); letter-spacing: 0; font-weight: 400;">
-        Toronto wedding photographer and videographer
+        Cinematic, honest, unhurried. A solo eye behind every frame.
       </span>
     </h1>
   </section>
@@ -57,7 +60,7 @@ const personSchema = {
   <section class="container-editorial" style="padding-top: var(--spacing-block);">
     <div class="grid-editorial items-start">
       <div class="col-span-12 md:col-span-5 order-2 md:order-1">
-        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-bottom: var(--spacing-element);">Meet AD</p>
+        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-bottom: var(--spacing-element);">Meet Kash</p>
         <div class="bio-expand reveal stagger-1" data-expanded="false">
           <p class="bio-teaser text-body-lg text-on-surface-variant">
             Toronto-based solo photographer and videographer. Intimate, unhurried weddings shot with a cinematic, editorial eye.
@@ -142,45 +145,77 @@ const personSchema = {
     </div>
   </section>
 
-  <!-- Our Process -->
+  <!-- My Process -->
   <section class="bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <div class="grid-editorial">
-        <div class="col-span-12 md:col-span-4 mb-[var(--spacing-block)] md:mb-0">
-          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">Our Process</p>
-          <h2 class="text-heading-lg reveal stagger-1" style="margin-top: var(--spacing-element);">How It Works</h2>
-        </div>
-        <div class="col-span-12 md:col-span-7 md:col-start-6">
-          <div class="reveal stagger-2" style="display: flex; flex-direction: column; gap: var(--spacing-block);">
-            <div>
-              <p class="text-label-sm text-on-surface-muted">01</p>
-              <h3 class="text-heading-md" style="margin-top: 4px;">The Conversation</h3>
-              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
-                We start with a free consultation. No scripts, no pressure. Just a real conversation about who you are, what you are celebrating, and how you want to remember it.
-              </p>
-            </div>
-            <div>
-              <p class="text-label-sm text-on-surface-muted">02</p>
-              <h3 class="text-heading-md" style="margin-top: 4px;">The Planning</h3>
-              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
-                I handle locations, timing, and creative direction. You will get a curated mood board and a clear plan so you know exactly what to expect. All you need to do is show up.
-              </p>
-            </div>
-            <div>
-              <p class="text-label-sm text-on-surface-muted">03</p>
-              <h3 class="text-heading-md" style="margin-top: 4px;">The Session</h3>
-              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
-                On the day, I guide you through natural prompts and movements. No stiff posing. The energy stays relaxed, fun, and focused on the two of you.
-              </p>
-            </div>
-            <div>
-              <p class="text-label-sm text-on-surface-muted">04</p>
-              <h3 class="text-heading-md" style="margin-top: 4px;">The Delivery</h3>
-              <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 55ch;">
-                Your gallery is hand-edited, colour-graded, and delivered within 1 to 3 weeks through a private online gallery. Every image is treated with the same care.
-              </p>
-            </div>
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">My Process</p>
+        <h2 class="text-display-md">How It Works</h2>
+        <p class="text-body-lg text-on-surface-variant mx-auto mt-6" style="max-width: 48ch;">
+          Four steps, no surprises. From the first message to the final gallery, here is exactly what to expect.
+        </p>
+      </div>
+
+      <!-- Timeline -->
+      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
+        <!-- Vertical line -->
+        <div class="timeline-line hidden md:block"></div>
+
+        <!-- Step 1 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
+            <h3 class="text-heading-lg font-serif">A real hello, no scripts.</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">
+              I start with a free consultation. No pressure. Just a real conversation about who you are, what you are celebrating, and how you want to remember it.
+            </p>
+            <p class="text-label-sm text-on-surface-muted mt-3">30-minute call · no obligation</p>
           </div>
+        </div>
+
+        <!-- Step 2 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
+            <h3 class="text-heading-lg font-serif">Every detail, handled.</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">
+              I take care of locations, timing, and creative direction. You will get a curated mood board and a clear plan, so you know exactly what to expect. All you need to do is show up.
+            </p>
+            <p class="text-label-sm text-on-surface-muted mt-3">Mood board · shot list · timeline</p>
+          </div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <!-- Step 3 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
+            <h3 class="text-heading-lg font-serif">Prompting, never posing.</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">
+              On the day, I guide you through natural prompts and movements. No stiff poses. The energy stays calm, unhurried, and focused on the two of you.
+            </p>
+            <p class="text-label-sm text-on-surface-muted mt-3">Calm over performance · real reactions</p>
+          </div>
+        </div>
+
+        <!-- Step 4 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
+            <h3 class="text-heading-lg font-serif">A gallery, carefully kept.</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">
+              Your gallery is hand-edited, colour-graded, and delivered within 1 to 3 weeks through a private online gallery. Every image is treated with the same care.
+            </p>
+            <p class="text-label-sm text-on-surface-muted mt-3">Private gallery · 1 to 3 week turnaround</p>
+          </div>
+          <div class="hidden md:block"></div>
         </div>
       </div>
     </div>
@@ -197,18 +232,75 @@ const personSchema = {
             When I am not shooting someone else's story, I am chasing my own. Light, architecture, strangers, cities.
             The same eye, off the clock. A small travel log, coming soon.
           </p>
+
+          <form
+            class="travel-notify reveal stagger-2"
+            action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
+            method="POST"
+            data-travel-notify
+          >
+            <input type="hidden" name="_subject" value="Travel Log signup" />
+            <input type="hidden" name="list" value="travel-log" />
+            <label for="travel-notify-email" class="text-label-sm text-on-surface-muted" style="letter-spacing: 0.12em; text-transform: uppercase;">
+              Know when it's live
+            </label>
+            <div class="travel-notify-row">
+              <input
+                id="travel-notify-email"
+                type="email"
+                name="email"
+                required
+                autocomplete="email"
+                placeholder="your@email.com"
+                class="travel-notify-input"
+              />
+              <button type="submit" class="travel-notify-submit logo-mark" aria-label="Notify me when travel log is live">
+                Notify Me
+              </button>
+            </div>
+            <p class="travel-notify-note text-label-sm text-on-surface-muted" data-notify-note>
+              One email when the log goes live. No other list.
+            </p>
+          </form>
         </div>
-        <div class="col-span-12 md:col-span-7 md:col-start-6 aspect-[3/2] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Madeira, Portugal">
-          <Image
-            src={travelMadeiraImage}
-            alt="Travel photograph from Madeira, Portugal by AD Photography"
-            widths={[640, 960, 1280, 1600]}
-            sizes="(max-width: 768px) 100vw, 58vw"
-            format="avif"
-            quality={80}
-            class="w-full h-full object-cover parallax-img"
-            loading="lazy"
-          />
+        <div class="travel-collage col-span-12 md:col-span-7 md:col-start-6 reveal-right stagger-2">
+          <div class="collage-main image-caption" data-caption="Madeira, Portugal">
+            <Image
+              src={travelMadeiraImage}
+              alt="Travel photograph from Madeira, Portugal by AD Photography"
+              widths={[640, 960, 1280, 1600]}
+              sizes="(max-width: 768px) 100vw, 45vw"
+              format="avif"
+              quality={80}
+              class="w-full h-full object-cover parallax-img"
+              loading="lazy"
+            />
+            <span class="travel-soon-badge logo-mark">Travel Log Coming Soon</span>
+          </div>
+          <div class="collage-accent collage-accent-tr">
+            <Image
+              src={travelMadeira2Image}
+              alt="Madeira coastline, Portugal travel photograph by AD Photography"
+              widths={[480, 720, 960]}
+              sizes="(max-width: 768px) 100vw, 25vw"
+              format="avif"
+              quality={80}
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div class="collage-accent collage-accent-bl">
+            <Image
+              src={travelPortugal3Image}
+              alt="Portugal travel photograph by AD Photography"
+              widths={[480, 720, 960]}
+              sizes="(max-width: 768px) 100vw, 25vw"
+              format="avif"
+              quality={80}
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -221,7 +313,7 @@ const personSchema = {
         <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center">Ready?</p>
         <h2 class="text-display-md text-on-surface reveal stagger-1" style="margin-top: var(--spacing-element);">Let's find the light.</h2>
         <p class="text-body-lg text-on-surface-variant reveal stagger-2" style="margin-top: var(--spacing-element); max-width: 48ch;">
-          Every session starts with a conversation. Tell me about your vision and we will build something beautiful together.
+          Every session starts with a conversation. Tell me about your vision and I will build something beautiful with you.
         </p>
         <div class="reveal stagger-3" style="margin-top: var(--spacing-block);">
           <Button href="/contact" variant="primary" class="magnetic">Start the Conversation</Button>
@@ -232,6 +324,206 @@ const personSchema = {
 </BaseLayout>
 
 <style>
+  /* Process zig-zag timeline */
+  .process-wrap {
+    position: relative;
+  }
+  .process-path {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--color-on-surface-muted);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .process-path-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 2400ms var(--ease-gallery);
+  }
+  .process-wrap.revealed .process-path-line {
+    stroke-dashoffset: 0;
+  }
+
+  .process-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;
+    row-gap: calc(var(--spacing-block) * 0.75);
+  }
+  .process-step {
+    position: relative;
+    min-height: 180px;
+    padding: 1.25rem 0;
+  }
+  .step-left {
+    grid-column: 1 / 2;
+    padding-right: 1.5rem;
+  }
+  .step-right {
+    grid-column: 2 / 3;
+    padding-left: 1.5rem;
+  }
+
+  .process-kicker {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    margin-bottom: var(--spacing-element);
+  }
+  .process-meta {
+    margin-top: var(--spacing-element);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 767px) {
+    .process-path { display: none; }
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-block);
+    }
+    .process-step { min-height: 0; padding: 0; }
+    .step-left, .step-right {
+      grid-column: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .process-path-line { transition: none; stroke-dashoffset: 0; }
+  }
+
+  /* Travel collage — outer bounding box forms a square, all three images intersect */
+  .travel-collage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+  }
+  .collage-main {
+    position: absolute;
+    top: 8%;
+    left: 0;
+    width: 66%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 12px 32px rgba(26, 26, 24, 0.1);
+  }
+  .collage-accent {
+    position: absolute;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    box-shadow: 0 14px 36px rgba(26, 26, 24, 0.18);
+  }
+  .collage-accent-tr {
+    top: 0;
+    right: 14%;
+    width: 28%;
+    z-index: 2;
+  }
+  .collage-accent-bl {
+    bottom: 0;
+    right: 0;
+    width: 40%;
+    z-index: 3;
+  }
+
+  /* Travel-log-coming-soon badge */
+  .travel-soon-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-surface-dark);
+    color: var(--color-on-dark);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  @media (max-width: 767px) {
+    .travel-collage {
+      aspect-ratio: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .collage-main {
+      width: 100%;
+      margin: 0;
+    }
+    .collage-accent {
+      position: static;
+      aspect-ratio: 2 / 3;
+    }
+    .collage-accent-tr { width: 60%; align-self: flex-end; }
+    .collage-accent-bl { width: 45%; align-self: flex-start; }
+  }
+
+  /* Travel log email signup */
+  .travel-notify {
+    margin-top: var(--spacing-block);
+    max-width: 32rem;
+  }
+  .travel-notify-row {
+    display: flex;
+    align-items: stretch;
+    margin-top: 0.75rem;
+    border-bottom: 1px solid var(--color-on-surface);
+  }
+  .travel-notify-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    padding: 0.75rem 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-on-surface);
+    outline: none;
+  }
+  .travel-notify-input::placeholder {
+    color: var(--color-on-surface-muted);
+  }
+  .travel-notify-submit {
+    background: transparent;
+    border: 0;
+    padding: 0.75rem 0 0.75rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 500ms var(--ease-gallery);
+  }
+  .travel-notify-submit:hover {
+    color: var(--color-on-surface-variant);
+  }
+  .travel-notify-note {
+    margin-top: 0.75rem;
+    font-style: italic;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .travel-notify[data-state="submitting"] .travel-notify-submit { opacity: 0.6; cursor: wait; }
+  .travel-notify[data-state="success"] .travel-notify-row { display: none; }
+  .travel-notify[data-state="success"] label { display: none; }
+
   .bio-expand { padding-bottom: var(--spacing-block); }
   .bio-teaser { display: none; }
   .bio-toggle { display: none; }
@@ -273,4 +565,35 @@ const personSchema = {
       btn.textContent = expanded ? 'Read more' : 'Read less';
     });
   });
+
+  function initTravelNotify() {
+    document.querySelectorAll<HTMLFormElement>('[data-travel-notify]').forEach((form) => {
+      if (form.dataset.notifyBound === 'true') return;
+      form.dataset.notifyBound = 'true';
+      const note = form.querySelector<HTMLElement>('[data-notify-note]');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        form.setAttribute('data-state', 'submitting');
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          if (res.ok) {
+            form.setAttribute('data-state', 'success');
+            if (note) note.textContent = "You're on the list. I'll send one email when the log goes live.";
+          } else {
+            form.setAttribute('data-state', 'error');
+            if (note) note.textContent = "Something went sideways. Try emailing info@kashklicks.ca instead.";
+          }
+        } catch {
+          form.setAttribute('data-state', 'error');
+          if (note) note.textContent = "Something went sideways. Try emailing info@kashklicks.ca instead.";
+        }
+      });
+    });
+  }
+  initTravelNotify();
+  document.addEventListener('astro:after-swap', initTravelNotify);
 </script>

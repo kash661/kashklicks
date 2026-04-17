@@ -13,11 +13,11 @@ Swati & Saksham, Toronto
 
 ---
 
-## What We Offer
+## What I Offer
 
 **H1:** Toronto Pre-Wedding Photography
 
-Your love story deserves to be told beautifully, before the big day even arrives. Our pre-wedding sessions capture the connection between you and your partner through cinematic photography and filmmaking at Toronto's most stunning locations.
+Your love story deserves to be told beautifully, before the big day even arrives. My pre-wedding sessions capture the connection between you and your partner through cinematic photography and filmmaking at Toronto's most stunning locations.
 
 ### What's Included
 - Professional photography and optional videography
@@ -32,7 +32,7 @@ Your love story deserves to be told beautifully, before the big day even arrives
 ## Your Journey
 
 1. Book a Consultation — free, no-obligation call about your session.
-2. We Plan Together — location, outfits, time of day, mood.
+2. Planning Together — location, outfits, time of day, mood.
 3. Lock In Your Date — simple contract, 50% retainer.
 4. Your Session Day — remaining 50% due on the day.
 5. Video Draft — one round of feedback on the film.

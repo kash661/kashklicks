@@ -15,11 +15,11 @@ Six-image venue mosaic: civil ceremony venue exteriors, ring and details, couple
 
 ---
 
-## What We Offer
+## What I Offer
 
 **Heading:** Civil Ceremony
 
-Intimate doesn't mean less important. We capture the beauty and emotion of your civil ceremony, whether at city hall, a courthouse, or any intimate venue, with the same care and artistry as a full wedding.
+Intimate doesn't mean less important. I capture the beauty and emotion of your civil ceremony, whether at city hall, a courthouse, or any intimate venue, with the same care and artistry as a full wedding.
 
 ### What's Included
 - Ceremony coverage
@@ -33,7 +33,7 @@ Intimate doesn't mean less important. We capture the beauty and emotion of your 
 ## Your Journey
 
 1. Book a Consultation — free, no-obligation call.
-2. We Plan Together — venue, timing, coverage needs.
+2. Planning Together — venue, timing, coverage needs.
 3. Your Ceremony Day — simple and beautiful.
 4. Full Delivery — within 2 to 4 weeks.
 

@@ -1,0 +1,88 @@
+---
+interface Props {
+  url: string;
+  title: string;
+  text?: string;
+  variant?: 'icon' | 'labeled';
+  label?: string;
+  class?: string;
+}
+
+const {
+  url,
+  title,
+  text = '',
+  variant = 'icon',
+  label = 'Share',
+  class: extraClass = '',
+} = Astro.props;
+
+const baseClass = variant === 'labeled'
+  ? 'share-btn inline-flex items-center gap-2 px-5 py-2.5 border border-on-surface text-on-surface text-label-md hover:bg-on-surface hover:text-on-dark cubic-ease'
+  : 'share-btn inline-flex items-center justify-center w-9 h-9 text-on-surface-variant hover:text-on-surface cubic-ease';
+---
+
+<button
+  type="button"
+  class:list={[baseClass, extraClass]}
+  data-share-btn
+  data-share-url={url}
+  data-share-title={title}
+  data-share-text={text}
+  aria-label={label}
+  style="transition-duration: var(--duration-hover);"
+>
+  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+  </svg>
+  {variant === 'labeled' && <span class="share-label">{label}</span>}
+  <span class="share-feedback hidden ml-1" aria-live="polite">Copied</span>
+</button>
+
+<script is:inline>
+  if (!window.__adShareInit) {
+    window.__adShareInit = true;
+    document.addEventListener('click', async (event) => {
+      const btn = event.target.closest('[data-share-btn]');
+      if (!btn) return;
+      event.preventDefault();
+
+      const shareUrl = new URL(btn.dataset.shareUrl || '/', window.location.origin).href;
+      const shareTitle = btn.dataset.shareTitle || document.title;
+      const shareText = btn.dataset.shareText || '';
+
+      const showCopied = () => {
+        const label = btn.querySelector('.share-label');
+        const feedback = btn.querySelector('.share-feedback');
+        if (!feedback) return;
+        if (label) label.classList.add('hidden');
+        feedback.classList.remove('hidden');
+        setTimeout(() => {
+          feedback.classList.add('hidden');
+          if (label) label.classList.remove('hidden');
+        }, 1800);
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ url: shareUrl, title: shareTitle, text: shareText });
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(shareUrl);
+          showCopied();
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = shareUrl;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+          showCopied();
+        }
+      } catch (_) {
+        // User cancelled share sheet - ignore
+      }
+    });
+  }
+</script>

@@ -13,11 +13,11 @@ Toronto
 
 ---
 
-## What We Offer
+## What I Offer
 
 **H1:** Toronto Event Photography
 
-Birthdays, bridal showers, baby showers, corporate events. Every gathering has moments worth preserving. Our event coverage is relaxed, natural, and designed to capture the energy of your celebration.
+Birthdays, bridal showers, baby showers, corporate events. Every gathering has moments worth preserving. My event coverage is relaxed, natural, and designed to capture the energy of your celebration.
 
 ### What's Included
 - Minimum 2 hours coverage
@@ -32,8 +32,8 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 ## Your Journey
 
 1. Book a Consultation — free, no-obligation call about your event.
-2. We Plan Together — timing, venue, coverage, must-have moments.
-3. Your Event — we blend in and capture everything naturally.
+2. Planning Together — timing, venue, coverage, must-have moments.
+3. Your Event — I blend in and capture everything naturally.
 4. Full Delivery — complete gallery within 2 weeks.
 
 ---

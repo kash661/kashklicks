@@ -6,16 +6,94 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="space-y-0" style="gap: 0;">
+<div class="faq-accordion" data-faq-accordion>
   {items.map((item, i) => (
-    <details class="group" style={`padding: var(--spacing-element) 0;${i === 0 ? 'padding-top: 0;' : ''}`}>
-      <summary class="flex items-center justify-between cursor-pointer list-none">
+    <div class:list={['faq-item', i === 0 && 'faq-item-first']}>
+      <button
+        type="button"
+        class="faq-summary flex items-center justify-between w-full text-left"
+        aria-expanded="false"
+      >
         <h3 class="text-body-lg font-medium pr-8">{item.question}</h3>
-        <span class="text-on-surface-variant text-2xl cubic-ease group-open:rotate-45" style="transition-duration: var(--duration-slow);" aria-hidden="true">+</span>
-      </summary>
-      <div class="text-body-md text-on-surface-variant" style="padding-top: 8px; max-width: 65ch;">
-        <p>{item.answer}</p>
+        <span
+          class="faq-icon text-on-surface-variant text-2xl cubic-ease shrink-0"
+          style="transition-duration: var(--duration-slow);"
+          aria-hidden="true"
+        >+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p class="text-body-md text-on-surface-variant" style="padding-top: 8px; max-width: 65ch;">
+            {item.answer}
+          </p>
+        </div>
       </div>
-    </details>
+    </div>
   ))}
 </div>
+
+<style>
+  .faq-item {
+    padding: var(--spacing-element) 0;
+  }
+  .faq-item-first {
+    padding-top: 0;
+  }
+
+  .faq-summary {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  .faq-icon {
+    display: inline-block;
+    transform-origin: center;
+  }
+  .faq-summary[aria-expanded="true"] .faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration-slow) var(--ease-gallery),
+                opacity var(--duration-slow) var(--ease-gallery);
+    opacity: 0;
+  }
+  .faq-answer-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+  .faq-summary[aria-expanded="true"] + .faq-answer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-answer,
+    .faq-icon {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initFaqAccordion() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.faq-accordion .faq-summary');
+    buttons.forEach((btn) => {
+      if (btn.dataset.faqBound === 'true') return;
+      btn.dataset.faqBound = 'true';
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      });
+    });
+  }
+
+  initFaqAccordion();
+  document.addEventListener('astro:after-swap', initFaqAccordion);
+</script>

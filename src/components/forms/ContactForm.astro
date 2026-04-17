@@ -31,7 +31,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
 <div id="contact-form-wrapper">
   <form
     id="contact-form"
-    action={`https://formspree.io/f/${formspreeId}`}
+    action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
     method="POST"
     class="space-y-16"
     novalidate
@@ -138,7 +138,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
         <!-- Event Type — full width -->
         <div class="relative">
           <label for="event_type" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            What We're Capturing <span class="text-on-surface" aria-hidden="true">*</span>
+            What I'm Capturing <span class="text-on-surface" aria-hidden="true">*</span>
           </label>
           <select
             id="event_type"
@@ -170,7 +170,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             style={inputStyle}
           />
           <p class="text-label-sm text-on-surface-muted italic mt-3">
-            Haven't locked the date? Leave blank, we'll talk through options together.
+            Haven't locked the date? Leave blank, I'll talk through options with you.
           </p>
         </div>
 
@@ -188,7 +188,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             style={inputStyle}
           />
           <p class="text-label-sm text-on-surface-muted italic mt-3">
-            Still deciding? No problem. Light first, location second, we help you pick.
+            Still deciding? No problem. Light first, location second, I help you pick.
           </p>
         </div>
 
@@ -222,7 +222,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
       <div class="space-y-10">
         <div class="relative">
           <label for="message" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Tell Us About Your Day <span class="text-on-surface" aria-hidden="true">*</span>
+            Tell Me About Your Day <span class="text-on-surface" aria-hidden="true">*</span>
           </label>
           <textarea
             id="message"
@@ -231,7 +231,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             aria-required="true"
             aria-describedby="message-error"
             rows="5"
-            placeholder="Your story, the mood you're going for, Pinterest or Instagram links — anything that helps us understand the day."
+            placeholder="Your story, the mood you're going for, Pinterest or Instagram links — anything that helps me understand the day."
             class={`${inputClass} resize-none`}
             style={inputStyle}
           ></textarea>
@@ -240,7 +240,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
 
         <div class="relative">
           <label for="referral" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            How Did You Find Us? <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+            How Did You Find Me? <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
           </label>
           <select
             id="referral"
@@ -278,10 +278,10 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
     <p class="text-label-md text-on-surface-muted eyebrow-rule revealed mb-4">Thank You</p>
     <h3 class="text-heading-lg font-serif">Your note is on its way.</h3>
     <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">
-      We'll read it carefully and reply within 24 hours to start planning something together.
+      I'll read it carefully and reply within 24 hours to start planning something with you.
     </p>
     <p class="text-label-sm text-on-surface-muted mt-6">
-      In the meantime, browse our <a href="/portfolio" class="text-on-surface hover:text-on-surface-variant cubic-ease underline" style="transition-duration: var(--duration-hover);">portfolio</a> for inspiration.
+      In the meantime, browse my <a href="/portfolio" class="text-on-surface hover:text-on-surface-variant cubic-ease underline" style="transition-duration: var(--duration-hover);">portfolio</a> for inspiration.
     </p>
   </div>
 
@@ -293,7 +293,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
       </svg>
       <div>
         <p class="text-label-md text-on-surface">Something went wrong</p>
-        <p class="mt-1 text-body-lg text-on-surface-variant">Your message couldn't be sent. Please try again, or reach out directly at <a href="mailto:info@kashklicks.ca" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">info@kashklicks.ca</a> or DM us on Instagram for a faster reply.</p>
+        <p class="mt-1 text-body-lg text-on-surface-variant">Your message couldn't be sent. Please try again, or reach out directly at <a href="mailto:info@kashklicks.ca" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">info@kashklicks.ca</a> or DM me on Instagram for a faster reply.</p>
         <button
           id="contact-retry-btn"
           type="button"

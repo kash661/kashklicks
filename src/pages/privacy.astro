@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import site from '../data/site.json';
+
+const lastUpdated = 'April 17, 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="How AD Photography collects, uses, and protects your personal information."
+>
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Privacy Policy', href: '/privacy' },
+    ]} />
+  </div>
+
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3">
+          <p class="text-label-sm text-on-surface-muted eyebrow-rule revealed mb-6">
+            Privacy · Last Updated {lastUpdated}
+          </p>
+          <h1 class="text-display-md mb-12">Privacy Policy</h1>
+
+          <div class="prose-editorial">
+            <p>AD Photography collects and uses personal information to respond to inquiries, deliver photography and videography services, and maintain this website. This page explains what I collect, why I collect it, and the rights you have.</p>
+
+            <h2>What I collect</h2>
+            <p>When you submit an inquiry form or book a call, I collect the information you provide. That typically includes your name, your partner's name, email, phone number, event date, venue, and any notes you share. If you book a consultation through Calendly, the same details are collected alongside the time slot you pick.</p>
+            <p>When you browse the site, my host (Cloudflare) records standard request data for security and performance. That includes your IP address, browser type, referring page, and the pages you visit. Aggregated page views may also be recorded for analytics, but no individual profile is built.</p>
+
+            <h2>How I use it</h2>
+            <p>Your contact details are used to reply to your inquiry, prepare a quote, send a booking contract, and follow up about your session. I never sell or rent your information, and I do not use it for advertising.</p>
+
+            <h2>Third parties</h2>
+            <p>A short list of services that help me run the site and the studio:</p>
+            <ul>
+              <li><strong>Formspree</strong>, which receives contact form submissions and forwards them to my inbox.</li>
+              <li><strong>Calendly</strong>, which handles consultation scheduling. When you open the Calendly booking widget, Calendly sets its own cookies to remember your booking progress and for analytics. Because I run the Calendly popup inline with my palette, its standalone consent banner is suppressed, so this policy is the place those cookies are disclosed. Calendly's full cookie list lives in the <a href="https://calendly.com/pages/privacy" target="_blank" rel="noopener">Calendly Privacy Notice</a>.</li>
+              <li><strong>Cloudflare</strong>, which hosts the site and provides anonymised analytics.</li>
+              <li><strong>YouTube, Instagram, Pinterest</strong>, whose embedded content sets its own cookies under its own privacy policy.</li>
+            </ul>
+
+            <h2>How long I keep it</h2>
+            <p>Inquiries I don't move forward with are kept for up to 24 months, then deleted. Active client records are retained while a booking is in progress and for seven years after the final delivery, which covers Canada Revenue Agency record-keeping requirements.</p>
+
+            <h2>Your rights</h2>
+            <p>You can ask me for a copy of the personal data I hold about you, correct anything that's wrong, or ask me to delete it entirely. Send a note to <a href={`mailto:${site.email}`}>{site.email}</a> and I'll reply within 30 days.</p>
+
+            <h2>Cookies</h2>
+            <p>This site uses very few first-party cookies: one to remember whether you've dismissed the splash screen, and, if you enable it, one to remember your ambient sound preference.</p>
+            <p>When you open the Calendly booking popup, Calendly places its own functional and analytics cookies to remember where you are in the booking flow. I have configured Calendly to skip its standalone cookie banner so the widget matches the look of this site, which means this policy is the disclosure for those cookies. If you would rather not accept them, close the popup without booking and they expire at the end of your session.</p>
+            <p>Other embedded third-party content (YouTube, Instagram, Pinterest) may also set cookies while its content is on the page, governed by each platform's own privacy policy.</p>
+
+            <h2>Children</h2>
+            <p>This site and my services are not directed at children under 13, and I don't knowingly collect personal information from anyone under that age.</p>
+
+            <h2>Changes to this policy</h2>
+            <p>If I update this policy, the "Last Updated" date at the top changes. Material changes will be highlighted at the top of the page for 30 days.</p>
+
+            <h2>Contact</h2>
+            <p>Questions about privacy, or requests to see, correct, or delete your data, go to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import Button from '../components/ui/Button.astro';
+import BookingLink from '../components/ui/BookingLink.astro';
 import { Image } from 'astro:assets';
 
 import locationsData from '../data/locations.json';
@@ -79,7 +80,7 @@ const locationListSchema = [
         </div>
         <div class="md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
           <p class="text-body-lg text-on-surface-variant" style="max-width: 55ch;">
-            A gallery of places we've shot across Toronto and the GTA. Hover any image for a quick read, or tap through for the full rundown: parking, permits, walking, best seasons.
+            A gallery of places I've shot across Toronto and the GTA. Hover any image for a quick read, or tap through for the full rundown: parking, permits, walking, best seasons.
           </p>
         </div>
       </div>
@@ -133,10 +134,10 @@ const locationListSchema = [
         <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-6">Still deciding?</p>
         <h2 class="text-display-md text-on-surface reveal stagger-1 char-reveal">Not sure where to shoot?</h2>
         <p class="text-body-lg text-on-surface-variant reveal stagger-2 mt-4 mb-10" style="max-width: 48ch;">
-          Location guidance is included with every package. We'll help you find the perfect spot.
+          Location guidance is included with every package. I'll help you find the perfect spot.
         </p>
         <div class="reveal stagger-3">
-          <Button href="/contact" variant="primary" class="magnetic">Book a Consultation</Button>
+          <BookingLink variant="primary" label="Book a Consultation" />
         </div>
       </div>
     </section>

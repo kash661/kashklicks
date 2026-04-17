@@ -135,6 +135,7 @@ const { transparent = false } = Astro.props;
 
     function closeMenu() {
       menu?.classList.remove('menu-open');
+      document.body.classList.remove('menu-is-open');
       iconOpen?.classList.remove('hidden');
       iconClose?.classList.add('hidden');
       toggleBtn?.setAttribute('aria-expanded', 'false');
@@ -144,6 +145,7 @@ const { transparent = false } = Astro.props;
 
     function openMenu() {
       menu?.classList.add('menu-open');
+      document.body.classList.add('menu-is-open');
       iconOpen?.classList.add('hidden');
       iconClose?.classList.remove('hidden');
       toggleBtn?.setAttribute('aria-expanded', 'true');

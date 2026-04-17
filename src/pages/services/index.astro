@@ -1,21 +1,85 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
-import Button from '../../components/ui/Button.astro';
+import BookingLink from '../../components/ui/BookingLink.astro';
+import ShareButton from '../../components/ui/ShareButton.astro';
 import { Image } from 'astro:assets';
 import site from '../../data/site.json';
+import portfolio from '../../data/portfolio.json';
 
-const serviceImages: Record<string, ImageMetadata> = {
-  'wedding': (await import('../../assets/images/homepage/wedding-service.jpg')).default,
-  'pre-wedding': (await import('../../assets/images/homepage/homepage-06.jpg')).default,
-  'civil-celebrations': (await import('../../assets/images/homepage/civil-ceremony-hero.jpg')).default,
-  'celebrations': (await import('../../assets/images/homepage/celebrations-hero.jpg')).default,
-};
+// Marquee: pick portrait photos from portfolio, round-robin across galleries.
+// Targets: 3 wedding, 8 pre-wedding, 5 civil-ceremony.
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/**/*.jpg',
+  { eager: true }
+);
+
+function resolveImg(galleryId: string, imgName: string): ImageMetadata | null {
+  const sub = `/src/assets/images/portfolio/${galleryId}/${imgName}`;
+  const flat = `/src/assets/images/portfolio/${imgName}`;
+  return portfolioImages[sub]?.default ?? portfolioImages[flat]?.default ?? null;
+}
+
+// Deterministic PRNG (Mulberry32) so builds are reproducible.
+// Bump MARQUEE_SEED when you want a fresh selection; otherwise output is stable.
+const MARQUEE_SEED = 20260417;
+
+function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const rng = mulberry32(MARQUEE_SEED);
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickByCategory(category: string, count: number): ImageMetadata[] {
+  const galleries = (portfolio as any[]).filter((p) => p.category === category);
+  // Build per-gallery shuffled queues of portrait images
+  const queues = galleries.map((g) => ({
+    id: g.id as string,
+    queue: shuffle(
+      (g.images as string[])
+        .map((name) => resolveImg(g.id, name))
+        .filter((img): img is ImageMetadata => !!img && img.height > img.width)
+    ),
+  })).filter((q) => q.queue.length > 0);
+
+  const picked: ImageMetadata[] = [];
+  // Round-robin across galleries for variety
+  let idx = 0;
+  while (picked.length < count && queues.some((q) => q.queue.length > 0)) {
+    const q = queues[idx % queues.length];
+    const next = q.queue.shift();
+    if (next) picked.push(next);
+    idx += 1;
+  }
+  return picked;
+}
+
+const marqueeImages = shuffle([
+  ...pickByCategory('wedding', 3),
+  ...pickByCategory('pre-wedding', 8),
+  ...pickByCategory('civil-ceremony', 5),
+]);
 
 const services = [
   {
     title: 'Wedding Day',
-    altTitle: 'Wedding day',
+    altTitle: 'Wedding Day',
     eyebrow: 'Weddings',
     caption: 'Full-Day Coverage',
     slug: 'wedding',
@@ -25,7 +89,7 @@ const services = [
   },
   {
     title: 'Pre-Weddings &<br>E-Shoots',
-    altTitle: 'Pre-wedding and engagement shoot',
+    altTitle: 'Pre-Wedding and Engagement Shoot',
     eyebrow: 'Pre-Wedding',
     caption: 'Before The Big Day',
     slug: 'pre-wedding',
@@ -35,17 +99,17 @@ const services = [
   },
   {
     title: 'Civil Ceremony',
-    altTitle: 'Civil ceremony',
+    altTitle: 'Civil Ceremony',
     eyebrow: 'Civil Ceremony',
     caption: 'Intimate. Uncomplicated.',
     slug: 'civil-ceremony',
     description: 'Intimate doesn\'t mean less important. City hall, courthouse, or any intimate venue, captured with the same care as a full wedding.',
-    startingAt: null,
+    startingAt: 500,
     image: 'civil-celebrations',
   },
   {
     title: 'Celebrations',
-    altTitle: 'Celebration and private event',
+    altTitle: 'Celebration and Private Event',
     eyebrow: 'Celebrations',
     caption: 'Every Gathering, Remembered',
     slug: 'celebrations',
@@ -57,6 +121,8 @@ const services = [
 
 const businessRef = { '@id': `${site.url}/#business` };
 
+const offersId = `${site.url}/services#offers`;
+
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -65,12 +131,14 @@ const serviceSchema = {
   provider: businessRef,
   areaServed: { '@type': 'City', name: 'Toronto' },
   serviceType: 'Wedding Photography',
-  image: `${site.url}/og-default.jpg`,
+  image: `${site.url}/og-services.jpg`,
+  hasOfferCatalog: { '@id': offersId },
 };
 
 const offerCatalogSchema = {
   '@context': 'https://schema.org',
   '@type': 'OfferCatalog',
+  '@id': offersId,
   name: 'AD Photography Services',
   description: 'Photography and videography services in Toronto by AD Photography, from $350.',
   url: `${site.url}/services`,
@@ -89,6 +157,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 <BaseLayout
   title="Toronto Wedding Photography Services"
   description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $350. View packages, pricing, and book a free consultation."
+  ogImage={new URL('/og-services.jpg', site.url).href}
   jsonLd={jsonLd}
 >
   <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
@@ -99,78 +168,231 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
     ]} />
   </div>
 
-  <!-- Hero Banner -->
-  <section class="relative w-full overflow-hidden aspect-[16/9]">
-    <Image
-      src={(await import('../../assets/images/homepage/services-hero.jpg')).default}
-      alt="Toronto wedding and event photography services by AD Photography"
-      widths={[1280, 1920, 2560]}
-      sizes="100vw"
-      quality={75}
-      format="avif"
-      class="absolute inset-0 w-full h-full object-cover"
-      loading="eager"
-      fetchpriority="high"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+  <!-- Index opener -->
+  <section class="pt-[var(--spacing-section)] pb-[var(--spacing-block)]">
+    <div class="container-editorial">
+      <h1 class="text-label-md text-on-surface-muted eyebrow-rule reveal">Toronto Wedding Photography Services</h1>
+      <p class="text-display-lg mt-8 max-w-4xl char-reveal">Four ways to be photographed.</p>
+      <p class="text-body-lg text-on-surface-variant mt-8 max-w-xl reveal stagger-2">
+        Photography and videography for every chapter of your love story.
+      </p>
+    </div>
+  </section>
 
-    <!-- Services title banner pinned to bottom -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white py-8 md:py-10">
-      <div class="container-editorial">
-        <h1 class="text-display-md text-on-surface char-reveal">Toronto Wedding Photography Services</h1>
-        <p class="text-body-lg text-on-surface-variant mt-2" style="max-width: 55ch;">
-          Photography and videography for every chapter of your love story.
-        </p>
+  <!-- Packages in a row -->
+  <section class="pb-[var(--spacing-block)]">
+    <div class="container-editorial">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
+        {services.map((service, i) => (
+          <article class:list={['service-card group flex flex-col h-full pt-8 border-t border-on-surface reveal', `stagger-${i + 1}`]}>
+            <!-- Header: number + meta row, fixed visual rhythm -->
+            <div class="flex items-start justify-between gap-3">
+              <span class="service-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="text-label-sm text-on-surface-muted pt-2 tracking-wider">
+                {service.eyebrow}
+              </span>
+            </div>
+
+            <!-- Body: aligned blocks -->
+            <p class="text-quote italic text-on-surface-variant mt-6" style="font-size: clamp(0.95rem, 1.1vw, 1.0625rem); line-height: 1.3;">
+              {service.caption}
+            </p>
+            <h2 class="text-heading-lg leading-[1.05] mt-2 min-h-[2.6em] service-title cubic-ease" style="transition-duration: var(--duration-hover);" set:html={service.title} />
+            <p class="text-body-md text-on-surface-variant mt-4">{service.description}</p>
+
+            <!-- Footer: pinned to bottom so CTAs align across cards -->
+            <div class="mt-auto pt-8">
+              <div class="flex items-end justify-between mb-4">
+                <p class="text-label-sm text-on-surface-muted">
+                  From <span class="text-heading-md text-on-surface">${service.startingAt}</span>
+                </p>
+                <ShareButton
+                  url={`/services/${service.slug}`}
+                  title={`${service.altTitle} — AD Photography`}
+                  text={service.description}
+                  label={`Share ${service.altTitle} package`}
+                  class="-mr-2"
+                />
+              </div>
+              <a
+                href={`/services/${service.slug}`}
+                class="service-cta inline-flex items-center justify-center w-full px-6 py-3 bg-primary text-on-dark text-label-md hover:bg-primary-hover cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              >
+                See Packages
+                <span class="service-arrow inline-block ml-2 cubic-ease" style="transition-duration: var(--duration-hover);">→</span>
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  {services.map((service, i) => (
-    <section
-      class:list={[i % 2 === 0 ? 'bg-surface-dim' : 'bg-background']}
-      style="padding: var(--spacing-section) 0;"
-    >
-      <div class="container-editorial">
-        <div class="grid-editorial items-center">
-          <div
-            class:list={[
-              'col-span-12 lg:col-span-6 aspect-[3/4] overflow-hidden reveal image-caption',
-              i % 2 === 1 ? 'lg:col-start-7 lg:row-start-1' : '',
-            ]}
-            data-caption={service.caption}
-          >
-            <Image
-              src={serviceImages[service.image]}
-              alt={`${service.altTitle} photography by AD Photography in Toronto`}
-              widths={[640, 960, 1280]}
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              quality={90}
-              class="w-full h-full object-cover parallax-img"
-              loading="lazy"
-            />
-          </div>
-          <div class:list={[
-            'col-span-12 lg:col-span-5 reveal stagger-2',
-            i % 2 === 1 ? 'lg:col-start-1' : 'lg:col-start-8',
-          ]}>
-            <p class="text-label-md text-on-surface-muted eyebrow-rule">{service.eyebrow}</p>
-            <h2 class="text-display-md mt-4" set:html={service.title} />
-            <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 45ch;">{service.description}</p>
-            {service.startingAt ? (
-              <p class="text-on-surface-muted text-label-sm mt-8">
-                Starting at <span class="text-on-surface text-heading-md">${service.startingAt}</span>
-              </p>
-            ) : (
-              <p class="text-on-surface-muted text-label-sm mt-8">Contact for pricing</p>
-            )}
-            <div class="mt-6">
-              <span class="magnetic inline-block"><Button href={`/services/${service.slug}`} variant="primary">View Packages</Button></span>
+  <!-- Slow infinite marquee of portrait photos -->
+  {marqueeImages.length > 0 && (
+    <section class="pb-[var(--spacing-section)] marquee-section" aria-hidden="true">
+      <div class="marquee" id="services-marquee">
+        <div class="marquee-track">
+          {[...marqueeImages, ...marqueeImages].map((img, i) => (
+            <div class="marquee-item">
+              <Image
+                src={img}
+                alt=""
+                widths={[240, 360, 480]}
+                sizes="240px"
+                quality={80}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
-  ))}
+  )}
+
+  <style>
+    .service-num {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(2.75rem, 5vw, 4.5rem);
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      color: var(--color-on-surface-muted);
+      font-variant-numeric: tabular-nums;
+      transition: color var(--duration-hover) var(--ease-gallery),
+                  transform var(--duration-hover) var(--ease-gallery);
+      animation: service-num-breathe 7s ease-in-out infinite;
+      will-change: transform;
+    }
+    .service-card:nth-child(2) .service-num { animation-delay: -1.2s; }
+    .service-card:nth-child(3) .service-num { animation-delay: -2.4s; }
+    .service-card:nth-child(4) .service-num { animation-delay: -3.6s; }
+
+    @keyframes service-num-breathe {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
+    }
+    .service-card:hover .service-num,
+    .service-card:focus-within .service-num {
+      color: var(--color-on-surface);
+      transform: translateY(-6px) rotate(-2deg);
+      animation-play-state: paused;
+    }
+
+    /* CTA lift + arrow drift */
+    .service-cta {
+      transition: background-color var(--duration-hover) var(--ease-gallery),
+                  transform var(--duration-hover) var(--ease-gallery),
+                  box-shadow var(--duration-hover) var(--ease-gallery);
+      will-change: transform;
+    }
+    .service-cta:hover,
+    .service-cta:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(26, 26, 24, 0.12);
+    }
+    .service-cta:hover .service-arrow,
+    .service-cta:focus-visible .service-arrow {
+      transform: translateX(0.4rem);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .service-num { animation: none; }
+    }
+
+    /* Marquee */
+    .marquee {
+      overflow: hidden;
+      width: 100%;
+      mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 1rem;
+      width: max-content;
+      animation: marquee-scroll 120s linear infinite;
+    }
+    .marquee-track {
+      transition: none;
+    }
+    .marquee-item {
+      flex: 0 0 auto;
+      width: clamp(180px, 18vw, 260px);
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background-color: var(--color-surface-container);
+      position: relative;
+      transition: transform var(--duration-hover) var(--ease-gallery);
+    }
+    .marquee-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .marquee-item:hover {
+      z-index: 2;
+    }
+    .marquee-item:hover img {
+      transform: scale(1.06);
+    }
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track {
+        animation: none;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    (() => {
+      const marquee = document.getElementById('services-marquee');
+      if (!marquee) return;
+      const track = marquee.querySelector('.marquee-track');
+      if (!track) return;
+
+      const SLOW = 0.12;
+      const FAST = 1;
+      const STEP = 0.06;
+
+      let target = FAST;
+      let current = FAST;
+      let raf = 0;
+
+      const tick = () => {
+        const diff = target - current;
+        if (Math.abs(diff) < 0.005) {
+          current = target;
+          raf = 0;
+        } else {
+          current += Math.sign(diff) * Math.min(STEP, Math.abs(diff));
+          raf = requestAnimationFrame(tick);
+        }
+        for (const anim of track.getAnimations()) {
+          anim.playbackRate = current;
+        }
+      };
+
+      const queue = (value) => {
+        target = value;
+        if (!raf) raf = requestAnimationFrame(tick);
+      };
+
+      marquee.addEventListener('pointerenter', () => queue(SLOW));
+      marquee.addEventListener('pointerleave', () => queue(FAST));
+    })();
+  </script>
 
   <!-- CTA -->
   <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
@@ -178,10 +400,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
       <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center">Not sure where to start?</p>
       <h2 class="text-display-md text-on-surface reveal stagger-1" style="margin-top: var(--spacing-element);">Let's find the right fit.</h2>
       <p class="text-body-lg text-on-surface-variant reveal stagger-2" style="margin-top: var(--spacing-element); max-width: 50ch; margin-left: auto; margin-right: auto;">
-        Book a free consultation. We will walk through your vision, recommend the right package, and handle the rest.
+        Book a free consultation. I will walk through your vision, recommend the right package, and handle the rest.
       </p>
       <div class="flex flex-wrap justify-center reveal stagger-3" style="margin-top: var(--spacing-block); gap: var(--spacing-element);">
-        <span class="magnetic inline-block"><Button href="/contact" variant="primary">Book Free Consultation</Button></span>
+        <BookingLink variant="primary" label="Book Free Consultation" />
       </div>
     </div>
   </section>

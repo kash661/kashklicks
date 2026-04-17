@@ -9,6 +9,19 @@ const isActive = (item: { href: string; children?: { href: string }[] }) =>
   (item.children?.some((c) => currentPath.startsWith(c.href)) ?? false);
 
 const pad = (n: number) => String(n).padStart(2, '0');
+
+// Mobile-only menu: fold "About" under "Resources" and drop the standalone About entry
+const mobileItems = navigation.items
+  .filter((item) => item.href !== '/about')
+  .map((item) => {
+    if (item.label === 'Resources') {
+      return {
+        ...item,
+        children: [...(item.children ?? []), { label: 'About', href: '/about' }],
+      };
+    }
+    return item;
+  });
 ---
 
 <div
@@ -37,7 +50,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </p>
 
       <ul class="menu-list">
-        {navigation.items.map((item, idx) => (
+        {mobileItems.map((item, idx) => (
           <li class:list={['menu-item', idx > 0 && 'menu-item-divided']}>
             <div class="flex items-baseline gap-4">
               <span class="menu-index text-label-sm text-on-surface-muted tabular-nums">{pad(idx + 1)}</span>
@@ -85,7 +98,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         class="mt-8 block w-full text-center px-6 py-4 bg-primary text-on-dark text-label-md hover:bg-primary-hover cubic-ease"
         style="transition-duration: var(--duration-hover);"
       >
-        Contact Us
+        Contact Me
       </a>
 
       <div class="mt-auto pt-8">

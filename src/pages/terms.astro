@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import site from '../data/site.json';
+
+const lastUpdated = 'April 17, 2026';
+---
+
+<BaseLayout
+  title="Terms of Service"
+  description="Terms governing the use of kashklicks.ca and the photography and videography services offered by AD Photography."
+>
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Terms of Service', href: '/terms' },
+    ]} />
+  </div>
+
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3">
+          <p class="text-label-sm text-on-surface-muted eyebrow-rule revealed mb-6">
+            Terms · Last Updated {lastUpdated}
+          </p>
+          <h1 class="text-display-md mb-12">Terms of Service</h1>
+
+          <div class="prose-editorial">
+            <p>These terms cover the use of kashklicks.ca and the photography and videography services offered by AD Photography. They are written in plain language. The formal booking contract you sign before a session is the binding agreement for that booking and takes priority if the two documents ever conflict.</p>
+
+            <h2>Accepting these terms</h2>
+            <p>By using this website or booking a session with me, you agree to these terms. If you don't agree, please don't use the site or book my services.</p>
+
+            <h2>My services</h2>
+            <p>AD Photography offers wedding, pre-wedding, civil ceremony, celebration, and editorial photography and videography in the Greater Toronto Area and across Canada. Specific service details and package inclusions live on the individual service pages and in the booking contract you receive after a consultation.</p>
+
+            <h2>Bookings and deposits</h2>
+            <p>A booking is confirmed once a signed contract and a non-refundable deposit are received. The contract, not this page, is the binding agreement between you and me. It spells out the deposit amount, payment schedule, cancellation policy, and deliverables for your booking.</p>
+
+            <h2>Photography and copyright</h2>
+            <p>AD Photography retains copyright on every image and film I produce. Clients receive a perpetual personal-use licence to print, share, and display their gallery for non-commercial purposes. Commercial or editorial use requires a separate licence. Reach out and I'll work it out.</p>
+            <p>Unless you ask me in writing to opt out, I may use a selection of images for portfolio, social media, blog, and marketing purposes. You will never be tagged publicly without consent, and sensitive moments (private readings, family-only rituals) are kept off the portfolio.</p>
+
+            <h2>Website content</h2>
+            <p>All text, images, video, and design on this site are owned by AD Photography or licensed for my use. You may share links to my pages and quote short excerpts with attribution. You may not reproduce galleries, scrape content for AI training, or reuse my photographs without written permission.</p>
+
+            <h2>Accuracy</h2>
+            <p>I keep pricing, availability, and editorial content up to date where I can, but the site is a guide. The quote and contract you receive override anything listed here. If you spot something that looks wrong, let me know.</p>
+
+            <h2>Limitation of liability</h2>
+            <p>Photography is a creative craft and every event is unpredictable. I deliver every session with my best effort and professional judgement, but I cannot guarantee specific aesthetic outcomes or insure against acts beyond my control, including weather, hardware failure, and venue restrictions. My liability under any booking is limited to the amount you paid for that booking.</p>
+
+            <h2>Governing law</h2>
+            <p>These terms are governed by the laws of the Province of Ontario, Canada. Any disputes will be resolved in the courts of the City of Toronto.</p>
+
+            <h2>Changes to these terms</h2>
+            <p>I may update these terms from time to time. The "Last Updated" date at the top reflects the most recent revision. Continuing to use the site after changes are posted means you accept the new terms.</p>
+
+            <h2>Contact</h2>
+            <p>Questions go to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -55,7 +55,7 @@ Every package includes a pre-shoot consultation, professionally edited images, a
 
 **Eyebrow:** Recent Work
 **Heading:** Stories from the last few months.
-**Pull quote:** A few recent afternoons with couples who trusted us with their day.
+**Pull quote:** A few recent afternoons with couples who trusted me with their day.
 
 ### Displayed Sessions
 - Meghna + Puneeth, Toronto (landscape feature, 16:9)
@@ -70,10 +70,10 @@ Every package includes a pre-shoot consultation, professionally edited images, a
 Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too.
 
 **Will you help us with posing?**
-We prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.
+I prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.
 
 **What if it rains?**
-We still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning.
+I still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning.
 
 **How long until I get my photos?**
 Sneak peek within days. Full wedding gallery in 2 to 3 months; pre-wedding and civil ceremony in 1 to 3 weeks.

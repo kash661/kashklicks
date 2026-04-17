@@ -13,11 +13,11 @@ Natalie & Shavar, The Glenerin Inn, Mississauga
 
 ---
 
-## What We Offer
+## What I Offer
 
 **H1:** Toronto Wedding Photography
 
-From getting ready to the last dance, we capture every moment of your wedding day with the same cinematic, honest approach. Unobtrusive coverage that lets you be fully present while we handle the memories.
+From getting ready to the last dance, I capture every moment of your wedding day with the same cinematic, honest approach. Unobtrusive coverage that lets you be fully present while I handle the memories.
 
 ### What's Included
 - Full-day or partial-day coverage
@@ -32,10 +32,10 @@ From getting ready to the last dance, we capture every moment of your wedding da
 ## Your Journey (From Inquiry to Gallery)
 
 1. **Book a Consultation** — free, no-obligation call about your wedding day.
-2. **We Plan Together** — walk through every package, find the right fit for your budget.
+2. **Planning Together** — walk through every package, find the right fit for your budget.
 3. **Lock In Your Date** — simple contract, 50% retainer secures the date.
-4. **Your Engagement Shoot** — pre-wedding session, we learn your editing style.
-5. **Your Wedding Day** — we capture everything. Second 30% due two weeks before.
+4. **Your Engagement Shoot** — pre-wedding session, I learn your editing style.
+5. **Your Wedding Day** — I capture everything. Second 30% due two weeks before.
 6. **Sneak Peek** — curated preview within days of your wedding.
 7. **Full Delivery** — complete gallery in 2 to 3 months. Final 20% due once you are happy.
 
@@ -55,7 +55,7 @@ Every package includes a free pre-wedding consultation, priority 2-3 week delive
 
 - **Free consultation** included with every booking.
 - **Location guidance** — light first, location second.
-- **GTA travel included** in every package. Beyond, we discuss upfront.
+- **GTA travel included** in every package. Beyond, I discuss upfront.
 - **Canada-wide** and destination weddings welcome.
 
 ---
@@ -63,11 +63,11 @@ Every package includes a free pre-wedding consultation, priority 2-3 week delive
 ## FAQ
 
 - Can I get the raw files? — Yes, $120 for raw photos, $250 for raw video.
-- Are there travel fees? — GTA is typically included. Anything beyond, we discuss upfront.
+- Are there travel fees? — GTA is typically included. Anything beyond, I discuss upfront.
 - When is the best time to shoot? — Golden hour. Overcast days work beautifully too.
 - Do you help pick a location? — Yes. Light first, location second.
-- Will you help us with posing? — We prompt, not pose.
-- What if it rains? — We still shoot. 48 hours notice for rescheduling.
+- Will you help us with posing? — I prompt, not pose.
+- What if it rains? — I still shoot. 48 hours notice for rescheduling.
 - How long until I get my photos? — Sneak peek within days. Full gallery in 2 to 3 months. Priority 2-3 week delivery available.
 
 ---

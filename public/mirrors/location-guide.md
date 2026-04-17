@@ -4,7 +4,7 @@ Curated Toronto and GTA photography locations for pre-wedding, engagement, and p
 
 Every location on this guide has been photographed by AD Photography. Each detail page covers parking, walking distance, permit requirements, best seasons, and the kind of light and mood to expect.
 
-Location guidance is included with every package. If you can't choose, we'll help you find the right fit for your story.
+Location guidance is included with every package. If you can't choose, I'll help you find the right fit for your story.
 
 ## All Locations (27)
 

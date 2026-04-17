@@ -592,6 +592,18 @@ img {
   box-shadow: 0 4px 32px rgba(26, 26, 24, 0.04);
 }
 
+/* ── Mobile menu open: force header logo + toggle to readable dark color ── */
+body.menu-is-open .header-logo,
+body.menu-is-open #mobile-menu-toggle {
+  color: var(--color-on-surface) !important;
+}
+
+/* Nudge X button inward when menu is open so it doesn't sit on the edge */
+body.menu-is-open #mobile-menu-toggle {
+  transform: translateX(-0.5rem);
+  transition: transform var(--duration-hover) var(--ease-gallery);
+}
+
 /* ── Header sliding background ── */
 .header-bg {
   position: absolute;

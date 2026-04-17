@@ -10,14 +10,20 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.18.0",
     "@astrojs/sitemap": "^3.3.0",
-    "tailwindcss": "^4.2.0",
     "@tailwindcss/vite": "^4.2.0",
+    "astro": "^5.18.0",
+    "glightbox": "^3.3.0",
     "sharp": "^0.33.0",
-    "glightbox": "^3.3.0"
+    "tailwindcss": "^4.2.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
   }
 }

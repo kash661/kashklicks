@@ -10,7 +10,7 @@ Currently booking for 2026 and beyond. Pre-wedding, wedding, and civil ceremony 
 
 ## The conversation starts here
 
-Share a little about your day, your vision, and the moments you want to remember. We'll take it from there.
+Share a little about your day, your vision, and the moments you want to remember. I'll take it from there.
 
 ## Studio Notes
 
@@ -21,7 +21,7 @@ Share a little about your day, your vision, and the moments you want to remember
 
 A solo practice. Quiet, intentional work. Akash Desai photographs intimate weddings, pre-weddings, civil ceremonies, and celebrations in Toronto and across Canada.
 
-## How to reach us
+## How to reach me
 
 1. Fill out the inquiry form at https://kashklicks.ca/contact/ with your name, partner's name, email, phone, event type, event date, venue (or "not sure yet"), guest count, and a note about your day.
 2. Email directly at info@kashklicks.ca.
@@ -32,22 +32,22 @@ Every inquiry gets a personal response within 24 hours. A free, no-pressure cons
 ## Frequently Asked
 
 ### When is the best time to shoot?
-Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too. We will guide you on timing.
+Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too. I will guide you on timing.
 
 ### Do you help pick a location?
-Yes. Light first, location second. One great spot can give you a dozen different looks. Check out our location guide for ideas.
+Yes. Light first, location second. One great spot can give you a dozen different looks. Check out my location guide for ideas.
 
 ### Will you help us with posing?
-We prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.
+I prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.
 
 ### What if it rains?
-We still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all we ask.
+I still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all I ask.
 
 ### Can I get the raw files?
 Yes. Raw photos are $120 for weddings, $50 for pre-wedding, civil ceremony, and celebrations. Raw video is $250 for weddings, $100 for other sessions. Delivered digitally with your edited gallery.
 
 ### Are there travel fees?
-GTA is typically included. Anything beyond, we discuss upfront. No surprises.
+GTA is typically included. Anything beyond, I discuss upfront. No surprises.
 
 ### How long until I get my photos?
 Sneak peek within days. Full wedding gallery in 2 to 3 months. Pre-wedding, civil, and celebration galleries in 1 to 3 weeks depending on the package.
