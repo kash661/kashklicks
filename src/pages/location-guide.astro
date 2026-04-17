@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-import LocationCard from '../components/ui/LocationCard.astro';
 import Button from '../components/ui/Button.astro';
+import { Image } from 'astro:assets';
 
-import locations from '../data/locations.json';
+import locationsData from '../data/locations.json';
 import site from '../data/site.json';
 
 const locationImages = import.meta.glob<{ default: ImageMetadata }>(
@@ -12,79 +12,312 @@ const locationImages = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
-const locationListSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'Best Photography Locations in Toronto',
-  description: 'Curated photography locations in Toronto and the GTA by AD Photography',
-  url: `${site.url}/location-guide`,
-  numberOfItems: locations.length,
-  itemListElement: locations.map((loc, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    item: {
-      '@type': 'Place',
-      name: loc.name,
-      description: loc.vibe,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: loc.area,
-        addressRegion: 'ON',
-        addressCountry: 'CA',
+const sorted = [...locationsData].sort((a, b) => a.name.localeCompare(b.name));
+
+const tiles = sorted
+  .map((loc) => {
+    const imgPath = `/src/assets/images/locations/${loc.image}`;
+    const img = locationImages[imgPath]?.default;
+    return img ? { ...loc, img } : null;
+  })
+  .filter((t): t is NonNullable<typeof t> => t !== null);
+
+const locationListSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Best Photography Locations in Toronto & the GTA',
+    description: 'Curated photography locations across Toronto and the GTA by AD Photography, with parking, permits, and session tips.',
+    url: `${site.url}/location-guide`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Best Photography Locations in Toronto',
+    description: 'Curated photography locations in Toronto and the GTA by AD Photography',
+    url: `${site.url}/location-guide`,
+    numberOfItems: tiles.length,
+    itemListElement: tiles.map((loc, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${site.url}/location-guide/${loc.id}`,
+      item: {
+        '@type': 'Place',
+        name: loc.name,
+        description: loc.vibe,
+        url: `${site.url}/location-guide/${loc.id}`,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: loc.area,
+          addressRegion: 'ON',
+          addressCountry: 'CA',
+        },
       },
-    },
-  })),
-};
+    })),
+  },
+];
 ---
 
 <BaseLayout
-  title="Toronto Location Guide"
-  description="Top photography locations in Toronto and the GTA for pre-wedding, engagement, and portrait sessions. Detailed guides with parking, permits, and best times to shoot."
+  title="Best Photography Locations in Toronto & the GTA"
+  description="Curated Toronto and GTA photography locations for pre-wedding, engagement, and portrait sessions. Parking, permits, and best times for each."
   jsonLd={locationListSchema}
 >
   <div class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
-    <Breadcrumbs items={[
-      { label: 'Home', href: '/' },
-      { label: 'Location Guide', href: '/location-guide' },
-    ]} />
+    <div class="sr-only">
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Location Guide', href: '/location-guide' },
+      ]} />
+    </div>
 
-    <header class="max-w-3xl" style="margin-bottom: var(--spacing-block);">
-      <h1 class="text-display-md reveal stagger-1">Toronto Location Guide</h1>
-      <p class="text-body-lg text-on-surface-variant mt-4 reveal stagger-2" style="max-width: 55ch;">
-        Our favourite photography spots across the GTA, tried, tested, and loved. Each one has been personally scouted for the best light, variety, and overall vibe.
-      </p>
+    <header style="margin-bottom: var(--spacing-block);">
+      <div class="grid grid-cols-1 md:grid-cols-12 md:gap-6 items-end">
+        <div class="md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Location Guide</p>
+          <h1 class="text-display-md char-reveal">Toronto Location Guide</h1>
+        </div>
+        <div class="md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-body-lg text-on-surface-variant" style="max-width: 55ch;">
+            A gallery of places we've shot across Toronto and the GTA. Hover any image for a quick read, or tap through for the full rundown: parking, permits, walking, best seasons.
+          </p>
+        </div>
+      </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-      {locations.map((loc, i) => {
-        const imgPath = `/src/assets/images/locations/${loc.image}`;
-        const img = locationImages[imgPath]?.default;
-        return img ? (
-          <div class="reveal" style={`transition-delay: ${(i % 3) * 100 + 100}ms;`}>
-            <LocationCard
-              name={loc.name}
-              area={loc.area}
-              vibe={loc.vibe}
-              bestFor={loc.bestFor}
-              walkingLevel={loc.walkingLevel}
-              walkingNote={loc.walkingNote}
-              permits={loc.permits}
-              parking={loc.parking}
-              idealIf={loc.idealIf}
-              image={img}
+    <div class="location-mosaic">
+      {tiles.map((loc, i) => (
+        <a
+          href={`/location-guide/${loc.id}`}
+          class="mosaic-tile reveal"
+          aria-label={`View details for ${loc.name}`}
+          style={`transition-delay: ${(i % 6) * 80 + 100}ms;`}
+        >
+          <div class="mosaic-img-wrap">
+            <Image
+              src={loc.img}
+              alt={`${loc.name}, Toronto pre-wedding and engagement photography location in ${loc.area}`}
+              widths={[400, 640, 960]}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              class="mosaic-img"
+              loading={i < 3 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
             />
           </div>
-        ) : null;
-      })}
+
+          <div class="mosaic-caption">
+            <p class="mosaic-caption-name">{loc.name}</p>
+            <p class="mosaic-caption-area">{loc.area}</p>
+          </div>
+
+          <div class="mosaic-overlay">
+            <div class="mosaic-overlay-inner">
+              <p class="mosaic-eyebrow">{loc.area}</p>
+              <h2 class="mosaic-name">{loc.name}</h2>
+              <p class="mosaic-vibe">"{loc.vibe}"</p>
+              <div class="mosaic-pills">
+                {loc.bestFor.slice(0, 4).map((tag) => (
+                  <span class="mosaic-pill">{tag}</span>
+                ))}
+              </div>
+              <p class="mosaic-more">Read the full guide &rarr;</p>
+            </div>
+          </div>
+        </a>
+      ))}
     </div>
 
     <!-- CTA -->
-    <section class="bg-surface-dim mt-24 py-16 px-8 text-center" style="margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem));">
-      <h2 class="text-heading-lg reveal stagger-1">Not sure where to shoot?</h2>
-      <p class="text-body-lg text-on-surface-variant mt-4 mb-8 reveal stagger-2">Location guidance is included with every package. We'll help you find the perfect spot.</p>
-      <div class="reveal stagger-3">
-        <Button href="/contact" variant="primary">Book a Consultation</Button>
+    <section class="bg-surface-dim mt-24" style="margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem)); padding: var(--spacing-section) 2rem;">
+      <div class="flex flex-col items-center text-center">
+        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-6">Still deciding?</p>
+        <h2 class="text-display-md text-on-surface reveal stagger-1 char-reveal">Not sure where to shoot?</h2>
+        <p class="text-body-lg text-on-surface-variant reveal stagger-2 mt-4 mb-10" style="max-width: 48ch;">
+          Location guidance is included with every package. We'll help you find the perfect spot.
+        </p>
+        <div class="reveal stagger-3">
+          <Button href="/contact" variant="primary" class="magnetic">Book a Consultation</Button>
+        </div>
       </div>
     </section>
   </div>
 </BaseLayout>
+
+<style>
+  .location-mosaic {
+    column-count: 1;
+    column-gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .location-mosaic {
+      column-count: 2;
+      column-gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .location-mosaic {
+      column-count: 3;
+      column-gap: 1rem;
+    }
+  }
+
+  .mosaic-tile {
+    display: block;
+    position: relative;
+    width: 100%;
+    margin: 0 0 1rem 0;
+    background: var(--color-surface-container);
+    overflow: hidden;
+    break-inside: avoid;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .mosaic-img-wrap {
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .mosaic-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 2.5s var(--ease-gallery);
+  }
+
+  .mosaic-tile:hover .mosaic-img,
+  .mosaic-tile:focus-visible .mosaic-img {
+    transform: scale(1.04);
+  }
+
+  .mosaic-caption {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    color: var(--color-on-dark);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    transition: opacity var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mosaic-caption-name {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .mosaic-caption-area {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-top: 0.25rem;
+  }
+
+  .mosaic-tile:hover .mosaic-caption,
+  .mosaic-tile:focus-visible .mosaic-caption {
+    opacity: 0;
+  }
+
+  .mosaic-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.75rem;
+    background: linear-gradient(to top, rgba(20, 20, 18, 0.92) 0%, rgba(20, 20, 18, 0.75) 55%, rgba(20, 20, 18, 0.2) 100%);
+    opacity: 0;
+    transition: opacity var(--duration-hover) var(--ease-gallery);
+    pointer-events: none;
+  }
+
+  .mosaic-tile:hover .mosaic-overlay,
+  .mosaic-tile:focus-visible .mosaic-overlay {
+    opacity: 1;
+  }
+
+  .mosaic-overlay-inner {
+    color: var(--color-on-dark);
+    transform: translateY(12px);
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mosaic-tile:hover .mosaic-overlay-inner,
+  .mosaic-tile:focus-visible .mosaic-overlay-inner {
+    transform: translateY(0);
+  }
+
+  .mosaic-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-dark-variant);
+    margin-bottom: 0.5rem;
+  }
+
+  .mosaic-name {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.2;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .mosaic-vibe {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+    max-width: 30ch;
+  }
+
+  .mosaic-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .mosaic-pill {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.625rem;
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--color-on-dark);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .mosaic-more {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-on-dark-variant);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .mosaic-tile:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+
+  @media (hover: none) {
+    .mosaic-tile:hover .mosaic-overlay {
+      opacity: 0;
+    }
+    .mosaic-tile:hover .mosaic-caption {
+      opacity: 1;
+    }
+  }
+</style>

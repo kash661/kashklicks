@@ -40,9 +40,10 @@ const {
   article,
 } = Astro.props;
 
-const organizationSchema = {
+const organizationSchema: Record<string, any> = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': `${site.url}/#business`,
   name: site.name,
   url: site.url,
   image: `${site.url}/og-default.jpg`,
@@ -58,10 +59,23 @@ const organizationSchema = {
     latitude: site.location.lat,
     longitude: site.location.lng,
   },
-  priceRange: '$$',
-  areaServed: site.areasServed,
+  priceRange: site.priceRange,
+  email: site.email,
+  areaServed: site.areasServed.map((name) => ({ '@type': 'City', name })),
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: site.hours.days,
+      opens: site.hours.opens,
+      closes: site.hours.closes,
+    },
+  ],
   sameAs: [site.social.instagram, site.social.pinterest, site.social.youtube],
 };
+
+if (site.phone) {
+  organizationSchema.telephone = site.phone;
+}
 ---
 
 <!doctype html>
@@ -69,11 +83,18 @@ const organizationSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#faf9f6" />
+    <meta name="author" content="AD Photography" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preconnect to external media / analytics -->
+    <link rel="preconnect" href="https://kashklicks.b-cdn.net" crossorigin />
+    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
 
     <!-- Preload critical fonts -->
     <link rel="preload" href="/fonts/CormorantGaramond-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/BodoniModa-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <ClientRouter />
 
     <SEO
@@ -111,11 +132,19 @@ const organizationSchema = {
       import { initScrollReveal } from '../scripts/scroll-reveal';
       import { initParallax } from '../scripts/parallax';
       import { initSoundState } from '../scripts/sound-manager';
+      import { initCharReveal } from '../scripts/char-reveal';
+      import { initMagnetic } from '../scripts/magnetic';
+      import { initTimeline } from '../scripts/timeline';
+      import { initCalendly } from '../scripts/calendly';
 
       function initPage() {
         initScrollReveal();
         initParallax();
+        initCharReveal();
+        initMagnetic();
+        initTimeline();
         initSoundState();
+        initCalendly();
 
         const lightboxElements = document.querySelectorAll('.glightbox');
         if (lightboxElements.length > 0) {

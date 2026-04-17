@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import Button from '../../components/ui/Button.astro';
+import { Image } from 'astro:assets';
+import site from '../../data/site.json';
+
+const serviceImages: Record<string, ImageMetadata> = {
+  'wedding': (await import('../../assets/images/homepage/wedding-service.jpg')).default,
+  'pre-wedding': (await import('../../assets/images/homepage/homepage-06.jpg')).default,
+  'civil-celebrations': (await import('../../assets/images/homepage/civil-ceremony-hero.jpg')).default,
+  'celebrations': (await import('../../assets/images/homepage/celebrations-hero.jpg')).default,
+};
+
+const services = [
+  {
+    title: 'Wedding Day',
+    altTitle: 'Wedding day',
+    eyebrow: 'Weddings',
+    caption: 'Full-Day Coverage',
+    slug: 'wedding',
+    description: 'Full-day and partial coverage of your wedding, from getting ready to the last dance. Unobtrusive, cinematic, honest.',
+    startingAt: 1200,
+    image: 'wedding',
+  },
+  {
+    title: 'Pre-Weddings &<br>E-Shoots',
+    altTitle: 'Pre-wedding and engagement shoot',
+    eyebrow: 'Pre-Wedding',
+    caption: 'Before The Big Day',
+    slug: 'pre-wedding',
+    description: 'Cinematic photography and filmmaking sessions at Toronto\'s most stunning locations. Your love story, before the big day.',
+    startingAt: 350,
+    image: 'pre-wedding',
+  },
+  {
+    title: 'Civil Ceremony',
+    altTitle: 'Civil ceremony',
+    eyebrow: 'Civil Ceremony',
+    caption: 'Intimate. Uncomplicated.',
+    slug: 'civil-ceremony',
+    description: 'Intimate doesn\'t mean less important. City hall, courthouse, or any intimate venue, captured with the same care as a full wedding.',
+    startingAt: null,
+    image: 'civil-celebrations',
+  },
+  {
+    title: 'Celebrations',
+    altTitle: 'Celebration and private event',
+    eyebrow: 'Celebrations',
+    caption: 'Every Gathering, Remembered',
+    slug: 'celebrations',
+    description: 'Birthdays, bridal showers, baby showers, and every gathering worth remembering. Relaxed, natural coverage.',
+    startingAt: 550,
+    image: 'celebrations',
+  },
+];
+
+const businessRef = { '@id': `${site.url}/#business` };
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Toronto Wedding Photography Services',
+  description: 'Wedding, pre-wedding, civil ceremony, and event photography and videography services in Toronto and the GTA.',
+  provider: businessRef,
+  areaServed: { '@type': 'City', name: 'Toronto' },
+  serviceType: 'Wedding Photography',
+  image: `${site.url}/og-default.jpg`,
+};
+
+const offerCatalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'AD Photography Services',
+  description: 'Photography and videography services in Toronto by AD Photography, from $350.',
+  url: `${site.url}/services`,
+  offeredBy: businessRef,
+  itemListElement: services.map((s) => ({
+    '@type': 'Offer',
+    name: s.altTitle,
+    url: `${site.url}/services/${s.slug}`,
+    ...(s.startingAt && { price: s.startingAt, priceCurrency: 'CAD' }),
+  })),
+};
+
+const jsonLd = [serviceSchema, offerCatalogSchema];
+---
+
+<BaseLayout
+  title="Toronto Wedding Photography Services"
+  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $350. View packages, pricing, and book a free consultation."
+  jsonLd={jsonLd}
+>
+  <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services' },
+    ]} />
+  </div>
+
+  <!-- Hero Banner -->
+  <section class="relative w-full overflow-hidden aspect-[16/9]">
+    <Image
+      src={(await import('../../assets/images/homepage/services-hero.jpg')).default}
+      alt="Toronto wedding and event photography services by AD Photography"
+      widths={[1280, 1920, 2560]}
+      sizes="100vw"
+      quality={75}
+      format="avif"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+
+    <!-- Services title banner pinned to bottom -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white py-8 md:py-10">
+      <div class="container-editorial">
+        <h1 class="text-display-md text-on-surface char-reveal">Toronto Wedding Photography Services</h1>
+        <p class="text-body-lg text-on-surface-variant mt-2" style="max-width: 55ch;">
+          Photography and videography for every chapter of your love story.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {services.map((service, i) => (
+    <section
+      class:list={[i % 2 === 0 ? 'bg-surface-dim' : 'bg-background']}
+      style="padding: var(--spacing-section) 0;"
+    >
+      <div class="container-editorial">
+        <div class="grid-editorial items-center">
+          <div
+            class:list={[
+              'col-span-12 lg:col-span-6 aspect-[3/4] overflow-hidden reveal image-caption',
+              i % 2 === 1 ? 'lg:col-start-7 lg:row-start-1' : '',
+            ]}
+            data-caption={service.caption}
+          >
+            <Image
+              src={serviceImages[service.image]}
+              alt={`${service.altTitle} photography by AD Photography in Toronto`}
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={90}
+              class="w-full h-full object-cover parallax-img"
+              loading="lazy"
+            />
+          </div>
+          <div class:list={[
+            'col-span-12 lg:col-span-5 reveal stagger-2',
+            i % 2 === 1 ? 'lg:col-start-1' : 'lg:col-start-8',
+          ]}>
+            <p class="text-label-md text-on-surface-muted eyebrow-rule">{service.eyebrow}</p>
+            <h2 class="text-display-md mt-4" set:html={service.title} />
+            <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 45ch;">{service.description}</p>
+            {service.startingAt ? (
+              <p class="text-on-surface-muted text-label-sm mt-8">
+                Starting at <span class="text-on-surface text-heading-md">${service.startingAt}</span>
+              </p>
+            ) : (
+              <p class="text-on-surface-muted text-label-sm mt-8">Contact for pricing</p>
+            )}
+            <div class="mt-6">
+              <span class="magnetic inline-block"><Button href={`/services/${service.slug}`} variant="primary">View Packages</Button></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- CTA -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial text-center">
+      <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center">Not sure where to start?</p>
+      <h2 class="text-display-md text-on-surface reveal stagger-1" style="margin-top: var(--spacing-element);">Let's find the right fit.</h2>
+      <p class="text-body-lg text-on-surface-variant reveal stagger-2" style="margin-top: var(--spacing-element); max-width: 50ch; margin-left: auto; margin-right: auto;">
+        Book a free consultation. We will walk through your vision, recommend the right package, and handle the rest.
+      </p>
+      <div class="flex flex-wrap justify-center reveal stagger-3" style="margin-top: var(--spacing-block); gap: var(--spacing-element);">
+        <span class="magnetic inline-block"><Button href="/contact" variant="primary">Book Free Consultation</Button></span>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

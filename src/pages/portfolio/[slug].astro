@@ -87,25 +87,10 @@ if (entry.youtubeUrl) {
 }
 
 // Split gallery images for bento layout
-const heroImage = galleryImages[0];
-const remainingImages = galleryImages.slice(1);
+const remainingImages = galleryImages;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} jsonLd={schemas}>
-
-  <!-- Full-width Hero Image -->
-  {heroImage && (
-    <section class="w-full overflow-hidden" style="max-height: 85vh;">
-      <Image
-        src={heroImage.src}
-        alt={heroImage.alt}
-        widths={[800, 1200, 1800, 2400]}
-        sizes="100vw"
-        class="w-full h-full object-cover"
-        loading="eager"
-      />
-    </section>
-  )}
 
   <!-- Collection Header -->
   <section class="py-[var(--spacing-section)]">
@@ -130,77 +115,62 @@ const remainingImages = galleryImages.slice(1);
     </div>
   </section>
 
-  <!-- Editorial Story Section -->
-  {entry.story && (
-    <section class="pb-[var(--spacing-section)]">
-      <div class="container-editorial">
-        <div class="grid-editorial reveal">
-          <!-- Story text: left 5 cols -->
-          <div class="col-span-12 lg:col-span-5">
-            <h2 class="text-heading-lg">{entry.story.headline}</h2>
-            <div class="mt-[var(--spacing-element)] space-y-4">
-              {entry.story.body.split('\n\n').map((paragraph: string) => (
-                <p class="text-body-md text-on-surface-variant">{paragraph}</p>
+  <!-- Story sidebar + Gallery, side-by-side on desktop -->
+  <section class="pb-[var(--spacing-section)]">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <!-- Gallery column (film + masonry) on the LEFT -->
+        <div class={((entry.story || entry.locationDescription) ? 'col-span-12 lg:col-span-8 lg:col-start-1' : 'col-span-12')}>
+          {entry.hasFilm && entry.youtubeUrl && (
+            <div class="mb-[var(--spacing-block)] reveal">
+              <h2 class="text-heading-md mb-[var(--spacing-element)]">The Film</h2>
+              <YouTubeEmbed url={entry.youtubeUrl} title={`${entry.couple} — Film by AD Photography`} />
+            </div>
+          )}
+          {remainingImages.length > 0 && (
+            <div class="columns-2 lg:columns-3" style="column-gap: var(--spacing-tight);">
+              {remainingImages.map((img) => (
+                <div class="mb-[var(--spacing-tight)] break-inside-avoid">
+                  <GalleryImage
+                    src={img.src}
+                    alt={img.alt}
+                    gallery={entry.id}
+                  />
+                </div>
               ))}
             </div>
-          </div>
-          <!-- Pull quote: right side -->
-          <div class="col-span-12 lg:col-span-5 lg:col-start-8 flex items-center">
-            {entry.story.pullQuote && (
-              <blockquote class="text-quote">
-                "{entry.story.pullQuote}"
-              </blockquote>
-            )}
-          </div>
+          )}
         </div>
-      </div>
-    </section>
-  )}
 
-  <!-- Location Description -->
-  {entry.locationDescription && (
-    <section class="pb-[var(--spacing-block)]">
-      <div class="container-editorial">
-        <div class="max-w-2xl reveal">
-          <span class="text-label-md text-on-surface-muted">About the Location</span>
-          <p class="text-body-md text-on-surface-variant mt-[var(--spacing-tight)]">{entry.locationDescription}</p>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Film Embed -->
-  {entry.hasFilm && entry.youtubeUrl && (
-    <section class="pb-[var(--spacing-section)]">
-      <div class="container-editorial reveal">
-        <h2 class="text-heading-md mb-[var(--spacing-element)]">The Film</h2>
-        <YouTubeEmbed url={entry.youtubeUrl} title={`${entry.couple} — Film by AD Photography`} />
-      </div>
-    </section>
-  )}
-
-  <!-- Bento Gallery Grid -->
-  {remainingImages.length > 0 && (
-    <section class="pb-[var(--spacing-section)]">
-      <div class="container-editorial">
-        <div class="grid grid-cols-2 lg:grid-cols-3 auto-rows-auto" style="gap: var(--spacing-tight);">
-          {remainingImages.map((img, i) => {
-            // Create a bento pattern: every 4th image spans 2 cols
-            const spanTwo = i % 5 === 0;
-            return (
-              <div class={spanTwo ? 'col-span-2' : 'col-span-1'}>
-                <GalleryImage
-                  src={img.src}
-                  alt={img.alt}
-                  gallery={entry.id}
-                />
+        <!-- Sidebar: story, pull quote, location blurb on the RIGHT -->
+        {(entry.story || entry.locationDescription) && (
+          <aside class="col-span-12 lg:col-span-4 lg:col-start-9 lg:sticky lg:top-28 lg:self-start lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto mt-[var(--spacing-block)] lg:mt-0 reveal">
+            {entry.story && (
+              <div>
+                <h2 class="text-heading-lg">{entry.story.headline}</h2>
+                <div class="mt-[var(--spacing-element)] space-y-4">
+                  {entry.story.body.split('\n\n').map((paragraph: string) => (
+                    <p class="text-body-md text-on-surface-variant">{paragraph}</p>
+                  ))}
+                </div>
+                {entry.story.pullQuote && (
+                  <blockquote class="text-quote mt-[var(--spacing-block)]">
+                    "{entry.story.pullQuote}"
+                  </blockquote>
+                )}
               </div>
-            );
-          })}
-        </div>
+            )}
+            {entry.locationDescription && (
+              <div class="mt-[var(--spacing-block)]">
+                <span class="text-label-md text-on-surface-muted">About the Location</span>
+                <p class="text-body-md text-on-surface-variant mt-[var(--spacing-tight)]">{entry.locationDescription}</p>
+              </div>
+            )}
+          </aside>
+        )}
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
   <!-- Related Galleries -->
   <div class="container-editorial">
@@ -208,15 +178,16 @@ const remainingImages = galleryImages.slice(1);
   </div>
 
   <!-- Reserve CTA -->
-  <section class="bg-surface-dark py-[var(--spacing-section)]">
+  <section class="bg-surface-dim py-[var(--spacing-section)]">
     <div class="container-editorial">
       <div class="max-w-2xl mx-auto text-center reveal">
-        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
-        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Ready?</p>
+        <h2 class="text-display-md text-on-surface">Reserve your date.</h2>
+        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
           Every session is unique, just like yours. Let's create something beautiful together.
         </p>
         <div class="mt-[var(--spacing-block)]">
-          <Button href="/contact" variant="primary">Get in Touch</Button>
+          <span class="magnetic inline-block"><Button href="/contact" variant="primary">Get in Touch</Button></span>
         </div>
       </div>
     </div>

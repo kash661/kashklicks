@@ -25,7 +25,7 @@ export function initParallax(): void {
         const elementCenter = rect.top + rect.height / 2;
         const viewportCenter = window.innerHeight / 2;
         const offset = (elementCenter - viewportCenter) * 0.08;
-        el.style.transform = `translateY(${offset}px)`;
+        el.style.setProperty('--parallax-y', `${offset}px`);
       });
       ticking = false;
     }

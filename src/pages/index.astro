@@ -1,37 +1,77 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
+import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import testimonials from '../data/testimonials.json';
 
-// Hero image
+// Hero
 import heroImage from '../assets/images/hero/hero-main.jpg';
 
-// Curated gallery images (best-of across shoots)
-import gallery1 from '../assets/images/portfolio/ayushi-parth/03.jpg';
-import gallery2 from '../assets/images/portfolio/alex-aziz/05.jpg';
-import gallery3 from '../assets/images/portfolio/shuba-rob/02.jpg';
-import gallery4 from '../assets/images/portfolio/meghna-puneeth/04.jpg';
-import gallery5 from '../assets/images/portfolio/priyanka-saurav/03.jpg';
-import gallery6 from '../assets/images/portfolio/anushka-anthony/01.jpg';
-import gallery7 from '../assets/images/portfolio/mania-hitesh/02.jpg';
+// Signature Style pair
+import signatureLeft from '../assets/images/homepage/homepage-07.jpg';
+import signatureRight from '../assets/images/portfolio/alex-aziz/05.jpg';
 
-// Pick one testimonial
+// Investment
+import investmentImage from '../assets/images/homepage/homepage-04.jpg';
+
+// Recent Work
+import recentWide from '../assets/images/portfolio/meghna-puneeth/06.jpg';
+import recentPortraitLeft from '../assets/images/homepage/homepage-03.jpg';
+import recentPortraitRight from '../assets/images/homepage/homepage-02.jpg';
+
 const testimonial = testimonials[0];
 
-// JSON-LD structured data
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'AD Photography',
-  url: 'https://kashklicks.ca',
-  description: 'Warm, candid wedding and civil ceremony photography in Toronto and across Canada.',
-};
+const faqItems = [
+  {
+    question: 'When is the best time to shoot?',
+    answer: 'Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too. We will guide you on timing.',
+  },
+  {
+    question: 'Will you help us with posing?',
+    answer: 'We prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.',
+  },
+  {
+    question: 'What if it rains?',
+    answer: 'We still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all we ask.',
+  },
+  {
+    question: 'How long until I get my photos?',
+    answer: 'Sneak peek within days. Full gallery in 2 to 3 months. Priority 2-3 week delivery is available for an additional fee.',
+  },
+];
+
+// Journal: latest two blog posts
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const journalPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 2);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'AD Photography',
+    url: 'https://kashklicks.ca',
+    description:
+      'Toronto wedding photographer and filmmaker capturing candid, cinematic pre-wedding and wedding photography across the GTA and Canada.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  },
+];
 ---
 
 <BaseLayout
-  title="AD Photography"
-  description="Warm, candid wedding and civil ceremony photography in Toronto and across Canada."
+  title="Home"
+  description="Toronto wedding photographer and filmmaker. AD Photography captures candid, cinematic pre-wedding and wedding photography across the GTA and Canada. Packages from $350."
   transparentHeader={true}
   showSplash={true}
   jsonLd={jsonLd}
@@ -40,147 +80,256 @@ const jsonLd = {
   <section class="relative h-screen w-full overflow-hidden bg-surface-container">
     <Image
       src={heroImage}
-      alt="Wedding photography by AD Photography"
+      alt="Toronto wedding photographer AD Photography, Mehak and Manal session"
       class="absolute inset-0 w-full h-full object-cover"
       widths={[768, 1280, 1920]}
       sizes="100vw"
-      quality={85}
+      quality={75}
+      format="avif"
       loading="eager"
+      fetchpriority="high"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-    <div class="absolute bottom-12 left-8 md:left-16 gallery-caption text-on-dark/90">
-      <p class="font-medium">Ayushi & Parth</p>
-      <p class="text-on-dark/60">Toronto, 2025</p>
+
+    <!-- Informational H1 (keyword-rich) styled small; emotional H2 (tagline) styled large -->
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+      <p class="text-label-md text-on-dark eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-8">AD Photography &middot; Toronto</p>
+      <h1 class="text-body-md text-on-dark/70 font-normal order-2 mt-6 max-w-[36ch] mx-auto">Your Toronto wedding photographer and filmmaker, telling real love stories.</h1>
+      <h2 class="text-display-lg text-on-dark char-reveal order-1" data-fade-prefix-count="12" data-fade-prefix-opacity="0.4">Moments fade. Memories don't.</h2>
+    </div>
+
+    <!-- Caption -->
+    <div class="hidden md:block absolute bottom-20 left-8 md:left-16 gallery-caption text-on-dark/90">
+      <p class="font-medium">Mehak & Manal</p>
+      <p class="text-on-dark/60">Kelowna, BC 2026</p>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 scroll-chevron">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-dark/70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
     </div>
   </section>
 
-  <!-- ═══ 2. PHOTO PAIR + TEXT MOMENT ═══ -->
+  <!-- ═══ 2. SIGNATURE STYLE — PHOTO PAIR ═══ -->
   <section class="py-[var(--spacing-section)]">
+    <div class="container-editorial" style="margin-bottom: var(--spacing-block);">
+      <div class="grid-editorial items-end">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Signature Style</p>
+          <h2 class="text-display-md text-on-surface char-reveal" style="max-width: 14ch;">Quiet moments, real connection.</h2>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-quote text-on-surface-variant" style="max-width: 44ch;">
+            No posing, no pretending. Just the in-between moments that end up meaning the most.
+          </p>
+        </div>
+      </div>
+    </div>
     <div class="grid-editorial">
-      <div class="col-span-12 md:col-span-7 hover-zoom reveal-left">
+      <div class="col-span-12 md:col-span-7 gallery-frame hover-zoom reveal-left">
         <Image
-          src={gallery1}
-          alt="Candid wedding moment"
-          class="w-full h-auto parallax-img"
+          src={signatureLeft}
+          alt="Candid Toronto wedding photography, Ayushi and Parth"
+          class="parallax-img"
           widths={[640, 960, 1280]}
           sizes="(max-width: 768px) 100vw, 58vw"
           quality={80}
         />
+        <div class="gallery-caption text-on-surface">
+          <p class="font-medium">Ayushi + Parth</p>
+          <p class="text-on-surface-variant">Toronto</p>
+        </div>
       </div>
-      <div class="col-span-12 md:col-span-5 md:mt-24 hover-zoom reveal-right stagger-2">
+      <div class="col-span-12 md:col-span-5 mt-8 md:mt-24 gallery-frame hover-zoom reveal-right stagger-2">
         <Image
-          src={gallery2}
-          alt="Intimate pre-wedding portrait"
-          class="w-full h-auto parallax-img"
+          src={signatureRight}
+          alt="Toronto pre-wedding portrait, Alex and Aziz"
+          class="parallax-img"
           widths={[640, 960]}
           sizes="(max-width: 768px) 100vw, 42vw"
           quality={80}
         />
+        <div class="gallery-caption text-on-surface">
+          <p class="font-medium">Alex + Aziz</p>
+          <p class="text-on-surface-variant">Toronto</p>
+        </div>
       </div>
     </div>
-    <div class="container-editorial mt-16 max-w-2xl">
-      <p class="text-body-lg text-on-surface-variant reveal stagger-1">
-        Quiet moments, real connection. No posing, no pretending.
-      </p>
-    </div>
   </section>
 
-  <!-- ═══ 3. FULL-BLEED SINGLE IMAGE ═══ -->
-  <section class="py-[var(--spacing-section)]">
-    <div class="w-full hover-zoom scale-reveal">
-      <Image
-        src={gallery3}
-        alt="Wedding celebration"
-        class="w-full h-auto parallax-img"
-        widths={[960, 1440, 1920]}
-        sizes="100vw"
-        quality={80}
-      />
-    </div>
-  </section>
-
-  <!-- ═══ 4. INVESTMENT CTA ═══ -->
-  <section class="py-[var(--spacing-section)] bg-background">
-    <div class="container-editorial text-center reveal">
-      <p class="text-label-md text-on-surface-variant mb-6">Investment</p>
-      <h2 class="text-heading-lg text-on-surface mb-8">Collections start at $500</h2>
-      <Button href="/investment" variant="primary">View Collections</Button>
-    </div>
-  </section>
-
-  <!-- ═══ 5. TWO MORE PHOTOS (MAGAZINE SPREAD) ═══ -->
-  <section class="py-[var(--spacing-section)]">
-    <div class="grid-editorial">
-      <div class="col-span-12 md:col-span-8 hover-zoom reveal-left">
+  <!-- ═══ 3. INVESTMENT ═══ -->
+  <section class="py-[var(--spacing-section)] bg-surface-dim">
+    <div class="grid-editorial items-center">
+      <div class="col-span-12 md:col-span-6 gallery-frame reveal-left image-caption" data-caption="Full-Day Coverage">
         <Image
-          src={gallery4}
-          alt="Candid moment during ceremony"
-          class="w-full h-auto parallax-img"
+          src={investmentImage}
+          alt="Full-day wedding photography coverage in Toronto by AD Photography"
+          class="parallax-img"
           widths={[640, 960, 1280]}
-          sizes="(max-width: 768px) 100vw, 66vw"
+          sizes="(max-width: 768px) 100vw, 50vw"
           quality={80}
         />
       </div>
-      <div class="col-span-12 md:col-span-4 flex flex-col gap-6 reveal-right stagger-2">
-        <div class="hover-zoom">
-          <Image
-            src={gallery5}
-            alt="Pre-wedding portrait"
-            class="w-full h-auto parallax-img"
-            widths={[480, 640]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            quality={80}
-          />
-        </div>
-        <div class="hover-zoom stagger-3">
-          <Image
-            src={gallery6}
-            alt="Couple portrait"
-            class="w-full h-auto parallax-img"
-            widths={[480, 640]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            quality={80}
-          />
-        </div>
+      <div class="col-span-12 md:col-span-5 md:col-start-8 mt-8 md:mt-0 reveal-right stagger-2">
+        <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Investment</p>
+        <h2 class="text-display-md text-on-surface mb-6 char-reveal">Wedding packages starting at $1,200</h2>
+        <p class="text-body-lg text-on-surface-variant mb-10">
+          Every package includes a pre-shoot consultation, professionally edited images, and a private online gallery.
+        </p>
+        <span class="magnetic inline-block">
+          <Button href="/services" variant="primary">View Packages</Button>
+        </span>
       </div>
     </div>
   </section>
 
-  <!-- ═══ 6. REVIEW ═══ -->
-  <section class="py-[var(--spacing-section)] bg-surface-dim">
-    <div class="container-editorial text-center max-w-3xl reveal">
-      <blockquote class="text-quote text-on-surface mb-8">
+  <!-- ═══ 4. TESTIMONIAL ═══ -->
+  <section class="py-[var(--spacing-section)] bg-white">
+    <div class="container-editorial text-center max-w-3xl mx-auto">
+      <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-10">Kind Words</p>
+      <blockquote class="text-quote text-on-surface mb-8 reveal stagger-1">
         "{testimonial.quote}"
       </blockquote>
-      <p class="text-label-md text-on-surface-variant">
+      <p class="text-label-md text-on-surface-variant reveal stagger-2">
         {testimonial.name} &middot; {testimonial.event}
       </p>
     </div>
   </section>
 
-  <!-- ═══ 7. CONTACT CTA ═══ -->
-  <section class="py-[var(--spacing-section)] bg-surface-dark">
-    <div class="container-editorial text-center reveal">
-      <h2 class="text-heading-lg text-on-dark mb-4">Start the Conversation</h2>
-      <p class="text-body-lg text-on-dark-variant mb-10">
-        Let's talk about your day. No obligations, just a conversation.
-      </p>
-      <Button href="/contact" variant="secondary">Get in Touch</Button>
-    </div>
-  </section>
-
-  <!-- ═══ 8. FINAL IMAGE ═══ -->
+  <!-- ═══ 5. RECENT WORK ═══ -->
   <section class="py-[var(--spacing-section)]">
-    <div class="container-editorial">
-      <div class="hover-zoom scale-reveal">
+    <div class="container-editorial mb-[var(--spacing-block)]">
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Recent Work</p>
+          <h2 class="text-display-md text-on-surface char-reveal" style="max-width: 18ch;">Stories from the last few months.</h2>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-quote text-on-surface-variant" style="max-width: 44ch;">
+            A few recent afternoons with couples who trusted us with their day.
+          </p>
+        </div>
+      </div>
+      <div class="gallery-frame hover-zoom scale-reveal mx-auto !w-full image-caption" data-caption="Meghna & Puneeth, Toronto">
         <Image
-          src={gallery7}
-          alt="Wedding moment"
-          class="w-full h-auto parallax-img"
+          src={recentWide}
+          alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
+          class="parallax-img !w-full !max-h-none aspect-[16/9] object-cover"
           widths={[960, 1440, 1920]}
           sizes="(max-width: 768px) 100vw, 90vw"
           quality={80}
         />
+        <div class="gallery-caption text-on-surface">
+          <p class="font-medium">Meghna + Puneeth</p>
+          <p class="text-on-surface-variant">Toronto</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid-editorial">
+      <div class="col-span-12 md:col-span-5 gallery-frame hover-zoom reveal-left !w-full">
+        <Image
+          src={recentPortraitLeft}
+          alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
+          class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+          widths={[480, 640, 960]}
+          sizes="(max-width: 768px) 100vw, 42vw"
+          quality={80}
+        />
+        <div class="gallery-caption text-on-surface">
+          <p class="font-medium">Swathi + Saksham</p>
+          <p class="text-on-surface-variant">Toronto</p>
+        </div>
+      </div>
+      <div class="col-span-12 md:col-span-5 md:col-start-7 mt-8 md:mt-24 gallery-frame hover-zoom reveal-right stagger-2 !w-full">
+        <Image
+          src={recentPortraitRight}
+          alt="Destination wedding portrait in Italy, Nora and Ali"
+          class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+          widths={[480, 640, 960]}
+          sizes="(max-width: 768px) 100vw, 42vw"
+          quality={80}
+        />
+        <div class="gallery-caption text-on-surface">
+          <p class="font-medium">Nora + Ali</p>
+          <p class="text-on-surface-variant">Italy</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. FAQ ═══ -->
+  <section class="py-[var(--spacing-section)] bg-surface-dim">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end mb-[var(--spacing-block)]">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Questions</p>
+          <h2 class="text-display-md text-on-surface char-reveal" style="max-width: 14ch;">Things couples ask us.</h2>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-quote text-on-surface-variant" style="max-width: 44ch;">
+            Short answers to the questions that come up most. Full list lives on the services pages.
+          </p>
+        </div>
+      </div>
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-10 md:col-start-2 reveal">
+          <FAQAccordion items={faqItems} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 7. JOURNAL ═══ -->
+  <section class="py-[var(--spacing-section)] bg-white">
+    <div class="container-editorial">
+      <div class="text-center mb-[var(--spacing-block)]">
+        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-4">The Journal</p>
+        <h2 class="text-display-md text-on-surface char-reveal">Stories & guides.</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-12">
+        {journalPosts.map((post, i) => (
+          <a href={`/blog/${post.id}`} class="group block reveal" style={`transition-delay: ${(i + 1) * 100}ms;`}>
+            <div class="aspect-[3/2] overflow-hidden bg-surface-dim">
+              <Image
+                src={post.data.coverImage}
+                alt={post.data.coverImageAlt}
+                class="w-full h-full object-cover cubic-ease group-hover:scale-[1.02]"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                quality={80}
+                style="transition-duration: var(--duration-slow);"
+              />
+            </div>
+            <h3 class="text-heading-md text-on-surface group-hover:text-on-surface-variant cubic-ease mt-4" style="transition-duration: var(--duration-hover);">
+              {post.data.title}
+            </h3>
+          </a>
+        ))}
+      </div>
+      <div class="text-center mt-[var(--spacing-block)] reveal">
+        <a href="/blog" class="magnetic inline-flex items-center text-label-md text-on-surface border-b border-on-surface pb-1 hover:text-on-surface-variant hover:border-on-surface-variant cubic-ease" style="transition-duration: var(--duration-hover);">Read the journal</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 8. CONTACT CTA ═══ -->
+  <section class="relative py-[var(--spacing-section)] overflow-hidden">
+    <video muted loop playsinline preload="none" poster="/og-default.jpg" class="absolute inset-0 w-full h-full object-cover" aria-hidden="true" data-autoplay>
+      <source src="https://kashklicks.b-cdn.net/kashklicks_backgroundMedia.mp4" type="video/mp4" />
+    </video>
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="container-editorial relative z-10">
+      <div class="flex flex-col items-center text-center">
+        <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">Ready?</p>
+        <h2 class="text-display-md text-on-dark mb-4 reveal stagger-1 char-reveal">Start the Conversation</h2>
+        <p class="text-body-lg text-on-dark/70 mb-10 reveal stagger-2">
+          Let's talk about your day. No obligations, just a conversation.
+        </p>
+        <div class="reveal stagger-3">
+          <a href="/contact" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-10 py-4 bg-white text-on-surface font-sans text-[0.875rem] tracking-[0.08em] uppercase hover:bg-white/90 cubic-ease" style="transition-duration: var(--duration-hover);">Get in Touch</a>
+        </div>
       </div>
     </div>
   </section>

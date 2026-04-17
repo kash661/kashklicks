@@ -1,32 +1,52 @@
 [
   {
-    "question": "Are raw files available?",
-    "answer": "Yes! Raw photo files are available as an add-on for +$35 and raw video files for +$50.",
-    "category": "Delivery"
+    "question": "Can I get the raw files?",
+    "answer": "Yes. Raw photos are $120, raw video is $250. Delivered digitally with your edited gallery.",
+    "services": ["wedding"]
+  },
+  {
+    "question": "Can I get the raw files?",
+    "answer": "Yes. Raw photos are $50, raw video is $100. Delivered digitally with your edited gallery.",
+    "services": ["pre-wedding", "civil-ceremony", "celebrations"]
   },
   {
     "question": "Are there travel fees?",
-    "answer": "Travel fees are applied based on location. Sessions within the GTA are typically included, and we'll discuss any additional fees upfront during your consultation.",
-    "category": "Booking"
+    "answer": "GTA is typically included. Anything beyond, we discuss upfront. No surprises.",
+    "services": ["wedding"]
   },
   {
-    "question": "What's the best time to shoot?",
-    "answer": "The best light is always during early mornings and late afternoons — what photographers call 'golden hour.' Overcast days are also fantastic for outdoor shoots. For indoor and studio sessions, timing is more flexible.",
-    "category": "Logistics"
+    "question": "Are there travel fees?",
+    "answer": "Yes, travel fees apply based on location. We will discuss this upfront during your consultation so there are no surprises.",
+    "services": ["pre-wedding", "civil-ceremony", "celebrations"]
   },
   {
-    "question": "Do you help with location selection?",
-    "answer": "Absolutely. We prioritize areas with the best natural light first, then consider the location itself. We'll help you find a spot that gives you a variety of backdrops and scenes — often from just one location. Check out our location guide for inspiration.",
-    "category": "Logistics"
+    "question": "When is the best time to shoot?",
+    "answer": "Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too. We will guide you on timing.",
+    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
+  },
+  {
+    "question": "Do you help pick a location?",
+    "answer": "Yes. Light first, location second. One great spot can give you a dozen different looks. Check out our location guide for ideas.",
+    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
   },
   {
     "question": "Will you help us with posing?",
-    "answer": "Short answer: YES, we got you! We're firm believers in 'prompting vs posing.' Instead of stiff, awkward poses, we guide you through natural activities and movements that keep things casual, flowing, and fun. The result? Photos that look and feel like you.",
-    "category": "Logistics"
+    "answer": "We prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.",
+    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
   },
   {
-    "question": "What if it rains or we need to reschedule?",
-    "answer": "Rain doesn't stop us — we'll shoot at covered outdoor spots or move indoors to your home or our studio space. If you do need to reschedule, just give us a minimum of 48 hours' notice. Fees may apply for last-minute changes.",
-    "category": "Booking"
+    "question": "What if it rains?",
+    "answer": "We still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all we ask.",
+    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
+  },
+  {
+    "question": "How long until I get my photos?",
+    "answer": "Sneak peek within days. Full gallery in 2 to 3 months. Priority 2-3 week delivery is available for an additional fee.",
+    "services": ["wedding"]
+  },
+  {
+    "question": "How long until I get my photos?",
+    "answer": "Sneak peek within days. Full gallery in 1 to 3 weeks depending on the package.",
+    "services": ["pre-wedding", "civil-ceremony", "celebrations"]
   }
 ]

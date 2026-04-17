@@ -1,0 +1,36 @@
+---
+interface Props {
+  variant?: 'primary' | 'dark' | 'text';
+  label?: string;
+  class?: string;
+  url?: string;
+}
+
+const {
+  variant = 'primary',
+  label = 'Book Your Call',
+  class: className = '',
+  url = 'https://calendly.com/kashklicks-ca/30min?hide_gdpr_banner=1&primary_color=5f5e5e&background_color=faf9f6&text_color=1a1a18',
+} = Astro.props;
+
+const variantClasses: Record<NonNullable<Props['variant']>, string> = {
+  primary:
+    'magnetic inline-flex items-center justify-center whitespace-nowrap px-10 py-4 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease',
+  dark:
+    'magnetic inline-flex items-center justify-center whitespace-nowrap px-10 py-4 bg-surface-dark text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease',
+  text:
+    'inline-flex items-center gap-2 text-label-md text-on-surface-variant hover:text-on-surface cubic-ease',
+};
+---
+
+<a
+  href={url}
+  class:list={[variantClasses[variant], className]}
+  style="transition-duration: var(--duration-hover);"
+  target="_blank"
+  rel="noopener"
+  data-calendly-popup
+  data-calendly-url={url}
+>
+  <slot>{label}</slot>
+</a>

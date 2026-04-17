@@ -3,72 +3,73 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
+import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
+import site from '../../data/site.json';
 
 const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/images/portfolio/*.jpg',
   { eager: true }
 );
 
-const entries = portfolio.filter((p) => p.hasFilm === true || (p.youtubeUrl && p.youtubeUrl !== null));
+const ctaImage = (await import('../../assets/images/homepage/homepage-07.jpg')).default;
+
+const entries = portfolio.filter((p: any) => p.hasFilm === true || (p.youtubeUrl && p.youtubeUrl !== null));
+
+const businessRef = { '@id': `${site.url}/#business` };
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  name: 'Wedding Films, AD Photography',
+  name: 'Toronto Wedding Films, AD Photography',
   description: 'Cinematic wedding and pre-wedding films by AD Photography in Toronto and the GTA.',
   url: new URL('/portfolio/films', Astro.site).href,
-  creator: {
-    '@type': 'LocalBusiness',
-    name: 'AD Photography',
-  },
+  creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
   image: entries.map((entry) => ({
     '@type': 'ImageObject',
     name: `${entry.couple}, Film`,
     description: `Cinematic film of ${entry.couple} at ${entry.location}`,
-    contentLocation: {
-      '@type': 'Place',
-      name: entry.location,
-    },
+    contentLocation: { '@type': 'Place', name: entry.location },
   })),
 };
 ---
 
 <BaseLayout
-  title="Films"
-  description="Cinematic wedding and pre-wedding films by AD Photography. Watch love stories unfold from Toronto and the GTA."
+  title="Toronto Wedding Films Portfolio"
+  description="Cinematic Toronto wedding and pre-wedding films by AD Photography. Motion, sound, and feeling. Watch love stories unfold."
   jsonLd={schema}
 >
-  <!-- Hero -->
-  <section class="py-[var(--spacing-section)]">
-    <div class="container-editorial">
-      <Breadcrumbs items={[
-        { label: 'Home', href: '/' },
-        { label: 'Portfolio', href: '/portfolio' },
-        { label: 'Films', href: '/portfolio/films' },
-      ]} />
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Films', href: '/portfolio/films' },
+    ]} />
+  </div>
 
-      <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
-        <h1 class="text-display-md">Our Films</h1>
-        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
-          Cinematic stories from our sessions. Motion, sound, and feeling brought together
-          in a way that still photography alone cannot capture.
-        </p>
+  <!-- ═══ GALLERY ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end mb-16">
+        <div class="col-span-12 md:col-span-7 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Films</p>
+          <h1 class="text-display-md char-reveal">Toronto Wedding Films Collection</h1>
+        </div>
+        <div class="col-span-12 md:col-span-4 md:col-start-9 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-body-md text-on-surface-variant" style="max-width: 32ch;">
+            Short-form cinematic edits. Click through to watch the reel for each story.
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Grid -->
-  <section class="pb-[var(--spacing-section)]">
-    <div class="container-editorial">
       {entries.length > 0 ? (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
           {entries.map((entry, i) => {
             const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
             const img = portfolioImages[imgPath]?.default;
             return img ? (
-              <div class={`stagger-${(i % 5) + 1}`}>
+              <div class:list={['reveal', `stagger-${(i % 5) + 1}`, i % 3 === 1 ? 'lg:mt-24' : '']}>
                 <PortfolioCard
                   couple={entry.couple}
                   location={entry.location}
@@ -81,18 +82,18 @@ const schema = {
           })}
         </div>
       ) : (
-        <div class="text-center py-[var(--spacing-section)]">
-          <p class="text-body-lg text-on-surface-muted">New films coming soon. We're currently editing some beautiful stories. Check back soon or browse our photography portfolio.</p>
-          <div class="mt-[var(--spacing-element)]">
-            <Button href="/portfolio" variant="secondary">View All Work</Button>
+        <div class="text-center py-16">
+          <p class="text-body-lg text-on-surface-muted">New films coming soon. We're currently editing some beautiful stories. Check back or browse our photography portfolio.</p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/portfolio" variant="secondary">View All Work</Button></span>
           </div>
         </div>
       )}
     </div>
   </section>
 
-  <!-- Philosophy Quote -->
-  <section class="py-[var(--spacing-section)] bg-surface">
+  <!-- ═══ PHILOSOPHY ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="max-w-3xl mx-auto text-center reveal">
         <p class="text-quote">
@@ -102,16 +103,30 @@ const schema = {
     </div>
   </section>
 
-  <!-- Reserve CTA -->
-  <section class="bg-surface-dark py-[var(--spacing-section)]">
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <div class="max-w-2xl mx-auto text-center reveal">
-        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
-        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
-          Want a cinematic film of your story? Let's talk.
-        </p>
-        <div class="mt-[var(--spacing-block)]">
-          <Button href="/contact" variant="primary">Book a Consultation</Button>
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
+          <h2 class="text-display-md text-on-surface">Want a film of your story?</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
+            Films are offered as an add-on to our wedding and pre-wedding coverage. Let's talk about what your reel could look like.
+          </p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/contact?service=film" variant="primary">Begin The Conversation</Button></span>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption" data-caption="In Motion">
+          <Image
+            src={ctaImage}
+            alt="Toronto wedding film still by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>

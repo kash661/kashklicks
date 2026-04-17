@@ -1,58 +1,122 @@
 ---
 import site from '../../data/site.json';
+import navigation from '../../data/navigation.json';
+import BookingLink from '../ui/BookingLink.astro';
+
+
+const portfolio = navigation.items.find((i) => i.label === 'Portfolio');
+const services = navigation.items.find((i) => i.label === 'Services');
+const resources = navigation.items.find((i) => i.label === 'Resources');
 ---
 
-<footer class="bg-surface-dark" style="padding-top: var(--spacing-section); padding-bottom: var(--spacing-block);">
+<footer class="bg-surface-dark pt-20 pb-12 md:pt-16 md:pb-8">
   <div class="container-editorial">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+
+    <div class="grid grid-cols-2 md:grid-cols-12 gap-12 md:gap-8">
       <!-- Brand -->
-      <div class="md:col-span-6">
-        <a href="/" class="font-serif text-2xl text-on-dark">AD</a>
+      <div class="col-span-2 md:col-span-4">
+        <a href="/" class="logo-mark text-xl text-on-dark">AD</a>
         <p class="text-body-md text-on-dark-variant mt-4 max-w-sm">
           {site.tagline}
         </p>
+        <a
+          href={`mailto:${site.email}`}
+          class="inline-block text-body-md text-on-dark-variant hover:text-on-dark mt-6 cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          {site.email}
+        </a>
       </div>
 
-      <!-- Connect -->
-      <div class="md:col-span-3">
-        <span class="text-label-sm text-on-dark-variant block mb-4">Connect</span>
+      <!-- Portfolio -->
+      <div class="md:col-span-2">
+        <a
+          href={portfolio.href}
+          class="text-label-sm text-on-dark block mb-4 hover:text-on-dark-variant cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          Portfolio
+        </a>
         <ul class="space-y-3">
-          <li>
-            <a
-              href={site.social.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
-              style="transition-duration: var(--duration-hover);"
-            >
-              Instagram
-            </a>
-          </li>
-          <li>
-            <a
-              href={site.social.pinterest}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
-              style="transition-duration: var(--duration-hover);"
-            >
-              Pinterest
-            </a>
-          </li>
+          {portfolio.children?.map((child) => (
+            <li>
+              <a
+                href={child.href}
+                class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              >
+                {child.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
-      <!-- Information -->
-      <div class="md:col-span-3">
-        <span class="text-label-sm text-on-dark-variant block mb-4">Information</span>
+      <!-- Services -->
+      <div class="md:col-span-2">
+        <a
+          href={services.href}
+          class="text-label-sm text-on-dark block mb-4 hover:text-on-dark-variant cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          Services
+        </a>
+        <ul class="space-y-3">
+          {services.children?.map((child) => (
+            <li>
+              <a
+                href={child.href}
+                class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              >
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div class="md:col-span-2">
+        <a
+          href={resources.href}
+          class="text-label-sm text-on-dark block mb-4 hover:text-on-dark-variant cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          Resources
+        </a>
+        <ul class="space-y-3">
+          {resources.children?.map((child) => (
+            <li>
+              <a
+                href={child.href}
+                class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              >
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- About AD -->
+      <div class="md:col-span-2">
+        <a
+          href="/about"
+          class="text-label-sm text-on-dark block mb-4 hover:text-on-dark-variant cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          About AD
+        </a>
         <ul class="space-y-3">
           <li>
             <a
-              href="/services"
+              href="/about"
               class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
               style="transition-duration: var(--duration-hover);"
             >
-              The Experience
+              My Story
             </a>
           </li>
           <li>
@@ -61,18 +125,43 @@ import site from '../../data/site.json';
               class="text-body-md text-on-dark-variant hover:text-on-dark cubic-ease"
               style="transition-duration: var(--duration-hover);"
             >
-              Inquiry
+              Contact
             </a>
+          </li>
+          <li>
+            <BookingLink variant="text" class="text-body-md text-on-dark-variant hover:text-on-dark">
+              Book a Call
+            </BookingLink>
           </li>
         </ul>
       </div>
     </div>
 
-    <!-- Copyright -->
-    <div class="mt-16">
+    <!-- Copyright + Social -->
+    <div class="mt-16 pt-8 md:mt-10 md:pt-6 border-t border-on-dark-variant/15 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
       <p class="text-label-sm text-on-dark-variant">
         &copy; {new Date().getFullYear()} AD Studios
       </p>
+      <div class="flex gap-6">
+        <a
+          href={site.social.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-label-sm text-on-dark-variant hover:text-on-dark cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          Instagram
+        </a>
+        <a
+          href={site.social.pinterest}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-label-sm text-on-dark-variant hover:text-on-dark cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          Pinterest
+        </a>
+      </div>
     </div>
   </div>
 </footer>

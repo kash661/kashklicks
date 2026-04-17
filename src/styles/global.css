@@ -175,6 +175,14 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-on-surface);
 }
 
+/* ── Logo mark (AD monogram — Bodoni Moda tracked caps) ── */
+.logo-mark {
+  font-family: 'Bodoni Moda', 'Georgia', 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
 /* ── Type Scale Utilities ── */
 .text-display-lg {
   font-family: var(--font-serif);
@@ -287,6 +295,33 @@ h1, h2, h3, h4, h5, h6 {
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes chevron-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+/* Scroll-down chevron indicator */
+.scroll-chevron {
+  animation: chevron-bounce 2s var(--ease-gallery) infinite;
+}
+
+/* Gallery image frame — art piece presentation */
+.gallery-frame {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.gallery-frame img {
+  max-height: 50vh;
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
+
+.gallery-frame .gallery-caption {
+  margin-top: 0.5rem;
+}
+
 /* Scroll reveal — applied by IntersectionObserver */
 .reveal {
   opacity: 0;
@@ -309,16 +344,16 @@ h1, h2, h3, h4, h5, h6 {
 /* Directional reveal variants */
 .reveal-left {
   opacity: 0;
-  transform: translateX(-40px);
-  transition: opacity var(--duration-slow) var(--ease-gallery),
-              transform var(--duration-slow) var(--ease-gallery);
+  transform: translateX(-60px);
+  transition: opacity 1.2s var(--ease-gallery),
+              transform 1.2s var(--ease-gallery);
 }
 
 .reveal-right {
   opacity: 0;
-  transform: translateX(40px);
-  transition: opacity var(--duration-slow) var(--ease-gallery),
-              transform var(--duration-slow) var(--ease-gallery);
+  transform: translateX(60px);
+  transition: opacity 1.2s var(--ease-gallery),
+              transform 1.2s var(--ease-gallery);
 }
 
 .reveal-left.revealed,
@@ -329,21 +364,200 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Parallax container */
 .parallax-img {
+  --parallax-y: 0px;
   will-change: transform;
+  transform: translateY(var(--parallax-y));
   transition: transform 0.1s linear;
 }
 
-/* Hover zoom for gallery images (desktop only) */
+/* Hover zoom for gallery images (desktop only) — slow breathing effect */
 .hover-zoom {
   overflow: hidden;
 }
 
 .hover-zoom img {
-  transition: transform var(--duration-slow) var(--ease-gallery);
+  transition: transform 2.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .hover-zoom:hover img {
-  transform: scale(1.03);
+  transform: translateY(var(--parallax-y, 0px)) scale(1.04);
+}
+
+/* Card lift on hover — gentle rise with ambient shadow */
+.card-lift {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Image caption — editorial label that fades in on hover.
+   Usage: <div class="image-caption" data-caption="Tara & James, Casa Loma">...</div> */
+.image-caption {
+  position: relative;
+}
+
+.image-caption::after {
+  content: attr(data-caption);
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  color: var(--color-on-dark);
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 2;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  max-width: calc(100% - 2.5rem);
+}
+
+.image-caption:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-caption::after {
+    transition: opacity 0.2s;
+    transform: none;
+  }
+}
+
+/* Eyebrow rule — hairline accent that draws in under label-md eyebrow text
+   (the all-caps muted labels that sit above serif titles) when the parent
+   .reveal enters the viewport.
+   Usage: <p class="text-label-md text-on-surface-muted eyebrow-rule">Your Journey</p>
+   Centered variant for text-center containers:
+   <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center">...</p> */
+.eyebrow-rule {
+  position: relative;
+}
+
+.eyebrow-rule::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+  height: 1px;
+  width: 0;
+  background: var(--color-on-surface-variant);
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+}
+
+.reveal.revealed .eyebrow-rule::after,
+.reveal-left.revealed .eyebrow-rule::after,
+.reveal-right.revealed .eyebrow-rule::after,
+.eyebrow-rule.revealed::after {
+  width: 40px;
+}
+
+/* Centered variant: rule centers under text regardless of block width. */
+.eyebrow-rule-center::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* On-dark variant: rule uses on-dark-variant for legibility on dark surfaces. */
+.eyebrow-rule-on-dark::after {
+  background: var(--color-on-dark-variant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow-rule::after {
+    transition: none;
+  }
+  .reveal.revealed .eyebrow-rule::after,
+  .reveal-left.revealed .eyebrow-rule::after,
+  .reveal-right.revealed .eyebrow-rule::after,
+  .eyebrow-rule.revealed::after {
+    width: 40px;
+  }
+}
+
+/* Active nav indicator — small hairline under the current section's nav link.
+   Uses view-transition-name so Astro's ClientRouter animates it between positions
+   when the user clicks from one section to another. */
+.nav-rule {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  pointer-events: none;
+  view-transition-name: nav-active-rule;
+}
+
+::view-transition-group(nav-active-rule) {
+  animation-duration: var(--duration-hover);
+  animation-timing-function: var(--ease-gallery);
+}
+
+/* Suppress the crossfade on the rule itself — let the group's position
+   morph carry the full animation. Prevents the "double rule" stagger
+   during forward navigation where old and new snapshots fade at different
+   rates. */
+::view-transition-old(nav-active-rule),
+::view-transition-new(nav-active-rule) {
+  animation: none;
+  mix-blend-mode: normal;
+  height: 100%;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-rule {
+    view-transition-name: none;
+  }
+}
+
+/* Timeline — alternating scroll-reveal steps */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-surface-container);
+  transform: translateX(-50%);
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--color-primary);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timeline-step {
+  opacity: 0;
+  transition: opacity 1s var(--ease-gallery), transform 1s var(--ease-gallery);
+}
+
+.timeline-step-left {
+  transform: translateX(-30px);
+}
+
+.timeline-step-right {
+  transform: translateX(30px);
+}
+
+.timeline-step.timeline-visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Scale-on-scroll: starts slightly smaller, JS adds .scaled */
@@ -378,49 +592,215 @@ img {
   box-shadow: 0 4px 32px rgba(26, 26, 24, 0.04);
 }
 
+/* ── Header sliding background ── */
+.header-bg {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(250, 249, 246, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 32px rgba(26, 26, 24, 0.04);
+  transform: translateY(-100%);
+  transition: transform var(--duration-slow) var(--ease-gallery);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.header-solid .header-bg {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-bg {
+    transition: none;
+  }
+}
+
 /* ── Ghost Border ── */
 .border-ghost {
   border-color: rgba(175, 179, 174, 0.15);
 }
 
-/* ── Scrollbar ── */
+/* ── Scrollbar (hidden everywhere, scroll still works) ── */
 html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-surface-container) var(--color-background);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* ── Prose (blog content) ── */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* ── Prose (blog content) ──
+   Editorial long-form styling. Mirrors the Digital Curator system:
+   serif headlines, generous negative space, hairline rules between sections,
+   drop cap on the opening paragraph, text-quote-sized blockquotes. */
 .prose-editorial {
   max-width: 65ch;
   font-size: 1.125rem;
   line-height: 1.8;
+  color: var(--color-on-surface);
 }
 
-.prose-editorial h2,
-.prose-editorial h3,
+/* Drop cap on the opening paragraph */
+.prose-editorial > p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-size: 4.5em;
+  font-weight: 400;
+  float: left;
+  line-height: 0.85;
+  margin-right: 0.1em;
+  margin-top: 0.1em;
+  color: var(--color-on-surface);
+}
+
+@media (max-width: 640px) {
+  .prose-editorial > p:first-of-type::first-letter {
+    font-size: 3.25em;
+  }
+}
+
+.prose-editorial h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-top: 3.25em;
+  margin-bottom: 0.75em;
+  padding-top: 2em;
+  position: relative;
+}
+
+/* Hairline separator above every section except the first */
+.prose-editorial h2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 1px;
+  background: var(--color-on-surface-muted);
+}
+
+.prose-editorial h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  color: var(--color-on-surface);
+}
+
 .prose-editorial h4 {
   font-family: var(--font-serif);
-  margin-top: 2.5em;
-  margin-bottom: 0.75em;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-top: 1.75em;
+  margin-bottom: 0.4em;
 }
 
 .prose-editorial p {
   margin-bottom: 1.5em;
+  color: var(--color-on-surface-variant);
+}
+
+.prose-editorial strong {
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.prose-editorial em {
+  font-style: italic;
+  color: var(--color-on-surface);
 }
 
 .prose-editorial blockquote {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 0 0 0 1.5rem;
+  border-left: 2px solid var(--color-on-surface-muted);
+  margin: 2.5em 0;
+  color: var(--color-on-surface);
+  max-width: 48ch;
+}
+
+.prose-editorial ul,
+.prose-editorial ol {
+  margin: 1.5em 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.prose-editorial ul li,
+.prose-editorial ol li {
+  position: relative;
   padding-left: 1.5rem;
-  border-left: 2px solid var(--color-surface-container);
-  margin: 2em 0;
+  margin-bottom: 0.6em;
+  color: var(--color-on-surface-variant);
+}
+
+.prose-editorial ul li::before {
+  content: '/';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-on-surface-muted);
+  font-family: var(--font-sans);
+}
+
+.prose-editorial ol {
+  counter-reset: prose-ordered;
+}
+
+.prose-editorial ol li {
+  counter-increment: prose-ordered;
+}
+
+.prose-editorial ol li::before {
+  content: counter(prose-ordered, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-muted);
+}
+
+.prose-editorial hr {
+  border: 0;
+  height: 1px;
+  background: var(--color-on-surface-muted);
+  width: 40px;
+  margin: 3.5em auto;
+}
+
+.prose-editorial img {
+  width: 100%;
+  height: auto;
+  margin: 2.5em 0;
+  display: block;
 }
 
 .prose-editorial a {
   color: var(--color-primary);
   text-decoration: underline;
   text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
   transition: color var(--duration-hover) var(--ease-gallery);
 }
 
@@ -487,4 +867,21 @@ summary:focus-visible,
 /* ── Gallery transition easing ── */
 .cubic-ease {
   transition-timing-function: var(--ease-gallery);
+}
+
+/* ── Pointer cursor on interactive elements ──
+   Tailwind v4 preflight sets `cursor: default` on <button>. Restore the
+   expected hand cursor for all clickable controls. */
+button:not(:disabled),
+[role="button"],
+summary,
+[data-open-modal],
+[data-close-modal],
+a[href] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
 }

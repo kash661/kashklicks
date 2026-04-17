@@ -1,10 +1,10 @@
 ---
 title: "6 Best Pre-Wedding Photography Locations in Toronto"
-description: "Planning a pre-wedding or engagement shoot in Toronto? Here are our top 6 tried-and-tested locations for stunning photos — with tips on timing, parking, and what to expect."
+description: "Planning a pre-wedding or engagement shoot in Toronto? Here are our top 6 tried-and-tested locations for stunning photos, with tips on timing, parking, and what to expect."
 publishDate: 2025-03-15
-author: "Akash"
-coverImage: "/og-default.jpg"
-coverImageAlt: "Couple at RC Harris Water Treatment Center during golden hour"
+author: "AD"
+coverImage: "../../assets/images/portfolio/ayushi-parth/01.jpg"
+coverImageAlt: "Ayushi and Parth pre-wedding shoot at a Toronto location, wide cinematic landscape by AD Photography"
 tags: ["Locations", "Pre-Wedding", "Toronto"]
 draft: false
 ---
@@ -21,7 +21,7 @@ This Scarborough landmark is one of the most stunning photography locations in a
 
 **Best time to shoot:** Late afternoon for golden hour light hitting the building's facade. The waterfront side catches sunset perfectly.
 
-**Parking:** Free street parking until 4pm. Arrive early on weekends — this spot is popular.
+**Parking:** Free street parking until 4pm. Arrive early on weekends because this spot is popular.
 
 **Pro tip:** Bring comfortable shoes. There's a lot of walking between the building exterior, the curved road, and the waterfront spots. The wind off the lake can be strong, so plan your outfit accordingly.
 
@@ -33,13 +33,13 @@ Nestled along the Harbourfront, the Music Garden is a hidden gem that offers inc
 
 **Best time to shoot:** Early morning on weekdays for fewer crowds. Weekend mornings work too, but expect visitors by 10am.
 
-**Pro tip:** The garden is designed in sections inspired by Bach's music. Each section has a different character — the winding hedge maze area is perfect for intimate close-ups.
+**Pro tip:** The garden is designed in sections inspired by Bach's music. Each section has a different character, and the winding hedge maze area is perfect for intimate close-ups.
 
 ## 3. Guild Park & Gardens
 
 **Vibe:** Fairytale, historic ruins, romantic gardens
 
-Guild Park feels like stepping into another world. The scattered architectural ruins from demolished Toronto buildings create a one-of-a-kind backdrop that looks like a European destination — right in Scarborough.
+Guild Park feels like stepping into another world. The scattered architectural ruins from demolished Toronto buildings create a one-of-a-kind backdrop that looks like a European destination, right here in Scarborough.
 
 **Best time to shoot:** Golden hour. The columns and stone walls catch warm light beautifully. Spring and fall are particularly stunning with the garden in bloom or changing colours.
 
@@ -69,11 +69,11 @@ UofT's St. George campus is arguably the most versatile location on this list. G
 
 **Vibe:** Urban, modern, cinematic street photography
 
-For couples who love the city, downtown Toronto's financial district offers sleek, modern backdrops that photograph beautifully — especially at night. The Mies van der Rohe-designed TD towers are iconic.
+For couples who love the city, downtown Toronto's financial district offers sleek, modern backdrops that photograph beautifully, especially at night. The Mies van der Rohe-designed TD towers are iconic.
 
 **Best time to shoot:** Golden hour for warm light on glass buildings, or blue hour for moody urban vibes. Weekends for quieter streets.
 
-**Pro tip:** King Street West has great variety — from the modern TD Centre to the older brick buildings and narrow side streets. Mix urban with greenery at nearby St. James Park.
+**Pro tip:** King Street West has great variety, from the modern TD Centre to the older brick buildings and narrow side streets. Mix urban with greenery at nearby St. James Park.
 
 ---
 

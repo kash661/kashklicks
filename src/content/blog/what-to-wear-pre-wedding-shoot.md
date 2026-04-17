@@ -2,16 +2,16 @@
 title: "What to Wear to Your Pre-Wedding Photo Shoot"
 description: "Not sure what to wear for your engagement or pre-wedding session? Here's our practical guide to choosing outfits that photograph beautifully."
 publishDate: 2025-02-20
-author: "Akash"
-coverImage: "/og-default.jpg"
-coverImageAlt: "Couple styling for pre-wedding photography session"
+author: "AD"
+coverImage: "../../assets/images/portfolio/alex-aziz/17.jpg"
+coverImageAlt: "Alex and Aziz pre-wedding styling landscape frame by AD Photography, coordinated outfits in Toronto"
 tags: ["Tips", "Pre-Wedding", "Style"]
 draft: false
 ---
 
 One of the most common questions we get from couples is: *"What should we wear?"*
 
-It's a great question — and the answer isn't as complicated as you might think. Here's everything you need to know about choosing outfits for your pre-wedding or engagement session.
+It's a great question, and the answer isn't as complicated as you might think. Here's everything you need to know about choosing outfits for your pre-wedding or engagement session.
 
 ## The Golden Rule: Wear What Makes You Feel Good
 
@@ -21,7 +21,7 @@ That said, here are some practical tips to keep in mind.
 
 ## Coordinate, Don't Match
 
-You don't need to wear the same colour. In fact, please don't — matching outfits can look dated. Instead, aim for complementary tones.
+You don't need to wear the same colour. In fact, please don't. Matching outfits can look dated. Instead, aim for complementary tones.
 
 **What works:**
 - One partner in a warm neutral (cream, beige, camel) and the other in a deeper tone (burgundy, forest green, navy)
@@ -35,7 +35,7 @@ You don't need to wear the same colour. In fact, please don't — matching outfi
 
 ## Consider Your Location
 
-Your outfit should complement — not clash with — your location.
+Your outfit should complement your location, not clash with it.
 
 - **Garden or park:** Flowy fabrics, soft colours, romantic silhouettes
 - **Urban / downtown:** Sleek, modern, structured pieces
@@ -47,9 +47,9 @@ Your outfit should complement — not clash with — your location.
 If your session is 3+ hours, plan 2-3 outfit changes. This gives variety to your gallery and lets you play with different moods.
 
 A common approach:
-1. **Formal / dressed up** — for the cinematic, editorial shots
-2. **Casual / relaxed** — for the natural, candid moments
-3. **Cultural or traditional** — if you want to incorporate your heritage
+1. **Formal / dressed up:** for the cinematic, editorial shots
+2. **Casual / relaxed:** for the natural, candid moments
+3. **Cultural or traditional:** if you want to incorporate your heritage
 
 ## Practical Tips
 
@@ -61,14 +61,14 @@ A common approach:
 
 ## What About South Asian Outfits?
 
-Traditional South Asian outfits photograph *beautifully* — the colours, the draping, the details. If you're incorporating desi attire:
+Traditional South Asian outfits photograph *beautifully*. The colours, the draping, the details. If you're incorporating desi attire:
 
 - Rich colours (red, gold, emerald, royal blue) pop against most Toronto locations
 - Lenghas, sarees, and sherwanis create gorgeous movement and drama
-- Plan extra time for traditional outfit changes — they take longer
+- Plan extra time for traditional outfit changes since they take longer
 
 ## Our Role
 
-Don't stress too much about this. During your consultation, we'll chat about your location, the vibe you're going for, and help you narrow down outfit ideas. We want you to show up feeling excited and confident — we handle the rest.
+Don't stress too much about this. During your consultation, we'll chat about your location, the vibe you're going for, and help you narrow down outfit ideas. We want you to show up feeling excited and confident. We handle the rest.
 
 [Book your consultation →](/contact)

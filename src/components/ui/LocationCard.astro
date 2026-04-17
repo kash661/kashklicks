@@ -6,19 +6,37 @@ interface Props {
   area: string;
   vibe: string;
   bestFor: string[];
+  season?: string[];
+  zone?: string;
+  setting?: string[];
   walkingLevel: string;
   walkingNote: string;
   permits: string;
   parking: string;
+  travelTime: string;
   idealIf: string;
   image: ImageMetadata;
 }
 
-const { name, area, vibe, bestFor, walkingLevel, walkingNote, permits, parking, idealIf, image } = Astro.props;
+const {
+  name,
+  area,
+  vibe,
+  bestFor,
+  season = [],
+  setting = [],
+  walkingLevel,
+  walkingNote,
+  permits,
+  parking,
+  travelTime,
+  idealIf,
+  image,
+} = Astro.props;
 ---
 
-<div class="bg-surface group">
-  <div class="aspect-[3/2] overflow-hidden">
+<article class="bg-surface group flex flex-col h-full">
+  <div class="aspect-[3/2] overflow-hidden image-caption" data-caption={`${name} · ${area}`}>
     <Image
       src={image}
       alt={`${name}, photography location in ${area}`}
@@ -30,10 +48,17 @@ const { name, area, vibe, bestFor, walkingLevel, walkingNote, permits, parking, 
     />
   </div>
 
-  <div class="pt-5 pb-6">
-    <h3 class="text-heading-md">{name}</h3>
+  <div class="pt-5 pb-6 flex flex-col flex-1">
+    <h3 class="text-heading-md font-serif">{name}</h3>
     <p class="text-label-sm text-on-surface-muted mt-1">{area}</p>
-    <p class="text-body-lg text-on-surface-variant mt-2 italic" style="font-family: var(--font-serif);">"{vibe}"</p>
+
+    {setting.length > 0 && (
+      <p class="text-label-sm text-on-surface-muted mt-2 tracking-wider">
+        {setting.join(' · ')}
+      </p>
+    )}
+
+    <p class="text-body-lg text-on-surface-variant mt-4 italic" style="font-family: var(--font-serif);">"{vibe}"</p>
 
     <div class="flex flex-wrap gap-2 mt-4">
       {bestFor.map((tag) => (
@@ -43,16 +68,31 @@ const { name, area, vibe, bestFor, walkingLevel, walkingNote, permits, parking, 
       ))}
     </div>
 
-    <details class="mt-5 group/details">
-      <summary class="cursor-pointer text-label-md text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">
-        View details
-      </summary>
-      <div class="mt-4 space-y-2 text-body-lg text-on-surface-variant">
-        <p><span class="text-on-surface-muted">Walking Level:</span> {walkingLevel} / {walkingNote}</p>
-        <p><span class="text-on-surface-muted">Permits:</span> {permits}</p>
-        <p><span class="text-on-surface-muted">Parking:</span> {parking}</p>
-        <p class="pt-2 italic" style="font-family: var(--font-serif);">Ideal if: {idealIf}</p>
-      </div>
-    </details>
+    <div class="mt-5 pt-5 border-t border-surface-container">
+      <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2.5">
+        <dt class="text-label-sm text-on-surface-muted tracking-wider">Walking</dt>
+        <dd class="text-body-md text-on-surface-variant">{walkingLevel} · {walkingNote}</dd>
+
+        <dt class="text-label-sm text-on-surface-muted tracking-wider">Permits</dt>
+        <dd class="text-body-md text-on-surface-variant">{permits}</dd>
+
+        <dt class="text-label-sm text-on-surface-muted tracking-wider">Parking</dt>
+        <dd class="text-body-md text-on-surface-variant">{parking}</dd>
+
+        <dt class="text-label-sm text-on-surface-muted tracking-wider">Travel</dt>
+        <dd class="text-body-md text-on-surface-variant">{travelTime}</dd>
+
+        {season.length > 0 && (
+          <>
+            <dt class="text-label-sm text-on-surface-muted tracking-wider">Season</dt>
+            <dd class="text-body-md text-on-surface-variant">{season.join(', ')}</dd>
+          </>
+        )}
+      </dl>
+    </div>
+
+    <p class="mt-6 pt-6 border-t border-surface-container text-body-md italic text-on-surface-variant" style="font-family: var(--font-serif);">
+      Ideal if {idealIf.charAt(0).toLowerCase() + idealIf.slice(1)}
+    </p>
   </div>
-</div>
+</article>

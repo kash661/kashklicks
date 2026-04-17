@@ -83,8 +83,17 @@ Three swappable serif + sans pairings. Switch by changing `--font-serif` and `--
 
 - **Easing**: `cubic-ease` class or `var(--ease-gallery)` — `cubic-bezier(0.22, 1, 0.36, 1)`
 - **Durations**: `--duration-slow` (600ms), `--duration-hover` (500ms), `--duration-page` (800ms), `--duration-splash` (1200ms)
-- **Scroll reveal**: Add `reveal` class to elements. Add `stagger-1` through `stagger-5` for sequential delays. Powered by IntersectionObserver in `src/scripts/scroll-reveal.ts`.
+- **Scroll reveal**: Add `reveal` / `reveal-left` / `reveal-right` to elements. Add `stagger-1` through `stagger-5` for sequential delays. IntersectionObserver in `src/scripts/scroll-reveal.ts`.
+- **Char reveal**: `char-reveal` on serif display headings splits them into per-character fades on scroll. Script: `char-reveal.ts`.
+- **Parallax**: `parallax-img` on an `<Image>` gives it an 8%-of-viewport-offset drift on scroll. Script: `parallax.ts`, initialized in `BaseLayout`. Compose with `hover-zoom` — they share the same transform variable.
+- **Hover zoom**: `hover-zoom` on an image wrapper (with a child `<img>`) does a 2.5s ease scale(1.04) on hover.
+- **Magnetic**: `magnetic` on a button or wrapper pulls toward the cursor (script: `magnetic.ts`).
+- **Card lift**: `card-lift` raises an element 4px with a soft shadow on hover, 600ms. `PricingCard` already applies this.
+- **Image caption reveal** (`image-caption` + `data-caption="..."` on an image wrapper): a label-sm caption fades in bottom-left on hover. Editorial label for hero/CTA portraits.
+- **Eyebrow rule** (`eyebrow-rule` on a `text-label-md text-on-surface-muted` paragraph, plus `eyebrow-rule-center` in `text-center` containers): draws a 40px hairline accent under the eyebrow label when its parent `.reveal` enters the viewport. Signature editorial flourish on all service pages.
 - **Page transitions**: Astro View Transitions (fade). Sound plays on transition if enabled.
+
+All motion primitives respect `prefers-reduced-motion: reduce`.
 
 ### Sound System
 
@@ -103,6 +112,17 @@ Opt-in ambient sound. Muted by default. Toggle in bottom-right corner.
 
 ## Hard Rules — Do's and Don'ts
 
+### Typography by Intent (Non-negotiable)
+
+Every text element must follow this rule based on its PURPOSE:
+
+| Intent | Font | Classes | Examples |
+|---|---|---|---|
+| Emotional / artistic | Serif, serif italic | `text-display-lg`, `text-heading-lg`, `text-quote` | Taglines, titles, quotes, testimonials, poetic statements, section names that evoke feeling |
+| Informational / functional | Sans, clean | `text-body-lg`, `text-body-md`, `text-label-md`, `text-label-sm` | Pricing, descriptions, body copy, labels, captions, CTAs, SEO text, navigation |
+
+**Before adding ANY text element, ask:** "Is this emotional or informational?" The answer determines the font. Never add elements without deliberate design intent.
+
 ### DO:
 - Use asymmetry. Offset headings from body text across the grid.
 - Embrace the void. If it feels empty, it's correct. Negative space is luxury.
@@ -110,6 +130,7 @@ Opt-in ambient sound. Muted by default. Toggle in bottom-right corner.
 - Let photographs be the hero. Interface is supporting architecture.
 - Use tonal layering for depth (lighter surfaces on darker ones).
 - Separate sections with surface color shifts or 64px+ white space.
+- Think before adding. Every element needs a reason to exist. Don't add things to fill space.
 
 ### DON'T:
 - **No rounded corners.** 0px radius everywhere. Non-negotiable.
@@ -121,6 +142,20 @@ Opt-in ambient sound. Muted by default. Toggle in bottom-right corner.
 - **No hover-dependent functionality.** Hover is enhancement only.
 - **No Google Fonts CDN calls.** All fonts self-hosted as woff2.
 - **No SectionHeading component.** Use inline serif headings + label-md subtitles.
+
+## Homepage Image Locations
+
+Reference these IDs when swapping images on the homepage (`src/pages/index.astro`):
+
+| Location ID | Section | Aspect | Current Source |
+|---|---|---|---|
+| `hero` | Full-screen hero banner with tagline | Free (object-cover) | `hero/hero-main.jpg` |
+| `gallery-left` | Photo pair section, left (larger image) | 50vh max | `portfolio/ayushi-parth/03.jpg` |
+| `gallery-right` | Photo pair section, right (offset down) | 50vh max | `portfolio/alex-aziz/05.jpg` |
+| `investment-image` | Investment CTA, left of pricing text | 50vh max | `portfolio/shuba-rob/02.jpg` |
+| `bottom-landscape` | Gallery section, wide image on top | 16:9 crop | `portfolio/meghna-puneeth/06.jpg` |
+| `bottom-portrait-left` | Gallery section, left portrait | 3:4 crop | `portfolio/priyanka-saurav/03.jpg` |
+| `bottom-portrait-right` | Gallery section, right portrait (offset) | 3:4 crop | `portfolio/natalie-shavar/13.jpg` |
 
 ## File Structure
 

@@ -1,0 +1,87 @@
+# AD Photography
+
+> Toronto wedding photographer and filmmaker. Candid, cinematic pre-wedding and wedding photography across the GTA and Canada.
+
+AD Photography is a Toronto-based wedding and pre-wedding photography and videography studio serving the Greater Toronto Area and all of Canada. The studio specializes in candid, cinematic, editorial-style wedding photography, pre-wedding shoots, civil ceremonies, celebrations, and short films.
+
+## Positioning
+
+Solo photographer/filmmaker operation, not a large studio. Intentionally focused on intimate, unhurried weddings — church weddings, civil ceremonies, small receptions, pre-wedding stories. Not a multi-shooter Indian/South Asian wedding specialist. Style is candid and cinematic with light prompting rather than posed set-ups.
+
+## Site Info
+
+- URL: https://kashklicks.ca
+- Owner: Akash Desai
+- Location: Toronto, Ontario, Canada
+- Contact: info@kashklicks.ca
+- Instagram: @kash.klicks
+
+## Pages
+
+- [Home](https://kashklicks.ca/): Hero banner, curated gallery, investment info, testimonials, contact CTA
+- [Portfolio](https://kashklicks.ca/portfolio/): Full gallery of wedding and pre-wedding sessions
+- [Portfolio > Weddings](https://kashklicks.ca/portfolio/weddings/): Wedding day galleries
+- [Portfolio > Pre-Weddings](https://kashklicks.ca/portfolio/pre-weddings/): Pre-wedding and engagement sessions
+- [Portfolio > Civil Ceremony](https://kashklicks.ca/portfolio/civil-ceremony/): Civil ceremony and courthouse weddings
+- [Portfolio > Films](https://kashklicks.ca/portfolio/films/): Wedding and pre-wedding short films
+- [Services](https://kashklicks.ca/services/): Photography and videography service offerings and package pricing
+- [Services > Wedding](https://kashklicks.ca/services/wedding/): Wedding day coverage
+- [Services > Pre-Wedding](https://kashklicks.ca/services/pre-wedding/): Pre-wedding and engagement sessions
+- [Services > Civil Ceremony](https://kashklicks.ca/services/civil-ceremony/): Civil ceremony coverage
+- [Services > Celebrations](https://kashklicks.ca/services/celebrations/): Birthdays, showers, private events
+- [Location Guide](https://kashklicks.ca/location-guide/): 27 curated Toronto and GTA photography locations with parking, permits, and session guidance
+- [Blog](https://kashklicks.ca/blog/): Photography tips, location guides, and session features
+- [About](https://kashklicks.ca/about/): About the photographer and studio
+- [Contact](https://kashklicks.ca/contact/): Inquiry form to book a Toronto wedding photographer, with direct email (info@kashklicks.ca) and Instagram DM (@kash.klicks) as the fastest reply channel
+
+## Packages
+
+### Pre-Wedding
+- Love Story Mini: $350 (up to 2 hours, 1 location, 50+ edited photos)
+- Love Story Duo: $550 (up to 3 hours, 2 locations, 2 outfits, 80+ edited photos)
+- Love Story + Film: $550 (up to 3 hours, 1 location, 40 photos + 1–2 minute film)
+- The Signature Session: $850 (up to 5 hours, 2 locations, 70+ photos + 3–4 minute film)
+- The Pre Wedding: $1,450 (up to 10 hours, 3 locations, 150+ photos + 5–7 minute 4K film)
+
+### Wedding
+- The Essentials: $1,200 (up to 6 hours coverage, 200+ photos)
+- The Full Day: $2,400 (up to 10 hours coverage, 400+ photos, second shooter, Love Story + Film session included)
+- The Complete Story: $3,800 (up to 14 hours coverage, 600+ photos, second shooter, Love Story + Film session included)
+
+### Civil Ceremony
+- The Civil Ceremony: $500 (up to 2 hours, ceremony + couples portraits, 150+ photos)
+
+### Celebrations
+- Celebrations: $550 (minimum 2 hours, birthdays / showers / private events, unlimited edited photos)
+
+### Custom
+- Make It Yours: Custom pricing — start from any package above and customize locations, hours, and coverage.
+
+## Areas Served
+
+Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
+
+## Blog
+
+- [Best Toronto Pre-Wedding Locations](https://kashklicks.ca/blog/best-toronto-pre-wedding-locations/)
+- [What to Wear for Your Pre-Wedding Shoot](https://kashklicks.ca/blog/what-to-wear-pre-wedding-shoot/)
+
+## Social
+
+- Instagram: https://instagram.com/kash.klicks
+- Pinterest: https://pinterest.com/kashklicks
+- YouTube: https://youtube.com/@kashklicks
+
+## Markdown Mirrors
+
+Full markdown representations of each page are available at:
+- [Home](https://kashklicks.ca/mirrors/home.md)
+- [About](https://kashklicks.ca/mirrors/about.md)
+- [Services · Wedding](https://kashklicks.ca/mirrors/services-wedding.md)
+- [Services · Pre-Wedding](https://kashklicks.ca/mirrors/services-pre-wedding.md)
+- [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
+- [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
+- [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Contact](https://kashklicks.ca/mirrors/contact.md)
+- [Location Guide](https://kashklicks.ca/mirrors/location-guide.md)
+- [Services Overview](https://kashklicks.ca/mirrors/services.md)

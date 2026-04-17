@@ -6,87 +6,203 @@ import Button from '../../components/ui/Button.astro';
 import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
+import site from '../../data/site.json';
 
 const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/images/portfolio/*.jpg',
   { eager: true }
 );
 
-const categories = [
-  { id: 'all', label: 'All Work' },
-  { id: 'pre-wedding', label: 'Pre-Weddings' },
-  { id: 'wedding', label: 'Weddings' },
-  { id: 'civil-ceremony', label: 'Civil Ceremony' },
-  { id: 'films', label: 'Films' },
+const heroImage = (await import('../../assets/images/homepage/portfolio-hero-raman.jpg')).default;
+const ctaImage = (await import('../../assets/images/homepage/homepage-01.jpg')).default;
+const weddingFeature = (await import('../../assets/images/homepage/wedding-hero-natalie.jpg')).default;
+const preWeddingFeature = (await import('../../assets/images/homepage/prewedding-service-detail.jpg')).default;
+const civilFeature = (await import('../../assets/images/homepage/civil-ceremony-hero.jpg')).default;
+const filmsFeature = (await import('../../assets/images/homepage/homepage-04.jpg')).default;
+
+const chapters = [
+  {
+    eyebrow: 'Chapter I',
+    title: 'Weddings',
+    description: 'Full-day coverage of your wedding, unobtrusive and cinematic. From getting ready to the last dance.',
+    href: '/portfolio/weddings',
+    image: weddingFeature,
+    caption: 'Wedding Day Stories',
+    alt: 'Toronto wedding photography portfolio preview by AD Photography',
+  },
+  {
+    eyebrow: 'Chapter II',
+    title: 'Pre-Weddings',
+    description: 'Engagement and pre-wedding sessions at Toronto\'s most stunning locations. Your love story, before the big day.',
+    href: '/portfolio/pre-weddings',
+    image: preWeddingFeature,
+    caption: 'Before The Big Day',
+    alt: 'Toronto pre-wedding photography portfolio preview',
+  },
+  {
+    eyebrow: 'Chapter III',
+    title: 'Civil Ceremony',
+    description: 'Intimate courthouse and city hall stories. Small ceremonies, same attention to every detail.',
+    href: '/portfolio/civil-ceremony',
+    image: civilFeature,
+    caption: 'Intimate. Uncomplicated.',
+    alt: 'Toronto civil ceremony photography portfolio preview',
+  },
+  {
+    eyebrow: 'Chapter IV',
+    title: 'Films',
+    description: 'Motion, sound, and feeling brought together. Cinematic wedding and pre-wedding films.',
+    href: '/portfolio/films',
+    image: filmsFeature,
+    caption: 'Love, In Motion',
+    alt: 'Toronto wedding films portfolio reel preview',
+  },
 ];
+
+const allEntries = portfolio;
+
+const businessRef = { '@id': `${site.url}/#business` };
 
 const gallerySchema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
   name: 'AD Photography Portfolio',
-  description: 'Wedding, pre-wedding, and event photography portfolio by AD Photography in Toronto.',
+  description: 'Toronto wedding, pre-wedding, civil ceremony, and film portfolio by AD Photography.',
   url: new URL('/portfolio', Astro.site).href,
-  creator: {
-    '@type': 'LocalBusiness',
-    name: 'AD Photography',
-  },
+  creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
+  image: allEntries.map((entry) => ({
+    '@type': 'ImageObject',
+    name: `${entry.couple}, ${entry.category}`,
+    description: `${entry.couple} at ${entry.location}`,
+    contentLocation: { '@type': 'Place', name: entry.location },
+  })),
 };
 ---
 
 <BaseLayout
-  title="Portfolio"
-  description="Browse our wedding, pre-wedding, and civil ceremony photography portfolio. Love stories captured across Toronto and the GTA."
+  title="Toronto Wedding Photography Portfolio"
+  description="Browse our full Toronto wedding, pre-wedding, civil ceremony, and film portfolio. Love stories captured across the GTA by AD Photography."
   jsonLd={gallerySchema}
 >
-  <!-- Hero -->
-  <section class="py-[var(--spacing-section)]">
-    <div class="container-editorial">
-      <Breadcrumbs items={[
-        { label: 'Home', href: '/' },
-        { label: 'Portfolio', href: '/portfolio' },
-      ]} />
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Portfolio', href: '/portfolio' },
+    ]} />
+  </div>
 
-      <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
-        <h1 class="text-display-md">Capturing the Unspoken</h1>
-        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
-          The glances that say everything. The hands that hold on a little tighter.
-          The moments between the moments. This is where we live.
-        </p>
+  <!-- ═══ HERO ═══ -->
+  <section style="padding-top: var(--spacing-block);">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="min-height: 80vh;">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Portfolio</p>
+          <h1 class="text-display-md char-reveal" style="max-width: 16ch;">
+            Toronto wedding <em>photography portfolio.</em>
+          </h1>
+          <p class="text-body-lg text-on-surface-variant mt-8" style="max-width: 45ch;">
+            The glances that say everything. The hands that hold on a little tighter. The moments between the moments. Every story is a chapter, and each one deserves its own voice.
+          </p>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption" data-caption="From The Archive">
+          <Image
+            src={heroImage}
+            alt="Toronto wedding photography portfolio by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={75}
+            format="avif"
+            class="w-full h-full object-cover parallax-img"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center mt-16 reveal stagger-3">
+        <p class="text-label-sm text-on-surface-muted mb-3">Explore By Chapter</p>
+        <div class="scroll-chevron">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Filter + Grid -->
-  <section class="pb-[var(--spacing-section)]">
+  <!-- ═══ EXPLORE BY CHAPTER ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-
-      <!-- Filter Tabs -->
-      <div class="flex flex-wrap gap-6 mb-[var(--spacing-block)]" id="portfolio-filters" role="group" aria-label="Filter portfolio by category">
-        {categories.map((cat) => (
-          <button
-            class="filter-btn text-label-md text-on-surface-muted cubic-ease pb-2 border-b-2 border-transparent data-[active]:text-on-surface data-[active]:border-on-surface"
-            style="transition-duration: var(--duration-hover);"
-            data-filter={cat.id}
-            data-active={cat.id === 'all' ? '' : undefined}
-            aria-pressed={cat.id === 'all' ? 'true' : 'false'}
-          >
-            {cat.label}
-          </button>
-        ))}
+      <div class="text-center mb-20 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Explore By Chapter</p>
+        <h2 class="text-display-md char-reveal">Every story has a setting.</h2>
       </div>
 
-      <!-- Portfolio Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal" id="portfolio-grid">
-        {portfolio.map((entry, i) => {
+      <div class="space-y-24 md:space-y-32">
+        {chapters.map((chapter, i) => (
+          <div class="grid-editorial items-center">
+            <div class:list={[
+              'col-span-12 lg:col-span-6 aspect-[3/4] overflow-hidden hover-zoom image-caption',
+              i % 2 === 0 ? 'reveal-left' : 'reveal-right',
+              i % 2 === 1 ? 'lg:col-start-7 lg:row-start-1' : '',
+            ]} data-caption={chapter.caption}>
+              <Image
+                src={chapter.image}
+                alt={chapter.alt}
+                widths={[640, 960, 1280]}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={85}
+                class="w-full h-full object-cover parallax-img"
+                loading="lazy"
+              />
+            </div>
+            <div class:list={[
+              'col-span-12 lg:col-span-5 reveal stagger-2',
+              i % 2 === 1 ? 'lg:col-start-1' : 'lg:col-start-8',
+            ]}>
+              <p class="text-label-md text-on-surface-muted eyebrow-rule">{chapter.eyebrow}</p>
+              <h3 class="text-display-md mt-4">{chapter.title}</h3>
+              <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 42ch;">{chapter.description}</p>
+              <div class="mt-10">
+                <a
+                  href={chapter.href}
+                  class="inline-flex items-center gap-3 text-label-md text-on-surface hover:text-on-surface-variant cubic-ease group"
+                  style="transition-duration: var(--duration-hover);"
+                >
+                  View Gallery
+                  <svg class="w-4 h-4 cubic-ease group-hover:translate-x-1" style="transition-duration: var(--duration-hover);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ RECENT WORK ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end mb-16">
+        <div class="col-span-12 md:col-span-7 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Every Story</p>
+          <h2 class="text-display-md char-reveal">Recent work.</h2>
+        </div>
+        <div class="col-span-12 md:col-span-4 md:col-start-9 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-body-md text-on-surface-variant" style="max-width: 32ch;">
+            A curated selection across every chapter, in order of release.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+        {allEntries.map((entry, i) => {
           const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
           const img = portfolioImages[imgPath]?.default;
-          const hasFilm = entry.hasFilm === true || (entry.youtubeUrl && entry.youtubeUrl !== null);
           return img ? (
-            <div
-              class={`portfolio-item stagger-${(i % 5) + 1}`}
-              data-category={entry.category}
-              data-film={hasFilm ? '' : undefined}
-            >
+            <div class:list={['reveal', `stagger-${(i % 5) + 1}`, i % 3 === 1 ? 'lg:mt-24' : '']}>
               <PortfolioCard
                 couple={entry.couple}
                 location={entry.location}
@@ -101,61 +217,43 @@ const gallerySchema = {
     </div>
   </section>
 
-  <!-- Philosophy Quote -->
-  <section class="py-[var(--spacing-section)] bg-surface">
+  <!-- ═══ PHILOSOPHY ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="max-w-3xl mx-auto text-center reveal">
         <p class="text-quote">
-          "A photograph is not about what you see. It is about what you felt in the fraction of a second
-          before you pressed the shutter."
+          "A photograph is not about what you see. It is about what you felt in the fraction of a second before you pressed the shutter."
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Reserve CTA -->
-  <section class="bg-surface-dark py-[var(--spacing-section)]">
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <div class="max-w-2xl mx-auto text-center reveal">
-        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
-        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
-          Every season fills up. If our work speaks to you, let's start a conversation
-          before your date is gone.
-        </p>
-        <div class="mt-[var(--spacing-block)]">
-          <Button href="/contact" variant="primary">Get in Touch</Button>
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
+          <h2 class="text-display-md text-on-surface">Your story, next.</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
+            Every season fills quickly. If our work speaks to you, let's start a conversation before your date is gone.
+          </p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/contact" variant="primary">Begin Your Journey</Button></span>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption" data-caption="Begin Your Journey">
+          <Image
+            src={ctaImage}
+            alt="Toronto wedding couple portrait by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>
   </section>
-
-  <script>
-    const buttons = document.querySelectorAll('.filter-btn');
-    const items = document.querySelectorAll('.portfolio-item');
-
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        buttons.forEach((b) => {
-          b.removeAttribute('data-active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.setAttribute('data-active', '');
-        btn.setAttribute('aria-pressed', 'true');
-
-        const filter = btn.getAttribute('data-filter');
-        items.forEach((item) => {
-          const el = item as HTMLElement;
-          if (filter === 'all') {
-            el.style.display = '';
-          } else if (filter === 'films') {
-            el.style.display = el.hasAttribute('data-film') ? '' : 'none';
-          } else if (item.getAttribute('data-category') === filter) {
-            el.style.display = '';
-          } else {
-            el.style.display = 'none';
-          }
-        });
-      });
-    });
-  </script>
 </BaseLayout>

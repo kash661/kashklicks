@@ -1,0 +1,295 @@
+{
+  "sessions": [
+    {
+      "id": "alex-aziz-2026",
+      "couple": "Alex + Aziz",
+      "date": "2026-01-01",
+      "type": "civil-ceremony",
+      "locations": [
+        "TD Centre",
+        "Commerce Court North",
+        "King Street",
+        "Nathan Phillips Square"
+      ],
+      "total_source_images": 83,
+      "ai_proposed": 25,
+      "human_approved": 25,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "bw-max-one",
+        "lift-one-per-location",
+        "walking-differentiate",
+        "streetcar-always-color",
+        "architectural-bookends",
+        "one-concept-per-frame"
+      ],
+      "rules_violated": [],
+      "rules_created": [
+        "bw-max-one",
+        "lift-one-per-location",
+        "walking-differentiate",
+        "streetcar-always-color",
+        "architectural-bookends",
+        "one-concept-per-frame",
+        "motion-blur-intentional-only"
+      ],
+      "notes": "Founding session. All rules established here. Full agreement \u2014 no adjustments made by photographer."
+    },
+    {
+      "id": "ayushi-parth-2026",
+      "couple": "Ayushi + Parth",
+      "date": "2026-02-01",
+      "type": "pre-wedding",
+      "locations": [
+        "Toronto Harbour (boat)",
+        "RC Harris",
+        "Guild Park"
+      ],
+      "total_source_images": 78,
+      "ai_proposed": 25,
+      "human_approved": 25,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "multi-location-establish-first",
+        "gown-one-fanned-one-motion",
+        "outfit-distribute-evenly"
+      ],
+      "rules_violated": [],
+      "rules_created": [
+        "multi-location-establish-first",
+        "gown-one-fanned-one-motion",
+        "outfit-distribute-evenly",
+        "proposal-moments-always-keep",
+        "solo-portrait-max-three"
+      ],
+      "notes": "Multi-location session with outfit changes. Rules about outfit distribution and location transitions established."
+    },
+    {
+      "id": "shuba-rob-2026",
+      "couple": "Shuba + Rob",
+      "date": "2026-02-15",
+      "type": "pre-wedding",
+      "locations": [
+        "RC Harris",
+        "Scarborough lakefront"
+      ],
+      "total_source_images": 22,
+      "ai_proposed": 12,
+      "human_approved": 9,
+      "cuts": [
+        "ring-shot-3.jpg",
+        "ring-shot-4.jpg",
+        "piggyback-alt.jpg"
+      ],
+      "adds": [],
+      "agreement_rate": 0.75,
+      "rules_confirmed": [
+        "one-concept-per-frame",
+        "piggyback-same-angle-one-only"
+      ],
+      "rules_violated": [
+        "ring-shots-max-two"
+      ],
+      "rules_created": [
+        "ring-shots-max-two",
+        "ring-against-sky-one-only",
+        "piggyback-same-angle-one-only",
+        "cover-casual-most-playful"
+      ],
+      "notes": "Photographer cut 3 images: 2 extra ring shots and a duplicate piggyback angle. Ring-shots-max-two rule created from this correction. Small source set (22 images) confirmed that small sets still need aggressive duplicate elimination."
+    },
+    {
+      "id": "meghna-puneeth-2026",
+      "couple": "Meghna + Puneeth",
+      "date": "2026-03-01",
+      "type": "pre-wedding",
+      "locations": [
+        "Toronto Harbourfront"
+      ],
+      "total_source_images": 26,
+      "ai_proposed": 18,
+      "human_approved": 18,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "streetcar-always-color",
+        "small-set-less-aggressive-culling"
+      ],
+      "rules_violated": [],
+      "rules_created": [
+        "small-set-less-aggressive-culling",
+        "day-to-night-natural-arc"
+      ],
+      "notes": "Day-to-night session. Small source set. Full agreement. Confirmed that small sets (under 30 images) warrant a higher selection rate."
+    },
+    {
+      "id": "winter-special-2026",
+      "couple": "Anonymous",
+      "date": "2026-03-15",
+      "type": "pre-wedding",
+      "locations": [
+        "RC Harris (snowy lakefront)",
+        "Downtown Toronto Financial District",
+        "University of Toronto Knox College"
+      ],
+      "total_source_images": 197,
+      "ai_proposed": 40,
+      "human_approved": 40,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "bw-max-one",
+        "outfit-distribute-evenly",
+        "multi-location-establish-first"
+      ],
+      "rules_violated": [],
+      "rules_created": [
+        "desaturated-pop-edits-use-color",
+        "twirl-sequence-one-peak",
+        "interior-shots-as-palette-cleanser",
+        "signage-with-date-sparingly",
+        "anonymous-couple-descriptive-name"
+      ],
+      "notes": "Largest source set to date (197 images). Three outfits. Snow made outdoor backdrops visually similar \u2014 interior shots became critical. B&W rule confirmed again (15+ candidates, still only 1 selected)."
+    },
+    {
+      "id": "mania-hitesh-2026",
+      "couple": "Mania + Hitesh",
+      "date": "2026-04-11",
+      "type": "pre-wedding",
+      "locations": [
+        "Harbourfront pier",
+        "CN Tower plaza",
+        "Downtown streetcar bench",
+        "RC Harris"
+      ],
+      "total_source_images": 70,
+      "ai_proposed": 10,
+      "human_approved": 10,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "one-concept-per-frame",
+        "walking-differentiate",
+        "outfit-distribute-evenly",
+        "multi-location-establish-first",
+        "twirl-sequence-one-peak",
+        "streetcar-always-color"
+      ],
+      "rules_violated": [],
+      "rules_created": [],
+      "notes": "100% agreement. Two outfits, two locations. 68 of 70 source images were tall portrait (0.666 ratio), only 2 landscape. No bursts or copy variants detected. Selection rate 14% aligns with standard 10-15% target for 70-image sets."
+    },
+    {
+      "id": "swati-geevan-2026",
+      "couple": "Swati + Geevan",
+      "date": "2026-04-11",
+      "type": "pre-wedding",
+      "locations": [
+        "University of Toronto (St. George campus)",
+        "Toronto Island"
+      ],
+      "total_source_images": 59,
+      "ai_proposed": 9,
+      "human_approved": 9,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "one-concept-per-frame",
+        "walking-differentiate",
+        "outfit-distribute-evenly"
+      ],
+      "rules_violated": [],
+      "rules_created": [],
+      "notes": "100% agreement. Two outfits (navy at UofT, pink on island), two locations. 15% selection rate from 59 source images. Session had naming prefix bug (KashKlicks vs KashKlicksEdited) that was fixed in the clustering script during this run."
+    },
+    {
+      "id": "natalie-shavar-2026",
+      "couple": "Natalie + Shavar",
+      "date": "2026-04-11",
+      "type": "wedding",
+      "locations": [
+        "Wedding venue (ceremony + reception)",
+        "Outdoor portraits"
+      ],
+      "total_source_images": 320,
+      "ai_proposed": 42,
+      "human_approved": 42,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "one-concept-per-frame",
+        "walking-differentiate",
+        "multi-location-establish-first"
+      ],
+      "rules_violated": [],
+      "rules_created": [],
+      "notes": "100% agreement. Largest source set to date (320 images). First wedding session logged. 13% selection rate. Heavy ceremony coverage (8 ceremony images in final 42). Copy variants detected in source (DSCF4363-Copy1, DSCF4432-Copy1, etc.)."
+    },
+    {
+      "id": "preet-roxana-2026",
+      "couple": "Preet + Roxana",
+      "date": "2025-04-27",
+      "type": "pre-wedding",
+      "locations": [
+        "University of Toronto (St. George campus)"
+      ],
+      "total_source_images": 101,
+      "ai_proposed": 15,
+      "human_approved": 15,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "bw-max-one",
+        "one-concept-per-frame",
+        "walking-differentiate",
+        "ring-shots-max-two",
+        "architectural-bookends",
+        "multi-location-establish-first",
+        "solo-portrait-max-three",
+        "temporal-distribution-mandatory"
+      ],
+      "rules_violated": [],
+      "rules_created": [],
+      "notes": "100% agreement. 15% selection rate from 101 source images across 3 subfolders (Highlights, Mr._Pablo, Variations). 6 burst clusters detected (3-11 frames each). Tuxedo dog (Mr. Pablo) featured in 5 of 15 final images. Single location (UofT) but high architectural variety across gothic arches, cloisters, cherry blossoms, CN Tower views."
+    },
+    {
+      "id": "nora-ali",
+      "couple": "Nora + Ali",
+      "date": "2025-06-27",
+      "type": "wedding",
+      "locations": [
+        "Backyard Wedding, Toronto"
+      ],
+      "total_source_images": 467,
+      "ai_proposed": 45,
+      "human_approved": 45,
+      "cuts": [],
+      "adds": [],
+      "agreement_rate": 1.0,
+      "rules_confirmed": [
+        "temporal-distribution-mandatory",
+        "through-frame-is-editorial",
+        "foreground-layering-is-distinct",
+        "copy-variant-different-crop-is-different-image",
+        "one-concept-per-frame",
+        "multi-location-establish-first"
+      ],
+      "rules_violated": [],
+      "rules_created": [
+        "persian-ceremony-concept-slots"
+      ],
+      "notes": "First Persian/sofreh-aghd session in dataset. Full 45 of 45 AI proposals accepted. Cover swapped within AI pipeline (string-lights fence to couple dancing) by cover-selector before deploy. 64% portrait orientation, thirds 14/17/14 \u2014 temporal distribution held."
+    }
+  ]
+}

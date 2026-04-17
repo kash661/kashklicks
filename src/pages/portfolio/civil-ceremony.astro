@@ -3,72 +3,73 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
+import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
+import site from '../../data/site.json';
 
 const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/images/portfolio/*.jpg',
   { eager: true }
 );
 
+const ctaImage = (await import('../../assets/images/homepage/civil-service-detail.jpg')).default;
+
 const entries = portfolio.filter((p) => p.category === 'civil-ceremony');
+
+const businessRef = { '@id': `${site.url}/#business` };
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  name: 'Civil Ceremony Photography, AD Photography',
-  description: 'Intimate civil ceremony photography in Toronto by AD Photography.',
+  name: 'Toronto Civil Ceremony Photography Gallery, AD Photography',
+  description: 'Intimate civil ceremony photography portfolio in Toronto and the GTA by AD Photography.',
   url: new URL('/portfolio/civil-ceremony', Astro.site).href,
-  creator: {
-    '@type': 'LocalBusiness',
-    name: 'AD Photography',
-  },
+  creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
   image: entries.map((entry) => ({
     '@type': 'ImageObject',
     name: `${entry.couple}, Civil Ceremony`,
     description: `Civil ceremony photography of ${entry.couple} at ${entry.location}`,
-    contentLocation: {
-      '@type': 'Place',
-      name: entry.location,
-    },
+    contentLocation: { '@type': 'Place', name: entry.location },
   })),
 };
 ---
 
 <BaseLayout
-  title="Civil Ceremony Photography"
-  description="Intimate civil ceremony photography in Toronto. Capturing the beauty of your courthouse or city hall wedding."
+  title="Toronto Civil Ceremony Photography Portfolio"
+  description="Browse our Toronto civil ceremony photography portfolio. Intimate courthouse and city hall coverage with the care of a full wedding."
   jsonLd={schema}
 >
-  <!-- Hero -->
-  <section class="py-[var(--spacing-section)]">
-    <div class="container-editorial">
-      <Breadcrumbs items={[
-        { label: 'Home', href: '/' },
-        { label: 'Portfolio', href: '/portfolio' },
-        { label: 'Civil Ceremony', href: '/portfolio/civil-ceremony' },
-      ]} />
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Civil Ceremony', href: '/portfolio/civil-ceremony' },
+    ]} />
+  </div>
 
-      <div class="mt-[var(--spacing-block)] max-w-3xl reveal">
-        <h1 class="text-display-md">Civil Ceremonies</h1>
-        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
-          Intimate, beautiful moments, no matter the venue. Small ceremonies deserve
-          the same attention to detail as the grandest celebrations.
-        </p>
+  <!-- ═══ GALLERY ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end mb-16">
+        <div class="col-span-12 md:col-span-7 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Civil Ceremony</p>
+          <h1 class="text-display-md char-reveal">Toronto Civil Ceremony Stories</h1>
+        </div>
+        <div class="col-span-12 md:col-span-4 md:col-start-9 mt-6 md:mt-0 reveal stagger-2">
+          <p class="text-body-md text-on-surface-variant" style="max-width: 32ch;">
+            A small room, a few vows, and a lifetime of feeling. That's what we show up for.
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Grid -->
-  <section class="pb-[var(--spacing-section)]">
-    <div class="container-editorial">
       {entries.length > 0 ? (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
           {entries.map((entry, i) => {
             const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
             const img = portfolioImages[imgPath]?.default;
             return img ? (
-              <div class={`stagger-${(i % 5) + 1}`}>
+              <div class:list={['reveal', `stagger-${(i % 5) + 1}`, i % 3 === 1 ? 'lg:mt-24' : '']}>
                 <PortfolioCard
                   couple={entry.couple}
                   location={entry.location}
@@ -81,18 +82,18 @@ const schema = {
           })}
         </div>
       ) : (
-        <div class="text-center py-[var(--spacing-section)]">
-          <p class="text-body-lg text-on-surface-muted">New work coming soon. Check back or browse our other galleries.</p>
-          <div class="mt-[var(--spacing-element)]">
-            <Button href="/portfolio" variant="secondary">View All Work</Button>
+        <div class="text-center py-16">
+          <p class="text-body-lg text-on-surface-muted">New work coming soon. Check back or browse our other chapters.</p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/portfolio" variant="secondary">View All Work</Button></span>
           </div>
         </div>
       )}
     </div>
   </section>
 
-  <!-- Philosophy Quote -->
-  <section class="py-[var(--spacing-section)] bg-surface">
+  <!-- ═══ PHILOSOPHY ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="max-w-3xl mx-auto text-center reveal">
         <p class="text-quote">
@@ -102,16 +103,30 @@ const schema = {
     </div>
   </section>
 
-  <!-- Reserve CTA -->
-  <section class="bg-surface-dark py-[var(--spacing-section)]">
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <div class="max-w-2xl mx-auto text-center reveal">
-        <h2 class="text-display-md text-on-dark">Reserve your date</h2>
-        <p class="text-body-lg text-on-dark-variant mt-[var(--spacing-element)]">
-          Planning a civil ceremony? Let's make sure every moment is preserved.
-        </p>
-        <div class="mt-[var(--spacing-block)]">
-          <Button href="/contact" variant="primary">Book Coverage</Button>
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
+          <h2 class="text-display-md text-on-surface">Book coverage.</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
+            Planning a civil ceremony? Let's make sure every moment, no matter how small, is kept.
+          </p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/contact?service=civil-ceremony" variant="primary">Begin The Conversation</Button></span>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption" data-caption="A Quiet Ceremony">
+          <Image
+            src={ctaImage}
+            alt="Toronto civil ceremony couple portrait by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>

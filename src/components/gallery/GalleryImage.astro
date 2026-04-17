@@ -20,8 +20,8 @@ const { src, alt, gallery = 'gallery' } = Astro.props;
   <Image
     src={src}
     alt={alt}
-    widths={[400, 600, 800, 1200]}
-    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    widths={[300, 400, 600, 800]}
+    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
     class="w-full h-auto object-cover cubic-ease"
     style="transition-duration: var(--duration-slow);"
     loading="lazy"

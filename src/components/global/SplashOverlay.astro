@@ -1,6 +1,7 @@
 ---
 // src/components/global/SplashOverlay.astro
 // Full-viewport gateway page. Shows once per session.
+// Hidden by default via CSS. JS reveals it only on first visit.
 import { Image } from 'astro:assets';
 import heroImage from '../../assets/images/hero/hero-main.jpg';
 ---
@@ -8,6 +9,7 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
 <div
   id="splash-overlay"
   class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-surface-dark"
+  style="display: none;"
   role="dialog"
   aria-label="Welcome to AD Photography"
   aria-modal="true"
@@ -29,7 +31,7 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
 
   <!-- Content -->
   <div class="relative text-center px-6">
-    <h1 class="text-display-lg text-on-dark">AD</h1>
+    <p class="logo-mark text-on-dark" style="font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05;" aria-hidden="true">AD</p>
     <p class="text-label-md text-on-dark-variant mt-4">Moments fade. Memories don't.</p>
     <div id="splash-cta" class="mt-12 opacity-0" style="transition: opacity var(--duration-splash) var(--ease-gallery);">
       <button
@@ -59,13 +61,14 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
     const enterBtn = document.getElementById('splash-enter');
     if (!overlay) return;
 
-    // Check if already seen this session
+    // Only show splash if NOT seen this session
     if (sessionStorage.getItem('kk-splash-seen') === 'true') {
       overlay.remove();
       return;
     }
 
-    // Prevent scrolling while splash is visible
+    // First visit: show the splash
+    overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
     // Start ambient sound if user has opted in
@@ -89,7 +92,6 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
       }, 1200);
     });
 
-    // Also allow Enter key
     enterBtn?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') enterBtn.click();
     });

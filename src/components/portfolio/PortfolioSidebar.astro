@@ -1,0 +1,91 @@
+---
+import Button from '../ui/Button.astro';
+
+
+interface Props {
+  couple: string;
+  location: string;
+  locationDescription?: string;
+  story?: {
+    headline: string;
+    body: string;
+    pullQuote?: string;
+  };
+  category: string;
+  date?: string;
+}
+
+const { couple, location, locationDescription, story, category, date } = Astro.props;
+
+// Format date nicely
+const formattedDate = date
+  ? new Date(date + 'T00:00:00').toLocaleDateString('en-CA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+---
+
+<div class="space-y-0">
+  <!-- Couple name (hidden on mobile, shown in page header instead) -->
+  <h1 class="hidden lg:block font-heading text-3xl font-bold text-text-primary">{couple}</h1>
+
+  <!-- Location badge -->
+  <p class="hidden lg:flex items-center gap-1.5 text-accent text-sm mt-3">
+    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+    {location}
+  </p>
+
+  <!-- Date -->
+  {formattedDate && (
+    <p class="text-text-muted text-sm mt-2">{formattedDate}</p>
+  )}
+
+  <!-- Divider -->
+  <div class="border-b border-border my-6"></div>
+
+  <!-- Story -->
+  {story && (
+    <>
+      <h2 class="font-heading text-xl font-bold text-text-primary">{story.headline}</h2>
+      <div class="mt-4 text-text-secondary leading-relaxed space-y-4">
+        {story.body.split('\n\n').map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+
+      {story.pullQuote && (
+        <blockquote class="mt-8 pl-5 border-l-3 border-accent italic font-heading text-text-secondary text-lg leading-relaxed">
+          &ldquo;{story.pullQuote}&rdquo;
+        </blockquote>
+      )}
+
+      <div class="border-b border-border my-6"></div>
+    </>
+  )}
+
+  <!-- Location description -->
+  {locationDescription && (
+    <>
+      <div class="flex items-center gap-2 text-text-primary text-sm font-medium mb-3">
+        <svg class="w-4 h-4 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        About the Location
+      </div>
+      <p class="text-text-secondary text-sm leading-relaxed">{locationDescription}</p>
+
+      <div class="border-b border-border my-6"></div>
+    </>
+  )}
+
+  <!-- CTA -->
+  <div class="pt-2">
+    <Button href="/contact" variant="primary">Book Your Session</Button>
+  </div>
+</div>

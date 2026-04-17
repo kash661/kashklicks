@@ -20,7 +20,7 @@ const {
   description,
   publishDate,
   updatedDate,
-  author = 'Akash',
+  author = 'AD',
   coverImage,
   coverImageAlt,
   tags = [],
@@ -73,23 +73,24 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
       ]} />
 
       <header style="margin-bottom: var(--spacing-block);">
-        <div class="flex items-center gap-3 text-label-sm text-on-surface-muted mb-6">
+        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">{tags[0] ?? 'Story'}</p>
+        <h1 class="text-display-md leading-tight">{title}</h1>
+        <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 55ch;">{description}</p>
+        <div class="flex items-center gap-3 text-label-sm text-on-surface-muted mt-8">
           <time datetime={publishDate.toISOString()}>{formattedDate}</time>
-          {tags.length > 0 && (
+          {tags.length > 1 && (
             <>
               <span aria-hidden="true">/</span>
               <div class="flex gap-2">
-                {tags.map((tag) => (
+                {tags.slice(1).map((tag) => (
                   <span>{tag}</span>
                 ))}
               </div>
             </>
           )}
         </div>
-        <h1 class="text-display-md leading-tight">{title}</h1>
-        <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 55ch;">{description}</p>
         {coverImage && (
-          <div class="mt-10 aspect-[16/9] overflow-hidden">
+          <div class="mt-10 aspect-[16/9] overflow-hidden reveal image-caption" data-caption={tags[0] ?? 'Read'}>
             <Image
               src={coverImage}
               alt={coverImageAlt || title}
@@ -98,6 +99,8 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
               loading="eager"
               fetchpriority="high"
               decoding="async"
+              format="avif"
+              quality={75}
               class="w-full h-full object-cover"
             />
           </div>
@@ -110,9 +113,11 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
 
       <footer class="mt-16 pt-8 border-t border-ghost">
         <p class="text-label-sm text-on-surface-muted">Written by {author}</p>
-        <a href="/blog" class="inline-block mt-4 text-label-md text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">
-          Back to Blog
-        </a>
+        <span class="magnetic inline-block mt-4">
+          <a href="/blog" class="text-label-md text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">
+            Back to Blog
+          </a>
+        </span>
       </footer>
     </div>
   </article>

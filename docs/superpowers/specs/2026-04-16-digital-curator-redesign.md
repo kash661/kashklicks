@@ -282,7 +282,23 @@ When navigating between pages:
 - Buttons: background color fade over `duration-hover`.
 - Portfolio images: scale to 102% over `duration-slow`.
 - Links: no underline by default; underline fades in from left over `duration-hover`.
-- Cards: no movement. Stillness is the default; only the image within breathes.
+- Cards: no movement. Stillness is the default; only the image within breathes. Exception: `PricingCard` lifts 4px + soft shadow on hover (`card-lift`).
+
+### 7.5 Service Page Micro-interactions
+
+These primitives are standard on every service sub-page (pre-wedding, wedding, civil-ceremony, celebrations). They respect `prefers-reduced-motion`.
+
+| Class | What it does | Where to use it |
+|---|---|---|
+| `parallax-img` | 8%-of-viewport vertical drift on scroll | Applied to `<Image>` itself on hero, service-detail, editorial interlude, CTA portraits |
+| `image-caption` + `data-caption="..."` | Label-sm caption fades in bottom-left on hover | Wrapper div of feature portraits |
+| `eyebrow-rule` (+ `eyebrow-rule-center`, + `eyebrow-rule-on-dark`) | 40px hairline draws under the eyebrow label in 800ms when parent `.reveal` enters viewport | Every `text-label-md text-on-surface-muted` eyebrow. Centered variant inside `text-center` containers; `-on-dark` modifier swaps the rule to `on-dark-variant` for legibility on `bg-surface-dark` sections |
+| `card-lift` | 4px rise + soft shadow on hover over 600ms | Pricing cards (already baked in) |
+| `char-reveal` | Per-character fade on scroll | Service description `text-display-md` title only (don't overuse) |
+| `magnetic` | Cursor-magnetism pull | CTA buttons |
+| `hover-zoom` | 2.5s scale(1.04) on image hover | Wrapper div that contains a child `<img>` (won't work if applied to `<Image>` directly, since `<Image>` renders as a single `<img>`) |
+
+**Where the accent line lives:** On the eyebrow label (the muted all-caps label above a serif title), NOT on the serif title itself. The editorial rhythm is: muted label + hairline → serif headline → body.
 
 ---
 

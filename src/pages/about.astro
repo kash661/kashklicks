@@ -5,71 +5,107 @@ import Button from '../components/ui/Button.astro';
 import { Image } from 'astro:assets';
 
 import portraitImage from '../assets/images/about/akash-portrait.jpg';
+import travelMadeiraImage from '../assets/images/about/travel-madeira.jpg';
 import site from '../data/site.json';
 
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Akash',
+  '@id': `${site.url}/about#person`,
+  name: 'Akash Desai',
+  givenName: 'Akash',
+  familyName: 'Desai',
   jobTitle: 'Photographer & Videographer',
-  worksFor: {
-    '@type': 'LocalBusiness',
-    name: 'AD Photography',
-  },
-  url: `${site.url}/about`,
-  sameAs: [site.social.instagram],
+  description:
+    'Toronto-based wedding and pre-wedding photographer and videographer. Solo practice focused on intimate, unhurried ceremonies and cinematic editorial storytelling.',
+  image: `${site.url}/og-default.jpg`,
+  url: `${site.url}/about/`,
+  worksFor: { '@id': `${site.url}/#business` },
+  knowsAbout: [
+    'Wedding photography',
+    'Pre-wedding photography',
+    'Civil ceremony photography',
+    'Wedding videography',
+    'Cinematic editorial portraiture',
+  ],
+  sameAs: [site.social.instagram, site.social.pinterest, site.social.youtube],
 };
 ---
 
 <BaseLayout
-  title="The Experience"
-  description="Meet Akash, the photographer behind AD Photography. Based in Toronto, specializing in cinematic wedding and pre-wedding photography with a Fujifilm system."
+  title="About AD, Toronto Wedding Photographer"
+  description="Meet AD, the photographer behind AD Photography. Based in Toronto, specializing in cinematic wedding and pre-wedding photography with a Fujifilm system."
   jsonLd={personSchema}
 >
   <!-- Hero -->
   <section class="container-editorial" style="padding-top: var(--spacing-section);">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'The Experience', href: '/about' },
+      { label: 'The Experience', href: '/about/' },
     ]} />
 
-    <h1 class="text-display-lg reveal" style="margin-top: var(--spacing-block); max-width: 10ch;">The Quiet Observer</h1>
+    <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-top: var(--spacing-block);">The Experience</p>
+    <h1 class="text-display-lg char-reveal" style="margin-top: var(--spacing-element); max-width: 16ch;">
+      <span class="block">The Quiet Observer</span>
+      <span class="block text-body-lg italic text-on-surface-variant" style="margin-top: var(--spacing-element); letter-spacing: 0; font-weight: 400;">
+        Toronto wedding photographer and videographer
+      </span>
+    </h1>
   </section>
 
   <!-- Bio + Portrait -->
   <section class="container-editorial" style="padding-top: var(--spacing-block);">
     <div class="grid-editorial items-start">
-      <div class="col-span-5">
-        <div class="reveal stagger-1" style="display: flex; flex-direction: column; gap: var(--spacing-element);">
-          <p class="text-body-lg text-on-surface-variant">
-            I am a Toronto-based wedding and pre-wedding photographer and videographer, and the founder of AD Photography.
-            What started as a love for capturing candid moments has grown into a full creative practice built around one idea:
-            your photos should feel like <em>you</em>.
+      <div class="col-span-12 md:col-span-5 order-2 md:order-1">
+        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-bottom: var(--spacing-element);">Meet AD</p>
+        <div class="bio-expand reveal stagger-1" data-expanded="false">
+          <p class="bio-teaser text-body-lg text-on-surface-variant">
+            Toronto-based solo photographer and videographer. Intimate, unhurried weddings shot with a cinematic, editorial eye.
+            Prompting over posing. Calm over performance. Your photos should feel like <em>you</em>.
           </p>
-          <p class="text-body-lg text-on-surface-variant">
-            I shoot with Fujifilm for the colours, the tones, and the way it renders skin. My style is cinematic and editorial
-            but never stiff. I believe in prompting, not posing: guiding you through natural movements and real
-            moments instead of asking you to hold a smile for the camera.
-          </p>
-          <p class="text-body-lg text-on-surface-variant">
-            South Asian weddings hold a special place in my work. The colours, the energy, the emotion. There is nothing quite
-            like it. But whether it is a pre-wedding session at Scarborough Bluffs or a civil ceremony downtown, I bring the same
-            calm direction, attention to light, and commitment to telling your story honestly.
-          </p>
-          <p class="text-body-lg text-on-surface-variant">
-            Every session starts with a conversation. I want to know who you are, what matters to you, and how you want to
-            remember this chapter. From there, I handle the planning: locations, timing, creative direction. So you can
-            just show up and be present.
-          </p>
+          <div class="bio-full" style="display: flex; flex-direction: column; gap: var(--spacing-element);">
+            <p class="text-body-lg text-on-surface-variant">
+              I am a Toronto-based wedding and pre-wedding photographer and videographer, and the founder of AD Photography.
+              What started as a love for capturing candid moments has grown into a full creative practice built around one idea:
+              your photos should feel like <em>you</em>.
+            </p>
+            <p class="text-body-lg text-on-surface-variant">
+              Fujifilm has been my camera for photos since the beginning. I love it for the colours, the tones, the way it
+              renders skin. Video lives on Sony, and lately I have been reaching for Sony for stills too. My style is
+              cinematic and editorial but never stiff. I believe in prompting, not posing: guiding you through natural
+              movements and real moments instead of asking you to hold a smile for the camera.
+            </p>
+            <p class="text-body-lg text-on-surface-variant">
+              I work solo. That is a deliberate choice. One photographer, one calm voice, a single point of view running
+              through every frame. My best work lives in unhurried, intimate celebrations: church ceremonies, backyard
+              vows, close-knit receptions. Smaller rooms, closer people, more considered frames.
+            </p>
+            <p class="text-body-lg text-on-surface-variant">
+              Between you and me, I do not love being on the other side of the lens either. I know exactly how it feels to
+              stand in front of a camera and be asked to relax. That understanding shapes everything: the prompting, the
+              calm direction, the space to just be. When the story calls for it, I travel too. Across Ontario and beyond.
+              Because where matters.
+            </p>
+            <p class="text-body-lg text-on-surface-variant">
+              Every session starts with a conversation. I want to know who you are, what matters to you, and how you want to
+              remember this chapter. From there, I handle the planning: locations, timing, creative direction. So you can
+              just show up and be present.
+            </p>
+          </div>
+          <button type="button" class="bio-toggle" aria-expanded="false">
+            Read more
+          </button>
         </div>
       </div>
-      <div class="col-span-6 col-start-7 reveal stagger-2">
+      <div class="col-span-12 md:col-span-6 md:col-start-7 order-1 md:order-2 reveal-right stagger-2 image-caption overflow-hidden mb-[var(--spacing-element)] md:mb-0" data-caption="Toledo, Spain">
         <Image
           src={portraitImage}
-          alt="Akash, photographer and founder of AD Photography"
-          widths={[400, 600, 800]}
+          alt="Portrait of AD, Toronto wedding photographer and founder of AD Photography"
+          widths={[400, 600, 800, 1000]}
           sizes="(max-width: 639px) 100vw, 50vw"
-          class="w-full object-cover"
+          format="avif"
+          quality={75}
+          class="w-full object-cover parallax-img"
           loading="eager"
           fetchpriority="high"
           decoding="async"
@@ -81,7 +117,7 @@ const personSchema = {
   <!-- Approach Pillars -->
   <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <p class="text-label-md text-on-surface-muted reveal">The Approach</p>
+      <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">The Approach</p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 reveal stagger-1" style="margin-top: var(--spacing-block); gap: var(--spacing-block);">
         <div>
@@ -110,11 +146,11 @@ const personSchema = {
   <section class="bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial">
-        <div class="col-span-4">
-          <p class="text-label-md text-on-surface-muted reveal">Our Process</p>
+        <div class="col-span-12 md:col-span-4 mb-[var(--spacing-block)] md:mb-0">
+          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">Our Process</p>
           <h2 class="text-heading-lg reveal stagger-1" style="margin-top: var(--spacing-element);">How It Works</h2>
         </div>
-        <div class="col-span-7 col-start-6">
+        <div class="col-span-12 md:col-span-7 md:col-start-6">
           <div class="reveal stagger-2" style="display: flex; flex-direction: column; gap: var(--spacing-block);">
             <div>
               <p class="text-label-sm text-on-surface-muted">01</p>
@@ -150,16 +186,91 @@ const personSchema = {
     </div>
   </section>
 
+  <!-- Travel Teaser -->
+  <section class="bg-surface" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-4 reveal">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule">Off The Clock</p>
+          <h2 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">The Traveling Eye</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 42ch;">
+            When I am not shooting someone else's story, I am chasing my own. Light, architecture, strangers, cities.
+            The same eye, off the clock. A small travel log, coming soon.
+          </p>
+        </div>
+        <div class="col-span-12 md:col-span-7 md:col-start-6 aspect-[3/2] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Madeira, Portugal">
+          <Image
+            src={travelMadeiraImage}
+            alt="Travel photograph from Madeira, Portugal by AD Photography"
+            widths={[640, 960, 1280, 1600]}
+            sizes="(max-width: 768px) 100vw, 58vw"
+            format="avif"
+            quality={80}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
-  <section class="bg-surface-dark" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial text-center">
-      <h2 class="text-display-md text-on-dark reveal">Let's find the light.</h2>
-      <p class="text-body-lg text-on-dark-variant reveal stagger-1" style="margin-top: var(--spacing-element); max-width: 48ch; margin-left: auto; margin-right: auto;">
-        Every session starts with a conversation. Tell me about your vision and we will build something beautiful together.
-      </p>
-      <div class="reveal stagger-2" style="margin-top: var(--spacing-block);">
-        <Button href="/contact" variant="primary">Start the Conversation</Button>
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="flex flex-col items-center text-center">
+        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center">Ready?</p>
+        <h2 class="text-display-md text-on-surface reveal stagger-1" style="margin-top: var(--spacing-element);">Let's find the light.</h2>
+        <p class="text-body-lg text-on-surface-variant reveal stagger-2" style="margin-top: var(--spacing-element); max-width: 48ch;">
+          Every session starts with a conversation. Tell me about your vision and we will build something beautiful together.
+        </p>
+        <div class="reveal stagger-3" style="margin-top: var(--spacing-block);">
+          <Button href="/contact" variant="primary" class="magnetic">Start the Conversation</Button>
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .bio-expand { padding-bottom: var(--spacing-block); }
+  .bio-teaser { display: none; }
+  .bio-toggle { display: none; }
+
+  @media (max-width: 767px) {
+    .bio-teaser { display: block; }
+    .bio-toggle {
+      display: inline-block;
+      margin-top: var(--spacing-element);
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--color-on-surface);
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-on-surface);
+      background: transparent;
+      cursor: pointer;
+      transition: color 500ms var(--ease-gallery), border-color 500ms var(--ease-gallery);
+    }
+    .bio-toggle:hover {
+      color: var(--color-on-surface-variant);
+      border-color: var(--color-on-surface-variant);
+    }
+    .bio-expand[data-expanded="false"] .bio-full { display: none; }
+    .bio-expand[data-expanded="true"] .bio-teaser { display: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.bio-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const wrapper = btn.closest('.bio-expand');
+      if (!wrapper) return;
+      const expanded = wrapper.getAttribute('data-expanded') === 'true';
+      const next = (!expanded).toString();
+      wrapper.setAttribute('data-expanded', next);
+      btn.setAttribute('aria-expanded', next);
+      btn.textContent = expanded ? 'Read more' : 'Read less';
+    });
+  });
+</script>

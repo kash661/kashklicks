@@ -17,17 +17,17 @@
       "150+ high-resolution edited photos",
       "5-7 minute custom cinematic 4K film",
       "30-40 second trailer / save-the-date",
-      "Private online gallery",
-      "Location guidance included"
+      "Private online gallery"
     ],
-    "popular": true,
+    "popular": false,
     "order": 1
   },
   {
     "id": "love-story-film",
-    "name": "Love Story + Film",
+    "name": "The Signature Session",
     "category": "Pre-Wedding",
     "price": 850,
+    "salePrice": 750,
     "currency": "CAD",
     "description": "The perfect balance of photography and film. Up to 5 hours across 2 locations with 70+ edited photos and a 3-4 minute cinematic film.",
     "duration": "Up to 5 hours",
@@ -43,12 +43,12 @@
       "30-40 second trailer",
       "Private online gallery"
     ],
-    "popular": false,
-    "order": 2
+    "popular": true,
+    "order": 3
   },
   {
     "id": "love-story-mini-film",
-    "name": "Love Story Mini + Film",
+    "name": "Love Story + Film",
     "category": "Pre-Wedding",
     "price": 550,
     "currency": "CAD",
@@ -63,11 +63,10 @@
       "1 location, 1-2 outfits",
       "40 edited photos",
       "1-2 minute cinematic film",
-      "Private online gallery",
-      "Travel fee may apply"
+      "Private online gallery"
     ],
     "popular": true,
-    "order": 3
+    "order": 2
   },
   {
     "id": "love-story-duo",
@@ -85,15 +84,14 @@
       "2 locations, 2 outfits",
       "80+ high-resolution edited photos",
       "Private online gallery",
-      "Location guidance included",
       "1-week delivery"
     ],
     "popular": false,
-    "order": 3
+    "order": 4
   },
   {
     "id": "love-story",
-    "name": "Love Story",
+    "name": "Love Story Mini",
     "category": "Pre-Wedding",
     "price": 350,
     "currency": "CAD",
@@ -107,11 +105,31 @@
       "1 location, 1 outfit",
       "50+ high-resolution edited photos",
       "Private online gallery",
-      "1-week delivery",
-      "Location guidance included"
+      "1-week delivery"
     ],
     "popular": true,
-    "order": 4
+    "order": 5
+  },
+  {
+    "id": "custom-package",
+    "name": "Make It Yours",
+    "category": "Pre-Wedding",
+    "price": null,
+    "currency": "CAD",
+    "custom": true,
+    "description": "Pick any package above and customize it to fit your vision. Add locations, extend hours, mix photo and video. We'll build the perfect session together.",
+    "duration": "Flexible",
+    "photos": "Custom",
+    "film": false,
+    "highlights": [
+      "Start from any package above",
+      "Add extra locations or hours",
+      "Mix photo + video coverage",
+      "Flexible outfit and timeline",
+      "Free consultation to plan it out"
+    ],
+    "popular": false,
+    "order": 6
   },
   {
     "id": "wedding-essential",
@@ -119,7 +137,7 @@
     "category": "Wedding",
     "price": 1200,
     "currency": "CAD",
-    "description": "Clean, beautiful coverage of your wedding day. Perfect for intimate weddings and elopements — up to 6 hours of photography with all the key moments captured.",
+    "description": "Clean, beautiful coverage of your wedding day. Perfect for intimate weddings and elopements, with up to 6 hours of photography and all the key moments captured.",
     "duration": "Up to 6 hours",
     "photos": "Unlimited (200+)",
     "film": false,
@@ -129,7 +147,10 @@
       "Getting ready, ceremony & reception",
       "Couple portraits on the day",
       "Private online gallery",
-      "3-week delivery"
+      "1 to 2 month delivery",
+      "Additional hours available at $300/hr",
+      "Second photographer available at +$100/hr",
+      "Priority 2-3 week delivery available +$500"
     ],
     "popular": false,
     "order": 10
@@ -140,7 +161,7 @@
     "category": "Wedding",
     "price": 2400,
     "currency": "CAD",
-    "description": "Our most popular wedding package. Full-day coverage from getting ready through the last dance — every moment, every detail, beautifully documented.",
+    "description": "Our most popular wedding package. Full-day coverage from getting ready through the last dance. Every moment, every detail, beautifully documented.",
     "duration": "Up to 10 hours",
     "photos": "Unlimited (400+)",
     "film": false,
@@ -150,10 +171,10 @@
       "Sneak peek delivered within 24 hours",
       "Second photographer for ceremony or reception (your choice)",
       "Additional second photographer hours available at $100/hr",
-      "Getting ready through last dance",
-      "Love Story Mini + Film session included",
+      "Love Story + Film session included",
       "Private online gallery",
-      "3-week delivery"
+      "2 to 3 month delivery",
+      "Priority 2-3 week delivery available +$500"
     ],
     "popular": true,
     "order": 11
@@ -175,9 +196,9 @@
       "Second photographer for ceremony or reception (your choice)",
       "Additional second photographer hours available at $100/hr",
       "Love Story + Film session included",
-      "Getting ready through send-off",
       "Private online gallery",
-      "2-week priority delivery"
+      "2 to 3 month delivery",
+      "Priority 2-3 week delivery available +$500"
     ],
     "popular": false,
     "order": 12
@@ -196,9 +217,32 @@
       "Minimum 2 hours coverage",
       "Unlimited edited photos",
       "Private online gallery",
-      "2-week delivery"
+      "2-week delivery",
+      "Additional hours available at $150/hr"
     ],
     "popular": false,
     "order": 5
+  },
+  {
+    "id": "civil-ceremony",
+    "name": "The Civil Ceremony",
+    "category": "Civil Ceremony",
+    "price": 500,
+    "currency": "CAD",
+    "salePrice": null,
+    "description": "Intimate coverage of your civil ceremony with a couples portrait session nearby. Simple, beautiful, and everything you need.",
+    "duration": "Up to 2 hours",
+    "photos": "Unlimited (150+)",
+    "film": false,
+    "highlights": [
+      "2 hours of coverage",
+      "Unlimited edited photos (150+)",
+      "Ceremony coverage",
+      "Couples shoot nearby the venue",
+      "Private online gallery"
+    ],
+    "popular": false,
+    "custom": false,
+    "order": 1
   }
 ]

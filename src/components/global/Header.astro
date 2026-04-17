@@ -12,17 +12,17 @@ const { transparent = false } = Astro.props;
 <header
   id="site-header"
   class:list={[
-    'fixed top-0 left-0 right-0 z-50 cubic-ease',
-    transparent ? 'bg-transparent header-transparent' : 'bg-background/80 backdrop-blur-[20px] shadow-ambient header-solid',
+    'fixed top-0 left-0 right-0 z-50',
+    transparent ? 'header-transparent' : 'header-solid',
   ]}
-  style="transition-duration: var(--duration-slow);"
 >
-  <div class="container-editorial">
-    <div class="flex items-center justify-between h-20 lg:h-24">
+  <div class="header-bg" aria-hidden="true"></div>
+  <div class="container-editorial relative">
+    <div class="flex items-center justify-between h-16 lg:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center group">
         <span class:list={[
-          'header-logo font-serif text-2xl lg:text-[1.625rem] tracking-tight cubic-ease',
+          'header-logo logo-mark text-xl lg:text-[1.375rem] cubic-ease',
           transparent ? 'text-on-dark' : 'text-on-surface',
         ]} style="transition-duration: var(--duration-hover);">
           AD
@@ -55,12 +55,14 @@ const { transparent = false } = Astro.props;
       </button>
     </div>
   </div>
-
-  <MobileMenu />
 </header>
 
-<!-- Spacer to prevent content from hiding behind fixed header -->
-<div class="h-20 lg:h-24"></div>
+<MobileMenu />
+
+{!transparent && (
+  <!-- Spacer to prevent content from hiding behind fixed header -->
+  <div class="h-16 lg:h-20"></div>
+)}
 
 <script>
   function initHeader() {
@@ -70,11 +72,15 @@ const { transparent = false } = Astro.props;
     const isTransparent = header.classList.contains('header-transparent');
     const logo = header.querySelector('.header-logo') as HTMLElement | null;
     const navLinks = header.querySelectorAll('.nav-link');
+    const navCta = header.querySelector('.nav-cta') as HTMLElement | null;
     const toggleBtn = document.getElementById('mobile-menu-toggle');
 
+    const ctaTransparentClasses = ['bg-transparent', 'border-on-dark-variant', 'hover:bg-on-dark', 'hover:text-on-surface', 'hover:border-on-dark'];
+    const ctaSolidClasses = ['bg-primary', 'border-primary', 'hover:bg-primary-hover', 'hover:border-primary-hover'];
+
     function applyTransparentMode() {
-      header.classList.add('bg-transparent', 'header-transparent');
-      header.classList.remove('bg-background/80', 'backdrop-blur-[20px]', 'shadow-ambient', 'header-solid');
+      header.classList.add('header-transparent');
+      header.classList.remove('header-solid');
       logo?.classList.remove('text-on-surface');
       logo?.classList.add('text-on-dark');
       navLinks.forEach((link) => {
@@ -83,11 +89,15 @@ const { transparent = false } = Astro.props;
       });
       toggleBtn?.classList.remove('text-on-surface');
       toggleBtn?.classList.add('text-on-dark');
+      if (navCta) {
+        ctaSolidClasses.forEach((c) => navCta.classList.remove(c));
+        ctaTransparentClasses.forEach((c) => navCta.classList.add(c));
+      }
     }
 
     function applySolidMode() {
-      header.classList.remove('bg-transparent', 'header-transparent');
-      header.classList.add('bg-background/80', 'backdrop-blur-[20px]', 'shadow-ambient', 'header-solid');
+      header.classList.remove('header-transparent');
+      header.classList.add('header-solid');
       logo?.classList.add('text-on-surface');
       logo?.classList.remove('text-on-dark');
       navLinks.forEach((link) => {
@@ -96,6 +106,10 @@ const { transparent = false } = Astro.props;
       });
       toggleBtn?.classList.add('text-on-surface');
       toggleBtn?.classList.remove('text-on-dark');
+      if (navCta) {
+        ctaTransparentClasses.forEach((c) => navCta.classList.remove(c));
+        ctaSolidClasses.forEach((c) => navCta.classList.add(c));
+      }
     }
 
     if (isTransparent) {
@@ -145,6 +159,15 @@ const { transparent = false } = Astro.props;
       } else {
         openMenu();
       }
+    });
+
+    // Close on backdrop tap
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    backdrop?.addEventListener('click', closeMenu);
+
+    // Close when a nav link is tapped
+    menu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMenu);
     });
 
     // Close on Escape key

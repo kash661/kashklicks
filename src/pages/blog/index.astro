@@ -3,14 +3,38 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import site from '../../data/site.json';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': `${site.url}/blog/#blog`,
+  url: `${site.url}/blog/`,
+  name: 'AD Photography Journal',
+  description: 'Toronto wedding photography tips, engagement shoot guides, and location features from AD Photography.',
+  inLanguage: 'en-CA',
+  publisher: { '@id': `${site.url}/#business` },
+  blogPost: posts.map((post) => ({
+    '@type': 'BlogPosting',
+    '@id': `${site.url}/blog/${post.id}/`,
+    headline: post.data.title,
+    description: post.data.description,
+    url: `${site.url}/blog/${post.id}/`,
+    datePublished: post.data.publishDate.toISOString(),
+    ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+    author: { '@type': 'Person', name: post.data.author },
+    keywords: post.data.tags.join(', '),
+  })),
+};
 ---
 
 <BaseLayout
-  title="Blog"
-  description="Tips, guides, and behind-the-scenes stories from AD Photography. Wedding planning advice, Toronto location guides, and photography inspiration."
+  title="Toronto Wedding Photography Journal"
+  description="Toronto wedding photography tips, engagement shoot guides, and location features from AD Photography. Candid, cinematic, honest."
+  jsonLd={blogSchema}
 >
   <div class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
     <Breadcrumbs items={[
@@ -19,7 +43,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     ]} />
 
     <header class="max-w-3xl" style="margin-bottom: var(--spacing-block);">
-      <h1 class="text-display-md reveal stagger-1">Stories & Guides</h1>
+      <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">The Journal</p>
+      <h1 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">
+        <span class="block">Stories & Guides</span>
+        <span class="block text-body-lg italic text-on-surface-variant" style="margin-top: var(--spacing-tight); letter-spacing: 0;">
+          Toronto wedding photography journal
+        </span>
+      </h1>
       <p class="text-body-lg text-on-surface-variant mt-4 reveal stagger-2" style="max-width: 55ch;">
         Tips, location guides, and behind-the-scenes from our sessions.
       </p>
@@ -31,12 +61,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
           <a href={`/blog/${post.id}`} class="group block reveal" style={`transition-delay: ${(i % 3) * 100 + 100}ms;`}>
             <article>
               {post.data.coverImage ? (
-                <div class="aspect-[3/2] overflow-hidden bg-surface-dim">
+                <div class="aspect-[3/2] overflow-hidden bg-surface-dim image-caption" data-caption={post.data.tags[0] ?? 'Read'}>
                   <Image
                     src={post.data.coverImage}
                     alt={post.data.coverImageAlt}
                     widths={[400, 600]}
                     sizes="(max-width: 768px) 100vw, 33vw"
+                    format="avif"
+                    quality={80}
                     loading="lazy"
                     class="w-full h-full object-cover cubic-ease group-hover:scale-[1.02]"
                     style="transition-duration: var(--duration-slow);"

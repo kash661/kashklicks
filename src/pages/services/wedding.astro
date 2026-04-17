@@ -1,0 +1,385 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import PricingCard from '../../components/ui/PricingCard.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
+import Button from '../../components/ui/Button.astro';
+import BookingLink from '../../components/ui/BookingLink.astro';
+import { Image } from 'astro:assets';
+
+import packages from '../../data/packages.json';
+import faqData from '../../data/faq.json';
+import site from '../../data/site.json';
+
+import heroImage from '../../assets/images/homepage/wedding-hero-natalie.jpg';
+const weddingServiceImage = (await import('../../assets/images/homepage/wedding-service-detail.jpg')).default;
+
+const weddingPackages = packages.filter((p) => p.category === 'Wedding').sort((a, b) => a.order - b.order);
+const weddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('wedding'));
+
+const weddingService = {
+  title: 'Wedding Day Coverage',
+  description: 'From getting ready to the last dance, we capture every moment of your wedding day with the same cinematic, honest approach. Unobtrusive coverage that lets you be fully present while we handle the memories.',
+  includes: [
+    'Full-day or partial-day coverage',
+    'Ceremony and reception photography',
+    'Getting ready and detail shots',
+    'Candid and directed moments',
+    'High-resolution edited photos',
+    'Private online gallery',
+  ],
+};
+
+const businessRef = { '@id': `${site.url}/#business` };
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Toronto Wedding Photography',
+  description: weddingService.description,
+  provider: businessRef,
+  areaServed: { '@type': 'City', name: 'Toronto' },
+  serviceType: 'Wedding Photography',
+  image: `${site.url}/og-default.jpg`,
+};
+
+const offerCatalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Wedding Photography Packages',
+  description: 'Toronto wedding day photography packages by AD Photography. Full-day and partial-day coverage from $1,200.',
+  url: `${site.url}/services/wedding`,
+  offeredBy: businessRef,
+  itemListElement: weddingPackages.filter((p) => p.price !== null).map((p) => ({
+    '@type': 'Offer',
+    name: p.name,
+    description: p.description,
+    price: p.salePrice || p.price,
+    priceCurrency: p.currency,
+    availability: 'https://schema.org/InStock',
+    seller: businessRef,
+  })),
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: weddingFaq.map((q: any) => ({
+    '@type': 'Question',
+    name: q.question,
+    acceptedAnswer: { '@type': 'Answer', text: q.answer },
+  })),
+};
+
+const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
+---
+
+<BaseLayout
+  title="Toronto Wedding Photography"
+  description="Toronto wedding day photography packages from $1,200. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation."
+  jsonLd={jsonLd}
+>
+  <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services' },
+      { label: 'Wedding', href: '/services/wedding' },
+    ]} />
+  </div>
+
+  <!-- Hero: Featured review + portrait image -->
+  <section style="padding-top: var(--spacing-block);">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="min-height: 80vh;">
+        <!-- Review -->
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Wedding Photography</p>
+          <blockquote class="text-display-md" style="max-width: 20ch;">
+            "They made us feel like the only two people in the room."
+          </blockquote>
+          <p class="text-label-md text-on-surface-variant mt-8">Natalie & Shavar</p>
+          <p class="text-label-sm text-on-surface-muted">The Glenerin Inn, Mississauga</p>
+        </div>
+        <!-- Portrait image -->
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Natalie & Shavar, Glenerin Inn">
+          <Image
+            src={heroImage}
+            alt="Natalie and Shavar wedding photography at The Glenerin Inn by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={75}
+            format="avif"
+            class="w-full h-full object-cover parallax-img"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICE DESCRIPTION ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left image-caption order-2 lg:order-1 mt-10 lg:mt-0" data-caption="Full-Day Coverage">
+          <Image
+            src={weddingServiceImage}
+            alt="Toronto wedding couple portrait, full-day coverage by AD Photography"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-12 lg:col-span-5 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule">What We Offer</p>
+          <h1 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">Toronto Wedding Photography</h1>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{weddingService.description}</p>
+          <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
+          <ul class="space-y-3">
+            {weddingService.includes.map((item) => (
+              <li class="text-body-md text-on-surface-variant pl-5 relative">
+                <span class="absolute left-0 top-0 text-on-surface-muted" aria-hidden="true">/</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Scroll indicator to journey -->
+      <div class="flex flex-col items-center mt-16 reveal stagger-3">
+        <p class="text-label-sm text-on-surface-muted mb-3">Your Journey</p>
+        <div class="scroll-chevron">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ JOURNEY TIMELINE ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
+        <h2 class="text-display-md">From Inquiry to Gallery</h2>
+      </div>
+
+      <!-- Timeline -->
+      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
+        <!-- Vertical line -->
+        <div class="timeline-line hidden md:block"></div>
+
+        <!-- Step 1 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
+            <h3 class="text-heading-lg font-serif">Book a Consultation</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">A free, no-obligation call to talk about your wedding day. No pressure, just a conversation about what matters to you.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
+            <h3 class="text-heading-lg font-serif">We Plan Together</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">We walk through every package, answer all your questions, and find the right fit for your day and your budget.</p>
+          </div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <!-- Step 3 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
+            <h3 class="text-heading-lg font-serif">Lock In Your Date</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">Sign a simple contract. A 50% retainer secures your date and gets us started.</p>
+          </div>
+        </div>
+
+        <!-- Step 4 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
+            <h3 class="text-heading-lg font-serif">Your Engagement Shoot</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">We book your pre-wedding session. We help pick the location, what to wear, the time of day, and the mood you're going for. This is where we learn your editing style.</p>
+          </div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <!-- Step 5 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 05</p>
+            <h3 class="text-heading-lg font-serif">Your Wedding Day</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">We capture everything. The second 30% is due two weeks before your date, so you have one less thing to think about. You be fully present. We handle the memories.</p>
+          </div>
+        </div>
+
+        <!-- Step 6 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 06</p>
+            <h3 class="text-heading-lg font-serif">Sneak Peek</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">Within days of your wedding, you get a curated preview. Since we already know your style from the engagement shoot, the look is already dialed in.</p>
+          </div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <!-- Step 7 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 07</p>
+            <h3 class="text-heading-lg font-serif">Full Delivery</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">Your complete gallery delivered within 2 to 3 months. Final 20% due once you're happy with everything. Private online gallery, yours to keep.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendly CTA -->
+      <div class="text-center mt-24 reveal">
+        <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
+        <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
+        <BookingLink variant="primary" label="Book Your Call" />
+        <div class="flex flex-col items-center mt-12">
+          <p class="text-body-md text-on-surface-variant mb-3">We believe in transparent pricing. See our packages below.</p>
+          <div class="scroll-chevron">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WEDDING PACKAGES ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-5">
+          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">Curated Collections</p>
+          <h2 class="text-display-md reveal stagger-1" style="margin-top: var(--spacing-element);">Wedding Packages</h2>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0">
+          <p class="text-quote text-on-surface-variant reveal stagger-2" style="max-width: 50ch;">
+            <span class="md:hidden">Every package includes a free consultation.</span>
+            <span class="hidden md:inline">Every package includes a free pre-wedding consultation to walk through your day, your vision, and the moments that matter most to you.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 reveal stagger-3" style="gap: 2px;">
+        {weddingPackages.map((pkg, i) => (
+          <div>
+            <PricingCard
+              id={pkg.id}
+              name={pkg.name}
+              price={pkg.price}
+              salePrice={pkg.salePrice}
+              description={pkg.description}
+              highlights={pkg.highlights}
+              popular={pkg.popular}
+              featured={!!pkg.salePrice}
+            />
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA below packages -->
+      <div class="text-center mt-16 reveal">
+        <p class="text-label-sm text-on-surface-muted mb-2">Have questions? We'll get back to you within 24 hours, guaranteed.</p>
+        <div class="mt-6">
+          <a href="/contact?service=wedding" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GOOD TO KNOW ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Before You Book</p>
+        <h2 class="text-display-md">Good to Know</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-surface-container">
+        <div class="bg-background p-10 reveal">
+          <p class="text-heading-md font-serif italic mb-3">Free consultation</p>
+          <p class="text-body-md text-on-surface-variant">Included with every booking. No pressure, just a conversation about your vision and what your day looks like.</p>
+        </div>
+        <div class="bg-background p-10 reveal stagger-1">
+          <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
+          <p class="text-body-md text-on-surface-variant">We help you find the perfect spot. Light first, location second. One great spot can give you a dozen different looks.</p>
+        </div>
+        <div class="bg-background p-10 reveal stagger-2">
+          <p class="text-heading-md font-serif italic mb-3">GTA travel included</p>
+          <p class="text-body-md text-on-surface-variant">No surprise fees. Travel within the Greater Toronto Area is typically covered. Anything beyond, we discuss upfront.</p>
+        </div>
+        <div class="bg-background p-10 reveal stagger-3">
+          <p class="text-heading-md font-serif italic mb-3">Canada-wide</p>
+          <p class="text-body-md text-on-surface-variant">Based in Toronto, but we travel for love. We have shot across Ontario and beyond. If you are planning a destination wedding, let's talk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial max-w-3xl">
+      <div class="text-center mb-12 reveal">
+        <h2 class="text-heading-lg font-serif italic">Questions you might have</h2>
+      </div>
+      <div class="reveal stagger-1">
+        <FAQAccordion items={weddingFaq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
+          <h2 class="text-display-md text-on-surface">Let's plan your day.</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
+            Book a free consultation. No pressure, just a conversation about your vision.
+          </p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/contact?service=wedding" variant="primary">Begin Your Journey</Button></span>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Begin Your Journey">
+          <Image
+            src={(await import('../../assets/images/homepage/homepage-01.jpg')).default}
+            alt="Toronto wedding couple portrait by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

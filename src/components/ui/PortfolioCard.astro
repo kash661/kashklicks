@@ -13,18 +13,17 @@ const { couple, location, category, coverImage, href } = Astro.props;
 ---
 
 <a href={href} class="group block" data-category={category}>
-  <div class="overflow-hidden aspect-[2/3] bg-surface-container">
+  <div class="hover-zoom aspect-[2/3] bg-surface-container image-caption" data-caption={couple}>
     <Image
       src={coverImage}
       alt={`${couple}, ${location}`}
       widths={[400, 600, 800]}
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      class="w-full h-full object-cover cubic-ease group-hover:scale-[1.02]"
-      style="transition-duration: var(--duration-slow);"
+      class="w-full h-full object-cover"
       loading="lazy"
     />
   </div>
-  <div class="mt-4">
+  <div class="mt-4 cubic-ease group-hover:translate-x-1" style="transition-duration: var(--duration-hover);">
     <h3 class="text-heading-md">{couple}</h3>
     <p class="text-label-md text-on-surface-variant mt-1">{location}</p>
   </div>

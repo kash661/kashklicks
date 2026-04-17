@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import PricingCard from '../../components/ui/PricingCard.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
+import Button from '../../components/ui/Button.astro';
+import BookingLink from '../../components/ui/BookingLink.astro';
+import { Image } from 'astro:assets';
+
+import packages from '../../data/packages.json';
+import faqData from '../../data/faq.json';
+import site from '../../data/site.json';
+
+import heroImage from '../../assets/images/homepage/civil-ceremony-hero.jpg';
+
+// Gallery images: 3 portraits + 3 landscapes = 6 images
+const galleryImages = [
+  { src: (await import('../../assets/images/homepage/civil-gallery/dscf6042.jpg')).default, alt: 'Toronto civil ceremony venue exterior by AD Photography', orient: 'landscape' },
+  { src: (await import('../../assets/images/homepage/civil-gallery/dscf7398.jpg')).default, alt: 'Toronto civil ceremony ring and details by AD Photography', orient: 'portrait' },
+  { src: (await import('../../assets/images/homepage/civil-gallery/dscf7569-copy1.jpg')).default, alt: 'Toronto civil ceremony couple after vows by AD Photography', orient: 'landscape' },
+  { src: (await import('../../assets/images/homepage/civil-gallery/dscf5953.jpg')).default, alt: 'Toronto civil ceremony candid moment by AD Photography', orient: 'portrait' },
+  { src: (await import('../../assets/images/homepage/civil-gallery/dscf7631.jpg')).default, alt: 'Toronto civil ceremony venue interior by AD Photography', orient: 'landscape' },
+  { src: (await import('../../assets/images/homepage/civil-gallery/xt959277.jpg')).default, alt: 'Toronto civil ceremony couple portrait by AD Photography', orient: 'portrait' },
+];
+const ctaImage = (await import('../../assets/images/homepage/civil-gallery/dscf7377.jpg')).default;
+
+const civilPackages = packages.filter((p: any) => p.category === 'Civil Ceremony');
+const civilFaq = faqData.filter((q: any) => !q.services || q.services.includes('civil-ceremony'));
+
+const civilService = {
+  title: 'Civil Ceremony',
+  description: 'Intimate doesn\'t mean less important. We capture the beauty and emotion of your civil ceremony, whether at city hall, a courthouse, or any intimate venue, with the same care and artistry as a full wedding.',
+  includes: [
+    'Ceremony coverage',
+    'Couple portraits after the ceremony',
+    'High-resolution edited photos',
+    'Quick turnaround delivery',
+    'Private online gallery',
+  ],
+};
+
+const businessRef = { '@id': `${site.url}/#business` };
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Toronto Civil Ceremony Photography',
+  description: civilService.description,
+  provider: businessRef,
+  areaServed: { '@type': 'City', name: 'Toronto' },
+  serviceType: 'Civil Ceremony Photography',
+  image: `${site.url}/og-default.jpg`,
+};
+
+const offerCatalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Civil Ceremony Photography Packages',
+  description: 'Toronto civil ceremony photography package by AD Photography. Intimate ceremony coverage from $500.',
+  url: `${site.url}/services/civil-ceremony`,
+  offeredBy: businessRef,
+  itemListElement: civilPackages.filter((p: any) => p.price !== null).map((p: any) => ({
+    '@type': 'Offer',
+    name: p.name,
+    description: p.description,
+    price: p.salePrice || p.price,
+    priceCurrency: p.currency,
+    availability: 'https://schema.org/InStock',
+    seller: businessRef,
+  })),
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: civilFaq.map((q: any) => ({
+    '@type': 'Question',
+    name: q.question,
+    acceptedAnswer: { '@type': 'Answer', text: q.answer },
+  })),
+};
+
+const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
+---
+
+<BaseLayout
+  title="Toronto Civil Ceremony Photography"
+  description="Intimate civil ceremony photography in Toronto. City hall, courthouse, and small venue coverage. Book a free consultation."
+  jsonLd={jsonLd}
+>
+  <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services' },
+      { label: 'Civil Ceremony', href: '/services/civil-ceremony' },
+    ]} />
+  </div>
+
+  <!-- Hero: Scrolling venue gallery -->
+  <section style="padding-top: var(--spacing-block);">
+    <div class="container-editorial">
+      <div class="text-center mb-16">
+        <p class="text-label-md text-on-surface-muted mb-4 reveal eyebrow-rule eyebrow-rule-center">Civil Ceremony</p>
+        <h1 class="text-display-md reveal stagger-1">Toronto Civil Ceremony Photography</h1>
+        <p class="text-quote text-on-surface-variant reveal stagger-2 mt-6 mx-auto" style="max-width: 28ch;">Every venue tells a story.</p>
+      </div>
+
+      <!-- 6-image mosaic: 3 portraits + 3 landscapes matching reference -->
+      <!-- 6 images, natural ratios, no cropping -->
+      <div class="columns-1 md:columns-3 gap-3">
+        {galleryImages.map((img, i) => (
+          <div class={`mb-3 break-inside-avoid overflow-hidden hover-zoom ${i >= 4 ? 'hidden md:block' : ''} ${i % 2 === 0 ? 'reveal-left' : 'reveal-right'} stagger-${(i % 5) + 1}`}>
+            <Image
+              src={img.src}
+              alt={img.alt}
+              widths={[480, 640, 960]}
+              sizes="(max-width: 768px) 50vw, 33vw"
+              quality={80}
+              format="avif"
+              class="w-full h-auto"
+              loading={i < 2 ? 'eager' : 'lazy'}
+              fetchpriority={i < 2 ? 'high' : 'auto'}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICE DESCRIPTION ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left image-caption order-2 lg:order-1 mt-10 lg:mt-0" data-caption="Intimate. Uncomplicated.">
+          <Image
+            src={(await import('../../assets/images/homepage/civil-service-detail.jpg')).default}
+            alt="Toronto civil ceremony couple portrait by AD Photography, intimate city hall coverage"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-12 lg:col-span-5 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule">What We Offer</p>
+          <h2 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">{civilService.title}</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{civilService.description}</p>
+          <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
+          <ul class="space-y-3">
+            {civilService.includes.map((item) => (
+              <li class="text-body-md text-on-surface-variant pl-5 relative">
+                <span class="absolute left-0 top-0 text-on-surface-muted" aria-hidden="true">/</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Scroll indicator to journey -->
+      <div class="flex flex-col items-center mt-16 reveal stagger-3">
+        <p class="text-label-sm text-on-surface-muted mb-3">Your Journey</p>
+        <div class="scroll-chevron">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ JOURNEY TIMELINE ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
+        <h2 class="text-display-md">From Inquiry to Gallery</h2>
+      </div>
+
+      <!-- Timeline -->
+      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
+        <!-- Vertical line -->
+        <div class="timeline-line hidden md:block"></div>
+
+        <!-- Step 1 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
+            <h3 class="text-heading-lg font-serif">Book a Consultation</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">A free, no-obligation call to talk about your ceremony. No pressure, just a conversation about what matters to you.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
+            <h3 class="text-heading-lg font-serif">We Plan Together</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">We walk through your venue, timing, and coverage needs so everything runs smoothly on the day.</p>
+          </div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <!-- Step 3 — Right side -->
+        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
+          <div class="hidden md:block"></div>
+          <div class="md:pl-12">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
+            <h3 class="text-heading-lg font-serif">Your Ceremony Day</h3>
+            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">We capture everything. Simple and beautiful. You stay fully present while we handle the memories.</p>
+          </div>
+        </div>
+
+        <!-- Step 4 — Left side -->
+        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 relative">
+          <div class="md:pr-12 md:text-right">
+            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
+            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
+            <h3 class="text-heading-lg font-serif">Full Delivery</h3>
+            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">Your complete gallery delivered within 2 to 4 weeks. Private online gallery, yours to keep.</p>
+          </div>
+          <div class="hidden md:block"></div>
+        </div>
+      </div>
+
+      <!-- Calendly CTA -->
+      <div class="text-center mt-24 reveal">
+        <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
+        <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
+        <BookingLink variant="primary" label="Book Your Call" />
+        <div class="flex flex-col items-center mt-12">
+          <p class="text-body-md text-on-surface-variant mb-3">See our package below.</p>
+          <div class="scroll-chevron">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CIVIL CEREMONY PACKAGE ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-block) 0 var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center mb-12 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Simple Pricing</p>
+        <h2 class="text-display-md">One Package. Everything You Need.</h2>
+      </div>
+
+      <div class="max-w-md mx-auto reveal stagger-1">
+        {civilPackages.map((pkg: any) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            salePrice={pkg.salePrice}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.popular}
+            featured={!!pkg.salePrice}
+            custom={pkg.custom}
+          />
+        ))}
+      </div>
+
+      <div class="text-center mt-16 reveal">
+        <p class="text-label-sm text-on-surface-muted mb-2">Have questions? We'll get back to you within 24 hours, guaranteed.</p>
+        <div class="mt-6">
+          <a href="/contact?service=civil-ceremony" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GOOD TO KNOW ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Before You Book</p>
+        <h2 class="text-display-md">Good to Know</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-surface-container">
+        <div class="bg-surface-dim p-10 reveal">
+          <p class="text-heading-md font-serif italic mb-3">Free consultation</p>
+          <p class="text-body-md text-on-surface-variant">Included with every booking. No pressure, just a conversation about your vision and what your day looks like.</p>
+        </div>
+        <div class="bg-surface-dim p-10 reveal stagger-1">
+          <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
+          <p class="text-body-md text-on-surface-variant">We help you find the perfect spot. Light first, location second. One great spot can give you a dozen different looks.</p>
+        </div>
+        <div class="bg-surface-dim p-10 reveal stagger-2">
+          <p class="text-heading-md font-serif italic mb-3">Travel fees</p>
+          <p class="text-body-md text-on-surface-variant">Travel fees apply based on your venue location. We discuss this upfront during your consultation so there are no surprises.</p>
+        </div>
+        <div class="bg-surface-dim p-10 reveal stagger-3">
+          <p class="text-heading-md font-serif italic mb-3">Canada-wide</p>
+          <p class="text-body-md text-on-surface-variant">Based in Toronto, but we travel for love. We have shot across Ontario and beyond. If you are planning a destination ceremony, let's talk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial max-w-3xl">
+      <div class="text-center mb-12 reveal">
+        <h2 class="text-heading-lg font-serif italic">Questions you might have</h2>
+      </div>
+      <div class="reveal stagger-1">
+        <FAQAccordion items={civilFaq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
+          <h2 class="text-display-md text-on-surface">Let's capture your ceremony.</h2>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
+            Book a free consultation. No pressure, just a conversation about your vision.
+          </p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/contact?service=civil-ceremony" variant="primary">Begin Your Journey</Button></span>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Begin Your Story">
+          <Image
+            src={ctaImage}
+            alt="Toronto civil ceremony couple portrait after vows by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

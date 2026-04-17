@@ -16,3 +16,7 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Local tooling
+.claude/settings.local.json
+src/assets/images/portfolio/.originals/

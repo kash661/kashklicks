@@ -1,25 +1,31 @@
 ---
-import FloatingInput from '../ui/FloatingInput.astro';
-import FloatingSelect from '../ui/FloatingSelect.astro';
-import FloatingTextarea from '../ui/FloatingTextarea.astro';
-import Button from '../ui/Button.astro';
-
 interface Props {
   formspreeId?: string;
 }
 
-// TODO: Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID (e.g. 'xrgvalqb')
-// Sign up at https://formspree.io and create a form to get your ID
+// TODO: Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
 const { formspreeId = 'YOUR_FORMSPREE_ID' } = Astro.props;
 
 const eventTypeOptions = [
-  { value: 'pre-wedding', label: 'Pre-Wedding / Engagement' },
   { value: 'wedding', label: 'Wedding' },
+  { value: 'pre-wedding', label: 'Pre-Wedding / Engagement' },
   { value: 'civil-ceremony', label: 'Civil Ceremony' },
-  { value: 'birthday', label: 'Birthday / Celebration' },
-  { value: 'portrait', label: 'Portrait' },
-  { value: 'other', label: 'Other' },
+  { value: 'celebration', label: 'Celebration' },
+  { value: 'unsure', label: 'Not sure yet' },
 ];
+
+const referralOptions = [
+  { value: 'instagram', label: 'Instagram' },
+  { value: 'google', label: 'Google search' },
+  { value: 'referral', label: 'A friend or family member' },
+  { value: 'planner', label: 'Wedding planner or vendor' },
+  { value: 'blog', label: 'Blog, article, or feature' },
+  { value: 'other', label: 'Somewhere else' },
+];
+
+const inputClass = "w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease";
+const inputStyle = "transition-duration: var(--duration-hover);";
+const selectArrowStyle = `transition-duration: var(--duration-hover); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235c605c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-position: right 0 center; background-repeat: no-repeat; background-size: 1rem; padding-right: 1.75rem;`;
 ---
 
 <div id="contact-form-wrapper">
@@ -27,49 +33,255 @@ const eventTypeOptions = [
     id="contact-form"
     action={`https://formspree.io/f/${formspreeId}`}
     method="POST"
-    class="space-y-8"
+    class="space-y-16"
     novalidate
   >
-    <!-- Honeypot field -->
+    <!-- Honeypot -->
     <div class="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
       <label for="_gotcha">Don't fill this out</label>
       <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-      <FloatingInput id="name" name="name" label="Name" required />
-      <FloatingInput id="email" name="email" type="email" label="Email" required />
-    </div>
+    <!-- ═══ 01 · ABOUT YOU ═══ -->
+    <fieldset>
+      <legend class="w-full mb-10">
+        <div class="flex items-baseline gap-4">
+          <span class="font-serif italic text-heading-md text-on-surface-muted">01</span>
+          <span class="text-label-md text-on-surface tracking-widest uppercase">About You</span>
+        </div>
+        <div class="h-px bg-ghost mt-4"></div>
+      </legend>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-      <FloatingSelect
-        id="event_type"
-        name="event_type"
-        label="Event Type"
-        options={eventTypeOptions}
-      />
-      <FloatingInput id="date" name="event_date" type="date" label="Event Date" />
-    </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
+        <div class="relative">
+          <label for="name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Your Name <span class="text-on-surface" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            autocomplete="given-name"
+            required
+            aria-required="true"
+            aria-describedby="name-error"
+            class={inputClass}
+            style={inputStyle}
+          />
+          <p id="name-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+        </div>
 
-    <FloatingInput id="location" name="location" label="Location" />
+        <div class="relative">
+          <label for="partner_name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Partner's Name <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— if applicable</span>
+          </label>
+          <input
+            type="text"
+            id="partner_name"
+            name="partner_name"
+            class={inputClass}
+            style={inputStyle}
+          />
+          <p class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+        </div>
 
-    <FloatingTextarea id="message" name="message" label="Tell us about your vision" required rows={5} />
+        <div class="relative">
+          <label for="email" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Email <span class="text-on-surface" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            required
+            aria-required="true"
+            aria-describedby="email-error"
+            class={inputClass}
+            style={inputStyle}
+          />
+          <p id="email-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+        </div>
 
+        <div class="relative">
+          <label for="phone" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Phone <span class="text-on-surface" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            autocomplete="tel"
+            required
+            aria-required="true"
+            aria-describedby="phone-error"
+            placeholder="(416) 555 0199"
+            class={inputClass}
+            style={inputStyle}
+          />
+          <p id="phone-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- ═══ 02 · YOUR DAY ═══ -->
+    <fieldset>
+      <legend class="w-full mb-10">
+        <div class="flex items-baseline gap-4">
+          <span class="font-serif italic text-heading-md text-on-surface-muted">02</span>
+          <span class="text-label-md text-on-surface tracking-widest uppercase">Your Day</span>
+        </div>
+        <div class="h-px bg-ghost mt-4"></div>
+      </legend>
+
+      <div class="space-y-10">
+        <!-- Event Type — full width -->
+        <div class="relative">
+          <label for="event_type" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            What We're Capturing <span class="text-on-surface" aria-hidden="true">*</span>
+          </label>
+          <select
+            id="event_type"
+            name="event_type"
+            required
+            aria-required="true"
+            aria-describedby="event_type-error"
+            class={`${inputClass} appearance-none cursor-pointer`}
+            style={selectArrowStyle}
+          >
+            <option value="" disabled selected>Select an occasion</option>
+            {eventTypeOptions.map((opt) => (
+              <option value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+          <p id="event_type-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+        </div>
+
+        <!-- Event Date -->
+        <div class="relative">
+          <label for="event_date" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Event Date <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— tentative is fine</span>
+          </label>
+          <input
+            type="date"
+            id="event_date"
+            name="event_date"
+            class={inputClass}
+            style={inputStyle}
+          />
+          <p class="text-label-sm text-on-surface-muted italic mt-3">
+            Haven't locked the date? Leave blank, we'll talk through options together.
+          </p>
+        </div>
+
+        <!-- Location -->
+        <div class="relative">
+          <label for="location" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Venue or Location <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+          </label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="Venue name, a city, or 'Not sure yet'"
+            class={inputClass}
+            style={inputStyle}
+          />
+          <p class="text-label-sm text-on-surface-muted italic mt-3">
+            Still deciding? No problem. Light first, location second, we help you pick.
+          </p>
+        </div>
+
+        <!-- Guest count -->
+        <div class="relative">
+          <label for="guest_count" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Approximate Guest Count <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+          </label>
+          <input
+            type="text"
+            id="guest_count"
+            name="guest_count"
+            placeholder="e.g. 50, 100+, or just the two of us"
+            class={inputClass}
+            style={inputStyle}
+          />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- ═══ 03 · THE VISION ═══ -->
+    <fieldset>
+      <legend class="w-full mb-10">
+        <div class="flex items-baseline gap-4">
+          <span class="font-serif italic text-heading-md text-on-surface-muted">03</span>
+          <span class="text-label-md text-on-surface tracking-widest uppercase">The Vision</span>
+        </div>
+        <div class="h-px bg-ghost mt-4"></div>
+      </legend>
+
+      <div class="space-y-10">
+        <div class="relative">
+          <label for="message" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            Tell Us About Your Day <span class="text-on-surface" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            aria-required="true"
+            aria-describedby="message-error"
+            rows="5"
+            placeholder="Your story, the mood you're going for, Pinterest or Instagram links — anything that helps us understand the day."
+            class={`${inputClass} resize-none`}
+            style={inputStyle}
+          ></textarea>
+          <p id="message-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+        </div>
+
+        <div class="relative">
+          <label for="referral" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+            How Did You Find Us? <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+          </label>
+          <select
+            id="referral"
+            name="referral"
+            class={`${inputClass} appearance-none cursor-pointer`}
+            style={selectArrowStyle}
+          >
+            <option value="" disabled selected>Select one</option>
+            {referralOptions.map((opt) => (
+              <option value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Submit -->
     <div class="pt-2">
-      <Button variant="primary" class="w-full sm:w-auto">Submit Inquiry</Button>
+      <div class="h-px bg-ghost mb-10"></div>
+      <button
+        type="submit"
+        class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease w-full sm:w-auto"
+        style="transition-duration: var(--duration-hover);"
+      >
+        Send Inquiry
+      </button>
+      <p class="text-label-sm text-on-surface-muted italic mt-6">
+        <span class="text-on-surface not-italic" aria-hidden="true">*</span> required · everything else is optional, share what you can
+      </p>
     </div>
-
-    <p class="text-label-sm text-on-surface-muted">We respond within 24 hours.</p>
   </form>
 
   <!-- Success state -->
   <div id="contact-success" class="hidden bg-surface-dim p-10" role="status" aria-live="polite">
-    <h3 class="text-heading-lg">Thank you.</h3>
+    <p class="text-label-md text-on-surface-muted eyebrow-rule revealed mb-4">Thank You</p>
+    <h3 class="text-heading-lg font-serif">Your note is on its way.</h3>
     <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">
-      Your inquiry is on its way. We'll get back to you within 24 hours to start planning something together.
+      We'll read it carefully and reply within 24 hours to start planning something together.
     </p>
     <p class="text-label-sm text-on-surface-muted mt-6">
-      In the meantime, feel free to browse our <a href="/portfolio" class="text-on-surface-variant hover:text-on-surface cubic-ease underline" style="transition-duration: var(--duration-hover);">portfolio</a> for inspiration.
+      In the meantime, browse our <a href="/portfolio" class="text-on-surface hover:text-on-surface-variant cubic-ease underline" style="transition-duration: var(--duration-hover);">portfolio</a> for inspiration.
     </p>
   </div>
 
@@ -81,7 +293,7 @@ const eventTypeOptions = [
       </svg>
       <div>
         <p class="text-label-md text-on-surface">Something went wrong</p>
-        <p class="mt-1 text-body-lg text-on-surface-variant">Your message couldn't be sent. Please try again, or reach out directly at <a href="mailto:hello@kashklicks.ca" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">hello@kashklicks.ca</a>.</p>
+        <p class="mt-1 text-body-lg text-on-surface-variant">Your message couldn't be sent. Please try again, or reach out directly at <a href="mailto:info@kashklicks.ca" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">info@kashklicks.ca</a> or DM us on Instagram for a faster reply.</p>
         <button
           id="contact-retry-btn"
           type="button"
@@ -116,7 +328,7 @@ const eventTypeOptions = [
       field.removeAttribute('aria-invalid');
     }
 
-    function showFieldError(field: HTMLInputElement | HTMLTextAreaElement, message: string) {
+    function showFieldError(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement, message: string) {
       const errMsg = field.closest('.relative')?.querySelector('.form-error-msg') as HTMLElement | null;
       if (errMsg) {
         errMsg.textContent = message;
@@ -128,7 +340,7 @@ const eventTypeOptions = [
     function validateForm(): boolean {
       let valid = true;
       let firstInvalid: HTMLElement | null = null;
-      const requiredFields = form!.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]');
+      const requiredFields = form!.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[required]');
 
       requiredFields.forEach((field) => {
         clearFieldError(field);
@@ -148,8 +360,9 @@ const eventTypeOptions = [
       return valid;
     }
 
-    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach((field) => {
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select').forEach((field) => {
       field.addEventListener('input', () => clearFieldError(field));
+      field.addEventListener('change', () => clearFieldError(field));
     });
 
     form.addEventListener('submit', async (e) => {
@@ -179,6 +392,7 @@ const eventTypeOptions = [
         if (response.ok) {
           form.classList.add('hidden');
           successEl.classList.remove('hidden');
+          successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
           throw new Error(`Form submission failed: ${response.status}`);
         }

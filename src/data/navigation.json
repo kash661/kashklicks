@@ -6,15 +6,28 @@
       "children": [
         { "label": "Weddings", "href": "/portfolio/weddings" },
         { "label": "Pre-Weddings", "href": "/portfolio/pre-weddings" },
-        { "label": "Events", "href": "/portfolio/events" },
-        { "label": "Portraits", "href": "/portfolio/portraits" },
-        { "label": "Civil Ceremony", "href": "/portfolio/civil-ceremony" }
+        { "label": "Civil Ceremony", "href": "/portfolio/civil-ceremony" },
+        { "label": "Films", "href": "/portfolio/films" }
       ]
     },
-    { "label": "Services", "href": "/services" },
-    { "label": "Pricing", "href": "/pricing" },
-    { "label": "Location Guide", "href": "/location-guide" },
-    { "label": "Blog", "href": "/blog" },
+    {
+      "label": "Services",
+      "href": "/services",
+      "children": [
+        { "label": "Wedding", "href": "/services/wedding" },
+        { "label": "Pre-Weddings & E-Shoots", "href": "/services/pre-wedding" },
+        { "label": "Civil Ceremony", "href": "/services/civil-ceremony" },
+        { "label": "Celebrations", "href": "/services/celebrations" }
+      ]
+    },
+    {
+      "label": "Resources",
+      "href": "/blog",
+      "children": [
+        { "label": "Location Guide", "href": "/location-guide" },
+        { "label": "Blog", "href": "/blog" }
+      ]
+    },
     { "label": "About", "href": "/about" }
   ]
 }
