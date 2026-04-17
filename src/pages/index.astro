@@ -77,7 +77,7 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <!-- ═══ 1. HERO ═══ -->
-  <section class="relative h-screen w-full overflow-hidden bg-surface-container">
+  <section class="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-surface-container">
     <Image
       src={heroImage}
       alt="Toronto wedding photographer AD Photography, Mehak and Manal session"
@@ -105,10 +105,8 @@ const jsonLd = [
     </div>
 
     <!-- Scroll indicator -->
-    <div class="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 scroll-chevron">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-dark/70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 9l6 6 6-6" />
-      </svg>
+    <div class="absolute left-1/2 -translate-x-1/2 scroll-rail-wrap" aria-hidden="true">
+      <span class="scroll-rail"></span>
     </div>
   </section>
 
@@ -116,23 +114,23 @@ const jsonLd = [
   <section class="py-[var(--spacing-section)]">
     <div class="container-editorial" style="margin-bottom: var(--spacing-block);">
       <div class="grid-editorial items-end">
-        <div class="col-span-12 md:col-span-5 reveal">
+        <div class="col-span-12 md:col-span-5">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Signature Style</p>
-          <h2 class="text-display-md text-on-surface char-reveal" style="max-width: 14ch;">Quiet moments, real connection.</h2>
+          <h2 class="text-display-md text-on-surface measure-tight">Quiet moments, real connection.</h2>
         </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-quote text-on-surface-variant" style="max-width: 44ch;">
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0">
+          <p class="text-quote text-on-surface-variant measure-wide">
             No posing, no pretending. Just the in-between moments that end up meaning the most.
           </p>
         </div>
       </div>
     </div>
     <div class="grid-editorial">
-      <div class="col-span-12 md:col-span-7 gallery-frame hover-zoom reveal-left">
+      <div class="col-span-12 md:col-span-7 gallery-frame hover-zoom">
         <Image
           src={signatureLeft}
           alt="Candid Toronto wedding photography, Ayushi and Parth"
-          class="parallax-img"
+          class="scroll-lift"
           widths={[640, 960, 1280]}
           sizes="(max-width: 768px) 100vw, 58vw"
           quality={80}
@@ -142,11 +140,11 @@ const jsonLd = [
           <p class="text-on-surface-variant">Toronto</p>
         </div>
       </div>
-      <div class="col-span-12 md:col-span-5 mt-8 md:mt-24 gallery-frame hover-zoom reveal-right stagger-2">
+      <div class="col-span-12 md:col-span-5 mt-3 md:mt-24 gallery-frame hover-zoom">
         <Image
           src={signatureRight}
           alt="Toronto pre-wedding portrait, Alex and Aziz"
-          class="parallax-img"
+          class="scroll-lift"
           widths={[640, 960]}
           sizes="(max-width: 768px) 100vw, 42vw"
           quality={80}
@@ -162,19 +160,19 @@ const jsonLd = [
   <!-- ═══ 3. INVESTMENT ═══ -->
   <section class="py-[var(--spacing-section)] bg-surface-dim">
     <div class="grid-editorial items-center">
-      <div class="col-span-12 md:col-span-6 gallery-frame reveal-left image-caption" data-caption="Full-Day Coverage">
+      <div class="col-span-12 md:col-span-6 gallery-frame image-caption" data-caption="Full-Day Coverage">
         <Image
           src={investmentImage}
           alt="Full-day wedding photography coverage in Toronto by AD Photography"
-          class="parallax-img"
+          class="scroll-lift"
           widths={[640, 960, 1280]}
           sizes="(max-width: 768px) 100vw, 50vw"
           quality={80}
         />
       </div>
-      <div class="col-span-12 md:col-span-5 md:col-start-8 mt-8 md:mt-0 reveal-right stagger-2">
+      <div class="col-span-12 md:col-span-5 md:col-start-8 mt-8 md:mt-0 order-first md:order-none">
         <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Investment</p>
-        <h2 class="text-display-md text-on-surface mb-6 char-reveal">Wedding packages starting at $1,200</h2>
+        <h2 class="text-display-md text-on-surface mb-6">Wedding packages starting at $1,200</h2>
         <p class="text-body-lg text-on-surface-variant mb-10">
           Every package includes a pre-shoot consultation, professionally edited images, and a private online gallery.
         </p>
@@ -188,11 +186,11 @@ const jsonLd = [
   <!-- ═══ 4. TESTIMONIAL ═══ -->
   <section class="py-[var(--spacing-section)] bg-white">
     <div class="container-editorial text-center max-w-3xl mx-auto">
-      <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-10">Kind Words</p>
-      <blockquote class="text-quote text-on-surface mb-8 reveal stagger-1">
+      <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center mb-10">Kind Words</p>
+      <blockquote class="text-quote text-on-surface mb-8">
         "{testimonial.quote}"
       </blockquote>
-      <p class="text-label-md text-on-surface-variant reveal stagger-2">
+      <p class="text-label-md text-on-surface-variant">
         {testimonial.name} &middot; {testimonial.event}
       </p>
     </div>
@@ -202,21 +200,21 @@ const jsonLd = [
   <section class="py-[var(--spacing-section)]">
     <div class="container-editorial mb-[var(--spacing-block)]">
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-12 md:col-span-5 reveal">
+        <div class="col-span-12 md:col-span-5">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Recent Work</p>
-          <h2 class="text-display-md text-on-surface char-reveal" style="max-width: 18ch;">Stories from the last few months.</h2>
+          <h2 class="text-display-md text-on-surface measure-medium">Stories from the last few months.</h2>
         </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-quote text-on-surface-variant" style="max-width: 44ch;">
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0">
+          <p class="text-quote text-on-surface-variant measure-wide">
             A few recent afternoons with couples who trusted me with their day.
           </p>
         </div>
       </div>
-      <div class="gallery-frame hover-zoom scale-reveal mx-auto !w-full image-caption" data-caption="Meghna & Puneeth, Toronto">
+      <a href="/portfolio/meghna-puneeth" class="gallery-frame hover-zoom mx-auto !w-full image-caption block group" data-caption="Meghna & Puneeth, Toronto" aria-label="View the Meghna and Puneeth album">
         <Image
           src={recentWide}
           alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
-          class="parallax-img !w-full !max-h-none aspect-[16/9] object-cover"
+          class="scroll-lift !w-full !max-h-none aspect-[16/9] object-cover"
           widths={[960, 1440, 1920]}
           sizes="(max-width: 768px) 100vw, 90vw"
           quality={80}
@@ -225,14 +223,14 @@ const jsonLd = [
           <p class="font-medium">Meghna + Puneeth</p>
           <p class="text-on-surface-variant">Toronto</p>
         </div>
-      </div>
+      </a>
     </div>
     <div class="grid-editorial">
-      <div class="col-span-12 md:col-span-5 gallery-frame hover-zoom reveal-left !w-full">
+      <a href="/portfolio" class="col-span-12 md:col-span-5 gallery-frame hover-zoom !w-full block group" aria-label="Browse the full portfolio">
         <Image
           src={recentPortraitLeft}
           alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
-          class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+          class="scroll-lift !w-full !max-h-none aspect-[3/4] object-cover"
           widths={[480, 640, 960]}
           sizes="(max-width: 768px) 100vw, 42vw"
           quality={80}
@@ -241,12 +239,12 @@ const jsonLd = [
           <p class="font-medium">Swathi + Saksham</p>
           <p class="text-on-surface-variant">Toronto</p>
         </div>
-      </div>
-      <div class="col-span-12 md:col-span-5 md:col-start-7 mt-8 md:mt-24 gallery-frame hover-zoom reveal-right stagger-2 !w-full">
+      </a>
+      <a href="/portfolio/nora-ali" class="col-span-12 md:col-span-5 md:col-start-7 mt-3 md:mt-24 gallery-frame hover-zoom !w-full block group" aria-label="View the Nora and Ali album">
         <Image
           src={recentPortraitRight}
           alt="Destination wedding portrait in Italy, Nora and Ali"
-          class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+          class="scroll-lift !w-full !max-h-none aspect-[3/4] object-cover"
           widths={[480, 640, 960]}
           sizes="(max-width: 768px) 100vw, 42vw"
           quality={80}
@@ -255,7 +253,7 @@ const jsonLd = [
           <p class="font-medium">Nora + Ali</p>
           <p class="text-on-surface-variant">Italy</p>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -263,18 +261,18 @@ const jsonLd = [
   <section class="py-[var(--spacing-section)] bg-surface-dim">
     <div class="container-editorial">
       <div class="grid-editorial items-end mb-[var(--spacing-block)]">
-        <div class="col-span-12 md:col-span-5 reveal">
+        <div class="col-span-12 md:col-span-5">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Questions</p>
-          <h2 class="text-display-md text-on-surface char-reveal" style="max-width: 14ch;">Things couples ask me.</h2>
+          <h2 class="text-display-md text-on-surface measure-tight">Things couples ask me.</h2>
         </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-quote text-on-surface-variant" style="max-width: 44ch;">
+        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0">
+          <p class="text-quote text-on-surface-variant measure-wide">
             Short answers to the questions that come up most. Full list lives on the services pages.
           </p>
         </div>
       </div>
       <div class="grid-editorial">
-        <div class="col-span-12 md:col-span-10 md:col-start-2 reveal">
+        <div class="col-span-12 md:col-span-10 md:col-start-2">
           <FAQAccordion items={faqItems} />
         </div>
       </div>
@@ -285,12 +283,12 @@ const jsonLd = [
   <section class="py-[var(--spacing-section)] bg-white">
     <div class="container-editorial">
       <div class="text-center mb-[var(--spacing-block)]">
-        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-4">The Journal</p>
-        <h2 class="text-display-md text-on-surface char-reveal">Stories & guides.</h2>
+        <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center mb-4">The Journal</p>
+        <h2 class="text-display-md text-on-surface">Stories & guides.</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-12">
         {journalPosts.map((post, i) => (
-          <a href={`/blog/${post.id}`} class="group block reveal" style={`transition-delay: ${(i + 1) * 100}ms;`}>
+          <a href={`/blog/${post.id}`} class="group block" style={`transition-delay: ${(i + 1) * 100}ms;`}>
             <div class="aspect-[3/2] overflow-hidden bg-surface-dim">
               <Image
                 src={post.data.coverImage}
@@ -308,7 +306,7 @@ const jsonLd = [
           </a>
         ))}
       </div>
-      <div class="text-center mt-[var(--spacing-block)] reveal">
+      <div class="text-center mt-[var(--spacing-block)]">
         <a href="/blog" class="magnetic inline-flex items-center text-label-md text-on-surface border-b border-on-surface pb-1 hover:text-on-surface-variant hover:border-on-surface-variant cubic-ease" style="transition-duration: var(--duration-hover);">Read the journal</a>
       </div>
     </div>
@@ -322,12 +320,12 @@ const jsonLd = [
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="container-editorial relative z-10">
       <div class="flex flex-col items-center text-center">
-        <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">Ready?</p>
-        <h2 class="text-display-md text-on-dark mb-4 reveal stagger-1 char-reveal">Start the Conversation</h2>
-        <p class="text-body-lg text-on-dark/70 mb-10 reveal stagger-2">
+        <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">Ready?</p>
+        <h2 class="text-display-md text-on-dark mb-4">Start the Conversation</h2>
+        <p class="text-body-lg text-on-dark/70 mb-10">
           Let's talk about your day. No obligations, just a conversation.
         </p>
-        <div class="reveal stagger-3">
+        <div>
           <a href="/contact" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-10 py-4 bg-white text-on-surface font-sans text-[0.875rem] tracking-[0.08em] uppercase hover:bg-white/90 cubic-ease" style="transition-duration: var(--duration-hover);">Get in Touch</a>
         </div>
       </div>

@@ -6,7 +6,7 @@
 
 export function initScrollReveal(): void {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const allRevealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const allRevealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .unmask, .unmask-l, .unmask-r');
 
   if (prefersReducedMotion) {
     allRevealElements.forEach((el) => {
