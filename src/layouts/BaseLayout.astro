@@ -87,9 +87,8 @@ if (site.phone) {
     <meta name="author" content="AD Photography" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Preconnect to external media / analytics -->
+    <!-- Preconnect to external media -->
     <link rel="preconnect" href="https://kashklicks.b-cdn.net" crossorigin />
-    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
 
     <!-- Preload critical fonts -->
     <link rel="preload" href="/fonts/CormorantGaramond-Regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -158,9 +157,5 @@ if (site.phone) {
       document.addEventListener('astro:after-swap', initPage);
     </script>
 
-    <!-- Cloudflare Web Analytics -->
-    <!-- TODO: Replace YOUR_CF_ANALYTICS_TOKEN with your Cloudflare Web Analytics token.
-         Get it from: Cloudflare Dashboard > Analytics & Logs > Web Analytics > Add a site > Copy the token -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script>
   </body>
 </html>

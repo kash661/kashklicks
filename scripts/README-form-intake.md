@@ -50,12 +50,34 @@ Received · Source · Name · Email · Phone · Event Type · Event Date · Loca
 
 `Status` is pre-filled with `new`. Edit it in the sheet as you work through leads (`replied`, `booked`, `declined`, etc.). You can add filters / views in the sheet however you like.
 
+## Pipeline setup (one-time, after the form-intake setup above)
+
+The Apps Script also exposes admin endpoints used by the `forms` skill in `.claude/skills/forms/`. Two extra steps to enable them:
+
+1. **Create an admin token.** In a terminal:
+   ```bash
+   openssl rand -hex 24 > ~/.claude/projects/-Users-akashdesai-projects-kashklicks/forms-admin-token
+   chmod 600 ~/.claude/projects/-Users-akashdesai-projects-kashklicks/forms-admin-token
+   ```
+2. **Tell Apps Script the same token.** In the Apps Script editor:
+   - Project Settings (gear icon) → **Script Properties** → **Add script property**.
+   - Name: `ADMIN_TOKEN`. Value: paste the same token.
+   - Save.
+3. **Re-deploy the web app** so the new code is live: Deploy → Manage deployments → pencil icon → Version: New version → Deploy. The URL stays the same.
+4. **Smoke test** from the project root:
+   ```bash
+   TOKEN=$(cat ~/.claude/projects/-Users-akashdesai-projects-kashklicks/forms-admin-token)
+   curl -sX POST 'https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec' \
+     -d "action=setup" -d "token=$TOKEN"
+   ```
+   Expect `{"ok":true,"tabs":["Inquiries","Pipeline","Booked"]}`. The two new tabs will appear in the sheet.
+
 ## Daily check from Claude Code
 
 Any session:
-> "Check my inquiries sheet for anything new."
+> "/forms"  — or "check forms", "any new inquiries", "show me the pipeline"
 
-Claude uses the Google Drive MCP to read the sheet and summarize rows with `Status = new` (or received since your last check). No extra auth needed — the Drive MCP is already connected.
+The `forms` skill (`.claude/skills/forms/SKILL.md`) hits the admin endpoints via the same web app URL. It reads inbox + pipeline, presents a triage table, applies your decisions (promote/ignore, status changes, notes, mark booked) by writing back through the API.
 
 ## If you want to migrate later
 

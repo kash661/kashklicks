@@ -87,7 +87,7 @@ The "best" location is the one that fits *you*. Here's a quick guide:
 - **Want classic, elegant photos?** → University of Toronto
 - **Not sure?** → That's what our free consultation is for
 
-Every KashKlicks package includes location guidance. We'll help you find the spot that matches your style, your outfits, and the look you're going for.
+Every package includes location guidance. I'll help you find the spot that matches your style, your outfits, and the look you're going for.
 
 [View our full location guide →](/location-guide)
 
