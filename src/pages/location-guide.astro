@@ -79,19 +79,44 @@ const locationListSchema = [
           <h1 class="text-display-md char-reveal">Toronto Location Guide</h1>
         </div>
         <div class="md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-body-lg text-on-surface-variant" style="max-width: 55ch;">
+          <p class="text-body-lg text-on-surface-variant measure-wide">
             A gallery of places I've shot across Toronto and the GTA. Hover any image for a quick read, or tap through for the full rundown: parking, permits, walking, best seasons.
           </p>
         </div>
       </div>
     </header>
 
-    <div class="location-mosaic">
+    <form class="mosaic-search reveal" role="search" autocomplete="off" onsubmit="return false;">
+      <label for="location-search" class="sr-only">Search locations</label>
+      <svg class="mosaic-search-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="7" />
+        <path stroke-linecap="round" d="m20 20-3.5-3.5" />
+      </svg>
+      <input
+        id="location-search"
+        type="search"
+        placeholder="Search by name, area, vibe, or season"
+        class="mosaic-search-input"
+        data-search-input
+      />
+      <button type="button" class="mosaic-search-clear" aria-label="Clear search" data-search-clear hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" d="M6 6l12 12M18 6l-12 12" />
+        </svg>
+      </button>
+    </form>
+
+    <p class="mosaic-search-count" aria-live="polite">
+      Showing <span data-search-count>{tiles.length}</span> of {tiles.length} locations
+    </p>
+
+    <div class="location-mosaic" data-search-target>
       {tiles.map((loc, i) => (
         <a
           href={`/location-guide/${loc.id}`}
           class="mosaic-tile reveal"
           aria-label={`View details for ${loc.name}`}
+          data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')}`.toLowerCase()}
           style={`transition-delay: ${(i % 6) * 80 + 100}ms;`}
         >
           <div class="mosaic-img-wrap">
@@ -128,6 +153,10 @@ const locationListSchema = [
       ))}
     </div>
 
+    <p class="mosaic-no-results" data-search-empty hidden>
+      No locations match that search. Try a city, a vibe, or a season.
+    </p>
+
     <!-- CTA -->
     <section class="bg-surface-dim mt-24" style="margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem)); padding: var(--spacing-section) 2rem;">
       <div class="flex flex-col items-center text-center">
@@ -144,7 +173,121 @@ const locationListSchema = [
   </div>
 </BaseLayout>
 
+<script>
+  // Client-side filter for the location guide mosaic. Matches against
+  // name, area, vibe, tags, setting, zone, and season (all lowercased
+  // into data-search-haystack server-side).
+  const input = document.querySelector<HTMLInputElement>('[data-search-input]');
+  const clearBtn = document.querySelector<HTMLButtonElement>('[data-search-clear]');
+  const tiles = document.querySelectorAll<HTMLElement>('[data-search-haystack]');
+  const countEl = document.querySelector<HTMLElement>('[data-search-count]');
+  const emptyEl = document.querySelector<HTMLElement>('[data-search-empty]');
+
+  function applyFilter() {
+    if (!input) return;
+    const q = input.value.trim().toLowerCase();
+    let matches = 0;
+    tiles.forEach((tile) => {
+      const haystack = tile.dataset.searchHaystack || '';
+      const show = !q || haystack.includes(q);
+      tile.hidden = !show;
+      if (show) matches++;
+    });
+    if (countEl) countEl.textContent = String(matches);
+    if (clearBtn) clearBtn.hidden = q.length === 0;
+    if (emptyEl) emptyEl.hidden = matches > 0;
+  }
+
+  input?.addEventListener('input', applyFilter);
+  clearBtn?.addEventListener('click', () => {
+    if (!input) return;
+    input.value = '';
+    input.focus();
+    applyFilter();
+  });
+</script>
+
 <style>
+  /* ── Search bar ── */
+  .mosaic-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+    padding: 0.625rem 0;
+    margin-bottom: 1rem;
+    border: 0;
+    border-bottom: 1px solid var(--color-on-surface-variant);
+  }
+
+  .mosaic-search-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-on-surface-muted);
+    margin-right: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .mosaic-search-input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-on-surface);
+    padding: 0.125rem 0;
+  }
+
+  .mosaic-search-input::placeholder {
+    color: var(--color-on-surface-muted);
+  }
+
+  /* Hide native clear button in WebKit so our custom button is the only one */
+  .mosaic-search-input::-webkit-search-cancel-button,
+  .mosaic-search-input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .mosaic-search-clear {
+    background: none;
+    border: 0;
+    padding: 0.5rem;
+    margin: -0.5rem -0.25rem -0.5rem 0.25rem;
+    cursor: pointer;
+    color: var(--color-on-surface-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mosaic-search-clear:hover {
+    color: var(--color-on-surface);
+  }
+
+  .mosaic-search-count {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    margin-bottom: 2rem;
+  }
+
+  .mosaic-no-results {
+    padding: clamp(3rem, 10vw, 6rem) 0;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    color: var(--color-on-surface-variant);
+  }
+
   .location-mosaic {
     column-count: 1;
     column-gap: 0.75rem;
