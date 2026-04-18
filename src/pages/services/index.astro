@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
+import FinalCTA from '../../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 import site from '../../data/site.json';
 import portfolio from '../../data/portfolio.json';
@@ -483,17 +484,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
     })();
   </script>
 
-  <!-- CTA -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial text-center">
-      <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center">Not sure where to start?</p>
-      <h2 class="text-display-md text-on-surface reveal stagger-1" style="margin-top: var(--spacing-element);">Let's find the right fit.</h2>
-      <p class="text-body-lg text-on-surface-variant reveal stagger-2" style="margin-top: var(--spacing-element); max-width: 50ch; margin-left: auto; margin-right: auto;">
-        Book a free consultation. I will walk through your vision, recommend the right package, and handle the rest.
-      </p>
-      <div class="flex flex-wrap justify-center reveal stagger-3" style="margin-top: var(--spacing-block); gap: var(--spacing-element);">
-        <BookingLink variant="primary" label="Book Free Consultation" />
-      </div>
-    </div>
-  </section>
+  <FinalCTA
+    eyebrow="Not sure where to start?"
+    title="Let's find the right fit."
+    body="Book a free consultation. I will walk through your vision, recommend the right package, and handle the rest."
+    useBookingLink={true}
+    bookingLabel="Book Free Consultation"
+    background="surface-dim"
+  />
 </BaseLayout>

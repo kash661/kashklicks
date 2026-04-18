@@ -1,0 +1,209 @@
+---
+/**
+ * FinalCTA
+ * --------
+ * Reusable bottom-of-page call-to-action section. Replaces the dozen+
+ * hand-rolled CTA blocks that drifted out of alignment over time.
+ *
+ * Two visual variants:
+ *  - centered (default when no image): label + heading + body + button stack
+ *    centered in the column.
+ *  - split    (when an image is provided): text column on the left,
+ *    portrait image on the right. On mobile the image stacks below
+ *    and the text column re-centers so the button never sits awkwardly
+ *    against the left margin.
+ *
+ * Either Button (default) or BookingLink (Calendly) can drive the CTA.
+ */
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import BookingLink from '../ui/BookingLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  /** When true, renders BookingLink (Calendly) instead of a plain Button. */
+  useBookingLink?: boolean;
+  bookingLabel?: string;
+  /** Section background. Default 'surface-dim'. */
+  background?: 'background' | 'surface-dim' | 'surface-dark';
+  image?: ImageMetadata;
+  imageAlt?: string;
+  imageCaption?: string;
+}
+
+const {
+  eyebrow = 'Ready?',
+  title,
+  body,
+  ctaLabel = 'Begin Your Story',
+  ctaHref = '/contact',
+  useBookingLink = false,
+  bookingLabel = 'Book a Consultation',
+  background = 'surface-dim',
+  image,
+  imageAlt,
+  imageCaption,
+} = Astro.props;
+
+const bgClass =
+  background === 'background'
+    ? 'bg-background'
+    : background === 'surface-dark'
+      ? 'bg-surface-dark'
+      : 'bg-surface-dim';
+
+const onDark = background === 'surface-dark';
+const hasImage = !!image && !!imageAlt;
+---
+
+<section class:list={['final-cta', bgClass]}>
+  <div class="container-editorial">
+    {hasImage ? (
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-5 final-cta__text reveal">
+          <p
+            class:list={[
+              'text-label-md mb-4 eyebrow-rule final-cta__eyebrow',
+              onDark
+                ? 'text-on-dark-variant eyebrow-rule-on-dark'
+                : 'text-on-surface-muted',
+            ]}
+          >
+            {eyebrow}
+          </p>
+          <h2
+            class:list={[
+              'text-display-md',
+              onDark ? 'text-on-dark' : 'text-on-surface',
+            ]}
+          >
+            {title}
+          </h2>
+          {body && (
+            <p
+              class:list={[
+                'text-body-lg mt-4 measure-wide final-cta__body',
+                onDark ? 'text-on-dark/80' : 'text-on-surface-variant',
+              ]}
+            >
+              {body}
+            </p>
+          )}
+          <div class="final-cta__action">
+            {useBookingLink ? (
+              <BookingLink variant="primary" label={bookingLabel} />
+            ) : (
+              <span class="magnetic inline-block">
+                <Button href={ctaHref} variant="primary">{ctaLabel}</Button>
+              </span>
+            )}
+          </div>
+        </div>
+        <div
+          class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption"
+          data-caption={imageCaption ?? title}
+        >
+          <Image
+            src={image!}
+            alt={imageAlt!}
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    ) : (
+      <div class="final-cta__centered reveal">
+        <p
+          class:list={[
+            'text-label-md mb-4 eyebrow-rule eyebrow-rule-center',
+            onDark
+              ? 'text-on-dark-variant eyebrow-rule-on-dark'
+              : 'text-on-surface-muted',
+          ]}
+        >
+          {eyebrow}
+        </p>
+        <h2
+          class:list={[
+            'text-display-md',
+            onDark ? 'text-on-dark' : 'text-on-surface',
+          ]}
+        >
+          {title}
+        </h2>
+        {body && (
+          <p
+            class:list={[
+              'text-body-lg mt-4',
+              onDark ? 'text-on-dark/80' : 'text-on-surface-variant',
+            ]}
+          >
+            {body}
+          </p>
+        )}
+        <div class="final-cta__action">
+          {useBookingLink ? (
+            <BookingLink variant="primary" label={bookingLabel} />
+          ) : (
+            <span class="magnetic inline-block">
+              <Button href={ctaHref} variant="primary">{ctaLabel}</Button>
+            </span>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .final-cta {
+    padding-block: var(--spacing-section);
+  }
+
+  .final-cta__centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 36rem;
+    margin-inline: auto;
+  }
+
+  .final-cta__centered .final-cta__action,
+  .final-cta__action {
+    margin-top: var(--spacing-block);
+  }
+
+  /* Mobile: split-variant text column re-centers so the button never sits
+     awkwardly against the left margin once the image stacks below. */
+  @media (max-width: 767px) {
+    .final-cta__text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .final-cta__text .final-cta__eyebrow {
+      position: relative;
+    }
+
+    .final-cta__text .final-cta__eyebrow::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .final-cta__text .final-cta__action {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+</style>

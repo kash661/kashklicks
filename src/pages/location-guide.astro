@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import Button from '../components/ui/Button.astro';
 import BookingLink from '../components/ui/BookingLink.astro';
+import FinalCTA from '../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 
 import locationsData from '../data/locations.json';
@@ -64,7 +65,7 @@ const locationListSchema = [
   description="Curated Toronto and GTA photography locations for pre-wedding, engagement, and portrait sessions. Parking, permits, and best times for each."
   jsonLd={locationListSchema}
 >
-  <div class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
+  <div class="container-editorial" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
     <div class="sr-only">
       <Breadcrumbs items={[
         { label: 'Home', href: '/' },
@@ -157,20 +158,16 @@ const locationListSchema = [
       No locations match that search. Try a city, a vibe, or a season.
     </p>
 
-    <!-- CTA -->
-    <section class="bg-surface-dim mt-24" style="margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem)); padding: var(--spacing-section) 2rem;">
-      <div class="flex flex-col items-center text-center">
-        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-6">Still deciding?</p>
-        <h2 class="text-display-md text-on-surface reveal stagger-1">Not sure where to shoot?</h2>
-        <p class="text-body-lg text-on-surface-variant reveal stagger-2 mt-4 mb-10" style="max-width: 48ch;">
-          Location guidance is included with every package. I'll help you find the perfect spot.
-        </p>
-        <div class="reveal stagger-3">
-          <BookingLink variant="primary" label="Book a Consultation" />
-        </div>
-      </div>
-    </section>
   </div>
+
+  <FinalCTA
+    eyebrow="Still deciding?"
+    title="Not sure where to shoot?"
+    body="Location guidance is included with every package. I'll help you find the perfect spot."
+    useBookingLink={true}
+    bookingLabel="Book a Consultation"
+    background="surface-dim"
+  />
 </BaseLayout>
 
 <script>

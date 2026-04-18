@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import Button from '../components/ui/Button.astro';
+import FinalCTA from '../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 
 import portraitImage from '../assets/images/about/akash-portrait.jpg';
@@ -281,21 +282,12 @@ const personSchema = {
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="flex flex-col items-center text-center">
-        <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center">Ready?</p>
-        <h2 class="text-display-md text-on-surface reveal stagger-1" style="margin-top: var(--spacing-element);">Let's find the light.</h2>
-        <p class="text-body-lg text-on-surface-variant reveal stagger-2" style="margin-top: var(--spacing-element); max-width: 48ch;">
-          Every session starts with a conversation. Tell me about your vision and I will build something beautiful with you.
-        </p>
-        <div class="reveal stagger-3" style="margin-top: var(--spacing-block);">
-          <Button href="/contact" variant="primary" class="magnetic">Start the Conversation</Button>
-        </div>
-      </div>
-    </div>
-  </section>
+  <FinalCTA
+    title="Let's find the light."
+    body="Every session starts with a conversation. Tell me about your vision and I will build something beautiful with you."
+    ctaLabel="Start the Conversation"
+    background="surface-dim"
+  />
 </BaseLayout>
 
 <style>

@@ -6,6 +6,7 @@ import Lightbox from '../../components/gallery/Lightbox.astro';
 import YouTubeEmbed from '../../components/gallery/YouTubeEmbed.astro';
 import RelatedGalleries from '../../components/portfolio/RelatedGalleries.astro';
 import Button from '../../components/ui/Button.astro';
+import FinalCTA from '../../components/global/FinalCTA.astro';
 import portfolio from '../../data/portfolio.json';
 import site from '../../data/site.json';
 import { Image } from 'astro:assets';
@@ -177,21 +178,12 @@ const remainingImages = galleryImages;
     <RelatedGalleries currentId={entry.id} category={entry.category} />
   </div>
 
-  <!-- Reserve CTA -->
-  <section class="bg-surface-dim py-[var(--spacing-section)]">
-    <div class="container-editorial">
-      <div class="max-w-2xl mx-auto text-center reveal">
-        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Ready?</p>
-        <h2 class="text-display-md text-on-surface">Reserve your date.</h2>
-        <p class="text-body-lg text-on-surface-variant mt-[var(--spacing-element)]">
-          Every session is unique, just like yours. Let's create something beautiful together.
-        </p>
-        <div class="mt-[var(--spacing-block)]">
-          <span class="magnetic inline-block"><Button href="/contact" variant="primary">Get in Touch</Button></span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <FinalCTA
+    title="Reserve your date."
+    body="Every session is unique, just like yours. Let's create something beautiful together."
+    ctaLabel="Get in Touch"
+    background="surface-dim"
+  />
 
   <Lightbox />
 </BaseLayout>

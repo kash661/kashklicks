@@ -6,6 +6,8 @@ import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
+import FinalCTA from '../../components/global/FinalCTA.astro';
+import ctaImage from '../../assets/images/homepage/homepage-01.jpg';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
@@ -364,32 +366,14 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ CTA ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="grid-editorial items-center">
-        <div class="col-span-12 md:col-span-5 reveal">
-          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
-          <h2 class="text-display-md text-on-surface">Let's plan your day.</h2>
-          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 40ch;">
-            Book a free consultation. No pressure, just a conversation about your vision.
-          </p>
-          <div class="mt-8">
-            <span class="magnetic inline-block"><Button href="/contact?service=wedding" variant="primary">Begin Your Journey</Button></span>
-          </div>
-        </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Begin Your Journey">
-          <Image
-            src={(await import('../../assets/images/homepage/homepage-01.jpg')).default}
-            alt="Toronto wedding couple portrait by AD Photography"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={90}
-            class="w-full h-full object-cover parallax-img"
-            loading="lazy"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  <FinalCTA
+    title="Let's plan your day."
+    body="Book a free consultation. No pressure, just a conversation about your vision."
+    ctaLabel="Begin Your Journey"
+    ctaHref="/contact?service=wedding"
+    background="background"
+    image={ctaImage}
+    imageAlt="Toronto wedding couple portrait by AD Photography"
+    imageCaption="Begin Your Journey"
+  />
 </BaseLayout>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
+import FinalCTA from '../../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
@@ -248,32 +249,13 @@ const gallerySchema = {
     </div>
   </section>
 
-  <!-- ═══ CTA ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="grid-editorial items-center">
-        <div class="col-span-12 md:col-span-5 reveal">
-          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Ready?</p>
-          <h2 class="text-display-md text-on-surface">Your story, next.</h2>
-          <p class="text-body-lg text-on-surface-variant mt-4 measure-wide">
-            Every season fills quickly. If my work speaks to you, let's start a conversation before your date is gone.
-          </p>
-          <div class="mt-8">
-            <span class="magnetic inline-block"><Button href="/contact" variant="primary">Begin Your Journey</Button></span>
-          </div>
-        </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption" data-caption="Begin Your Journey">
-          <Image
-            src={ctaImage}
-            alt="Toronto wedding couple portrait by AD Photography"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={90}
-            class="w-full h-full object-cover parallax-img"
-            loading="lazy"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  <FinalCTA
+    title="Your story, next."
+    body="Every season fills quickly. If my work speaks to you, let's start a conversation before your date is gone."
+    ctaLabel="Begin Your Journey"
+    background="background"
+    image={ctaImage}
+    imageAlt="Toronto wedding couple portrait by AD Photography"
+    imageCaption="Begin Your Journey"
+  />
 </BaseLayout>

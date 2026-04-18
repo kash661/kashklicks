@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import Button from '../../components/ui/Button.astro';
 import LocationCarousel from '../../components/ui/LocationCarousel.astro';
+import FinalCTA from '../../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 import locationsData from '../../data/locations.json';
 import site from '../../data/site.json';
@@ -244,21 +245,13 @@ const essentials = [
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="bg-background" style="padding: var(--spacing-section) 0;">
-      <div class="container-editorial">
-        <div class="flex flex-col items-center text-center">
-          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-6">Ready?</p>
-          <h2 class="text-display-md text-on-surface reveal stagger-1">Let's shoot at {loc.name}.</h2>
-          <p class="text-body-lg text-on-surface-variant reveal stagger-2 mt-4 mb-10" style="max-width: 48ch;">
-            Let's talk about your vision and map the perfect session.
-          </p>
-          <div class="reveal stagger-3">
-            <Button href={`/contact?location=${loc.id}`} variant="primary" class="magnetic">Start the Conversation</Button>
-          </div>
-        </div>
-      </div>
-    </section>
+    <FinalCTA
+      title={`Let's shoot at ${loc.name}.`}
+      body="Let's talk about your vision and map the perfect session."
+      ctaLabel="Start the Conversation"
+      ctaHref={`/contact?location=${loc.id}`}
+      background="background"
+    />
   </article>
 </BaseLayout>
 
