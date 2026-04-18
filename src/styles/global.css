@@ -411,41 +411,29 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Service card "Limited Offer" badge. Renders above the price row when
-   any package in that service's category has a non-null salePrice in
-   packages.json. Small pulsing dot plus tracked caps label, tappable
-   link that deep-links to the sale package on the detail page. */
-.service-sale-badge {
+/* Service card "Limited Offer" tag — replaces the muted category eyebrow
+   in the top-right of a card when that service has a sale. Same
+   typographic slot as the default eyebrow so nothing shifts; the
+   stronger treatment (full on-surface colour + pulsing dot + arrow)
+   pulls the reader's eye without a heavy badge pill. */
+.service-sale-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
   font-family: var(--font-sans);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-on-surface);
-  margin-bottom: 0.875rem;
-  padding: 0.5rem 0.75rem;
-  margin-left: -0.75rem;
-  border: 1px solid color-mix(in srgb, var(--color-on-surface) 25%, transparent);
-  cursor: pointer;
-  transition: background-color var(--duration-hover) var(--ease-gallery),
-              color var(--duration-hover) var(--ease-gallery),
-              border-color var(--duration-hover) var(--ease-gallery);
+  transition: color var(--duration-hover) var(--ease-gallery);
 }
 
-.service-sale-badge:hover,
-.service-sale-badge:focus-visible {
-  background: var(--color-on-surface);
-  color: var(--color-on-dark);
-  border-color: var(--color-on-surface);
+.service-sale-tag:hover,
+.service-sale-tag:focus-visible {
+  color: var(--color-on-surface-variant);
   outline: none;
-}
-
-.service-sale-badge:hover .service-sale-dot,
-.service-sale-badge:focus-visible .service-sale-dot {
-  background: var(--color-on-dark);
 }
 
 .service-sale-arrow {
@@ -453,8 +441,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform var(--duration-hover) var(--ease-gallery);
 }
 
-.service-sale-badge:hover .service-sale-arrow,
-.service-sale-badge:focus-visible .service-sale-arrow {
+.service-sale-tag:hover .service-sale-arrow,
+.service-sale-tag:focus-visible .service-sale-arrow {
   transform: translateX(3px);
 }
 

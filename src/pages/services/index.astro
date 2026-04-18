@@ -212,14 +212,27 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
       <div class="services-scroller flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16" data-services-scroller>
         {services.map((service, i) => (
           <article class:list={['service-card group flex flex-col h-full pt-8 border-t border-on-surface reveal', `stagger-${i + 1}`]}>
-            <!-- Header: number + meta row, fixed visual rhythm -->
+            <!-- Header: number + meta row. Sale cards swap the meta label
+                 for a tappable Limited Offer deep link. -->
             <div class="flex items-start justify-between gap-3">
               <span class="service-num" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <span class="text-label-sm text-on-surface-muted pt-2 tracking-wider">
-                {service.eyebrow}
-              </span>
+              {service.hasSale && service.saleHref ? (
+                <a
+                  href={service.saleHref}
+                  class="service-sale-tag"
+                  aria-label={`Jump to the limited-time ${service.altTitle} offer`}
+                >
+                  <span class="service-sale-dot" aria-hidden="true"></span>
+                  Limited Offer
+                  <span class="service-sale-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+              ) : (
+                <span class="text-label-sm text-on-surface-muted pt-2 tracking-wider">
+                  {service.eyebrow}
+                </span>
+              )}
             </div>
 
             <!-- Body: aligned blocks -->
@@ -231,17 +244,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
             <!-- Footer: pinned to bottom so CTAs align across cards -->
             <div class="mt-auto pt-8">
-              {service.hasSale && service.saleHref && (
-                <a
-                  href={service.saleHref}
-                  class="service-sale-badge"
-                  aria-label={`Jump to the limited-time ${service.altTitle} offer`}
-                >
-                  <span class="service-sale-dot" aria-hidden="true"></span>
-                  Limited Offer
-                  <span class="service-sale-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-              )}
               <div class="flex items-end justify-between mb-4">
                 <p class="text-label-sm text-on-surface-muted">
                   From <span class="text-heading-md text-on-surface">${service.startingAt}</span>
