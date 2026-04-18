@@ -18,7 +18,7 @@ import heroImage from '../assets/images/intimate-wedding/hero-DSCF4845.jpg';
 const noraAliCover = (await import('../assets/images/portfolio/nora-ali-cover.jpg')).default;
 const natalieShavarCover = (await import('../assets/images/portfolio/natalie-shavar-cover.jpg')).default;
 const alexAzizCover = (await import('../assets/images/portfolio/alex-aziz-cover.jpg')).default;
-const anushkaAnthonyAlt = (await import('../assets/images/portfolio/anushka-anthony/05.jpg')).default;
+const anushkaAnthonyAlt = (await import('../assets/images/intimate-wedding/anushka-anthony-alt-DSCF7057.jpg')).default;
 
 // Wedding packages only (photo-only — no film)
 const weddingPackages = packages
@@ -231,7 +231,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           <a
             href={item.href}
             class={`block reveal stagger-${(i % 4) + 1} hover-zoom`}
-            aria-label={`${item.couple} wedding photography at ${item.venue}`}
           >
             <div class={`${item.aspect} overflow-hidden bg-surface-container`}>
               <Image
@@ -245,6 +244,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 loading="lazy"
               />
             </div>
+            <p class="text-label-sm text-on-surface-variant mt-3">{item.couple}</p>
+            <p class="text-label-sm text-on-surface-muted">{item.venue}</p>
           </a>
         ))}
       </div>
