@@ -372,22 +372,22 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-on-dark-variant);
 }
 
-/* Services index horizontal scroller — on mobile, the four service
-   cards slide horizontally with scroll-snap so the reader can swipe
-   through the offerings without scrolling the whole page. Desktop
-   falls back to the tailwind grid (sm:grid, sm:grid-cols-2, etc.). */
+/* Services index horizontal scroller — on mobile, one service card
+   fills the viewport. Reader swipes between cards with native CSS
+   scroll-snap. Each card sets its own horizontal padding so it
+   preserves the container gutter. Desktop falls back to the tailwind
+   grid above 640px. */
 @media (max-width: 639px) {
   .services-scroller {
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: clamp(1.5rem, 4vw, 6rem);
-    gap: 1rem;
-    padding-inline: clamp(1.5rem, 4vw, 6rem);
-    padding-bottom: 0.5rem;
+    gap: 0;
+    padding: 0;
     margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem));
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    align-items: stretch;
   }
 
   .services-scroller::-webkit-scrollbar {
@@ -395,16 +395,59 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .services-scroller > .service-card {
-    flex: 0 0 82%;
-    max-width: 82%;
+    flex: 0 0 100vw;
+    max-width: 100vw;
     scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding-inline: clamp(1.5rem, 4vw, 6rem);
+    min-height: 520px;
   }
 
-  /* A hint that there's more to the right of the initially visible card */
-  .services-scroller::after {
-    content: '';
-    flex: 0 0 1rem;
+  /* Bigger, heavier service titles on mobile */
+  .services-scroller .service-title {
+    font-size: clamp(2rem, 7.5vw, 2.75rem);
+    line-height: 1.02;
+    min-height: 2.4em;
   }
+}
+
+/* Dot indicator below the scroller (mobile only). Lets the reader
+   see how many cards remain and where they are. */
+.services-indicator {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 639px) {
+  .services-indicator {
+    display: flex;
+  }
+}
+
+.services-indicator-dot {
+  width: 6px;
+  height: 6px;
+  background: color-mix(in srgb, var(--color-on-surface-muted) 55%, transparent);
+  transition: width var(--duration-hover) var(--ease-gallery),
+              background-color var(--duration-hover) var(--ease-gallery);
+}
+
+.services-indicator-dot.is-active {
+  width: 24px;
+  background: var(--color-on-surface);
+}
+
+.services-indicator-label {
+  margin-left: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-muted);
 }
 
 /* Breaker 3 — stats / credibility stamp. Big serif numeral on a dark
