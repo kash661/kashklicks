@@ -16,7 +16,12 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 
 const ctaImage = (await import('../../assets/images/homepage/homepage-07.jpg')).default;
 
-const entries = portfolio.filter((p: any) => p.hasFilm === true || (p.youtubeUrl && p.youtubeUrl !== null));
+const entries = portfolio.filter(
+  (p: any) =>
+    p.hasFilm === true ||
+    (p.youtubeUrl && p.youtubeUrl !== null) ||
+    (Array.isArray(p.youtubeUrls) && p.youtubeUrls.length > 0)
+);
 
 const businessRef = { '@id': `${site.url}/#business` };
 

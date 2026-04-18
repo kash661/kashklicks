@@ -72,20 +72,29 @@ const schemas: any[] = [{
   },
 }];
 
-if (entry.youtubeUrl) {
-  const videoId = entry.youtubeUrl.includes('youtu.be/')
-    ? entry.youtubeUrl.split('youtu.be/')[1]?.split('?')[0]
-    : new URL(entry.youtubeUrl).searchParams.get('v');
+// Films can be a single youtubeUrl (legacy) or a youtubeUrls array.
+const films: string[] = (entry as any).youtubeUrls?.length
+  ? (entry as any).youtubeUrls
+  : entry.youtubeUrl
+    ? [entry.youtubeUrl]
+    : [];
+
+films.forEach((film, i) => {
+  const videoId = film.includes('youtu.be/')
+    ? film.split('youtu.be/')[1]?.split('?')[0]
+    : new URL(film).searchParams.get('v');
   schemas.push({
     '@context': 'https://schema.org',
     '@type': 'VideoObject',
-    name: `${entry.couple}, Pre-Wedding Film`,
-    description: `Pre-wedding film of ${entry.couple} at ${entry.location} by AD Photography.`,
+    name: films.length > 1
+      ? `${entry.couple}, Film ${i + 1}`
+      : `${entry.couple}, Pre-Wedding Film`,
+    description: `Film of ${entry.couple} at ${entry.location} by AD Photography.`,
     thumbnailUrl: galleryImages[0]?.src?.src ? `${site.url}${galleryImages[0].src.src}` : undefined,
     embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}`,
     uploadDate: entry.date,
   });
-}
+});
 
 // Split gallery images for bento layout
 const remainingImages = galleryImages;
@@ -122,10 +131,19 @@ const remainingImages = galleryImages;
       <div class="grid-editorial">
         <!-- Gallery column (film + masonry) on the LEFT -->
         <div class={((entry.story || entry.locationDescription) ? 'col-span-12 lg:col-span-8 lg:col-start-1' : 'col-span-12')}>
-          {entry.hasFilm && entry.youtubeUrl && (
+          {entry.hasFilm && films.length > 0 && (
             <div class="mb-[var(--spacing-block)] reveal">
-              <h2 class="text-heading-md mb-[var(--spacing-element)]">The Film</h2>
-              <YouTubeEmbed url={entry.youtubeUrl} title={`${entry.couple} — Film by AD Photography`} />
+              <h2 class="text-heading-md mb-[var(--spacing-element)]">{films.length > 1 ? 'The Films' : 'The Film'}</h2>
+              <div class="space-y-[var(--spacing-element)]">
+                {films.map((url, i) => (
+                  <YouTubeEmbed
+                    url={url}
+                    title={films.length > 1
+                      ? `${entry.couple} — Film ${i + 1} by AD Photography`
+                      : `${entry.couple} — Film by AD Photography`}
+                  />
+                ))}
+              </div>
             </div>
           )}
           {remainingImages.length > 0 && (

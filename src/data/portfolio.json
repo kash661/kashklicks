@@ -284,6 +284,10 @@
       "pullQuote": "Two people who show up for each other fully, no matter the setting."
     },
     "youtubeUrl": "https://www.youtube.com/watch?v=5UK-h94oWdY&t=34s",
+    "youtubeUrls": [
+      "https://www.youtube.com/watch?v=5UK-h94oWdY&t=34s",
+      "https://www.youtube.com/watch?v=bcR92YKNzdQ&t=1s"
+    ],
     "hasFilm": true,
     "date": "2025-10-25",
     "tags": [
