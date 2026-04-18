@@ -47,7 +47,7 @@ const personSchema = {
     ]} />
 
     <p class="text-label-md text-on-surface-muted reveal eyebrow-rule" style="margin-top: var(--spacing-block);">About Kash</p>
-    <h1 class="text-display-lg char-reveal about-hero-title" style="margin-top: var(--spacing-element); max-width: 22ch;">
+    <h1 class="text-display-lg reveal stagger-1 about-hero-title" style="margin-top: var(--spacing-element); max-width: 22ch;">
       <span class="block">Kash,</span>
       <span class="block">Toronto Wedding Photographer</span>
       <span class="block text-body-lg italic text-on-surface-variant" style="margin-top: var(--spacing-element); letter-spacing: 0; font-weight: 400;">
@@ -100,7 +100,7 @@ const personSchema = {
           </button>
         </div>
       </div>
-      <div class="col-span-12 md:col-span-6 md:col-start-7 order-1 md:order-2 reveal-right stagger-2 image-caption overflow-hidden mb-[var(--spacing-element)] md:mb-0" data-caption="Toledo, Spain">
+      <div class="col-span-12 md:col-span-6 md:col-start-7 order-1 md:order-2 reveal-right stagger-2 image-caption overflow-hidden mb-[var(--spacing-element)] md:mb-0 aspect-[3/4]" data-caption="Toledo, Spain">
         <Image
           src={portraitImage}
           alt="Portrait of AD, Toronto wedding photographer and founder of AD Photography"
@@ -108,7 +108,8 @@ const personSchema = {
           sizes="(max-width: 639px) 100vw, 50vw"
           format="avif"
           quality={75}
-          class="w-full object-cover parallax-img"
+          class="w-full h-full object-cover parallax-img"
+          style="object-position: center top;"
           loading="eager"
           fetchpriority="high"
           decoding="async"
