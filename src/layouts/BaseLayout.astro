@@ -110,6 +110,31 @@ if (site.phone) {
 
     <!-- Page-specific JSON-LD -->
     {jsonLd && <JsonLd schema={jsonLd} />}
+
+    <!-- ═══ Meta Pixel — KashKlicks Marketing (899860066437019) ═══
+         PageView fires on initial load + on every client-side navigation
+         (astro:after-swap). Custom QualifiedEngagement + gated Lead
+         events are fired by the intimate-wedding-toronto LP. -->
+    <script is:inline>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '899860066437019');
+      fbq('track', 'PageView');
+      document.addEventListener('astro:after-swap', function () {
+        if (typeof window.fbq === 'function') { window.fbq('track', 'PageView'); }
+      });
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none" alt=""
+        src="https://www.facebook.com/tr?id=899860066437019&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Meta Pixel -->
   </head>
   <body class="min-h-screen flex flex-col bg-background text-on-surface">
     <div class="scroll-progress" aria-hidden="true"></div>
