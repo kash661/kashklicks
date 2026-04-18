@@ -90,10 +90,12 @@ if (site.phone) {
     <!-- Preconnect to external media -->
     <link rel="preconnect" href="https://kashklicks.b-cdn.net" crossorigin />
 
-    <!-- Preload critical fonts -->
-    <link rel="preload" href="/fonts/CormorantGaramond-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Preload critical fonts — Noir et Blanc Regular (hero/display) +
+         Italic (pull quotes) + Medium (section headings) + Inter Regular (body) -->
+    <link rel="preload" href="/fonts/NoirEtBlanc-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/NoirEtBlanc-Italic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/NoirEtBlanc-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/BodoniModa-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <ClientRouter />
 
     <SEO

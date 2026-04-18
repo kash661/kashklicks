@@ -29,5 +29,5 @@ const { id, name, type = 'text', label, required = false } = Astro.props;
   >
     {label}
   </label>
-  <p id={`${id}-error`} class="form-error-msg mt-1 text-xs hidden" role="alert" style="color: #9e422c;"></p>
+  <p id={`${id}-error`} class="form-error-msg mt-1 text-xs hidden" role="alert" style="color: var(--color-error);"></p>
 </div>

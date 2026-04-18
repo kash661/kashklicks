@@ -61,12 +61,12 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             class={inputClass}
             style={inputStyle}
           />
-          <p id="name-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+          <p id="name-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
         </div>
 
         <div class="relative">
           <label for="partner_name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Partner's Name <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— if applicable</span>
+            Partner's Name <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(if applicable)</span>
           </label>
           <input
             type="text"
@@ -75,7 +75,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             class={inputClass}
             style={inputStyle}
           />
-          <p class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+          <p class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
         </div>
 
         <div class="relative">
@@ -93,7 +93,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             class={inputClass}
             style={inputStyle}
           />
-          <p id="email-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+          <p id="email-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
         </div>
 
         <div class="relative">
@@ -112,7 +112,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             class={inputClass}
             style={inputStyle}
           />
-          <p id="phone-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+          <p id="phone-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
         </div>
       </div>
     </fieldset>
@@ -147,13 +147,13 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
               <option value={opt.value}>{opt.label}</option>
             ))}
           </select>
-          <p id="event_type-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+          <p id="event_type-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
         </div>
 
         <!-- Event Date -->
         <div class="relative">
           <label for="event_date" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Event Date <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— tentative is fine</span>
+            Event Date <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(tentative is fine)</span>
           </label>
           <input
             type="date"
@@ -170,7 +170,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
         <!-- Location -->
         <div class="relative">
           <label for="location" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Venue or Location <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+            Venue or Location <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
           </label>
           <input
             type="text"
@@ -188,7 +188,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
         <!-- Guest count -->
         <div class="relative">
           <label for="guest_count" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Approximate Guest Count <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+            Approximate Guest Count <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
           </label>
           <input
             type="text"
@@ -224,16 +224,16 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             aria-required="true"
             aria-describedby="message-error"
             rows="5"
-            placeholder="Your story, the mood you're going for, Pinterest or Instagram links — anything that helps me understand the day."
+            placeholder="Your story, the mood you're going for, Pinterest or Instagram links. Anything that helps me understand the day."
             class={`${inputClass} resize-none`}
             style={inputStyle}
           ></textarea>
-          <p id="message-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+          <p id="message-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
         </div>
 
         <div class="relative">
           <label for="referral" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            How Did You Find Me? <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+            How Did You Find Me? <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
           </label>
           <select
             id="referral"
