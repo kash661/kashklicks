@@ -11,14 +11,14 @@ import packages from '../data/packages.json';
 import faqData from '../data/faq.json';
 import site from '../data/site.json';
 
-// Hero: intimate backyard Toronto wedding (Nora + Ali)
-import heroImage from '../assets/images/portfolio/nora-ali-cover.jpg';
+// Hero: editorial portrait (DSCF4845)
+import heroImage from '../assets/images/intimate-wedding/hero-DSCF4845.jpg';
 
 // Work gallery: Toronto-local couples
 const noraAliCover = (await import('../assets/images/portfolio/nora-ali-cover.jpg')).default;
 const natalieShavarCover = (await import('../assets/images/portfolio/natalie-shavar-cover.jpg')).default;
 const alexAzizCover = (await import('../assets/images/portfolio/alex-aziz-cover.jpg')).default;
-const anushkaAnthonyCover = (await import('../assets/images/portfolio/anushka-anthony-cover.jpg')).default;
+const anushkaAnthonyAlt = (await import('../assets/images/portfolio/anushka-anthony/05.jpg')).default;
 
 // Wedding packages only (photo-only — no film)
 const weddingPackages = packages
@@ -56,7 +56,7 @@ const torontoWork = [
   {
     couple: 'Anushka + Anthony',
     venue: 'Toronto City Hall',
-    image: anushkaAnthonyCover,
+    image: anushkaAnthonyAlt,
     href: '/portfolio/anushka-anthony',
     aspect: 'aspect-[3/4]',
   },
@@ -138,7 +138,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <section style="padding-top: var(--spacing-block);">
     <div class="container-editorial">
       <div class="grid-editorial items-center" style="min-height: 80vh;">
-        <!-- Filter headline + sub + CTA -->
+        <!-- Filter headline + sub + price anchor + CTA -->
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Toronto · Intimate Weddings</p>
           <h1 class="text-display-lg" style="max-width: 14ch;">
@@ -147,9 +147,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           <p class="text-body-lg text-on-surface-variant mt-8" style="max-width: 40ch;">
             For couples getting married here. One photographer. Intimate ceremonies — church, civil, backyard, small venues.
           </p>
-          <div class="mt-10">
+          <p class="text-label-sm text-on-surface-muted mt-6 tracking-widest uppercase">
+            Most weddings $2,400+ · Solo · Photo-only
+          </p>
+          <div class="mt-8">
             <span class="magnetic inline-block">
-              <Button href="#begin" variant="primary">Begin the Conversation</Button>
+              <Button href="#inquire" variant="primary">Begin the Conversation</Button>
             </span>
           </div>
         </div>
@@ -157,11 +160,11 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <!-- Portrait image -->
         <div
           class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption"
-          data-caption="Nora & Ali, Backyard Toronto"
+          data-caption="Intimate Toronto wedding"
         >
           <Image
             src={heroImage}
-            alt="Intimate backyard Toronto wedding photographed by AD Photography"
+            alt="Intimate Toronto wedding photograph by AD Photography"
             widths={[640, 960, 1280]}
             sizes="(max-width: 768px) 100vw, 50vw"
             quality={82}
@@ -227,8 +230,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         {torontoWork.map((item, i) => (
           <a
             href={item.href}
-            class={`block reveal stagger-${(i % 4) + 1} hover-zoom image-caption`}
-            data-caption={`${item.couple} · ${item.venue}`}
+            class={`block reveal stagger-${(i % 4) + 1} hover-zoom`}
+            aria-label={`${item.couple} wedding photography at ${item.venue}`}
           >
             <div class={`${item.aspect} overflow-hidden bg-surface-container`}>
               <Image
@@ -242,16 +245,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 loading="lazy"
               />
             </div>
-            <p class="text-label-sm text-on-surface-variant mt-3">{item.couple}</p>
-            <p class="text-label-sm text-on-surface-muted">{item.venue}</p>
           </a>
         ))}
       </div>
 
-      <div class="mt-16 reveal flex justify-center">
-        <span class="magnetic inline-block">
-          <Button href="/portfolio/weddings" variant="secondary">See the Full Portfolio</Button>
-        </span>
+      <div class="mt-16 reveal text-center">
+        <Button href="/portfolio/weddings" variant="secondary">See the Full Portfolio</Button>
       </div>
     </div>
   </section>
@@ -324,6 +323,178 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
+  <!-- ═══ BEGIN THE CONVERSATION — inline inquiry form + Calendly CTA ═══ -->
+  <section id="inquire" class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial" style="max-width: 64rem;">
+      <!-- Header -->
+      <div class="text-center mb-12 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Begin the Conversation</p>
+        <h2 class="text-display-md">Tell me about your day.</h2>
+        <p class="text-body-lg text-on-surface-variant mt-6 mx-auto" style="max-width: 52ch;">
+          A short note gets the conversation started. I read every inquiry myself and reply within 24 hours.
+        </p>
+      </div>
+
+      <!-- Compact form -->
+      <div id="lp-form-wrapper" class="reveal stagger-1">
+        <form
+          id="lp-inquiry-form"
+          action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
+          method="POST"
+          class="space-y-10"
+          novalidate
+        >
+          <!-- Honeypot -->
+          <div class="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+            <label for="lp_gotcha">Don't fill this out</label>
+            <input type="text" id="lp_gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Source tracking -->
+          <input type="hidden" name="source" value="intimate-wedding-toronto" />
+          <input type="hidden" name="event_type" value="wedding" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
+            <!-- Name -->
+            <div class="relative">
+              <label for="lp-name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+                Your Name <span class="text-on-surface" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="lp-name"
+                name="name"
+                autocomplete="given-name"
+                required
+                aria-required="true"
+                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              />
+              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+            </div>
+
+            <!-- Email -->
+            <div class="relative">
+              <label for="lp-email" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+                Email <span class="text-on-surface" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email"
+                id="lp-email"
+                name="email"
+                autocomplete="email"
+                required
+                aria-required="true"
+                inputmode="email"
+                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              />
+              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+            </div>
+
+            <!-- Ceremony date -->
+            <div class="relative">
+              <label for="lp-date" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+                Ceremony Date <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— tentative is fine</span>
+              </label>
+              <input
+                type="date"
+                id="lp-date"
+                name="event_date"
+                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              />
+            </div>
+
+            <!-- Ceremony location -->
+            <div class="relative">
+              <label for="lp-location" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+                Ceremony Location <span class="text-on-surface" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="lp-location"
+                name="location"
+                placeholder="City, venue, or neighborhood"
+                required
+                aria-required="true"
+                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              />
+              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+            </div>
+          </div>
+
+          <!-- Optional story -->
+          <div class="relative">
+            <label for="lp-message" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+              A Few Words About Your Day <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+            </label>
+            <textarea
+              id="lp-message"
+              name="message"
+              rows="3"
+              placeholder="The feel, the place, anything that helps me understand the day."
+              class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease resize-none"
+              style="transition-duration: var(--duration-hover);"
+            ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <div>
+            <div class="h-px bg-ghost mb-8"></div>
+            <button
+              id="lp-submit-btn"
+              type="submit"
+              class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease w-full sm:w-auto"
+              style="transition-duration: var(--duration-hover);"
+            >
+              Send Inquiry
+            </button>
+            <p class="text-label-sm text-on-surface-muted italic mt-6">
+              <span class="text-on-surface not-italic" aria-hidden="true">*</span> required · I reply within 24 hours
+            </p>
+          </div>
+        </form>
+
+        <!-- Success state -->
+        <div id="lp-success" class="hidden bg-surface-dim p-10" role="status" aria-live="polite">
+          <p class="text-label-md text-on-surface-muted mb-4">Thank You</p>
+          <h3 class="text-heading-lg font-serif">Your note is on its way.</h3>
+          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">
+            I'll read it carefully and reply within 24 hours to start planning something with you.
+          </p>
+        </div>
+
+        <!-- Error state -->
+        <div id="lp-error" class="hidden bg-surface-dim p-6" role="alert" aria-live="assertive">
+          <p class="text-label-md text-on-surface">Something went wrong</p>
+          <p class="mt-1 text-body-lg text-on-surface-variant">
+            Please try again, or reach me directly at <a href={`mailto:${site.email}`} class="underline hover:text-on-surface cubic-ease">{site.email}</a>.
+          </p>
+          <button
+            id="lp-retry-btn"
+            type="button"
+            class="mt-3 text-label-md text-on-surface-variant hover:text-on-surface cubic-ease underline"
+            style="transition-duration: var(--duration-hover);"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendly CTA -->
+      <div class="mt-20 text-center reveal">
+        <div class="h-px bg-ghost max-w-xs mx-auto mb-10"></div>
+        <p class="text-heading-md font-serif italic mb-3">Have any questions?</p>
+        <p class="text-body-md text-on-surface-variant mb-8 mx-auto" style="max-width: 40ch;">
+          Book a free 30-minute consultation. No pressure, just a conversation.
+        </p>
+        <BookingLink variant="primary" label="Book a Free Consultation" />
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ GOOD TO KNOW ═══ -->
   <section class="bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
@@ -373,45 +544,158 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ BEGIN THE CONVERSATION — inquiry anchor + CTA ═══ -->
-  <section id="begin" class="bg-background" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="grid-editorial items-center">
-        <div class="col-span-12 md:col-span-5 reveal">
-          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Next</p>
-          <h2 class="text-display-md text-on-surface">Begin the conversation.</h2>
-          <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 44ch;">
-            Tell me about your day. Where the ceremony is, roughly when. I read every inquiry myself and reply within 24 hours.
-          </p>
-          <div class="mt-10">
-            <span class="magnetic inline-block">
-              <Button href="/contact?service=wedding" variant="primary">Send an Inquiry</Button>
-            </span>
-          </div>
-          <div class="mt-8">
-            <BookingLink variant="text" label="Prefer to talk first? Book a free consultation" />
-          </div>
-          <p class="text-label-sm text-on-surface-muted mt-3">
-            Or reach me directly: <a href={`mailto:${site.email}`} class="underline hover:text-on-surface cubic-ease">{site.email}</a>
-          </p>
-        </div>
+  <!-- ═══ Meta Pixel Lead-event gate (45s dwell OR 60% scroll) ═══
+       Rationale: paid-LP best practice per council review 2026-04-17. Firing
+       Lead on every arrival trains Meta's algorithm toward form-mashers and
+       diaspora tire-kickers. This gate only signals "qualified engagement"
+       to Meta once a visitor has demonstrated real intent. Safe to ship
+       before Meta Pixel base code is installed — `fbq` calls are no-ops
+       until it lands in BaseLayout. -->
+  <script is:inline>
+    (function () {
+      var DWELL_MS = 45000;
+      var SCROLL_PCT = 0.6;
+      var FLAG_KEY = 'ad_qualified_engagement';
+      var fired = false;
 
-        <div
-          class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption"
-          data-caption="Alex & Aziz, TD Centre"
-        >
-          <Image
-            src={alexAzizCover}
-            alt="Toronto civil ceremony photography at TD Centre by AD Photography"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={82}
-            format="avif"
-            class="w-full h-full object-cover parallax-img"
-            loading="lazy"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+      if (sessionStorage.getItem(FLAG_KEY) === 'true') {
+        return; // already qualified this session
+      }
+
+      function qualify(source) {
+        if (fired) return;
+        fired = true;
+        try { sessionStorage.setItem(FLAG_KEY, 'true'); } catch (_) {}
+        if (typeof window.fbq === 'function') {
+          window.fbq('trackCustom', 'QualifiedEngagement', { source: source });
+        }
+      }
+
+      // 45-second dwell timer
+      var dwellTimer = setTimeout(function () { qualify('dwell'); }, DWELL_MS);
+
+      // Scroll tracker
+      function onScroll() {
+        var h = document.documentElement;
+        var total = h.scrollHeight - h.clientHeight;
+        if (total <= 0) return;
+        var pct = h.scrollTop / total;
+        if (pct >= SCROLL_PCT) {
+          qualify('scroll');
+          window.removeEventListener('scroll', onScroll);
+          clearTimeout(dwellTimer);
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
+
+  <!-- ═══ LP inquiry form init + Lead event gate ═══
+       Lead fires ONLY if visitor qualified (45s dwell OR 60% scroll).
+       Prevents pixel poisoning per council review 2026-04-17. -->
+  <script is:inline>
+    (function () {
+      function initLpInquiryForm() {
+        var form = document.getElementById('lp-inquiry-form');
+        var submitBtn = document.getElementById('lp-submit-btn');
+        var successEl = document.getElementById('lp-success');
+        var errorEl = document.getElementById('lp-error');
+        var retryBtn = document.getElementById('lp-retry-btn');
+        if (!form || !submitBtn || !successEl || !errorEl) return;
+
+        var originalBtnText = submitBtn.textContent;
+
+        function clearFieldError(field) {
+          var wrap = field.closest('.relative');
+          var errMsg = wrap ? wrap.querySelector('.lp-error-msg') : null;
+          if (errMsg) { errMsg.textContent = ''; errMsg.classList.add('hidden'); }
+          field.removeAttribute('aria-invalid');
+        }
+
+        function showFieldError(field, message) {
+          var wrap = field.closest('.relative');
+          var errMsg = wrap ? wrap.querySelector('.lp-error-msg') : null;
+          if (errMsg) { errMsg.textContent = message; errMsg.classList.remove('hidden'); }
+          field.setAttribute('aria-invalid', 'true');
+        }
+
+        function validateForm() {
+          var valid = true;
+          var firstInvalid = null;
+          var requiredFields = form.querySelectorAll('[required]');
+          requiredFields.forEach(function (field) {
+            clearFieldError(field);
+            if (!field.value.trim()) {
+              showFieldError(field, 'This field is required.');
+              valid = false;
+              if (!firstInvalid) firstInvalid = field;
+            } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) {
+              showFieldError(field, 'Please enter a valid email address.');
+              valid = false;
+              if (!firstInvalid) firstInvalid = field;
+            }
+          });
+          if (firstInvalid) firstInvalid.focus();
+          return valid;
+        }
+
+        form.querySelectorAll('input, textarea, select').forEach(function (field) {
+          field.addEventListener('input', function () { clearFieldError(field); });
+          field.addEventListener('change', function () { clearFieldError(field); });
+        });
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (!validateForm()) return;
+          var honeypot = form.querySelector('[name="_gotcha"]');
+          if (honeypot && honeypot.value) return;
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending...';
+          errorEl.classList.add('hidden');
+
+          var formData = new FormData(form);
+          formData.delete('_gotcha');
+
+          fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          }).then(function (response) {
+            if (!response.ok) throw new Error('Form submission failed: ' + response.status);
+            form.classList.add('hidden');
+            successEl.classList.remove('hidden');
+            successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // ─── Meta Pixel Lead gate ───
+            // Fire Lead ONLY if the visitor qualified (45s dwell OR 60% scroll).
+            // Safe pre-pixel-install — `fbq` calls are no-ops until pixel lands.
+            if (typeof window.fbq === 'function' &&
+                sessionStorage.getItem('ad_qualified_engagement') === 'true') {
+              window.fbq('track', 'Lead', {
+                content_name: 'intimate-wedding-toronto',
+                content_category: 'wedding-inquiry'
+              });
+            }
+          }).catch(function () {
+            errorEl.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+          });
+        });
+
+        if (retryBtn) {
+          retryBtn.addEventListener('click', function () {
+            errorEl.classList.add('hidden');
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLpInquiryForm);
+      } else {
+        initLpInquiryForm();
+      }
+    })();
+  </script>
 </BaseLayout>
