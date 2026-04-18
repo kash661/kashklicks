@@ -182,7 +182,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
   <!-- Packages in a row -->
   <section class="pb-[var(--spacing-block)]">
     <div class="container-editorial">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
+      <div class="services-scroller flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
         {services.map((service, i) => (
           <article class:list={['service-card group flex flex-col h-full pt-8 border-t border-on-surface reveal', `stagger-${i + 1}`]}>
             <!-- Header: number + meta row, fixed visual rhythm -->

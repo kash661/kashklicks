@@ -372,6 +372,41 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-on-dark-variant);
 }
 
+/* Services index horizontal scroller — on mobile, the four service
+   cards slide horizontally with scroll-snap so the reader can swipe
+   through the offerings without scrolling the whole page. Desktop
+   falls back to the tailwind grid (sm:grid, sm:grid-cols-2, etc.). */
+@media (max-width: 639px) {
+  .services-scroller {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: clamp(1.5rem, 4vw, 6rem);
+    gap: 1rem;
+    padding-inline: clamp(1.5rem, 4vw, 6rem);
+    padding-bottom: 0.5rem;
+    margin-inline: calc(-1 * clamp(1.5rem, 4vw, 6rem));
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .services-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .services-scroller > .service-card {
+    flex: 0 0 82%;
+    max-width: 82%;
+    scroll-snap-align: start;
+  }
+
+  /* A hint that there's more to the right of the initially visible card */
+  .services-scroller::after {
+    content: '';
+    flex: 0 0 1rem;
+  }
+}
+
 /* Breaker 3 — stats / credibility stamp. Big serif numeral on a dark
    band, a small unit label, and a single serif-italic caption line.
    Used between curated and full-grid sections on long pages to give
