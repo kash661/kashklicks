@@ -374,6 +374,21 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
               <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
             </div>
 
+            <!-- Partner's name -->
+            <div class="relative">
+              <label for="lp-partner" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+                Partner's Name <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— if applicable</span>
+              </label>
+              <input
+                type="text"
+                id="lp-partner"
+                name="partner_name"
+                autocomplete="off"
+                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              />
+            </div>
+
             <!-- Email -->
             <div class="relative">
               <label for="lp-email" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
@@ -391,6 +406,23 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 style="transition-duration: var(--duration-hover);"
               />
               <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
+            </div>
+
+            <!-- Phone -->
+            <div class="relative">
+              <label for="lp-phone" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
+                Phone <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+              </label>
+              <input
+                type="tel"
+                id="lp-phone"
+                name="phone"
+                autocomplete="tel"
+                inputmode="tel"
+                placeholder="(416) 555 0199"
+                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              />
             </div>
 
             <!-- Ceremony date -->

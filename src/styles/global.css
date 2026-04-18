@@ -161,7 +161,6 @@ body {
   background-color: var(--color-background);
   color: var(--color-on-surface);
   overflow-x: clip;
-  max-width: 100vw;
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.6;
