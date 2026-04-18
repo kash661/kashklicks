@@ -18,8 +18,8 @@ const {
 } = Astro.props;
 
 const baseClass = variant === 'labeled'
-  ? 'share-btn inline-flex items-center gap-2 px-5 py-2.5 border border-on-surface text-on-surface text-label-md hover:bg-on-surface hover:text-on-dark cubic-ease'
-  : 'share-btn inline-flex items-center justify-center w-9 h-9 text-on-surface-variant hover:text-on-surface cubic-ease';
+  ? 'share-btn relative inline-flex items-center gap-2 px-5 py-2.5 border border-on-surface text-on-surface text-label-md hover:bg-on-surface hover:text-on-dark cubic-ease'
+  : 'share-btn relative inline-flex items-center justify-center w-9 h-9 text-on-surface-variant hover:text-on-surface cubic-ease';
 ---
 
 <button
@@ -36,7 +36,16 @@ const baseClass = variant === 'labeled'
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
   </svg>
   {variant === 'labeled' && <span class="share-label">{label}</span>}
-  <span class="share-feedback hidden ml-1" aria-live="polite">Copied</span>
+  {variant === 'labeled' ? (
+    <span class="share-feedback hidden ml-1" aria-live="polite">Copied</span>
+  ) : (
+    <span
+      class="share-feedback hidden absolute left-1/2 -translate-x-1/2 -top-2 -translate-y-full bg-on-surface text-on-dark px-2.5 py-1 text-[0.6875rem] font-sans font-medium tracking-[0.14em] uppercase whitespace-nowrap pointer-events-none z-10"
+      aria-live="polite"
+    >
+      Copied
+    </span>
+  )}
 </button>
 
 <script is:inline>
