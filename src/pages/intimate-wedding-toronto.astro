@@ -134,6 +134,58 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     ]} />
   </div>
 
+  <!-- flatpickr (date picker) — CDN + Digital Curator theme overrides -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" />
+  <style is:global>
+    /* Editorial overrides for flatpickr — flat corners, neutral palette */
+    .flatpickr-calendar {
+      border-radius: 0 !important;
+      border: 1px solid var(--color-surface-container, #e4e2e1) !important;
+      box-shadow: 0 8px 32px rgba(26, 26, 24, 0.08) !important;
+      font-family: var(--font-sans, 'Inter', system-ui, sans-serif) !important;
+      background: #ffffff !important;
+    }
+    .flatpickr-day,
+    .flatpickr-day.today,
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange {
+      border-radius: 0 !important;
+    }
+    .flatpickr-day.selected,
+    .flatpickr-day.selected:hover {
+      background: #1a1a18 !important;
+      border-color: #1a1a18 !important;
+      color: #faf9f6 !important;
+    }
+    .flatpickr-day.today {
+      border-color: #5f5e5e !important;
+    }
+    .flatpickr-day:hover {
+      background: #f4f4f0 !important;
+    }
+    .flatpickr-months .flatpickr-month,
+    .flatpickr-weekdays {
+      background: #ffffff !important;
+      color: #1a1a18 !important;
+    }
+    .flatpickr-current-month .flatpickr-monthDropdown-months,
+    .flatpickr-current-month input.cur-year {
+      color: #1a1a18 !important;
+      font-weight: 500 !important;
+    }
+    .flatpickr-weekday {
+      color: #5c605c !important;
+      font-weight: 500 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      font-size: 0.6875rem !important;
+    }
+    .flatpickr-input[readonly] {
+      cursor: pointer;
+    }
+  </style>
+
   <!-- ═══ HERO — editorial, filter-headline ═══ -->
   <section style="padding-top: var(--spacing-block);">
     <div class="container-editorial">
@@ -141,7 +193,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <!-- Filter headline + sub + price anchor + CTA -->
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Toronto · Intimate Weddings</p>
-          <h1 class="text-display-lg" style="max-width: 14ch;">
+          <h1 class="text-display-lg char-reveal" style="max-width: 14ch;">
             Toronto weddings, unhurried.
           </h1>
           <p class="text-body-lg text-on-surface-variant mt-8" style="max-width: 40ch;">
@@ -159,8 +211,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
         <!-- Portrait image -->
         <div
-          class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption"
-          data-caption="Intimate Toronto wedding"
+          class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden unmask-r stagger-2 hover-zoom"
         >
           <Image
             src={heroImage}
@@ -260,7 +311,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <section class="bg-surface-dark" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="max-w-4xl mx-auto text-center reveal">
-        <blockquote class="text-display-lg font-serif italic text-on-dark">
+        <blockquote class="text-display-lg font-serif italic text-on-dark char-reveal">
           "Every moment, captured without ever feeling staged."
         </blockquote>
         <p class="text-label-md text-on-dark-variant mt-10">Shania & Vishal</p>
@@ -286,9 +337,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 reveal stagger-3" style="gap: 2px;">
-        {weddingPackages.map((pkg) => (
-          <div>
+      <div class="grid grid-cols-1 md:grid-cols-3" style="gap: 2px;">
+        {weddingPackages.map((pkg, i) => (
+          <div class={`reveal stagger-${i + 1}`}>
             <PricingCard
               id={pkg.id}
               name={pkg.name}
@@ -623,6 +674,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     })();
   </script>
 
+  <!-- flatpickr script (loaded once; no-op if page already has it) -->
+  <script is:inline src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+
   <!-- ═══ LP inquiry form init + Lead event gate ═══
        Lead fires ONLY if visitor qualified (45s dwell OR 60% scroll).
        Prevents pixel poisoning per council review 2026-04-17. -->
@@ -637,6 +691,25 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         if (!form || !submitBtn || !successEl || !errorEl) return;
 
         var originalBtnText = submitBtn.textContent;
+
+        // Init flatpickr on the ceremony date input
+        var dateInput = document.getElementById('lp-date');
+        if (dateInput && typeof window.flatpickr === 'function') {
+          window.flatpickr(dateInput, {
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'F j, Y',
+            minDate: 'today',
+            disableMobile: false,
+            monthSelectorType: 'static'
+          });
+        }
+
+        // Phone validation: strip non-digits, require ≥10 digits (NANP standard)
+        function isValidPhone(value) {
+          var digits = value.replace(/\D/g, '');
+          return digits.length >= 10 && digits.length <= 15;
+        }
 
         function clearFieldError(field) {
           var wrap = field.closest('.relative');
@@ -664,6 +737,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
               if (!firstInvalid) firstInvalid = field;
             } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) {
               showFieldError(field, 'Please enter a valid email address.');
+              valid = false;
+              if (!firstInvalid) firstInvalid = field;
+            } else if (field.type === 'tel' && !isValidPhone(field.value)) {
+              showFieldError(field, 'Please enter a valid phone number.');
               valid = false;
               if (!firstInvalid) firstInvalid = field;
             }
