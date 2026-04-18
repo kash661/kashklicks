@@ -377,7 +377,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <!-- Partner's name -->
             <div class="relative">
               <label for="lp-partner" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Partner's Name <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— if applicable</span>
+                Partner's Name
               </label>
               <input
                 type="text"
@@ -411,7 +411,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <!-- Phone -->
             <div class="relative">
               <label for="lp-phone" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Phone <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
+                Phone <span class="text-on-surface" aria-hidden="true">*</span>
               </label>
               <input
                 type="tel"
@@ -419,10 +419,13 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 name="phone"
                 autocomplete="tel"
                 inputmode="tel"
+                required
+                aria-required="true"
                 placeholder="(416) 555 0199"
                 class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
                 style="transition-duration: var(--duration-hover);"
               />
+              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
             </div>
 
             <!-- Ceremony date -->
