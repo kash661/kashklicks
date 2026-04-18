@@ -176,9 +176,16 @@ const hasImage = !!image && !!imageAlt;
     margin-inline: auto;
   }
 
-  .final-cta__centered .final-cta__action,
+  .final-cta__centered > * {
+    width: 100%;
+  }
+
   .final-cta__action {
     margin-top: var(--spacing-block);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 
   /* Mobile: split-variant text column re-centers so the button never sits
