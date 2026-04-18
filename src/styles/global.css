@@ -238,6 +238,20 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.4;
 }
 
+/* Italic is a decorative/emotional device — always use regular weight
+   regardless of the heading's non-italic weight. Prevents Noir et Blanc
+   MediumBold Italic from shouting where a soft poetic line is intended. */
+.text-display-lg.italic,
+.text-display-md.italic,
+.text-heading-lg.italic,
+.text-heading-md.italic,
+.text-display-lg em,
+.text-display-md em,
+.text-heading-lg em,
+.text-heading-md em {
+  font-weight: 400;
+}
+
 /* ── Layout Utilities ── */
 .grid-editorial {
   display: grid;
