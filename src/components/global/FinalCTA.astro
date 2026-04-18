@@ -64,7 +64,7 @@ const hasImage = !!image && !!imageAlt;
   <div class="container-editorial">
     {hasImage ? (
       <div class="grid-editorial items-center">
-        <div class="col-span-12 md:col-span-5 final-cta__text reveal">
+        <div class="col-span-12 md:col-span-5 final-cta__text reveal flex flex-col items-center md:items-start text-center md:text-left">
           <p
             class:list={[
               'text-label-md mb-4 eyebrow-rule final-cta__eyebrow',
@@ -93,7 +93,7 @@ const hasImage = !!image && !!imageAlt;
               {body}
             </p>
           )}
-          <div class="final-cta__action">
+          <div class="final-cta__action flex justify-center md:justify-start w-full">
             {useBookingLink ? (
               <BookingLink variant="primary" label={bookingLabel} />
             ) : (
