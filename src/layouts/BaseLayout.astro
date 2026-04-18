@@ -136,6 +136,28 @@ if (site.phone) {
         src="https://www.facebook.com/tr?id=899860066437019&ev=PageView&noscript=1" />
     </noscript>
     <!-- End Meta Pixel -->
+
+    <!-- ═══ Google Ads / Global Site Tag (AW-18099849669) ═══
+         Base tag for conversion tracking. Page view auto-fires on initial
+         load. For client-side Astro navigations, we manually fire page_view
+         on astro:after-swap. Conversion events fire from the LP inquiry
+         form on qualified engagement. -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18099849669"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'AW-18099849669');
+      document.addEventListener('astro:after-swap', function () {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'page_view', {
+            page_path: window.location.pathname + window.location.search
+          });
+        }
+      });
+    </script>
+    <!-- End Google Tag -->
   </head>
   <body class="min-h-screen flex flex-col bg-background text-on-surface">
     <div class="scroll-progress" aria-hidden="true"></div>

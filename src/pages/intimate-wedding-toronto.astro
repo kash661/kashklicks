@@ -866,15 +866,28 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             successEl.classList.remove('hidden');
             successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // ─── Meta Pixel Lead gate ───
-            // Fire Lead ONLY if the visitor qualified (45s dwell OR 60% scroll).
-            // Safe pre-pixel-install — `fbq` calls are no-ops until pixel lands.
-            if (typeof window.fbq === 'function' &&
-                sessionStorage.getItem('ad_qualified_engagement') === 'true') {
-              window.fbq('track', 'Lead', {
-                content_name: 'intimate-wedding-toronto',
-                content_category: 'wedding-inquiry'
-              });
+            // ─── Ad-platform conversion events, gated ───
+            // Fire ONLY if the visitor qualified (45s dwell OR 60% scroll).
+            // Prevents Meta + Google from optimizing toward tire-kickers
+            // per council review 2026-04-17.
+            var qualified = sessionStorage.getItem('ad_qualified_engagement') === 'true';
+            if (qualified) {
+              // Meta Pixel Lead event
+              if (typeof window.fbq === 'function') {
+                window.fbq('track', 'Lead', {
+                  content_name: 'intimate-wedding-toronto',
+                  content_category: 'wedding-inquiry'
+                });
+              }
+              // Google Ads conversion — Intimate Wedding Inquiry
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'conversion', {
+                  'send_to': 'AW-18099849669/T8MMCMX8gp4cEMWT17ZD',
+                  'value': 650.0,
+                  'currency': 'CAD',
+                  'transaction_id': ''
+                });
+              }
             }
           }).catch(function () {
             errorEl.classList.remove('hidden');
@@ -888,6 +901,31 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             errorEl.classList.add('hidden');
           });
         }
+
+        // ─── Calendly CTA click conversion ───
+        // Fire Meta Lead + Google Ads conversion when a qualified visitor
+        // clicks any Calendly link on this page (same gate as form submit).
+        var calendlyLinks = document.querySelectorAll('a[href*="calendly.com"]');
+        calendlyLinks.forEach(function (link) {
+          link.addEventListener('click', function () {
+            var qualified = sessionStorage.getItem('ad_qualified_engagement') === 'true';
+            if (!qualified) return;
+            if (typeof window.fbq === 'function') {
+              window.fbq('track', 'Lead', {
+                content_name: 'intimate-wedding-toronto-calendly',
+                content_category: 'wedding-consultation'
+              });
+            }
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'conversion', {
+                'send_to': 'AW-18099849669/T8MMCMX8gp4cEMWT17ZD',
+                'value': 650.0,
+                'currency': 'CAD',
+                'transaction_id': ''
+              });
+            }
+          });
+        });
       }
 
       if (document.readyState === 'loading') {
