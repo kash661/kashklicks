@@ -445,19 +445,16 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <!-- Ceremony location -->
             <div class="relative">
               <label for="lp-location" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Ceremony Location <span class="text-on-surface" aria-hidden="true">*</span>
+                Ceremony Location <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">— optional</span>
               </label>
               <input
                 type="text"
                 id="lp-location"
                 name="location"
                 placeholder="City, venue, or neighborhood"
-                required
-                aria-required="true"
                 class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
                 style="transition-duration: var(--duration-hover);"
               />
-              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: #9e422c;"></p>
             </div>
           </div>
 
