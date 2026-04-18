@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from 'astro:transitions';
 import SEO from '../components/seo/SEO.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/global/Header.astro';
@@ -96,7 +95,6 @@ if (site.phone) {
     <link rel="preload" href="/fonts/NoirEtBlanc-Italic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/NoirEtBlanc-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <ClientRouter />
 
     <SEO
       title={title}
@@ -170,7 +168,7 @@ if (site.phone) {
     {showSplash && <SplashOverlay />}
 
     <Header transparent={transparentHeader} />
-    <main id="main-content" class="flex-1" transition:animate="none">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer />
