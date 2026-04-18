@@ -739,6 +739,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.5rem;
 }
 
+/* Suppresses the reveal fade for elements that are already in the viewport
+   on page load. Prevents the above-the-fold flicker when navigating
+   between pages — elements land in their final state immediately. */
+.no-reveal-transition,
+.no-reveal-transition * {
+  transition: none !important;
+}
+
 /* Scroll reveal — applied by IntersectionObserver */
 .reveal {
   opacity: 0;
