@@ -4,7 +4,6 @@ import SEO from '../components/seo/SEO.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/global/Header.astro';
 import Footer from '../components/global/Footer.astro';
-import SoundToggle from '../components/global/SoundToggle.astro';
 import SplashOverlay from '../components/global/SplashOverlay.astro';
 import site from '../data/site.json';
 import '../styles/global.css';
@@ -126,7 +125,6 @@ if (site.phone) {
     </main>
     <Footer />
 
-    <SoundToggle />
 
     <script>
       import { initScrollReveal } from '../scripts/scroll-reveal';
