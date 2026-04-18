@@ -21,6 +21,9 @@ export default defineConfig({
   image: {
     experimentalLayout: 'constrained',
   },
+  devToolbar: {
+    enabled: false,
+  },
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',
