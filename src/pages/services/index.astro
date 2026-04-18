@@ -86,11 +86,12 @@ const slugToPackageCategory: Record<string, string> = {
   celebrations: 'Events',
 };
 
-function hasSaleInCategory(slug: string): boolean {
+function firstSalePackageId(slug: string): string | null {
   const category = slugToPackageCategory[slug];
-  if (!category) return false;
-  return (packages as Array<{ category: string; salePrice?: number | null }>)
-    .some((p) => p.category === category && p.salePrice != null);
+  if (!category) return null;
+  const found = (packages as Array<{ id: string; category: string; salePrice?: number | null }>)
+    .find((p) => p.category === category && p.salePrice != null);
+  return found?.id ?? null;
 }
 
 const baseServices = [
@@ -136,7 +137,14 @@ const baseServices = [
   },
 ];
 
-const services = baseServices.map((s) => ({ ...s, hasSale: hasSaleInCategory(s.slug) }));
+const services = baseServices.map((s) => {
+  const saleId = firstSalePackageId(s.slug);
+  return {
+    ...s,
+    hasSale: saleId !== null,
+    saleHref: saleId ? `/services/${s.slug}#${saleId}` : null,
+  };
+});
 
 const businessRef = { '@id': `${site.url}/#business` };
 
@@ -223,11 +231,16 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
             <!-- Footer: pinned to bottom so CTAs align across cards -->
             <div class="mt-auto pt-8">
-              {service.hasSale && (
-                <p class="service-sale-badge" aria-label="Limited time offer on this service">
+              {service.hasSale && service.saleHref && (
+                <a
+                  href={service.saleHref}
+                  class="service-sale-badge"
+                  aria-label={`Jump to the limited-time ${service.altTitle} offer`}
+                >
                   <span class="service-sale-dot" aria-hidden="true"></span>
                   Limited Offer
-                </p>
+                  <span class="service-sale-arrow" aria-hidden="true">&rarr;</span>
+                </a>
               )}
               <div class="flex items-end justify-between mb-4">
                 <p class="text-label-sm text-on-surface-muted">

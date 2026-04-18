@@ -14,7 +14,7 @@ interface Props {
 const { name, price, salePrice, description, highlights, custom = false, id } = Astro.props;
 ---
 
-<div class="bg-surface p-10 flex flex-col h-full relative card-lift" style="gap: var(--spacing-element);">
+<div id={id} class="bg-surface p-10 flex flex-col h-full relative card-lift" style="gap: var(--spacing-element); scroll-margin-top: 120px;">
   {salePrice && (
     <span class="absolute top-4 right-4 text-label-sm text-on-surface-variant font-serif italic">Limited offer</span>
   )}
