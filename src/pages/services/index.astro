@@ -6,6 +6,7 @@ import ShareButton from '../../components/ui/ShareButton.astro';
 import { Image } from 'astro:assets';
 import site from '../../data/site.json';
 import portfolio from '../../data/portfolio.json';
+import packages from '../../data/packages.json';
 
 // Marquee: pick portrait photos from portfolio, round-robin across galleries.
 // Targets: 3 wedding, 8 pre-wedding, 5 civil-ceremony.
@@ -76,7 +77,23 @@ const marqueeImages = shuffle([
   ...pickByCategory('civil-ceremony', 5),
 ]);
 
-const services = [
+// Map service slug to the category string used in packages.json so we can
+// detect whether a service has at least one package with an active sale.
+const slugToPackageCategory: Record<string, string> = {
+  wedding: 'Wedding',
+  'pre-wedding': 'Pre-Wedding',
+  'civil-ceremony': 'Civil Ceremony',
+  celebrations: 'Events',
+};
+
+function hasSaleInCategory(slug: string): boolean {
+  const category = slugToPackageCategory[slug];
+  if (!category) return false;
+  return (packages as Array<{ category: string; salePrice?: number | null }>)
+    .some((p) => p.category === category && p.salePrice != null);
+}
+
+const baseServices = [
   {
     title: 'Wedding Day',
     altTitle: 'Wedding Day',
@@ -118,6 +135,8 @@ const services = [
     image: 'celebrations',
   },
 ];
+
+const services = baseServices.map((s) => ({ ...s, hasSale: hasSaleInCategory(s.slug) }));
 
 const businessRef = { '@id': `${site.url}/#business` };
 
@@ -204,6 +223,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
             <!-- Footer: pinned to bottom so CTAs align across cards -->
             <div class="mt-auto pt-8">
+              {service.hasSale && (
+                <p class="service-sale-badge" aria-label="Limited time offer on this service">
+                  <span class="service-sale-dot" aria-hidden="true"></span>
+                  Limited Offer
+                </p>
+              )}
               <div class="flex items-end justify-between mb-4">
                 <p class="text-label-sm text-on-surface-muted">
                   From <span class="text-heading-md text-on-surface">${service.startingAt}</span>

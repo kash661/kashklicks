@@ -411,6 +411,42 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Service card "Limited Offer" badge. Renders above the price row when
+   any package in that service's category has a non-null salePrice in
+   packages.json. Small pulsing dot plus tracked caps label, no fills
+   so it stays editorial. */
+.service-sale-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-on-surface);
+  margin-bottom: 0.875rem;
+}
+
+.service-sale-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-on-surface);
+  animation: service-sale-pulse 2.4s var(--ease-gallery) infinite;
+}
+
+@keyframes service-sale-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-sale-dot {
+    animation: none;
+    opacity: 0.9;
+  }
+}
+
 /* Dot indicator below the scroller (mobile only). Lets the reader
    see how many cards remain and where they are. */
 .services-indicator {
