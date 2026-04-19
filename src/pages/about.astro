@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import Button from '../components/ui/Button.astro';
 import FinalCTA from '../components/global/FinalCTA.astro';
+import JourneyTimelineDesktop from '../components/services/JourneyTimelineDesktop.astro';
+import JourneyTimelineMobile from '../components/services/JourneyTimelineMobile.astro';
 import { Image } from 'astro:assets';
 
 import portraitImage from '../assets/images/about/akash-portrait.jpg';
@@ -32,6 +34,33 @@ const personSchema = {
   ],
   sameAs: [site.social.instagram, site.social.pinterest, site.social.youtube],
 };
+
+const aboutJourneySteps = [
+  {
+    label: 'Step 01',
+    title: 'A real hello, no scripts.',
+    body: 'I start with a free consultation. No pressure. Just a real conversation about who you are, what you are celebrating, and how you want to remember it.',
+    hint: '30-minute call · no obligation',
+  },
+  {
+    label: 'Step 02',
+    title: 'Every detail, handled.',
+    body: 'I take care of locations, timing, and creative direction. You will get a curated mood board and a clear plan, so you know exactly what to expect. All you need to do is show up.',
+    hint: 'Mood board · shot list · timeline',
+  },
+  {
+    label: 'Step 03',
+    title: 'Prompting, never posing.',
+    body: 'On the day, I guide you through natural prompts and movements. No stiff poses. The energy stays calm, unhurried, and focused on the two of you.',
+    hint: 'Calm over performance · real reactions',
+  },
+  {
+    label: 'Step 04',
+    title: 'A gallery, carefully kept.',
+    body: 'Your gallery is hand-edited, colour-graded, and delivered within 1 to 3 weeks through a private online gallery. Every image is treated with the same care.',
+    hint: 'Private gallery · 1 to 3 week turnaround',
+  },
+];
 ---
 
 <BaseLayout
@@ -145,81 +174,18 @@ const personSchema = {
     </div>
   </section>
 
-  <!-- My Process -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <!-- Section header -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">My Process</p>
-        <h2 class="text-display-md">How It Works</h2>
-        <p class="text-body-lg text-on-surface-variant mx-auto mt-6" style="max-width: 48ch;">
-          Four steps, no surprises. From the first message to the final gallery, here is exactly what to expect.
-        </p>
-      </div>
-
-      <!-- Timeline -->
-      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
-        <!-- Vertical line -->
-        <div class="timeline-line hidden md:block"></div>
-
-        <!-- Step 1 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
-            <h3 class="text-heading-lg font-serif">A real hello, no scripts.</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">
-              I start with a free consultation. No pressure. Just a real conversation about who you are, what you are celebrating, and how you want to remember it.
-            </p>
-            <p class="text-label-sm text-on-surface-muted mt-3">30-minute call · no obligation</p>
-          </div>
-        </div>
-
-        <!-- Step 2 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
-            <h3 class="text-heading-lg font-serif">Every detail, handled.</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">
-              I take care of locations, timing, and creative direction. You will get a curated mood board and a clear plan, so you know exactly what to expect. All you need to do is show up.
-            </p>
-            <p class="text-label-sm text-on-surface-muted mt-3">Mood board · shot list · timeline</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 3 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
-            <h3 class="text-heading-lg font-serif">Prompting, never posing.</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">
-              On the day, I guide you through natural prompts and movements. No stiff poses. The energy stays calm, unhurried, and focused on the two of you.
-            </p>
-            <p class="text-label-sm text-on-surface-muted mt-3">Calm over performance · real reactions</p>
-          </div>
-        </div>
-
-        <!-- Step 4 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
-            <h3 class="text-heading-lg font-serif">A gallery, carefully kept.</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">
-              Your gallery is hand-edited, colour-graded, and delivered within 1 to 3 weeks through a private online gallery. Every image is treated with the same care.
-            </p>
-            <p class="text-label-sm text-on-surface-muted mt-3">Private gallery · 1 to 3 week turnaround</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <JourneyTimelineDesktop
+    steps={aboutJourneySteps}
+    eyebrow="My Process"
+    title="How It Works"
+    intro="Four steps, no surprises. From the first message to the final gallery, here is exactly what to expect."
+  />
+  <JourneyTimelineMobile
+    steps={aboutJourneySteps}
+    eyebrow="My Process"
+    title="How It Works"
+    intro="Four steps, no surprises. From the first message to the final gallery, here is exactly what to expect."
+  />
 
   <!-- Travel Teaser -->
   <section class="bg-surface" style="padding: var(--spacing-section) 0;">

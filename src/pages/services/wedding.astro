@@ -9,6 +9,8 @@ import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import GearStrip from '../../components/global/GearStrip.astro';
+import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
+import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
 import gearStripCard01 from '../../assets/images/portfolio/ayushi-parth/25.jpg';
 import gearStripCard04 from '../../assets/images/gear/04-wedding-override.jpg';
 import ctaImage from '../../assets/images/homepage/homepage-01.jpg';
@@ -23,6 +25,44 @@ const weddingServiceImage = (await import('../../assets/images/homepage/wedding-
 
 const weddingPackages = packages.filter((p) => p.category === 'Wedding').sort((a, b) => a.order - b.order);
 const weddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('wedding'));
+
+const weddingJourneySteps = [
+  {
+    label: 'Step 01',
+    title: 'Book a Consultation',
+    body: 'A free, no-obligation call to talk about your wedding day. No pressure, just a conversation about what matters to you.',
+  },
+  {
+    label: 'Step 02',
+    title: 'Planning Together',
+    body: 'I walk through every package, answer all your questions, and find the right fit for your day and your budget.',
+  },
+  {
+    label: 'Step 03',
+    title: 'Lock In Your Date',
+    body: 'Sign a simple contract. A 50% retainer secures your date and gets things started.',
+  },
+  {
+    label: 'Step 04',
+    title: 'Your Engagement Shoot',
+    body: "I book your pre-wedding session. I help pick the location, what to wear, the time of day, and the mood you're going for. This is where I learn your editing style.",
+  },
+  {
+    label: 'Step 05',
+    title: 'Your Wedding Day',
+    body: 'I capture everything. The second 30% is due two weeks before your date, so you have one less thing to think about. You be fully present. I handle the memories.',
+  },
+  {
+    label: 'Step 06',
+    title: 'Sneak Peek',
+    body: 'Within days of your wedding, you get a curated preview. Since I already know your style from the engagement shoot, the look is already dialed in.',
+  },
+  {
+    label: 'Step 07',
+    title: 'Full Delivery',
+    body: "Your complete gallery delivered within 2 to 3 months. Final 20% due once you're happy with everything. Private online gallery, yours to keep.",
+  },
+];
 
 const weddingService = {
   title: 'Wedding Day Coverage',
@@ -177,100 +217,13 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ JOURNEY TIMELINE ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <JourneyTimelineDesktop steps={weddingJourneySteps} />
+  <JourneyTimelineMobile steps={weddingJourneySteps} />
+
+  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
     <div class="container-editorial">
-      <!-- Section header -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
-        <h2 class="text-display-md">From Inquiry to Gallery</h2>
-      </div>
-
-      <!-- Timeline -->
-      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
-        <!-- Vertical line -->
-        <div class="timeline-line hidden md:block"></div>
-
-        <!-- Step 1 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
-            <h3 class="text-heading-lg font-serif">Book a Consultation</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">A free, no-obligation call to talk about your wedding day. No pressure, just a conversation about what matters to you.</p>
-          </div>
-        </div>
-
-        <!-- Step 2 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
-            <h3 class="text-heading-lg font-serif">Planning Together</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">I walk through every package, answer all your questions, and find the right fit for your day and your budget.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 3 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
-            <h3 class="text-heading-lg font-serif">Lock In Your Date</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">Sign a simple contract. A 50% retainer secures your date and gets things started.</p>
-          </div>
-        </div>
-
-        <!-- Step 4 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
-            <h3 class="text-heading-lg font-serif">Your Engagement Shoot</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">I book your pre-wedding session. I help pick the location, what to wear, the time of day, and the mood you're going for. This is where I learn your editing style.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 5 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 05</p>
-            <h3 class="text-heading-lg font-serif">Your Wedding Day</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">I capture everything. The second 30% is due two weeks before your date, so you have one less thing to think about. You be fully present. I handle the memories.</p>
-          </div>
-        </div>
-
-        <!-- Step 6 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 06</p>
-            <h3 class="text-heading-lg font-serif">Sneak Peek</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">Within days of your wedding, you get a curated preview. Since I already know your style from the engagement shoot, the look is already dialed in.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 7 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 07</p>
-            <h3 class="text-heading-lg font-serif">Full Delivery</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">Your complete gallery delivered within 2 to 3 months. Final 20% due once you're happy with everything. Private online gallery, yours to keep.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Calendly CTA -->
-      <div class="text-center mt-24 reveal">
+      <div class="text-center reveal">
         <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
         <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
         <BookingLink variant="primary" label="Book Your Call" />

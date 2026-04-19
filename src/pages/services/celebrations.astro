@@ -9,6 +9,8 @@ import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import { Image } from 'astro:assets';
+import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
+import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
 
 import packages from '../../data/packages.json';
 import faqData from '../../data/faq.json';
@@ -18,6 +20,29 @@ import heroImage from '../../assets/images/homepage/celebrations-hero.jpg';
 import serviceDetailImage from '../../assets/images/homepage/celebrations-service-detail.jpg';
 import momentImage from '../../assets/images/homepage/celebrations-moment.jpg';
 import ctaImage from '../../assets/images/homepage/celebrations-cta.jpg';
+
+const celebrationsJourneySteps = [
+  {
+    label: 'Step 01',
+    title: 'Book a Consultation',
+    body: "Tell me about your event. A free, no-obligation call to talk through the details and make sure I'm the right fit.",
+  },
+  {
+    label: 'Step 02',
+    title: 'Planning Together',
+    body: 'I go over timing, the venue, coverage needs, and the must-have moments you want preserved. No detail is too small.',
+  },
+  {
+    label: 'Step 03',
+    title: 'Your Event',
+    body: 'I blend in and capture everything naturally. Candid moments, group shots, decor details. You enjoy the celebration. I handle the memories.',
+  },
+  {
+    label: 'Step 04',
+    title: 'Full Delivery',
+    body: 'Your complete gallery delivered within 2 weeks. Private online gallery, yours to keep and share.',
+  },
+];
 
 const eventPackages = packages.filter((p) => p.category === 'Events').sort((a, b) => a.order - b.order);
 const eventFaq = faqData.filter((q: any) => !q.services || q.services.includes('celebrations'));
@@ -175,67 +200,13 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ JOURNEY TIMELINE ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <JourneyTimelineDesktop steps={celebrationsJourneySteps} />
+  <JourneyTimelineMobile steps={celebrationsJourneySteps} />
+
+  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
     <div class="container-editorial">
-      <!-- Section header -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
-        <h2 class="text-display-md">From Inquiry to Gallery</h2>
-      </div>
-
-      <!-- Timeline -->
-      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
-        <!-- Vertical line -->
-        <div class="timeline-line hidden md:block"></div>
-
-        <!-- Step 1 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
-            <h3 class="text-heading-lg font-serif">Book a Consultation</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">Tell me about your event. A free, no-obligation call to talk through the details and make sure I'm the right fit.</p>
-          </div>
-        </div>
-
-        <!-- Step 2 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
-            <h3 class="text-heading-lg font-serif">Planning Together</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">I go over timing, the venue, coverage needs, and the must-have moments you want preserved. No detail is too small.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 3 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
-            <h3 class="text-heading-lg font-serif">Your Event</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">I blend in and capture everything naturally. Candid moments, group shots, decor details. You enjoy the celebration. I handle the memories.</p>
-          </div>
-        </div>
-
-        <!-- Step 4 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
-            <h3 class="text-heading-lg font-serif">Full Delivery</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">Your complete gallery delivered within 2 weeks. Private online gallery, yours to keep and share.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-      </div>
-
-      <!-- Calendly CTA -->
-      <div class="text-center mt-24 reveal">
+      <div class="text-center reveal">
         <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
         <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
         <BookingLink variant="primary" label="Book Your Call" />

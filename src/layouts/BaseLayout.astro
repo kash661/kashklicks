@@ -187,7 +187,6 @@ if (site.phone) {
       import { initSoundState } from '../scripts/sound-manager';
       import { initCharReveal } from '../scripts/char-reveal';
       import { initMagnetic } from '../scripts/magnetic';
-      import { initTimeline } from '../scripts/timeline';
       import { initCalendly } from '../scripts/calendly';
 
       const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 150));
@@ -203,7 +202,6 @@ if (site.phone) {
         onIdle(() => {
           initLazyVideo();
           initMagnetic();
-          initTimeline();
           initSoundState();
           initCalendly();
         });
