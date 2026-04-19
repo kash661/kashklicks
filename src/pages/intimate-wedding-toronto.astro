@@ -2,9 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import PricingCard from '../components/ui/PricingCard.astro';
+import PackageAddOns from '../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import Button from '../components/ui/Button.astro';
 import BookingLink from '../components/ui/BookingLink.astro';
+import GearStrip from '../components/global/GearStrip.astro';
+import gearStripCard01 from '../assets/images/portfolio/ayushi-parth/25.jpg';
+import gearStripCard04 from '../assets/images/gear/04-wedding-override.jpg';
 import { Image } from 'astro:assets';
 
 import packages from '../data/packages.json';
@@ -320,18 +324,19 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ DISPLAY TESTIMONIAL — editorial pull-quote ═══ -->
-  <section class="bg-surface-dark" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="max-w-4xl mx-auto text-center reveal">
-        <blockquote class="text-display-lg font-serif italic text-on-dark char-reveal">
-          "Every moment, captured without ever feeling staged."
-        </blockquote>
-        <p class="text-label-md text-on-dark-variant mt-10">Shania & Vishal</p>
-        <p class="text-label-sm text-on-dark-variant" style="opacity: 0.7;">Toronto</p>
-      </div>
-    </div>
-  </section>
+  <!-- ═══ THE KIT — four cameras, four looks ═══ -->
+  <GearStrip
+    imageOverrides={{
+      '01': {
+        src: gearStripCard01,
+        alt: 'Ayushi and Parth walking up stone steps through a classical archway, Toronto wedding session',
+      },
+      '04': {
+        src: gearStripCard04,
+        alt: 'Candid wedding moment captured on a handheld compact, the kind of angle your crew catches',
+      },
+    }}
+  />
 
   <!-- ═══ WEDDING PACKAGES ═══ -->
   <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
@@ -365,6 +370,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             />
           </div>
         ))}
+      </div>
+
+      <!-- Shared add-ons section (pulled from all wedding packages above) -->
+      <div class="mt-12">
+        <PackageAddOns
+          title="Add-Ons & Extras"
+          description="Optional upgrades that apply across the collections above. Add any combination to your booking."
+          packages={weddingPackages}
+        />
       </div>
 
       {civilPackage && (
@@ -408,21 +422,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           </div>
         </div>
       )}
-    </div>
-  </section>
-
-  <!-- ═══ AVAILABILITY ANCHOR — message match for V8 scarcity ad ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-block) 0 0 0;">
-    <div class="container-editorial">
-      <div class="text-center reveal">
-        <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center">Availability</p>
-        <p class="text-heading-lg font-serif italic mt-6" style="max-width: 32ch; margin-inline: auto;">
-          Now booking late 2026 and 2027.
-        </p>
-        <p class="text-body-md text-on-surface-variant mt-4" style="max-width: 40ch; margin-inline: auto;">
-          One wedding per weekend. Toronto and the GTA.
-        </p>
-      </div>
     </div>
   </section>
 
