@@ -1,0 +1,83 @@
+---
+export interface JourneyStep {
+  label: string;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  steps: JourneyStep[];
+}
+
+const { steps } = Astro.props;
+---
+
+<section
+  class="hidden md:block bg-background"
+  style="padding: var(--spacing-section) 0;"
+  data-journey-timeline="desktop"
+>
+  <div class="container-editorial">
+    <div class="text-center mb-16 reveal">
+      <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
+      <h2 class="text-display-md">From Inquiry to Gallery</h2>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
+      <div class="journey-line-desktop"></div>
+
+      {steps.map((step, i) => {
+        const isRight = i % 2 === 0;
+        const side = isRight ? 'right' : 'left';
+        const isLast = i === steps.length - 1;
+        return (
+          <div
+            class={`journey-step grid grid-cols-2 ${isLast ? '' : 'mb-24'}`}
+            data-step-index={i}
+            data-side={side}
+          >
+            {isRight ? (
+              <>
+                <div></div>
+                <div class="pl-12">
+                  <div class="journey-dot journey-dot-desktop" style="top: 8px;"></div>
+                  <div class="journey-step-content">
+                    <p class="text-label-sm text-on-surface-muted mb-2">{step.label}</p>
+                    <h3 class="text-heading-lg font-serif">{step.title}</h3>
+                    <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">{step.body}</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div class="pr-12 text-right">
+                  <div class="journey-dot journey-dot-desktop" style="top: 8px;"></div>
+                  <div class="journey-step-content">
+                    <p class="text-label-sm text-on-surface-muted mb-2">{step.label}</p>
+                    <h3 class="text-heading-lg font-serif">{step.title}</h3>
+                    <p class="text-body-md text-on-surface-variant mt-3 ml-auto" style="max-width: 36ch;">{step.body}</p>
+                  </div>
+                </div>
+                <div></div>
+              </>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initJourneyTimelineDesktop } from '../../scripts/journey-timeline';
+
+  let cleanup: (() => void) | undefined;
+
+  function run() {
+    cleanup?.();
+    cleanup = initJourneyTimelineDesktop();
+  }
+
+  run();
+  document.addEventListener('astro:page-load', run);
+</script>
