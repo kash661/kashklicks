@@ -1,0 +1,61 @@
+---
+export interface JourneyStep {
+  label: string;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  steps: JourneyStep[];
+}
+
+const { steps } = Astro.props;
+---
+
+<section
+  class="md:hidden bg-background"
+  style="padding: var(--spacing-section) 0;"
+  data-journey-timeline="mobile"
+>
+  <div class="container-editorial">
+    <div class="text-center mb-12 reveal">
+      <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
+      <h2 class="text-display-md">From Inquiry to Gallery</h2>
+    </div>
+
+    <div class="relative" style="padding: 0 1rem 0 2rem;">
+      <div class="journey-line-mobile"></div>
+
+      {steps.map((step, i) => {
+        const isLast = i === steps.length - 1;
+        return (
+          <div
+            class={`journey-step ${isLast ? '' : 'mb-12'}`}
+            data-step-index={i}
+          >
+            <div class="journey-dot journey-dot-mobile" style="top: 8px;"></div>
+            <div class="journey-step-content">
+              <p class="text-label-sm text-on-surface-muted mb-2">{step.label}</p>
+              <h3 class="text-heading-lg font-serif">{step.title}</h3>
+              <p class="text-body-md text-on-surface-variant mt-3">{step.body}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initJourneyTimelineMobile } from '../../scripts/journey-timeline';
+
+  let cleanup: (() => void) | undefined;
+
+  function run() {
+    cleanup?.();
+    cleanup = initJourneyTimelineMobile();
+  }
+
+  run();
+  document.addEventListener('astro:page-load', run);
+</script>
