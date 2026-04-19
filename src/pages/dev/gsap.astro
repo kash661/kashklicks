@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+
+import hero from '../../assets/images/hero/hero-main.jpg';
+import alexAziz from '../../assets/images/portfolio/alex-aziz-cover.jpg';
+import ayushiParth from '../../assets/images/portfolio/ayushi-parth-cover.jpg';
+import meghnaPuneeth from '../../assets/images/portfolio/meghna-puneeth-cover.jpg';
+import mitaliPurv from '../../assets/images/portfolio/mitali-purv-cover.jpg';
+import nataliShavar from '../../assets/images/portfolio/natalie-shavar-cover.jpg';
+import noraAli from '../../assets/images/portfolio/nora-ali-cover.jpg';
+import preetRoxana from '../../assets/images/portfolio/preet-roxana-cover.jpg';
+import shubaRob from '../../assets/images/portfolio/shuba-rob-cover.jpg';
+
+const panels = [
+  { img: alexAziz,      couple: 'Alex + Aziz',      location: 'Financial District' },
+  { img: ayushiParth,   couple: 'Ayushi + Parth',   location: 'Toronto Islands' },
+  { img: meghnaPuneeth, couple: 'Meghna + Puneeth', location: 'High Park' },
+  { img: mitaliPurv,    couple: 'Mitali + Purv',    location: 'Distillery District' },
+  { img: nataliShavar,  couple: 'Natalie + Shavar', location: 'Casa Loma' },
+];
+
+const covers = [noraAli, preetRoxana, shubaRob];
+
+const packages = [
+  { id: 'quiet',    name: 'The Quiet',    price: 2400, description: 'Civil ceremony or intimate vow.', highlights: ['4 hours coverage', '150+ edited photos', 'Private gallery', 'Print release'] },
+  { id: 'cinema',   name: 'The Cinema',   price: 4200, description: 'Full-day with second pair of eyes.', highlights: ['8 hours coverage', '400+ edited photos', 'Highlight film (3 min)', 'Heirloom album credit'] },
+  { id: 'heirloom', name: 'The Heirloom', price: 6800, description: 'Multi-day, multi-event.', highlights: ['Two-day coverage', '600+ edited photos', 'Feature film (6 min)', 'Linen album', 'Engagement session'] },
+];
+---
+
+<BaseLayout
+  title="GSAP Prototypes — Dev"
+  description="Internal preview of GSAP animation prototypes."
+  noIndex={true}
+>
+  <!-- Prototype index -->
+  <nav class="bg-surface-dark text-on-dark py-6">
+    <div class="container-editorial">
+      <p class="text-label-sm text-on-dark-variant mb-3">GSAP Prototypes · scroll through</p>
+      <ol class="grid gap-2 md:grid-cols-3 text-body-md">
+        <li><a href="#fx-1" class="hover:text-on-dark underline-offset-4 hover:underline">01 · Pinned Ken-Burns Hero</a></li>
+        <li><a href="#fx-2" class="hover:text-on-dark underline-offset-4 hover:underline">02 · Horizontal Portfolio</a></li>
+        <li><a href="#fx-3" class="hover:text-on-dark underline-offset-4 hover:underline">03 · Scroll-Scrubbed Chars</a></li>
+        <li><a href="#fx-4" class="hover:text-on-dark underline-offset-4 hover:underline">04 · Crossfading Covers</a></li>
+        <li><a href="#fx-5" class="hover:text-on-dark underline-offset-4 hover:underline">05 · Splash Timeline</a></li>
+        <li><a href="#fx-6" class="hover:text-on-dark underline-offset-4 hover:underline">06 · Pricing Expansion</a></li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- 01 · Pinned Ken-Burns Hero -->
+  <section id="fx-1" class="gsap-hero relative h-screen overflow-hidden bg-surface-container">
+    <div class="gsap-hero__image absolute inset-0">
+      <Image src={hero} alt="" class="w-full h-full object-cover" widths={[1200, 1920, 2400]} sizes="100vw" loading="eager" />
+    </div>
+    <div class="gsap-hero__overlay absolute inset-0 bg-black/20"></div>
+    <div class="gsap-hero__copy relative h-full flex flex-col justify-end pb-16 container-editorial text-on-dark">
+      <p class="text-label-sm text-on-dark-variant mb-3">01 · Pinned Ken-Burns</p>
+      <h2 class="text-display-md max-w-xl">Moments fade. Memories don't.</h2>
+      <p class="text-body-md mt-4 max-w-md text-on-dark-variant">Hero pins as you scroll; image scales and drifts, copy fades out.</p>
+    </div>
+  </section>
+
+  <!-- 02 · Horizontal Portfolio Panels -->
+  <section id="fx-2" class="gsap-horz bg-background">
+    <div class="container-editorial py-16">
+      <p class="text-label-sm text-on-surface-muted">02 · Horizontal Scroll</p>
+      <h2 class="text-heading-lg mt-2">Recent Work</h2>
+      <p class="text-body-md text-on-surface-variant mt-2 max-w-md">Scroll vertically, the gallery slides horizontally while pinned.</p>
+    </div>
+    <div class="gsap-horz__track relative h-screen overflow-hidden">
+      <div class="gsap-horz__rail flex h-full">
+        {panels.map((p) => (
+          <article class="gsap-horz__panel shrink-0 w-screen h-full grid place-items-center px-12">
+            <div class="w-full max-w-3xl">
+              <div class="aspect-[3/4] overflow-hidden bg-surface-container">
+                <Image src={p.img} alt={p.couple} class="w-full h-full object-cover" widths={[600, 900, 1200]} sizes="(max-width: 768px) 90vw, 50vw" />
+              </div>
+              <div class="mt-4 flex justify-between text-label-md text-on-surface-variant">
+                <span>{p.couple}</span>
+                <span>{p.location}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Scroll-Scrubbed Character Reveal -->
+  <section id="fx-3" class="py-[30vh] bg-surface-dim">
+    <div class="container-editorial">
+      <p class="text-label-sm text-on-surface-muted">03 · Scrub Chars</p>
+      <h2 class="gsap-chars text-display-lg mt-4 max-w-5xl" data-split>
+        A quiet architecture of light, patience, and the smallest true moments.
+      </h2>
+      <p class="text-body-md text-on-surface-variant mt-8 max-w-md">Each character's opacity is tied to scroll position. The heading reads itself as you pass.</p>
+    </div>
+  </section>
+
+  <!-- 04 · Crossfading Covers -->
+  <section id="fx-4" class="gsap-crossfade relative h-[300vh] bg-surface-dark">
+    <div class="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+      <div class="relative w-full max-w-xl aspect-[3/4]">
+        {covers.map((c, i) => (
+          <div class="gsap-crossfade__img absolute inset-0" data-index={i}>
+            <Image src={c} alt="" class="w-full h-full object-cover" widths={[600, 900, 1200]} sizes="(max-width: 768px) 90vw, 40vw" />
+          </div>
+        ))}
+      </div>
+      <div class="absolute bottom-12 left-0 right-0 text-center text-on-dark">
+        <p class="text-label-sm text-on-dark-variant">04 · Crossfade · {covers.length} frames</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · Splash Timeline -->
+  <section id="fx-5" class="bg-background py-24">
+    <div class="container-editorial">
+      <p class="text-label-sm text-on-surface-muted">05 · Splash Timeline</p>
+      <p class="text-body-md text-on-surface-variant mt-2 mb-8 max-w-md">Click to replay. Mark · wordmark · tagline · CTA arrive on a single orchestrated timeline.</p>
+      <div class="gsap-splash relative bg-surface-dark text-on-dark p-16 md:p-24 min-h-[60vh] flex flex-col items-center justify-center text-center">
+        <span class="gsap-splash__mark text-display-lg font-serif">AD</span>
+        <span class="gsap-splash__wordmark block mt-6 text-label-md text-on-dark-variant">
+          <span>A</span><span>D</span>&nbsp;<span>P</span><span>H</span><span>O</span><span>T</span><span>O</span><span>G</span><span>R</span><span>A</span><span>P</span><span>H</span><span>Y</span>
+        </span>
+        <span class="gsap-splash__tag block mt-10 text-quote italic max-w-lg">Moments fade. Memories don't.</span>
+        <button class="gsap-splash__cta mt-10 px-8 py-3 border border-on-dark-variant text-label-md hover:bg-on-dark hover:text-surface-dark transition-colors duration-500" data-replay>
+          Enter the Gallery
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · Pricing Card Expansion -->
+  <section id="fx-6" class="bg-surface-dim py-24">
+    <div class="container-editorial">
+      <p class="text-label-sm text-on-surface-muted">06 · Expanding Cards</p>
+      <h2 class="text-heading-lg mt-2">The Investment</h2>
+      <p class="text-body-md text-on-surface-variant mt-2 mb-10 max-w-md">Click a card to expand it on a timeline. Click again to collapse.</p>
+      <div class="grid gap-6 md:grid-cols-3">
+        {packages.map((pkg) => (
+          <article class="gsap-pricing bg-surface p-8 cursor-pointer" data-pkg>
+            <div class="gsap-pricing__summary">
+              <p class="text-label-md text-on-surface-muted">{pkg.id.toUpperCase()}</p>
+              <h3 class="text-heading-md mt-2">{pkg.name}</h3>
+              <p class="text-body-md text-on-surface-variant mt-3">{pkg.description}</p>
+              <p class="text-body-lg mt-6">${pkg.price.toLocaleString()}</p>
+            </div>
+            <div class="gsap-pricing__details overflow-hidden" data-details style="height:0">
+              <ul class="mt-8 space-y-3 border-t border-on-surface-muted/20 pt-6">
+                {pkg.highlights.map((h) => (
+                  <li class="text-body-md text-on-surface-variant">{h}</li>
+                ))}
+              </ul>
+            </div>
+            <p class="gsap-pricing__hint text-label-sm text-on-surface-muted mt-6">Tap to expand ↓</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="h-[40vh] bg-surface-dark"></div>
+</BaseLayout>
+
+<style>
+  .gsap-horz__panel {
+    width: 100vw;
+  }
+  .gsap-chars .char {
+    display: inline-block;
+    opacity: 0.15;
+    will-change: opacity;
+  }
+  .gsap-chars .char.space {
+    width: 0.25em;
+  }
+  .gsap-crossfade__img {
+    opacity: 0;
+  }
+  .gsap-crossfade__img[data-index="0"] {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) {
+    console.info('[gsap-proto] reduced-motion: prototypes disabled');
+  } else {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 01 · Pinned Ken-Burns Hero
+    const hero = document.querySelector<HTMLElement>('.gsap-hero');
+    if (hero) {
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: '+=100%',
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+        },
+      })
+        .to('.gsap-hero__image', { scale: 1.15, yPercent: -6, ease: 'none' }, 0)
+        .to('.gsap-hero__overlay', { opacity: 0.5, ease: 'none' }, 0)
+        .to('.gsap-hero__copy', { yPercent: -20, opacity: 0, ease: 'power1.in' }, 0);
+    }
+
+    // 02 · Horizontal Portfolio Panels
+    const horz = document.querySelector<HTMLElement>('.gsap-horz__track');
+    const rail = document.querySelector<HTMLElement>('.gsap-horz__rail');
+    const panels = gsap.utils.toArray<HTMLElement>('.gsap-horz__panel');
+    if (horz && rail && panels.length) {
+      gsap.to(rail, {
+        xPercent: -100 * (panels.length - 1) * (100 / panels.length),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: horz,
+          start: 'top top',
+          end: () => '+=' + window.innerWidth * (panels.length - 1),
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+    }
+
+    // 03 · Scroll-Scrubbed Character Reveal
+    document.querySelectorAll<HTMLElement>('.gsap-chars[data-split]').forEach((heading) => {
+      const text = heading.textContent || '';
+      heading.innerHTML = text
+        .split('')
+        .map((c) =>
+          c === ' '
+            ? '<span class="char space">&nbsp;</span>'
+            : `<span class="char">${c}</span>`
+        )
+        .join('');
+      gsap.to(heading.querySelectorAll('.char'), {
+        opacity: 1,
+        stagger: 0.02,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 80%',
+          end: 'bottom 40%',
+          scrub: true,
+        },
+      });
+    });
+
+    // 04 · Crossfading Covers
+    const crossfade = document.querySelector<HTMLElement>('.gsap-crossfade');
+    const frames = gsap.utils.toArray<HTMLElement>('.gsap-crossfade__img');
+    if (crossfade && frames.length) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: crossfade,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1,
+        },
+      });
+      frames.forEach((frame, i) => {
+        if (i === 0) return;
+        tl.to(frames[i - 1], { opacity: 0, ease: 'none' }, i - 1)
+          .to(frame, { opacity: 1, ease: 'none' }, i - 1);
+      });
+    }
+
+    // 05 · Splash Timeline
+    const splash = document.querySelector<HTMLElement>('.gsap-splash');
+    if (splash) {
+      const build = () =>
+        gsap.timeline()
+          .from(splash.querySelector('.gsap-splash__mark'), { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out' })
+          .from(splash.querySelectorAll('.gsap-splash__wordmark span'), { y: 20, opacity: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out' }, '-=0.4')
+          .from(splash.querySelector('.gsap-splash__tag'), { y: 20, opacity: 0, duration: 0.7, ease: 'power2.out' }, '-=0.2')
+          .from(splash.querySelector('.gsap-splash__cta'), { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+
+      build();
+      splash.querySelector<HTMLElement>('[data-replay]')?.addEventListener('click', () => build());
+    }
+
+    // 06 · Pricing Card Expansion
+    document.querySelectorAll<HTMLElement>('[data-pkg]').forEach((card) => {
+      const details = card.querySelector<HTMLElement>('[data-details]');
+      const hint = card.querySelector<HTMLElement>('.gsap-pricing__hint');
+      if (!details || !hint) return;
+      let open = false;
+      card.addEventListener('click', () => {
+        open = !open;
+        const target = open ? details.scrollHeight : 0;
+        gsap.to(details, { height: target, duration: 0.6, ease: 'power2.inOut' });
+        gsap.to(hint, { opacity: open ? 0 : 1, y: open ? -4 : 0, duration: 0.3 });
+        hint.textContent = open ? '' : 'Tap to expand ↓';
+      });
+    });
+  }
+</script>
