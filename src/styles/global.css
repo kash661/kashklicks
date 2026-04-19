@@ -966,43 +966,56 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Timeline — alternating scroll-reveal steps */
-.timeline-line {
+/* Journey Timeline — GSAP scroll-linked line draw */
+
+/* Desktop variant — centered vertical line */
+.journey-line-desktop {
   position: absolute;
   left: 50%;
   top: 0;
-  bottom: 0;
   width: 1px;
-  background: var(--color-surface-container);
+  height: 100%;
+  background: var(--color-on-surface-muted);
   transform: translateX(-50%);
+  transform-origin: top center;
+  /* CSS default = visible. GSAP overrides to scaleY(0) on init, then animates. */
 }
 
-.timeline-dot {
+/* Mobile variant — left-edge vertical line */
+.journey-line-mobile {
+  position: absolute;
+  left: 14px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--color-on-surface-muted);
+  transform-origin: top left;
+}
+
+/* Shared dot */
+.journey-dot {
   width: 10px;
   height: 10px;
   background: var(--color-primary);
+  border: 2px solid var(--color-background);
   position: absolute;
+  z-index: 1;
+  /* CSS default = visible, full-scale. GSAP overrides to opacity 0, scale 0.4 on init. */
+}
+
+.journey-dot-desktop {
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1;
 }
 
-.timeline-step {
-  opacity: 0;
-  transition: opacity 1s var(--ease-gallery), transform 1s var(--ease-gallery);
+.journey-dot-mobile {
+  left: 14px;
+  transform: translateX(-50%);
 }
 
-.timeline-step-left {
-  transform: translateX(-30px);
-}
-
-.timeline-step-right {
-  transform: translateX(30px);
-}
-
-.timeline-step.timeline-visible {
-  opacity: 1;
-  transform: translateX(0);
+/* Step content — CSS default = visible. GSAP overrides on init. */
+.journey-step {
+  position: relative;
 }
 
 /* Scale-on-scroll: starts slightly smaller, JS adds .scaled */
