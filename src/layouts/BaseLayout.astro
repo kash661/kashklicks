@@ -93,7 +93,6 @@ if (site.phone) {
          Italic (pull quotes) + Medium (section headings) + Inter Regular (body) -->
     <link rel="preload" href="/fonts/NoirEtBlanc-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/NoirEtBlanc-Italic.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/NoirEtBlanc-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <SEO
@@ -112,7 +111,7 @@ if (site.phone) {
     <!-- Page-specific JSON-LD -->
     {jsonLd && <JsonLd schema={jsonLd} />}
 
-    <!-- ═══ Meta Pixel — Kash's marketing data (1383961226444206) ═══
+    <!-- ═══ Meta Pixel — Kash's marketing data (1349154153697983) ═══
          PageView fires on initial load + on every client-side navigation
          (astro:after-swap). Custom QualifiedEngagement + gated Lead
          events are fired by the intimate-wedding-toronto LP. -->
@@ -125,7 +124,7 @@ if (site.phone) {
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1383961226444206');
+      fbq('init', '1349154153697983');
       fbq('track', 'PageView');
       document.addEventListener('astro:after-swap', function () {
         if (typeof window.fbq === 'function') { window.fbq('track', 'PageView'); }
@@ -133,7 +132,7 @@ if (site.phone) {
     </script>
     <noscript>
       <img height="1" width="1" style="display:none" alt=""
-        src="https://www.facebook.com/tr?id=1383961226444206&ev=PageView&noscript=1" />
+        src="https://www.facebook.com/tr?id=1349154153697983&ev=PageView&noscript=1" />
     </noscript>
     <!-- End Meta Pixel -->
 
@@ -185,16 +184,23 @@ if (site.phone) {
       import { initTimeline } from '../scripts/timeline';
       import { initCalendly } from '../scripts/calendly';
 
+      const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 150));
+
       function initPage() {
+        // Critical — run immediately for above-fold motion
         initScrollReveal();
         initParallax();
         initScrollProgress();
-        initLazyVideo();
         initCharReveal();
-        initMagnetic();
-        initTimeline();
-        initSoundState();
-        initCalendly();
+
+        // Deferred — below-fold or interaction-triggered
+        onIdle(() => {
+          initLazyVideo();
+          initMagnetic();
+          initTimeline();
+          initSoundState();
+          initCalendly();
+        });
 
         const lightboxElements = document.querySelectorAll('.glightbox');
         if (lightboxElements.length > 0) {
