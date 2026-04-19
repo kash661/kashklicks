@@ -3,6 +3,7 @@ export interface JourneyStep {
   label: string;
   title: string;
   body: string;
+  hint?: string;
 }
 
 interface Props {
@@ -44,6 +45,9 @@ const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intr
               <p class="text-label-sm text-on-surface-muted mb-2">{step.label}</p>
               <h3 class="text-heading-lg font-serif">{step.title}</h3>
               <p class="text-body-md text-on-surface-variant mt-3">{step.body}</p>
+              {step.hint && (
+                <p class="text-label-sm text-on-surface-muted mt-3">{step.hint}</p>
+              )}
             </div>
           </div>
         );
