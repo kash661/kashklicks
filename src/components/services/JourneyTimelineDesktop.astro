@@ -7,9 +7,12 @@ export interface JourneyStep {
 
 interface Props {
   steps: JourneyStep[];
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
 }
 
-const { steps } = Astro.props;
+const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intro } = Astro.props;
 ---
 
 <section
@@ -19,8 +22,11 @@ const { steps } = Astro.props;
 >
   <div class="container-editorial">
     <div class="text-center mb-16 reveal">
-      <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
-      <h2 class="text-display-md">From Inquiry to Gallery</h2>
+      <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">{eyebrow}</p>
+      <h2 class="text-display-md">{title}</h2>
+      {intro && (
+        <p class="text-body-lg text-on-surface-variant mx-auto mt-6" style="max-width: 48ch;">{intro}</p>
+      )}
     </div>
 
     <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
