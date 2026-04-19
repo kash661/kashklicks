@@ -1,0 +1,144 @@
+---
+// src/components/ui/PackageAddOns.astro
+// Shared add-ons section rendered once below a set of pricing cards.
+// Consolidates the per-card add-on strings ("+$X", "available at $X/hr",
+// "Priority ... +$500") into a single list, deduplicated. Pass either
+// `items` directly, or `packages` + optional `filterByCategory` and the
+// component will extract shared add-ons automatically.
+interface Props {
+  title?: string;
+  eyebrow?: string;
+  description?: string;
+  items?: string[];
+  packages?: Array<{ highlights: string[]; category: string }>;
+  filterByCategory?: string;
+}
+
+const {
+  title = 'Add-Ons & Extras',
+  eyebrow = 'Optional',
+  description,
+  items: explicitItems,
+  packages,
+  filterByCategory,
+} = Astro.props;
+
+const isAddOn = (item: string) => item.includes('+$') || item.includes('available');
+
+let items: string[];
+if (explicitItems) {
+  items = explicitItems;
+} else if (packages) {
+  const filtered = filterByCategory
+    ? packages.filter((p) => p.category === filterByCategory)
+    : packages;
+  items = Array.from(
+    new Set(filtered.flatMap((p) => p.highlights.filter(isAddOn)))
+  );
+} else {
+  items = [];
+}
+---
+
+{items.length > 0 && (
+  <section class="package-addons" aria-label="Optional add-ons">
+    <div class="package-addons__inner">
+      <div class="package-addons__head">
+        {eyebrow && (
+          <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center mb-4 reveal">{eyebrow}</p>
+        )}
+        <h3 class="text-heading-lg text-on-surface measure-tight reveal stagger-1">{title}</h3>
+        {description && (
+          <p class="text-body-md text-on-surface-variant mt-4 reveal stagger-2">{description}</p>
+        )}
+      </div>
+
+      <ul class="package-addons__list reveal stagger-2">
+        {items.map((item) => (
+          <li class="package-addons__item">
+            <span class="package-addons__bullet" aria-hidden="true">+</span>
+            <span class="package-addons__text">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<style>
+  .package-addons {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    padding-inline: clamp(1.5rem, 5vw, 3rem);
+    background: var(--color-surface-dim);
+  }
+
+  .package-addons__inner {
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .package-addons__head {
+    text-align: center;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .package-addons__head h3 {
+    max-width: 20ch;
+    margin-inline: auto;
+  }
+
+  .package-addons__head p {
+    max-width: 54ch;
+    margin-inline: auto;
+    line-height: 1.7;
+  }
+
+  .package-addons__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--color-surface-container);
+  }
+
+  .package-addons__item {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1rem;
+    padding-inline: 0.25rem;
+    border-bottom: 1px solid var(--color-surface-container);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+  }
+
+  .package-addons__bullet {
+    flex: 0 0 auto;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    color: var(--color-on-surface-muted);
+    line-height: 1;
+    transform: translateY(2px);
+  }
+
+  .package-addons__text {
+    flex: 1 1 auto;
+  }
+
+  @media (min-width: 768px) {
+    .package-addons__list {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* Extend divider for the two-column layout so items align cleanly */
+    .package-addons__item:nth-child(odd) {
+      border-inline-end: 1px solid var(--color-surface-container);
+      padding-inline-end: 1.5rem;
+    }
+    .package-addons__item:nth-child(even) {
+      padding-inline-start: 1.5rem;
+    }
+  }
+</style>

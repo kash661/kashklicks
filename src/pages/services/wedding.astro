@@ -2,11 +2,15 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
+import PackageAddOns from '../../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import GearStrip from '../../components/global/GearStrip.astro';
+import gearStripCard01 from '../../assets/images/portfolio/ayushi-parth/25.jpg';
+import gearStripCard04 from '../../assets/images/gear/04-wedding-override.jpg';
 import ctaImage from '../../assets/images/homepage/homepage-01.jpg';
 import { Image } from 'astro:assets';
 
@@ -315,6 +319,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         ))}
       </div>
 
+      <!-- Shared add-ons section (pulled from all wedding packages above) -->
+      <div class="mt-12">
+        <PackageAddOns
+          title="Add-Ons & Extras"
+          description="Optional upgrades that apply across the packages above. Add any combination to your booking."
+          packages={weddingPackages}
+        />
+      </div>
+
       <!-- CTA below packages -->
       <div class="text-center mt-16 reveal">
         <p class="text-label-sm text-on-surface-muted mb-2">Have questions? I'll get back to you within 24 hours, guaranteed.</p>
@@ -353,6 +366,20 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
       </div>
     </div>
   </section>
+
+  <!-- ═══ THE KIT ═══ -->
+  <GearStrip
+    imageOverrides={{
+      '01': {
+        src: gearStripCard01,
+        alt: 'Ayushi and Parth walking up stone steps through a classical archway, Toronto wedding session',
+      },
+      '04': {
+        src: gearStripCard04,
+        alt: 'Candid wedding moment captured on a handheld compact, the kind of angle your crew catches',
+      },
+    }}
+  />
 
   <!-- ═══ FAQ ═══ -->
   <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">

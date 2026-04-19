@@ -1,0 +1,26 @@
+[
+  {
+    "num": "01",
+    "camera": "Sony Mirrorless",
+    "role": "The editorial gallery.",
+    "description": "Clean, timeless frames. Magazine-quality files. The gallery you'll still love twenty years from now."
+  },
+  {
+    "num": "02",
+    "camera": "Fujifilm + Simulations",
+    "role": "The film-grain nostalgia.",
+    "description": "In-camera film recipes, Classic Chrome tones and Kodachrome warmth. Real film feel with no lab wait."
+  },
+  {
+    "num": "03",
+    "camera": "Vintage Canon",
+    "role": "The throwback candids.",
+    "description": "A 90s point-and-shoot. Soft flash, imperfect framing, disposable-camera energy pulled out of an old shoebox."
+  },
+  {
+    "num": "04",
+    "camera": "Sony Compact + Fujifilm Instax",
+    "role": "For your crew and guests.",
+    "description": "A Sony Compact your bridesmaids keep for the angles I can't reach, plus a Fujifilm Instax printing polaroids on the spot. Guests sign them, you leave with a physical stack of the night."
+  }
+]

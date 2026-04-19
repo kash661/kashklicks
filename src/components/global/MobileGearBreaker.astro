@@ -1,0 +1,182 @@
+---
+// src/components/global/MobileGearBreaker.astro
+// Mobile gear differentiator. Narrow-viewport tree, independent of
+// GearBreaker.astro. Uses pure CSS sticky for stacked-cards scroll —
+// each card is `position: sticky; top: 0; height: 100svh` and later
+// cards in source order cover earlier ones as the deck scrolls.
+// Zero JS, zero scroll-hijack, native momentum preserved. Active below
+// min-width: 1024px (covers phones + portrait tablets).
+import { Image } from 'astro:assets';
+import gear from '../../data/gear.json';
+
+// Per-card feature image. Only cards with an entry here render an image;
+// the others render text-only. Keyed by `num` in gear.json.
+import cardImage01 from '../../assets/images/gear/01-sony.jpg';
+import cardImage02 from '../../assets/images/gear/02-fujifilm.jpg';
+import cardImage03 from '../../assets/images/gear/03-canon.jpg';
+import cardImage04 from '../../assets/images/gear/04-sony-compact.jpg';
+
+const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
+  '01': {
+    src: cardImage01,
+    alt: 'Editorial gallery frame shot on Sony mirrorless, Toronto wedding photography',
+  },
+  '02': {
+    src: cardImage02,
+    alt: 'Fujifilm film-simulation frame with warm Classic Chrome tones and soft grain',
+  },
+  '03': {
+    src: cardImage03,
+    alt: 'Vintage Canon point-and-shoot candid with soft flash and disposable-camera feel',
+  },
+  '04': {
+    src: cardImage04,
+    alt: 'Candid bridesmaid-angle frame shot on a handheld Sony compact camera',
+  },
+};
+
+const total = gear.length;
+---
+
+<section class="gear-stack-m" aria-label="The cameras I shoot with">
+  <header class="gear-stack-m__intro">
+    <p class="text-label-sm text-on-dark-variant eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark reveal mb-5">The Kit</p>
+    <h2 class="text-display-md text-on-dark reveal stagger-1 gear-stack-m__head">Four cameras.<br />Four looks.<br />One day.</h2>
+    <p class="text-body-md text-on-dark/70 reveal stagger-2 gear-stack-m__lede">
+      Most shooters bring one camera. I bring four, so you walk away with four distinct looks from the same day: the polished gallery, the film-grain nostalgia, the throwback candids, and the off-the-cuff shots from your crew.
+    </p>
+  </header>
+
+  <div class="gear-stack-m__deck">
+    {gear.map((item, i) => {
+      const img = imageMap[item.num];
+      return (
+        <article class={`gear-card ${img ? 'gear-card--hasMedia' : ''}`} data-i={i + 1}>
+          {img && (
+            <figure class="gear-card__media" aria-hidden="true">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                class="gear-card__img"
+                widths={[480, 720, 960]}
+                sizes="100vw"
+                quality={74}
+                format="avif"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </figure>
+          )}
+          <div class="gear-card__inner">
+            <span class="gear-card__num" aria-hidden="true">{item.num}</span>
+            <p class="text-label-sm text-on-dark-variant gear-card__label">{item.camera}</p>
+            <h3 class="text-heading-lg text-on-dark gear-card__role">{item.role}</h3>
+            <p class="text-body-md text-on-dark/70 gear-card__desc">{item.description}</p>
+            <p class="text-label-sm text-on-dark-variant gear-card__progress" aria-hidden="true">0{i + 1} / 0{total}</p>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .gear-stack-m {
+    background: var(--color-surface-dark);
+  }
+
+  .gear-stack-m__intro {
+    padding: clamp(4rem, 12vw, 6rem) 1.5rem clamp(2.5rem, 8vw, 4rem);
+    text-align: center;
+    max-width: 44ch;
+    margin-inline: auto;
+  }
+  .gear-stack-m__head { line-height: 1.15; }
+  .gear-stack-m__lede {
+    max-width: 38ch;
+    margin-inline: auto;
+    margin-top: 1.25rem;
+    line-height: 1.7;
+  }
+
+  /* The deck: cards stack here via position: sticky. Container height = n ×
+     100svh (from the cards themselves); each card is sticky at top: 0 with
+     height 100svh. As the user scrolls past a card's natural offset, that
+     card sticks. Later cards arrive at top: 0 and cover earlier ones via
+     source order. Pure CSS stacking — no JS, no pin, native scroll. */
+  .gear-stack-m__deck {
+    position: relative;
+  }
+
+  .gear-card {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: clamp(3rem, 9vh, 4.5rem) 1.5rem clamp(2rem, 6vh, 3rem);
+    background: var(--color-surface-dark);
+    border-top: 1px solid color-mix(in srgb, var(--color-on-dark) 14%, transparent);
+    gap: clamp(1.25rem, 3vh, 1.75rem);
+  }
+  .gear-card:first-child {
+    border-top: 0;
+  }
+
+  .gear-card__media {
+    margin: 0;
+    width: 100%;
+    height: clamp(260px, 42svh, 360px);
+    overflow: hidden;
+    background: var(--color-surface-container);
+  }
+  .gear-card__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* When the card has media, content drops a bit closer to the image */
+  .gear-card--hasMedia {
+    padding-top: clamp(2rem, 6vh, 3rem);
+  }
+
+  .gear-card__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-width: 32rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .gear-card__num {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(3rem, 11vw, 4.5rem);
+    line-height: 0.9;
+    color: var(--color-on-dark-variant);
+    opacity: 0.85;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+
+  .gear-card__label { margin: 0; }
+  .gear-card__role { margin: 0; line-height: 1.2; }
+  .gear-card__desc { margin: 0; line-height: 1.65; max-width: 34ch; }
+
+  .gear-card__progress {
+    margin: 1.75rem 0 0;
+    opacity: 0.55;
+    letter-spacing: 0.22em;
+  }
+
+  /* Hidden on desktop — GearBreaker.astro handles 1024px+ */
+  @media (min-width: 1024px) {
+    .gear-stack-m { display: none !important; }
+  }
+</style>

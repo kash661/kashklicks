@@ -779,6 +779,27 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateX(0);
 }
 
+/* Per-character reveal wrappers (produced by char-reveal.ts). Three-layer
+   structure: sentence → word → char.
+   • Sentence is inline by default so short headings keep flowing; at <=767px
+     it flips to block, so multi-sentence taglines break between sentences
+     on mobile ("Moments fade." / "Memories don't." on their own lines).
+   • Word uses white-space: nowrap so inline-block char shards can never
+     wrap mid-word. Lines only break between words.
+   • Char is the animated unit; styles set inline by the script. */
+.char-reveal-line {
+  display: inline;
+}
+@media (max-width: 767px) {
+  .char-reveal-line {
+    display: block;
+  }
+}
+.char-reveal-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 /* Parallax container — desktop only; mobile gets flat placement for perf + framing. */
 .parallax-img {
   --parallax-y: 0px;

@@ -1,0 +1,179 @@
+---
+// src/components/global/GearBreaker.astro
+// Desktop gear differentiator. Four full-width rows, alternating photo side
+// (left / right / left / right), native scroll only — no pin, no scrub, no
+// JS animation beyond the existing .reveal IntersectionObserver fade-in.
+// Large editorial photographs anchor each row; a text column on the opposite
+// side carries the chapter numeral, camera label, role, and description.
+// Independent tree from MobileGearBreaker.astro. Active at min-width: 1024px.
+import { Image } from 'astro:assets';
+import gear from '../../data/gear.json';
+
+import rowImage01 from '../../assets/images/gear/01-sony.jpg';
+import rowImage02 from '../../assets/images/gear/02-fujifilm.jpg';
+import rowImage03 from '../../assets/images/gear/03-canon.jpg';
+import rowImage04 from '../../assets/images/gear/04-sony-compact.jpg';
+
+const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
+  '01': {
+    src: rowImage01,
+    alt: 'Editorial gallery frame shot on Sony mirrorless, Toronto wedding photography',
+  },
+  '02': {
+    src: rowImage02,
+    alt: 'Fujifilm film-simulation frame with warm Classic Chrome tones and soft grain',
+  },
+  '03': {
+    src: rowImage03,
+    alt: 'Vintage Canon point-and-shoot candid with soft flash and disposable-camera feel',
+  },
+  '04': {
+    src: rowImage04,
+    alt: 'Candid frame shot on a handheld Sony compact — for the angles the main camera cannot reach',
+  },
+};
+---
+
+<section class="gear-rows" aria-label="The cameras I shoot with">
+  <div class="gear-rows__intro">
+    <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark reveal mb-6">The Kit</p>
+    <h2 class="text-display-md text-on-dark reveal stagger-1 gear-rows__head">Four cameras. Four looks. <br />One day.</h2>
+    <p class="text-body-md text-on-dark/70 reveal stagger-2 gear-rows__lede">
+      Most shooters bring one camera and one look. I bring four, so you walk away with the polished gallery, the film-grain nostalgia, the throwback candids, and the off-the-cuff bridesmaid shots, all from the same day.
+    </p>
+  </div>
+
+  <div class="gear-rows__list">
+    {gear.map((item, i) => {
+      const img = imageMap[item.num];
+      // Alternate the entrance direction: odd rows slide in from the left,
+      // even rows from the right — matches the alternating photo position.
+      const revealClass = i % 2 === 0 ? 'reveal-left' : 'reveal-right';
+      return (
+        <article class={`gear-row ${revealClass}`} data-i={item.num}>
+          <figure class="gear-row__media" aria-hidden="true">
+            {img && (
+              <Image
+                src={img.src}
+                alt={img.alt}
+                class="gear-row__img"
+                widths={[720, 960, 1200]}
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                quality={74}
+                format="avif"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            )}
+          </figure>
+          <div class="gear-row__body">
+            <span class="gear-row__num" aria-hidden="true">{item.num}</span>
+            <div class="gear-row__content">
+              <p class="text-label-md text-on-dark-variant gear-row__label">{item.camera}</p>
+              <h3 class="text-heading-md text-on-dark gear-row__role">{item.role}</h3>
+              <p class="text-body-md text-on-dark/70 gear-row__desc">{item.description}</p>
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .gear-rows {
+    background: var(--color-surface-dark);
+    position: relative;
+  }
+
+  .gear-rows__intro {
+    padding: var(--spacing-section) clamp(2rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem);
+    text-align: center;
+    max-width: 60rem;
+    margin-inline: auto;
+  }
+  .gear-rows__intro h2 {
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+  .gear-rows__head {
+    line-height: 1.15;
+  }
+  .gear-rows__lede {
+    max-width: 60ch;
+    margin-inline: auto;
+    margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+    line-height: 1.7;
+  }
+
+  .gear-rows__list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3.25rem);
+    padding-bottom: var(--spacing-section);
+  }
+
+  /* Each row: 2-column grid, photo on one side, text column on the other.
+     Even rows flip the photo to the right (alternating magazine spread). */
+  .gear-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+    padding-inline: clamp(2rem, 6vw, 5rem);
+    min-height: 52svh;
+  }
+  .gear-row:nth-child(even) .gear-row__media { order: 2; }
+  .gear-row:nth-child(even) .gear-row__body  { order: 1; }
+
+  .gear-row__media {
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-surface-container);
+    aspect-ratio: 4 / 3;
+    max-height: 52svh;
+  }
+  .gear-row__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gear-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.25vw, 1.75rem);
+    max-width: 28rem;
+  }
+  /* On even rows, the text sits in the left column — push it toward the
+     right edge so there's visual tension with the image on the right. */
+  .gear-row:nth-child(even) .gear-row__body {
+    margin-inline-start: auto;
+  }
+
+  .gear-row__num {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(3.25rem, 5.5vw, 5rem);
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    color: var(--color-on-dark-variant);
+    opacity: 0.85;
+    display: block;
+  }
+
+  .gear-row__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    max-width: 34ch;
+  }
+  .gear-row__label { margin: 0; }
+  .gear-row__role { margin: 0; line-height: 1.15; }
+  .gear-row__desc { margin: 0; line-height: 1.7; }
+
+  /* Hidden on narrow viewports — MobileGearBreaker handles those */
+  @media (max-width: 1023px) {
+    .gear-rows { display: none !important; }
+  }
+</style>

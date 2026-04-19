@@ -5,6 +5,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import InvestmentSection from '../components/global/InvestmentSection.astro';
+import GearBreaker from '../components/global/GearBreaker.astro';
+import MobileGearBreaker from '../components/global/MobileGearBreaker.astro';
 import testimonials from '../data/testimonials.json';
 
 // Hero
@@ -125,6 +127,12 @@ const jsonLd = [
       }
     }
 
+    /* Word wrapper keeps words atomic — lines only break between words. */
+    .home-hero__copy h2[data-entrance-defer] .tagline-word {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
     /* Mobile: hero text sits higher so the photograph takes the lower half.
        Desktop stays true-centered. */
     @media (max-width: 767px) {
@@ -132,6 +140,27 @@ const jsonLd = [
         justify-content: flex-start;
         padding-top: 18vh;
       }
+    }
+
+    /* Per-character split produced by initSectionHeadings (desktop only).
+       Word wrapper keeps a word atomic so line wrapping happens only at spaces;
+       chars inside a word are inline-block (required for transform) and the
+       word itself uses white-space: nowrap. */
+    [data-gsap-chars] .gsap-word {
+      display: inline-block;
+      white-space: nowrap;
+    }
+    [data-gsap-chars] .gsap-char {
+      display: inline-block;
+      will-change: transform, opacity;
+      /* Per-char splitting breaks the italic's natural letter flow, which
+         triggers OpenType contextual alternates/ligatures/kerning pairs to
+         fall back to wrong glyph forms (most visible: "d" renders as its
+         isolated cursive variant and reads like "a"). Neutralise all
+         position-aware features so each char renders in its default form. */
+      font-feature-settings: "kern" 0, "liga" 0, "calt" 0, "clig" 0, "dlig" 0, "hlig" 0;
+      font-variant-ligatures: none;
+      font-kerning: none;
     }
   </style>
 
@@ -201,7 +230,7 @@ const jsonLd = [
       <div class="grid-editorial items-end">
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Signature Style</p>
-          <h2 class="text-display-md text-on-surface measure-tight">Quiet moments, real connection.</h2>
+          <h2 class="text-display-md text-on-surface measure-tight" data-gsap-chars>Quiet moments, real connection.</h2>
         </div>
         <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
           <p class="text-quote text-on-surface-variant measure-wide">
@@ -242,19 +271,12 @@ const jsonLd = [
     </div>
   </section>
 
-  <!-- ═══ BREAKER · QUIET MOMENT ═══
-       Structural pattern break. No eyebrow, no section heading, no reveal
-       stagger. Dark band + single serif quote. Palette inversion + pure
-       typography interrupt the light-bg gallery rhythm. -->
-  <section class="breaker-quote" aria-label="Quote from Kash">
-    <div class="breaker-quote__inner">
-      <span class="breaker-rule" aria-hidden="true"></span>
-      <blockquote class="breaker-quote__text">
-        A wedding isn't a pose. It's the hand you didn't notice you were holding.
-      </blockquote>
-      <p class="breaker-quote__attribution">Kash, Toronto</p>
-    </div>
-  </section>
+  <!-- ═══ BREAKER · THE KIT ═══
+       Two independent components per the mobile/desktop separation rule.
+       GearBreaker renders ≥1024px (asymmetric chapter-page layout).
+       MobileGearBreaker renders <1024px (vertical stack on hairline rail). -->
+  <GearBreaker />
+  <MobileGearBreaker />
 
   <!-- ═══ 3. INVESTMENT ═══ -->
   <InvestmentSection
@@ -281,7 +303,7 @@ const jsonLd = [
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Recent Work</p>
-          <h2 class="text-display-md text-on-surface measure-medium">Stories from the last few months.</h2>
+          <h2 class="text-display-md text-on-surface measure-medium" data-gsap-chars>Stories from the last few months.</h2>
         </div>
         <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
           <p class="text-quote text-on-surface-variant measure-wide">
@@ -383,7 +405,7 @@ const jsonLd = [
       <div class="grid-editorial items-end mb-[var(--spacing-block)]">
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Questions</p>
-          <h2 class="text-display-md text-on-surface measure-tight">Things couples ask me.</h2>
+          <h2 class="text-display-md text-on-surface measure-tight" data-gsap-chars>Things couples ask me.</h2>
         </div>
         <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
           <p class="text-quote text-on-surface-variant measure-wide">
@@ -404,7 +426,7 @@ const jsonLd = [
     <div class="container-editorial">
       <div class="text-center mb-[var(--spacing-block)]">
         <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-4">The Journal</p>
-        <h2 class="text-display-md text-on-surface">Stories & guides.</h2>
+        <h2 class="text-display-md text-on-surface" data-gsap-chars>Stories & guides.</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-12">
         {journalPosts.map((post, i) => (
@@ -441,7 +463,7 @@ const jsonLd = [
     <div class="container-editorial relative z-10">
       <div class="flex flex-col items-center text-center">
         <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">Ready?</p>
-        <h2 class="text-display-md text-on-dark mb-4 reveal stagger-1">Start the Conversation</h2>
+        <h2 class="text-display-md text-on-dark mb-4" data-gsap-chars>Start the Conversation</h2>
         <p class="text-body-lg text-on-dark/70 mb-10 reveal stagger-2">
           Let's talk about your day. No obligations, just a conversation.
         </p>
@@ -517,17 +539,26 @@ const jsonLd = [
       sentences.forEach((sentence, index) => {
         const line = document.createElement('span');
         line.className = 'tagline-line';
-        for (const char of sentence) {
-          if (char === ' ') {
+        // Wrap each word so the browser can only line-break at real word
+        // boundaries, never mid-word into inline-block char shards.
+        const tokens = sentence.split(/(\s+)/);
+        tokens.forEach((token) => {
+          if (token === '') return;
+          if (/^\s+$/.test(token)) {
             line.appendChild(document.createTextNode(' '));
-            continue;
+            return;
           }
-          const span = document.createElement('span');
-          span.className = 'tagline-char';
-          span.textContent = char;
-          span.setAttribute('aria-hidden', 'true');
-          line.appendChild(span);
-        }
+          const word = document.createElement('span');
+          word.className = 'tagline-word';
+          for (const char of token) {
+            const span = document.createElement('span');
+            span.className = 'tagline-char';
+            span.textContent = char;
+            span.setAttribute('aria-hidden', 'true');
+            word.appendChild(span);
+          }
+          line.appendChild(word);
+        });
         h2.appendChild(line);
         if (index < sentences.length - 1) {
           h2.appendChild(document.createTextNode(' '));
@@ -606,17 +637,79 @@ const jsonLd = [
     return () => document.removeEventListener('splash:done', runEntrance);
   };
 
+  // Desktop-only: upgrade section display headings + pull-quote from the
+  // existing .reveal IntersectionObserver to a GSAP ScrollTrigger char-reveal.
+  // One-shot timeline per element — no scrub, no pin, no paint cost after the
+  // heading enters view. Mobile and reduced-motion keep their native render.
+  const initSectionHeadings = () => {
+    const mm = gsap.matchMedia();
+    mm.add(
+      '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+      () => {
+        const targets = document.querySelectorAll<HTMLElement>('[data-gsap-chars]');
+        targets.forEach((el) => {
+          if (el.dataset.charsSplit === 'true') return;
+          const text = (el.textContent || '').trim();
+          if (!text) return;
+          el.setAttribute('aria-label', text);
+          el.textContent = '';
+          // Split into word groups first so line wrapping can only happen at
+          // real word boundaries. Chars inside a word wrapper stay atomic.
+          const words = text.split(/(\s+)/);
+          for (const token of words) {
+            if (/^\s+$/.test(token)) {
+              el.appendChild(document.createTextNode(' '));
+              continue;
+            }
+            const word = document.createElement('span');
+            word.className = 'gsap-word';
+            word.setAttribute('aria-hidden', 'true');
+            for (const char of token) {
+              const span = document.createElement('span');
+              span.className = 'gsap-char';
+              span.textContent = char;
+              word.appendChild(span);
+            }
+            el.appendChild(word);
+          }
+          el.dataset.charsSplit = 'true';
+
+          const chars = el.querySelectorAll<HTMLElement>('.gsap-char');
+          gsap.set(chars, { opacity: 0, yPercent: 18 });
+
+          gsap.to(chars, {
+            opacity: 1,
+            yPercent: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            stagger: 0.018,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 82%',
+              once: true,
+            },
+          });
+        });
+      }
+    );
+    return () => mm.revert();
+  };
+
   let cleanupPin = initHomeHero();
   let cleanupEntrance = initHeroEntrance();
+  let cleanupHeadings = initSectionHeadings();
 
   document.addEventListener('astro:page-load', () => {
     cleanupPin?.();
     cleanupEntrance?.();
+    cleanupHeadings?.();
     cleanupPin = initHomeHero();
     cleanupEntrance = initHeroEntrance();
+    cleanupHeadings = initSectionHeadings();
   });
   document.addEventListener('astro:before-preparation', () => {
     cleanupPin?.();
     cleanupEntrance?.();
+    cleanupHeadings?.();
   });
 </script>

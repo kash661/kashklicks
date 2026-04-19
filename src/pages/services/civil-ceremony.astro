@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
+import PackageAddOns from '../../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
@@ -280,6 +281,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             custom={pkg.custom}
           />
         ))}
+      </div>
+
+      <!-- Shared add-ons section (pulled from the civil ceremony package) -->
+      <div class="mt-12">
+        <PackageAddOns
+          title="Add-Ons & Extras"
+          description="Optional upgrades you can add to the civil ceremony package."
+          packages={civilPackages}
+        />
       </div>
 
       <div class="text-center mt-16 reveal">
