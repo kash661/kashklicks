@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
-import FinalCTA from '../../components/global/FinalCTA.astro';
+import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
@@ -104,7 +104,7 @@ const schema = {
     </div>
   </section>
 
-  <FinalCTA
+  <PortfolioFinalCTA
     title="Plan your session."
     body="From location scouting to outfit guidance, I walk through every detail with you. Let's plan a session that feels like you."
     ctaLabel="Begin The Conversation"

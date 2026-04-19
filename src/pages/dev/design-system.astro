@@ -1,0 +1,467 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import PricingCard from '../../components/ui/PricingCard.astro';
+import TestimonialCard from '../../components/ui/TestimonialCard.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
+import FloatingInput from '../../components/ui/FloatingInput.astro';
+import FloatingSelect from '../../components/ui/FloatingSelect.astro';
+import FloatingTextarea from '../../components/ui/FloatingTextarea.astro';
+
+const colors = [
+  { group: 'Surface', items: [
+    { name: 'background',         token: '--color-background',        hex: '#faf9f6', desc: 'Primary canvas — the "gallery wall"' },
+    { name: 'surface',            token: '--color-surface',           hex: '#ffffff', desc: 'Cards, elevated containers' },
+    { name: 'surface-dim',        token: '--color-surface-dim',       hex: '#f4f4f0', desc: 'Alt sections, alternate rows' },
+    { name: 'surface-container',  token: '--color-surface-container', hex: '#e4e2e1', desc: 'Image placeholders, gradients' },
+    { name: 'surface-dark',       token: '--color-surface-dark',      hex: '#2c2824', desc: 'Splash, CTA sections, footer' },
+  ]},
+  { group: 'Text', items: [
+    { name: 'on-surface',         token: '--color-on-surface',         hex: '#1a1a18', desc: 'Primary text' },
+    { name: 'on-surface-variant', token: '--color-on-surface-variant', hex: '#5c605c', desc: 'Secondary text, labels' },
+    { name: 'on-surface-muted',   token: '--color-on-surface-muted',   hex: '#afb3ae', desc: 'Placeholder, disabled' },
+    { name: 'on-dark',            token: '--color-on-dark',            hex: '#faf9f6', desc: 'Text on dark surfaces' },
+    { name: 'on-dark-variant',    token: '--color-on-dark-variant',    hex: '#d4ccc2', desc: 'Secondary on dark' },
+  ]},
+  { group: 'Interactive', items: [
+    { name: 'primary',            token: '--color-primary',            hex: '#5f5e5e', desc: 'Buttons, links' },
+    { name: 'primary-hover',      token: '--color-primary-hover',      hex: '#4a4948', desc: 'Hover state' },
+    { name: 'error',              token: '--color-error',              hex: '#9e422c', desc: 'Form error messages' },
+  ]},
+];
+
+const typeScale = [
+  { cls: 'text-display-lg', role: 'Hero statements, splash',        sample: "Moments fade. Memories don't." },
+  { cls: 'text-display-md', role: 'Page titles',                    sample: 'A Quiet Architecture of Light' },
+  { cls: 'text-heading-lg', role: 'Section titles',                 sample: 'Signature Style' },
+  { cls: 'text-heading-md', role: 'Sub-section titles, card groups',sample: 'The Wedding Experience' },
+  { cls: 'text-quote',      role: 'Pull quotes, testimonials',      sample: '"It felt like he saw us, not just photographed us."' },
+  { cls: 'text-body-lg',    role: 'Primary body',                   sample: 'Solo, unhurried wedding photography for couples who want the day itself — not a template of it.' },
+  { cls: 'text-body-md',    role: 'Secondary body',                 sample: 'Based in Toronto. Available GTA-wide and across Canada.' },
+  { cls: 'text-label-md',   role: 'Nav, labels, captions',          sample: 'Portfolio · Services · About' },
+  { cls: 'text-label-sm',   role: 'Micro labels',                   sample: 'Recent Work · Toronto' },
+];
+
+const weights = [
+  { token: '--fw-regular', value: 400, label: 'Regular', serifSample: 'Cinematic and quiet' },
+  { token: '--fw-medium',  value: 500, label: 'Medium',  serifSample: 'Cinematic and quiet' },
+  { token: '--fw-bold',    value: 700, label: 'Medium Bold', serifSample: 'Cinematic and quiet' },
+];
+
+const spacing = [
+  { token: '--spacing-section', label: 'Section',  note: 'Between major page sections (56-160px clamp)' },
+  { token: '--spacing-block',   label: 'Block',    note: 'Between blocks inside a section (40-96px clamp)' },
+  { token: '--spacing-element', label: 'Element',  note: 'Between elements inside a block (24px)' },
+  { token: '--spacing-tight',   label: 'Tight',    note: 'Adjacent related items (8px)' },
+];
+
+const durations = [
+  { token: '--duration-fast',       value: '400ms', use: 'Micro interactions' },
+  { token: '--duration-hover',      value: '500ms', use: 'Hover states' },
+  { token: '--duration-slow',       value: '600ms', use: 'Scroll reveal, transitions' },
+  { token: '--duration-page',       value: '800ms', use: 'Page transitions' },
+  { token: '--duration-deliberate', value: '900ms', use: 'Emphasis reveals' },
+  { token: '--duration-splash',     value: '1200ms',use: 'Splash overlay' },
+];
+
+const motionPrimitives = [
+  { cls: '.reveal',        note: 'IntersectionObserver fade-up. Compose with .stagger-1 through .stagger-5.' },
+  { cls: '.reveal-left',   note: 'Slide in from left on scroll.' },
+  { cls: '.reveal-right',  note: 'Slide in from right on scroll.' },
+  { cls: '.scale-reveal',  note: 'Scale from 0.98 to 1 on scroll.' },
+  { cls: '.parallax-img',  note: '8%-of-viewport drift on an <Image>. Desktop only.' },
+  { cls: '.hover-zoom',    note: 'Slow 2.5s scale(1.04) on hover over image wrapper.' },
+  { cls: '.card-lift',     note: '4px rise + ambient shadow on card hover.' },
+  { cls: '.magnetic',      note: 'Pulls toward cursor. Needs magnetic.ts script.' },
+  { cls: '.char-reveal',   note: 'Splits serif heading into per-character fades on scroll.' },
+  { cls: '.image-caption', note: 'Editorial label fades in bottom-left on image hover (data-caption attr).' },
+  { cls: '.eyebrow-rule',  note: '40px hairline accent under label-md eyebrow when parent .reveal enters.' },
+];
+
+const faqItems = [
+  { question: 'When is the best time to shoot?', answer: 'Golden hour, always. Early morning or late afternoon light is unmatched.' },
+  { question: 'Will you help us with posing?',   answer: 'I prompt, not pose. Natural movements, real reactions.' },
+];
+
+const selectOptions = [
+  { value: '', label: 'Choose one' },
+  { value: 'wedding', label: 'Wedding' },
+  { value: 'pre-wedding', label: 'Pre-wedding' },
+  { value: 'portrait', label: 'Portrait' },
+];
+---
+
+<BaseLayout
+  title="Design System — AD Photography"
+  description="Internal design system reference."
+  noIndex={true}
+>
+  <style is:global>
+    .ds-section {
+      padding-block: clamp(3rem, 6vw, 6rem);
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .ds-section:first-of-type { border-top: 0; }
+
+    .ds-grid-6 { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem; }
+
+    .ds-swatch {
+      display: flex; flex-direction: column;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .ds-swatch__chip { aspect-ratio: 1.6 / 1; }
+    .ds-swatch__body { padding: 1rem; background: var(--color-surface); }
+    .ds-swatch__name { font-family: var(--font-sans); font-weight: 500; font-size: 0.875rem; color: var(--color-on-surface); }
+    .ds-swatch__meta { font-family: var(--font-sans); font-size: 0.75rem; color: var(--color-on-surface-variant); margin-top: 0.25rem; line-height: 1.4; }
+    .ds-swatch__hex  { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.7rem; color: var(--color-on-surface-muted); margin-top: 0.35rem; }
+
+    .ds-row {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      align-items: start;
+    }
+    .ds-row:first-child { border-top: 0; }
+    @media (max-width: 720px) {
+      .ds-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    }
+
+    .ds-meta-cls  { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.75rem; color: var(--color-on-surface); }
+    .ds-meta-role { font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-on-surface-variant); margin-top: 0.25rem; line-height: 1.4; }
+
+    .ds-spacing-bar {
+      background: var(--color-surface-container);
+      height: 12px;
+      display: block;
+    }
+
+    .ds-component-frame {
+      background: var(--color-surface);
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .ds-anchor-nav a {
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-variant);
+      padding: 0.25rem 0.75rem;
+      transition: color var(--duration-hover) var(--ease-gallery);
+    }
+    .ds-anchor-nav a:hover { color: var(--color-on-surface); }
+  </style>
+
+  <!-- HEADER + NAV -->
+  <section class="container-editorial pt-32 pb-12">
+    <p class="text-label-md text-on-surface-muted mb-4">Internal · noindex</p>
+    <h1 class="text-display-md mb-6">Design system</h1>
+    <p class="text-body-md text-on-surface-variant max-w-2xl mb-8">
+      Single source of truth for AD Photography visual language. Every token and component is wired to
+      <code>global.css</code>. To swap the serif, change <code>--font-serif</code>. To change a color, edit the
+      <code>--color-*</code> token. Every component inherits automatically.
+    </p>
+    <nav class="ds-anchor-nav flex flex-wrap gap-x-2 gap-y-2">
+      <a href="#colors">Colors</a>
+      <a href="#typography">Typography</a>
+      <a href="#weights">Weights</a>
+      <a href="#spacing">Spacing</a>
+      <a href="#motion">Motion</a>
+      <a href="#components">Components</a>
+    </nav>
+  </section>
+
+  <!-- ═══ COLORS ═══ -->
+  <section id="colors" class="container-editorial ds-section">
+    <div class="mb-10">
+      <p class="text-label-md text-on-surface-muted mb-2">01 · Tokens</p>
+      <h2 class="text-heading-lg mb-3">Color</h2>
+      <p class="text-body-md text-on-surface-variant max-w-2xl">
+        Stone/taupe palette, zero gold. Use <code>bg-[token]</code>, <code>text-[token]</code>, or <code>var(--color-*)</code> — never hex.
+      </p>
+    </div>
+
+    {colors.map((group) => (
+      <div class="mb-10">
+        <p class="text-label-sm text-on-surface-muted mb-4">{group.group}</p>
+        <div class="ds-grid-6">
+          {group.items.map((c) => (
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style={`background: ${c.hex};`}></div>
+              <div class="ds-swatch__body">
+                <p class="ds-swatch__name">{c.name}</p>
+                <p class="ds-swatch__meta">{c.desc}</p>
+                <p class="ds-swatch__hex">{c.token} · {c.hex}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- ═══ TYPOGRAPHY ═══ -->
+  <section id="typography" class="container-editorial ds-section">
+    <div class="mb-10">
+      <p class="text-label-md text-on-surface-muted mb-2">02 · Tokens</p>
+      <h2 class="text-heading-lg mb-3">Typography</h2>
+      <p class="text-body-md text-on-surface-variant max-w-2xl">
+        Serif: <strong>Noir et Blanc</strong> for emotional text. Sans: <strong>Inter</strong> for informational.
+        Always use the type-scale utility class — never inline <code>font-size</code> or <code>font-family</code>.
+      </p>
+    </div>
+
+    {typeScale.map((t) => (
+      <div class="ds-row">
+        <div>
+          <p class="ds-meta-cls">.{t.cls}</p>
+          <p class="ds-meta-role">{t.role}</p>
+        </div>
+        <div class={t.cls}>{t.sample}</div>
+      </div>
+    ))}
+  </section>
+
+  <!-- ═══ WEIGHTS ═══ -->
+  <section id="weights" class="container-editorial ds-section">
+    <div class="mb-10">
+      <p class="text-label-md text-on-surface-muted mb-2">03 · Tokens</p>
+      <h2 class="text-heading-lg mb-3">Font weights</h2>
+      <p class="text-body-md text-on-surface-variant max-w-2xl">
+        Use the <code>--fw-*</code> tokens instead of raw numbers. Weight follows size: larger text → lighter weight.
+      </p>
+    </div>
+
+    {weights.map((w) => (
+      <div class="ds-row">
+        <div>
+          <p class="ds-meta-cls">{w.token}</p>
+          <p class="ds-meta-role">{w.label} · {w.value}</p>
+        </div>
+        <div style={`font-family: var(--font-serif); font-weight: ${w.value}; font-size: 2.25rem; line-height: 1.2;`}>
+          {w.serifSample}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- ═══ SPACING ═══ -->
+  <section id="spacing" class="container-editorial ds-section">
+    <div class="mb-10">
+      <p class="text-label-md text-on-surface-muted mb-2">04 · Tokens</p>
+      <h2 class="text-heading-lg mb-3">Spacing</h2>
+      <p class="text-body-md text-on-surface-variant max-w-2xl">
+        Four spacing tokens. Don't invent new values — if nothing fits, step up to the next token or add a new one here.
+      </p>
+    </div>
+
+    {spacing.map((s) => (
+      <div class="ds-row">
+        <div>
+          <p class="ds-meta-cls">{s.token}</p>
+          <p class="ds-meta-role">{s.label} · {s.note}</p>
+        </div>
+        <div>
+          <div class="ds-spacing-bar" style={`width: var(${s.token});`}></div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- ═══ MOTION ═══ -->
+  <section id="motion" class="container-editorial ds-section">
+    <div class="mb-10">
+      <p class="text-label-md text-on-surface-muted mb-2">05 · Tokens</p>
+      <h2 class="text-heading-lg mb-3">Motion</h2>
+      <p class="text-body-md text-on-surface-variant max-w-2xl">
+        Easing <code>--ease-gallery: cubic-bezier(0.22, 1, 0.36, 1)</code>. All motion respects <code>prefers-reduced-motion</code>.
+      </p>
+    </div>
+
+    <p class="text-label-sm text-on-surface-muted mb-4">Duration tokens</p>
+    <div class="mb-10">
+      {durations.map((d) => (
+        <div class="ds-row">
+          <div>
+            <p class="ds-meta-cls">{d.token}</p>
+            <p class="ds-meta-role">{d.value}</p>
+          </div>
+          <p class="text-body-md">{d.use}</p>
+        </div>
+      ))}
+    </div>
+
+    <p class="text-label-sm text-on-surface-muted mb-4 mt-12">Motion primitives</p>
+    {motionPrimitives.map((m) => (
+      <div class="ds-row">
+        <p class="ds-meta-cls">{m.cls}</p>
+        <p class="text-body-md text-on-surface-variant">{m.note}</p>
+      </div>
+    ))}
+  </section>
+
+  <!-- ═══ COMPONENTS ═══ -->
+  <section id="components" class="container-editorial ds-section">
+    <div class="mb-10">
+      <p class="text-label-md text-on-surface-muted mb-2">06 · Components</p>
+      <h2 class="text-heading-lg mb-3">Component library</h2>
+      <p class="text-body-md text-on-surface-variant max-w-2xl">
+        Reusable primitives. Every component consumes design tokens — swap a token, every instance updates.
+      </p>
+    </div>
+
+    <!-- Button -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">Button</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        <code>{'<Button href?={string} variant={"primary"|"secondary"|"ghost"}>Label</Button>'}</code>
+      </p>
+      <div class="ds-component-frame flex flex-wrap gap-4 items-center">
+        <Button variant="primary">Primary — Inquire</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="ghost">Ghost</Button>
+      </div>
+    </div>
+
+    <!-- PricingCard -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">PricingCard</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        <code>{'<PricingCard name price description highlights popular? featured? custom? id />'}</code>
+      </p>
+      <div class="ds-component-frame">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <PricingCard
+            id="ds-essential"
+            name="Essential"
+            price={2500}
+            description="A quiet ceremony, captured."
+            highlights={['6 hours coverage', '400+ edited photos', 'Online gallery']}
+          />
+          <PricingCard
+            id="ds-signature"
+            name="Signature"
+            price={4200}
+            description="The full day, unhurried."
+            highlights={['10 hours coverage', '800+ edited photos', 'Pre-wedding session', 'Online gallery + USB']}
+            popular={true}
+          />
+          <PricingCard
+            id="ds-bespoke"
+            name="Bespoke"
+            price={null}
+            description="Your day, your way."
+            highlights={['Custom coverage', 'Film + photo', 'Travel included']}
+            custom={true}
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- TestimonialCard -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">TestimonialCard</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        <code>{'<TestimonialCard name event quote rating />'}</code>
+      </p>
+      <div class="ds-component-frame">
+        <TestimonialCard
+          name="Shuba & Rob"
+          event="Casa Loma · 2025"
+          quote="It felt like he saw us, not just photographed us."
+          rating={5}
+        />
+      </div>
+    </div>
+
+    <!-- FAQAccordion -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">FAQAccordion</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        <code>{'<FAQAccordion items={[{question, answer}]} />'}</code>
+      </p>
+      <div class="ds-component-frame">
+        <FAQAccordion items={faqItems} />
+      </div>
+    </div>
+
+    <!-- Floating inputs -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">Form inputs</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        <code>{'<FloatingInput id name label type? required? />'}</code> ·
+        <code>{'<FloatingSelect id name label options required? />'}</code> ·
+        <code>{'<FloatingTextarea id name label rows? required? />'}</code>
+      </p>
+      <div class="ds-component-frame">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <FloatingInput id="ds-name" name="ds-name" label="Your name" />
+          <FloatingInput id="ds-email" name="ds-email" label="Email" type="email" />
+          <FloatingSelect id="ds-event" name="ds-event" label="Event type" options={selectOptions} />
+          <div></div>
+          <div class="md:col-span-2">
+            <FloatingTextarea id="ds-msg" name="ds-msg" label="Tell me about your day" rows={3} />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eyebrow rule -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">Eyebrow + rule</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        Signature editorial flourish. A label-md eyebrow with a 40px hairline that draws in when the parent
+        <code>.reveal</code> enters the viewport.
+      </p>
+      <div class="ds-component-frame">
+        <div class="reveal revealed">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule">Your journey</p>
+          <h3 class="text-heading-lg mt-6">The quiet in between</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breaker quote -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">Breaker · quote</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        Full-bleed dark band with a centered italic pull quote. Used between repeating sections to break rhythm.
+      </p>
+      <div class="breaker-quote" style="min-height: 35svh;">
+        <div class="breaker-quote__inner">
+          <span class="breaker-rule"></span>
+          <p class="breaker-quote__text">Not posed. Remembered.</p>
+          <p class="breaker-quote__attribution">AD · Toronto</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breaker stats -->
+    <div class="mb-16">
+      <p class="text-label-sm text-on-surface-muted mb-2">Breaker · stats</p>
+      <p class="text-body-md text-on-surface-variant mb-6">
+        Giant italic numeral on a dark band — a verified-number grounding between long sections.
+      </p>
+      <div class="breaker-stats" style="min-height: 35svh;">
+        <div class="breaker-stats__inner">
+          <span class="breaker-stats__rule"></span>
+          <p class="breaker-stats__number">08</p>
+          <p class="breaker-stats__unit">weddings a year</p>
+          <p class="breaker-stats__caption">by design, not constraint</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <section class="container-editorial py-24 border-t" style="border-color: rgba(0,0,0,0.08);">
+    <p class="text-label-sm text-on-surface-muted">Last updated · 2026-04-18 · AD Photography</p>
+    <p class="text-body-md text-on-surface-variant mt-4 max-w-2xl">
+      When adding a new component, first check if an existing one can be extended. When adding a new color or size,
+      first check if an existing token fits. The point of this system is to avoid one-off values.
+    </p>
+  </section>
+</BaseLayout>

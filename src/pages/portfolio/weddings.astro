@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
-import FinalCTA from '../../components/global/FinalCTA.astro';
+import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
@@ -104,12 +104,11 @@ const schema = {
     </div>
   </section>
 
-  <FinalCTA
+  <PortfolioFinalCTA
     title="Reserve your date."
     body="Looking for wedding day coverage? Let's talk about your vision and find the right fit."
     ctaLabel="Begin The Conversation"
     ctaHref="/contact?service=wedding"
-    background="surface-dim"
     image={ctaImage}
     imageAlt="Toronto wedding couple portrait by AD Photography"
     imageCaption="A Full Day"

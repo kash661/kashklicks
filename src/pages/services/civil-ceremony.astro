@@ -6,7 +6,7 @@ import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
-import FinalCTA from '../../components/global/FinalCTA.astro';
+import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
@@ -333,12 +333,11 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ CTA ═══ -->
-  <FinalCTA
+  <PortfolioFinalCTA
     title="Let's capture your ceremony."
     body="Book a free consultation. No pressure, just a conversation about your vision."
     ctaLabel="Begin Your Journey"
     ctaHref="/contact?service=civil-ceremony"
-    background="surface-dim"
     image={ctaImage}
     imageAlt="Toronto civil ceremony couple portrait after vows by AD Photography"
     imageCaption="Begin Your Story"

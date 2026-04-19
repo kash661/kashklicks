@@ -1,0 +1,122 @@
+---
+/**
+ * PortfolioFinalCTA
+ * -----------------
+ * Bottom-of-portfolio-page call-to-action. Two separate DOM trees:
+ * mobile is a simple centered stack (block/flex), desktop is the
+ * editorial split grid. No responsive classes fighting each other —
+ * each tree is authored for exactly one breakpoint.
+ */
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  /** Section background. Defaults to 'surface-dim'. Use 'background' when
+   *  the section directly above is already surface-dim, so the two don't
+   *  visually merge. */
+  background?: 'background' | 'surface-dim';
+  image: ImageMetadata;
+  imageAlt: string;
+  imageCaption?: string;
+}
+
+const {
+  eyebrow = 'Ready?',
+  title,
+  body,
+  ctaLabel = 'Begin Your Story',
+  ctaHref = '/contact',
+  background = 'surface-dim',
+  image,
+  imageAlt,
+  imageCaption,
+} = Astro.props;
+
+const bgClass = background === 'background' ? 'bg-background' : 'bg-surface-dim';
+---
+
+<section class:list={['portfolio-final-cta', bgClass]}>
+  {/* ── Desktop (md+) ─────────────────────────── */}
+  <div class="hidden md:block">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">
+            {eyebrow}
+          </p>
+          <h2 class="text-display-md text-on-surface">
+            {title}
+          </h2>
+          {body && (
+            <p class="text-body-lg text-on-surface-variant mt-4 measure-wide">
+              {body}
+            </p>
+          )}
+          <div class="mt-8">
+            <span class="magnetic inline-block">
+              <Button href={ctaHref} variant="primary">{ctaLabel}</Button>
+            </span>
+          </div>
+        </div>
+        <div
+          class="md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden hover-zoom reveal-right stagger-2 image-caption"
+          data-caption={imageCaption ?? title}
+        >
+          <Image
+            src={image}
+            alt={imageAlt}
+            widths={[640, 960, 1280]}
+            sizes="50vw"
+            quality={90}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* ── Mobile (< md) ─────────────────────────── */}
+  <div class="md:hidden">
+    <div class="container-editorial">
+      <div class="flex flex-col items-center text-center reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">
+          {eyebrow}
+        </p>
+        <h2 class="text-display-md text-on-surface">
+          {title}
+        </h2>
+        {body && (
+          <p class="text-body-lg text-on-surface-variant mt-4 max-w-[44ch]">
+            {body}
+          </p>
+        )}
+        <div class="mt-8 mb-10">
+          <Button href={ctaHref} variant="primary">{ctaLabel}</Button>
+        </div>
+        <div class="w-full aspect-[3/4] overflow-hidden">
+          <Image
+            src={image}
+            alt={imageAlt}
+            widths={[480, 640, 960]}
+            sizes="100vw"
+            quality={85}
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portfolio-final-cta {
+    padding-block: var(--spacing-section);
+  }
+</style>

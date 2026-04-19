@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
+import InvestmentSection from '../components/global/InvestmentSection.astro';
 import testimonials from '../data/testimonials.json';
 
 // Hero
@@ -183,30 +184,10 @@ const jsonLd = [
   </section>
 
   <!-- ═══ 3. INVESTMENT ═══ -->
-  <section class="py-[var(--spacing-section)] bg-surface-dim">
-    <div class="grid-editorial items-center">
-      <div class="col-span-12 md:col-span-6 gallery-frame reveal-left image-caption" data-caption="Full-Day Coverage">
-        <Image
-          src={investmentImage}
-          alt="Full-day wedding photography coverage in Toronto by AD Photography"
-          class="parallax-img"
-          widths={[640, 960, 1280]}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          quality={80}
-        />
-      </div>
-      <div class="col-span-12 md:col-span-5 md:col-start-8 mt-8 md:mt-0 order-first md:order-none reveal-right stagger-2">
-        <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Investment</p>
-        <h2 class="text-display-md text-on-surface mb-6">Wedding packages starting at $1,200</h2>
-        <p class="text-body-lg text-on-surface-variant mb-10">
-          Every package includes a pre-shoot consultation, professionally edited images, and a private online gallery.
-        </p>
-        <span class="magnetic inline-block">
-          <Button href="/services" variant="primary">View Packages</Button>
-        </span>
-      </div>
-    </div>
-  </section>
+  <InvestmentSection
+    image={investmentImage}
+    imageAlt="Full-day wedding photography coverage in Toronto by AD Photography"
+  />
 
   <!-- ═══ 4. TESTIMONIAL ═══ -->
   <section class="py-[var(--spacing-section)] bg-white">

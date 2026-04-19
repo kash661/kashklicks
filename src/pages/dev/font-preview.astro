@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Type roles mapped to Noir et Blanc weights. Sans stays Inter.
+const hierarchy = [
+  {
+    group: 'Display',
+    rationale: 'Largest text on the site — hero and page titles. Hairlines look beautiful at this scale. Regular weight.',
+    roles: [
+      { name: 'text-display-lg', usage: 'Hero statements, splash page', css: "font-family: 'Noir et Blanc', serif; font-weight: 400; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.1;", sample: "Moments fade. Memories don't." },
+      { name: 'text-display-md', usage: 'Page titles (About, Services, Locations)', css: "font-family: 'Noir et Blanc', serif; font-weight: 400; font-size: clamp(2.25rem, 4.5vw, 4rem); line-height: 1.15;", sample: 'A Quiet Architecture of Light' },
+    ],
+  },
+  {
+    group: 'Headings',
+    rationale: 'Section headings. Step up the weight as size decreases so stroke presence stays consistent.',
+    roles: [
+      { name: 'text-heading-lg', usage: 'Section titles', css: "font-family: 'Noir et Blanc', serif; font-weight: 500; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.2;", sample: 'Signature Style' },
+      { name: 'text-heading-md', usage: 'Sub-section titles, card group titles', css: "font-family: 'Noir et Blanc', serif; font-weight: 700; font-size: clamp(1.25rem, 2vw, 1.75rem); line-height: 1.25;", sample: 'The Wedding Experience' },
+    ],
+  },
+  {
+    group: 'Italic / Editorial',
+    rationale: 'The signature move. Noir et Blanc italic is the stand-out face — reserve it for emotional, quotable moments.',
+    roles: [
+      { name: 'text-quote', usage: 'Pull quotes, testimonials', css: "font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.3;", sample: '"It felt like he saw us, not just photographed us."' },
+      { name: '.breaker-quote__text', usage: 'Full-bleed breaker quotes between sections', css: "font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 3.8vw, 2.75rem); line-height: 1.3;", sample: 'Not posed. Remembered.' },
+      { name: '.prose-editorial blockquote', usage: 'Blog pull quotes', css: "font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: clamp(1.25rem, 2vw, 1.75rem); line-height: 1.4;", sample: 'Some days are written in light. Yours was one of them.' },
+    ],
+  },
+  {
+    group: 'Specialized Display',
+    rationale: 'Signature typographic moments — the AD monogram and the giant italic stat numbers.',
+    roles: [
+      { name: '.logo-mark', usage: 'AD monogram in header & footer', css: "font-family: 'Noir et Blanc', serif; font-weight: 400; font-size: 1.75rem; letter-spacing: 0.25em;", sample: 'AD' },
+      { name: '.breaker-stats__number', usage: 'Giant italic stat numerals', css: "font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 500; font-size: clamp(6rem, 16vw, 10rem); line-height: 1;", sample: '08' },
+      { name: '.breaker-stats__caption', usage: 'Caption under stat', css: "font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: clamp(1.125rem, 2.3vw, 1.5rem); line-height: 1.4;", sample: 'weddings a year, by design' },
+    ],
+  },
+  {
+    group: 'Blog / Prose',
+    rationale: 'Editorial blog body. Drop cap opens the article. H2/H3 use weighted variants for readable rhythm.',
+    roles: [
+      { name: '.prose-editorial drop-cap', usage: 'First letter of opening paragraph', css: "font-family: 'Noir et Blanc', serif; font-weight: 400; font-size: 4.5em; line-height: 0.85; float: left; margin-right: 0.1em;", sample: 'T' },
+      { name: '.prose-editorial h2', usage: 'Blog H2', css: "font-family: 'Noir et Blanc', serif; font-weight: 500; font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.2;", sample: 'Why we shot at dawn' },
+      { name: '.prose-editorial h3', usage: 'Blog H3 (italic by convention)', css: "font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: 1.35rem;", sample: 'A note on light' },
+      { name: '.prose-editorial h4', usage: 'Blog H4', css: "font-family: 'Noir et Blanc', serif; font-weight: 500; font-size: 1.15rem;", sample: 'Gear used' },
+    ],
+  },
+  {
+    group: 'Sans — unchanged (Inter)',
+    rationale: "Informational text stays sans for legibility. No change here.",
+    roles: [
+      { name: 'text-body-lg', usage: 'Primary body copy', css: "font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1.125rem; line-height: 1.7;", sample: 'Pre-wedding, wedding, civil ceremony, celebrations, portraits — photo and video, captured with a solo, unhurried eye in Toronto and across Canada.' },
+      { name: 'text-body-md', usage: 'Secondary body', css: "font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1rem; line-height: 1.6;", sample: 'Based in Toronto. Available GTA-wide and destinations.' },
+      { name: 'text-label-md', usage: 'Nav, labels, captions', css: "font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase;", sample: 'Portfolio · Services · About' },
+      { name: 'text-label-sm', usage: 'Micro labels', css: "font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;", sample: 'Recent Work · Toronto' },
+      { name: 'Button / CTA', usage: 'All buttons and calls-to-action', css: "font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase;", sample: 'Inquire about your date' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Font Hierarchy — Noir et Blanc"
+  description="Proposed Noir et Blanc hierarchy for kashklicks.ca."
+  noIndex={true}
+>
+  <style is:global>
+    @font-face {
+      font-family: 'Noir et Blanc';
+      src: url('/fonts/NoirEtBlanc-Regular.woff2') format('woff2');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noir et Blanc';
+      src: url('/fonts/NoirEtBlanc-Italic.woff2') format('woff2');
+      font-weight: 400; font-style: italic; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noir et Blanc';
+      src: url('/fonts/NoirEtBlanc-Medium.woff2') format('woff2');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noir et Blanc';
+      src: url('/fonts/NoirEtBlanc-MediumItalic.woff2') format('woff2');
+      font-weight: 500; font-style: italic; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noir et Blanc';
+      src: url('/fonts/NoirEtBlanc-MediumBold.woff2') format('woff2');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noir et Blanc';
+      src: url('/fonts/NoirEtBlanc-MediumBoldItalic.woff2') format('woff2');
+      font-weight: 700; font-style: italic; font-display: swap;
+    }
+
+    .hier-sample-box {
+      padding: 2rem;
+      background: #faf9f6;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+  </style>
+
+  <!-- HEADER -->
+  <section class="container-editorial pt-32 pb-16">
+    <p class="text-label-md text-on-surface-muted mb-4">Internal · noindex</p>
+    <h1 style="font-family: 'Noir et Blanc', serif; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1;">
+      Noir et Blanc — proposed hierarchy
+    </h1>
+    <p class="text-body-md text-on-surface-variant mt-8 max-w-2xl">
+      Every serif role on kashklicks.ca mapped to a Noir et Blanc weight.
+      Sans (Inter) stays unchanged for body, labels, nav and CTAs.
+      Buttons and body copy never use Noir — legibility over decoration.
+    </p>
+  </section>
+
+  <!-- WEIGHT MAP TABLE -->
+  <section class="container-editorial py-16">
+    <h2 class="text-heading-lg mb-10" style="font-family: 'Noir et Blanc', serif; font-weight: 500;">
+      Weight map
+    </h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-on-surface-variant/30">
+            <th class="py-3 pr-6 text-label-md text-on-surface-muted font-normal">Role</th>
+            <th class="py-3 pr-6 text-label-md text-on-surface-muted font-normal">Weight</th>
+            <th class="py-3 text-label-md text-on-surface-muted font-normal">Why</th>
+          </tr>
+        </thead>
+        <tbody class="text-body-md">
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">Hero / page titles</td><td class="py-3 pr-6">400 Regular</td><td class="py-3">Hairlines are gorgeous at 3-5rem</td></tr>
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">Section headings</td><td class="py-3 pr-6">500 Medium</td><td class="py-3">Mid-size needs slight stroke boost</td></tr>
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">Sub-headings</td><td class="py-3 pr-6">700 Medium Bold</td><td class="py-3">Small sizes — protect hairlines from disappearing</td></tr>
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">Pull quotes / testimonials</td><td class="py-3 pr-6">400 Italic</td><td class="py-3">The signature face — reserved for emotional copy</td></tr>
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">AD monogram</td><td class="py-3 pr-6">400 Regular tracked</td><td class="py-3">Clean uppercase with 0.25em letter-spacing</td></tr>
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">Giant stat numerals</td><td class="py-3 pr-6">500 Medium Italic</td><td class="py-3">Editorial flourish at huge size</td></tr>
+          <tr class="border-b border-on-surface-variant/15"><td class="py-3 pr-6">Body / labels / nav / CTA</td><td class="py-3 pr-6">Inter (unchanged)</td><td class="py-3">Legibility over decoration</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- HIERARCHY BY GROUP -->
+  {hierarchy.map((group) => (
+    <section class="container-editorial py-16 border-t border-on-surface-variant/15">
+      <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-10 mb-12">
+        <div>
+          <h2 class="text-heading-md mb-3" style="font-family: 'Noir et Blanc', serif; font-weight: 700;">{group.group}</h2>
+          <p class="text-body-md text-on-surface-variant">{group.rationale}</p>
+        </div>
+      </div>
+
+      <div class="space-y-10">
+        {group.roles.map((role) => (
+          <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-10 items-start">
+            <div>
+              <p class="text-label-sm text-on-surface-muted mb-2">{role.name}</p>
+              <p class="text-body-md text-on-surface-variant">{role.usage}</p>
+            </div>
+            <div class="hier-sample-box">
+              <p style={role.css}>{role.sample}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <!-- FULL-PAGE SIMULATION -->
+  <section class="container-editorial py-24 border-t border-on-surface-variant/30 mt-16">
+    <p class="text-label-md text-on-surface-muted mb-6">Simulation · how a page would feel</p>
+    <h2 class="text-heading-lg mb-12" style="font-family: 'Noir et Blanc', serif; font-weight: 500;">
+      Sample wedding landing page
+    </h2>
+
+    <div class="hier-sample-box p-12">
+      <!-- Eyebrow -->
+      <p style="font-family: 'Inter', sans-serif; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5c605c; margin-bottom: 2rem;">
+        Intimate Weddings · Toronto
+      </p>
+
+      <!-- Hero -->
+      <p style="font-family: 'Noir et Blanc', serif; font-weight: 400; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05; margin-bottom: 1.5rem;">
+        Moments fade.<br/>Memories don't.
+      </p>
+
+      <!-- Body -->
+      <p style="font-family: 'Inter', sans-serif; font-size: 1.125rem; line-height: 1.7; max-width: 42ch; margin-bottom: 3rem;">
+        Solo, unhurried wedding photography for couples who want the day itself — not a template of it. Based in Toronto, available GTA-wide and across Canada.
+      </p>
+
+      <!-- CTA -->
+      <a style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; display: inline-block; padding: 1rem 2rem; background: #2c2824; color: #faf9f6; margin-bottom: 4rem;">
+        Inquire about your date
+      </a>
+
+      <!-- Section divider + heading -->
+      <div style="border-top: 1px solid rgba(0,0,0,0.15); padding-top: 4rem; margin-top: 2rem;">
+        <p style="font-family: 'Inter', sans-serif; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5c605c; margin-bottom: 1rem;">
+          Signature Style
+        </p>
+        <h3 style="font-family: 'Noir et Blanc', serif; font-weight: 500; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.2; margin-bottom: 2rem;">
+          Editorial, not template
+        </h3>
+        <p style="font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.7; max-width: 60ch; margin-bottom: 3rem;">
+          One photographer. One set of eyes on the day. No second shooter, no assistant with a second camera in your peripheral vision. Just a quiet, unhurried witness.
+        </p>
+
+        <!-- Pull quote -->
+        <blockquote style="font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.3; max-width: 40ch; margin: 3rem 0 1rem;">
+          "It felt like he saw us, not just photographed us."
+        </blockquote>
+        <p style="font-family: 'Inter', sans-serif; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5c605c;">
+          — Shuba &amp; Rob, Casa Loma
+        </p>
+      </div>
+
+      <!-- Stat block -->
+      <div style="border-top: 1px solid rgba(0,0,0,0.15); padding-top: 4rem; margin-top: 4rem; display: flex; align-items: baseline; gap: 2rem; flex-wrap: wrap;">
+        <span style="font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 500; font-size: clamp(5rem, 14vw, 10rem); line-height: 1;">08</span>
+        <span style="font-family: 'Noir et Blanc', serif; font-style: italic; font-weight: 400; font-size: clamp(1.125rem, 2.3vw, 1.5rem); line-height: 1.4; max-width: 22ch;">
+          weddings a year, by design
+        </span>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
