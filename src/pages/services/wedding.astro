@@ -220,6 +220,25 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <JourneyTimelineDesktop steps={weddingJourneySteps} />
   <JourneyTimelineMobile steps={weddingJourneySteps} />
 
+  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center reveal">
+        <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
+        <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
+        <BookingLink variant="primary" label="Book Your Call" />
+        <div class="flex flex-col items-center mt-12">
+          <p class="text-body-md text-on-surface-variant mb-3">I believe in transparent pricing. See my packages below.</p>
+          <div class="scroll-chevron">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ WEDDING PACKAGES ═══ -->
   <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
