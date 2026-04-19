@@ -30,7 +30,7 @@ const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intr
       )}
     </div>
 
-    <div class="relative" style="padding: 0 1rem 0 2rem;">
+    <div class="relative">
       <div class="journey-line-mobile"></div>
 
       {steps.map((step, i) => {
@@ -41,7 +41,7 @@ const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intr
             data-step-index={i}
           >
             <div class="journey-dot journey-dot-mobile" style="top: 8px;"></div>
-            <div class="journey-step-content">
+            <div class="journey-step-content" style="padding-left: 2rem;">
               <p class="text-label-sm text-on-surface-muted mb-2">{step.label}</p>
               <h3 class="text-heading-lg font-serif">{step.title}</h3>
               <p class="text-body-md text-on-surface-variant mt-3">{step.body}</p>
