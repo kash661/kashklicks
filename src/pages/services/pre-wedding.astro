@@ -7,6 +7,8 @@ import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
+import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
+import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ctaImage from '../../assets/images/homepage/homepage-05.jpg';
 import { Image } from 'astro:assets';
@@ -76,6 +78,39 @@ const faqPageSchema = {
 };
 
 const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
+
+const preWeddingJourneySteps = [
+  {
+    label: 'Step 01',
+    title: 'Book a Consultation',
+    body: 'A free, no-obligation call to talk about your session. No pressure, just a conversation about what you are envisioning and what matters most to you.',
+  },
+  {
+    label: 'Step 02',
+    title: 'Planning Together',
+    body: "I'll help you choose your location, outfits, time of day, and mood. I walk through every package and find the right fit for your vision and your budget.",
+  },
+  {
+    label: 'Step 03',
+    title: 'Lock In Your Date',
+    body: 'Sign a simple contract. A 50% retainer secures your session date and gets things started.',
+  },
+  {
+    label: 'Step 04',
+    title: 'Your Session Day',
+    body: 'I capture everything. The remaining 50% is due on the day of your session. You just show up and be yourselves. I handle the rest.',
+  },
+  {
+    label: 'Step 05',
+    title: 'Video Draft',
+    body: 'I send you an edited draft of your film. Give me all your feedback in one round, and I custom curate the final cut for you.',
+  },
+  {
+    label: 'Step 06',
+    title: 'Full Delivery',
+    body: 'Your complete gallery and final film delivered within 1 to 3 weeks. Private online gallery, yours to keep and share.',
+  },
+];
 ---
 
 <BaseLayout
@@ -175,89 +210,13 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ JOURNEY TIMELINE ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <JourneyTimelineDesktop steps={preWeddingJourneySteps} />
+  <JourneyTimelineMobile steps={preWeddingJourneySteps} />
+
+  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
     <div class="container-editorial">
-      <!-- Section header -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Your Journey</p>
-        <h2 class="text-display-md">From Inquiry to Gallery</h2>
-      </div>
-
-      <!-- Timeline -->
-      <div class="relative max-w-4xl mx-auto" style="padding: 0 1rem;">
-        <!-- Vertical line -->
-        <div class="timeline-line hidden md:block"></div>
-
-        <!-- Step 1 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 01</p>
-            <h3 class="text-heading-lg font-serif">Book a Consultation</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">A free, no-obligation call to talk about your session. No pressure, just a conversation about what you are envisioning and what matters most to you.</p>
-          </div>
-        </div>
-
-        <!-- Step 2 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 02</p>
-            <h3 class="text-heading-lg font-serif">Planning Together</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">I'll help you choose your location, outfits, time of day, and mood. I walk through every package and find the right fit for your vision and your budget.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 3 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 03</p>
-            <h3 class="text-heading-lg font-serif">Lock In Your Date</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">Sign a simple contract. A 50% retainer secures your session date and gets things started.</p>
-          </div>
-        </div>
-
-        <!-- Step 4 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 04</p>
-            <h3 class="text-heading-lg font-serif">Your Session Day</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">I capture everything. The remaining 50% is due on the day of your session. You just show up and be yourselves. I handle the rest.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-
-        <!-- Step 5 — Right side -->
-        <div class="timeline-step timeline-step-right md:grid md:grid-cols-2 mb-16 md:mb-24 relative">
-          <div class="hidden md:block"></div>
-          <div class="md:pl-12">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 05</p>
-            <h3 class="text-heading-lg font-serif">Video Draft</h3>
-            <p class="text-body-md text-on-surface-variant mt-3" style="max-width: 36ch;">I send you an edited draft of your film. Give me all your feedback in one round, and I custom curate the final cut for you.</p>
-          </div>
-        </div>
-
-        <!-- Step 6 — Left side -->
-        <div class="timeline-step timeline-step-left md:grid md:grid-cols-2 relative">
-          <div class="md:pr-12 md:text-right">
-            <div class="timeline-dot hidden md:block" style="top: 8px;"></div>
-            <p class="text-label-sm text-on-surface-muted mb-2">Step 06</p>
-            <h3 class="text-heading-lg font-serif">Full Delivery</h3>
-            <p class="text-body-md text-on-surface-variant mt-3 md:ml-auto" style="max-width: 36ch;">Your complete gallery and final film delivered within 1 to 3 weeks. Private online gallery, yours to keep and share.</p>
-          </div>
-          <div class="hidden md:block"></div>
-        </div>
-      </div>
-
-      <!-- Calendly CTA -->
-      <div class="text-center mt-24 reveal">
+      <div class="text-center reveal">
         <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
         <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
         <BookingLink variant="primary" label="Book Your Call" />
