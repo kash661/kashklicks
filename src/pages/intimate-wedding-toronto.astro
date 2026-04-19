@@ -2,9 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import PricingCard from '../components/ui/PricingCard.astro';
+import PackageAddOns from '../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import Button from '../components/ui/Button.astro';
 import BookingLink from '../components/ui/BookingLink.astro';
+import GearStrip from '../components/global/GearStrip.astro';
+import gearStripCard01 from '../assets/images/portfolio/ayushi-parth/25.jpg';
+import gearStripCard04 from '../assets/images/gear/04-wedding-override.jpg';
 import { Image } from 'astro:assets';
 
 import packages from '../data/packages.json';
@@ -242,36 +246,19 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ APPROACH — three cols ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="text-center mb-16 reveal">
-        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">The Approach</p>
-        <h2 class="text-display-md">How I shoot a Toronto wedding.</h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-surface-container">
-        <div class="bg-background p-6 md:p-10 reveal">
-          <p class="text-heading-md font-serif italic mb-3">One photographer</p>
-          <p class="text-body-md text-on-surface-variant">
-            My full attention across your entire day. Multiple cameras so no moment slips away, one eye on the edit so your gallery feels like a single story.
-          </p>
-        </div>
-        <div class="bg-background p-6 md:p-10 reveal stagger-1">
-          <p class="text-heading-md font-serif italic mb-3">Photography only</p>
-          <p class="text-body-md text-on-surface-variant">
-            I shoot weddings on camera, not video. Film is for pre-wedding sessions. The wedding is documented in stills, honest, editorial, unhurried.
-          </p>
-        </div>
-        <div class="bg-background p-6 md:p-10 reveal stagger-2">
-          <p class="text-heading-md font-serif italic mb-3">Made here</p>
-          <p class="text-body-md text-on-surface-variant">
-            Toronto venues. Local families. Local stories. I know the churches, the halls, the backyards, and the light in each.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ═══ THE KIT — four cameras, four looks ═══ -->
+  <GearStrip
+    imageOverrides={{
+      '01': {
+        src: gearStripCard01,
+        alt: 'Ayushi and Parth walking up stone steps through a classical archway, Toronto wedding session',
+      },
+      '04': {
+        src: gearStripCard04,
+        alt: 'Candid wedding moment captured on a handheld compact, the kind of angle your crew catches',
+      },
+    }}
+  />
 
   <!-- ═══ RECENT TORONTO WORK ═══ -->
   <section class="bg-background" style="padding: var(--spacing-section) 0;">
@@ -320,15 +307,33 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <!-- ═══ DISPLAY TESTIMONIAL — editorial pull-quote ═══ -->
-  <section class="bg-surface-dark" style="padding: var(--spacing-section) 0;">
+  <!-- ═══ APPROACH — three cols ═══ -->
+  <section class="bg-surface" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <div class="max-w-4xl mx-auto text-center reveal">
-        <blockquote class="text-display-lg font-serif italic text-on-dark char-reveal">
-          "Every moment, captured without ever feeling staged."
-        </blockquote>
-        <p class="text-label-md text-on-dark-variant mt-10">Shania & Vishal</p>
-        <p class="text-label-sm text-on-dark-variant" style="opacity: 0.7;">Toronto</p>
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">The Approach</p>
+        <h2 class="text-display-md">How I shoot a Toronto wedding.</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-surface-container">
+        <div class="bg-background p-6 md:p-10 reveal">
+          <p class="text-heading-md font-serif italic mb-3">One photographer</p>
+          <p class="text-body-md text-on-surface-variant">
+            My full attention across your entire day. Multiple cameras so no moment slips away, one eye on the edit so your gallery feels like a single story.
+          </p>
+        </div>
+        <div class="bg-background p-6 md:p-10 reveal stagger-1">
+          <p class="text-heading-md font-serif italic mb-3">Photography only</p>
+          <p class="text-body-md text-on-surface-variant">
+            I shoot weddings on camera, not video. Film is for pre-wedding sessions. The wedding is documented in stills, honest, editorial, unhurried.
+          </p>
+        </div>
+        <div class="bg-background p-6 md:p-10 reveal stagger-2">
+          <p class="text-heading-md font-serif italic mb-3">Made here</p>
+          <p class="text-body-md text-on-surface-variant">
+            Toronto venues. Local families. Local stories. I know the churches, the halls, the backyards, and the light in each.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -367,62 +372,36 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         ))}
       </div>
 
+      <!-- Shared add-ons section (pulled from all wedding packages above) -->
+      <div class="mt-12">
+        <PackageAddOns
+          title="Add-Ons & Extras"
+          description="Optional upgrades that apply across the collections above. Add any combination to your booking."
+          packages={weddingPackages}
+        />
+      </div>
+
       {civilPackage && (
-        <div class="mt-24 reveal">
-          <!-- Typography-forward editorial block, rule-framed -->
-          <div class="bg-background border-y border-surface-container py-16 md:py-24 px-6 md:px-12">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
-
-              <!-- Oversized editorial price stat -->
-              <div class="md:col-span-5 text-center md:text-left">
-                <p class="text-label-md text-on-surface-muted uppercase tracking-widest mb-8">Also Available</p>
-                <div class="font-serif text-on-surface leading-none" style="font-size: clamp(5rem, 13vw, 9rem);">
-                  ${civilPackage.price}
-                </div>
-                <div class="flex items-center gap-3 mt-8 justify-center md:justify-start">
-                  <div class="h-px w-12 bg-surface-container"></div>
-                  <p class="text-label-md text-on-surface-muted uppercase tracking-widest">Civil Ceremony</p>
-                </div>
+        <div class="mt-12 reveal">
+          <!-- Compact single-row civil ceremony callout -->
+          <div class="border-t border-b border-surface-container py-6 md:py-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
+              <div class="flex items-baseline gap-4 flex-wrap">
+                <p class="text-label-sm text-on-surface-muted uppercase tracking-widest">Also Available</p>
+                <p class="text-heading-md font-serif italic text-on-surface">Civil Ceremony · ${civilPackage.price}</p>
               </div>
-
-              <!-- Description + CTA -->
-              <div class="md:col-span-6 md:col-start-7">
-                <p class="text-heading-md font-serif italic text-on-surface">
-                  Two quiet hours. Unlimited frames. Nothing in between.
-                </p>
-                <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 50ch;">
-                  {civilPackage.description}
-                </p>
-                <div class="mt-10">
-                  <a
-                    href="/services/civil-ceremony"
-                    class="inline-flex items-center gap-3 text-label-md text-on-surface uppercase tracking-widest hover:text-on-surface-variant cubic-ease group"
-                    style="transition-duration: var(--duration-hover);"
-                  >
-                    <span>Civil Ceremony Details</span>
-                    <span aria-hidden="true" class="transition-transform group-hover:translate-x-1" style="transition-duration: var(--duration-hover);">→</span>
-                  </a>
-                </div>
-              </div>
+              <a
+                href="/services/civil-ceremony"
+                class="inline-flex items-center gap-2 text-label-sm text-on-surface uppercase tracking-widest hover:text-on-surface-variant cubic-ease group shrink-0"
+                style="transition-duration: var(--duration-hover);"
+              >
+                <span>Details</span>
+                <span aria-hidden="true" class="transition-transform group-hover:translate-x-1" style="transition-duration: var(--duration-hover);">→</span>
+              </a>
             </div>
           </div>
         </div>
       )}
-    </div>
-  </section>
-
-  <!-- ═══ AVAILABILITY ANCHOR — message match for V8 scarcity ad ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-block) 0 0 0;">
-    <div class="container-editorial">
-      <div class="text-center reveal">
-        <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center">Availability</p>
-        <p class="text-heading-lg font-serif italic mt-6" style="max-width: 32ch; margin-inline: auto;">
-          Now booking late 2026 and 2027.
-        </p>
-        <p class="text-body-md text-on-surface-variant mt-4" style="max-width: 40ch; margin-inline: auto;">
-          One wedding per weekend. Toronto and the GTA.
-        </p>
-      </div>
     </div>
   </section>
 
