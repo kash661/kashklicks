@@ -4,6 +4,7 @@ import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/global/Header.astro';
 import Footer from '../components/global/Footer.astro';
 import SplashOverlay from '../components/global/SplashOverlay.astro';
+import MobileSplashOverlay from '../components/global/MobileSplashOverlay.astro';
 import site from '../data/site.json';
 import '../styles/global.css';
 
@@ -164,7 +165,12 @@ if (site.phone) {
       Skip to content
     </a>
 
-    {showSplash && <SplashOverlay />}
+    {showSplash && (
+      <>
+        <SplashOverlay />
+        <MobileSplashOverlay />
+      </>
+    )}
 
     <Header transparent={transparentHeader} />
     <main id="main-content" class="flex-1">

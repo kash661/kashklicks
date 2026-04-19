@@ -77,12 +77,51 @@ const jsonLd = [
   showSplash={true}
   jsonLd={jsonLd}
 >
+  <script is:inline>
+    // Hide hero elements on first visit until the splash:done event fires (prevents FOUC).
+    if (
+      typeof sessionStorage !== 'undefined' &&
+      sessionStorage.getItem('kk-splash-seen') !== 'true'
+    ) {
+      document.documentElement.classList.add('splash-pending');
+    }
+  </script>
+
+  <style is:global>
+    html.splash-pending .home-hero__copy .logo-mark,
+    html.splash-pending .home-hero__copy h1,
+    html.splash-pending .home-hero__copy h2,
+    html.splash-pending .home-hero .hero-cta,
+    html.splash-pending .home-hero .gallery-caption,
+    html.splash-pending .home-hero .scroll-rail-wrap {
+      opacity: 0;
+    }
+
+    /* Lock each tagline char's formatting context + layer so the glyph shape
+       (notably the Cormorant "f" with its long descender) doesn't shift between
+       opacity phases. */
+    .home-hero__copy h2[data-entrance-defer] .tagline-char {
+      display: inline-block;
+      will-change: opacity;
+    }
+
+    /* Desktop: two sentences flow inline. Mobile: each sentence on its own line. */
+    .home-hero__copy h2[data-entrance-defer] .tagline-line {
+      display: inline;
+    }
+    @media (max-width: 767px) {
+      .home-hero__copy h2[data-entrance-defer] .tagline-line {
+        display: block;
+      }
+    }
+  </style>
+
   <!-- ═══ 1. HERO ═══ -->
-  <section class="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-surface-container">
+  <section class="home-hero relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-surface-container">
     <Image
       src={heroImage}
       alt="Toronto wedding photographer AD Photography, Mehak and Manal session"
-      class="absolute inset-0 w-full h-full object-cover"
+      class="home-hero__image absolute inset-0 w-full h-full object-cover"
       widths={[768, 1280, 1600]}
       sizes="100vw"
       quality={72}
@@ -90,14 +129,29 @@ const jsonLd = [
       loading="eager"
       fetchpriority="high"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+    <div class="home-hero__overlay absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
     <!-- Informational H1 (keyword-rich) styled small; emotional H2 (tagline) styled large -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+    <div class="home-hero__copy absolute inset-0 flex flex-col items-center justify-center text-center px-6">
       <p class="logo-mark text-[0.8125rem] text-on-dark eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-8">AD Photos</p>
       <h1 class="text-body-md text-on-dark/70 font-normal order-2 mt-6 max-w-[36ch] mx-auto">Your Toronto wedding photographer and filmmaker, telling real love stories.</h1>
       <h2 class="text-display-lg text-on-dark char-reveal order-1" data-fade-prefix-count="12" data-fade-prefix-opacity="0.4">Moments fade. Memories don't.</h2>
     </div>
+
+    <script is:inline>
+      // On first visit the hero tagline is driven by the GSAP entrance timeline,
+      // not by char-reveal.ts. Strip the class before the module script picks it up.
+      if (
+        typeof sessionStorage !== 'undefined' &&
+        sessionStorage.getItem('kk-splash-seen') !== 'true'
+      ) {
+        const heroTag = document.querySelector('.home-hero__copy h2.char-reveal');
+        if (heroTag) {
+          heroTag.classList.remove('char-reveal');
+          heroTag.setAttribute('data-entrance-defer', 'true');
+        }
+      }
+    </script>
 
     <!-- Caption -->
     <div class="hidden md:block absolute bottom-20 left-8 md:left-16 gallery-caption text-on-dark/90">
@@ -379,3 +433,171 @@ const jsonLd = [
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initHomeHero = () => {
+    const hero = document.querySelector<HTMLElement>('.home-hero');
+    if (!hero) return () => {};
+
+    const mm = gsap.matchMedia();
+
+    // Desktop + tablet: pinned ken-burns. Respects reduced-motion.
+    mm.add(
+      {
+        desktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+      },
+      () => {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top top',
+              end: '+=100%',
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to('.home-hero__image', { scale: 1.12, yPercent: -4, ease: 'none' }, 0)
+          .to('.home-hero__overlay', { opacity: 0.6, ease: 'none' }, 0)
+          .to('.home-hero__copy', { yPercent: -18, opacity: 0, ease: 'power1.in' }, 0);
+      }
+    );
+
+    return () => mm.revert();
+  };
+
+  const initHeroEntrance = () => {
+    const firstVisit = sessionStorage.getItem('kk-splash-seen') !== 'true';
+    if (!firstVisit) {
+      document.documentElement.classList.remove('splash-pending');
+      return () => {};
+    }
+
+    // Split the hero tagline into per-char spans so GSAP can type it out.
+    // Each sentence goes in its own .tagline-line wrapper so mobile CSS can
+    // force sentence-level line breaks instead of wrapping mid-word.
+    const h2 = document.querySelector<HTMLHeadingElement>(
+      '.home-hero__copy h2[data-entrance-defer]'
+    );
+    let h2Chars: HTMLElement[] = [];
+    if (h2 && !h2.dataset.splitDone) {
+      const fullText = h2.textContent || '';
+      h2.textContent = '';
+      h2.setAttribute('aria-label', fullText);
+      const boundary = fullText.indexOf('. ');
+      const sentences = boundary > -1
+        ? [fullText.slice(0, boundary + 1), fullText.slice(boundary + 2)]
+        : [fullText];
+      sentences.forEach((sentence, index) => {
+        const line = document.createElement('span');
+        line.className = 'tagline-line';
+        for (const char of sentence) {
+          if (char === ' ') {
+            line.appendChild(document.createTextNode(' '));
+            continue;
+          }
+          const span = document.createElement('span');
+          span.className = 'tagline-char';
+          span.textContent = char;
+          span.setAttribute('aria-hidden', 'true');
+          line.appendChild(span);
+        }
+        h2.appendChild(line);
+        if (index < sentences.length - 1) {
+          h2.appendChild(document.createTextNode(' '));
+        }
+      });
+      h2.dataset.splitDone = 'true';
+      h2Chars = Array.from(h2.querySelectorAll<HTMLElement>('.tagline-char'));
+    }
+
+    const targets = [
+      '.home-hero__copy .logo-mark',
+      '.home-hero__copy h1',
+      '.home-hero .hero-cta',
+      '.home-hero .gallery-caption',
+      '.home-hero .scroll-rail-wrap',
+    ];
+
+    // Take over from the anti-FOUC CSS with inline GSAP styles.
+    gsap.set(targets, { opacity: 0 });
+    gsap.set(h2Chars, { opacity: 0 });
+    if (h2) gsap.set(h2, { opacity: 1 });
+    document.documentElement.classList.remove('splash-pending');
+
+    // "Moments fade." → first 12 chars. After the tagline types in, these fade away
+    // while "Memories don't." stays — the phrase demonstrates itself.
+    const momentsFadeChars = h2Chars.slice(0, 12);
+
+    const runEntrance = () => {
+      gsap
+        .timeline({ defaults: { ease: 'power3.out' } })
+        .fromTo(
+          '.home-hero__copy .logo-mark',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          0
+        )
+        .to(
+          h2Chars,
+          { opacity: 1, duration: 0.35, stagger: 0.035, ease: 'power1.out' },
+          0.2
+        )
+        .addLabel('taglineIn', '>')
+        .fromTo(
+          '.home-hero__copy h1',
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          'taglineIn+=0.05'
+        )
+        .fromTo(
+          '.home-hero .hero-cta',
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.55 },
+          '-=0.25'
+        )
+        .fromTo(
+          '.home-hero .gallery-caption',
+          { opacity: 0, y: 8 },
+          { opacity: 1, y: 0, duration: 0.55 },
+          '-=0.4'
+        )
+        .fromTo(
+          '.home-hero .scroll-rail-wrap',
+          { opacity: 0 },
+          { opacity: 1, duration: 0.5 },
+          '-=0.3'
+        )
+        // "Moments fade." — the words fade (but linger faintly) while "Memories don't." stays
+        .to(
+          momentsFadeChars,
+          { opacity: 0.32, duration: 0.5, stagger: 0.035, ease: 'power1.in' },
+          'taglineIn+=0.9'
+        );
+    };
+
+    document.addEventListener('splash:done', runEntrance, { once: true });
+    return () => document.removeEventListener('splash:done', runEntrance);
+  };
+
+  let cleanupPin = initHomeHero();
+  let cleanupEntrance = initHeroEntrance();
+
+  document.addEventListener('astro:page-load', () => {
+    cleanupPin?.();
+    cleanupEntrance?.();
+    cleanupPin = initHomeHero();
+    cleanupEntrance = initHeroEntrance();
+  });
+  document.addEventListener('astro:before-preparation', () => {
+    cleanupPin?.();
+    cleanupEntrance?.();
+  });
+</script>

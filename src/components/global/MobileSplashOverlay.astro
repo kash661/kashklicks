@@ -1,0 +1,253 @@
+---
+// src/components/global/MobileSplashOverlay.astro
+// Mobile-only splash gateway. Independent DOM + script from the desktop
+// SplashOverlay so layout concerns don't cross breakpoints.
+// Active when viewport < 768px. Dispatches the same `splash:done` event and
+// shares the `kk-splash-seen` sessionStorage key.
+import { Image } from 'astro:assets';
+import heroImage from '../../assets/images/hero/hero-main.jpg';
+---
+
+<div
+  id="splash-mobile-overlay"
+  class="fixed left-0 top-0 w-full z-[100] bg-surface-dark"
+  style="display: none; height: 100dvh;"
+  role="dialog"
+  aria-label="Welcome to AD Photography"
+  aria-modal="true"
+>
+  <!-- Background image with Ken Burns -->
+  <div class="absolute inset-0 overflow-hidden">
+    <Image
+      src={heroImage}
+      alt=""
+      class="w-full h-full object-cover opacity-40"
+      style="animation: kenburns 8s var(--ease-gallery) forwards;"
+      widths={[640, 960]}
+      sizes="100vw"
+      quality={72}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+
+  <!-- Mark + Tag, transform-centered so mobile browser chrome never throws it off -->
+  <div class="splash-mobile-copy absolute left-1/2 top-1/2 w-full text-center px-6 pointer-events-none">
+    <p
+      id="splash-mobile-mark"
+      class="logo-mark text-on-dark opacity-0"
+      style="font-size: clamp(3rem, 14vw, 4.75rem); line-height: 1.05;"
+      aria-hidden="true"
+    >AD</p>
+    <p
+      id="splash-mobile-tag"
+      class="text-label-md text-on-dark-variant mt-4 opacity-0"
+    >Moments fade. Memories don't.</p>
+  </div>
+
+  <!-- Button, also transform-centered at the same point (overlaps mark+tag's center) -->
+  <div
+    id="splash-mobile-cta"
+    class="splash-mobile-cta absolute left-1/2 top-1/2 opacity-0"
+  >
+    <button
+      id="splash-mobile-enter"
+      class="splash-mobile-enter-btn relative inline-flex items-center justify-center px-10 py-4 text-on-dark text-label-md cursor-pointer"
+    >
+      <span class="splash-mobile-corner splash-mobile-corner--tl" aria-hidden="true"></span>
+      <span class="splash-mobile-corner splash-mobile-corner--tr" aria-hidden="true"></span>
+      <span class="splash-mobile-corner splash-mobile-corner--bl" aria-hidden="true"></span>
+      <span class="splash-mobile-corner splash-mobile-corner--br" aria-hidden="true"></span>
+      <span class="splash-mobile-label relative z-10 whitespace-nowrap">Step Inside</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Guaranteed centering: transform the centered layers back by half their own size */
+  .splash-mobile-copy { transform: translate(-50%, -50%); }
+  .splash-mobile-cta  { transform: translate(-50%, -50%); }
+
+  .splash-mobile-enter-btn { isolation: isolate; }
+  .splash-mobile-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .splash-mobile-corner::before,
+  .splash-mobile-corner::after {
+    content: '';
+    position: absolute;
+    background: rgba(250, 249, 246, 0.85);
+  }
+  .splash-mobile-corner--tl { top: 0; left: 0; }
+  .splash-mobile-corner--tl::before { top: 0; left: 0; width: 100%; height: 1px; }
+  .splash-mobile-corner--tl::after  { top: 0; left: 0; width: 1px; height: 100%; }
+  .splash-mobile-corner--tr { top: 0; right: 0; }
+  .splash-mobile-corner--tr::before { top: 0; right: 0; width: 100%; height: 1px; }
+  .splash-mobile-corner--tr::after  { top: 0; right: 0; width: 1px; height: 100%; }
+  .splash-mobile-corner--bl { bottom: 0; left: 0; }
+  .splash-mobile-corner--bl::before { bottom: 0; left: 0; width: 100%; height: 1px; }
+  .splash-mobile-corner--bl::after  { bottom: 0; left: 0; width: 1px; height: 100%; }
+  .splash-mobile-corner--br { bottom: 0; right: 0; }
+  .splash-mobile-corner--br::before { bottom: 0; right: 0; width: 100%; height: 1px; }
+  .splash-mobile-corner--br::after  { bottom: 0; right: 0; width: 1px; height: 100%; }
+
+  .splash-mobile-label span { display: inline-block; opacity: 0; }
+
+  /* Hide this component on desktop */
+  @media (min-width: 768px) {
+    #splash-mobile-overlay { display: none !important; }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { playAmbientLoop, stopAmbient } from '../../scripts/sound-manager';
+
+  function initMobileSplash() {
+    // Only run on mobile viewports
+    if (window.matchMedia('(min-width: 768px)').matches) return;
+
+    const overlay = document.getElementById('splash-mobile-overlay');
+    const enterBtn = document.getElementById('splash-mobile-enter');
+    if (!overlay) return;
+
+    if (sessionStorage.getItem('kk-splash-seen') === 'true') {
+      overlay.remove();
+      document.dispatchEvent(new CustomEvent('splash:done'));
+      return;
+    }
+
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    playAmbientLoop();
+
+    const cta = document.getElementById('splash-mobile-cta');
+    const cornerTL = document.querySelector<HTMLElement>('.splash-mobile-corner--tl');
+    const cornerTR = document.querySelector<HTMLElement>('.splash-mobile-corner--tr');
+    const cornerBL = document.querySelector<HTMLElement>('.splash-mobile-corner--bl');
+    const cornerBR = document.querySelector<HTMLElement>('.splash-mobile-corner--br');
+    const btnLabel = document.querySelector<HTMLElement>('.splash-mobile-label');
+    const mark = document.getElementById('splash-mobile-mark');
+    const tag = document.getElementById('splash-mobile-tag');
+
+    // Split button label chars
+    if (btnLabel && !btnLabel.dataset.split) {
+      const text = btnLabel.textContent || '';
+      btnLabel.setAttribute('aria-label', text);
+      btnLabel.innerHTML = text
+        .split('')
+        .map((c) =>
+          c === ' '
+            ? '<span aria-hidden="true">&nbsp;</span>'
+            : `<span aria-hidden="true">${c}</span>`
+        )
+        .join('');
+      btnLabel.dataset.split = 'true';
+    }
+    const labelChars = btnLabel ? btnLabel.querySelectorAll('span') : [];
+
+    // Split tagline chars (for type-out on tap)
+    if (tag) {
+      const text = tag.textContent || '';
+      tag.innerHTML = text
+        .split('')
+        .map((c) =>
+          c === ' '
+            ? '<span class="splash-char">&nbsp;</span>'
+            : `<span class="splash-char">${c}</span>`
+        )
+        .join('');
+      gsap.set(tag, { opacity: 1 });
+      gsap.set(tag.querySelectorAll('.splash-char'), { opacity: 0 });
+    }
+
+    // Corners start scattered outside the button
+    gsap.set(cornerTL, { x: -20, y: -20, opacity: 0 });
+    gsap.set(cornerTR, { x: 20, y: -20, opacity: 0 });
+    gsap.set(cornerBL, { x: -20, y: 20, opacity: 0 });
+    gsap.set(cornerBR, { x: 20, y: 20, opacity: 0 });
+
+    setTimeout(() => {
+      if (!cta) return;
+      gsap
+        .timeline({ defaults: { ease: 'power3.out' } })
+        .to(cta, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+        .to(
+          [cornerTL, cornerTR, cornerBL, cornerBR],
+          { x: 0, y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.06 },
+          '-=0.25'
+        )
+        .to(
+          labelChars,
+          { opacity: 1, duration: 0.35, stagger: 0.05, ease: 'power1.out' },
+          '-=0.4'
+        );
+    }, 1000);
+
+    // Hover (still useful for tablets with cursors)
+    if (enterBtn) {
+      enterBtn.addEventListener('mouseenter', () => {
+        gsap.to(cornerTL, { x: -4, y: -4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(cornerTR, { x: 4, y: -4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(cornerBL, { x: -4, y: 4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(cornerBR, { x: 4, y: 4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(btnLabel, { letterSpacing: '0.26em', duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+      });
+      enterBtn.addEventListener('mouseleave', () => {
+        gsap.to([cornerTL, cornerTR, cornerBL, cornerBR], { x: 0, y: 0, duration: 0.6, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(btnLabel, { letterSpacing: '0.1em', duration: 0.6, ease: 'power2.out', overwrite: 'auto' });
+      });
+    }
+
+    // Tap → reveal mark + typed tagline → splash exits
+    let revealed = false;
+    enterBtn?.addEventListener('click', () => {
+      if (revealed) return;
+      revealed = true;
+      if (enterBtn instanceof HTMLButtonElement) enterBtn.disabled = true;
+
+      const chars = tag ? tag.querySelectorAll('.splash-char') : [];
+
+      gsap
+        .timeline({ defaults: { overwrite: 'auto' } })
+        .to(cta, { opacity: 0, y: -8, duration: 0.5, ease: 'power2.in' })
+        .fromTo(
+          mark,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+          '-=0.2'
+        )
+        .to(
+          chars,
+          { opacity: 1, duration: 0.25, stagger: 0.04, ease: 'none' },
+          '-=0.3'
+        )
+        .call(
+          () => {
+            stopAmbient();
+            sessionStorage.setItem('kk-splash-seen', 'true');
+          },
+          [],
+          '+=0.5'
+        )
+        .to(overlay, {
+          opacity: 0,
+          scale: 1.02,
+          duration: 0.55,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            document.body.style.overflow = '';
+            overlay.remove();
+            document.dispatchEvent(new CustomEvent('splash:done'));
+          },
+        });
+    });
+  }
+
+  initMobileSplash();
+</script>

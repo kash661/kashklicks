@@ -9,7 +9,7 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
 <div
   id="splash-overlay"
   class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-surface-dark"
-  style="display: none;"
+  style="display: none; height: 100dvh;"
   role="dialog"
   aria-label="Welcome to AD Photography"
   aria-modal="true"
@@ -30,19 +30,25 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
     />
   </div>
 
-  <!-- Content -->
-  <div class="relative text-center px-6">
-    <p class="logo-mark text-on-dark" style="font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05;" aria-hidden="true">AD</p>
-    <p class="text-label-md text-on-dark-variant mt-4">Moments fade. Memories don't.</p>
-    <div id="splash-cta" class="mt-12 opacity-0" style="transition: opacity var(--duration-splash) var(--ease-gallery);">
-      <button
-        id="splash-enter"
-        class="px-8 py-4 bg-primary text-on-dark text-label-md hover:bg-primary-hover cubic-ease"
-        style="transition-duration: var(--duration-hover);"
-      >
-        View the Collection
-      </button>
-    </div>
+  <!-- Mark + Tag (centered, revealed after tap) -->
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none">
+    <p id="splash-mark" class="logo-mark text-on-dark opacity-0" style="font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05;" aria-hidden="true">AD</p>
+    <p id="splash-tag" class="text-label-md text-on-dark-variant mt-4 opacity-0">Moments fade. Memories don't.</p>
+  </div>
+
+  <!-- Button (true-center until tap) -->
+  <div id="splash-cta" class="absolute inset-0 flex items-center justify-center px-6 opacity-0">
+    <button
+      id="splash-enter"
+      class="splash-enter-btn relative inline-flex items-center justify-center px-12 py-5 text-on-dark text-label-md cursor-pointer"
+    >
+      <span class="splash-enter-corner splash-enter-corner--tl" aria-hidden="true"></span>
+      <span class="splash-enter-corner splash-enter-corner--tr" aria-hidden="true"></span>
+      <span class="splash-enter-corner splash-enter-corner--bl" aria-hidden="true"></span>
+      <span class="splash-enter-corner splash-enter-corner--br" aria-hidden="true"></span>
+      <span class="splash-enter-dot" aria-hidden="true"></span>
+      <span class="splash-enter-label relative z-10 whitespace-nowrap">Step Inside</span>
+    </button>
   </div>
 </div>
 
@@ -51,20 +57,73 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
     from { transform: scale(1); }
     to { transform: scale(1.08); }
   }
+
+  /* Desktop-only component — hide on mobile to prevent DOM bleed */
+  @media (max-width: 767px) {
+    #splash-overlay { display: none !important; }
+  }
+
+  /* Crop-mark corner brackets — contact sheet feel.
+     GSAP drives every transform/opacity below; no CSS transitions. */
+  .splash-enter-btn { isolation: isolate; }
+  .splash-enter-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .splash-enter-corner::before,
+  .splash-enter-corner::after {
+    content: '';
+    position: absolute;
+    background: rgba(250, 249, 246, 0.85);
+  }
+  .splash-enter-corner--tl { top: 0; left: 0; }
+  .splash-enter-corner--tl::before { top: 0; left: 0; width: 100%; height: 1px; }
+  .splash-enter-corner--tl::after  { top: 0; left: 0; width: 1px; height: 100%; }
+  .splash-enter-corner--tr { top: 0; right: 0; }
+  .splash-enter-corner--tr::before { top: 0; right: 0; width: 100%; height: 1px; }
+  .splash-enter-corner--tr::after  { top: 0; right: 0; width: 1px; height: 100%; }
+  .splash-enter-corner--bl { bottom: 0; left: 0; }
+  .splash-enter-corner--bl::before { bottom: 0; left: 0; width: 100%; height: 1px; }
+  .splash-enter-corner--bl::after  { bottom: 0; left: 0; width: 1px; height: 100%; }
+  .splash-enter-corner--br { bottom: 0; right: 0; }
+  .splash-enter-corner--br::before { bottom: 0; right: 0; width: 100%; height: 1px; }
+  .splash-enter-corner--br::after  { bottom: 0; right: 0; width: 1px; height: 100%; }
+
+  /* Centered registration dot — ambient breath, GSAP-driven */
+  .splash-enter-dot {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 3px; height: 3px;
+    margin-left: -1.5px; margin-top: -1.5px;
+    background: rgba(250, 249, 246, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* Label chars split + staggered by GSAP; base styles stay neutral */
+  .splash-enter-label span { display: inline-block; opacity: 0; }
 </style>
 
 <script>
+  import gsap from 'gsap';
   import { playAmbientLoop, stopAmbient } from '../../scripts/sound-manager';
 
   function initSplash() {
+    // Desktop-only. Mobile (<768px) uses MobileSplashOverlay.astro.
+    if (window.matchMedia('(max-width: 767px)').matches) return;
+
     const overlay = document.getElementById('splash-overlay');
-    const cta = document.getElementById('splash-cta');
     const enterBtn = document.getElementById('splash-enter');
     if (!overlay) return;
 
     // Only show splash if NOT seen this session
     if (sessionStorage.getItem('kk-splash-seen') === 'true') {
       overlay.remove();
+      document.dispatchEvent(new CustomEvent('splash:done'));
       return;
     }
 
@@ -75,22 +134,156 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
     // Start ambient sound if user has opted in
     playAmbientLoop();
 
-    // Reveal CTA after 3.5 seconds
+    // Reveal CTA: crop-mark corners scatter in, then label chars stagger in
+    const cta = document.getElementById('splash-cta');
+    const btn = document.getElementById('splash-enter');
+    const cornerTL = document.querySelector<HTMLElement>('.splash-enter-corner--tl');
+    const cornerTR = document.querySelector<HTMLElement>('.splash-enter-corner--tr');
+    const cornerBL = document.querySelector<HTMLElement>('.splash-enter-corner--bl');
+    const cornerBR = document.querySelector<HTMLElement>('.splash-enter-corner--br');
+    const dot = document.querySelector<HTMLElement>('.splash-enter-dot');
+    const label = document.querySelector<HTMLElement>('.splash-enter-label');
+
+    // Split label into per-char spans for the stagger
+    if (label && !label.dataset.split) {
+      const text = label.textContent || '';
+      label.setAttribute('aria-label', text);
+      label.innerHTML = text
+        .split('')
+        .map((c) =>
+          c === ' '
+            ? '<span aria-hidden="true">&nbsp;</span>'
+            : `<span aria-hidden="true">${c}</span>`
+        )
+        .join('');
+      label.dataset.split = 'true';
+    }
+    const labelChars = label ? label.querySelectorAll('span') : [];
+
+    // Corners start scattered outside the button frame
+    gsap.set(cornerTL, { x: -24, y: -24, opacity: 0 });
+    gsap.set(cornerTR, { x: 24, y: -24, opacity: 0 });
+    gsap.set(cornerBL, { x: -24, y: 24, opacity: 0 });
+    gsap.set(cornerBR, { x: 24, y: 24, opacity: 0 });
+    gsap.set(dot, { opacity: 0, scale: 0 });
+
     setTimeout(() => {
-      if (cta) cta.style.opacity = '1';
-    }, 3500);
+      if (!cta) return;
+      const tl = gsap
+        .timeline({ defaults: { ease: 'power3.out' } })
+        .to(cta, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+        .to(
+          [cornerTL, cornerTR, cornerBL, cornerBR],
+          { x: 0, y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.06 },
+          '-=0.25'
+        )
+        .to(
+          dot,
+          { opacity: 1, scale: 1, duration: 0.6 },
+          '-=0.5'
+        )
+        .to(
+          labelChars,
+          { opacity: 1, duration: 0.35, stagger: 0.05, ease: 'power1.out' },
+          '-=0.4'
+        );
 
-    // Enter site
+      // Ambient breath on the dot + corners while idle
+      gsap.to(dot, {
+        opacity: 0.3,
+        duration: 1.8,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: tl.duration(),
+      });
+      gsap.to([cornerTL, cornerTR, cornerBL, cornerBR], {
+        opacity: 0.65,
+        duration: 2.4,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: tl.duration(),
+      });
+    }, 1000);
+
+    // Hover: frame expands outward, label letter-spacing widens, dot shrinks
+    if (btn) {
+      btn.addEventListener('mouseenter', () => {
+        gsap.to(cornerTL, { x: -4, y: -4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(cornerTR, { x: 4, y: -4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(cornerBL, { x: -4, y: 4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(cornerBR, { x: 4, y: 4, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(label, { letterSpacing: '0.26em', duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(dot, { scale: 0, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to([cornerTL, cornerTR, cornerBL, cornerBR], { x: 0, y: 0, duration: 0.6, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(label, { letterSpacing: '0.1em', duration: 0.6, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(dot, { scale: 1, duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
+      });
+    }
+
+    // Enter site — tap reveals mark, then types out the tagline
+    const mark = document.getElementById('splash-mark');
+    const tag = document.getElementById('splash-tag');
+
+    // Split tagline into character spans so we can stagger like a typewriter
+    if (tag) {
+      const text = tag.textContent || '';
+      tag.innerHTML = text
+        .split('')
+        .map((c) =>
+          c === ' '
+            ? '<span class="splash-char">&nbsp;</span>'
+            : `<span class="splash-char">${c}</span>`
+        )
+        .join('');
+      gsap.set(tag, { opacity: 1 });
+      gsap.set(tag.querySelectorAll('.splash-char'), { opacity: 0 });
+    }
+
+    let revealed = false;
+
     enterBtn?.addEventListener('click', () => {
-      stopAmbient();
-      overlay.style.transition = `opacity var(--duration-splash) var(--ease-gallery)`;
-      overlay.style.opacity = '0';
-      sessionStorage.setItem('kk-splash-seen', 'true');
-      document.body.style.overflow = '';
+      if (revealed) return;
+      revealed = true;
+      if (enterBtn instanceof HTMLButtonElement) enterBtn.disabled = true;
 
-      setTimeout(() => {
-        overlay.remove();
-      }, 1200);
+      const chars = tag ? tag.querySelectorAll('.splash-char') : [];
+
+      gsap.timeline({ defaults: { overwrite: 'auto' } })
+        .to(cta, { opacity: 0, y: -8, duration: 0.5, ease: 'power2.in' })
+        .fromTo(
+          mark,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+          '-=0.2'
+        )
+        .to(
+          chars,
+          { opacity: 1, duration: 0.25, stagger: 0.04, ease: 'none' },
+          '-=0.3'
+        )
+        .call(
+          () => {
+            stopAmbient();
+            sessionStorage.setItem('kk-splash-seen', 'true');
+          },
+          [],
+          '+=0.5'
+        )
+        .to(overlay, {
+          opacity: 0,
+          scale: 1.02,
+          duration: 0.55,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            document.body.style.overflow = '';
+            overlay.remove();
+            document.dispatchEvent(new CustomEvent('splash:done'));
+          },
+        });
     });
 
     enterBtn?.addEventListener('keydown', (e) => {
