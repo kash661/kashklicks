@@ -32,15 +32,15 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
 
   <!-- Content -->
   <div class="relative text-center px-6">
-    <p class="logo-mark text-on-dark" style="font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05;" aria-hidden="true">AD</p>
-    <p class="text-label-md text-on-dark-variant mt-4">Moments fade. Memories don't.</p>
+    <p id="splash-mark" class="logo-mark text-on-dark opacity-0" style="font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05;" aria-hidden="true">AD</p>
+    <p id="splash-tag" class="text-label-md text-on-dark-variant mt-4 opacity-0">Moments fade. Memories don't.</p>
     <div id="splash-cta" class="mt-12 opacity-0" style="transition: opacity var(--duration-splash) var(--ease-gallery);">
       <button
         id="splash-enter"
-        class="px-8 py-4 bg-primary text-on-dark text-label-md hover:bg-primary-hover cubic-ease"
+        class="inline-flex items-center justify-center whitespace-nowrap px-9 py-3.5 border border-on-dark/70 text-on-dark text-label-md hover:bg-on-dark hover:text-on-surface cubic-ease"
         style="transition-duration: var(--duration-hover);"
       >
-        View the Collection
+        Step Inside
       </button>
     </div>
   </div>
@@ -54,17 +54,18 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
 </style>
 
 <script>
+  import gsap from 'gsap';
   import { playAmbientLoop, stopAmbient } from '../../scripts/sound-manager';
 
   function initSplash() {
     const overlay = document.getElementById('splash-overlay');
-    const cta = document.getElementById('splash-cta');
     const enterBtn = document.getElementById('splash-enter');
     if (!overlay) return;
 
     // Only show splash if NOT seen this session
     if (sessionStorage.getItem('kk-splash-seen') === 'true') {
       overlay.remove();
+      document.dispatchEvent(new CustomEvent('splash:done'));
       return;
     }
 
@@ -75,22 +76,72 @@ import heroImage from '../../assets/images/hero/hero-main.jpg';
     // Start ambient sound if user has opted in
     playAmbientLoop();
 
-    // Reveal CTA after 3.5 seconds
+    // Reveal CTA after Ken Burns settles in
+    const cta = document.getElementById('splash-cta');
     setTimeout(() => {
       if (cta) cta.style.opacity = '1';
-    }, 3500);
+    }, 1000);
 
-    // Enter site
+    // Enter site — tap reveals mark, then types out the tagline
+    const mark = document.getElementById('splash-mark');
+    const tag = document.getElementById('splash-tag');
+
+    // Split tagline into character spans so we can stagger like a typewriter
+    if (tag) {
+      const text = tag.textContent || '';
+      tag.innerHTML = text
+        .split('')
+        .map((c) =>
+          c === ' '
+            ? '<span class="splash-char">&nbsp;</span>'
+            : `<span class="splash-char">${c}</span>`
+        )
+        .join('');
+      gsap.set(tag, { opacity: 1 });
+      gsap.set(tag.querySelectorAll('.splash-char'), { opacity: 0 });
+    }
+
+    let revealed = false;
+
     enterBtn?.addEventListener('click', () => {
-      stopAmbient();
-      overlay.style.transition = `opacity var(--duration-splash) var(--ease-gallery)`;
-      overlay.style.opacity = '0';
-      sessionStorage.setItem('kk-splash-seen', 'true');
-      document.body.style.overflow = '';
+      if (revealed) return;
+      revealed = true;
+      if (enterBtn instanceof HTMLButtonElement) enterBtn.disabled = true;
 
-      setTimeout(() => {
-        overlay.remove();
-      }, 1200);
+      const chars = tag ? tag.querySelectorAll('.splash-char') : [];
+
+      gsap.timeline({ defaults: { overwrite: 'auto' } })
+        .to(cta, { opacity: 0, y: -8, duration: 0.5, ease: 'power2.in' })
+        .fromTo(
+          mark,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+          '-=0.2'
+        )
+        .to(
+          chars,
+          { opacity: 1, duration: 0.25, stagger: 0.04, ease: 'none' },
+          '-=0.3'
+        )
+        .call(
+          () => {
+            stopAmbient();
+            sessionStorage.setItem('kk-splash-seen', 'true');
+          },
+          [],
+          '+=1.2'
+        )
+        .to(overlay, {
+          opacity: 0,
+          scale: 1.02,
+          duration: 1.0,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            document.body.style.overflow = '';
+            overlay.remove();
+            document.dispatchEvent(new CustomEvent('splash:done'));
+          },
+        });
     });
 
     enterBtn?.addEventListener('keydown', (e) => {

@@ -78,11 +78,11 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <!-- ═══ 1. HERO ═══ -->
-  <section class="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-surface-container">
+  <section class="home-hero relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-surface-container">
     <Image
       src={heroImage}
       alt="Toronto wedding photographer AD Photography, Mehak and Manal session"
-      class="absolute inset-0 w-full h-full object-cover"
+      class="home-hero__image absolute inset-0 w-full h-full object-cover"
       widths={[768, 1280, 1600]}
       sizes="100vw"
       quality={72}
@@ -90,10 +90,10 @@ const jsonLd = [
       loading="eager"
       fetchpriority="high"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+    <div class="home-hero__overlay absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
     <!-- Informational H1 (keyword-rich) styled small; emotional H2 (tagline) styled large -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+    <div class="home-hero__copy absolute inset-0 flex flex-col items-center justify-center text-center px-6">
       <p class="logo-mark text-[0.8125rem] text-on-dark eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-8">AD Photos</p>
       <h1 class="text-body-md text-on-dark/70 font-normal order-2 mt-6 max-w-[36ch] mx-auto">Your Toronto wedding photographer and filmmaker, telling real love stories.</h1>
       <h2 class="text-display-lg text-on-dark char-reveal order-1" data-fade-prefix-count="12" data-fade-prefix-opacity="0.4">Moments fade. Memories don't.</h2>
@@ -379,3 +379,50 @@ const jsonLd = [
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initHomeHero = () => {
+    const hero = document.querySelector<HTMLElement>('.home-hero');
+    if (!hero) return () => {};
+
+    const mm = gsap.matchMedia();
+
+    // Desktop + tablet: pinned ken-burns. Respects reduced-motion.
+    mm.add(
+      {
+        desktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+      },
+      () => {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top top',
+              end: '+=100%',
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to('.home-hero__image', { scale: 1.12, yPercent: -4, ease: 'none' }, 0)
+          .to('.home-hero__overlay', { opacity: 0.6, ease: 'none' }, 0)
+          .to('.home-hero__copy', { yPercent: -18, opacity: 0, ease: 'power1.in' }, 0);
+      }
+    );
+
+    return () => mm.revert();
+  };
+
+  let cleanup = initHomeHero();
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    cleanup = initHomeHero();
+  });
+  document.addEventListener('astro:before-preparation', () => cleanup?.());
+</script>
