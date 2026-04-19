@@ -200,7 +200,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             For couples getting married here. One photographer. Intimate ceremonies: church, civil, backyard, small venues.
           </p>
           <p class="text-label-sm text-on-surface-muted mt-6 tracking-widest uppercase">
-            Most weddings $2,400+ · Solo · Photo-only
+            Weddings from $1,200 · Solo · Photo-only
           </p>
           <div class="mt-8">
             <span class="magnetic inline-block">
@@ -225,6 +225,19 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             fetchpriority="high"
           />
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VENUE TRUST STRIP — first-scroll credibility via named Toronto venues ═══
+       Editorial brand pattern per vault/Editorial LP Pattern.md: named venues > review counts.
+       Skip "500+ couples" claims; use specificity instead of statistics. -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-block) 0;">
+    <div class="container-editorial">
+      <div class="text-center reveal">
+        <p class="text-label-sm text-on-surface-muted uppercase" style="letter-spacing: 0.14em; max-width: 68ch; margin-inline: auto; line-height: 1.8;">
+          Toronto City Hall · TD Centre · The Glenerin Inn · University of Toronto · Backyards across the GTA
+        </p>
       </div>
     </div>
   </section>
@@ -368,7 +381,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 </div>
                 <div class="flex items-center gap-3 mt-8 justify-center md:justify-start">
                   <div class="h-px w-12 bg-surface-container"></div>
-                  <p class="text-label-md text-on-surface-muted uppercase tracking-widest">Civil Ceremony · {civilPackage.currency}</p>
+                  <p class="text-label-md text-on-surface-muted uppercase tracking-widest">Civil Ceremony</p>
                 </div>
               </div>
 
@@ -395,6 +408,21 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           </div>
         </div>
       )}
+    </div>
+  </section>
+
+  <!-- ═══ AVAILABILITY ANCHOR — message match for V8 scarcity ad ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-block) 0 0 0;">
+    <div class="container-editorial">
+      <div class="text-center reveal">
+        <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center">Availability</p>
+        <p class="text-heading-lg font-serif italic mt-6" style="max-width: 32ch; margin-inline: auto;">
+          Now booking late 2026 and 2027.
+        </p>
+        <p class="text-body-md text-on-surface-variant mt-4" style="max-width: 40ch; margin-inline: auto;">
+          One wedding per weekend. Toronto and the GTA.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -485,7 +513,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <!-- Phone -->
             <div class="relative">
               <label for="lp-phone" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Phone <span class="text-on-surface" aria-hidden="true">*</span>
+                Phone
               </label>
               <input
                 type="tel"
@@ -493,8 +521,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 name="phone"
                 autocomplete="tel"
                 inputmode="tel"
-                required
-                aria-required="true"
                 placeholder="(416) 555 0199"
                 class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
                 style="transition-duration: var(--duration-hover);"
@@ -524,7 +550,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
               <input
                 type="text"
                 id="lp-location"
-                required
                 name="location"
                 placeholder="City, venue, or neighborhood"
                 class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
