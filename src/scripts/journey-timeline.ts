@@ -16,7 +16,6 @@ function initVariant(
   const section = document.querySelector<HTMLElement>(selector);
   if (!section) return;
   if (section.dataset.journeyInitialized === 'true') return;
-  section.dataset.journeyInitialized = 'true';
 
   const mm = gsap.matchMedia();
 
@@ -26,7 +25,13 @@ function initVariant(
     const dots = steps.map((s) => s.querySelector<HTMLElement>('.journey-dot'));
     const contents = steps.map((s) => s.querySelector<HTMLElement>('.journey-step-content'));
 
-    if (!line || steps.length === 0) return;
+    if (!line || steps.length === 0) {
+      // No-op cleanup so mm.revert() remains safe.
+      return () => {};
+    }
+
+    // Commit to animating — mark initialized here so bailouts above don't lock the flag.
+    section.dataset.journeyInitialized = 'true';
 
     // Set initial hidden state (CSS defaults were visible).
     gsap.set(line, { scaleY: 0 });
