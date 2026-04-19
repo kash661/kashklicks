@@ -97,12 +97,22 @@ const jsonLd = [
       opacity: 0;
     }
 
-    /* Lock each tagline char's formatting context + layer so the glyph shape
-       (notably the Cormorant "f" with its long descender) doesn't shift between
-       opacity phases. */
+    /* Lock each tagline char's formatting context + GPU layer so the glyph shape
+       (notably the Cormorant "f" with its long descender + crossbar) doesn't
+       shift between opacity phases. Mobile rasterization is the most sensitive:
+       subpixel antialiasing, GPU layer toggling, and OpenType contextual
+       alternates can each cause the same char to re-render with different
+       pixels mid-animation. All three are neutralised below. */
     .home-hero__copy h2[data-entrance-defer] .tagline-char {
       display: inline-block;
+      transform: translate3d(0, 0, 0); /* permanent GPU layer — no re-rasterization */
+      backface-visibility: hidden;
       will-change: opacity;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
+      font-feature-settings: "kern" 0, "liga" 0, "calt" 0;
+      font-synthesis: none;
     }
 
     /* Desktop: two sentences flow inline. Mobile: each sentence on its own line. */
@@ -112,6 +122,15 @@ const jsonLd = [
     @media (max-width: 767px) {
       .home-hero__copy h2[data-entrance-defer] .tagline-line {
         display: block;
+      }
+    }
+
+    /* Mobile: hero text sits higher so the photograph takes the lower half.
+       Desktop stays true-centered. */
+    @media (max-width: 767px) {
+      .home-hero__copy {
+        justify-content: flex-start;
+        padding-top: 18vh;
       }
     }
   </style>
