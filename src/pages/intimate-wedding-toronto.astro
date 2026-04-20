@@ -355,20 +355,21 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3" style="gap: 2px;">
+      <div class="pricing-grid reveal stagger-3">
         {weddingPackages.map((pkg, i) => (
-          <div class={`reveal stagger-${i + 1}`}>
-            <PricingCard
-              id={pkg.id}
-              name={pkg.name}
-              price={pkg.price}
-              salePrice={pkg.salePrice}
-              description={pkg.description}
-              highlights={pkg.highlights}
-              popular={pkg.popular}
-              featured={!!pkg.salePrice}
-            />
-          </div>
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            salePrice={pkg.salePrice}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.popular}
+            featured={!!pkg.salePrice}
+            ordinal={i}
+            service="wedding"
+            ctaLabel="Enquire"
+          />
         ))}
       </div>
 
@@ -417,13 +418,14 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </p>
       </div>
 
-      <!-- Compact form -->
+      <!-- Inquiry form — shared BEM treatment with /contact ContactForm:
+           boxed white inputs, champagne hairline borders, italic serif
+           placeholders, roman-numeral section legends. -->
       <div id="lp-form-wrapper" class="reveal stagger-1">
         <form
           id="lp-inquiry-form"
           action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
           method="POST"
-          class="space-y-8 md:space-y-10"
           novalidate
         >
           <!-- Honeypot -->
@@ -436,135 +438,155 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           <input type="hidden" name="source" value="intimate-wedding-toronto" />
           <input type="hidden" name="event_type" value="wedding" />
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8 md:gap-x-8 md:gap-y-10">
-            <!-- Name -->
-            <div class="relative">
-              <label for="lp-name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Your Name <span class="text-on-surface" aria-hidden="true">*</span>
-              </label>
-              <input
-                type="text"
-                id="lp-name"
-                name="name"
-                autocomplete="given-name"
-                required
-                aria-required="true"
-                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
-                style="transition-duration: var(--duration-hover);"
-              />
-              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
-            </div>
+          <!-- Package context — prefilled when Inquire is tapped on a PricingCard. -->
+          <input type="hidden" id="lp-package-id" name="package_id" value="" />
+          <input type="hidden" id="lp-package-name" name="package_name" value="" />
 
-            <!-- Partner's name -->
-            <div class="relative">
-              <label for="lp-partner" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Partner's Name
-              </label>
-              <input
-                type="text"
-                id="lp-partner"
-                name="partner_name"
-                autocomplete="off"
-                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
-                style="transition-duration: var(--duration-hover);"
-              />
-            </div>
+          <!-- ═══ I · ABOUT YOU ═══ -->
+          <fieldset class="form-section">
+            <legend class="form-section__legend">
+              <span class="form-section__number">I</span>
+              <span class="form-section__title">About You</span>
+            </legend>
 
-            <!-- Email -->
-            <div class="relative">
-              <label for="lp-email" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Email <span class="text-on-surface" aria-hidden="true">*</span>
-              </label>
-              <input
-                type="email"
-                id="lp-email"
-                name="email"
-                autocomplete="email"
-                required
-                aria-required="true"
-                inputmode="email"
-                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
-                style="transition-duration: var(--duration-hover);"
-              />
-              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
+              <div class="form-field">
+                <label for="lp-name" class="form-field__label">
+                  Your Name <span class="form-field__required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="lp-name"
+                  name="name"
+                  autocomplete="given-name"
+                  required
+                  aria-required="true"
+                  aria-describedby="lp-name-error"
+                  class="form-field__input"
+                />
+                <p id="lp-name-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+              </div>
 
-            <!-- Phone -->
-            <div class="relative">
-              <label for="lp-phone" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Phone
-              </label>
-              <input
-                type="tel"
-                id="lp-phone"
-                name="phone"
-                autocomplete="tel"
-                inputmode="tel"
-                placeholder="(416) 555 0199"
-                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
-                style="transition-duration: var(--duration-hover);"
-              />
-              <p class="lp-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
-            </div>
+              <div class="form-field">
+                <label for="lp-partner" class="form-field__label">
+                  Partner's Name <span class="form-field__optional">(if applicable)</span>
+                </label>
+                <input
+                  type="text"
+                  id="lp-partner"
+                  name="partner_name"
+                  autocomplete="off"
+                  class="form-field__input"
+                />
+                <p class="form-error-msg form-field__error hidden" role="alert"></p>
+              </div>
 
-            <!-- Ceremony date -->
-            <div class="relative">
-              <label for="lp-date" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Ceremony Date <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(tentative is fine)</span>
-              </label>
-              <input
-                type="date"
-                id="lp-date"
-                name="event_date"
-                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
-                style="transition-duration: var(--duration-hover);"
-              />
-            </div>
+              <div class="form-field">
+                <label for="lp-email" class="form-field__label">
+                  Email <span class="form-field__required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="lp-email"
+                  name="email"
+                  autocomplete="email"
+                  required
+                  aria-required="true"
+                  inputmode="email"
+                  aria-describedby="lp-email-error"
+                  class="form-field__input"
+                />
+                <p id="lp-email-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+              </div>
 
-            <!-- Ceremony location -->
-            <div class="relative">
-              <label for="lp-location" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-                Ceremony Location
-              </label>
-              <input
-                type="text"
-                id="lp-location"
-                name="location"
-                placeholder="City, venue, or neighborhood"
-                class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease"
-                style="transition-duration: var(--duration-hover);"
-              />
+              <div class="form-field">
+                <label for="lp-phone" class="form-field__label">
+                  Phone <span class="form-field__optional">(optional)</span>
+                </label>
+                <input
+                  type="tel"
+                  id="lp-phone"
+                  name="phone"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  placeholder="(416) 555 0199"
+                  aria-describedby="lp-phone-error"
+                  class="form-field__input"
+                />
+                <p id="lp-phone-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+              </div>
             </div>
-          </div>
+          </fieldset>
 
-          <!-- Optional story -->
-          <div class="relative">
-            <label for="lp-message" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-              A Few Words About Your Day <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
-            </label>
-            <textarea
-              id="lp-message"
-              name="message"
-              rows="3"
-              placeholder="The feel, the place, anything that helps me understand the day."
-              class="w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease resize-none"
-              style="transition-duration: var(--duration-hover);"
-            ></textarea>
-          </div>
+          <!-- ═══ II · YOUR DAY ═══ -->
+          <fieldset class="form-section">
+            <legend class="form-section__legend">
+              <span class="form-section__number">II</span>
+              <span class="form-section__title">Your Day</span>
+            </legend>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
+              <div class="form-field">
+                <label for="lp-date" class="form-field__label">
+                  Ceremony Date <span class="form-field__optional">(tentative is fine)</span>
+                </label>
+                <input
+                  type="date"
+                  id="lp-date"
+                  name="event_date"
+                  class="form-field__input"
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="lp-location" class="form-field__label">
+                  Ceremony Location <span class="form-field__optional">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  id="lp-location"
+                  name="location"
+                  placeholder="City, venue, or neighborhood"
+                  class="form-field__input"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ═══ III · THE STORY ═══ -->
+          <fieldset class="form-section">
+            <legend class="form-section__legend">
+              <span class="form-section__number">III</span>
+              <span class="form-section__title">The Story</span>
+            </legend>
+
+            <div class="form-field">
+              <label for="lp-message" class="form-field__label">
+                A Few Words About Your Day <span class="form-field__optional">(optional)</span>
+              </label>
+              <textarea
+                id="lp-message"
+                name="message"
+                rows="4"
+                placeholder="The feel, the place, anything that helps me understand the day."
+                class="form-field__textarea"
+              ></textarea>
+            </div>
+          </fieldset>
 
           <!-- Submit -->
-          <div>
-            <div class="h-px bg-ghost mb-8"></div>
+          <div class="form-submit">
+            <div class="form-submit__break"></div>
             <button
               id="lp-submit-btn"
               type="submit"
-              class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease w-full sm:w-auto"
-              style="transition-duration: var(--duration-hover);"
+              class="form-submit__button magnetic w-full sm:w-auto"
             >
               Send Inquiry
+              <span class="form-submit__arrow" aria-hidden="true">&rarr;</span>
             </button>
-            <p class="text-label-sm text-on-surface-muted italic mt-6">
-              <span class="text-on-surface not-italic" aria-hidden="true">*</span> required · I reply within 24 hours
+            <p class="form-submit__note">
+              <span class="form-field__required not-italic" aria-hidden="true">*</span> required · I reply within 24 hours
             </p>
           </div>
         </form>
@@ -806,15 +828,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         }
 
         function clearFieldError(field) {
-          var wrap = field.closest('.relative');
-          var errMsg = wrap ? wrap.querySelector('.lp-error-msg') : null;
+          var wrap = field.closest('.form-field');
+          var errMsg = wrap ? wrap.querySelector('.form-error-msg') : null;
           if (errMsg) { errMsg.textContent = ''; errMsg.classList.add('hidden'); }
           field.removeAttribute('aria-invalid');
         }
 
         function showFieldError(field, message) {
-          var wrap = field.closest('.relative');
-          var errMsg = wrap ? wrap.querySelector('.lp-error-msg') : null;
+          var wrap = field.closest('.form-field');
+          var errMsg = wrap ? wrap.querySelector('.form-error-msg') : null;
           if (errMsg) { errMsg.textContent = message; errMsg.classList.remove('hidden'); }
           field.setAttribute('aria-invalid', 'true');
         }
@@ -928,6 +950,34 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
                 'currency': 'CAD',
                 'transaction_id': ''
               });
+            }
+          });
+        });
+
+        // ─── Pricing card "Inquire" → scroll to inline form + prefill ───
+        // The LP uses this inline form instead of a ContactModal, so we
+        // intercept PricingCard's [data-open-modal="contact-modal"] clicks,
+        // prefill the hidden package context fields, and smooth-scroll
+        // the visitor to #inquire.
+        var pkgIdField = document.getElementById('lp-package-id');
+        var pkgNameField = document.getElementById('lp-package-name');
+        var inquireAnchor = document.getElementById('inquire');
+        var pricingInquireBtns = document.querySelectorAll('[data-open-modal="contact-modal"]');
+        pricingInquireBtns.forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var pkgId = btn.getAttribute('data-package') || '';
+            var pkgName = btn.getAttribute('data-package-name') || '';
+            if (pkgIdField) pkgIdField.value = pkgId;
+            if (pkgNameField) pkgNameField.value = pkgName;
+            if (inquireAnchor) {
+              inquireAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              setTimeout(function () {
+                var firstField = document.getElementById('lp-name');
+                if (firstField && typeof firstField.focus === 'function') {
+                  firstField.focus({ preventScroll: true });
+                }
+              }, 600);
             }
           });
         });
