@@ -1,0 +1,379 @@
+---
+// src/components/global/MobileRecentWork.astro
+// Mobile + portrait-tablet Recent Work — minimal gallery spread.
+// One hairline matted-print frame around every photograph does the
+// whole job: the line exists to elevate the image. No numerals, no
+// spec strip, no column grid, no corner ticks. Active below 1024px.
+import { Image } from 'astro:assets';
+
+import recentWide from '../../assets/images/portfolio/meghna-puneeth/06.jpg';
+import recentPortraitLeft from '../../assets/images/homepage/homepage-03.jpg';
+import recentPortraitRight from '../../assets/images/homepage/homepage-02.jpg';
+---
+
+<section class="mrw" aria-labelledby="mrw-heading">
+  <div class="mrw__inner">
+    <div class="mrw__runhead reveal" aria-hidden="true">
+      <span class="mrw__runhead-rule"></span>
+      <span class="mrw__runhead-text">Volume V &middot; MMXXVI</span>
+      <span class="mrw__runhead-rule"></span>
+    </div>
+
+    <header class="mrw__intro">
+      <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-on-dark reveal mb-5">Recent Work</p>
+      <h2 id="mrw-heading" class="mrw__title reveal stagger-1">
+        Stories from the last few months.
+      </h2>
+      <p class="mrw__deck reveal stagger-2">
+        A few recent afternoons with couples who trusted me with their day.
+      </p>
+    </header>
+
+    <article class="mrw__story reveal">
+      <p class="mrw__meta">
+        <span class="mrw__plate">Plate I</span>
+        <span class="mrw__meta-dot">·</span>Toronto <span class="mrw__meta-dot">·</span> Autumn 2025
+      </p>
+      <div class="mrw__mat">
+        <a href="/portfolio/meghna-puneeth" class="mrw__frame" aria-label="View the Meghna and Puneeth album and film">
+          <span class="mrw__badge">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden="true"><path d="M1.5 0.5l7 4-7 4z" /></svg>
+            Film
+          </span>
+          <Image
+            src={recentWide}
+            alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
+            class="mrw__img"
+            widths={[480, 768, 1024]}
+            sizes="100vw"
+            quality={78}
+          />
+        </a>
+      </div>
+      <div class="mrw__cap">
+        <p class="mrw__couple">Meghna <em>&amp;</em> Puneeth</p>
+        <p class="mrw__sub">Pre-wedding film</p>
+        <a href="/portfolio/meghna-puneeth" class="mrw__view">
+          View Story <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </article>
+
+    <article class="mrw__story reveal">
+      <p class="mrw__meta">
+        <span class="mrw__plate">Plate II</span>
+        <span class="mrw__meta-dot">·</span>Toronto <span class="mrw__meta-dot">·</span> Summer 2025
+      </p>
+      <div class="mrw__mat">
+        <a href="/portfolio" class="mrw__frame" aria-label="Browse the full portfolio">
+          <Image
+            src={recentPortraitLeft}
+            alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
+            class="mrw__img mrw__img--portrait"
+            widths={[480, 640, 768]}
+            sizes="100vw"
+            quality={78}
+          />
+        </a>
+      </div>
+      <div class="mrw__cap">
+        <p class="mrw__couple">Swathi <em>&amp;</em> Saksham</p>
+        <p class="mrw__sub">Pre-wedding portraits</p>
+        <a href="/portfolio" class="mrw__view">
+          View Story <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </article>
+
+    <article class="mrw__story reveal">
+      <p class="mrw__meta">
+        <span class="mrw__plate">Plate III</span>
+        <span class="mrw__meta-dot">·</span>Italy <span class="mrw__meta-dot">·</span> Spring 2026
+      </p>
+      <div class="mrw__mat">
+        <a href="/portfolio/nora-ali" class="mrw__frame" aria-label="View the Nora and Ali album">
+          <Image
+            src={recentPortraitRight}
+            alt="Destination wedding portrait in Italy, Nora and Ali"
+            class="mrw__img mrw__img--portrait"
+            widths={[480, 640, 768]}
+            sizes="100vw"
+            quality={78}
+          />
+        </a>
+      </div>
+      <div class="mrw__cap">
+        <p class="mrw__couple">Nora <em>&amp;</em> Ali</p>
+        <p class="mrw__sub">Destination wedding</p>
+        <a href="/portfolio/nora-ali" class="mrw__view">
+          View Story <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </article>
+
+    <div class="mrw__runfoot reveal">
+      <span class="mrw__runfoot-rule"></span>
+      <a href="/portfolio" class="mrw__runfoot-link">
+        Continue to the full portfolio <span aria-hidden="true">&rarr;</span>
+      </a>
+      <span class="mrw__runfoot-rule"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mrw {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: var(--spacing-section);
+    color: var(--color-on-dark);
+    background:
+      radial-gradient(ellipse at top,
+        color-mix(in srgb, var(--color-on-dark) 5%, var(--color-surface-dark)) 0%,
+        var(--color-surface-dark) 60%),
+      var(--color-surface-dark);
+  }
+
+  .mrw__inner {
+    position: relative;
+    padding-inline: clamp(1.25rem, 6vw, 2.25rem);
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  /* Runhead — one thin centred rule with the era */
+  .mrw__runhead {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 2.75rem;
+  }
+
+  .mrw__runhead-rule {
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-on-dark-variant) 40%, transparent);
+  }
+
+  .mrw__runhead-text {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-on-dark-variant);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Intro */
+  .mrw__intro {
+    margin-bottom: 3rem;
+  }
+
+  .mrw__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 11vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-on-dark);
+    margin: 0;
+  }
+
+  .mrw__deck {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+    color: color-mix(in srgb, var(--color-on-dark) 78%, transparent);
+    margin: 1.25rem 0 0;
+    max-width: 34ch;
+  }
+
+  /* Story — meta line, matted image, caption. That's it. */
+  .mrw__story {
+    position: relative;
+    margin-top: 3rem;
+  }
+
+  .mrw__meta {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-dark-variant);
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+  }
+
+  .mrw__plate {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    color: var(--color-on-dark);
+    text-transform: none;
+    margin-right: 0.5rem;
+  }
+
+  .mrw__meta-dot {
+    font-style: normal;
+    color: color-mix(in srgb, var(--color-on-dark-variant) 60%, transparent);
+    margin: 0 0.35rem;
+    text-transform: none;
+  }
+
+  /* Matted-print frame — the one line that elevates the photo */
+  .mrw__mat {
+    padding: 10px;
+    border: 1px solid color-mix(in srgb, var(--color-on-dark-variant) 35%, transparent);
+    transition: border-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mrw__mat:active {
+    border-color: color-mix(in srgb, var(--color-on-dark-variant) 65%, transparent);
+  }
+
+  .mrw__frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-on-dark) 6%, var(--color-surface-dark));
+  }
+
+  .mrw__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .mrw__img--portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  .mrw__badge {
+    position: absolute;
+    top: 0.875rem;
+    left: 0.875rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-dark);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  /* Caption — stacked, quiet, no dividing rule */
+  .mrw__cap {
+    margin-top: 1.25rem;
+  }
+
+  .mrw__couple {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(1.625rem, 7vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--color-on-dark);
+    margin: 0;
+  }
+
+  .mrw__couple em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-on-dark-variant);
+    margin: 0 0.08em;
+  }
+
+  .mrw__sub {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-dark-variant);
+    margin: 0.625rem 0 0;
+  }
+
+  .mrw__view {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-dark-variant) 50%, transparent);
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-on-dark);
+    transition: border-color var(--duration-hover) var(--ease-gallery),
+                color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mrw__view span {
+    margin-left: 0.5rem;
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mrw__view:active {
+    color: var(--color-on-dark-variant);
+    border-color: var(--color-on-dark);
+  }
+
+  /* Runfoot — centred portfolio link between two hairlines */
+  .mrw__runfoot {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .mrw__runfoot-rule {
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-on-dark-variant) 40%, transparent);
+  }
+
+  .mrw__runfoot-link {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-dark);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .mrw__runfoot-link span {
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+
+  /* At very narrow widths the runfoot link wraps — stack it cleanly */
+  @media (max-width: 360px) {
+    .mrw__runfoot {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .mrw__runfoot-rule {
+      width: 60%;
+      flex: 0 0 auto;
+    }
+  }
+
+  /* Hidden on desktop — RecentWork handles those */
+  @media (min-width: 1024px) {
+    .mrw { display: none !important; }
+  }
+</style>
