@@ -1,11 +1,10 @@
 ---
 // src/components/global/GearBreaker.astro
-// Desktop gear differentiator. Four full-width rows, alternating photo side
-// (left / right / left / right), native scroll only — no pin, no scrub, no
-// JS animation beyond the existing .reveal IntersectionObserver fade-in.
-// Large editorial photographs anchor each row; a text column on the opposite
-// side carries the chapter numeral, camera label, role, and description.
-// Independent tree from MobileGearBreaker.astro. Active at min-width: 1024px.
+// Desktop gear differentiator. Four alternating editorial rows on a cream
+// stock. Each photograph sits with a champagne-toned hairline beneath it —
+// the same gallery-plaque vocabulary used on the Recent Work section —
+// so the photos carry the weight and the numbering, role, and copy read
+// as museum wall labels rather than magazine chrome.
 import { Image } from 'astro:assets';
 import gear from '../../data/gear.json';
 
@@ -32,13 +31,15 @@ const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
     alt: 'Candid frame shot on a handheld Sony compact — for the angles the main camera cannot reach',
   },
 };
+
+const plates = ['Plate I', 'Plate II', 'Plate III', 'Plate IV'];
 ---
 
 <section class="gear-rows" aria-label="The cameras I shoot with">
   <div class="gear-rows__intro">
-    <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark reveal mb-6">The Kit</p>
-    <h2 class="text-display-md text-on-dark reveal stagger-1 gear-rows__head">Four cameras. Four looks. <br />One day.</h2>
-    <p class="text-body-md text-on-dark/70 reveal stagger-2 gear-rows__lede">
+    <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center reveal mb-6">The Kit</p>
+    <h2 class="reveal stagger-1 gear-rows__head">Four cameras. Four looks. <br />One day.</h2>
+    <p class="text-on-surface-variant reveal stagger-2 gear-rows__lede">
       Most shooters bring one camera and one look. I bring four, so you walk away with the polished gallery, the film-grain nostalgia, the throwback candids, and the off-the-cuff bridesmaid shots, all from the same day.
     </p>
   </div>
@@ -46,12 +47,10 @@ const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
   <div class="gear-rows__list">
     {gear.map((item, i) => {
       const img = imageMap[item.num];
-      // Alternate the entrance direction: odd rows slide in from the left,
-      // even rows from the right — matches the alternating photo position.
       const revealClass = i % 2 === 0 ? 'reveal-left' : 'reveal-right';
       return (
         <article class={`gear-row ${revealClass}`} data-i={item.num}>
-          <figure class="gear-row__media" aria-hidden="true">
+          <figure class="gear-row__media">
             {img && (
               <Image
                 src={img.src}
@@ -59,19 +58,20 @@ const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
                 class="gear-row__img"
                 widths={[720, 960, 1200]}
                 sizes="(min-width: 1024px) 45vw, 100vw"
-                quality={74}
+                quality={80}
                 format="avif"
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
             )}
           </figure>
           <div class="gear-row__body">
-            <span class="gear-row__num" aria-hidden="true">{item.num}</span>
-            <div class="gear-row__content">
-              <p class="text-label-md text-on-dark-variant gear-row__label">{item.camera}</p>
-              <h3 class="text-heading-md text-on-dark gear-row__role">{item.role}</h3>
-              <p class="text-body-md text-on-dark/70 gear-row__desc">{item.description}</p>
+            <div class="gear-row__plate-line">
+              <span class="gear-row__plate">{plates[i]}</span>
+              <span class="gear-row__plate-rule"></span>
+              <span class="gear-row__label">{item.camera}</span>
             </div>
+            <h3 class="gear-row__role">{item.role}</h3>
+            <p class="gear-row__desc">{item.description}</p>
           </div>
         </article>
       );
@@ -81,46 +81,77 @@ const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
 
 <style>
   .gear-rows {
-    background: var(--color-surface-dark);
+    background: var(--color-surface-dim);
+    color: var(--color-on-surface);
     position: relative;
   }
+
+  .gear-rows::before,
+  .gear-rows::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(calc(100% - 3rem), 1320px);
+    height: 1px;
+    background: linear-gradient(to right,
+      transparent,
+      color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent) 18%,
+      color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent) 82%,
+      transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .gear-rows::before { top: 0; }
+  .gear-rows::after  { bottom: 0; }
 
   .gear-rows__intro {
     padding: var(--spacing-section) clamp(2rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem);
     text-align: center;
     max-width: 60rem;
     margin-inline: auto;
+    position: relative;
+    z-index: 1;
   }
-  .gear-rows__intro h2 {
+
+  .gear-rows__head {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 4.8vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
     max-width: 22ch;
     margin-inline: auto;
+    color: var(--color-on-surface);
   }
-  .gear-rows__head {
-    line-height: 1.15;
-  }
+
   .gear-rows__lede {
-    max-width: 60ch;
+    font-family: var(--font-serif);
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 54ch;
     margin-inline: auto;
     margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
-    line-height: 1.7;
   }
 
   .gear-rows__list {
     display: flex;
     flex-direction: column;
-    gap: clamp(2rem, 4vw, 3.25rem);
+    gap: clamp(3rem, 6vw, 5rem);
     padding-bottom: var(--spacing-section);
+    position: relative;
+    z-index: 1;
   }
 
-  /* Each row: 2-column grid, photo on one side, text column on the other.
-     Even rows flip the photo to the right (alternating magazine spread). */
   .gear-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: clamp(2rem, 4vw, 3.5rem);
     align-items: center;
     padding-inline: clamp(2rem, 6vw, 5rem);
-    min-height: 52svh;
   }
   .gear-row:nth-child(even) .gear-row__media { order: 2; }
   .gear-row:nth-child(even) .gear-row__body  { order: 1; }
@@ -128,7 +159,6 @@ const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
   .gear-row__media {
     margin: 0;
     overflow: hidden;
-    background: var(--color-surface-container);
     aspect-ratio: 4 / 3;
     max-height: 52svh;
   }
@@ -137,40 +167,75 @@ const imageMap: Record<string, { src: ImageMetadata; alt: string }> = {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 2.5s var(--ease-gallery);
+  }
+  .gear-row:hover .gear-row__img {
+    transform: scale(1.02);
   }
 
   .gear-row__body {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.25rem, 2.25vw, 1.75rem);
-    max-width: 28rem;
+    gap: 1rem;
+    max-width: 30rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
   }
-  /* On even rows, the text sits in the left column — push it toward the
-     right edge so there's visual tension with the image on the right. */
   .gear-row:nth-child(even) .gear-row__body {
     margin-inline-start: auto;
   }
 
-  .gear-row__num {
-    font-family: var(--font-serif);
-    font-weight: 400;
-    font-size: clamp(3.25rem, 5.5vw, 5rem);
-    line-height: 0.88;
-    letter-spacing: -0.02em;
-    color: var(--color-on-dark-variant);
-    opacity: 0.85;
-    display: block;
+  .gear-row__plate-line {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
   }
 
-  .gear-row__content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    max-width: 34ch;
+  .gear-row__plate {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--color-on-surface);
+    flex-shrink: 0;
   }
-  .gear-row__label { margin: 0; }
-  .gear-row__role { margin: 0; line-height: 1.15; }
-  .gear-row__desc { margin: 0; line-height: 1.7; }
+
+  .gear-row__plate-rule {
+    width: 1.75rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
+    flex-shrink: 0;
+  }
+
+  .gear-row__label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .gear-row__role {
+    margin: 0.25rem 0 0;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--color-on-surface);
+  }
+
+  .gear-row__desc {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+    max-width: 38ch;
+  }
 
   /* Hidden on narrow viewports — MobileGearBreaker handles those */
   @media (max-width: 1023px) {

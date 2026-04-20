@@ -438,15 +438,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-sale-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   background: var(--color-on-surface);
-  animation: service-sale-pulse 2.4s var(--ease-gallery) infinite;
-}
-
-@keyframes service-sale-pulse {
-  0%, 100% { opacity: 0.4; }
-  50%      { opacity: 1; }
+  opacity: 0.75;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -701,58 +701,312 @@ const jsonLd = [
     </div>
   </section>
 
-  <!-- ═══ 7. JOURNAL ═══ -->
-  <section class="py-[var(--spacing-section)] bg-white">
+  <!-- ═══ 7. JOURNAL ═══
+       Same gallery-plaque vocabulary as Recent Work: cover photograph,
+       single champagne hairline beneath, caption with a quiet meta line
+       and the post title reading as a museum wall label. -->
+  <section class="journal py-[var(--spacing-section)]">
     <div class="container-editorial">
       <div class="text-center mb-[var(--spacing-block)]">
         <p class="text-label-md text-on-surface-muted reveal eyebrow-rule eyebrow-rule-center mb-4">The Journal</p>
-        <h2 class="text-display-md text-on-surface" data-gsap-chars>Stories & guides.</h2>
+        <h2 class="journal__title" data-gsap-chars>Stories &amp; guides.</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-12">
-        {journalPosts.map((post, i) => (
-          <a href={`/blog/${post.id}`} class="group block reveal" style={`transition-delay: ${(i + 1) * 100}ms;`}>
-            <div class="aspect-[3/2] overflow-hidden bg-surface-dim">
-              <Image
-                src={post.data.coverImage}
-                alt={post.data.coverImageAlt}
-                class="w-full h-full object-cover cubic-ease group-hover:scale-[1.02]"
-                widths={[400, 600]}
-                sizes="(max-width: 768px) 100vw, 33vw"
-                quality={80}
-                style="transition-duration: var(--duration-slow);"
-              />
-            </div>
-            <h3 class="text-heading-md text-on-surface group-hover:text-on-surface-variant cubic-ease mt-4" style="transition-duration: var(--duration-hover);">
-              {post.data.title}
-            </h3>
-          </a>
-        ))}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
+        {journalPosts.map((post, i) => {
+          const published = new Date(post.data.publishDate).toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric',
+          });
+          return (
+            <a href={`/blog/${post.id}`} class="journal__post group block reveal" style={`transition-delay: ${(i + 1) * 100}ms;`}>
+              <div class="journal__frame">
+                <Image
+                  src={post.data.coverImage}
+                  alt={post.data.coverImageAlt}
+                  class="journal__img"
+                  widths={[600, 900, 1200]}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={80}
+                />
+              </div>
+              <figcaption class="journal__caption">
+                <div class="journal__plate-line">
+                  <span class="journal__plate">Journal</span>
+                  <span class="journal__plate-rule"></span>
+                  <span class="journal__meta-text">{published}</span>
+                </div>
+                <h3 class="journal__headline">{post.data.title}</h3>
+              </figcaption>
+            </a>
+          );
+        })}
       </div>
       <div class="text-center mt-[var(--spacing-block)] reveal">
-        <a href="/blog" class="magnetic inline-flex items-center text-label-md text-on-surface border-b border-on-surface pb-1 hover:text-on-surface-variant hover:border-on-surface-variant cubic-ease" style="transition-duration: var(--duration-hover);">Read the journal</a>
+        <a href="/blog" class="journal__cta magnetic">
+          Read the journal <span aria-hidden="true">&rarr;</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ═══ 8. CONTACT CTA ═══ -->
-  <section class="relative py-[var(--spacing-section)] overflow-hidden">
+  <style>
+    .journal {
+      background: var(--color-background);
+      color: var(--color-on-surface);
+    }
+
+    .journal__title {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(2.25rem, 5.2vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--color-on-surface);
+    }
+
+    .journal__post {
+      transition: opacity var(--duration-hover) var(--ease-gallery);
+    }
+
+    .journal__frame {
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: var(--color-surface-dim);
+    }
+
+    .journal__img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 2.5s var(--ease-gallery);
+    }
+
+    .journal__post:hover .journal__img {
+      transform: scale(1.02);
+    }
+
+    .journal__caption {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .journal__plate-line {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      font-family: var(--font-sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-variant);
+    }
+
+    .journal__plate {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--color-on-surface);
+      flex-shrink: 0;
+    }
+
+    .journal__plate-rule {
+      width: 1.75rem;
+      height: 1px;
+      background: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
+      flex-shrink: 0;
+    }
+
+    .journal__meta-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .journal__headline {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(1.375rem, 2vw, 1.75rem);
+      line-height: 1.2;
+      letter-spacing: -0.005em;
+      color: var(--color-on-surface);
+      transition: color var(--duration-hover) var(--ease-gallery);
+    }
+
+    .journal__post:hover .journal__headline {
+      color: var(--color-on-surface-variant);
+    }
+
+    .journal__cta {
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-on-surface);
+      display: inline-flex;
+      align-items: center;
+      transition: color var(--duration-hover) var(--ease-gallery);
+    }
+
+    .journal__cta span {
+      display: inline-block;
+      margin-left: 0.5rem;
+      transition: transform var(--duration-hover) var(--ease-gallery);
+    }
+
+    .journal__cta:hover {
+      color: var(--color-on-surface-variant);
+    }
+
+    .journal__cta:hover span {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 640px) {
+      .journal__title {
+        font-size: clamp(2rem, 9vw, 2.75rem);
+      }
+      .journal__headline {
+        font-size: 1.375rem;
+      }
+      .journal__plate-line {
+        gap: 0.625rem;
+        font-size: 0.625rem;
+      }
+      .journal__plate-rule {
+        width: 1.25rem;
+      }
+    }
+  </style>
+
+  <!-- ═══ 8. CONTACT CTA ═══
+       A quiet cinematic close — the video remains as an atmospheric
+       bookend but the overlay lifts, the copy scales back, and the
+       call sits as a hairline-underlined invitation rather than a
+       solid-billboard button. Reads as intimate, not pitched. -->
+  <section class="contact-cta relative py-[var(--spacing-section)] overflow-hidden">
     <video muted loop playsinline preload="none" poster="/og-default.jpg" class="absolute inset-0 w-full h-full object-cover" aria-hidden="true" data-autoplay>
       <source src="https://kashklicks.b-cdn.net/kashklicks_backgroundMedia.mp4" type="video/mp4" />
     </video>
-    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="contact-cta__scrim absolute inset-0"></div>
     <div class="container-editorial relative z-10">
-      <div class="flex flex-col items-center text-center">
-        <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">Ready?</p>
-        <h2 class="text-display-md text-on-dark mb-4" data-gsap-chars>Start the Conversation</h2>
-        <p class="text-body-lg text-on-dark/70 mb-10 reveal stagger-2">
-          Let's talk about your day. No obligations, just a conversation.
+      <div class="contact-cta__inner">
+        <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">An invitation</p>
+        <h2 class="contact-cta__title" data-gsap-chars>Start the conversation.</h2>
+        <p class="contact-cta__deck reveal stagger-2">
+          Let&rsquo;s talk about your day. No obligations &mdash; just a conversation.
         </p>
-        <div class="reveal stagger-3">
-          <a href="/contact" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-10 py-4 bg-white text-on-surface font-sans text-[0.875rem] tracking-[0.08em] uppercase hover:bg-white/90 cubic-ease" style="transition-duration: var(--duration-hover);">Get in Touch</a>
+        <div class="reveal stagger-3 contact-cta__actions">
+          <span class="contact-cta__rule" aria-hidden="true"></span>
+          <a href="/contact" class="contact-cta__link magnetic">
+            Get in touch <span aria-hidden="true">&rarr;</span>
+          </a>
+          <span class="contact-cta__rule" aria-hidden="true"></span>
         </div>
       </div>
     </div>
   </section>
+
+  <style>
+    .contact-cta {
+      color: var(--color-on-dark);
+    }
+
+    .contact-cta__scrim {
+      background:
+        linear-gradient(180deg,
+          color-mix(in srgb, #000 28%, transparent) 0%,
+          color-mix(in srgb, #000 40%, transparent) 50%,
+          color-mix(in srgb, #000 32%, transparent) 100%);
+      pointer-events: none;
+    }
+
+    .contact-cta__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 36rem;
+      margin-inline: auto;
+    }
+
+    .contact-cta__title {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(2.25rem, 5.2vw, 4.25rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--color-on-dark);
+      margin: 0 0 1rem;
+    }
+
+    .contact-cta__deck {
+      font-family: var(--font-serif);
+      font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.6;
+      color: color-mix(in srgb, var(--color-on-dark) 82%, transparent);
+      margin: 0 0 2.5rem;
+      max-width: 42ch;
+    }
+
+    .contact-cta__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 26rem;
+    }
+
+    .contact-cta__rule {
+      flex: 1;
+      height: 1px;
+      background: color-mix(in srgb, var(--color-on-dark) 45%, transparent);
+    }
+
+    .contact-cta__link {
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-on-dark);
+      white-space: nowrap;
+      transition: color var(--duration-hover) var(--ease-gallery);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .contact-cta__link span {
+      display: inline-block;
+      margin-left: 0.5rem;
+      transition: transform var(--duration-hover) var(--ease-gallery);
+    }
+
+    .contact-cta__link:hover {
+      color: var(--color-on-dark-variant);
+    }
+
+    .contact-cta__link:hover span {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 640px) {
+      .contact-cta__title {
+        font-size: clamp(2rem, 9vw, 2.75rem);
+      }
+      .contact-cta__deck {
+        font-size: 1.0625rem;
+      }
+    }
+  </style>
 </BaseLayout>
 
 <script>
