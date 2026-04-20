@@ -7,24 +7,58 @@ interface Props {
   category: string;
   coverImage: ImageMetadata;
   href: string;
+  date?: string | null;
+  plateOverride?: string;
 }
 
-const { couple, location, category, coverImage, href } = Astro.props;
+const { couple, location, category, coverImage, href, date, plateOverride } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  'pre-wedding': 'Pre-Wedding',
+  'wedding': 'Wedding',
+  'civil-ceremony': 'Civil Ceremony',
+  'film': 'Film',
+};
+const plateLabel = plateOverride ?? categoryLabels[category] ?? 'Story';
+
+const formattedDate = date
+  ? new Date(`${date}T00:00:00`).toLocaleDateString('en-CA', { year: 'numeric', month: 'long' })
+  : null;
+const meta = formattedDate ? `${location} · ${formattedDate}` : location;
+
+const parts = couple.split(/\s*[+&]\s*/);
+const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
 ---
 
 <a href={href} class="group block" data-category={category}>
-  <div class="hover-zoom aspect-[2/3] bg-surface-container image-caption" data-caption={couple}>
-    <Image
-      src={coverImage}
-      alt={`${couple}, ${location}`}
-      widths={[400, 600, 800]}
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      class="w-full h-full object-cover"
-      loading="lazy"
-    />
-  </div>
-  <div class="mt-4 cubic-ease group-hover:translate-x-1" style="transition-duration: var(--duration-hover);">
-    <h3 class="text-heading-md">{couple}</h3>
-    <p class="text-label-md text-on-surface-variant mt-1">{location}</p>
-  </div>
+  <figure class="gallery-plaque-card">
+    <div class="hover-zoom aspect-[2/3] overflow-hidden bg-surface-container">
+      <Image
+        src={coverImage}
+        alt={`${couple}, ${location}`}
+        widths={[400, 600, 800]}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+    <figcaption class="gallery-plaque">
+      <div class="gallery-plaque__line">
+        <span class="gallery-plaque__plate">{plateLabel}</span>
+        <span class="gallery-plaque__rule" aria-hidden="true"></span>
+        <span class="gallery-plaque__meta">{meta}</span>
+      </div>
+      <div class="gallery-plaque__row">
+        <p class="gallery-plaque__title">
+          {hasAmpersand ? (
+            <>{parts[0]} <em>&amp;</em> {parts[1]}</>
+          ) : couple}
+        </p>
+        <span class="gallery-plaque__link">
+          View
+          <span class="gallery-plaque__link-arrow" aria-hidden="true">&rarr;</span>
+        </span>
+      </div>
+    </figcaption>
+  </figure>
 </a>

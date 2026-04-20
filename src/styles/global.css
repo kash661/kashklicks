@@ -726,6 +726,199 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.5rem;
 }
 
+/* ── Gallery plaque — museum wall-label caption under a photograph.
+   Champagne-tone hairline, italic serif plate label, meta text.
+   Shared vocabulary for portfolio cards, chapter rows, and slug header. */
+.gallery-plaque {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Standalone variant — when the plaque heads a column instead of
+   sitting under a photograph (e.g. chapter rows, slug headers). */
+.gallery-plaque--standalone {
+  margin-top: 0;
+}
+
+.gallery-plaque__line {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.gallery-plaque__plate {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--color-on-surface);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.gallery-plaque__rule {
+  width: 1.75rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.gallery-plaque__meta {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.55;
+}
+
+.gallery-plaque__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+
+.gallery-plaque__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  letter-spacing: -0.005em;
+  color: var(--color-on-surface);
+  margin: 0;
+  line-height: 1.15;
+}
+
+.gallery-plaque__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+  margin: 0 0.1em;
+}
+
+.gallery-plaque__title--display {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+}
+
+.gallery-plaque__link {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+  transition: color var(--duration-hover) var(--ease-gallery);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-plaque__link-arrow {
+  display: inline-block;
+  transition: transform var(--duration-hover) var(--ease-gallery);
+}
+
+.group:hover .gallery-plaque__link,
+.gallery-plaque__link:hover { color: var(--color-on-surface); }
+.group:hover .gallery-plaque__link-arrow,
+.gallery-plaque__link:hover .gallery-plaque__link-arrow { transform: translateX(4px); }
+
+@media (max-width: 640px) {
+  .gallery-plaque__title {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+  .gallery-plaque__title--display {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+  .gallery-plaque__line {
+    gap: 0.625rem;
+    font-size: 0.625rem;
+  }
+  .gallery-plaque__rule {
+    width: 1.25rem;
+  }
+  .gallery-plaque__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Section frame — thin fading hairlines at top + bottom of a
+   portfolio grid section. Non-intrusive tonal seam without a hard
+   color shift. Mirrors the homepage Recent Work treatment. */
+.section-frame {
+  isolation: isolate;
+  position: relative;
+}
+
+.section-frame::before,
+.section-frame::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 3rem), 1320px);
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent,
+    color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent) 18%,
+    color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent) 82%,
+    transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-frame::before { top: 0; }
+.section-frame::after  { bottom: 0; }
+
+/* Restrained serif section title paired with an italic serif deck,
+   matched to the gallery plaque palette. */
+.section-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5.8vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+}
+
+.section-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+}
+
+.section-deck {
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+}
+
+@media (max-width: 640px) {
+  .section-title {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+  .section-deck {
+    font-size: 1.125rem;
+  }
+}
+
 /* Suppresses the reveal fade for elements that are already in the viewport
    on page load. Prevents the above-the-fold flicker when navigating
    between pages — elements land in their final state immediately. */
