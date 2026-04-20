@@ -299,12 +299,11 @@ const jsonLd = [
   </section>
 
   <!-- ═══ 5. RECENT WORK ═══
-       Editorial chapter: numbered, gridded, dated. Reads like a curated
-       monograph spread — a hairline column grid with corner ticks sits
-       behind the work, each story is indexed with a large serif numeral,
-       framed by location + season metadata, and the whole section is
-       bracketed by running head + foot rules. -->
-  <section class="recent-work py-[var(--spacing-section)] bg-surface-dim relative overflow-hidden">
+       Editorial feature spread: dark magazine stock, massive serif
+       headline, outlined display numerals next to each plate, warm
+       champagne hairlines on a cream-on-charcoal palette. Reads as a
+       high-end monograph — the "wow, who are these guys" moment. -->
+  <section class="recent-work py-[var(--spacing-section)] bg-surface-dark relative overflow-hidden">
     <div class="recent-work__grid" aria-hidden="true"></div>
     <div class="recent-work__ticks" aria-hidden="true">
       <span class="recent-work__tick recent-work__tick--tl"></span>
@@ -330,12 +329,12 @@ const jsonLd = [
       </div>
 
       <div class="grid-editorial items-end recent-work__intro">
-        <div class="col-span-12 md:col-span-5 reveal">
-          <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Recent Work</p>
-          <h2 class="text-display-md text-on-surface measure-medium" data-gsap-chars>Stories from the last few months.</h2>
+        <div class="col-span-12 md:col-span-7 reveal">
+          <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-on-dark mb-6">Recent Work</p>
+          <h2 class="recent-work__title text-on-dark" data-gsap-chars>Stories from the last few months.</h2>
         </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-quote text-on-surface-variant measure-wide">
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0 reveal stagger-2">
+          <p class="recent-work__deck text-on-dark/80 measure-wide">
             A few recent afternoons with couples who trusted me with their day.
           </p>
           <dl class="recent-work__specs">
@@ -480,21 +479,24 @@ const jsonLd = [
   </section>
 
   <style>
-    /* ── Recent Work — editorial monograph treatment ────────────────
-       Section reads like a curated book spread: running-head rule with
-       volume + edition marks, a hairline column grid behind the work,
-       corner crop-ticks at the page bounds, large serif numerals set
-       alongside each plate, and a running-foot with folio numerals.
-       The bg tonal shift to surface-dim gives the section its own
-       paper stock so the hairline rules can read clearly. */
+    /* ── Recent Work — dark editorial feature spread ────────────────
+       Section flips to the brand's warm-charcoal stock (surface-dark)
+       so the whole block reads like a high-end magazine feature: a
+       massive display headline, a visible champagne column grid,
+       outlined serif numerals anchored beside each plate, and cream
+       running-head / foot marks. The tonal inversion pulls the reader
+       out of the page flow — the "wow, who are these guys" pause. */
     .recent-work {
       isolation: isolate;
+      color: var(--color-on-dark);
       background:
-        radial-gradient(ellipse at top, color-mix(in srgb, var(--color-surface) 60%, transparent) 0%, transparent 55%),
-        var(--color-surface-dim);
+        radial-gradient(ellipse at top,
+          color-mix(in srgb, var(--color-on-dark) 6%, var(--color-surface-dark)) 0%,
+          var(--color-surface-dark) 58%),
+        var(--color-surface-dark);
     }
 
-    /* Subtle paper grain — adds depth without texture noise */
+    /* Subtle paper grain — warm vignette on the dark stock */
     .recent-work::before {
       content: '';
       position: absolute;
@@ -503,14 +505,15 @@ const jsonLd = [
       z-index: 0;
       background:
         linear-gradient(180deg,
-          color-mix(in srgb, var(--color-on-surface) 3%, transparent) 0%,
-          transparent 12%,
-          transparent 88%,
-          color-mix(in srgb, var(--color-on-surface) 4%, transparent) 100%);
+          color-mix(in srgb, var(--color-on-dark) 4%, transparent) 0%,
+          transparent 14%,
+          transparent 86%,
+          color-mix(in srgb, #000 35%, transparent) 100%);
     }
 
-    /* Column grid — 4 hairline verticals rendered as repeating
-       background, only shown on tablet+ where column rhythm reads. */
+    /* Column grid — 4 champagne hairline verticals. Slightly more
+       visible than the previous light-stock version so the grid reads
+       as deliberate typographic architecture rather than decoration. */
     .recent-work__grid {
       position: absolute;
       inset: 0;
@@ -530,13 +533,13 @@ const jsonLd = [
       margin-inline: clamp(1.5rem, 4vw, 6rem);
       background-image:
         linear-gradient(to right,
-          color-mix(in srgb, var(--color-on-surface-muted) 24%, transparent) 0,
-          color-mix(in srgb, var(--color-on-surface-muted) 24%, transparent) 1px,
+          color-mix(in srgb, var(--color-on-dark-variant) 22%, transparent) 0,
+          color-mix(in srgb, var(--color-on-dark-variant) 22%, transparent) 1px,
           transparent 1px);
       background-size: 25% 100%;
       background-repeat: repeat-x;
-      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
     }
 
     .recent-work__grid::after {
@@ -546,9 +549,9 @@ const jsonLd = [
       bottom: 0;
       right: clamp(1.5rem, 4vw, 6rem);
       width: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 24%, transparent);
-      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      background: color-mix(in srgb, var(--color-on-dark-variant) 22%, transparent);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
     }
 
     @media (min-width: 768px) {
@@ -557,8 +560,7 @@ const jsonLd = [
       }
     }
 
-    /* Corner crop-ticks — tiny right-angle marks at the four section
-       corners, like a printer's trim reference. */
+    /* Corner crop-ticks — printer trim marks in the warm cream accent */
     .recent-work__ticks {
       position: absolute;
       inset: clamp(1.5rem, 3vw, 3.5rem) clamp(1.5rem, 4vw, 6rem);
@@ -570,16 +572,16 @@ const jsonLd = [
 
     .recent-work__tick {
       position: absolute;
-      width: 18px;
-      height: 18px;
-      opacity: 0.5;
+      width: 24px;
+      height: 24px;
+      opacity: 0.75;
     }
 
     .recent-work__tick::before,
     .recent-work__tick::after {
       content: '';
       position: absolute;
-      background: var(--color-on-surface-variant);
+      background: var(--color-on-dark-variant);
     }
 
     .recent-work__tick::before {
@@ -636,31 +638,57 @@ const jsonLd = [
     .recent-work__runhead-roman {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 1.125rem;
+      font-size: 1.5rem;
       letter-spacing: 0.06em;
-      color: var(--color-on-surface);
+      color: var(--color-on-dark);
     }
 
     .recent-work__runhead-label {
       font-family: var(--font-sans);
-      font-size: 0.625rem;
-      letter-spacing: 0.22em;
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: var(--color-on-surface-muted);
+      color: var(--color-on-dark-variant);
     }
 
     .recent-work__runhead-rule {
       flex: 1;
       height: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent);
+      background: color-mix(in srgb, var(--color-on-dark-variant) 45%, transparent);
     }
 
     .recent-work__runhead-ornament {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 1rem;
-      color: var(--color-on-surface-variant);
+      font-size: 1.25rem;
+      color: var(--color-on-dark-variant);
       flex-shrink: 0;
+    }
+
+    /* Feature title — display-lg scale with an italic accent on the
+       second clause. Sits as the visual anchor of the spread. */
+    .recent-work__title {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 6.8vw, 6.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      max-width: 18ch;
+    }
+
+    .recent-work__title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--color-on-dark-variant);
+    }
+
+    .recent-work__deck {
+      font-family: var(--font-serif);
+      font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: -0.005em;
     }
 
     /* Intro two-column block with spec strip */
@@ -671,10 +699,10 @@ const jsonLd = [
     .recent-work__specs {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, auto));
-      gap: 1.5rem 2.5rem;
-      margin-top: 2rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 32%, transparent);
+      gap: 1.75rem 2.75rem;
+      margin-top: 2.25rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-dark-variant) 40%, transparent);
       position: relative;
     }
 
@@ -685,30 +713,30 @@ const jsonLd = [
       left: 0;
       right: 0;
       height: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 18%, transparent);
-      transform: translateY(-4px);
+      background: color-mix(in srgb, var(--color-on-dark-variant) 18%, transparent);
+      transform: translateY(-5px);
     }
 
     .recent-work__specs div {
       display: flex;
       flex-direction: column;
-      gap: 0.375rem;
+      gap: 0.5rem;
     }
 
     .recent-work__specs dt {
       font-family: var(--font-sans);
-      font-size: 0.625rem;
-      letter-spacing: 0.2em;
+      font-size: 0.6875rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--color-on-surface-muted);
+      color: var(--color-on-dark-variant);
     }
 
     .recent-work__specs dd {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 1rem;
-      letter-spacing: 0.01em;
-      color: var(--color-on-surface);
+      font-size: 1.25rem;
+      letter-spacing: 0.005em;
+      color: var(--color-on-dark);
       margin: 0;
     }
 
@@ -728,21 +756,21 @@ const jsonLd = [
     .recent-work__meta {
       display: flex;
       align-items: center;
-      gap: 0.875rem;
-      margin-bottom: 1.25rem;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
       font-family: var(--font-sans);
       font-size: 0.6875rem;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--color-on-surface-variant);
+      color: var(--color-on-dark-variant);
     }
 
     .recent-work__plate {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 0.9375rem;
+      font-size: 1.125rem;
       letter-spacing: 0.04em;
-      color: var(--color-on-surface);
+      color: var(--color-on-dark);
       text-transform: none;
       flex-shrink: 0;
     }
@@ -750,58 +778,63 @@ const jsonLd = [
     .recent-work__meta-rule {
       flex: 0 1 3rem;
       height: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 50%, transparent);
+      background: color-mix(in srgb, var(--color-on-dark-variant) 55%, transparent);
     }
 
     .recent-work__loc {
       flex-shrink: 0;
-      color: var(--color-on-surface);
+      color: var(--color-on-dark);
     }
 
     .recent-work__dot {
       width: 3px;
       height: 3px;
       border-radius: 50%;
-      background: var(--color-on-surface-muted);
+      background: var(--color-on-dark-variant);
       flex-shrink: 0;
     }
 
     .recent-work__date {
       margin-left: auto;
-      color: var(--color-on-surface-muted);
+      color: var(--color-on-dark-variant);
       flex-shrink: 0;
     }
 
-    /* Frame wrapper — lets us anchor a large serif numeral next to the
-       image without fighting the gallery-frame layout. */
+    /* Frame wrapper — anchors the oversized serif numeral beside each
+       plate. The numeral is stroked (outlined) on dark stock so it
+       reads as signage-scale typography without shouting over the
+       photograph. */
     .recent-work__frame {
       position: relative;
     }
 
     .recent-work__numeral {
       position: absolute;
-      top: -0.1em;
-      left: -1.25rem;
+      top: -0.12em;
+      left: -1.5rem;
       transform: translateX(-100%);
       font-family: var(--font-serif);
       font-style: italic;
       font-weight: 400;
-      font-size: clamp(3.5rem, 6vw, 6rem);
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-      color: color-mix(in srgb, var(--color-on-surface) 78%, transparent);
+      font-size: clamp(5rem, 9vw, 9.5rem);
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      color: transparent;
+      -webkit-text-stroke: 1px color-mix(in srgb, var(--color-on-dark-variant) 70%, transparent);
+      text-shadow: 0 0 0 color-mix(in srgb, var(--color-on-dark) 12%, transparent);
       pointer-events: none;
       white-space: nowrap;
-      transition: transform var(--duration-hover) var(--ease-gallery),
-                  color var(--duration-hover) var(--ease-gallery);
+      transition: -webkit-text-stroke-color var(--duration-hover) var(--ease-gallery),
+                  transform var(--duration-hover) var(--ease-gallery);
     }
 
     .recent-work__frame--feature .recent-work__numeral {
-      font-size: clamp(4.5rem, 8vw, 8.5rem);
+      font-size: clamp(7rem, 13vw, 14rem);
+      -webkit-text-stroke-width: 1.25px;
     }
 
     .recent-work__frame:hover .recent-work__numeral {
-      color: var(--color-on-surface);
+      -webkit-text-stroke-color: var(--color-on-dark);
       transform: translateX(-100%) translateY(-4px);
     }
 
@@ -811,8 +844,8 @@ const jsonLd = [
         display: block;
         transform: none;
         margin-bottom: 0.5rem;
-        font-size: clamp(2.5rem, 10vw, 4rem);
-        color: color-mix(in srgb, var(--color-on-surface) 60%, transparent);
+        font-size: clamp(3.5rem, 14vw, 6rem);
+        -webkit-text-stroke: 1px color-mix(in srgb, var(--color-on-dark-variant) 65%, transparent);
       }
       .recent-work__frame:hover .recent-work__numeral {
         transform: none;
@@ -824,10 +857,10 @@ const jsonLd = [
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: end;
-      gap: 1.5rem 2rem;
-      margin-top: 1.25rem;
-      padding-top: 1rem;
-      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 28%, transparent);
+      gap: 1.5rem 2.25rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-dark-variant) 40%, transparent);
       position: relative;
     }
 
@@ -838,8 +871,8 @@ const jsonLd = [
       left: 0;
       right: 0;
       height: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 14%, transparent);
-      transform: translateY(-4px);
+      background: color-mix(in srgb, var(--color-on-dark-variant) 16%, transparent);
+      transform: translateY(-5px);
     }
 
     .recent-work__story--feature .recent-work__footer {
@@ -852,56 +885,57 @@ const jsonLd = [
 
     .recent-work__couple {
       font-family: var(--font-serif);
-      font-size: 1.25rem;
-      letter-spacing: 0.005em;
-      color: var(--color-on-surface);
+      font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+      letter-spacing: -0.005em;
+      color: var(--color-on-dark);
       margin: 0;
+      line-height: 1.15;
     }
 
     .recent-work__couple em {
       font-style: italic;
       font-weight: 400;
-      color: var(--color-on-surface-variant);
-      margin: 0 0.125em;
+      color: var(--color-on-dark-variant);
+      margin: 0 0.1em;
     }
 
     .recent-work__sub {
       font-family: var(--font-sans);
       font-size: 0.6875rem;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--color-on-surface-muted);
-      margin-top: 0.5rem;
+      color: var(--color-on-dark-variant);
+      margin-top: 0.75rem;
     }
 
     /* Inline exif-style metadata for the feature plate */
     .recent-work__exif {
       display: flex;
-      gap: 1.75rem;
+      gap: 2rem;
       margin: 0;
-      padding-right: 1.75rem;
-      border-right: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+      padding-right: 2rem;
+      border-right: 1px solid color-mix(in srgb, var(--color-on-dark-variant) 35%, transparent);
     }
 
     .recent-work__exif div {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.3rem;
     }
 
     .recent-work__exif dt {
       font-family: var(--font-sans);
-      font-size: 0.5625rem;
-      letter-spacing: 0.2em;
+      font-size: 0.625rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--color-on-surface-muted);
+      color: var(--color-on-dark-variant);
     }
 
     .recent-work__exif dd {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 0.9375rem;
-      color: var(--color-on-surface);
+      font-size: 1.125rem;
+      color: var(--color-on-dark);
       margin: 0;
     }
 
@@ -916,10 +950,10 @@ const jsonLd = [
 
     .recent-work__view {
       font-family: var(--font-sans);
-      font-size: 0.6875rem;
-      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--color-on-surface-variant);
+      color: var(--color-on-dark-variant);
       white-space: nowrap;
       transition: color var(--duration-hover) var(--ease-gallery);
       align-self: end;
@@ -932,7 +966,7 @@ const jsonLd = [
     }
 
     .recent-work__view:hover {
-      color: var(--color-on-surface);
+      color: var(--color-on-dark);
     }
 
     .recent-work__view:hover span {
@@ -943,9 +977,9 @@ const jsonLd = [
     .recent-work__runfoot {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
-      padding-top: 1.75rem;
-      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 32%, transparent);
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-dark-variant) 40%, transparent);
       position: relative;
     }
 
@@ -956,16 +990,16 @@ const jsonLd = [
       left: 0;
       right: 0;
       height: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 16%, transparent);
-      transform: translateY(-4px);
+      background: color-mix(in srgb, var(--color-on-dark-variant) 16%, transparent);
+      transform: translateY(-5px);
     }
 
     .recent-work__runfoot-folio {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 0.875rem;
-      letter-spacing: 0.1em;
-      color: var(--color-on-surface-muted);
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      color: var(--color-on-dark-variant);
       white-space: nowrap;
       flex-shrink: 0;
     }
@@ -975,23 +1009,23 @@ const jsonLd = [
       height: 1px;
       background: linear-gradient(to right,
         transparent,
-        color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent),
+        color-mix(in srgb, var(--color-on-dark-variant) 45%, transparent),
         transparent);
     }
 
     .recent-work__runfoot-rule--r {
       background: linear-gradient(to left,
         transparent,
-        color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent),
+        color-mix(in srgb, var(--color-on-dark-variant) 45%, transparent),
         transparent);
     }
 
     .recent-work__runfoot-link {
       font-family: var(--font-sans);
-      font-size: 0.75rem;
-      letter-spacing: 0.16em;
+      font-size: 0.8125rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--color-on-surface);
+      color: var(--color-on-dark);
       white-space: nowrap;
       transition: color var(--duration-hover) var(--ease-gallery);
       flex-shrink: 0;
@@ -1004,7 +1038,7 @@ const jsonLd = [
     }
 
     .recent-work__runfoot-link:hover {
-      color: var(--color-on-surface-variant);
+      color: var(--color-on-dark-variant);
     }
 
     .recent-work__runfoot-link:hover span {
@@ -1016,13 +1050,22 @@ const jsonLd = [
         gap: 0.875rem;
       }
       .recent-work__runhead-roman {
-        font-size: 1rem;
+        font-size: 1.125rem;
       }
       .recent-work__runhead-label {
-        font-size: 0.5625rem;
+        font-size: 0.625rem;
       }
       .recent-work__runhead-ornament {
-        font-size: 0.875rem;
+        font-size: 1rem;
+      }
+      .recent-work__title {
+        font-size: clamp(2.25rem, 10vw, 3.5rem);
+      }
+      .recent-work__deck {
+        font-size: 1.125rem;
+      }
+      .recent-work__couple {
+        font-size: clamp(1.5rem, 7vw, 2rem);
       }
       .recent-work__meta {
         gap: 0.625rem;
