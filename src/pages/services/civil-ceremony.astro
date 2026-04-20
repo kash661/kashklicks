@@ -11,6 +11,7 @@ import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobi
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
+import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
@@ -232,7 +233,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ CIVIL CEREMONY PACKAGE ═══ -->
-  <section class="section-frame bg-background" style="padding: var(--spacing-block) 0 var(--spacing-section) 0;">
+  <section id="packages" class="section-frame bg-background" style="padding: var(--spacing-block) 0 var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="text-center mb-12 reveal">
         <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Simple Pricing</p>
@@ -329,4 +330,5 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   />
 
   <ContactModal />
+  <FloatingPackagesLink />
 </BaseLayout>

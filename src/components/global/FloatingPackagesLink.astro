@@ -1,0 +1,139 @@
+---
+/**
+ * Floating anchor that quick-jumps to the #packages section on service pages.
+ * Shows after the viewer scrolls past the hero and hides once the packages
+ * section itself is in view, so it never covers its own destination.
+ */
+---
+
+<a
+  href="#packages"
+  class="floating-packages"
+  aria-label="Jump to packages"
+  data-floating-packages
+>
+  <span class="floating-packages__label">See packages</span>
+  <span class="floating-packages__arrow" aria-hidden="true">↓</span>
+</a>
+
+<style>
+  .floating-packages {
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+    right: 1.5rem;
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    background: var(--color-surface-dark);
+    color: var(--color-on-dark);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 0;
+    box-shadow: 0 16px 40px -16px rgba(26, 26, 24, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(14px);
+    transition:
+      opacity var(--duration-hover, 500ms) var(--ease-gallery, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform var(--duration-hover, 500ms) var(--ease-gallery, cubic-bezier(0.22, 1, 0.36, 1)),
+      background-color 200ms var(--ease-gallery, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+
+  .floating-packages[data-visible='true'] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .floating-packages:hover,
+  .floating-packages:focus-visible {
+    background: var(--color-on-surface);
+    color: var(--color-on-dark);
+    outline: none;
+  }
+
+  .floating-packages__arrow {
+    display: inline-block;
+    transition: transform 320ms var(--ease-gallery, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+  .floating-packages:hover .floating-packages__arrow,
+  .floating-packages:focus-visible .floating-packages__arrow {
+    transform: translateY(3px);
+  }
+
+  @media (max-width: 640px) {
+    .floating-packages {
+      left: 50%;
+      right: auto;
+      transform: translate(-50%, 14px);
+    }
+    .floating-packages[data-visible='true'] {
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-packages,
+    .floating-packages[data-visible='true'] {
+      transition: opacity 120ms linear;
+      transform: none;
+    }
+    @media (max-width: 640px) {
+      .floating-packages,
+      .floating-packages[data-visible='true'] {
+        transform: translateX(-50%);
+      }
+    }
+  }
+</style>
+
+<script>
+  function initFloatingPackagesLink() {
+    const btn = document.querySelector<HTMLAnchorElement>('[data-floating-packages]');
+    if (!btn) return;
+    const target = document.getElementById('packages');
+    if (!target) {
+      btn.remove();
+      return;
+    }
+
+    let pastHero = false;
+    let targetVisible = false;
+
+    const update = () => {
+      btn.dataset.visible = pastHero && !targetVisible ? 'true' : 'false';
+    };
+
+    const targetObs = new IntersectionObserver(
+      ([entry]) => {
+        targetVisible = entry.isIntersecting;
+        update();
+      },
+      { rootMargin: '-10% 0px -20% 0px' }
+    );
+    targetObs.observe(target);
+
+    const onScroll = () => {
+      const next = window.scrollY > window.innerHeight * 0.6;
+      if (next !== pastHero) {
+        pastHero = next;
+        update();
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFloatingPackagesLink, { once: true });
+  } else {
+    initFloatingPackagesLink();
+  }
+  document.addEventListener('astro:page-load', initFloatingPackagesLink);
+</script>

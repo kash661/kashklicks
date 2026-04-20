@@ -9,6 +9,7 @@ import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
+import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
 import GearStrip from '../../components/global/GearStrip.astro';
 import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
 import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
@@ -251,7 +252,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ WEDDING PACKAGES ═══ -->
-  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section id="packages" class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
         <div class="col-span-12 md:col-span-7">
@@ -370,4 +371,5 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   />
 
   <ContactModal />
+  <FloatingPackagesLink />
 </BaseLayout>
