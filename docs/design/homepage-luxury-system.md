@@ -4,13 +4,14 @@ Short doc covering the quiet-luxury design pass applied to `src/pages/index.astr
 
 ## Branches & status
 
-- **`main`** — contains the Recent Work redesign (PR #3, commit `84fd5bd`). Cream background, gallery-plaque hairline under each photo.
-- **`claude/homepage-luxury-pass`** — open feature branch, commit `f43e493`. Extends the same system to The Kit (desktop + mobile), Journal, Contact CTA, and Investment. **Not yet merged to main.** Build is green.
+Everything below is live on `main`:
 
-To preview locally:
+- Recent Work redesign (commit `84fd5bd`) — cream background, gallery-plaque hairline under each photo.
+- Luxury pass extending the vocabulary to The Kit (desktop + mobile), Journal, Contact CTA, and Investment (fast-forward merged on 2026-04-20, commit `8aac25c`).
+- LP cross-page application — `/intimate-wedding-toronto` inquiry form + pricing grid (commit `7e2909b` on 2026-04-20). See "Cross-page application" below.
+
+Preview locally:
 ```bash
-git fetch origin
-git checkout claude/homepage-luxury-pass
 pnpm dev
 ```
 
@@ -63,11 +64,27 @@ Section-level hairlines: a single soft horizontal fade at `::before` (top) and `
 | 7 | Journal | `src/pages/index.astro` | **Reworked** on `claude/homepage-luxury-pass`. Cards flattened, 2-col layout, plaque hairline under each cover, `Journal · {Month Year}` meta line. |
 | 8 | Contact CTA | `src/pages/index.astro` | **Reworked** on same branch. Video kept as tonal bookend; overlay softened to 28–40% graduated scrim; solid white button replaced with hairline-flanked "Get in touch →" link; title now italic serif. |
 
+## Cross-page application
+
+### `/intimate-wedding-toronto` (paid-ads LP) — 2026-04-20
+
+Inquiry form and pricing grid now share the same design contract as `/contact` and the service pages. The LP intentionally keeps its inline form (a modal on a paid LP is redundant UX) and its own conversion tracking, but adopts the shared vocabulary for everything visual.
+
+- **Inquiry form.** Migrated from bottom-border underline inputs to the shared BEM vocabulary — `.form-section` with Roman-numeral `.form-section__legend`, `.form-field__input` / `.form-field__textarea`, `.form-submit__button`. Tokens live in `src/styles/global.css`; the canonical implementation is `src/components/forms/ContactForm.astro`. LP keeps `lp-*` IDs so its existing form init script still binds.
+
+- **Pricing "Inquire" CTA.** `PricingCard` emits `data-open-modal="contact-modal"`, which is only wired by the global `ContactModal` component. The LP doesn't embed `ContactModal`, so the buttons are intercepted in the LP init script: read `data-package` / `data-package-name`, write them into hidden `package_id` / `package_name` fields on the inline form, smooth-scroll to `#inquire`, then focus `lp-name` after 600ms. Meta Pixel Lead + Google Ads conversion events stay gated by the 45s-dwell / 60%-scroll qualifier around form submit and Calendly click paths.
+
+- **Pricing grid alignment.** Wrapper must be `.pricing-grid` with `PricingCard` as **direct children**. Required for `grid-template-rows: subgrid; grid-row: span 4` to align head / price / what's included / CTA horizontally across tiers. Intermediate wrapper divs (e.g., per-card `.reveal.stagger-N`) break subgrid inheritance — put reveal + stagger on the `.pricing-grid` itself, not on each card.
+
+### Still pending
+
+- Portfolio subpages (`/portfolio/*`) — untouched.
+- Services journey — untouched.
+
 ## Known follow-ups / ideas parked
 
 - If the photographs want even more elevation, the agreed-upon "print mat inset" (12–20px cream padding around each image before the hairline) was discussed but not implemented. It would give a matboard-behind-framed-print feel. Scoped for a future pass.
 - The Hero's dark overlay wasn't touched — worth revisiting once the body pass is live, because the hero might feel disproportionately dramatic compared to the newly quieter middle of the page.
-- No changes were made to portfolio subpages (`/portfolio/*`) or the services journey. Apply this system there before cross-linking if the goal is full-site consistency.
 
 ## Rationale shorthand for future decisions
 
