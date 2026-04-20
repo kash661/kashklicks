@@ -300,21 +300,36 @@ const jsonLd = [
 
   <!-- ═══ 5. RECENT WORK ═══
        Editorial chapter: numbered, gridded, dated. Reads like a curated
-       monograph spread — a hairline column grid sits behind the work, each
-       story is indexed and stamped with location + season, and a thin
-       chapter rule frames the section heading. -->
+       monograph spread — a hairline column grid with corner ticks sits
+       behind the work, each story is indexed with a large serif numeral,
+       framed by location + season metadata, and the whole section is
+       bracketed by running head + foot rules. -->
   <section class="recent-work py-[var(--spacing-section)] bg-surface-dim relative overflow-hidden">
     <div class="recent-work__grid" aria-hidden="true"></div>
+    <div class="recent-work__ticks" aria-hidden="true">
+      <span class="recent-work__tick recent-work__tick--tl"></span>
+      <span class="recent-work__tick recent-work__tick--tr"></span>
+      <span class="recent-work__tick recent-work__tick--bl"></span>
+      <span class="recent-work__tick recent-work__tick--br"></span>
+    </div>
 
     <div class="container-editorial relative">
-      <!-- Chapter rule: editorial spread marker spanning the full container -->
-      <div class="recent-work__chapter reveal" aria-hidden="true">
-        <span class="recent-work__chapter-mark">N&deg; 05</span>
-        <span class="recent-work__chapter-rule"></span>
-        <span class="recent-work__chapter-mark recent-work__chapter-mark--end">Selected Stories</span>
+      <!-- Running head: volume mark · chapter rule · edition mark -->
+      <div class="recent-work__runhead reveal" aria-hidden="true">
+        <span class="recent-work__runhead-mark">
+          <span class="recent-work__runhead-roman">V</span>
+          <span class="recent-work__runhead-label">Volume</span>
+        </span>
+        <span class="recent-work__runhead-rule"></span>
+        <span class="recent-work__runhead-ornament">&#10022;</span>
+        <span class="recent-work__runhead-rule"></span>
+        <span class="recent-work__runhead-mark recent-work__runhead-mark--end">
+          <span class="recent-work__runhead-label">Edition</span>
+          <span class="recent-work__runhead-roman">MMXXVI</span>
+        </span>
       </div>
 
-      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+      <div class="grid-editorial items-end recent-work__intro">
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Recent Work</p>
           <h2 class="text-display-md text-on-surface measure-medium" data-gsap-chars>Stories from the last few months.</h2>
@@ -343,30 +358,38 @@ const jsonLd = [
       <!-- Story 01 — Featured film -->
       <article class="recent-work__story recent-work__story--feature reveal">
         <header class="recent-work__meta">
-          <span class="recent-work__num">01</span>
+          <span class="recent-work__plate">Plate I</span>
           <span class="recent-work__meta-rule"></span>
           <span class="recent-work__loc">Toronto &middot; Harbourfront</span>
+          <span class="recent-work__dot" aria-hidden="true"></span>
           <span class="recent-work__date">Autumn 2025</span>
         </header>
-        <a href="/portfolio/meghna-puneeth" class="gallery-frame hover-zoom scale-reveal mx-auto !w-full image-caption block group relative" data-caption="Meghna & Puneeth, Toronto" aria-label="View the Meghna and Puneeth album and film">
-          <span class="absolute top-4 left-4 md:top-6 md:left-6 z-10 inline-flex items-center gap-2 text-[0.6875rem] tracking-[0.14em] uppercase font-sans text-on-dark bg-black/40 backdrop-blur-[2px] px-3 py-1.5">
-            <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden="true"><path d="M1.5 0.5l7 4-7 4z" /></svg>
-            Film
-          </span>
-          <Image
-            src={recentWide}
-            alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
-            class="parallax-img !w-full !max-h-none aspect-[16/9] object-cover"
-            widths={[960, 1440, 1920]}
-            sizes="(max-width: 768px) 100vw, 90vw"
-            quality={80}
-          />
-        </a>
+        <div class="recent-work__frame recent-work__frame--feature">
+          <span class="recent-work__numeral" aria-hidden="true">01</span>
+          <a href="/portfolio/meghna-puneeth" class="gallery-frame hover-zoom scale-reveal mx-auto !w-full image-caption block group relative" data-caption="Meghna & Puneeth, Toronto" aria-label="View the Meghna and Puneeth album and film">
+            <span class="absolute top-4 left-4 md:top-6 md:left-6 z-10 inline-flex items-center gap-2 text-[0.6875rem] tracking-[0.14em] uppercase font-sans text-on-dark bg-black/40 backdrop-blur-[2px] px-3 py-1.5">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden="true"><path d="M1.5 0.5l7 4-7 4z" /></svg>
+              Film
+            </span>
+            <Image
+              src={recentWide}
+              alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
+              class="parallax-img !w-full !max-h-none aspect-[16/9] object-cover"
+              widths={[960, 1440, 1920]}
+              sizes="(max-width: 768px) 100vw, 90vw"
+              quality={80}
+            />
+          </a>
+        </div>
         <footer class="recent-work__footer">
-          <div>
-            <p class="recent-work__couple">Meghna + Puneeth</p>
-            <p class="recent-work__sub">Pre-wedding film</p>
+          <div class="recent-work__caption">
+            <p class="recent-work__couple">Meghna <em>&amp;</em> Puneeth</p>
+            <p class="recent-work__sub">Pre-wedding film &middot; Cinematic story</p>
           </div>
+          <dl class="recent-work__exif">
+            <div><dt>Format</dt><dd>4K Film</dd></div>
+            <div><dt>Runtime</dt><dd>3:42</dd></div>
+          </dl>
           <a href="/portfolio/meghna-puneeth" class="recent-work__view" aria-label="View Meghna and Puneeth's story">
             View Story <span aria-hidden="true">&rarr;</span>
           </a>
@@ -374,28 +397,32 @@ const jsonLd = [
       </article>
     </div>
 
-    <div class="grid-editorial relative">
+    <div class="grid-editorial relative recent-work__pair">
       <!-- Story 02 -->
       <article class="recent-work__story col-span-12 md:col-span-5 reveal-left">
         <header class="recent-work__meta">
-          <span class="recent-work__num">02</span>
+          <span class="recent-work__plate">Plate II</span>
           <span class="recent-work__meta-rule"></span>
           <span class="recent-work__loc">Toronto</span>
+          <span class="recent-work__dot" aria-hidden="true"></span>
           <span class="recent-work__date">Summer 2025</span>
         </header>
-        <a href="/portfolio" class="gallery-frame hover-zoom !w-full block group" aria-label="Browse the full portfolio">
-          <Image
-            src={recentPortraitLeft}
-            alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
-            class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
-            widths={[480, 640, 960]}
-            sizes="(max-width: 768px) 100vw, 42vw"
-            quality={80}
-          />
-        </a>
+        <div class="recent-work__frame">
+          <span class="recent-work__numeral" aria-hidden="true">02</span>
+          <a href="/portfolio" class="gallery-frame hover-zoom !w-full block group" aria-label="Browse the full portfolio">
+            <Image
+              src={recentPortraitLeft}
+              alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
+              class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+              widths={[480, 640, 960]}
+              sizes="(max-width: 768px) 100vw, 42vw"
+              quality={80}
+            />
+          </a>
+        </div>
         <footer class="recent-work__footer">
-          <div>
-            <p class="recent-work__couple">Swathi + Saksham</p>
+          <div class="recent-work__caption">
+            <p class="recent-work__couple">Swathi <em>&amp;</em> Saksham</p>
             <p class="recent-work__sub">Pre-wedding portraits</p>
           </div>
           <a href="/portfolio" class="recent-work__view" aria-label="Browse the full portfolio">
@@ -407,24 +434,28 @@ const jsonLd = [
       <!-- Story 03 -->
       <article class="recent-work__story col-span-12 md:col-span-5 md:col-start-7 mt-12 md:mt-24 reveal-right stagger-2">
         <header class="recent-work__meta">
-          <span class="recent-work__num">03</span>
+          <span class="recent-work__plate">Plate III</span>
           <span class="recent-work__meta-rule"></span>
           <span class="recent-work__loc">Italy</span>
+          <span class="recent-work__dot" aria-hidden="true"></span>
           <span class="recent-work__date">Spring 2026</span>
         </header>
-        <a href="/portfolio/nora-ali" class="gallery-frame hover-zoom !w-full block group" aria-label="View the Nora and Ali album">
-          <Image
-            src={recentPortraitRight}
-            alt="Destination wedding portrait in Italy, Nora and Ali"
-            class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
-            widths={[480, 640, 960]}
-            sizes="(max-width: 768px) 100vw, 42vw"
-            quality={80}
-          />
-        </a>
+        <div class="recent-work__frame">
+          <span class="recent-work__numeral" aria-hidden="true">03</span>
+          <a href="/portfolio/nora-ali" class="gallery-frame hover-zoom !w-full block group" aria-label="View the Nora and Ali album">
+            <Image
+              src={recentPortraitRight}
+              alt="Destination wedding portrait in Italy, Nora and Ali"
+              class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+              widths={[480, 640, 960]}
+              sizes="(max-width: 768px) 100vw, 42vw"
+              quality={80}
+            />
+          </a>
+        </div>
         <footer class="recent-work__footer">
-          <div>
-            <p class="recent-work__couple">Nora + Ali</p>
+          <div class="recent-work__caption">
+            <p class="recent-work__couple">Nora <em>&amp;</em> Ali</p>
             <p class="recent-work__sub">Destination wedding</p>
           </div>
           <a href="/portfolio/nora-ali" class="recent-work__view" aria-label="View Nora and Ali's story">
@@ -434,29 +465,52 @@ const jsonLd = [
       </article>
     </div>
 
-    <!-- Closing rule + browse link -->
+    <!-- Running foot: page-number style closer -->
     <div class="container-editorial relative mt-[var(--spacing-block)]">
-      <div class="recent-work__close reveal">
-        <span class="recent-work__close-rule"></span>
-        <a href="/portfolio" class="recent-work__close-link magnetic">
-          Browse the full portfolio <span aria-hidden="true">&rarr;</span>
+      <div class="recent-work__runfoot reveal">
+        <span class="recent-work__runfoot-folio">&#8212; iii &#8212;</span>
+        <span class="recent-work__runfoot-rule"></span>
+        <a href="/portfolio" class="recent-work__runfoot-link magnetic">
+          Continue to the full portfolio <span aria-hidden="true">&rarr;</span>
         </a>
+        <span class="recent-work__runfoot-rule recent-work__runfoot-rule--r"></span>
+        <span class="recent-work__runfoot-folio">&#8212; xii &#8212;</span>
       </div>
     </div>
   </section>
 
   <style>
     /* ── Recent Work — editorial monograph treatment ────────────────
-       The section sits on a faint dim band so the hairline rules have
-       contrast to read against. A 4-column hairline grid runs the full
-       height behind the imagery; it's purely decorative and aria-hidden. */
+       Section reads like a curated book spread: running-head rule with
+       volume + edition marks, a hairline column grid behind the work,
+       corner crop-ticks at the page bounds, large serif numerals set
+       alongside each plate, and a running-foot with folio numerals.
+       The bg tonal shift to surface-dim gives the section its own
+       paper stock so the hairline rules can read clearly. */
     .recent-work {
       isolation: isolate;
+      background:
+        radial-gradient(ellipse at top, color-mix(in srgb, var(--color-surface) 60%, transparent) 0%, transparent 55%),
+        var(--color-surface-dim);
     }
 
-    /* Hairline column grid — drawn with two repeating gradients so the
-       rule lines stay 1px regardless of viewport. Shown only on tablet+
-       where the column rhythm is meaningful. */
+    /* Subtle paper grain — adds depth without texture noise */
+    .recent-work::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(180deg,
+          color-mix(in srgb, var(--color-on-surface) 3%, transparent) 0%,
+          transparent 12%,
+          transparent 88%,
+          color-mix(in srgb, var(--color-on-surface) 4%, transparent) 100%);
+    }
+
+    /* Column grid — 4 hairline verticals rendered as repeating
+       background, only shown on tablet+ where column rhythm reads. */
     .recent-work__grid {
       position: absolute;
       inset: 0;
@@ -476,11 +530,13 @@ const jsonLd = [
       margin-inline: clamp(1.5rem, 4vw, 6rem);
       background-image:
         linear-gradient(to right,
-          color-mix(in srgb, var(--color-on-surface-muted) 22%, transparent) 0,
-          color-mix(in srgb, var(--color-on-surface-muted) 22%, transparent) 1px,
+          color-mix(in srgb, var(--color-on-surface-muted) 24%, transparent) 0,
+          color-mix(in srgb, var(--color-on-surface-muted) 24%, transparent) 1px,
           transparent 1px);
       background-size: 25% 100%;
       background-repeat: repeat-x;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
 
     .recent-work__grid::after {
@@ -490,7 +546,9 @@ const jsonLd = [
       bottom: 0;
       right: clamp(1.5rem, 4vw, 6rem);
       width: 1px;
-      background: color-mix(in srgb, var(--color-on-surface-muted) 22%, transparent);
+      background: color-mix(in srgb, var(--color-on-surface-muted) 24%, transparent);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
 
     @media (min-width: 768px) {
@@ -499,65 +557,156 @@ const jsonLd = [
       }
     }
 
-    /* Chapter rule — sits at the top of the section like a book spread
-       running head: marker · hairline · marker. */
-    .recent-work__chapter {
+    /* Corner crop-ticks — tiny right-angle marks at the four section
+       corners, like a printer's trim reference. */
+    .recent-work__ticks {
+      position: absolute;
+      inset: clamp(1.5rem, 3vw, 3.5rem) clamp(1.5rem, 4vw, 6rem);
+      pointer-events: none;
+      z-index: 1;
+      max-width: calc(1440px - clamp(3rem, 8vw, 12rem));
+      margin-inline: auto;
+    }
+
+    .recent-work__tick {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      opacity: 0.5;
+    }
+
+    .recent-work__tick::before,
+    .recent-work__tick::after {
+      content: '';
+      position: absolute;
+      background: var(--color-on-surface-variant);
+    }
+
+    .recent-work__tick::before {
+      width: 1px;
+      height: 100%;
+    }
+
+    .recent-work__tick::after {
+      width: 100%;
+      height: 1px;
+    }
+
+    .recent-work__tick--tl { top: 0; left: 0; }
+    .recent-work__tick--tl::before { left: 0; top: 0; }
+    .recent-work__tick--tl::after  { left: 0; top: 0; }
+
+    .recent-work__tick--tr { top: 0; right: 0; }
+    .recent-work__tick--tr::before { right: 0; top: 0; }
+    .recent-work__tick--tr::after  { right: 0; top: 0; }
+
+    .recent-work__tick--bl { bottom: 0; left: 0; }
+    .recent-work__tick--bl::before { left: 0; bottom: 0; }
+    .recent-work__tick--bl::after  { left: 0; bottom: 0; }
+
+    .recent-work__tick--br { bottom: 0; right: 0; }
+    .recent-work__tick--br::before { right: 0; bottom: 0; }
+    .recent-work__tick--br::after  { right: 0; bottom: 0; }
+
+    @media (max-width: 767px) {
+      .recent-work__ticks { display: none; }
+    }
+
+    /* Running head — a chapter heading rule with roman volume/edition
+       marks flanking a centred ornament. */
+    .recent-work__runhead {
       display: flex;
       align-items: center;
       gap: 1.25rem;
       margin-bottom: var(--spacing-block);
     }
 
-    .recent-work__chapter-mark {
-      font-family: var(--font-sans);
-      font-size: 0.6875rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--color-on-surface-muted);
+    .recent-work__runhead-mark {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.5rem;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
-    .recent-work__chapter-mark--end {
-      letter-spacing: 0.14em;
+    .recent-work__runhead-mark--end {
+      flex-direction: row;
     }
 
-    .recent-work__chapter-rule {
+    .recent-work__runhead-roman {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.125rem;
+      letter-spacing: 0.06em;
+      color: var(--color-on-surface);
+    }
+
+    .recent-work__runhead-label {
+      font-family: var(--font-sans);
+      font-size: 0.625rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-muted);
+    }
+
+    .recent-work__runhead-rule {
       flex: 1;
       height: 1px;
-      background: linear-gradient(to right,
-        color-mix(in srgb, var(--color-on-surface-muted) 45%, transparent),
-        color-mix(in srgb, var(--color-on-surface-muted) 12%, transparent));
+      background: color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent);
     }
 
-    /* Spec strip — three labelled metadata pairs sitting under the body
-       copy, hairline-divided. Editorial detail without shouting. */
+    .recent-work__runhead-ornament {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--color-on-surface-variant);
+      flex-shrink: 0;
+    }
+
+    /* Intro two-column block with spec strip */
+    .recent-work__intro {
+      margin-bottom: var(--spacing-block);
+    }
+
     .recent-work__specs {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, auto));
       gap: 1.5rem 2.5rem;
       margin-top: 2rem;
       padding-top: 1.25rem;
-      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 32%, transparent);
+      position: relative;
+    }
+
+    .recent-work__specs::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: color-mix(in srgb, var(--color-on-surface-muted) 18%, transparent);
+      transform: translateY(-4px);
     }
 
     .recent-work__specs div {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.375rem;
     }
 
     .recent-work__specs dt {
       font-family: var(--font-sans);
       font-size: 0.625rem;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--color-on-surface-muted);
     }
 
     .recent-work__specs dd {
       font-family: var(--font-serif);
-      font-size: 0.9375rem;
+      font-style: italic;
+      font-size: 1rem;
       letter-spacing: 0.01em;
       color: var(--color-on-surface);
       margin: 0;
@@ -570,21 +719,17 @@ const jsonLd = [
       }
     }
 
-    /* Per-story metadata header: index, hairline, location, date */
+    /* Per-story metadata header */
     .recent-work__story {
       position: relative;
       z-index: 1;
     }
 
-    .recent-work__story--feature {
-      margin-bottom: 0;
-    }
-
     .recent-work__meta {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.875rem;
+      margin-bottom: 1.25rem;
       font-family: var(--font-sans);
       font-size: 0.6875rem;
       letter-spacing: 0.16em;
@@ -592,10 +737,10 @@ const jsonLd = [
       color: var(--color-on-surface-variant);
     }
 
-    .recent-work__num {
+    .recent-work__plate {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 1rem;
+      font-size: 0.9375rem;
       letter-spacing: 0.04em;
       color: var(--color-on-surface);
       text-transform: none;
@@ -613,38 +758,160 @@ const jsonLd = [
       color: var(--color-on-surface);
     }
 
+    .recent-work__dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--color-on-surface-muted);
+      flex-shrink: 0;
+    }
+
     .recent-work__date {
       margin-left: auto;
       color: var(--color-on-surface-muted);
       flex-shrink: 0;
     }
 
-    /* Footer beneath each frame: couple name + sub label, "View Story" CTA */
+    /* Frame wrapper — lets us anchor a large serif numeral next to the
+       image without fighting the gallery-frame layout. */
+    .recent-work__frame {
+      position: relative;
+    }
+
+    .recent-work__numeral {
+      position: absolute;
+      top: -0.1em;
+      left: -1.25rem;
+      transform: translateX(-100%);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: color-mix(in srgb, var(--color-on-surface) 78%, transparent);
+      pointer-events: none;
+      white-space: nowrap;
+      transition: transform var(--duration-hover) var(--ease-gallery),
+                  color var(--duration-hover) var(--ease-gallery);
+    }
+
+    .recent-work__frame--feature .recent-work__numeral {
+      font-size: clamp(4.5rem, 8vw, 8.5rem);
+    }
+
+    .recent-work__frame:hover .recent-work__numeral {
+      color: var(--color-on-surface);
+      transform: translateX(-100%) translateY(-4px);
+    }
+
+    @media (max-width: 1023px) {
+      .recent-work__numeral {
+        position: static;
+        display: block;
+        transform: none;
+        margin-bottom: 0.5rem;
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        color: color-mix(in srgb, var(--color-on-surface) 60%, transparent);
+      }
+      .recent-work__frame:hover .recent-work__numeral {
+        transform: none;
+      }
+    }
+
+    /* Footer beneath each frame: caption · optional exif · "View Story" */
     .recent-work__footer {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 1.5rem 2rem;
       margin-top: 1.25rem;
       padding-top: 1rem;
       border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 28%, transparent);
+      position: relative;
+    }
+
+    .recent-work__footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: color-mix(in srgb, var(--color-on-surface-muted) 14%, transparent);
+      transform: translateY(-4px);
+    }
+
+    .recent-work__story--feature .recent-work__footer {
+      grid-template-columns: 1fr auto auto;
+    }
+
+    .recent-work__caption {
+      min-width: 0;
     }
 
     .recent-work__couple {
       font-family: var(--font-serif);
-      font-size: 1.125rem;
+      font-size: 1.25rem;
       letter-spacing: 0.005em;
       color: var(--color-on-surface);
       margin: 0;
     }
 
+    .recent-work__couple em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--color-on-surface-variant);
+      margin: 0 0.125em;
+    }
+
     .recent-work__sub {
       font-family: var(--font-sans);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--color-on-surface-muted);
-      margin-top: 0.375rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Inline exif-style metadata for the feature plate */
+    .recent-work__exif {
+      display: flex;
+      gap: 1.75rem;
+      margin: 0;
+      padding-right: 1.75rem;
+      border-right: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+    }
+
+    .recent-work__exif div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .recent-work__exif dt {
+      font-family: var(--font-sans);
+      font-size: 0.5625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-muted);
+    }
+
+    .recent-work__exif dd {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9375rem;
+      color: var(--color-on-surface);
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .recent-work__exif {
+        display: none;
+      }
+      .recent-work__story--feature .recent-work__footer {
+        grid-template-columns: 1fr auto;
+      }
     }
 
     .recent-work__view {
@@ -655,6 +922,7 @@ const jsonLd = [
       color: var(--color-on-surface-variant);
       white-space: nowrap;
       transition: color var(--duration-hover) var(--ease-gallery);
+      align-self: end;
     }
 
     .recent-work__view span {
@@ -671,64 +939,118 @@ const jsonLd = [
       transform: translateX(4px);
     }
 
-    /* Closing rule + browse link */
-    .recent-work__close {
+    /* Running foot — folio numerals flanking a centred portfolio link */
+    .recent-work__runfoot {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+      gap: 1.25rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 32%, transparent);
+      position: relative;
     }
 
-    .recent-work__close-rule {
+    .recent-work__runfoot::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: color-mix(in srgb, var(--color-on-surface-muted) 16%, transparent);
+      transform: translateY(-4px);
+    }
+
+    .recent-work__runfoot-folio {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      color: var(--color-on-surface-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .recent-work__runfoot-rule {
       flex: 1;
       height: 1px;
       background: linear-gradient(to right,
+        transparent,
         color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent),
         transparent);
     }
 
-    .recent-work__close-link {
+    .recent-work__runfoot-rule--r {
+      background: linear-gradient(to left,
+        transparent,
+        color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent),
+        transparent);
+    }
+
+    .recent-work__runfoot-link {
       font-family: var(--font-sans);
       font-size: 0.75rem;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--color-on-surface);
       white-space: nowrap;
       transition: color var(--duration-hover) var(--ease-gallery);
+      flex-shrink: 0;
     }
 
-    .recent-work__close-link span {
+    .recent-work__runfoot-link span {
       display: inline-block;
       margin-left: 0.5rem;
       transition: transform var(--duration-hover) var(--ease-gallery);
     }
 
-    .recent-work__close-link:hover {
+    .recent-work__runfoot-link:hover {
       color: var(--color-on-surface-variant);
     }
 
-    .recent-work__close-link:hover span {
+    .recent-work__runfoot-link:hover span {
       transform: translateX(4px);
     }
 
-    /* Mobile: tighten metadata so it stays single-line where possible */
     @media (max-width: 640px) {
+      .recent-work__runhead {
+        gap: 0.875rem;
+      }
+      .recent-work__runhead-roman {
+        font-size: 1rem;
+      }
+      .recent-work__runhead-label {
+        font-size: 0.5625rem;
+      }
+      .recent-work__runhead-ornament {
+        font-size: 0.875rem;
+      }
       .recent-work__meta {
-        gap: 0.75rem;
+        gap: 0.625rem;
         font-size: 0.625rem;
       }
       .recent-work__meta-rule {
         flex: 1;
       }
       .recent-work__footer {
-        align-items: center;
+        grid-template-columns: 1fr;
+        align-items: start;
       }
-      .recent-work__chapter {
-        gap: 1rem;
+      .recent-work__view {
+        justify-self: start;
       }
-      .recent-work__chapter-mark {
-        font-size: 0.625rem;
+      .recent-work__runfoot {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+      .recent-work__runfoot-rule,
+      .recent-work__runfoot-rule--r {
+        display: none;
+      }
+      .recent-work__runfoot-link {
+        order: 2;
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
