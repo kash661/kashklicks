@@ -76,16 +76,17 @@ const jsonLd = [
   title="Home"
   description="Toronto wedding photographer and filmmaker. AD Photography captures candid, cinematic pre-wedding and wedding photography across the GTA and Canada. Packages from $350."
   transparentHeader={true}
-  showSplash={true}
+  showSplash={false}
   jsonLd={jsonLd}
 >
   <script is:inline>
-    // Hide hero elements on first visit until the splash:done event fires (prevents FOUC).
-    if (
-      typeof sessionStorage !== 'undefined' &&
-      sessionStorage.getItem('kk-splash-seen') !== 'true'
-    ) {
-      document.documentElement.classList.add('splash-pending');
+    // Splash temporarily disabled. Pre-seed the "seen" flag so the hero
+    // entrance script in this file (and the SoundManager) treat the visit
+    // as a return visit and render the hero immediately without waiting
+    // for the splash:done event. To re-enable: flip showSplash back to
+    // true in the BaseLayout props above and delete this seeding line.
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('kk-splash-seen', 'true');
     }
   </script>
 
@@ -297,9 +298,22 @@ const jsonLd = [
     </div>
   </section>
 
-  <!-- ═══ 5. RECENT WORK ═══ -->
-  <section class="py-[var(--spacing-section)]">
-    <div class="container-editorial mb-[var(--spacing-block)]">
+  <!-- ═══ 5. RECENT WORK ═══
+       Editorial chapter: numbered, gridded, dated. Reads like a curated
+       monograph spread — a hairline column grid sits behind the work, each
+       story is indexed and stamped with location + season, and a thin
+       chapter rule frames the section heading. -->
+  <section class="recent-work py-[var(--spacing-section)] bg-surface-dim relative overflow-hidden">
+    <div class="recent-work__grid" aria-hidden="true"></div>
+
+    <div class="container-editorial relative">
+      <!-- Chapter rule: editorial spread marker spanning the full container -->
+      <div class="recent-work__chapter reveal" aria-hidden="true">
+        <span class="recent-work__chapter-mark">N&deg; 05</span>
+        <span class="recent-work__chapter-rule"></span>
+        <span class="recent-work__chapter-mark recent-work__chapter-mark--end">Selected Stories</span>
+      </div>
+
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Recent Work</p>
@@ -309,58 +323,415 @@ const jsonLd = [
           <p class="text-quote text-on-surface-variant measure-wide">
             A few recent afternoons with couples who trusted me with their day.
           </p>
+          <dl class="recent-work__specs">
+            <div>
+              <dt>Selection</dt>
+              <dd>Three of twelve</dd>
+            </div>
+            <div>
+              <dt>Period</dt>
+              <dd>2025 &mdash; 2026</dd>
+            </div>
+            <div>
+              <dt>Format</dt>
+              <dd>Film &amp; Stills</dd>
+            </div>
+          </dl>
         </div>
       </div>
-      <a href="/portfolio/meghna-puneeth" class="gallery-frame hover-zoom scale-reveal mx-auto !w-full image-caption block group relative" data-caption="Meghna & Puneeth, Toronto" aria-label="View the Meghna and Puneeth album and film">
-        <span class="absolute top-4 left-4 md:top-6 md:left-6 z-10 inline-flex items-center gap-2 text-[0.6875rem] tracking-[0.14em] uppercase font-sans text-on-dark bg-black/40 backdrop-blur-[2px] px-3 py-1.5">
-          <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden="true"><path d="M1.5 0.5l7 4-7 4z" /></svg>
-          Film
-        </span>
-        <Image
-          src={recentWide}
-          alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
-          class="parallax-img !w-full !max-h-none aspect-[16/9] object-cover"
-          widths={[960, 1440, 1920]}
-          sizes="(max-width: 768px) 100vw, 90vw"
-          quality={80}
-        />
-        <div class="gallery-caption text-on-surface">
-          <p class="font-medium">Meghna + Puneeth</p>
-          <p class="text-on-surface-variant">Toronto</p>
-        </div>
-      </a>
+
+      <!-- Story 01 — Featured film -->
+      <article class="recent-work__story recent-work__story--feature reveal">
+        <header class="recent-work__meta">
+          <span class="recent-work__num">01</span>
+          <span class="recent-work__meta-rule"></span>
+          <span class="recent-work__loc">Toronto &middot; Harbourfront</span>
+          <span class="recent-work__date">Autumn 2025</span>
+        </header>
+        <a href="/portfolio/meghna-puneeth" class="gallery-frame hover-zoom scale-reveal mx-auto !w-full image-caption block group relative" data-caption="Meghna & Puneeth, Toronto" aria-label="View the Meghna and Puneeth album and film">
+          <span class="absolute top-4 left-4 md:top-6 md:left-6 z-10 inline-flex items-center gap-2 text-[0.6875rem] tracking-[0.14em] uppercase font-sans text-on-dark bg-black/40 backdrop-blur-[2px] px-3 py-1.5">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden="true"><path d="M1.5 0.5l7 4-7 4z" /></svg>
+            Film
+          </span>
+          <Image
+            src={recentWide}
+            alt="Candid pre-wedding photography at Toronto Harbourfront, Meghna and Puneeth"
+            class="parallax-img !w-full !max-h-none aspect-[16/9] object-cover"
+            widths={[960, 1440, 1920]}
+            sizes="(max-width: 768px) 100vw, 90vw"
+            quality={80}
+          />
+        </a>
+        <footer class="recent-work__footer">
+          <div>
+            <p class="recent-work__couple">Meghna + Puneeth</p>
+            <p class="recent-work__sub">Pre-wedding film</p>
+          </div>
+          <a href="/portfolio/meghna-puneeth" class="recent-work__view" aria-label="View Meghna and Puneeth's story">
+            View Story <span aria-hidden="true">&rarr;</span>
+          </a>
+        </footer>
+      </article>
     </div>
-    <div class="grid-editorial">
-      <a href="/portfolio" class="col-span-12 md:col-span-5 gallery-frame hover-zoom reveal-left !w-full block group" aria-label="Browse the full portfolio">
-        <Image
-          src={recentPortraitLeft}
-          alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
-          class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
-          widths={[480, 640, 960]}
-          sizes="(max-width: 768px) 100vw, 42vw"
-          quality={80}
-        />
-        <div class="gallery-caption text-on-surface">
-          <p class="font-medium">Swathi + Saksham</p>
-          <p class="text-on-surface-variant">Toronto</p>
-        </div>
-      </a>
-      <a href="/portfolio/nora-ali" class="col-span-12 md:col-span-5 md:col-start-7 mt-3 md:mt-24 gallery-frame hover-zoom reveal-right stagger-2 !w-full block group" aria-label="View the Nora and Ali album">
-        <Image
-          src={recentPortraitRight}
-          alt="Destination wedding portrait in Italy, Nora and Ali"
-          class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
-          widths={[480, 640, 960]}
-          sizes="(max-width: 768px) 100vw, 42vw"
-          quality={80}
-        />
-        <div class="gallery-caption text-on-surface">
-          <p class="font-medium">Nora + Ali</p>
-          <p class="text-on-surface-variant">Italy</p>
-        </div>
-      </a>
+
+    <div class="grid-editorial relative">
+      <!-- Story 02 -->
+      <article class="recent-work__story col-span-12 md:col-span-5 reveal-left">
+        <header class="recent-work__meta">
+          <span class="recent-work__num">02</span>
+          <span class="recent-work__meta-rule"></span>
+          <span class="recent-work__loc">Toronto</span>
+          <span class="recent-work__date">Summer 2025</span>
+        </header>
+        <a href="/portfolio" class="gallery-frame hover-zoom !w-full block group" aria-label="Browse the full portfolio">
+          <Image
+            src={recentPortraitLeft}
+            alt="Pre-wedding portrait session, Swathi and Saksham in Toronto"
+            class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+            widths={[480, 640, 960]}
+            sizes="(max-width: 768px) 100vw, 42vw"
+            quality={80}
+          />
+        </a>
+        <footer class="recent-work__footer">
+          <div>
+            <p class="recent-work__couple">Swathi + Saksham</p>
+            <p class="recent-work__sub">Pre-wedding portraits</p>
+          </div>
+          <a href="/portfolio" class="recent-work__view" aria-label="Browse the full portfolio">
+            View Story <span aria-hidden="true">&rarr;</span>
+          </a>
+        </footer>
+      </article>
+
+      <!-- Story 03 -->
+      <article class="recent-work__story col-span-12 md:col-span-5 md:col-start-7 mt-12 md:mt-24 reveal-right stagger-2">
+        <header class="recent-work__meta">
+          <span class="recent-work__num">03</span>
+          <span class="recent-work__meta-rule"></span>
+          <span class="recent-work__loc">Italy</span>
+          <span class="recent-work__date">Spring 2026</span>
+        </header>
+        <a href="/portfolio/nora-ali" class="gallery-frame hover-zoom !w-full block group" aria-label="View the Nora and Ali album">
+          <Image
+            src={recentPortraitRight}
+            alt="Destination wedding portrait in Italy, Nora and Ali"
+            class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+            widths={[480, 640, 960]}
+            sizes="(max-width: 768px) 100vw, 42vw"
+            quality={80}
+          />
+        </a>
+        <footer class="recent-work__footer">
+          <div>
+            <p class="recent-work__couple">Nora + Ali</p>
+            <p class="recent-work__sub">Destination wedding</p>
+          </div>
+          <a href="/portfolio/nora-ali" class="recent-work__view" aria-label="View Nora and Ali's story">
+            View Story <span aria-hidden="true">&rarr;</span>
+          </a>
+        </footer>
+      </article>
+    </div>
+
+    <!-- Closing rule + browse link -->
+    <div class="container-editorial relative mt-[var(--spacing-block)]">
+      <div class="recent-work__close reveal">
+        <span class="recent-work__close-rule"></span>
+        <a href="/portfolio" class="recent-work__close-link magnetic">
+          Browse the full portfolio <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     </div>
   </section>
+
+  <style>
+    /* ── Recent Work — editorial monograph treatment ────────────────
+       The section sits on a faint dim band so the hairline rules have
+       contrast to read against. A 4-column hairline grid runs the full
+       height behind the imagery; it's purely decorative and aria-hidden. */
+    .recent-work {
+      isolation: isolate;
+    }
+
+    /* Hairline column grid — drawn with two repeating gradients so the
+       rule lines stay 1px regardless of viewport. Shown only on tablet+
+       where the column rhythm is meaningful. */
+    .recent-work__grid {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1.4s var(--ease-gallery) 0.2s;
+      max-width: 1440px;
+      margin-inline: auto;
+      padding-inline: clamp(1.5rem, 4vw, 6rem);
+    }
+
+    .recent-work__grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin-inline: clamp(1.5rem, 4vw, 6rem);
+      background-image:
+        linear-gradient(to right,
+          color-mix(in srgb, var(--color-on-surface-muted) 22%, transparent) 0,
+          color-mix(in srgb, var(--color-on-surface-muted) 22%, transparent) 1px,
+          transparent 1px);
+      background-size: 25% 100%;
+      background-repeat: repeat-x;
+    }
+
+    .recent-work__grid::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: clamp(1.5rem, 4vw, 6rem);
+      width: 1px;
+      background: color-mix(in srgb, var(--color-on-surface-muted) 22%, transparent);
+    }
+
+    @media (min-width: 768px) {
+      .recent-work__grid {
+        opacity: 1;
+      }
+    }
+
+    /* Chapter rule — sits at the top of the section like a book spread
+       running head: marker · hairline · marker. */
+    .recent-work__chapter {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: var(--spacing-block);
+    }
+
+    .recent-work__chapter-mark {
+      font-family: var(--font-sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .recent-work__chapter-mark--end {
+      letter-spacing: 0.14em;
+    }
+
+    .recent-work__chapter-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right,
+        color-mix(in srgb, var(--color-on-surface-muted) 45%, transparent),
+        color-mix(in srgb, var(--color-on-surface-muted) 12%, transparent));
+    }
+
+    /* Spec strip — three labelled metadata pairs sitting under the body
+       copy, hairline-divided. Editorial detail without shouting. */
+    .recent-work__specs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, auto));
+      gap: 1.5rem 2.5rem;
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+    }
+
+    .recent-work__specs div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .recent-work__specs dt {
+      font-family: var(--font-sans);
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-muted);
+    }
+
+    .recent-work__specs dd {
+      font-family: var(--font-serif);
+      font-size: 0.9375rem;
+      letter-spacing: 0.01em;
+      color: var(--color-on-surface);
+      margin: 0;
+    }
+
+    @media (max-width: 640px) {
+      .recent-work__specs {
+        grid-template-columns: repeat(2, minmax(0, auto));
+        gap: 1.25rem 2rem;
+      }
+    }
+
+    /* Per-story metadata header: index, hairline, location, date */
+    .recent-work__story {
+      position: relative;
+      z-index: 1;
+    }
+
+    .recent-work__story--feature {
+      margin-bottom: 0;
+    }
+
+    .recent-work__meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-variant);
+    }
+
+    .recent-work__num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--color-on-surface);
+      text-transform: none;
+      flex-shrink: 0;
+    }
+
+    .recent-work__meta-rule {
+      flex: 0 1 3rem;
+      height: 1px;
+      background: color-mix(in srgb, var(--color-on-surface-muted) 50%, transparent);
+    }
+
+    .recent-work__loc {
+      flex-shrink: 0;
+      color: var(--color-on-surface);
+    }
+
+    .recent-work__date {
+      margin-left: auto;
+      color: var(--color-on-surface-muted);
+      flex-shrink: 0;
+    }
+
+    /* Footer beneath each frame: couple name + sub label, "View Story" CTA */
+    .recent-work__footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 28%, transparent);
+    }
+
+    .recent-work__couple {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      letter-spacing: 0.005em;
+      color: var(--color-on-surface);
+      margin: 0;
+    }
+
+    .recent-work__sub {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-muted);
+      margin-top: 0.375rem;
+    }
+
+    .recent-work__view {
+      font-family: var(--font-sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-variant);
+      white-space: nowrap;
+      transition: color var(--duration-hover) var(--ease-gallery);
+    }
+
+    .recent-work__view span {
+      display: inline-block;
+      margin-left: 0.5rem;
+      transition: transform var(--duration-hover) var(--ease-gallery);
+    }
+
+    .recent-work__view:hover {
+      color: var(--color-on-surface);
+    }
+
+    .recent-work__view:hover span {
+      transform: translateX(4px);
+    }
+
+    /* Closing rule + browse link */
+    .recent-work__close {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+    }
+
+    .recent-work__close-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right,
+        color-mix(in srgb, var(--color-on-surface-muted) 35%, transparent),
+        transparent);
+    }
+
+    .recent-work__close-link {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-on-surface);
+      white-space: nowrap;
+      transition: color var(--duration-hover) var(--ease-gallery);
+    }
+
+    .recent-work__close-link span {
+      display: inline-block;
+      margin-left: 0.5rem;
+      transition: transform var(--duration-hover) var(--ease-gallery);
+    }
+
+    .recent-work__close-link:hover {
+      color: var(--color-on-surface-variant);
+    }
+
+    .recent-work__close-link:hover span {
+      transform: translateX(4px);
+    }
+
+    /* Mobile: tighten metadata so it stays single-line where possible */
+    @media (max-width: 640px) {
+      .recent-work__meta {
+        gap: 0.75rem;
+        font-size: 0.625rem;
+      }
+      .recent-work__meta-rule {
+        flex: 1;
+      }
+      .recent-work__footer {
+        align-items: center;
+      }
+      .recent-work__chapter {
+        gap: 1rem;
+      }
+      .recent-work__chapter-mark {
+        font-size: 0.625rem;
+      }
+    }
+  </style>
 
   <!-- ═══ BREAKER · WHERE I'VE SHOT ═══
        Horizontal motion breaker — continuous right-to-left marquee of
