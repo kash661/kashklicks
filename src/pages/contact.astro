@@ -81,19 +81,29 @@ const contactPageSchema = {
             Currently booking for 2026 and beyond. Pre-wedding, wedding, and civil ceremony coverage across the GTA and Canada-wide. Reply within 24 hours.
           </p>
         </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="A Quiet Conversation">
-          <Image
-            src={heroImage}
-            alt="Toronto wedding couple portrait by AD Photography"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={75}
-            format="avif"
-            class="w-full h-full object-cover parallax-img"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
+        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2">
+          <div class="aspect-[3/4] overflow-hidden">
+            <Image
+              src={heroImage}
+              alt="Toronto wedding couple portrait by AD Photography"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={75}
+              format="avif"
+              class="w-full h-full object-cover parallax-img"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Inquiry</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">Reply within 24 hours</span>
+            </div>
+            <p class="gallery-plaque__title"><em>A quiet</em> conversation</p>
+          </figcaption>
+        </figure>
       </div>
 
       <!-- Scroll cue -->
@@ -124,11 +134,7 @@ const contactPageSchema = {
 
           <!-- Studio Colophon -->
           <div class="mt-16">
-            <div class="flex items-center gap-4 mb-8 reveal">
-              <span class="text-label-sm text-on-surface-muted uppercase tracking-widest whitespace-nowrap">Studio Notes</span>
-              <span class="h-px flex-1 bg-on-surface-muted/25"></span>
-              <span class="font-serif italic text-label-sm text-on-surface-muted">№ 01</span>
-            </div>
+            <p class="text-label-md text-on-surface-muted mb-8 eyebrow-rule reveal">Studio Notes</p>
 
             <dl class="border-y border-on-surface-muted/25">
               <div class="flex items-baseline gap-6 py-5 border-b border-on-surface-muted/15 reveal stagger-1">
@@ -169,7 +175,7 @@ const contactPageSchema = {
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 17L17 7M17 7H7M17 7V17" />
                     </svg>
                   </a>
-                  <span class="text-label-sm font-serif italic text-on-surface-muted ml-3 signature-pulse">fastest reply</span>
+                  <span class="text-label-sm font-serif italic text-on-surface-muted ml-3">fastest reply</span>
                 </dd>
               </div>
             </dl>
@@ -184,10 +190,6 @@ const contactPageSchema = {
         <!-- Right: Invitation card with modal trigger -->
         <div class="col-span-12 lg:col-span-6 lg:col-start-7 mt-16 lg:mt-0">
           <div class="bg-surface-dark text-on-dark p-10 lg:p-14 relative overflow-hidden reveal-right invitation-card">
-            <!-- Ambient corner hairlines that draw in -->
-            <span class="invitation-corner invitation-corner-tl" aria-hidden="true"></span>
-            <span class="invitation-corner invitation-corner-br" aria-hidden="true"></span>
-
             <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-on-dark reveal stagger-1">Ready When You Are</p>
             <h3 class="text-heading-lg text-on-dark mt-8 reveal stagger-2" style="max-width: 14ch;">
               Begin the <em class="font-serif italic">inquiry.</em>
@@ -200,7 +202,7 @@ const contactPageSchema = {
               <button
                 type="button"
                 data-open-modal="contact-modal"
-                class="magnetic cta-pulse inline-flex items-center gap-4 whitespace-nowrap px-10 py-5 bg-background text-on-surface font-sans text-label-md hover:bg-surface-dim cubic-ease group relative"
+                class="magnetic inline-flex items-center gap-4 whitespace-nowrap px-10 py-5 bg-background text-on-surface font-sans text-label-md hover:bg-surface-dim cubic-ease group relative"
                 style="transition-duration: var(--duration-hover);"
               >
                 <span>Open the Form</span>
@@ -237,7 +239,7 @@ const contactPageSchema = {
         <h2 class="text-display-md reveal stagger-1">Frequently Asked</h2>
       </div>
       <div class="max-w-3xl mx-auto faq-stagger reveal">
-        <FAQAccordion items={contactFaq} />
+        <FAQAccordion items={contactFaq} defaultOpen />
       </div>
       <p class="text-label-sm text-on-surface-muted text-center mt-12 reveal">
         Looking for package-specific answers? Visit my <a href="/services" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">services</a> pages.
@@ -283,60 +285,6 @@ const contactPageSchema = {
 </BaseLayout>
 
 <style>
-  /* ── Invitation card: hairlines that draw in with the card ── */
-  .invitation-card {
-    position: relative;
-  }
-  .invitation-corner {
-    position: absolute;
-    background: rgba(250, 249, 246, 0.25);
-    transition: transform var(--duration-page) var(--ease-gallery);
-  }
-  .invitation-corner-tl {
-    top: 0;
-    left: 0;
-    width: 48px;
-    height: 1px;
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  .invitation-corner-br {
-    bottom: 0;
-    right: 0;
-    width: 48px;
-    height: 1px;
-    transform: scaleX(0);
-    transform-origin: right;
-  }
-  .invitation-card.revealed .invitation-corner-tl,
-  .invitation-card.revealed .invitation-corner-br {
-    transform: scaleX(1);
-    transition-delay: 600ms;
-  }
-
-  /* ── CTA button: soft ambient pulse on the edge ── */
-  .cta-pulse::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(250, 249, 246, 0.35);
-    pointer-events: none;
-    animation: cta-breath 3.2s var(--ease-gallery) infinite;
-  }
-  @keyframes cta-breath {
-    0%, 100% { transform: scale(1); opacity: 0; }
-    50% { transform: scale(1.06); opacity: 1; }
-  }
-
-  /* ── "fastest reply" signature: slow opacity breath ── */
-  .signature-pulse {
-    animation: signature-breath 4s var(--ease-gallery) infinite;
-  }
-  @keyframes signature-breath {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-  }
-
   /* ── FAQ accordion items: stagger each question as the section reveals ── */
   .faq-stagger > div > details {
     opacity: 0;
@@ -355,18 +303,11 @@ const contactPageSchema = {
   .faq-stagger.revealed > div > details:nth-child(8) { transition-delay: 560ms; }
 
   @media (prefers-reduced-motion: reduce) {
-    .invitation-corner,
-    .cta-pulse::after,
-    .signature-pulse,
     .faq-stagger > div > details {
       animation: none;
       transition: none;
       opacity: 1;
       transform: none;
-    }
-    .invitation-corner-tl,
-    .invitation-corner-br {
-      transform: scaleX(1);
     }
   }
 

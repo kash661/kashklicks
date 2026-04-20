@@ -129,20 +129,30 @@ const aboutJourneySteps = [
           </button>
         </div>
       </div>
-      <div class="col-span-12 md:col-span-6 md:col-start-7 order-1 md:order-2 reveal-right stagger-2 image-caption overflow-hidden mb-[var(--spacing-element)] md:mb-0 aspect-[3/4]" data-caption="Toledo, Spain">
-        <Image
-          src={portraitImage}
-          alt="Portrait of AD, Toronto wedding photographer and founder of AD Photography"
-          widths={[400, 600, 800, 1000]}
-          sizes="(max-width: 639px) 100vw, 50vw"
-          format="avif"
-          quality={75}
-          class="w-full h-full object-cover object-bottom parallax-img"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </div>
+      <figure class="col-span-12 md:col-span-6 md:col-start-7 order-1 md:order-2 reveal-right stagger-2 mb-[var(--spacing-element)] md:mb-0">
+        <div class="aspect-[3/4] overflow-hidden">
+          <Image
+            src={portraitImage}
+            alt="Portrait of AD, Toronto wedding photographer and founder of AD Photography"
+            widths={[400, 600, 800, 1000]}
+            sizes="(max-width: 639px) 100vw, 50vw"
+            format="avif"
+            quality={75}
+            class="w-full h-full object-cover object-bottom parallax-img"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+        <figcaption class="gallery-plaque">
+          <div class="gallery-plaque__line">
+            <span class="gallery-plaque__plate">Portrait</span>
+            <span class="gallery-plaque__rule" aria-hidden="true"></span>
+            <span class="gallery-plaque__meta">Toledo, Spain</span>
+          </div>
+          <p class="gallery-plaque__title"><em>Akash</em></p>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -229,8 +239,8 @@ const aboutJourneySteps = [
             </p>
           </form>
         </div>
-        <div class="travel-collage col-span-12 md:col-span-7 md:col-start-6 reveal-right stagger-2">
-          <div class="collage-main image-caption" data-caption="Madeira, Portugal">
+        <figure class="travel-collage col-span-12 md:col-span-7 md:col-start-6 reveal-right stagger-2">
+          <div class="collage-main">
             <Image
               src={travelMadeiraImage}
               alt="Travel photograph from Madeira, Portugal by AD Photography"
@@ -241,8 +251,66 @@ const aboutJourneySteps = [
               class="w-full h-full object-cover parallax-img"
               loading="lazy"
             />
-            <span class="travel-soon-badge logo-mark">Travel Log Coming Soon</span>
           </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Travel Log</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">Coming Soon</span>
+            </div>
+            <p class="gallery-plaque__title"><em>Madeira</em>, Portugal</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BREAKER · COUNTRIES VISITED ═══
+       Horizontal marquee closes the "Traveling Eye" beat: one frame above
+       (Madeira), the full list of countries the eye has moved through below. -->
+  <section aria-label="Countries I have visited" style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
+    <div class="container-editorial" style="margin-bottom: var(--spacing-element);">
+      <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center text-center reveal">
+        Countries Visited
+      </p>
+    </div>
+    <div class="breaker-marquee">
+      <div class="breaker-marquee__track" aria-hidden="true">
+        <div class="breaker-marquee__set">
+          <span>Morocco</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Spain</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Greece</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Italy</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Portugal</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Mexico</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Thailand</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Singapore</span>
+          <span class="breaker-marquee__dot">·</span>
+        </div>
+        <div class="breaker-marquee__set">
+          <span>Morocco</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Spain</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Greece</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Italy</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Portugal</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Mexico</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Thailand</span>
+          <span class="breaker-marquee__dot">·</span>
+          <span>Singapore</span>
+          <span class="breaker-marquee__dot">·</span>
         </div>
       </div>
     </div>
@@ -349,31 +417,16 @@ const aboutJourneySteps = [
     .process-path-line { transition: none; stroke-dashoffset: 0; }
   }
 
-  /* Travel collage — outer bounding box forms a square, all three images intersect */
+  /* Travel collage — flat editorial print, plaque below frames the image. */
   .travel-collage {
     position: relative;
+    margin: 0;
   }
   .collage-main {
     position: relative;
     width: 100%;
     aspect-ratio: 3 / 2;
     overflow: hidden;
-    box-shadow: 0 12px 32px rgba(26, 26, 24, 0.1);
-  }
-
-  /* Travel-log-coming-soon badge */
-  .travel-soon-badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    padding: 0.5rem 0.75rem;
-    background: var(--color-surface-dark);
-    color: var(--color-on-dark);
-    font-size: 0.6875rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    z-index: 4;
-    pointer-events: none;
   }
 
 
