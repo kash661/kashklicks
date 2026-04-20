@@ -1,9 +1,10 @@
 ---
 interface Props {
   items: { question: string; answer: string }[];
+  defaultOpen?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, defaultOpen = false } = Astro.props;
 ---
 
 <div class="faq-accordion" data-faq-accordion>
@@ -12,7 +13,7 @@ const { items } = Astro.props;
       <button
         type="button"
         class="faq-summary flex items-center justify-between w-full text-left"
-        aria-expanded="false"
+        aria-expanded={defaultOpen && i === 0 ? 'true' : 'false'}
       >
         <h3 class="text-body-lg font-medium pr-8">{item.question}</h3>
         <span
