@@ -726,6 +726,690 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.5rem;
 }
 
+/* ── Gallery plaque — museum wall-label caption under a photograph.
+   Champagne-tone hairline, italic serif plate label, meta text.
+   Shared vocabulary for portfolio cards, chapter rows, and slug header. */
+.gallery-plaque {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Standalone variant — when the plaque heads a column instead of
+   sitting under a photograph (e.g. chapter rows, slug headers). */
+.gallery-plaque--standalone {
+  margin-top: 0;
+}
+
+.gallery-plaque__line {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.gallery-plaque__plate {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--color-on-surface);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.gallery-plaque__rule {
+  width: 1.75rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.gallery-plaque__meta {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.55;
+}
+
+.gallery-plaque__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+
+.gallery-plaque__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  letter-spacing: -0.005em;
+  color: var(--color-on-surface);
+  margin: 0;
+  line-height: 1.15;
+}
+
+.gallery-plaque__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+  margin: 0 0.1em;
+}
+
+.gallery-plaque__title--display {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+}
+
+.gallery-plaque__link {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+  transition: color var(--duration-hover) var(--ease-gallery);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-plaque__link-arrow {
+  display: inline-block;
+  transition: transform var(--duration-hover) var(--ease-gallery);
+}
+
+.group:hover .gallery-plaque__link,
+.gallery-plaque__link:hover { color: var(--color-on-surface); }
+.group:hover .gallery-plaque__link-arrow,
+.gallery-plaque__link:hover .gallery-plaque__link-arrow { transform: translateX(4px); }
+
+@media (max-width: 640px) {
+  .gallery-plaque__title {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+  .gallery-plaque__title--display {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+  .gallery-plaque__line {
+    gap: 0.625rem;
+    font-size: 0.625rem;
+  }
+  .gallery-plaque__rule {
+    width: 1.25rem;
+  }
+  .gallery-plaque__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Good-to-know grid — a clean 2x2 of info blocks separated by
+   champagne hairlines instead of 1px borders. Replaces the old
+   gap-px bg-surface-container anti-pattern. */
+.good-to-know-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+}
+
+.good-to-know-item {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+}
+
+.good-to-know-item:last-child {
+  border-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .good-to-know-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;
+  }
+  .good-to-know-item {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  }
+  .good-to-know-item:nth-last-child(-n+2) {
+    border-bottom: 0;
+  }
+}
+
+/* ── Inquiry form — elevated field treatment. Boxed inputs on a
+   cream surface, champagne hairline borders, italic serif placeholders,
+   roman-numeral section legends. Replaces the low-contrast underline
+   input pattern that read as too flat. */
+.form-section {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.form-section + .form-section {
+  margin-top: 4rem;
+}
+
+.form-section__legend {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  width: 100%;
+  margin-bottom: 2.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+}
+
+.form-section__number {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-on-surface);
+  flex-shrink: 0;
+}
+
+.form-section__title {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.form-field {
+  position: relative;
+}
+
+.form-field__label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.625rem;
+}
+
+.form-field__optional,
+.form-field__required {
+  letter-spacing: 0.02em;
+}
+
+.form-field__optional {
+  text-transform: none;
+  font-weight: 400;
+  color: var(--color-on-surface-muted);
+}
+
+.form-field__required {
+  color: var(--color-on-surface);
+}
+
+.form-field__input,
+.form-field__select,
+.form-field__textarea {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 28%, transparent);
+  padding: 0.875rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--color-on-surface);
+  border-radius: 0;
+  transition: border-color var(--duration-hover) var(--ease-gallery),
+              background-color var(--duration-hover) var(--ease-gallery);
+}
+
+.form-field__input::placeholder,
+.form-field__textarea::placeholder {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-on-surface-muted);
+  opacity: 1;
+}
+
+.form-field__input:hover,
+.form-field__select:hover,
+.form-field__textarea:hover {
+  border-color: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
+}
+
+.form-field__input:focus,
+.form-field__select:focus,
+.form-field__textarea:focus {
+  outline: none;
+  border-color: var(--color-on-surface);
+  background: var(--color-surface);
+}
+
+.form-field__input[aria-invalid="true"],
+.form-field__select[aria-invalid="true"],
+.form-field__textarea[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.form-field__select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235c605c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-position: right 0.875rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+}
+
+.form-field__textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.form-field__help {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-on-surface-muted);
+  margin-top: 0.75rem;
+}
+
+.form-field__error {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  color: var(--color-error);
+  margin-top: 0.625rem;
+}
+
+.form-submit {
+  padding-top: 1rem;
+}
+
+.form-submit__break {
+  height: 1px;
+  background: color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  margin-bottom: 2.5rem;
+}
+
+.form-submit__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--color-on-surface);
+  color: var(--color-on-dark);
+  padding: 1.125rem 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 0;
+  transition: background-color var(--duration-hover) var(--ease-gallery);
+}
+
+.form-submit__button:hover {
+  background: var(--color-primary-hover);
+}
+
+.form-submit__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-submit__arrow {
+  display: inline-block;
+  transition: transform var(--duration-hover) var(--ease-gallery);
+}
+
+.form-submit__button:hover .form-submit__arrow {
+  transform: translateX(4px);
+}
+
+.form-submit__note {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  color: var(--color-on-surface-muted);
+  margin-top: 1.5rem;
+}
+
+/* ── Pricing card — 3-up comparative grid. Each card is flush on the
+   section's cream stock with no borders. Featured tier lifts to pure
+   white for subtle tonal elevation. Typography does the heavy lifting:
+   big italic serif name + big serif price are co-equal heroes. */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .pricing-grid {
+    /* Subgrid rows keep head / price / included / CTA aligned
+       horizontally across all three cards regardless of content length. */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto 1fr auto;
+    gap: 2rem;
+  }
+  /* Single-card variant — centered column, editorial width. */
+  .pricing-grid:has(> :only-child) {
+    grid-template-columns: minmax(0, 42rem);
+    grid-template-rows: auto;
+    justify-content: center;
+  }
+}
+
+.pricing-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2.5rem 1.5rem;
+  scroll-margin-top: 120px;
+  position: relative;
+  transition: background-color var(--duration-hover) var(--ease-gallery),
+              opacity 600ms var(--ease-gallery);
+}
+
+/* Small italic-serif badge pinned to the top edge of the featured
+   card. Champagne-tint cream fill with a single hairline border —
+   visible enough to anchor the tier, quiet enough to feel editorial. */
+.pricing-card__badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-background);
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  color: var(--color-on-surface);
+  border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .pricing-card {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 4;
+    row-gap: 2rem;
+    padding: 3rem 2rem;
+  }
+  /* Single-card layout falls back to natural flow. */
+  .pricing-grid:has(> :only-child) .pricing-card {
+    display: flex;
+    grid-row: auto;
+  }
+}
+
+/* Featured / Most Popular — tonal lift to pure white against the
+   cream section + a soft warm-toned shadow for subtle elevation.
+   Keeps the flat editorial feel while making the tier clearly
+   distinguishable at a glance. */
+.pricing-card[data-featured="true"] {
+  background: var(--color-surface);
+  box-shadow:
+    0 24px 48px -28px rgba(26, 26, 24, 0.18),
+    0 8px 16px -10px rgba(26, 26, 24, 0.08);
+}
+
+@media (min-width: 1024px) {
+  .pricing-card[data-featured="true"] {
+    padding: 3.5rem 2.5rem;
+  }
+}
+
+.pricing-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pricing-card__eyebrow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-muted);
+  margin: 0;
+}
+
+.pricing-card__eyebrow-label {
+  color: var(--color-on-surface-variant);
+}
+
+.pricing-card__tag {
+  font-family: var(--font-serif);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.9375rem;
+  color: var(--color-on-surface);
+}
+
+.pricing-card__name {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.875rem, 3vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--color-on-surface);
+  margin: 0;
+}
+
+.pricing-card__deck {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.55;
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.pricing-card__price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pricing-card__price-kicker {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-muted);
+}
+
+.pricing-card__price {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 4vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--color-on-surface);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pricing-card__price em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+}
+
+.pricing-card__price-strike {
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+  line-height: 1;
+  color: var(--color-on-surface-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.pricing-card__included {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.pricing-card__included-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-muted);
+  margin: 0;
+}
+
+.pricing-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.pricing-card__list li {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-on-surface-variant);
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.pricing-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  width: 0.5rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
+}
+
+.pricing-card__cta {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface);
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: auto;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  transition: color var(--duration-hover) var(--ease-gallery),
+              border-color var(--duration-hover) var(--ease-gallery);
+}
+
+.pricing-card__cta:hover {
+  color: var(--color-on-surface-variant);
+  border-bottom-color: var(--color-on-surface);
+}
+
+.pricing-card__cta-arrow {
+  display: inline-block;
+  transition: transform var(--duration-hover) var(--ease-gallery);
+}
+
+.pricing-card__cta:hover .pricing-card__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ── Section frame — thin fading hairlines at top + bottom of a
+   portfolio grid section. Non-intrusive tonal seam without a hard
+   color shift. Mirrors the homepage Recent Work treatment. */
+.section-frame {
+  isolation: isolate;
+  position: relative;
+}
+
+.section-frame::before,
+.section-frame::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 3rem), 1320px);
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent,
+    color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent) 18%,
+    color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent) 82%,
+    transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-frame::before { top: 0; }
+.section-frame::after  { bottom: 0; }
+
+/* Restrained serif section title paired with an italic serif deck,
+   matched to the gallery plaque palette. */
+.section-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5.8vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+}
+
+.section-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+}
+
+.section-deck {
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+}
+
+@media (max-width: 640px) {
+  .section-title {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+  .section-deck {
+    font-size: 1.125rem;
+  }
+}
+
 /* Suppresses the reveal fade for elements that are already in the viewport
    on page load. Prevents the above-the-fold flicker when navigating
    between pages — elements land in their final state immediately. */

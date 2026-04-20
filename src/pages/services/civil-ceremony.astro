@@ -10,6 +10,7 @@ import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDes
 import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import ContactModal from '../../components/global/ContactModal.astro';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
@@ -126,12 +127,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </div>
 
   <!-- Hero: Scrolling venue gallery -->
-  <section style="padding-top: var(--spacing-block);">
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
     <div class="container-editorial">
       <div class="text-center mb-16">
-        <p class="text-label-md text-on-surface-muted mb-4 reveal eyebrow-rule eyebrow-rule-center">Civil Ceremony</p>
-        <h1 class="text-display-md reveal stagger-1">Toronto Civil Ceremony Photography</h1>
-        <p class="text-quote text-on-surface-variant reveal stagger-2 mt-6 mx-auto" style="max-width: 28ch;">Every venue tells a story.</p>
+        <p class="text-label-md text-on-surface-muted mb-6 reveal eyebrow-rule eyebrow-rule-center">Civil Ceremony</p>
+        <h1 class="section-title mx-auto reveal stagger-1">Toronto civil ceremony <em>photography.</em></h1>
+        <p class="section-deck text-on-surface-variant reveal stagger-2 mt-6 mx-auto" style="max-width: 32ch;">Every venue tells a story.</p>
         <div class="mt-8 flex justify-center reveal stagger-3">
           <ShareButton
             variant="labeled"
@@ -166,10 +167,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ SERVICE DESCRIPTION ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left image-caption order-2 lg:order-1 mt-10 lg:mt-0" data-caption="Intimate. Uncomplicated.">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
           <Image
             src={(await import('../../assets/images/homepage/civil-service-detail.jpg')).default}
             alt="Toronto civil ceremony couple portrait by AD Photography, intimate city hall coverage"
@@ -180,10 +181,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             loading="lazy"
           />
         </div>
-        <div class="col-span-12 lg:col-span-5 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
-          <p class="text-label-md text-on-surface-muted eyebrow-rule">What I Offer</p>
-          <h2 class="text-display-md" style="margin-top: var(--spacing-element);">{civilService.title}</h2>
-          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{civilService.description}</p>
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">What I Offer</p>
+          <h2 class="section-title">{civilService.title}</h2>
+          <p class="section-deck text-on-surface-variant mt-8 measure-wide">{civilService.description}</p>
           <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
           <ul class="space-y-3">
             {civilService.includes.map((item) => (
@@ -231,15 +232,15 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ CIVIL CEREMONY PACKAGE ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-block) 0 var(--spacing-section) 0;">
+  <section class="section-frame bg-background" style="padding: var(--spacing-block) 0 var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="text-center mb-12 reveal">
         <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Simple Pricing</p>
-        <h2 class="text-display-md">One Package. Everything You Need.</h2>
+        <h2 class="section-title mx-auto">One package. <em>Everything you need.</em></h2>
       </div>
 
-      <div class="max-w-md mx-auto reveal stagger-1">
-        {civilPackages.map((pkg: any) => (
+      <div class="pricing-grid reveal stagger-1">
+        {civilPackages.map((pkg: any, i: number) => (
           <PricingCard
             id={pkg.id}
             name={pkg.name}
@@ -250,6 +251,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             popular={pkg.popular}
             featured={!!pkg.salePrice}
             custom={pkg.custom}
+            ordinal={i}
+            service="civil-ceremony"
+            ctaLabel="Enquire"
           />
         ))}
       </div>
@@ -273,27 +277,27 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ GOOD TO KNOW ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="text-center mb-16 reveal">
         <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Before You Book</p>
-        <h2 class="text-display-md">Good to Know</h2>
+        <h2 class="section-title mx-auto">Good to <em>know.</em></h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-surface-container">
-        <div class="bg-surface-dim p-10 reveal">
+      <div class="good-to-know-grid">
+        <div class="good-to-know-item reveal">
           <p class="text-heading-md font-serif italic mb-3">Free consultation</p>
           <p class="text-body-md text-on-surface-variant">Included with every booking. No pressure, just a conversation about your vision and what your day looks like.</p>
         </div>
-        <div class="bg-surface-dim p-10 reveal stagger-1">
+        <div class="good-to-know-item reveal stagger-1">
           <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
           <p class="text-body-md text-on-surface-variant">I help you find the perfect spot. Light first, location second. One great spot can give you a dozen different looks.</p>
         </div>
-        <div class="bg-surface-dim p-10 reveal stagger-2">
+        <div class="good-to-know-item reveal stagger-2">
           <p class="text-heading-md font-serif italic mb-3">Travel fees</p>
           <p class="text-body-md text-on-surface-variant">Travel fees apply based on your venue location. I discuss this upfront during your consultation so there are no surprises.</p>
         </div>
-        <div class="bg-surface-dim p-10 reveal stagger-3">
+        <div class="good-to-know-item reveal stagger-3">
           <p class="text-heading-md font-serif italic mb-3">Canada-wide</p>
           <p class="text-body-md text-on-surface-variant">Based in Toronto, but I travel for love. I've shot across Ontario and beyond. If you are planning a destination ceremony, let's talk.</p>
         </div>
@@ -302,7 +306,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ FAQ ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial max-w-3xl">
       <div class="text-center mb-12 reveal">
         <h2 class="text-heading-lg font-serif italic">Questions you might have</h2>
@@ -323,4 +327,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     imageAlt="Toronto civil ceremony couple portrait after vows by AD Photography"
     imageCaption="Begin Your Story"
   />
+
+  <ContactModal />
 </BaseLayout>

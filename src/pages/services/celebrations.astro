@@ -8,6 +8,7 @@ import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import ContactModal from '../../components/global/ContactModal.astro';
 import { Image } from 'astro:assets';
 import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
 import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
@@ -119,12 +120,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </div>
 
   <!-- Hero: Featured review + portrait image -->
-  <section style="padding-top: var(--spacing-block);">
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
     <div class="container-editorial">
-      <div class="grid-editorial items-center" style="min-height: 80vh;">
+      <div class="grid-editorial items-center" style="min-height: 80svh;">
         <!-- Review -->
         <div class="col-span-12 md:col-span-5 reveal">
-          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Events & Celebrations</p>
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Events &amp; Celebrations</p>
           <blockquote class="text-display-md" style="max-width: 20ch;">
             "The best celebrations are the ones where nobody is performing. Just people, together, being happy."
           </blockquote>
@@ -139,29 +140,39 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             />
           </div>
         </div>
-        <!-- Portrait image -->
-        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Your Celebration, Captured">
-          <Image
-            src={heroImage}
-            alt="Toronto birthday and celebration photography by AD Photography"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={75}
-            format="avif"
-            class="w-full h-full object-cover parallax-img"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
+        <!-- Portrait image + plaque -->
+        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={heroImage}
+              alt="Toronto birthday and celebration photography by AD Photography"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={75}
+              format="avif"
+              class="w-full h-full object-cover parallax-img"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Celebration</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">Toronto</span>
+            </div>
+            <p class="gallery-plaque__title">Your celebration, <em>captured.</em></p>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
   <!-- ═══ SERVICE DESCRIPTION ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left image-caption order-2 lg:order-1 mt-10 lg:mt-0" data-caption="Every Detail, Remembered">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
           <Image
             src={serviceDetailImage}
             alt="Candid celebration photography capturing guests and decor at a Toronto event"
@@ -172,10 +183,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             loading="lazy"
           />
         </div>
-        <div class="col-span-12 lg:col-span-5 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
-          <p class="text-label-md text-on-surface-muted eyebrow-rule">What I Offer</p>
-          <h1 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">Toronto Event Photography</h1>
-          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{celebrationsService.description}</p>
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">What I Offer</p>
+          <h1 class="section-title char-reveal">Toronto event <em>photography.</em></h1>
+          <p class="section-deck text-on-surface-variant mt-8 measure-wide">{celebrationsService.description}</p>
           <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
           <ul class="space-y-3">
             {celebrationsService.includes.map((item) => (
@@ -223,34 +234,35 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ EVENT PACKAGES ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-5">
-          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">Curated Collections</p>
-          <h2 class="text-display-md reveal stagger-1" style="margin-top: var(--spacing-element);">Event Packages</h2>
+        <div class="col-span-12 md:col-span-7">
+          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">Curated Collections</p>
+          <h2 class="section-title reveal stagger-1">Event <em>packages.</em></h2>
         </div>
-        <div class="col-span-6 col-start-7">
-          <p class="text-quote text-on-surface-variant reveal stagger-2" style="max-width: 50ch;">
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0">
+          <p class="section-deck text-on-surface-variant reveal stagger-2 measure-wide">
             Every booking includes a free consultation to walk through your event, your timeline, and the moments that matter most to you.
           </p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 max-w-md mx-auto reveal stagger-3" style="gap: 2px;">
-        {eventPackages.map((pkg) => (
-          <div>
-            <PricingCard
-              id={pkg.id}
-              name={pkg.name}
-              price={pkg.price}
-              salePrice={pkg.salePrice}
-              description={pkg.description}
-              highlights={pkg.highlights}
-              popular={pkg.popular}
-              featured={!!pkg.salePrice}
-            />
-          </div>
+      <div class="pricing-grid reveal stagger-3">
+        {eventPackages.map((pkg, i) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            salePrice={pkg.salePrice}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.popular}
+            featured={!!pkg.salePrice}
+            ordinal={i}
+            service="celebration"
+            ctaLabel="Enquire"
+          />
         ))}
       </div>
 
@@ -277,17 +289,26 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <section class="bg-surface" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-center">
-        <div class="col-span-12 md:col-span-6 aspect-[3/4] overflow-hidden reveal-left image-caption" data-caption="In The Details">
-          <Image
-            src={momentImage}
-            alt="Floral centerpiece and candlelight details at a Toronto celebration, photographed before guests arrive"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={90}
-            class="w-full h-full object-cover parallax-img"
-            loading="lazy"
-          />
-        </div>
+        <figure class="col-span-12 md:col-span-6 reveal-left">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={momentImage}
+              alt="Floral centerpiece and candlelight details at a Toronto celebration, photographed before guests arrive"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={90}
+              class="w-full h-full object-cover parallax-img"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Detail</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">Before the room fills</span>
+            </div>
+          </figcaption>
+        </figure>
         <div class="col-span-12 md:col-span-4 md:col-start-8 reveal stagger-2">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">In The Details</p>
           <p class="text-quote text-on-surface-variant" style="max-width: 28ch;">
@@ -299,27 +320,27 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ GOOD TO KNOW ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="text-center mb-16 reveal">
         <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Before You Book</p>
-        <h2 class="text-display-md">Good to Know</h2>
+        <h2 class="section-title mx-auto">Good to <em>know.</em></h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-surface-container">
-        <div class="bg-background p-10 reveal">
+      <div class="good-to-know-grid">
+        <div class="good-to-know-item reveal">
           <p class="text-heading-md font-serif italic mb-3">Free consultation</p>
           <p class="text-body-md text-on-surface-variant">Included with every booking. No pressure, just a conversation about your event and what you want captured.</p>
         </div>
-        <div class="bg-background p-10 reveal stagger-1">
+        <div class="good-to-know-item reveal stagger-1">
           <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
           <p class="text-body-md text-on-surface-variant">I help you think through the space and how to make the most of it. Light first, location second. One great spot can give you a dozen different looks.</p>
         </div>
-        <div class="bg-background p-10 reveal stagger-2">
+        <div class="good-to-know-item reveal stagger-2">
           <p class="text-heading-md font-serif italic mb-3">GTA travel included</p>
           <p class="text-body-md text-on-surface-variant">No surprise fees. Travel within the Greater Toronto Area is typically covered. Anything beyond, I discuss upfront.</p>
         </div>
-        <div class="bg-background p-10 reveal stagger-3">
+        <div class="good-to-know-item reveal stagger-3">
           <p class="text-heading-md font-serif italic mb-3">Canada-wide</p>
           <p class="text-body-md text-on-surface-variant">Based in Toronto, but I travel for the moments that matter. If your event is outside the GTA, let's talk.</p>
         </div>
@@ -328,7 +349,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ FAQ ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial max-w-3xl">
       <div class="text-center mb-12 reveal">
         <h2 class="text-heading-lg font-serif italic">Questions you might have</h2>
@@ -350,4 +371,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     imageAlt="Toronto celebration photography by AD Photography"
     imageCaption="Begin Your Story"
   />
+
+  <ContactModal />
 </BaseLayout>

@@ -1,4 +1,11 @@
 ---
+interface FilterMeta {
+  film?: boolean;
+  sale?: boolean;
+  custom?: boolean;
+  price?: number;
+}
+
 interface Props {
   name: string;
   price: number | null;
@@ -9,52 +16,104 @@ interface Props {
   featured?: boolean;
   custom?: boolean;
   id: string;
+  ordinal?: number;
+  service?: string;
+  ctaLabel?: string;
+  filterMeta?: FilterMeta;
 }
 
-const { name, price, salePrice, description, highlights, custom = false, id } = Astro.props;
+const {
+  name,
+  price,
+  salePrice,
+  description,
+  highlights,
+  popular,
+  featured,
+  custom = false,
+  id,
+  ordinal,
+  service,
+  ctaLabel = 'Enquire',
+  filterMeta,
+} = Astro.props;
 
-// A highlight belongs in the shared Add-Ons section (rendered separately via
-// PackageAddOns.astro), not on the card. Cards stay focused on "what you get".
+const romans = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+const plateLabel = ordinal != null ? `Package ${romans[ordinal] ?? ordinal + 1}` : 'Package';
+
+// Lift this tier visually — user-flagged popular, on-sale, or explicitly featured.
+const isFeatured = !!(featured ?? popular);
+
+// Add-ons live in the shared PackageAddOns section. Cards stay focused on
+// "what you get" at this tier.
 const isAddOn = (item: string) => item.includes('+$') || item.includes('available');
 const includedItems = highlights.filter((item) => !isAddOn(item));
+
+const hasSale = !!salePrice;
+const displayPrice = hasSale ? salePrice : price;
 ---
 
-<div id={id} class="bg-surface p-10 flex flex-col h-full relative card-lift" style="gap: var(--spacing-element); scroll-margin-top: 120px;">
-  {salePrice && (
-    <span class="absolute top-4 right-4 text-label-sm text-on-surface-variant font-serif italic">Limited offer</span>
+<article
+  id={id}
+  class:list={['pricing-card', filterMeta ? 'package-card' : '']}
+  data-featured={isFeatured ? 'true' : undefined}
+  data-film={filterMeta ? (filterMeta.film ? 'true' : 'false') : undefined}
+  data-sale={filterMeta ? (filterMeta.sale ? 'true' : 'false') : undefined}
+  data-custom={filterMeta ? (filterMeta.custom ? 'true' : 'false') : undefined}
+  data-price={filterMeta?.price}
+>
+  {popular && !hasSale && (
+    <span class="pricing-card__badge">Most Popular</span>
   )}
-  <!-- Price at top -->
-  <div>
-    <p class="text-label-sm text-on-surface-muted mb-2">Price</p>
-    {custom ? (
-      <span class="text-display-md">Custom</span>
-    ) : salePrice ? (
-      <div class="flex items-baseline gap-3">
-        <span class="text-display-md">${salePrice.toLocaleString()}</span>
-        <span class="text-body-md text-on-surface-muted line-through">${price?.toLocaleString()}</span>
-      </div>
-    ) : (
-      <span class="text-display-md">${price?.toLocaleString()}</span>
-    )}
-  </div>
+  {hasSale && (
+    <span class="pricing-card__badge">Limited Offer</span>
+  )}
 
-  <div class="flex-1">
-    <h3 class="text-heading-md italic">{name}</h3>
-    <p class="text-body-md text-on-surface-variant mt-4">{description}</p>
-  </div>
+  <header class="pricing-card__head">
+    <p class="pricing-card__eyebrow">
+      <span class="pricing-card__eyebrow-label">{plateLabel}</span>
+    </p>
+    <h3 class="pricing-card__name">{name}</h3>
+    <p class="pricing-card__deck">{description}</p>
+  </header>
 
-  <!-- What's included (add-ons live in the shared PackageAddOns section) -->
+  {custom ? (
+    <div class="pricing-card__price-block">
+      <span class="pricing-card__price-kicker">Investment</span>
+      <span class="pricing-card__price"><em>Custom</em></span>
+    </div>
+  ) : (
+    <div class="pricing-card__price-block">
+      <span class="pricing-card__price-kicker">Starting at</span>
+      <span class="pricing-card__price">
+        <span>${displayPrice?.toLocaleString()}</span>
+        {hasSale && price && (
+          <span class="pricing-card__price-strike">${price.toLocaleString()}</span>
+        )}
+      </span>
+    </div>
+  )}
+
   {includedItems.length > 0 && (
-    <div class="mt-auto">
-      <p class="text-label-sm text-on-surface-muted mb-3">What's Included</p>
-      <ul class="space-y-2">
+    <div class="pricing-card__included">
+      <p class="pricing-card__included-label">What's Included</p>
+      <ul class="pricing-card__list">
         {includedItems.map((item) => (
-          <li class="text-body-md text-on-surface-variant pl-5 relative">
-            <span class="absolute left-0 top-0 text-on-surface-muted" aria-hidden="true">/</span>
-            {item}
-          </li>
+          <li>{item}</li>
         ))}
       </ul>
     </div>
   )}
-</div>
+
+  <button
+    type="button"
+    class="pricing-card__cta"
+    data-open-modal="contact-modal"
+    data-service={service}
+    data-package={id}
+    data-package-name={name}
+  >
+    {ctaLabel}
+    <span class="pricing-card__cta-arrow" aria-hidden="true">&rarr;</span>
+  </button>
+</article>

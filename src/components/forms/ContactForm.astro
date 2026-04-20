@@ -15,10 +15,6 @@ const referralOptions = [
   { value: 'blog', label: 'Blog, article, or feature' },
   { value: 'other', label: 'Somewhere else' },
 ];
-
-const inputClass = "w-full bg-transparent border-0 border-b-2 border-on-surface-muted/40 text-body-lg text-on-surface pb-3 pt-1 placeholder:text-on-surface-muted/60 focus:border-primary focus:outline-none cubic-ease";
-const inputStyle = "transition-duration: var(--duration-hover);";
-const selectArrowStyle = `transition-duration: var(--duration-hover); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235c605c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-position: right 0 center; background-repeat: no-repeat; background-size: 1rem; padding-right: 1.75rem;`;
 ---
 
 <div id="contact-form-wrapper">
@@ -26,7 +22,6 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
     id="contact-form"
     action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
     method="POST"
-    class="space-y-16"
     novalidate
   >
     <!-- Honeypot -->
@@ -35,20 +30,24 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
       <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
     </div>
 
-    <!-- ═══ 01 · ABOUT YOU ═══ -->
-    <fieldset>
-      <legend class="w-full mb-10">
-        <div class="flex items-baseline gap-4">
-          <span class="font-serif italic text-heading-md text-on-surface-muted">01</span>
-          <span class="text-label-md text-on-surface tracking-widest uppercase">About You</span>
-        </div>
-        <div class="h-px bg-ghost mt-4"></div>
+    <!-- Hidden context — auto-filled when Enquire is clicked from a
+         specific package so the backend sees which collection the
+         couple was looking at. -->
+    <input type="hidden" id="package_id" name="package_id" value="" />
+    <input type="hidden" id="package_name" name="package_name" value="" />
+    <input type="hidden" id="source_page" name="source_page" value="" />
+
+    <!-- ═══ I · ABOUT YOU ═══ -->
+    <fieldset class="form-section">
+      <legend class="form-section__legend">
+        <span class="form-section__number">I</span>
+        <span class="form-section__title">About You</span>
       </legend>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
-        <div class="relative">
-          <label for="name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Your Name <span class="text-on-surface" aria-hidden="true">*</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
+        <div class="form-field">
+          <label for="name" class="form-field__label">
+            Your Name <span class="form-field__required" aria-hidden="true">*</span>
           </label>
           <input
             type="text"
@@ -58,29 +57,27 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             required
             aria-required="true"
             aria-describedby="name-error"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
-          <p id="name-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
+          <p id="name-error" class="form-error-msg form-field__error hidden" role="alert"></p>
         </div>
 
-        <div class="relative">
-          <label for="partner_name" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Partner's Name <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(if applicable)</span>
+        <div class="form-field">
+          <label for="partner_name" class="form-field__label">
+            Partner's Name <span class="form-field__optional">(if applicable)</span>
           </label>
           <input
             type="text"
             id="partner_name"
             name="partner_name"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
-          <p class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
+          <p class="form-error-msg form-field__error hidden" role="alert"></p>
         </div>
 
-        <div class="relative">
-          <label for="email" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Email <span class="text-on-surface" aria-hidden="true">*</span>
+        <div class="form-field">
+          <label for="email" class="form-field__label">
+            Email <span class="form-field__required" aria-hidden="true">*</span>
           </label>
           <input
             type="email"
@@ -90,15 +87,14 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             required
             aria-required="true"
             aria-describedby="email-error"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
-          <p id="email-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
+          <p id="email-error" class="form-error-msg form-field__error hidden" role="alert"></p>
         </div>
 
-        <div class="relative">
-          <label for="phone" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Phone <span class="text-on-surface" aria-hidden="true">*</span>
+        <div class="form-field">
+          <label for="phone" class="form-field__label">
+            Phone <span class="form-field__required" aria-hidden="true">*</span>
           </label>
           <input
             type="tel"
@@ -109,29 +105,24 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             aria-required="true"
             aria-describedby="phone-error"
             placeholder="(416) 555 0199"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
-          <p id="phone-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
+          <p id="phone-error" class="form-error-msg form-field__error hidden" role="alert"></p>
         </div>
       </div>
     </fieldset>
 
-    <!-- ═══ 02 · YOUR DAY ═══ -->
-    <fieldset>
-      <legend class="w-full mb-10">
-        <div class="flex items-baseline gap-4">
-          <span class="font-serif italic text-heading-md text-on-surface-muted">02</span>
-          <span class="text-label-md text-on-surface tracking-widest uppercase">Your Day</span>
-        </div>
-        <div class="h-px bg-ghost mt-4"></div>
+    <!-- ═══ II · YOUR DAY ═══ -->
+    <fieldset class="form-section">
+      <legend class="form-section__legend">
+        <span class="form-section__number">II</span>
+        <span class="form-section__title">Your Day</span>
       </legend>
 
-      <div class="space-y-10">
-        <!-- Event Type — full width -->
-        <div class="relative">
-          <label for="event_type" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            What I'm Capturing <span class="text-on-surface" aria-hidden="true">*</span>
+      <div class="space-y-8">
+        <div class="form-field">
+          <label for="event_type" class="form-field__label">
+            What I'm Capturing <span class="form-field__required" aria-hidden="true">*</span>
           </label>
           <select
             id="event_type"
@@ -139,83 +130,73 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             required
             aria-required="true"
             aria-describedby="event_type-error"
-            class={`${inputClass} appearance-none cursor-pointer`}
-            style={selectArrowStyle}
+            class="form-field__select"
           >
             <option value="" disabled selected>Select an occasion</option>
             {eventTypeOptions.map((opt) => (
               <option value={opt.value}>{opt.label}</option>
             ))}
           </select>
-          <p id="event_type-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
+          <p id="event_type-error" class="form-error-msg form-field__error hidden" role="alert"></p>
         </div>
 
-        <!-- Event Date -->
-        <div class="relative">
-          <label for="event_date" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Event Date <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(tentative is fine)</span>
+        <div class="form-field">
+          <label for="event_date" class="form-field__label">
+            Event Date <span class="form-field__optional">(tentative is fine)</span>
           </label>
           <input
             type="date"
             id="event_date"
             name="event_date"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
-          <p class="text-label-sm text-on-surface-muted italic mt-3">
+          <p class="form-field__help">
             Haven't locked the date? Leave blank, I'll talk through options with you.
           </p>
         </div>
 
-        <!-- Location -->
-        <div class="relative">
-          <label for="location" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Venue or Location <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
+        <div class="form-field">
+          <label for="location" class="form-field__label">
+            Venue or Location <span class="form-field__optional">(optional)</span>
           </label>
           <input
             type="text"
             id="location"
             name="location"
             placeholder="Venue name, a city, or 'Not sure yet'"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
-          <p class="text-label-sm text-on-surface-muted italic mt-3">
+          <p class="form-field__help">
             Still deciding? No problem. Light first, location second, I help you pick.
           </p>
         </div>
 
-        <!-- Guest count -->
-        <div class="relative">
-          <label for="guest_count" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Approximate Guest Count <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
+        <div class="form-field">
+          <label for="guest_count" class="form-field__label">
+            Approximate Guest Count <span class="form-field__optional">(optional)</span>
           </label>
           <input
             type="text"
             id="guest_count"
             name="guest_count"
             placeholder="e.g. 50, 100+, or just the two of us"
-            class={inputClass}
-            style={inputStyle}
+            class="form-field__input"
           />
         </div>
       </div>
     </fieldset>
 
-    <!-- ═══ 03 · THE VISION ═══ -->
-    <fieldset>
-      <legend class="w-full mb-10">
-        <div class="flex items-baseline gap-4">
-          <span class="font-serif italic text-heading-md text-on-surface-muted">03</span>
-          <span class="text-label-md text-on-surface tracking-widest uppercase">The Vision</span>
-        </div>
-        <div class="h-px bg-ghost mt-4"></div>
+    <!-- ═══ III · THE VISION ═══ -->
+    <fieldset class="form-section">
+      <legend class="form-section__legend">
+        <span class="form-section__number">III</span>
+        <span class="form-section__title">The Vision</span>
       </legend>
 
-      <div class="space-y-10">
-        <div class="relative">
-          <label for="message" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            Tell Me About Your Day <span class="text-on-surface" aria-hidden="true">*</span>
+      <div class="space-y-8">
+        <div class="form-field">
+          <label for="message" class="form-field__label">
+            Tell Me About Your Day <span class="form-field__required" aria-hidden="true">*</span>
           </label>
           <textarea
             id="message"
@@ -225,21 +206,19 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
             aria-describedby="message-error"
             rows="5"
             placeholder="Your story, the mood you're going for, Pinterest or Instagram links. Anything that helps me understand the day."
-            class={`${inputClass} resize-none`}
-            style={inputStyle}
+            class="form-field__textarea"
           ></textarea>
-          <p id="message-error" class="form-error-msg mt-2 text-label-sm hidden" role="alert" style="color: var(--color-error);"></p>
+          <p id="message-error" class="form-error-msg form-field__error hidden" role="alert"></p>
         </div>
 
-        <div class="relative">
-          <label for="referral" class="block text-label-sm text-on-surface-muted uppercase tracking-widest mb-3">
-            How Did You Find Me? <span class="lowercase tracking-normal font-normal text-on-surface-muted/70">(optional)</span>
+        <div class="form-field">
+          <label for="referral" class="form-field__label">
+            How Did You Find Me? <span class="form-field__optional">(optional)</span>
           </label>
           <select
             id="referral"
             name="referral"
-            class={`${inputClass} appearance-none cursor-pointer`}
-            style={selectArrowStyle}
+            class="form-field__select"
           >
             <option value="" disabled selected>Select one</option>
             {referralOptions.map((opt) => (
@@ -251,17 +230,14 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
     </fieldset>
 
     <!-- Submit -->
-    <div class="pt-2">
-      <div class="h-px bg-ghost mb-10"></div>
-      <button
-        type="submit"
-        class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease w-full sm:w-auto"
-        style="transition-duration: var(--duration-hover);"
-      >
+    <div class="form-submit">
+      <div class="form-submit__break"></div>
+      <button type="submit" class="form-submit__button">
         Send Inquiry
+        <span class="form-submit__arrow" aria-hidden="true">&rarr;</span>
       </button>
-      <p class="text-label-sm text-on-surface-muted italic mt-6">
-        <span class="text-on-surface not-italic" aria-hidden="true">*</span> required · everything else is optional, share what you can
+      <p class="form-submit__note">
+        <span class="form-field__required not-italic" aria-hidden="true">*</span> required · everything else is optional, share what you can
       </p>
     </div>
   </form>
@@ -313,7 +289,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
     const originalBtnText = submitBtn.textContent;
 
     function clearFieldError(field: HTMLElement) {
-      const errMsg = field.closest('.relative')?.querySelector('.form-error-msg') as HTMLElement | null;
+      const errMsg = field.closest('.form-field')?.querySelector('.form-error-msg') as HTMLElement | null;
       if (errMsg) {
         errMsg.textContent = '';
         errMsg.classList.add('hidden');
@@ -322,7 +298,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
     }
 
     function showFieldError(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement, message: string) {
-      const errMsg = field.closest('.relative')?.querySelector('.form-error-msg') as HTMLElement | null;
+      const errMsg = field.closest('.form-field')?.querySelector('.form-error-msg') as HTMLElement | null;
       if (errMsg) {
         errMsg.textContent = message;
         errMsg.classList.remove('hidden');
@@ -398,6 +374,7 @@ const selectArrowStyle = `transition-duration: var(--duration-hover); background
 
     retryBtn?.addEventListener('click', () => {
       errorEl.classList.add('hidden');
+      form.classList.remove('hidden');
     });
   }
 

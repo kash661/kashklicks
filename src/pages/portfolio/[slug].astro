@@ -42,6 +42,18 @@ const categoryLabels: Record<string, string> = {
 const categoryLabel = categoryLabels[entry.category] || entry.category;
 const categorySlug = entry.category === 'pre-wedding' ? 'pre-weddings' : entry.category;
 
+// Singular form for the gallery plate label
+const plateLabels: Record<string, string> = {
+  'pre-wedding': 'Pre-Wedding',
+  'wedding': 'Wedding',
+  'civil-ceremony': 'Civil Ceremony',
+};
+const platePrimary = plateLabels[entry.category] || entry.category;
+const plateLabel = entry.hasFilm ? `${platePrimary} · Film` : platePrimary;
+
+const coupleParts = entry.couple.split(/\s*[+&]\s*/);
+const coupleHasAmp = coupleParts.length === 2 && coupleParts[0] && coupleParts[1];
+
 // SEO
 const pageTitle = `${entry.couple} | ${categoryLabel} Photography`;
 const pageDescription = entry.story?.body?.slice(0, 155) ||
@@ -112,16 +124,20 @@ const remainingImages = galleryImages;
         { label: entry.couple, href: `/portfolio/${entry.slug ?? entry.id}` },
       ]} />
 
-      <div class="mt-[var(--spacing-block)] reveal">
-        <h1 class="text-display-md">{entry.couple}</h1>
-        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-[var(--spacing-element)]">
-          <span class="text-label-md text-on-surface-variant">{entry.location}</span>
-          {formattedDate && (
-            <span class="text-label-md text-on-surface-muted">{formattedDate}</span>
-          )}
-          <span class="text-label-sm text-on-surface-muted">{categoryLabel}</span>
-        </div>
-      </div>
+      <figure class="gallery-plaque gallery-plaque--standalone reveal mt-[var(--spacing-block)]">
+        <figcaption class="gallery-plaque__line">
+          <span class="gallery-plaque__plate">{plateLabel}</span>
+          <span class="gallery-plaque__rule" aria-hidden="true"></span>
+          <span class="gallery-plaque__meta">
+            {entry.location}{formattedDate ? ` · ${formattedDate}` : ''}
+          </span>
+        </figcaption>
+        <h1 class="gallery-plaque__title gallery-plaque__title--display">
+          {coupleHasAmp ? (
+            <>{coupleParts[0]} <em>&amp;</em> {coupleParts[1]}</>
+          ) : entry.couple}
+        </h1>
+      </figure>
     </div>
   </section>
 

@@ -199,9 +199,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
   <!-- Index opener -->
   <section class="pt-[var(--spacing-section)] pb-[var(--spacing-block)]">
     <div class="container-editorial">
-      <h1 class="text-label-md text-on-surface-muted eyebrow-rule reveal">Toronto Wedding Photography Services</h1>
-      <p class="text-display-lg mt-8 max-w-4xl char-reveal">Four ways to be photographed.</p>
-      <p class="text-body-lg text-on-surface-variant mt-8 max-w-xl reveal stagger-2">
+      <p class="text-label-md text-on-surface-muted eyebrow-rule reveal mb-8">Toronto Wedding Photography Services</p>
+      <h1 class="section-title char-reveal">Four ways to be <em>photographed.</em></h1>
+      <p class="section-deck text-on-surface-variant mt-8 measure-wide reveal stagger-2">
         Photography and videography for every chapter of your love story.
       </p>
     </div>
@@ -212,7 +212,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
     <div class="container-editorial">
       <div class="services-scroller flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16" data-services-scroller>
         {services.map((service, i) => (
-          <article class:list={['service-card group flex flex-col h-full pt-8 border-t border-on-surface reveal', `stagger-${i + 1}`]}>
+          <article class:list={['service-card group flex flex-col h-full pt-8 reveal', `stagger-${i + 1}`]} style="border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);">
             <!-- Header: number + meta row. Sale cards swap the meta label
                  for a tappable Limited Offer deep link. -->
             <div class="flex items-start justify-between gap-3">

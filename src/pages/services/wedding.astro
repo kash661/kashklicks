@@ -8,6 +8,7 @@ import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import ContactModal from '../../components/global/ContactModal.astro';
 import GearStrip from '../../components/global/GearStrip.astro';
 import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
 import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
@@ -136,16 +137,16 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </div>
 
   <!-- Hero: Featured review + portrait image -->
-  <section style="padding-top: var(--spacing-block);">
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
     <div class="container-editorial">
-      <div class="grid-editorial items-center" style="min-height: 80vh;">
+      <div class="grid-editorial items-center" style="min-height: 80svh;">
         <!-- Review -->
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Wedding Photography</p>
           <blockquote class="text-display-md" style="max-width: 20ch;">
             "They made us feel like the only two people in the room."
           </blockquote>
-          <p class="text-label-md text-on-surface-variant mt-8">Natalie & Shavar</p>
+          <p class="text-label-md text-on-surface-variant mt-8">Natalie &amp; Shavar</p>
           <p class="text-label-sm text-on-surface-muted">The Glenerin Inn, Mississauga</p>
           <div class="mt-8">
             <ShareButton
@@ -157,29 +158,39 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             />
           </div>
         </div>
-        <!-- Portrait image -->
-        <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 image-caption" data-caption="Natalie & Shavar, Glenerin Inn">
-          <Image
-            src={heroImage}
-            alt="Natalie and Shavar wedding photography at The Glenerin Inn by AD Photography"
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            quality={75}
-            format="avif"
-            class="w-full h-full object-cover parallax-img"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
+        <!-- Portrait image + plaque -->
+        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={heroImage}
+              alt="Natalie and Shavar wedding photography at The Glenerin Inn by AD Photography"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={75}
+              format="avif"
+              class="w-full h-full object-cover parallax-img"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Wedding</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">The Glenerin Inn, Mississauga</span>
+            </div>
+            <p class="gallery-plaque__title">Natalie <em>&amp;</em> Shavar</p>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
   <!-- ═══ SERVICE DESCRIPTION ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left image-caption order-2 lg:order-1 mt-10 lg:mt-0" data-caption="Full-Day Coverage">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
           <Image
             src={weddingServiceImage}
             alt="Toronto wedding couple portrait, full-day coverage by AD Photography"
@@ -189,10 +200,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             loading="lazy"
           />
         </div>
-        <div class="col-span-12 lg:col-span-5 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
-          <p class="text-label-md text-on-surface-muted eyebrow-rule">What I Offer</p>
-          <h1 class="text-display-md char-reveal" style="margin-top: var(--spacing-element);">Toronto Wedding Photography</h1>
-          <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">{weddingService.description}</p>
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">What I Offer</p>
+          <h1 class="section-title char-reveal">Toronto wedding <em>photography.</em></h1>
+          <p class="section-deck text-on-surface-variant mt-8 measure-wide">{weddingService.description}</p>
           <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
           <ul class="space-y-3">
             {weddingService.includes.map((item) => (
@@ -240,35 +251,36 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ WEDDING PACKAGES ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-12 md:col-span-5">
-          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule">Curated Collections</p>
-          <h2 class="text-display-md reveal stagger-1" style="margin-top: var(--spacing-element);">Wedding Packages</h2>
+        <div class="col-span-12 md:col-span-7">
+          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">Curated Collections</p>
+          <h2 class="section-title reveal stagger-1">Wedding <em>packages.</em></h2>
         </div>
-        <div class="col-span-12 md:col-span-6 md:col-start-7 mt-6 md:mt-0">
-          <p class="text-quote text-on-surface-variant reveal stagger-2" style="max-width: 50ch;">
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0">
+          <p class="section-deck text-on-surface-variant reveal stagger-2 measure-wide">
             <span class="md:hidden">Every package includes a free consultation.</span>
             <span class="hidden md:inline">Every package includes a free pre-wedding consultation to walk through your day, your vision, and the moments that matter most to you.</span>
           </p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 reveal stagger-3" style="gap: 2px;">
+      <div class="pricing-grid reveal stagger-3">
         {weddingPackages.map((pkg, i) => (
-          <div>
-            <PricingCard
-              id={pkg.id}
-              name={pkg.name}
-              price={pkg.price}
-              salePrice={pkg.salePrice}
-              description={pkg.description}
-              highlights={pkg.highlights}
-              popular={pkg.popular}
-              featured={!!pkg.salePrice}
-            />
-          </div>
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            salePrice={pkg.salePrice}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.popular}
+            featured={!!pkg.salePrice}
+            ordinal={i}
+            service="wedding"
+            ctaLabel="Enquire"
+          />
         ))}
       </div>
 
@@ -292,27 +304,27 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   </section>
 
   <!-- ═══ GOOD TO KNOW ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="text-center mb-16 reveal">
         <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Before You Book</p>
-        <h2 class="text-display-md">Good to Know</h2>
+        <h2 class="section-title mx-auto">Good to <em>know.</em></h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-surface-container">
-        <div class="bg-background p-10 reveal">
+      <div class="good-to-know-grid">
+        <div class="good-to-know-item reveal">
           <p class="text-heading-md font-serif italic mb-3">Free consultation</p>
           <p class="text-body-md text-on-surface-variant">Included with every booking. No pressure, just a conversation about your vision and what your day looks like.</p>
         </div>
-        <div class="bg-background p-10 reveal stagger-1">
+        <div class="good-to-know-item reveal stagger-1">
           <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
           <p class="text-body-md text-on-surface-variant">I help you find the perfect spot. Light first, location second. One great spot can give you a dozen different looks.</p>
         </div>
-        <div class="bg-background p-10 reveal stagger-2">
+        <div class="good-to-know-item reveal stagger-2">
           <p class="text-heading-md font-serif italic mb-3">GTA travel included</p>
           <p class="text-body-md text-on-surface-variant">No surprise fees. Travel within the Greater Toronto Area is typically covered. Anything beyond, I discuss upfront.</p>
         </div>
-        <div class="bg-background p-10 reveal stagger-3">
+        <div class="good-to-know-item reveal stagger-3">
           <p class="text-heading-md font-serif italic mb-3">Canada-wide</p>
           <p class="text-body-md text-on-surface-variant">Based in Toronto, but I travel for love. I've shot across Ontario and beyond. If you are planning a destination wedding, let's talk.</p>
         </div>
@@ -335,7 +347,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   />
 
   <!-- ═══ FAQ ═══ -->
-  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial max-w-3xl">
       <div class="text-center mb-12 reveal">
         <h2 class="text-heading-lg font-serif italic">Questions you might have</h2>
@@ -356,4 +368,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     imageAlt="Toronto wedding couple portrait by AD Photography"
     imageCaption="Begin Your Journey"
   />
+
+  <ContactModal />
 </BaseLayout>

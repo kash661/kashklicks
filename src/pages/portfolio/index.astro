@@ -141,12 +141,12 @@ const gallerySchema = {
 
       <div class="space-y-24 md:space-y-32">
         {chapters.map((chapter, i) => (
-          <div class="grid-editorial items-center">
+          <a href={chapter.href} class="group grid-editorial items-center">
             <div class:list={[
-              'col-span-12 lg:col-span-6 aspect-[3/4] overflow-hidden hover-zoom image-caption',
+              'col-span-12 lg:col-span-6 aspect-[3/4] overflow-hidden hover-zoom',
               i % 2 === 0 ? 'reveal-left' : 'reveal-right',
               i % 2 === 1 ? 'lg:col-start-7 lg:row-start-1' : '',
-            ]} data-caption={chapter.caption}>
+            ]}>
               <Image
                 src={chapter.image}
                 alt={chapter.alt}
@@ -161,23 +161,21 @@ const gallerySchema = {
               'col-span-12 lg:col-span-5 reveal stagger-2',
               i % 2 === 1 ? 'lg:col-start-1' : 'lg:col-start-8',
             ]}>
-              <p class="text-label-md text-on-surface-muted eyebrow-rule">{chapter.eyebrow}</p>
-              <h3 class="text-display-md mt-4">{chapter.title}</h3>
-              <p class="text-body-lg text-on-surface-variant mt-6 measure-wide">{chapter.description}</p>
-              <div class="mt-10">
-                <a
-                  href={chapter.href}
-                  class="inline-flex items-center gap-3 text-label-md text-on-surface hover:text-on-surface-variant cubic-ease group"
-                  style="transition-duration: var(--duration-hover);"
-                >
+              <figure class="gallery-plaque gallery-plaque--standalone">
+                <figcaption class="gallery-plaque__line">
+                  <span class="gallery-plaque__plate">{chapter.eyebrow}</span>
+                  <span class="gallery-plaque__rule" aria-hidden="true"></span>
+                  <span class="gallery-plaque__meta">{chapter.caption}</span>
+                </figcaption>
+                <h3 class="gallery-plaque__title gallery-plaque__title--display">{chapter.title}</h3>
+                <p class="text-body-lg text-on-surface-variant mt-6 measure-wide">{chapter.description}</p>
+                <span class="gallery-plaque__link mt-10">
                   View Gallery
-                  <svg class="w-4 h-4 cubic-ease group-hover:translate-x-1" style="transition-duration: var(--duration-hover);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
-              </div>
+                  <span class="gallery-plaque__link-arrow" aria-hidden="true">&rarr;</span>
+                </span>
+              </figure>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
@@ -200,21 +198,21 @@ const gallerySchema = {
   </section>
 
   <!-- ═══ RECENT WORK ═══ -->
-  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+  <section class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
-      <div class="grid-editorial items-end mb-16">
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
         <div class="col-span-12 md:col-span-7 reveal">
-          <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule">Every Story</p>
-          <h2 class="text-display-md">Recent work.</h2>
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Every Story</p>
+          <h2 class="section-title">Recent <em>work.</em></h2>
         </div>
-        <div class="col-span-12 md:col-span-4 md:col-start-9 mt-6 md:mt-0 reveal stagger-2">
-          <p class="text-body-md text-on-surface-variant measure-wide">
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0 reveal stagger-2">
+          <p class="section-deck text-on-surface-variant measure-wide">
             A curated selection across every chapter, in order of release.
           </p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
         {allEntries.map((entry, i) => {
           const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
           const img = portfolioImages[imgPath]?.default;
@@ -226,6 +224,7 @@ const gallerySchema = {
                 category={entry.category}
                 coverImage={img}
                 href={`/portfolio/${entry.slug ?? entry.id}`}
+                date={entry.date ?? null}
               />
             </div>
           ) : null;
