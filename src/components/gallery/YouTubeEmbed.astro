@@ -41,9 +41,9 @@ if (url.includes('youtu.be/')) {
   }
 }
 
-const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}${
-  startSeconds > 0 ? `?start=${startSeconds}` : ''
-}`;
+const embedParams = new URLSearchParams({ rel: '0' });
+if (startSeconds > 0) embedParams.set('start', String(startSeconds));
+const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?${embedParams.toString()}`;
 ---
 
 {videoId && (
