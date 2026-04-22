@@ -678,6 +678,24 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
+  <!-- ═══ Microsoft Clarity — segmentation tags for ad-landing recordings ═══
+       Tags every session arriving on this page so you can filter Clarity
+       recordings to paid traffic only. Fires immediately (no gate) so
+       bounced sessions are still tagged and watchable. -->
+  <script is:inline>
+    (function () {
+      if (typeof window.clarity !== 'function') return;
+      var params = new URLSearchParams(window.location.search);
+      window.clarity('set', 'page_category', 'ad-landing');
+      var utmSource = params.get('utm_source');
+      if (utmSource) window.clarity('set', 'utm_source', utmSource);
+      var utmCampaign = params.get('utm_campaign');
+      if (utmCampaign) window.clarity('set', 'utm_campaign', utmCampaign);
+      var utmContent = params.get('utm_content');
+      if (utmContent) window.clarity('set', 'utm_content', utmContent);
+    })();
+  </script>
+
   <!-- ═══ Meta Pixel Lead-event gate (45s dwell OR 60% scroll) ═══
        Rationale: paid-LP best practice per council review 2026-04-17. Firing
        Lead on every arrival trains Meta's algorithm toward form-mashers and
@@ -702,6 +720,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         try { sessionStorage.setItem(FLAG_KEY, 'true'); } catch (_) {}
         if (typeof window.fbq === 'function') {
           window.fbq('trackCustom', 'QualifiedEngagement', { source: source });
+        }
+        if (typeof window.clarity === 'function') {
+          window.clarity('set', 'qualified', source);
         }
       }
 
