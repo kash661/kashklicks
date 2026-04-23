@@ -1,0 +1,133 @@
+---
+// Two-stage inquiry form for /free-engagement-session-toronto/
+// Stage 1: email + optional wedding month. Stage 2: name + city + story.
+// Both stages POST to Google Apps Script independently.
+// No redirect on submit — DOM swap in place, IG WebView safe.
+---
+
+<div id="eof-wrapper" class="eof-wrapper" data-eof-root>
+  <!-- ═══ STAGE 1 ═══ -->
+  <div class="eof-stage eof-stage--1" data-eof-stage="1">
+    <h2 class="eof-heading">Tell me about your wedding.</h2>
+    <p class="eof-subhead">Two quick fields now. Full details on the next step.</p>
+
+    <form
+      id="eof-form-1"
+      class="eof-form"
+      action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
+      method="POST"
+      target="eof-sink-1"
+      novalidate
+    >
+      <!-- Honeypot -->
+      <div class="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label for="eof-website">Don't fill this out</label>
+        <input type="text" id="eof-website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <!-- Stage identity -->
+      <input type="hidden" name="stage" value="1" />
+      <input type="hidden" name="variant" value="free-engagement-session-toronto" />
+
+      <!-- Attribution (filled by JS on submit) -->
+      <input type="hidden" name="page_url" data-eof-page-url />
+      <input type="hidden" name="referrer" data-eof-referrer />
+      <input type="hidden" name="utm_source" data-eof-utm="source" />
+      <input type="hidden" name="utm_medium" data-eof-utm="medium" />
+      <input type="hidden" name="utm_campaign" data-eof-utm="campaign" />
+      <input type="hidden" name="utm_content" data-eof-utm="content" />
+      <input type="hidden" name="utm_term" data-eof-utm="term" />
+      <input type="hidden" name="fbclid" data-eof-utm="fbclid" />
+      <input type="hidden" name="gclid" data-eof-utm="gclid" />
+      <input type="hidden" name="user_agent" data-eof-user-agent />
+      <input type="hidden" name="submitted_at" data-eof-submitted-at />
+
+      <div class="form-field">
+        <label for="eof-email" class="form-field__label">
+          Email <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="email"
+          id="eof-email"
+          name="email"
+          inputmode="email"
+          autocomplete="email"
+          required
+          aria-required="true"
+          class="form-field__input"
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="eof-wedding-month" class="form-field__label">
+          Ceremony month and year (optional)
+        </label>
+        <input
+          type="text"
+          id="eof-wedding-month"
+          name="wedding_month"
+          autocomplete="off"
+          placeholder="e.g. August 2027"
+          class="form-field__input"
+        />
+      </div>
+
+      <button type="submit" class="btn btn--primary eof-submit-1">
+        Continue →
+      </button>
+
+      <p class="eof-fineprint">No spam. I reply within 24 hours, usually sooner.</p>
+
+      <div class="eof-error" data-eof-error-1 role="alert" aria-live="polite" hidden>
+        Something stuck. Email info@kashklicks.ca or DM @kashklicks and we'll sort it.
+      </div>
+    </form>
+
+    <!-- Invisible submit target — iframe fallback for WebView resilience -->
+    <iframe name="eof-sink-1" data-eof-sink-1 style="display:none" aria-hidden="true"></iframe>
+  </div>
+
+  <!-- ═══ STAGE 2 (hidden by default, unhidden by JS on stage 1 success) ═══ -->
+  <div class="eof-stage eof-stage--2" data-eof-stage="2" hidden>
+    <!-- Stage 2 markup added in Task 6 -->
+  </div>
+
+  <!-- ═══ SUCCESS STATE (hidden by default) ═══ -->
+  <div class="eof-stage eof-stage--success" data-eof-stage="success" hidden>
+    <!-- Success markup added in Task 9 -->
+  </div>
+</div>
+
+<style>
+  .eof-wrapper {
+    max-width: 520px;
+    margin-inline: auto;
+  }
+  .eof-heading {
+    font-family: var(--font-serif);
+    font-size: var(--text-display-sm, 2rem);
+    margin-bottom: 0.5rem;
+  }
+  .eof-subhead {
+    color: var(--color-on-surface-variant);
+    margin-bottom: 2rem;
+  }
+  .eof-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .eof-submit-1 {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .eof-fineprint {
+    color: var(--color-on-surface-variant);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  .eof-error {
+    color: var(--color-error, #b00020);
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+  }
+</style>
