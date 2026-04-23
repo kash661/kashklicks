@@ -9,6 +9,9 @@ dist/
 .env
 .env.*
 
+# Clarity API output (analysis artifacts, keep out of repo)
+scripts/clarity-data/
+
 # OS
 .DS_Store
 Thumbs.db
