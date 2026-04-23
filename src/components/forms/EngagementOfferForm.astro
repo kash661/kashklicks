@@ -19,10 +19,10 @@
       target="eof-sink-1"
       novalidate
     >
-      <!-- Honeypot -->
+      <!-- Honeypot — align with ContactForm convention (Apps Script backend filters on _gotcha) -->
       <div class="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
-        <label for="eof-website">Don't fill this out</label>
-        <input type="text" id="eof-website" name="website" tabindex="-1" autocomplete="off" />
+        <label for="eof-gotcha">Don't fill this out</label>
+        <input type="text" id="eof-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
       </div>
 
       <!-- Stage identity -->
