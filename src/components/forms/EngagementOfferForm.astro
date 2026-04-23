@@ -3,6 +3,9 @@
 // Stage 1: email + optional wedding month. Stage 2: name + city + story.
 // Both stages POST to Google Apps Script independently.
 // No redirect on submit — DOM swap in place, IG WebView safe.
+
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec";
 ---
 
 <div id="eof-wrapper" class="eof-wrapper" data-eof-root>
@@ -14,7 +17,7 @@
     <form
       id="eof-form-1"
       class="eof-form"
-      action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
+      action={APPS_SCRIPT_URL}
       method="POST"
       target="eof-sink-1"
       novalidate
@@ -94,7 +97,7 @@
     <form
       id="eof-form-2"
       class="eof-form"
-      action="https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec"
+      action={APPS_SCRIPT_URL}
       method="POST"
       target="eof-sink-2"
       novalidate
@@ -202,7 +205,8 @@
     display: grid;
     gap: 1.5rem;
   }
-  .eof-submit-1 {
+  .eof-submit-1,
+  .eof-submit-2 {
     width: 100%;
     margin-top: 0.5rem;
   }
