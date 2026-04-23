@@ -316,8 +316,10 @@ const APPS_SCRIPT_URL =
     // Carry stage-1 values into stage-2 hidden inputs
     const emailInput = stage1.querySelector('#eof-email');
     const monthInput = stage1.querySelector('#eof-wedding-month');
-    stage2.querySelector('[data-eof-s2-email]').value = emailInput ? emailInput.value : '';
-    stage2.querySelector('[data-eof-s2-wedding-month]').value = monthInput ? monthInput.value : '';
+    const s2Email = stage2.querySelector('[data-eof-s2-email]');
+    const s2Month = stage2.querySelector('[data-eof-s2-wedding-month]');
+    if (s2Email) s2Email.value = emailInput ? emailInput.value : '';
+    if (s2Month) s2Month.value = monthInput ? monthInput.value : '';
 
     // Meta Pixel Lead (fire BEFORE DOM swap — pixel calls are synchronous)
     if (typeof window.fbq === 'function') {
@@ -379,7 +381,7 @@ const APPS_SCRIPT_URL =
         currency: 'CAD',
       });
     }
-    // Google Ads generate_lead (conversion ID wired in Task 21)
+    // Google Ads generate_lead (conversion ID wired in Task 18)
     if (typeof window.gtag === 'function' && window.EOF_GADS_CONVERSION_ID) {
       window.gtag('event', 'conversion', {
         send_to: window.EOF_GADS_CONVERSION_ID,
