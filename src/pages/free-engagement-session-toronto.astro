@@ -7,6 +7,20 @@ import { Image } from 'astro:assets';
 import packages from '../data/packages.json';
 import faqData from '../data/faq.json';
 
+import heroImage from '../assets/images/intimate-wedding/hero-DSCF4845.jpg';
+
+const noraAliCover = (await import('../assets/images/portfolio/nora-ali-cover.jpg')).default;
+const alexAzizCover = (await import('../assets/images/portfolio/alex-aziz-cover.jpg')).default;
+const natalieShavarCover = (await import('../assets/images/portfolio/natalie-shavar-cover.jpg')).default;
+const anushkaAnthonyCover = (await import('../assets/images/portfolio/anushka-anthony/21.jpg')).default;
+
+const torontoWork = [
+  { couple: 'Nora + Ali', venue: 'Backyard Wedding, Toronto', image: noraAliCover },
+  { couple: 'Alex + Aziz', venue: 'TD Centre & Commerce Court, Toronto', image: alexAzizCover },
+  { couple: 'Natalie + Shavar', venue: 'The Glenerin Inn, Mississauga', image: natalieShavarCover },
+  { couple: 'Anushka + Anthony', venue: 'Toronto City Hall', image: anushkaAnthonyCover },
+];
+
 // Filter FAQs scoped to this page via the `pages` field
 const lpFaq = faqData.filter((q: any) =>
   Array.isArray(q.pages) && q.pages.includes('free-engagement-session-toronto')
@@ -35,13 +49,137 @@ const meta = {
   robots={meta.robots}
 >
   <main class="fe-main">
-    <!-- Section 1: Hero — Task 9 -->
-    <!-- Section 2: Portfolio strip — Task 10 -->
-    <!-- Section 3: How the gift works — Task 11 -->
-    <!-- Section 5: Good to know — Task 13 -->
-    <!-- Section 6: FAQ — Task 14 -->
-    <!-- Section 7+8: Form (two-stage inside a single section) — Task 15 -->
-    <!-- Section 9: Footer band — Task 16 -->
+    <section class="fe-hero" aria-labelledby="fe-hero-heading">
+      <div class="fe-hero__image-wrap">
+        <Image
+          src={heroImage}
+          alt="Toronto engagement session"
+          class="fe-hero__image"
+          widths={[640, 960, 1280, 1920]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          format="avif"
+        />
+      </div>
+      <div class="fe-hero__content">
+        <p class="fe-hero__overline">FOR TORONTO COUPLES GETTING MARRIED IN 2026 OR 2027</p>
+        <h1 id="fe-hero-heading" class="fe-hero__headline">
+          Your love story,<br />on me.
+        </h1>
+        <p class="fe-hero__subhead">
+          Book any wedding collection for 2026 or 2027.<br />
+          I'll photograph your engagement session free, a gift to start the story.
+        </p>
+        <a href="#how-the-gift-works" class="btn btn--primary fe-hero__cta">
+          See how it works →
+        </a>
+        <a href="https://instagram.com/kashklicks" target="_blank" rel="noopener" class="fe-hero__cta-secondary">
+          Or message me on Instagram →
+        </a>
+      </div>
+    </section>
+    <section class="fe-work" aria-label="Recent Toronto weddings" id="work">
+      <div class="fe-work__grid">
+        {torontoWork.map((item) => (
+          <figure class="fe-work__item">
+            <Image
+              src={item.image}
+              alt={`${item.couple}, ${item.venue}`}
+              class="fe-work__image"
+              widths={[400, 640, 960]}
+              sizes="(min-width: 768px) 33vw, 100vw"
+              loading="lazy"
+              format="avif"
+            />
+            <figcaption class="fe-work__caption">
+              {item.couple}, {item.venue}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+    <section class="fe-how" id="how-the-gift-works" aria-labelledby="fe-how-heading">
+      <h2 id="fe-how-heading" class="fe-how__heading">How the gift works</h2>
+      <ol class="fe-how__steps">
+        <li class="fe-how__step">
+          <p class="fe-how__step-label">Step 1: Book your wedding</p>
+          <p class="fe-how__step-body">
+            Any collection. The Essentials at $1,400 to The Complete Story at $3,800.
+            Photo only or photo plus film.
+          </p>
+        </li>
+        <li class="fe-how__step">
+          <p class="fe-how__step-label">Step 2: I photograph your love story first</p>
+          <p class="fe-how__step-body">
+            Two hours, one Toronto location, fifty plus edited photos.
+            Love Story Mini on The Essentials, Love Story + Film on The Full Day
+            and The Complete Story. Either way, on me.
+          </p>
+        </li>
+        <li class="fe-how__step">
+          <p class="fe-how__step-label">Step 3: Then we shoot your wedding day</p>
+          <p class="fe-how__step-body">
+            Familiar with you, familiar with how you move together.
+            Your wedding photos come out better because of the morning we had.
+          </p>
+        </li>
+      </ol>
+    </section>
+    <section class="fe-gtk" id="good-to-know" aria-labelledby="fe-gtk-heading">
+      <h2 id="fe-gtk-heading" class="fe-gtk__heading">Good to know</h2>
+      <div class="fe-gtk__grid">
+        <div class="fe-gtk__col">
+          <h3 class="fe-gtk__col-title">Coverage scope</h3>
+          <p class="fe-gtk__col-body">
+            One wedding per weekend. Solo shooter. Church, civil, backyard,
+            intimate venues. Photo and film available depending on collection.
+          </p>
+        </div>
+        <div class="fe-gtk__col">
+          <h3 class="fe-gtk__col-title">Delivery</h3>
+          <p class="fe-gtk__col-body">
+            Wedding: one to two months. Engagement session: one week.
+            Priority two-to-three week wedding delivery +$500.
+          </p>
+        </div>
+        <div class="fe-gtk__col">
+          <h3 class="fe-gtk__col-title">Logistics</h3>
+          <p class="fe-gtk__col-body">
+            I'm based in Mississauga, shoot across the GTA.
+            I travel to you for the engagement session inside the GTA.
+            Outside the GTA, let's talk.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="fe-faq" id="faq" aria-labelledby="fe-faq-heading">
+      <h2 id="fe-faq-heading" class="fe-faq__heading">Frequently asked</h2>
+      <FAQAccordion items={lpFaq} defaultOpen />
+    </section>
+    <section class="fe-pricing-anchor" aria-label="Collections">
+      <p class="fe-pricing-anchor__text">
+        Collections begin at ${minPrice.toLocaleString('en-CA')} for The Essentials and go to
+        ${maxPrice.toLocaleString('en-CA')} for The Complete Story. Every wedding collection
+        includes your engagement session as a gift.
+      </p>
+      <a href="/services/wedding/" class="fe-pricing-anchor__link">See the full collections →</a>
+    </section>
+
+    <section class="fe-inquire" id="inquire" aria-label="Start the conversation">
+      <EngagementOfferForm />
+    </section>
+    <section class="fe-contact-band" aria-label="Other ways to reach me">
+      <p class="fe-contact-band__text">Prefer a DM or email?</p>
+      <div class="fe-contact-band__links">
+        <a href="https://instagram.com/kashklicks" target="_blank" rel="noopener" class="fe-contact-band__link">
+          @kashklicks on Instagram
+        </a>
+        <a href="mailto:info@kashklicks.ca" class="fe-contact-band__link">
+          info@kashklicks.ca
+        </a>
+      </div>
+    </section>
   </main>
 </BaseLayout>
 
@@ -50,4 +188,277 @@ const meta = {
     display: flex;
     flex-direction: column;
   }
+  .fe-hero {
+    position: relative;
+    display: grid;
+    min-height: 80vh;
+    grid-template-columns: 1fr;
+    align-items: end;
+    padding: 4rem 1.5rem 3rem;
+    color: #fff;
+    isolation: isolate;
+  }
+  .fe-hero__image-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .fe-hero__image-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+  }
+  .fe-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fe-hero__content {
+    max-width: 680px;
+  }
+  .fe-hero__overline {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+  }
+  .fe-hero__headline {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 7vw, 4.75rem);
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
+  }
+  .fe-hero__subhead {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    max-width: 52ch;
+  }
+  .fe-hero__cta {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+  .fe-hero__cta-secondary {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    color: inherit;
+  }
+  @media (min-width: 768px) {
+    .fe-hero {
+      padding: 6rem 4rem 5rem;
+    }
+  }
+  .fe-work {
+    padding: 4rem 1.5rem;
+  }
+  .fe-work__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+  .fe-work__item {
+    margin: 0;
+  }
+  .fe-work__image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+  .fe-work__caption {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-top: 0.75rem;
+    color: var(--color-on-surface-variant);
+  }
+  @media (min-width: 768px) {
+    .fe-work {
+      padding: 6rem 4rem;
+    }
+    .fe-work__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  .fe-how {
+    padding: 4rem 1.5rem;
+    max-width: 780px;
+    margin-inline: auto;
+  }
+  .fe-how__heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 2.5rem;
+  }
+  .fe-how__steps {
+    display: grid;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .fe-how__step-label {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+  }
+  .fe-how__step-body {
+    font-family: var(--font-sans);
+    color: var(--color-on-surface-variant);
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  @media (min-width: 768px) {
+    .fe-how {
+      padding: 6rem 2rem;
+    }
+  }
+  .fe-gtk {
+    padding: 4rem 1.5rem;
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+  .fe-gtk__heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 2.5rem;
+  }
+  .fe-gtk__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+  .fe-gtk__col-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .fe-gtk__col-body {
+    font-family: var(--font-sans);
+    color: var(--color-on-surface-variant);
+    line-height: 1.55;
+    max-width: 40ch;
+  }
+  @media (min-width: 768px) {
+    .fe-gtk { padding: 6rem 2rem; }
+    .fe-gtk__grid { grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+  }
+  .fe-faq {
+    padding: 4rem 1.5rem;
+    max-width: 780px;
+    margin-inline: auto;
+  }
+  .fe-faq__heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 2rem;
+  }
+  @media (min-width: 768px) {
+    .fe-faq { padding: 6rem 2rem; }
+  }
+  .fe-pricing-anchor {
+    padding: 3rem 1.5rem 1rem;
+    max-width: 780px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .fe-pricing-anchor__text {
+    font-family: var(--font-sans);
+    color: var(--color-on-surface-variant);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+  .fe-pricing-anchor__link {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    text-decoration: underline;
+  }
+  .fe-inquire {
+    padding: 3rem 1.5rem 5rem;
+  }
+  @media (min-width: 768px) {
+    .fe-inquire { padding: 4rem 2rem 7rem; }
+  }
+  .fe-contact-band {
+    padding: 3rem 1.5rem 5rem;
+    text-align: center;
+    border-top: 1px solid var(--color-divider, rgba(0,0,0,0.08));
+  }
+  .fe-contact-band__text {
+    font-family: var(--font-sans);
+    color: var(--color-on-surface-variant);
+    margin-bottom: 1rem;
+  }
+  .fe-contact-band__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .fe-contact-band__link {
+    text-decoration: underline;
+  }
+  @media (min-width: 640px) {
+    .fe-contact-band__links { flex-direction: row; gap: 2rem; justify-content: center; }
+  }
 </style>
+
+<script is:inline>
+(function () {
+  // Google Ads conversion ID — set when the Google Ads conversion action is created (Task 18 / Runbook R1).
+  // Leave as null until the AW-…/… ID is available; the form JS guards on truthy.
+  window.EOF_GADS_CONVERSION_ID = null;
+
+  if (typeof window.fbq !== 'function' && typeof window.clarity !== 'function') return;
+
+  // Set Clarity variant tag on every pageview
+  if (typeof window.clarity === 'function') {
+    window.clarity('set', 'variant', 'free-engagement-session-toronto');
+  }
+
+  let firedViewContent = false;
+  let firedQualifiedEngagement = false;
+
+  function onScroll() {
+    const h = document.documentElement;
+    const total = h.scrollHeight - h.clientHeight;
+    if (total <= 0) return;
+    const pct = h.scrollTop / total;
+
+    if (!firedViewContent && pct >= 0.25) {
+      firedViewContent = true;
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'ViewContent', {
+          content_name: 'free-engagement-session-toronto',
+          content_category: 'wedding-lp',
+        });
+      }
+    }
+    if (!firedQualifiedEngagement && pct >= 0.40) {
+      firedQualifiedEngagement = true;
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'QualifiedEngagement', { source: 'scroll' });
+      }
+    }
+    if (firedViewContent && firedQualifiedEngagement) {
+      window.removeEventListener('scroll', onScroll);
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+</script>
