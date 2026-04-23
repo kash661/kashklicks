@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EngagementOfferForm from '../components/forms/EngagementOfferForm.astro';
+import FAQAccordion from '../components/ui/FAQAccordion.astro';
+import { Image } from 'astro:assets';
+
+import packages from '../data/packages.json';
+import faqData from '../data/faq.json';
+
+// Filter FAQs scoped to this page via the `pages` field
+const lpFaq = faqData.filter((q: any) =>
+  Array.isArray(q.pages) && q.pages.includes('free-engagement-session-toronto')
+);
+
+// Qualifying wedding tiers (for soft pricing block)
+const qualifyingTiers = packages
+  .filter((p: any) => p.includesEngagementSession === true)
+  .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
+
+const minPrice = Math.min(...qualifyingTiers.map((p: any) => p.price));
+const maxPrice = Math.max(...qualifyingTiers.map((p: any) => p.price));
+
+const meta = {
+  title: 'Free Engagement Session | Toronto Wedding Photographer | AD Photography',
+  description: "For 2026 and 2027 Toronto couples. Book any wedding collection, I'll photograph your engagement session free. Solo editorial photographer, photo and film.",
+  canonicalUrl: 'https://kashklicks.ca/free-engagement-session-toronto/',
+  robots: 'noindex, follow',
+};
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  canonicalUrl={meta.canonicalUrl}
+  robots={meta.robots}
+>
+  <main class="fe-main">
+    <!-- Section 1: Hero — Task 9 -->
+    <!-- Section 2: Portfolio strip — Task 10 -->
+    <!-- Section 3: How the gift works — Task 11 -->
+    <!-- Section 5: Good to know — Task 13 -->
+    <!-- Section 6: FAQ — Task 14 -->
+    <!-- Section 7+8: Form (two-stage inside a single section) — Task 15 -->
+    <!-- Section 9: Footer band — Task 16 -->
+  </main>
+</BaseLayout>
+
+<style>
+  .fe-main {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
