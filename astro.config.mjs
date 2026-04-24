@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://kashklicks.ca',
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   vite: {
     plugins: [tailwindcss()],
     server: {
@@ -64,10 +64,7 @@ export default defineConfig({
     enabled: false,
   },
   prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'viewport',
-  },
-  experimental: {
-    clientPrerender: true,
+    prefetchAll: false,
+    defaultStrategy: 'hover',
   },
 });
