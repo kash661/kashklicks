@@ -15,6 +15,7 @@ interface Props {
   ogType?: 'website' | 'article';
   canonicalUrl?: string;
   noIndex?: boolean;
+  robots?: string;
   jsonLd?: Record<string, any> | Record<string, any>[];
   transparentHeader?: boolean;
   showSplash?: boolean;
@@ -33,6 +34,7 @@ const {
   ogType,
   canonicalUrl,
   noIndex,
+  robots,
   jsonLd,
   transparentHeader = false,
   showSplash = false,
@@ -106,71 +108,70 @@ if (site.phone) {
       article={article}
     />
 
+    {robots && <meta name="robots" content={robots} />}
+
     <!-- Organization Schema (site-wide) -->
     <JsonLd schema={organizationSchema} />
 
     <!-- Page-specific JSON-LD -->
     {jsonLd && <JsonLd schema={jsonLd} />}
 
-    <!-- ═══ Meta Pixel — Kash's marketing data (1349154153697983) ═══
-         PageView fires on initial load + on every client-side navigation
-         (astro:after-swap). Custom QualifiedEngagement + gated Lead
-         events are fired by the intimate-wedding-toronto LP. -->
+    <!-- ═══ Analytics & ad pixels — gated to production host only ═══
+         Dev servers (localhost, *.trycloudflare.com, *.pages.dev previews)
+         would otherwise pollute Clarity, Meta Pixel, and Google Ads with
+         test traffic. The guard below skips all three tags off-host. -->
     <script is:inline>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1349154153697983');
-      fbq('track', 'PageView');
-      document.addEventListener('astro:after-swap', function () {
-        if (typeof window.fbq === 'function') { window.fbq('track', 'PageView'); }
-      });
+      (function () {
+        var h = (location.hostname || '').toLowerCase();
+        var isProd = h === 'kashklicks.ca' || h === 'www.kashklicks.ca';
+        if (!isProd) return;
+
+        // Meta Pixel (1349154153697983)
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1349154153697983');
+        fbq('track', 'PageView');
+        document.addEventListener('astro:after-swap', function () {
+          if (typeof window.fbq === 'function') { window.fbq('track', 'PageView'); }
+        });
+
+        // Google Ads / gtag (AW-18099849669)
+        var g = document.createElement('script');
+        g.async = true;
+        g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18099849669';
+        document.head.appendChild(g);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'AW-18099849669');
+        document.addEventListener('astro:after-swap', function () {
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'page_view', {
+              page_path: window.location.pathname + window.location.search
+            });
+          }
+        });
+
+        // Microsoft Clarity (wfh1khoxjx)
+        (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wfh1khoxjx");
+      })();
     </script>
     <noscript>
       <img height="1" width="1" style="display:none" alt=""
         src="https://www.facebook.com/tr?id=1349154153697983&ev=PageView&noscript=1" />
     </noscript>
-    <!-- End Meta Pixel -->
-
-    <!-- ═══ Google Ads / Global Site Tag (AW-18099849669) ═══
-         Base tag for conversion tracking. Page view auto-fires on initial
-         load. For client-side Astro navigations, we manually fire page_view
-         on astro:after-swap. Conversion events fire from the LP inquiry
-         form on qualified engagement. -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18099849669"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', 'AW-18099849669');
-      document.addEventListener('astro:after-swap', function () {
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'page_view', {
-            page_path: window.location.pathname + window.location.search
-          });
-        }
-      });
-    </script>
-    <!-- End Google Tag -->
-
-    <!-- ═══ Microsoft Clarity — heatmaps + session recordings (wfh1khoxjx) ═══
-         Fires immediately on every page load. Form inputs are masked by
-         default. Custom tags (page_category, utm_source) are set by individual
-         pages to segment recordings — see intimate-wedding-toronto.astro. -->
-    <script is:inline>
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "wfh1khoxjx");
-    </script>
-    <!-- End Microsoft Clarity -->
+    <!-- End analytics block -->
   </head>
   <body class="min-h-screen flex flex-col bg-background text-on-surface">
     <div class="scroll-progress" aria-hidden="true"></div>

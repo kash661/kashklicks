@@ -153,7 +153,7 @@
     "film": false,
     "highlights": [
       "Up to 6 hours coverage",
-      "Love Story Mini engagement session included ($350 value)",
+      "Engagement session included (Love Story Mini, 2 hrs, 50+ photos)",
       "Unlimited edited photos (200+)",
       "Getting ready, ceremony & reception",
       "Couple portraits on the day",
@@ -167,6 +167,7 @@
       "Priority 2-3 week delivery available +$500"
     ],
     "popular": false,
+    "includesEngagementSession": true,
     "order": 10
   },
   {
@@ -185,7 +186,7 @@
       "Unlimited edited photos (400+)",
       "Sneak peek delivered within 24 hours",
       "Second photographer for ceremony or reception (your choice)",
-      "Love Story + Film session included",
+      "Engagement session included (Love Story + Film, 2 hrs, photo + video)",
       "Private online gallery",
       "2 to 3 month delivery",
       "Four cameras, four looks: Sony editorial, Fuji film sim, vintage Canon, handheld compact",
@@ -195,6 +196,7 @@
       "Priority 2-3 week delivery available +$500"
     ],
     "popular": true,
+    "includesEngagementSession": true,
     "order": 11
   },
   {
@@ -212,7 +214,7 @@
       "Unlimited edited photos (600+)",
       "Sneak peek delivered within 24 hours",
       "Second photographer for ceremony or reception (your choice)",
-      "Love Story + Film session included",
+      "Engagement session included (Love Story + Film, 2 hrs, photo + video)",
       "Private online gallery",
       "2 to 3 month delivery",
       "Four cameras, four looks: Sony editorial, Fuji film sim, vintage Canon, handheld compact",
@@ -222,6 +224,7 @@
       "Priority 2-3 week delivery available +$500"
     ],
     "popular": false,
+    "includesEngagementSession": true,
     "order": 12
   },
   {
