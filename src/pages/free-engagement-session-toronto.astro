@@ -68,9 +68,33 @@ const meta = {
   canonicalUrl={meta.canonicalUrl}
   robots={meta.robots}
 >
-  <!-- flatpickr · Digital Curator themed calendar (matches intimate-wedding LP) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" />
-  <script is:inline src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+  <!-- flatpickr · lazy-loaded off critical path (IG webview perf).
+       CSS + JS are injected on requestIdleCallback OR on first date-field focus,
+       whichever comes first. Keeps head parse unblocked and LCP clean. -->
+  <script is:inline>
+    (function () {
+      var FP_CSS = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css';
+      var FP_JS  = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13';
+      var loaded = false;
+      function load() {
+        if (loaded) return; loaded = true;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet'; l.href = FP_CSS;
+        document.head.appendChild(l);
+        var s = document.createElement('script');
+        s.src = FP_JS; s.async = true;
+        document.head.appendChild(s);
+      }
+      // Eager: idle callback after first paint
+      var onIdle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1200); };
+      onIdle(load);
+      // Safety: if user focuses the date field before idle fires
+      document.addEventListener('focusin', function (e) {
+        var t = e.target;
+        if (t && t.matches && t.matches('input[name="wedding_date"], [data-eof-date]')) load();
+      }, { passive: true });
+    })();
+  </script>
   <style is:global>
     .flatpickr-calendar {
       border-radius: 0 !important;
@@ -166,13 +190,14 @@ const meta = {
           <Image
             src={heroImage}
             alt="Bride in a sweeping red gown looks back at her partner as they walk down the stone steps of a Toronto landmark, photographed by AD Photography"
-            widths={[640, 960, 1280, 1600]}
+            widths={[480, 768, 1080, 1440]}
             sizes="(max-width: 768px) 100vw, 50vw"
-            quality={78}
+            quality={65}
             format="avif"
             class="w-full h-full object-cover parallax-img"
             loading="eager"
             fetchpriority="high"
+            decoding="sync"
           />
         </div>
       </div>
