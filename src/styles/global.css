@@ -964,6 +964,9 @@ h1, h2, h3, h4, h5, h6 {
 .form-field__select,
 .form-field__textarea {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: var(--color-surface);
   border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 28%, transparent);
   padding: 0.875rem 1rem;
@@ -974,6 +977,28 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0;
   transition: border-color var(--duration-hover) var(--ease-gallery),
               background-color var(--duration-hover) var(--ease-gallery);
+}
+
+/* Native date input overrides — iOS Safari adds an implicit min-width
+   sized for "YYYY-MM-DD" plus spinner UI, which can overflow narrow
+   containers. Force shrinkable width and neutralize the appearance so
+   our editorial border + padding own the rendering. */
+.form-field__input[type="date"],
+.form-field__input[type="time"],
+.form-field__input[type="datetime-local"] {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+}
+/* Flatpickr alt input · same treatment so the formatted "April 24, 2026"
+   string never forces width past the form container. */
+.form-field__input.flatpickr-input,
+.form-field__input.flatpickr-mobile,
+input.flatpickr-input + input.form-field__input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .form-field__input::placeholder,

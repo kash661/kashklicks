@@ -4,8 +4,10 @@
 // Both stages POST to Google Apps Script independently.
 // No redirect on submit — DOM swap in place, IG WebView safe.
 
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec";
+// Same-origin proxy. The Cloudflare Worker forwards to Apps Script
+// server-side, sidestepping IG/FB in-app webviews silently dropping
+// cross-origin POSTs to script.google.com.
+const APPS_SCRIPT_URL = "/api/engagement-lead";
 ---
 
 <div id="eof-wrapper" class="eof-wrapper" data-eof-root>

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EngagementOfferForm from '../components/forms/EngagementOfferForm.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import Button from '../components/ui/Button.astro';
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 
 import packages from '../data/packages.json';
 import faqData from '../data/faq.json';
@@ -187,13 +187,14 @@ const meta = {
 
         <!-- Cover plate -->
         <div class="col-span-12 md:col-span-6 md:col-start-7 aspect-[3/4] overflow-hidden reveal-right stagger-2 hover-zoom md:mt-0 fe-hero-plate">
-          <Image
+          <Picture
             src={heroImage}
             alt="Bride in a sweeping red gown looks back at her partner as they walk down the stone steps of a Toronto landmark, photographed by AD Photography"
             widths={[480, 768, 1080, 1440]}
             sizes="(max-width: 768px) 100vw, 50vw"
             quality={65}
-            format="avif"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
             class="w-full h-full object-cover parallax-img"
             loading="eager"
             fetchpriority="high"
@@ -932,6 +933,22 @@ const meta = {
     }
 
     @media (max-width: 768px) {
+      /* ─── Overflow guards · prevent any child from forcing page wider
+             than viewport on narrow phones (≤360px) ─────────────────── */
+      #lp-hero,
+      .fe-hero-grid,
+      .fe-hero-copy,
+      .fe-hero-plate {
+        min-width: 0;
+        max-width: 100%;
+      }
+      .fe-hero-copy .text-display-lg,
+      .fe-hero-copy .text-body-lg,
+      .fe-hero-copy p {
+        max-width: 100%;
+        overflow-wrap: break-word;
+      }
+
       /* ─── Hero · image leads on mobile, copy follows ───────────────── */
       .fe-hero-grid {
         gap: 2rem;
@@ -945,8 +962,8 @@ const meta = {
         order: 2;
       }
       .fe-hero-copy .text-display-lg {
-        font-size: clamp(2.5rem, 11vw, 3.75rem);
-        max-width: 18ch;
+        font-size: clamp(2rem, 9.5vw, 3.5rem);
+        max-width: 100%;
       }
       .fe-hero-copy .text-body-lg {
         font-size: 1.0625rem;
@@ -1087,12 +1104,36 @@ const meta = {
     @media (max-width: 480px) {
       /* Phones · tighter still */
       .fe-hero-copy .text-display-lg {
-        font-size: clamp(2.25rem, 12vw, 3.25rem);
+        font-size: clamp(1.875rem, 10vw, 2.75rem);
       }
       .fe-colophon__tagline {
         font-size: clamp(1.375rem, 7vw, 2rem);
       }
       .breaker-marquee__set { font-size: clamp(1.375rem, 9vw, 2rem); }
+      /* Tighten container padding on very narrow viewports */
+      .container-editorial,
+      .grid-editorial {
+        padding-inline: 1.25rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      /* Smallest phones (e.g., 320px) · prevent any clipping */
+      .fe-hero-copy .text-display-lg {
+        font-size: clamp(1.625rem, 9vw, 2.25rem);
+        letter-spacing: -0.015em;
+      }
+      .fe-hero-copy .text-body-lg {
+        font-size: 1rem;
+      }
+      .container-editorial,
+      .grid-editorial {
+        padding-inline: 1rem;
+      }
+      /* Allow long words like "engagement" to wrap if they ever exceed viewport */
+      .fe-hero-copy .char-reveal-word {
+        white-space: normal;
+      }
     }
   </style>
 
