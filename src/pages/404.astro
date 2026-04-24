@@ -30,4 +30,27 @@ import Button from '../components/ui/Button.astro';
       </ul>
     </nav>
   </section>
+
+  <!-- Tag 404 sessions in Clarity with the attempted path + referrer, so
+       future not-found traffic can be filtered and the source URLs
+       identified. Also fires gtag + fbq custom events for cross-reference. -->
+  <script is:inline>
+    (function () {
+      var path = (location.pathname || '') + (location.search || '');
+      if (typeof window.clarity === 'function') {
+        window.clarity('set', 'page_type', '404');
+        window.clarity('set', 'not_found_path', path);
+        if (document.referrer) window.clarity('set', 'not_found_referrer', document.referrer);
+      }
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'page_not_found', {
+          not_found_path: path,
+          referrer: document.referrer || '',
+        });
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'PageNotFound', { path: path });
+      }
+    })();
+  </script>
 </BaseLayout>

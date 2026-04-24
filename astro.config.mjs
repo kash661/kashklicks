@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://kashklicks.ca',
+  trailingSlash: 'always',
   vite: {
     plugins: [tailwindcss()],
     server: {

@@ -1,2 +1,11 @@
-/galleries/clients     /portfolio       301
-/guides/location-guide /location-guide  301
+/galleries/clients     /portfolio/       301
+/guides/location-guide /location-guide/  301
+
+# Defensive redirects for common missing-prefix typos seen in Clarity
+# (users land on /pre-wedding instead of /services/pre-wedding/, etc.)
+/pre-wedding           /services/pre-wedding/      301
+/pre-weddings          /services/pre-wedding/      301
+/wedding               /services/wedding/          301
+/weddings              /portfolio/weddings/        301
+/civil-ceremony        /services/civil-ceremony/   301
+/celebrations          /services/celebrations/     301
