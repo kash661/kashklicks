@@ -2,71 +2,117 @@
   {
     "question": "Can I get the raw files?",
     "answer": "Yes. Raw photos are $120, raw video is $250. Delivered digitally with your edited gallery.",
-    "services": ["wedding"]
+    "services": [
+      "wedding"
+    ]
   },
   {
     "question": "Can I get the raw files?",
     "answer": "Yes. Raw photos are $50, raw video is $100. Delivered digitally with your edited gallery.",
-    "services": ["pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "Are there travel fees?",
     "answer": "GTA is typically included. Anything beyond, I discuss upfront. No surprises.",
-    "services": ["wedding"]
+    "services": [
+      "wedding"
+    ]
   },
   {
     "question": "Are there travel fees?",
     "answer": "Yes, travel fees apply based on location. I will discuss this upfront during your consultation so there are no surprises.",
-    "services": ["pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "When is the best time to shoot?",
     "answer": "Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too. I will guide you on timing.",
-    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "wedding",
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "Do you help pick a location?",
     "answer": "Yes. Light first, location second. One great spot can give you a dozen different looks. Check out my location guide for ideas.",
-    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "wedding",
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "Will you help us with posing?",
     "answer": "I prompt, not pose. Natural movements, real reactions. The photos end up looking and feeling like you.",
-    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "wedding",
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "What if it rains?",
     "answer": "I still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all I ask.",
-    "services": ["wedding", "pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "wedding",
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "How long until I get my photos?",
     "answer": "Sneak peek within days. Full gallery in 2 to 3 months. Priority 2-3 week delivery is available for an additional fee.",
-    "services": ["wedding"]
+    "services": [
+      "wedding"
+    ]
   },
   {
     "question": "How long until I get my photos?",
     "answer": "Sneak peek within days. Full gallery in 1 to 3 weeks depending on the package.",
-    "services": ["pre-wedding", "civil-ceremony", "celebrations"]
+    "services": [
+      "pre-wedding",
+      "civil-ceremony",
+      "celebrations"
+    ]
   },
   {
     "question": "Is the engagement session really free?",
     "answer": "Yes. It's included when you book any 2026 or 2027 wedding collection with me, from The Essentials ($1,400) to The Complete Story ($3,800). Normally the session is $350 on its own.",
-    "pages": ["free-engagement-session-toronto"]
-  },
-  {
-    "question": "What if we book and the wedding gets cancelled?",
-    "answer": "The engagement session is delivered once the wedding retainer is paid. If you cancel the wedding after we've done the engagement session, $350 (the session's list value) is excluded from the refundable amount per the cancellation policy. If you cancel before the engagement session, nothing changes.",
-    "pages": ["free-engagement-session-toronto"]
-  },
-  {
-    "question": "Can the engagement session happen outside Toronto?",
-    "answer": "Inside the GTA, yes, at no extra cost. Outside the GTA, I charge travel at cost. Destination engagements we can talk through.",
-    "pages": ["free-engagement-session-toronto"]
+    "pages": [
+      "free-engagement-session-toronto"
+    ]
   },
   {
     "question": "Do we have to do the engagement session? What if we don't want one?",
     "answer": "It's optional. If you'd rather skip it, you can. I'd rather you have it because it makes your wedding day photos better, but the offer is yours to take or leave.",
-    "pages": ["free-engagement-session-toronto"]
+    "pages": [
+      "free-engagement-session-toronto"
+    ]
+  },
+  {
+    "question": "Can the engagement session happen outside Toronto?",
+    "answer": "Inside the GTA, yes, at no extra cost. Outside the GTA, I charge travel at cost. Destination engagements we can talk through.",
+    "pages": [
+      "free-engagement-session-toronto"
+    ]
+  },
+  {
+    "question": "What if the engagement photos aren't a fit?",
+    "answer": "Walk away. Your wedding retainer is fully refundable, and the engagement session is on me. The photos stay with me, and we part ways with no charge. The whole point of the tasting is to find out whether we're right for each other before the wedding day.",
+    "pages": [
+      "free-engagement-session-toronto"
+    ]
   }
 ]

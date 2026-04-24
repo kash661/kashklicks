@@ -9,10 +9,10 @@ const APPS_SCRIPT_URL =
 ---
 
 <div id="eof-wrapper" class="eof-wrapper" data-eof-root>
-  <!-- ═══ STAGE 1 ═══ -->
+  <!-- ═══ STAGE 1 · sub-stage A (email) → sub-stage B (date) ═══ -->
   <div class="eof-stage eof-stage--1" data-eof-stage="1">
     <h2 class="eof-heading">Tell me about your wedding.</h2>
-    <p class="eof-subhead">Two quick fields now. Full details on the next step.</p>
+    <p class="eof-subhead">A few short steps.</p>
 
     <form
       id="eof-form-1"
@@ -22,7 +22,7 @@ const APPS_SCRIPT_URL =
       target="eof-sink-1"
       novalidate
     >
-      <!-- Honeypot — align with ContactForm convention (Apps Script backend filters on _gotcha) -->
+      <!-- Honeypot -->
       <div class="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
         <label for="eof-gotcha">Don't fill this out</label>
         <input type="text" id="eof-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
@@ -31,83 +31,6 @@ const APPS_SCRIPT_URL =
       <!-- Stage identity -->
       <input type="hidden" name="stage" value="1" />
       <input type="hidden" name="variant" value="free-engagement-session-toronto" />
-
-      <!-- Attribution (filled by JS on submit) -->
-      <input type="hidden" name="page_url" data-eof-page-url />
-      <input type="hidden" name="referrer" data-eof-referrer />
-      <input type="hidden" name="utm_source" data-eof-utm="source" />
-      <input type="hidden" name="utm_medium" data-eof-utm="medium" />
-      <input type="hidden" name="utm_campaign" data-eof-utm="campaign" />
-      <input type="hidden" name="utm_content" data-eof-utm="content" />
-      <input type="hidden" name="utm_term" data-eof-utm="term" />
-      <input type="hidden" name="fbclid" data-eof-utm="fbclid" />
-      <input type="hidden" name="gclid" data-eof-utm="gclid" />
-      <input type="hidden" name="user_agent" data-eof-user-agent />
-      <input type="hidden" name="submitted_at" data-eof-submitted-at />
-
-      <div class="form-field">
-        <label for="eof-email" class="form-field__label">
-          Email <span class="form-field__required" aria-hidden="true">*</span>
-        </label>
-        <input
-          type="email"
-          id="eof-email"
-          name="email"
-          inputmode="email"
-          autocomplete="email"
-          required
-          aria-required="true"
-          class="form-field__input"
-        />
-      </div>
-
-      <div class="form-field">
-        <label for="eof-wedding-month" class="form-field__label">
-          Ceremony month and year (optional)
-        </label>
-        <input
-          type="text"
-          id="eof-wedding-month"
-          name="wedding_month"
-          autocomplete="off"
-          placeholder="e.g. August 2027"
-          class="form-field__input"
-        />
-      </div>
-
-      <button type="submit" class="btn btn--primary eof-submit-1">
-        Continue →
-      </button>
-
-      <p class="eof-fineprint">No spam. I reply within 24 hours, usually sooner.</p>
-
-      <div class="eof-error" data-eof-error-1 role="alert" aria-live="polite" hidden>
-        Something stuck. Email info@kashklicks.ca or DM @kashklicks and we'll sort it.
-      </div>
-    </form>
-
-    <!-- Invisible submit target — iframe fallback for WebView resilience -->
-    <iframe name="eof-sink-1" data-eof-sink-1 style="display:none" aria-hidden="true"></iframe>
-  </div>
-
-  <!-- ═══ STAGE 2 (hidden by default, unhidden by JS on stage 1 success) ═══ -->
-  <div class="eof-stage eof-stage--2" data-eof-stage="2" hidden>
-    <h2 class="eof-heading">Great. A few more details.</h2>
-
-    <form
-      id="eof-form-2"
-      class="eof-form"
-      action={APPS_SCRIPT_URL}
-      method="POST"
-      target="eof-sink-2"
-      novalidate
-    >
-      <input type="hidden" name="stage" value="2" />
-      <input type="hidden" name="variant" value="free-engagement-session-toronto" />
-
-      <!-- Carried over from stage 1 (populated by JS after stage 1 success) -->
-      <input type="hidden" name="email" data-eof-s2-email />
-      <input type="hidden" name="wedding_month" data-eof-s2-wedding-month />
 
       <!-- Attribution -->
       <input type="hidden" name="page_url" data-eof-page-url />
@@ -138,15 +61,15 @@ const APPS_SCRIPT_URL =
       </div>
 
       <div class="form-field">
-        <label for="eof-city" class="form-field__label">
-          Ceremony city or venue <span class="form-field__required" aria-hidden="true">*</span>
+        <label for="eof-email" class="form-field__label">
+          Email <span class="form-field__required" aria-hidden="true">*</span>
         </label>
         <input
-          type="text"
-          id="eof-city"
-          name="city"
-          autocomplete="off"
-          placeholder="Toronto, Casa Loma, Glenerin Inn, etc."
+          type="email"
+          id="eof-email"
+          name="email"
+          inputmode="email"
+          autocomplete="email"
           required
           aria-required="true"
           class="form-field__input"
@@ -154,8 +77,35 @@ const APPS_SCRIPT_URL =
       </div>
 
       <div class="form-field">
+        <label for="eof-wedding-date" class="form-field__label">
+          Wedding date <span class="form-field__optional">(optional, tentative is fine)</span>
+        </label>
+        <input
+          type="date"
+          id="eof-wedding-date"
+          name="wedding_month"
+          autocomplete="off"
+          class="form-field__input"
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="eof-venue" class="form-field__label">
+          Ceremony venue or city <span class="form-field__optional">(optional)</span>
+        </label>
+        <input
+          type="text"
+          id="eof-venue"
+          name="city"
+          autocomplete="off"
+          placeholder="Toronto, Casa Loma, Glenerin Inn"
+          class="form-field__input"
+        />
+      </div>
+
+      <div class="form-field">
         <label for="eof-story" class="form-field__label">
-          Your story (optional)
+          Your story <span class="form-field__optional">(optional)</span>
         </label>
         <textarea
           id="eof-story"
@@ -167,31 +117,83 @@ const APPS_SCRIPT_URL =
         ></textarea>
       </div>
 
-      <button type="submit" class="btn btn--primary eof-submit-2">
-        Send →
+      <button type="submit" class="form-submit__button eof-submit-1" disabled aria-disabled="true">
+        <span class="form-submit__label">Send</span>
+        <span class="form-submit__arrow" aria-hidden="true">→</span>
+        <span class="form-submit__spinner" aria-hidden="true"></span>
       </button>
 
-      <p class="eof-fineprint">Prefer a DM? <a href="https://instagram.com/kashklicks" target="_blank" rel="noopener">@kashklicks</a> on Instagram.</p>
+      <p class="eof-fineprint">No spam. I reply within 24 hours, usually sooner.</p>
 
-      <div class="eof-error" data-eof-error-2 role="alert" aria-live="polite" hidden>
+      <div class="eof-error" data-eof-error-1 role="alert" aria-live="polite" hidden>
         Something stuck. Email info@kashklicks.ca or DM @kashklicks and we'll sort it.
       </div>
     </form>
 
-    <iframe name="eof-sink-2" data-eof-sink-2 style="display:none" aria-hidden="true"></iframe>
+    <iframe name="eof-sink-1" data-eof-sink-1 style="display:none" aria-hidden="true"></iframe>
   </div>
 
-  <!-- ═══ SUCCESS STATE (hidden by default) ═══ -->
+  <!-- ═══ SUCCESS STATE (hidden by default) · editorial reservation receipt ═══ -->
   <div class="eof-stage eof-stage--success" data-eof-stage="success" hidden>
-    <h2 class="eof-heading">Thanks, <span data-eof-success-name>friend</span>.</h2>
-    <p class="eof-success-body">
-      I'll email you within 24 hours to confirm the free engagement session
-      and talk through dates.
-    </p>
-    <p class="eof-success-body">
-      If I'm slow, nudge me on Instagram:
-      <a href="https://instagram.com/kashklicks" target="_blank" rel="noopener">@kashklicks</a>.
-    </p>
+    <div class="eof-success__inner">
+
+      <!-- Animated wax seal · radial gradient gives it physical depth -->
+      <div class="eof-success__seal" aria-hidden="true">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="eof-seal-grad" cx="38%" cy="32%" r="75%">
+              <stop offset="0%" stop-color="#3a3530" />
+              <stop offset="55%" stop-color="#1f1a16" />
+              <stop offset="100%" stop-color="#0d0a08" />
+            </radialGradient>
+            <radialGradient id="eof-seal-ring" cx="50%" cy="50%" r="50%">
+              <stop offset="92%" stop-color="rgba(26,22,18,0)" />
+              <stop offset="100%" stop-color="rgba(26,22,18,0.35)" />
+            </radialGradient>
+          </defs>
+          <!-- Outer dashed ring -->
+          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1.8 3" opacity="0.55" />
+          <!-- Wax body with inner gradient -->
+          <circle cx="50" cy="50" r="38" fill="url(#eof-seal-grad)" />
+          <!-- Subtle vignette ring on the wax edge -->
+          <circle cx="50" cy="50" r="38" fill="url(#eof-seal-ring)" />
+          <!-- Highlight glint -->
+          <ellipse cx="38" cy="34" rx="11" ry="6" fill="rgba(255,250,240,0.18)" />
+          <!-- Monogram -->
+          <text x="50" y="61" text-anchor="middle" fill="#faf9f6"
+                font-family="'Noir et Blanc', Georgia, serif" font-style="italic" font-size="26" letter-spacing="2">AD</text>
+        </svg>
+      </div>
+
+      <!-- Editorial header -->
+      <p class="eof-success__overline">Reservation received</p>
+      <h2 class="eof-success__heading">
+        Hello, <span data-eof-success-name>friend</span>.
+      </h2>
+
+      <!-- Letter -->
+      <div class="eof-success__letter">
+        <p>
+          Your note just landed in my inbox. I read every inquiry myself
+          and I'll write you back within 24 hours, usually sooner.
+        </p>
+        <p data-eof-success-date-line hidden>
+          Pencilled in for <em data-eof-success-date></em>.
+        </p>
+        <p>
+          If I'm slow, nudge me on Instagram
+          <a href="https://instagram.com/kashklicks" target="_blank" rel="noopener">@kashklicks</a>
+          or at
+          <a href="mailto:info@kashklicks.ca">info@kashklicks.ca</a>.
+        </p>
+      </div>
+
+      <!-- Sign-off -->
+      <p class="eof-success__signoff">
+        <span class="eof-success__signoff-line">Talk soon,</span>
+        <span class="eof-success__signature">AD</span>
+      </p>
+    </div>
   </div>
 </div>
 
@@ -237,6 +239,217 @@ const APPS_SCRIPT_URL =
     text-decoration: underline;
     color: inherit;
   }
+
+  /* ─── Editorial reservation-receipt success state ─────────────────── */
+  .eof-stage--success {
+    text-align: center;
+    padding: 2.5rem 0 1.5rem;
+  }
+  /* Letterpress card · double hairline frame, warm drop shadow, paper stock */
+  .eof-success__inner {
+    max-width: 520px;
+    margin: 0 auto;
+    background: #fffefb;
+    padding: clamp(2.75rem, 6vw, 3.75rem) clamp(1.75rem, 5vw, 3rem);
+    position: relative;
+    isolation: isolate;
+    border: 1px solid rgba(180, 160, 140, 0.30);
+    box-shadow:
+      0 1px 2px rgba(80, 60, 40, 0.05),
+      0 8px 20px rgba(80, 60, 40, 0.06),
+      0 28px 56px rgba(80, 60, 40, 0.08),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+  /* Inner double-hairline frame · classic invitation suite detail */
+  .eof-success__inner::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(180, 160, 140, 0.22);
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* All inner content sits above the frame */
+  .eof-success__inner > * { position: relative; z-index: 1; }
+
+  .eof-success__seal {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 2.5rem;
+    color: var(--color-on-surface);
+    transform-origin: center center;
+    opacity: 0;
+    filter:
+      drop-shadow(0 1px 2px rgba(20, 14, 8, 0.30))
+      drop-shadow(0 6px 14px rgba(20, 14, 8, 0.22));
+    animation: eofSealStamp 0.85s cubic-bezier(0.34, 1.45, 0.64, 1) forwards;
+    animation-delay: 0.1s;
+  }
+  .eof-success__seal svg { width: 100%; height: 100%; display: block; }
+  @keyframes eofSealStamp {
+    0%   { opacity: 0; transform: scale(0.35) rotate(-22deg); }
+    55%  { opacity: 1; transform: scale(1.18) rotate(5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  .eof-success__overline {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    margin: 0 0 1.25rem;
+    opacity: 0;
+    animation: eofRiseIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.65s;
+  }
+  .eof-success__heading {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--color-on-surface);
+    margin: 0 0 2.25rem;
+    opacity: 0;
+    animation: eofRiseIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.8s;
+  }
+  .eof-success__letter {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-on-surface-variant);
+    max-width: 38ch;
+    margin: 0 auto;
+    opacity: 0;
+    animation: eofRiseIn 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 1s;
+  }
+  .eof-success__letter p { margin: 0 0 1rem; }
+  .eof-success__letter p:last-child { margin: 0; }
+  .eof-success__letter em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-on-surface);
+    letter-spacing: -0.005em;
+  }
+  .eof-success__letter a {
+    color: var(--color-on-surface);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface) 35%, transparent);
+    padding-bottom: 1px;
+    transition: border-color 0.3s var(--ease-gallery);
+  }
+  .eof-success__letter a:hover { border-bottom-color: var(--color-on-surface); }
+  .eof-success__signoff {
+    margin: 2.5rem 0 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-on-surface);
+    opacity: 0;
+    animation: eofRiseIn 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 1.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .eof-success__signoff-line {
+    font-size: 1rem;
+    color: var(--color-on-surface-variant);
+  }
+  .eof-success__signature {
+    font-size: 1.75rem;
+    letter-spacing: 0.2em;
+    color: var(--color-on-surface);
+  }
+  @keyframes eofRiseIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eof-success__seal,
+    .eof-success__overline,
+    .eof-success__heading,
+    .eof-success__letter,
+    .eof-success__signoff {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+  }
+
+  /* ─── Sub-stage UI · step indicator + back link + animated reveal ─── */
+  .eof-substep {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    margin-bottom: 1.5rem;
+  }
+  .eof-sub {
+    animation: eofSubFade 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes eofSubFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .eof-back {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    background: none;
+    border: 0;
+    padding: 0.4rem 0;
+    cursor: pointer;
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+  .eof-back:hover,
+  .eof-back:focus-visible { color: var(--color-on-surface); outline: none; }
+  .eof-field-error {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-error);
+    margin-top: 0.625rem;
+  }
+
+  /* ─── Submit button loading state ─────────────────────────────────── */
+  .form-submit__button { position: relative; }
+  .form-submit__button.is-loading {
+    pointer-events: none;
+    opacity: 0.92;
+  }
+  .form-submit__button.is-loading .form-submit__label,
+  .form-submit__button.is-loading .form-submit__arrow {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .form-submit__spinner {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -7px 0 0 -7px;
+    animation: eofSpin 0.7s linear infinite;
+  }
+  .form-submit__button.is-loading .form-submit__spinner {
+    display: inline-block;
+  }
+  @keyframes eofSpin {
+    to { transform: rotate(360deg); }
+  }
 </style>
 
 <script is:inline>
@@ -245,15 +458,11 @@ const APPS_SCRIPT_URL =
   if (!root) return;
 
   const stage1 = root.querySelector('[data-eof-stage="1"]');
-  const stage2 = root.querySelector('[data-eof-stage="2"]');
   const success = root.querySelector('[data-eof-stage="success"]');
 
   const form1 = root.querySelector('#eof-form-1');
-  const form2 = root.querySelector('#eof-form-2');
   const sink1 = root.querySelector('[data-eof-sink-1]');
-  const sink2 = root.querySelector('[data-eof-sink-2]');
   const err1 = root.querySelector('[data-eof-error-1]');
-  const err2 = root.querySelector('[data-eof-error-2]');
 
   // ─── UTM + click-ID capture (session-scoped) ─────────────────────────
   const UTM_KEYS = ['source', 'medium', 'campaign', 'content', 'term', 'fbclid', 'gclid'];
@@ -290,98 +499,160 @@ const APPS_SCRIPT_URL =
 
   const attribution = captureAttribution();
   fillHiddenFields(stage1, attribution);
-  fillHiddenFields(stage2, attribution);
 
   // ─── Stage 1 submit ──────────────────────────────────────────────────
   let stage1SubmittedAt = 0;
 
+  // Lightweight inline error helpers (form has novalidate; we own the checks)
+  function setFieldError(field, message) {
+    field.setAttribute('aria-invalid', 'true');
+    var wrap = field.closest('.form-field');
+    if (!wrap) return;
+    var existing = wrap.querySelector('.eof-field-error');
+    if (!existing) {
+      existing = document.createElement('p');
+      existing.className = 'eof-field-error';
+      existing.setAttribute('role', 'alert');
+      wrap.appendChild(existing);
+    }
+    existing.textContent = message;
+  }
+  function clearFieldError(field) {
+    field.removeAttribute('aria-invalid');
+    var wrap = field.closest('.form-field');
+    var existing = wrap && wrap.querySelector('.eof-field-error');
+    if (existing) existing.remove();
+  }
+  // Clear field errors on input
+  root.querySelectorAll('input, textarea').forEach(function (field) {
+    field.addEventListener('input', function () { clearFieldError(field); });
+  });
+
+  // Loading state helper for submit/continue buttons
+  function setLoading(btn, on) {
+    if (!btn) return;
+    if (on) {
+      btn.classList.add('is-loading');
+      btn.setAttribute('aria-busy', 'true');
+      btn.disabled = true;
+    } else {
+      btn.classList.remove('is-loading');
+      btn.removeAttribute('aria-busy');
+      btn.disabled = false;
+    }
+  }
+  function isValidEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  // ─── Flatpickr (Digital Curator themed calendar) ─────────────────────
+  function initFlatpickr() {
+    var dateInput = stage1.querySelector('#eof-wedding-date');
+    if (!dateInput || typeof window.flatpickr !== 'function') return;
+    if (dateInput._flatpickr) return; // already initialised
+    window.flatpickr(dateInput, {
+      dateFormat: 'Y-m-d',
+      altInput: true,
+      altFormat: 'F j, Y',
+      minDate: 'today',
+      disableMobile: false,
+      monthSelectorType: 'static',
+    });
+  }
+  // Try now; if flatpickr hasn't loaded yet, retry briefly.
+  initFlatpickr();
+  if (typeof window.flatpickr !== 'function') {
+    var fpAttempts = 0;
+    var fpTimer = setInterval(function () {
+      fpAttempts += 1;
+      if (typeof window.flatpickr === 'function') {
+        initFlatpickr();
+        clearInterval(fpTimer);
+      } else if (fpAttempts > 30) {
+        clearInterval(fpTimer);
+      }
+    }, 200);
+  }
+
+  // ─── Send button gating · disabled until name + valid email ──────────
+  var nameField  = stage1.querySelector('#eof-name');
+  var emailField = stage1.querySelector('#eof-email');
+  var submitBtn  = stage1.querySelector('.eof-submit-1');
+
+  function checkFormReady() {
+    var nameOk  = nameField  && nameField.value.trim().length > 0;
+    var emailOk = emailField && isValidEmail(emailField.value.trim());
+    var ready = nameOk && emailOk;
+    if (submitBtn) submitBtn.disabled = !ready;
+  }
+  if (nameField)  nameField.addEventListener('input', checkFormReady);
+  if (emailField) emailField.addEventListener('input', checkFormReady);
+  checkFormReady(); // initial state: disabled
+
   form1.addEventListener('submit', function (e) {
-    // Refresh attribution + timestamp immediately before the native submit.
-    // Native form submit goes via the iframe target — no preventDefault.
+    // Defensive validation — the gate already prevents click, but in case JS
+    // is bypassed or assistive tech triggers the form, re-check.
+    var nameVal  = (nameField  && nameField.value  || '').trim();
+    var emailVal = (emailField && emailField.value || '').trim();
+    if (!nameVal) {
+      e.preventDefault();
+      setFieldError(nameField, 'Please enter your name.');
+      nameField.focus();
+      return;
+    }
+    if (!emailVal || !isValidEmail(emailVal)) {
+      e.preventDefault();
+      setFieldError(emailField, emailVal ? 'Please enter a valid email address.' : 'Email is required.');
+      emailField.focus();
+      return;
+    }
     fillHiddenFields(stage1, attribution);
     err1.hidden = true;
     stage1SubmittedAt = Date.now();
+    setLoading(submitBtn, true);
   });
 
   sink1.addEventListener('load', function () {
     // iframe load AFTER a submit indicates Apps Script accepted the POST.
-    // We consider any load event after a submit attempt as success (no-cors
-    // means we can't read the response). Reject events that fire before any
-    // submit happened.
     if (!stage1SubmittedAt || Date.now() - stage1SubmittedAt < 100) return;
-    onStage1Success();
+    onSendSuccess();
   });
 
-  function onStage1Success() {
-    // Carry stage-1 values into stage-2 hidden inputs
-    const emailInput = stage1.querySelector('#eof-email');
-    const monthInput = stage1.querySelector('#eof-wedding-month');
-    const s2Email = stage2.querySelector('[data-eof-s2-email]');
-    const s2Month = stage2.querySelector('[data-eof-s2-wedding-month]');
-    if (s2Email) s2Email.value = emailInput ? emailInput.value : '';
-    if (s2Month) s2Month.value = monthInput ? monthInput.value : '';
-
-    // Meta Pixel Lead (fire BEFORE DOM swap — pixel calls are synchronous)
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'Lead', {
-        content_name: 'free-engagement-session-toronto',
-        value: 0,
-        currency: 'CAD',
-      });
-    }
-    // Clarity tag
-    if (typeof window.clarity === 'function') {
-      window.clarity('set', 'stage_1_submitted', 'true');
-    }
-
-    // Swap DOM
-    stage1.hidden = true;
-    stage2.hidden = false;
-    fillHiddenFields(stage2, attribution);
-
-    // Focus first stage-2 field for a11y + continuity
-    const nameField = stage2.querySelector('#eof-name');
-    if (nameField) nameField.focus();
-
-    // Start abandonment tracker
-    setTimeout(function () {
-      if (!stage2.hidden && success.hidden) {
-        if (typeof window.clarity === 'function') {
-          window.clarity('set', 'stage_2_abandoned', 'true');
-        }
-      }
-    }, 30000);
-  }
-
-  // ─── Stage 2 submit ──────────────────────────────────────────────────
-  let stage2SubmittedAt = 0;
-
-  form2.addEventListener('submit', function (e) {
-    fillHiddenFields(stage2, attribution);
-    err2.hidden = true;
-    stage2SubmittedAt = Date.now();
-  });
-
-  sink2.addEventListener('load', function () {
-    if (!stage2SubmittedAt || Date.now() - stage2SubmittedAt < 100) return;
-    onStage2Success();
-  });
-
-  function onStage2Success() {
-    const nameInput = stage2.querySelector('#eof-name');
-    const firstName = nameInput ? nameInput.value.trim().split(' ')[0] : '';
-    const nameSlot = success.querySelector('[data-eof-success-name]');
+  function onSendSuccess() {
+    var firstName = nameField ? nameField.value.trim().split(' ')[0] : '';
+    var nameSlot = success.querySelector('[data-eof-success-name]');
     if (nameSlot && firstName) nameSlot.textContent = firstName;
 
-    // Meta CompleteRegistration
+    // Show "Pencilled in for [date]" line if the user entered a date
+    var dateInput = stage1.querySelector('#eof-wedding-date');
+    var dateValue = dateInput ? (dateInput.value || '').trim() : '';
+    var dateLine  = success.querySelector('[data-eof-success-date-line]');
+    var dateSlot  = success.querySelector('[data-eof-success-date]');
+    if (dateValue && dateLine && dateSlot) {
+      try {
+        var d = new Date(dateValue + 'T12:00:00');
+        var formatted = d.toLocaleDateString('en-CA', {
+          month: 'long', day: 'numeric', year: 'numeric',
+        });
+        dateSlot.textContent = formatted;
+        dateLine.hidden = false;
+      } catch (e) {}
+    }
+
+    // Meta CompleteRegistration (final conversion event)
     if (typeof window.fbq === 'function') {
       window.fbq('track', 'CompleteRegistration', {
         content_name: 'free-engagement-session-toronto',
         value: 350,
         currency: 'CAD',
       });
+      window.fbq('track', 'Lead', {
+        content_name: 'free-engagement-session-toronto',
+        value: 350,
+        currency: 'CAD',
+      });
     }
-    // Google Ads generate_lead (conversion ID wired in Task 18)
+    // Google Ads conversion (when configured)
     if (typeof window.gtag === 'function' && window.EOF_GADS_CONVERSION_ID) {
       window.gtag('event', 'conversion', {
         send_to: window.EOF_GADS_CONVERSION_ID,
@@ -389,12 +660,11 @@ const APPS_SCRIPT_URL =
         currency: 'CAD',
       });
     }
-    // Clarity tag
     if (typeof window.clarity === 'function') {
-      window.clarity('set', 'stage_2_submitted', 'true');
+      window.clarity('set', 'form_submitted', 'true');
     }
 
-    stage2.hidden = true;
+    stage1.hidden = true;
     success.hidden = false;
     success.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
