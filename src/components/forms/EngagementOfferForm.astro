@@ -128,7 +128,7 @@ const APPS_SCRIPT_URL = "/api/engagement-lead";
       <p class="eof-fineprint">No spam. I reply within 24 hours, usually sooner.</p>
 
       <div class="eof-error" data-eof-error-1 role="alert" aria-live="polite" hidden>
-        Something stuck. Email info@kashklicks.ca or DM @kashklicks and we'll sort it.
+        Uh oh, tech hiccup on our end. DM us on Instagram <a href="https://instagram.com/kashklicks" target="_blank" rel="noopener" class="eof-error__link">@kashklicks</a> and we'll lock in your free session manually.
       </div>
     </form>
 
@@ -231,6 +231,12 @@ const APPS_SCRIPT_URL = "/api/engagement-lead";
     color: var(--color-error, #b00020);
     font-size: 0.9rem;
     margin-top: 0.75rem;
+    line-height: 1.5;
+  }
+  .eof-error__link {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 600;
   }
   .eof-success-body {
     color: var(--color-on-surface-variant);
@@ -628,10 +634,11 @@ const APPS_SCRIPT_URL = "/api/engagement-lead";
       .catch(function (err) {
         setLoading(submitBtn, false);
         err1.hidden = false;
-        if (err1.firstElementChild || err1.textContent === '') {
-          err1.textContent = "We couldn't send that — please try again or email hello@kashklicks.ca.";
-        }
+        // Leave the existing HTML error markup (with @kashklicks IG link) intact;
+        // do not overwrite via textContent or we strip the anchor.
         try { console.error('[EOF] submit failed:', err && err.message ? err.message : err); } catch (e) {}
+        // Scroll the error into view so the user notices it on small screens.
+        try { err1.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
       });
   });
 
