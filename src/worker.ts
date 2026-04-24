@@ -45,7 +45,13 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
-    if (url.pathname === '/api/engagement-lead') {
+    // Both paths route to the same handler. The /book/intake path exists
+    // because some cellular carriers / content blockers filter requests
+    // matching /api/lead*. Keep /api/engagement-lead for the legacy form.
+    if (
+      url.pathname === '/api/engagement-lead' ||
+      url.pathname === '/book/intake'
+    ) {
       return handleEngagementLead(request);
     }
 

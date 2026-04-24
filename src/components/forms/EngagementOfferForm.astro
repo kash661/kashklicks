@@ -6,8 +6,10 @@
 
 // Same-origin proxy. The Cloudflare Worker forwards to Apps Script
 // server-side, sidestepping IG/FB in-app webviews silently dropping
-// cross-origin POSTs to script.google.com.
-const APPS_SCRIPT_URL = "/api/engagement-lead";
+// cross-origin POSTs to script.google.com. Path avoids /api/lead* so
+// cellular carrier content filters and Safari content blockers don't
+// match it on URL pattern.
+const APPS_SCRIPT_URL = "/book/intake";
 ---
 
 <div id="eof-wrapper" class="eof-wrapper" data-eof-root>
