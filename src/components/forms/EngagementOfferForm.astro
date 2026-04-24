@@ -610,11 +610,21 @@ const APPS_SCRIPT_URL =
     err1.hidden = true;
     stage1SubmittedAt = Date.now();
     setLoading(submitBtn, true);
+
+    // IG/FB in-app webviews suppress cross-origin iframe load events,
+    // so the sink1.load handler often never fires. POST is reliable;
+    // resolve optimistically if iframe hasn't reported back in 3.5s.
+    setTimeout(function () {
+      if (!success.hidden) return;
+      if (!stage1SubmittedAt) return;
+      onSendSuccess();
+    }, 3500);
   });
 
   sink1.addEventListener('load', function () {
     // iframe load AFTER a submit indicates Apps Script accepted the POST.
     if (!stage1SubmittedAt || Date.now() - stage1SubmittedAt < 100) return;
+    if (!success.hidden) return;
     onSendSuccess();
   });
 
