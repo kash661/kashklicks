@@ -1,0 +1,17 @@
+{
+  "name": "kashklicks-meta-ads-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local stdio MCP server wrapping Meta Marketing API for kashklicks",
+  "bin": {
+    "meta-ads-mcp": "./index.mjs"
+  },
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "dotenv": "^17.2.3"
+  }
+}
