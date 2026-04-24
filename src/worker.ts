@@ -45,12 +45,31 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
-    // Both paths route to the same handler. The /book/intake path exists
-    // because some cellular carriers / content blockers filter requests
-    // matching /api/lead*. Keep /api/engagement-lead for the legacy form.
+    // Diagnostic ping — returns the CF edge identifier so we can confirm a
+    // user's request reached the Worker (vs being intercepted by a cached
+    // asset 404, carrier middleware, or content blocker).
+    if (url.pathname === '/__diag/ping') {
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          ray: request.headers.get('cf-ray') || null,
+          colo: request.headers.get('cf-ipcountry') || null,
+          ua: request.headers.get('user-agent') || null,
+          at: new Date().toISOString(),
+        }, null, 2),
+        {
+          headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
+        },
+      );
+    }
+
+    // Form-submission proxy. Multiple aliases exist because cached 404s at
+    // edge nodes / browsers can poison a path forever; renaming gives the
+    // user a fresh path that nothing has indexed.
     if (
       url.pathname === '/api/engagement-lead' ||
-      url.pathname === '/book/intake'
+      url.pathname === '/book/intake' ||
+      url.pathname === '/r/eof-7k2x'
     ) {
       return handleEngagementLead(request);
     }

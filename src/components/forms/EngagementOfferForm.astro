@@ -6,10 +6,10 @@
 
 // Same-origin proxy. The Cloudflare Worker forwards to Apps Script
 // server-side, sidestepping IG/FB in-app webviews silently dropping
-// cross-origin POSTs to script.google.com. Path avoids /api/lead* so
-// cellular carrier content filters and Safari content blockers don't
-// match it on URL pattern.
-const APPS_SCRIPT_URL = "/book/intake";
+// cross-origin POSTs to script.google.com. Pseudo-random path because
+// cached 404s at edge / browser persist on a per-path basis and renaming
+// is the cheapest way to force a fresh cache entry.
+const APPS_SCRIPT_URL = "/r/eof-7k2x";
 ---
 
 <div id="eof-wrapper" class="eof-wrapper" data-eof-root>
