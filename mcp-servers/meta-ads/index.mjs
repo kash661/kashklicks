@@ -196,7 +196,7 @@ const tools = [
         targeting: {
           type: 'object',
           description:
-            'Meta Targeting object. Example: { geo_locations: { cities: [{ key: "2630759", radius: 40, distance_unit: "kilometer" }] }, age_min: 25, age_max: 38, genders: [1,2], publisher_platforms: ["instagram","facebook"], facebook_positions: ["feed"], instagram_positions: ["stream","reels","story"] }',
+            'Meta Targeting object. Example (Toronto, CA): { geo_locations: { cities: [{ key: "296875", radius: 40, distance_unit: "kilometer" }] }, age_min: 25, age_max: 38, genders: [1,2], publisher_platforms: ["instagram","facebook"], facebook_positions: ["feed"], instagram_positions: ["stream","reels","story"], targeting_automation: { advantage_audience: 0 } }. Look up city keys via GET /v21.0/search?type=adgeolocation&q=<city>&location_types=["city"].',
         },
         start_time: { type: 'string', description: 'ISO 8601' },
         end_time: { type: 'string', description: 'ISO 8601 (required if using lifetime_budget)' },
