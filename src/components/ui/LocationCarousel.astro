@@ -26,8 +26,8 @@ const loop = [...images, ...images];
       </div>
     </div>
 
-    <div class="marquee">
-      <div class="marquee-track">
+    <div class="marquee" data-marquee tabindex="0" aria-roledescription="carousel" aria-label={`${locationName} gallery`}>
+      <div class="marquee-track" data-marquee-track>
         {loop.map((img, i) => (
           <figure class="marquee-slide">
             <Image
@@ -47,7 +47,14 @@ const loop = [...images, ...images];
 
 <style>
   .marquee {
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0,
@@ -64,15 +71,19 @@ const loop = [...images, ...images];
     );
   }
 
+  .marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .marquee.is-dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+  }
+
   .marquee-track {
     display: flex;
     width: max-content;
     gap: 16px;
-    animation: marquee-scroll 90s linear infinite;
-  }
-
-  .marquee:hover .marquee-track {
-    animation-play-state: paused;
   }
 
   .marquee-slide {
@@ -87,23 +98,129 @@ const loop = [...images, ...images];
     object-fit: cover;
     display: block;
     background: var(--color-surface-container);
-  }
-
-  @keyframes marquee-scroll {
-    from { transform: translate3d(0, 0, 0); }
-    to { transform: translate3d(-50%, 0, 0); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
-    }
-    .marquee {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-    }
-    .marquee-slide {
-      scroll-snap-align: start;
-    }
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
   }
 </style>
+
+<script>
+  // Location carousel: native horizontal scroll with a rAF auto-advance
+  // that pauses while the user interacts (touch, wheel, pointer drag, key)
+  // and resumes after a brief idle. The track is rendered twice so the
+  // scrollLeft position can seamlessly wrap at the halfway point in both
+  // directions.
+  const PX_PER_SECOND = 35;
+  const IDLE_RESUME_MS = 1800;
+
+  function initMarquee(root: HTMLElement) {
+    const track = root.querySelector<HTMLElement>('[data-marquee-track]');
+    if (!track) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let paused = reduce;
+    let resumeTimer: number | null = null;
+    let rafId = 0;
+    let lastTs = 0;
+
+    const halfWidth = () => track.scrollWidth / 2;
+
+    const wrap = () => {
+      const h = halfWidth();
+      if (!h) return;
+      if (root.scrollLeft >= h) root.scrollLeft -= h;
+      else if (root.scrollLeft < 0) root.scrollLeft += h;
+    };
+
+    const tick = (ts: number) => {
+      if (lastTs === 0) lastTs = ts;
+      const dt = (ts - lastTs) / 1000;
+      lastTs = ts;
+      if (!paused) {
+        root.scrollLeft += PX_PER_SECOND * dt;
+        wrap();
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const pauseAndScheduleResume = () => {
+      paused = true;
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        if (reduce) return;
+        paused = false;
+        lastTs = 0;
+      }, IDLE_RESUME_MS);
+    };
+
+    // Interaction signals → pause auto-advance
+    ['wheel', 'touchstart', 'touchmove', 'keydown'].forEach((e) =>
+      root.addEventListener(e, pauseAndScheduleResume, { passive: true }),
+    );
+
+    // Pointer drag support for desktop (click-and-drag horizontally)
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let pointerId: number | null = null;
+
+    root.addEventListener('pointerdown', (ev: PointerEvent) => {
+      if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+      dragging = true;
+      startX = ev.clientX;
+      startScroll = root.scrollLeft;
+      pointerId = ev.pointerId;
+      root.setPointerCapture(ev.pointerId);
+      root.classList.add('is-dragging');
+      pauseAndScheduleResume();
+    });
+
+    root.addEventListener('pointermove', (ev: PointerEvent) => {
+      if (!dragging) return;
+      root.scrollLeft = startScroll - (ev.clientX - startX);
+      wrap();
+    });
+
+    const endDrag = (ev: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      root.classList.remove('is-dragging');
+      if (pointerId !== null && root.hasPointerCapture(pointerId)) {
+        root.releasePointerCapture(pointerId);
+      }
+      pointerId = null;
+      pauseAndScheduleResume();
+    };
+    root.addEventListener('pointerup', endDrag);
+    root.addEventListener('pointercancel', endDrag);
+
+    // Handle wrap during native scroll (momentum, scrollbar, touch flicks)
+    root.addEventListener('scroll', wrap, { passive: true });
+
+    // Start halfway into the duplicated track so backward scrolling has room
+    root.scrollLeft = 0;
+
+    rafId = requestAnimationFrame(tick);
+
+    // Cleanup when navigating away (Astro View Transitions)
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        if (resumeTimer) window.clearTimeout(resumeTimer);
+      },
+      { once: true },
+    );
+  }
+
+  function boot() {
+    document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((el) => {
+      if ((el as any).__marqueeInit) return;
+      (el as any).__marqueeInit = true;
+      initMarquee(el);
+    });
+  }
+
+  boot();
+  document.addEventListener('astro:after-swap', boot);
+</script>
