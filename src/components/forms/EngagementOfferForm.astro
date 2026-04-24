@@ -592,18 +592,20 @@ const APPS_SCRIPT_URL = "/api/engagement-lead";
   checkFormReady(); // initial state: disabled
 
   form1.addEventListener('submit', function (e) {
-    // Defensive validation — the gate already prevents click, but in case JS
-    // is bypassed or assistive tech triggers the form, re-check.
+    // We always handle submission via fetch(); never let the form do its
+    // native iframe-target POST. The iframe pattern was firing the load
+    // event instantly in some webviews regardless of whether the POST
+    // actually reached the proxy, masking failures.
+    e.preventDefault();
+
     var nameVal  = (nameField  && nameField.value  || '').trim();
     var emailVal = (emailField && emailField.value || '').trim();
     if (!nameVal) {
-      e.preventDefault();
       setFieldError(nameField, 'Please enter your name.');
       nameField.focus();
       return;
     }
     if (!emailVal || !isValidEmail(emailVal)) {
-      e.preventDefault();
       setFieldError(emailField, emailVal ? 'Please enter a valid email address.' : 'Email is required.');
       emailField.focus();
       return;
@@ -613,21 +615,24 @@ const APPS_SCRIPT_URL = "/api/engagement-lead";
     stage1SubmittedAt = Date.now();
     setLoading(submitBtn, true);
 
-    // IG/FB in-app webviews suppress cross-origin iframe load events,
-    // so the sink1.load handler often never fires. POST is reliable;
-    // resolve optimistically if iframe hasn't reported back in 3.5s.
-    setTimeout(function () {
-      if (!success.hidden) return;
-      if (!stage1SubmittedAt) return;
-      onSendSuccess();
-    }, 3500);
-  });
-
-  sink1.addEventListener('load', function () {
-    // iframe load AFTER a submit indicates Apps Script accepted the POST.
-    if (!stage1SubmittedAt || Date.now() - stage1SubmittedAt < 100) return;
-    if (!success.hidden) return;
-    onSendSuccess();
+    var formData = new FormData(form1);
+    fetch(form1.action, {
+      method: 'POST',
+      body: formData,
+      credentials: 'same-origin',
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('proxy returned ' + res.status);
+        onSendSuccess();
+      })
+      .catch(function (err) {
+        setLoading(submitBtn, false);
+        err1.hidden = false;
+        if (err1.firstElementChild || err1.textContent === '') {
+          err1.textContent = "We couldn't send that — please try again or email hello@kashklicks.ca.";
+        }
+        try { console.error('[EOF] submit failed:', err && err.message ? err.message : err); } catch (e) {}
+      });
   });
 
   function onSendSuccess() {
