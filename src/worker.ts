@@ -63,13 +63,16 @@ export default {
       );
     }
 
-    // Form-submission proxy. Multiple aliases exist because cached 404s at
-    // edge nodes / browsers can poison a path forever; renaming gives the
-    // user a fresh path that nothing has indexed.
+    // Form-submission proxy. ALL site forms (engagement offer LP, contact
+    // form, intimate-wedding LP, about-page travel-log signup) post here
+    // same-origin so IG/FB in-app webviews don't silently drop the POST.
+    // Multiple aliases exist because cached 404s at edge nodes / browsers
+    // can poison a path; aliasing keeps cached HTML working after renames.
     if (
-      url.pathname === '/api/engagement-lead' ||
+      url.pathname === '/r/intake' ||
+      url.pathname === '/r/eof-7k2x' ||
       url.pathname === '/book/intake' ||
-      url.pathname === '/r/eof-7k2x'
+      url.pathname === '/api/engagement-lead'
     ) {
       return handleEngagementLead(request);
     }
