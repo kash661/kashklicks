@@ -684,29 +684,49 @@ const APPS_SCRIPT_URL = "/r/eof-7k2x";
       } catch (e) {}
     }
 
-    // Meta CompleteRegistration (final conversion event)
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'CompleteRegistration', {
-        content_name: 'free-engagement-session-toronto',
-        value: 350,
-        currency: 'CAD',
-      });
-      window.fbq('track', 'Lead', {
-        content_name: 'free-engagement-session-toronto',
-        value: 350,
-        currency: 'CAD',
-      });
+    // ─── Ad-platform conversion events, gated ───
+    // Fire ONLY if the visitor qualified (45s dwell OR 40% scroll).
+    // Prevents Meta + Google from optimizing toward tire-kickers
+    // per council review 2026-04-17.
+    var qualified = false;
+    try {
+      qualified = sessionStorage.getItem('ad_qualified_engagement') === 'true';
+    } catch (_) {}
+
+    if (qualified) {
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'CompleteRegistration', {
+          content_name: 'free-engagement-session-toronto',
+          value: 350,
+          currency: 'CAD',
+        });
+        window.fbq('track', 'Lead', {
+          content_name: 'free-engagement-session-toronto',
+          value: 350,
+          currency: 'CAD',
+        });
+      }
+      if (typeof window.gtag === 'function' && window.EOF_GADS_CONVERSION_ID) {
+        window.gtag('event', 'conversion', {
+          send_to: window.EOF_GADS_CONVERSION_ID,
+          value: 350,
+          currency: 'CAD',
+        });
+      }
+    } else {
+      // Track unqualified leak rate without polluting the Lead optimization signal.
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'UnqualifiedFormSubmit', {
+          content_name: 'free-engagement-session-toronto',
+        });
+      }
     }
-    // Google Ads conversion (when configured)
-    if (typeof window.gtag === 'function' && window.EOF_GADS_CONVERSION_ID) {
-      window.gtag('event', 'conversion', {
-        send_to: window.EOF_GADS_CONVERSION_ID,
-        value: 350,
-        currency: 'CAD',
-      });
-    }
+
+    // Clarity tag (analytics, not algorithmic) — always fire so we can
+    // compare submitted-and-qualified vs submitted-but-bouncy in recordings.
     if (typeof window.clarity === 'function') {
       window.clarity('set', 'form_submitted', 'true');
+      window.clarity('set', 'form_qualified', qualified ? 'true' : 'false');
     }
 
     stage1.hidden = true;

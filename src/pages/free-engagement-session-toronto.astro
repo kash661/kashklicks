@@ -1138,8 +1138,10 @@ const meta = {
   </style>
 
   <!-- ═══════════════════════════════════════════════════════════════════
-       Tracking · Clarity variant + scroll-depth pixel events
-       Mirror of intimate-wedding LP gating pattern.
+       Tracking · Clarity variant + qualified-engagement gate
+       Mirror of intimate-wedding LP gating pattern (council 2026-04-17):
+       Lead/conversion events MUST only fire after 45s dwell OR 40% scroll.
+       Otherwise Meta optimizes toward form-mashers / diaspora tire-kickers.
        ═══════════════════════════════════════════════════════════════════ -->
   <script is:inline>
     (function () {
@@ -1156,9 +1158,34 @@ const meta = {
         if (utmCampaign) window.clarity('set', 'utm_campaign', utmCampaign);
       }
 
-      // Pixel scroll-depth events (gated qualified-engagement signal)
+      var DWELL_MS = 45000;
+      var SCROLL_PCT = 0.40;
+      var VIEW_CONTENT_PCT = 0.25;
+      var FLAG_KEY = 'ad_qualified_engagement';
+
       var firedViewContent = false;
-      var firedQualifiedEngagement = false;
+      var qualified = false;
+
+      // Already qualified earlier in the session — short-circuit timers/listeners.
+      if (sessionStorage.getItem(FLAG_KEY) === 'true') {
+        qualified = true;
+      }
+
+      function qualify(source) {
+        if (qualified) return;
+        qualified = true;
+        try { sessionStorage.setItem(FLAG_KEY, 'true'); } catch (_) {}
+        if (typeof window.fbq === 'function') {
+          window.fbq('trackCustom', 'QualifiedEngagement', { source: source });
+        }
+        if (typeof window.clarity === 'function') {
+          window.clarity('set', 'qualified', source);
+        }
+        clearTimeout(dwellTimer);
+      }
+
+      // 45-second dwell timer
+      var dwellTimer = setTimeout(function () { qualify('dwell'); }, DWELL_MS);
 
       function onScroll() {
         var h = document.documentElement;
@@ -1166,7 +1193,7 @@ const meta = {
         if (total <= 0) return;
         var pct = h.scrollTop / total;
 
-        if (!firedViewContent && pct >= 0.25) {
+        if (!firedViewContent && pct >= VIEW_CONTENT_PCT) {
           firedViewContent = true;
           if (typeof window.fbq === 'function') {
             window.fbq('track', 'ViewContent', {
@@ -1175,14 +1202,10 @@ const meta = {
             });
           }
         }
-        if (!firedQualifiedEngagement && pct >= 0.40) {
-          firedQualifiedEngagement = true;
-          if (typeof window.fbq === 'function') {
-            window.fbq('trackCustom', 'QualifiedEngagement', { source: 'scroll' });
-          }
-          try { sessionStorage.setItem('ad_qualified_engagement', 'true'); } catch (_) {}
+        if (!qualified && pct >= SCROLL_PCT) {
+          qualify('scroll');
         }
-        if (firedViewContent && firedQualifiedEngagement) {
+        if (firedViewContent && qualified) {
           window.removeEventListener('scroll', onScroll);
         }
       }
