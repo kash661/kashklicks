@@ -7,7 +7,9 @@ import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import InvestmentSection from '../components/global/InvestmentSection.astro';
 import GearBreaker from '../components/global/GearBreaker.astro';
 import MobileGearBreaker from '../components/global/MobileGearBreaker.astro';
+import GoogleReviews from '../components/global/GoogleReviews.astro';
 import testimonials from '../data/testimonials.json';
+import googleReviews from '../data/google-reviews.json';
 
 // Hero
 import heroImage from '../assets/images/hero/hero-main.jpg';
@@ -67,6 +69,32 @@ const jsonLd = [
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': 'https://kashklicks.ca/#business',
+    name: 'AD Photography',
+    url: 'https://kashklicks.ca',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: googleReviews.aggregate.rating,
+      reviewCount: googleReviews.aggregate.count,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    review: googleReviews.reviews.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.name },
+      datePublished: r.datePublished,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      reviewBody: r.text,
     })),
   },
 ];
@@ -297,6 +325,9 @@ const jsonLd = [
       </p>
     </div>
   </section>
+
+  <!-- ═══ 4b. GOOGLE REVIEWS ═══ -->
+  <GoogleReviews />
 
   <!-- ═══ 5. RECENT WORK ═══
        Editorial feature spread: quiet cream stock, generous whitespace,

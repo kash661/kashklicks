@@ -1,0 +1,68 @@
+{
+  "aggregate": {
+    "rating": 5.0,
+    "count": 14,
+    "businessName": "KashKlicksStudios",
+    "profileUrl": "https://maps.app.goo.gl/46xUNUsJkw8qMSCj8",
+    "writeReviewUrl": "https://maps.app.goo.gl/46xUNUsJkw8qMSCj8"
+  },
+  "reviews": [
+    {
+      "id": "harish-kumar",
+      "name": "Harish Kumar",
+      "rating": 5,
+      "date": "13 hours ago",
+      "datePublished": "2026-04-25",
+      "text": "Absolutely impressed with the creativity and attention to detail! Every shot feels natural yet cinematic, capturing emotions in the most authentic way. Truly talented work that goes beyond photography and turns moments into memories. Highly recommended for anyone looking for quality and professionalism!"
+    },
+    {
+      "id": "srivastav-harsh",
+      "name": "Srivastav Harsh",
+      "rating": 5,
+      "date": "5 days ago",
+      "datePublished": "2026-04-21",
+      "text": "Had my pre-wedding shoot done by Akash, and I must say, he is one of the best photographers in the town. Staying calm and humble is his main character, and that's what we liked the most. Photo results were amazing and he uses an online platform to deliver photos and videos which keeps the quality high."
+    },
+    {
+      "id": "amit-chawla",
+      "name": "Amit Chawla",
+      "rating": 5,
+      "date": "5 days ago",
+      "datePublished": "2026-04-21",
+      "text": "Best photographer I would say in whole GTA. His attention to detail is extremely amazing. We gave him 2 songs before our pre-wedding shoot, and he created a theme of videos in such a way that it looks like the whole song was originally on us only. He is quite co-operative as well and helped us in adjusting with our schedule. Highly recommended."
+    },
+    {
+      "id": "meghna-dhillon",
+      "name": "Meghna Dhillon",
+      "rating": 5,
+      "date": "a month ago",
+      "datePublished": "2026-03-26",
+      "text": "Had a wonderful experience! Kash.klicks truly understands requirements and delivers exactly what you want. Very patient throughout the process and extremely friendly, which made us feel comfortable and relaxed. Highly recommended."
+    },
+    {
+      "id": "amanda-lupo",
+      "name": "Amanda Lupo",
+      "rating": 5,
+      "date": "4 months ago",
+      "datePublished": "2025-12-26",
+      "text": "Akash is amazing to work with! He photographed my bridal shower and all the photos are gorgeous. He is friendly, professional and excellent at communicating. We are so grateful to have professional photos to mark the occasion. Would recommend him 100 percent if you are looking for someone to capture special events and moments. His delivery of edited images was in good timing in an easy to use online gallery."
+    },
+    {
+      "id": "priyanka-goyat",
+      "name": "Priyanka Goyat",
+      "rating": 5,
+      "date": "4 months ago",
+      "datePublished": "2025-12-26",
+      "text": "We had an amazing experience with our pre-wedding photographer. Aakash is very professional, creative, and very easy to work with. The photos turned out absolutely beautiful, and the best part was the quick delivery without compromising on quality. Highly recommended for anyone looking for a reliable and talented photographer."
+    },
+    {
+      "id": "shubha-kaushik",
+      "name": "Shubha Kaushik",
+      "rating": 5,
+      "date": "4 months ago",
+      "datePublished": "2025-12-26",
+      "localGuide": true,
+      "text": "We got the most beautiful engagement photos with Akash! Would love to get more with him again."
+    }
+  ]
+}
