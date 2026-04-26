@@ -1,0 +1,333 @@
+---
+import googleReviews from '../../data/google-reviews.json';
+
+const { aggregate, reviews } = googleReviews;
+const featured = reviews.slice(0, 6);
+
+const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#0097a7'];
+---
+
+<section class="google-reviews py-[var(--spacing-section)]" aria-labelledby="google-reviews-heading">
+  <div class="container-editorial">
+    <div class="google-reviews__intro reveal">
+      <p class="text-label-md text-on-surface-muted eyebrow-rule eyebrow-rule-center mb-6">Reviews on Google</p>
+      <h2 id="google-reviews-heading" class="google-reviews__title">Verified words from real couples.</h2>
+
+      <div class="google-reviews__aggregate reveal stagger-1">
+        <span class="google-reviews__brand" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.99 10.99 0 0 0 12 23z"/>
+            <path fill="#FBBC04" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.83z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A10.99 10.99 0 0 0 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z"/>
+          </svg>
+          <span>Google</span>
+        </span>
+
+        <div class="google-reviews__rating-row">
+          <span class="google-reviews__score">{aggregate.rating.toFixed(1)}</span>
+          <span class="google-reviews__stars" aria-label={`${aggregate.rating} out of 5 stars`}>
+            {Array.from({ length: 5 }).map(() => (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#f9ab00" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </span>
+        </div>
+        <p class="google-reviews__count">from {aggregate.count} verified reviews</p>
+      </div>
+    </div>
+
+    <ul class="google-reviews__grid" role="list">
+      {featured.map((review, i) => (
+        <li class="google-reviews__card reveal" style={`transition-delay: ${(i % 3) * 80}ms;`}>
+          <div class="google-reviews__card-head">
+            <span
+              class="google-reviews__avatar"
+              style={`background:${avatarPalette[i % avatarPalette.length]};`}
+              aria-hidden="true"
+            >
+              {review.name.charAt(0)}
+            </span>
+            <div class="google-reviews__card-meta">
+              <p class="google-reviews__name">{review.name}</p>
+              <p class="google-reviews__date">{review.date}</p>
+            </div>
+            <span class="google-reviews__card-mark" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.99 10.99 0 0 0 12 23z"/>
+                <path fill="#FBBC04" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.83z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A10.99 10.99 0 0 0 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z"/>
+              </svg>
+            </span>
+          </div>
+
+          <span class="google-reviews__card-stars" aria-label={`${review.rating} out of 5 stars`}>
+            {Array.from({ length: review.rating }).map(() => (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#f9ab00" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </span>
+
+          <blockquote class="google-reviews__quote">{review.text}</blockquote>
+        </li>
+      ))}
+    </ul>
+
+    <div class="google-reviews__footer reveal">
+      <a
+        href={aggregate.profileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="google-reviews__cta magnetic"
+        aria-label={`Read all ${aggregate.count} reviews on Google in a new tab`}
+      >
+        Read all reviews on Google <span aria-hidden="true">&rarr;</span>
+      </a>
+      <span class="google-reviews__divider" aria-hidden="true"></span>
+      <a
+        href={aggregate.writeReviewUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="google-reviews__cta google-reviews__cta--secondary"
+      >
+        Leave a review <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .google-reviews {
+    background: var(--color-background);
+    color: var(--color-on-surface);
+  }
+
+  .google-reviews__intro {
+    text-align: center;
+    max-width: 44rem;
+    margin-inline: auto;
+    margin-bottom: var(--spacing-block);
+  }
+
+  .google-reviews__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 4.6vw, 3.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--color-on-surface);
+    margin: 0 0 2rem;
+  }
+
+  .google-reviews__aggregate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .google-reviews__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+
+  .google-reviews__brand span {
+    line-height: 1;
+  }
+
+  .google-reviews__rating-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .google-reviews__score {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-on-surface);
+  }
+
+  .google-reviews__stars {
+    display: inline-flex;
+    gap: 0.125rem;
+  }
+
+  .google-reviews__count {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+  }
+
+  .google-reviews__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .google-reviews__card {
+    background: var(--color-surface);
+    border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 18%, transparent);
+    padding: 1.75rem 1.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color var(--duration-hover) var(--ease-gallery),
+                transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .google-reviews__card:hover {
+    border-color: color-mix(in srgb, var(--color-on-surface-variant) 38%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .google-reviews__card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .google-reviews__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .google-reviews__card-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .google-reviews__name {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-on-surface);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .google-reviews__date {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--color-on-surface-variant);
+    margin: 0.125rem 0 0;
+    line-height: 1.2;
+  }
+
+  .google-reviews__card-mark {
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .google-reviews__card-stars {
+    display: inline-flex;
+    gap: 0.0625rem;
+  }
+
+  .google-reviews__quote {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-on-surface);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .google-reviews__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: var(--spacing-block);
+  }
+
+  .google-reviews__cta {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    white-space: nowrap;
+    transition: color var(--duration-hover) var(--ease-gallery);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .google-reviews__cta span {
+    display: inline-block;
+    margin-left: 0.5rem;
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .google-reviews__cta:hover {
+    color: var(--color-on-surface-variant);
+  }
+
+  .google-reviews__cta:hover span {
+    transform: translateX(4px);
+  }
+
+  .google-reviews__cta--secondary {
+    color: var(--color-on-surface-variant);
+  }
+
+  .google-reviews__divider {
+    width: 1px;
+    height: 1.25rem;
+    background: color-mix(in srgb, var(--color-on-surface-variant) 35%, transparent);
+  }
+
+  @media (max-width: 1024px) {
+    .google-reviews__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .google-reviews__grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .google-reviews__title {
+      font-size: clamp(1.875rem, 8vw, 2.5rem);
+    }
+    .google-reviews__footer {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .google-reviews__divider {
+      width: 2rem;
+      height: 1px;
+    }
+    .google-reviews__quote {
+      -webkit-line-clamp: 8;
+    }
+  }
+</style>
