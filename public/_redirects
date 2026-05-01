@@ -1,11 +1,31 @@
-/galleries/clients     /portfolio/       301
-/guides/location-guide /location-guide/  301
+# All from-paths use trailing-slash form. The Worker (src/worker.ts) canonicalizes
+# extension-less URLs to trailing-slash before passing to ASSETS.fetch, so rules
+# without a trailing slash are unreachable.
 
-# Defensive redirects for common missing-prefix typos seen in Clarity
-# (users land on /pre-wedding instead of /services/pre-wedding/, etc.)
-/pre-wedding           /services/pre-wedding/      301
-/pre-weddings          /services/pre-wedding/      301
-/wedding               /services/wedding/          301
-/weddings              /portfolio/weddings/        301
-/civil-ceremony        /services/civil-ceremony/   301
-/celebrations          /services/celebrations/     301
+# Existing migration shortcuts
+/galleries/clients/                                   /portfolio/                  301
+/guides/location-guide/                               /location-guide/             301
+
+# Defensive redirects for short-form typos seen in Clarity
+/pre-wedding/                                         /services/pre-wedding/       301
+/pre-weddings/                                        /services/pre-wedding/       301
+/wedding/                                             /services/wedding/           301
+/weddings/                                            /portfolio/weddings/         301
+/civil-ceremony/                                      /services/civil-ceremony/    301
+/celebrations/                                        /services/celebrations/      301
+
+# Webflow legacy URLs (GSC 404 list, 2026-05-01)
+/clients/                                             /portfolio/                  301
+/about-us/                                            /about/                      301
+/home/                                                /                            301
+/engagement/                                          /services/pre-wedding/       301
+/portfolio-1/                                         /portfolio/                  301
+/blog/toronto-city-hall-civil-ceremony-photographer/  /services/civil-ceremony/    301
+/party/                                               /services/celebrations/      301
+/photo-booths/                                        /services/celebrations/      301
+/locations-guide/                                     /location-guide/             301
+/portraits/                                           /services/                   301
+/investment/                                          /services/                   301
+
+# Webflow placeholder/stub pages (never built out, no SEO equity)
+/new-page-*                                           /                            301

@@ -2,32 +2,65 @@
   "items": [
     {
       "label": "Portfolio",
-      "href": "/portfolio",
+      "href": "/portfolio/",
       "children": [
-        { "label": "Weddings", "href": "/portfolio/weddings" },
-        { "label": "Pre-Weddings", "href": "/portfolio/pre-weddings" },
-        { "label": "Civil Ceremony", "href": "/portfolio/civil-ceremony" },
-        { "label": "Films", "href": "/portfolio/films" }
+        {
+          "label": "Weddings",
+          "href": "/portfolio/weddings/"
+        },
+        {
+          "label": "Pre-Weddings",
+          "href": "/portfolio/pre-weddings/"
+        },
+        {
+          "label": "Civil Ceremony",
+          "href": "/portfolio/civil-ceremony/"
+        },
+        {
+          "label": "Films",
+          "href": "/portfolio/films/"
+        }
       ]
     },
     {
       "label": "Services",
-      "href": "/services",
+      "href": "/services/",
       "children": [
-        { "label": "Wedding", "href": "/services/wedding" },
-        { "label": "Pre-Weddings & E-Shoots", "href": "/services/pre-wedding" },
-        { "label": "Civil Ceremony", "href": "/services/civil-ceremony" },
-        { "label": "Celebrations", "href": "/services/celebrations" }
+        {
+          "label": "Wedding",
+          "href": "/services/wedding/"
+        },
+        {
+          "label": "Pre-Weddings & E-Shoots",
+          "href": "/services/pre-wedding/"
+        },
+        {
+          "label": "Civil Ceremony",
+          "href": "/services/civil-ceremony/"
+        },
+        {
+          "label": "Celebrations",
+          "href": "/services/celebrations/"
+        }
       ]
     },
     {
       "label": "Resources",
-      "href": "/blog",
+      "href": "/blog/",
       "children": [
-        { "label": "Location Guide", "href": "/location-guide" },
-        { "label": "Blog", "href": "/blog" }
+        {
+          "label": "Location Guide",
+          "href": "/location-guide/"
+        },
+        {
+          "label": "Blog",
+          "href": "/blog/"
+        }
       ]
     },
-    { "label": "About", "href": "/about" }
+    {
+      "label": "About",
+      "href": "/about/"
+    }
   ]
 }
