@@ -19,11 +19,32 @@ const classes = `${base} ${variants[variant]} ${className}`;
 ---
 
 {href ? (
-  <a href={href} class={classes} style="transition-duration: var(--duration-hover);">
+  <a href={href} class={classes}>
     <slot />
   </a>
 ) : (
-  <button class={classes} style="transition-duration: var(--duration-hover);">
+  <button class={classes}>
     <slot />
   </button>
 )}
+
+<style>
+  a, button {
+    transition:
+      transform 120ms ease-out,
+      background-color var(--duration-hover) var(--ease-gallery),
+      color var(--duration-hover) var(--ease-gallery),
+      border-color var(--duration-hover) var(--ease-gallery),
+      opacity var(--duration-hover) var(--ease-gallery);
+  }
+
+  a:active, button:active {
+    transform: scale(0.97);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a:active, button:active {
+      transform: none;
+    }
+  }
+</style>

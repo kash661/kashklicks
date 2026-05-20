@@ -107,26 +107,7 @@ const jsonLd = [
   showSplash={false}
   jsonLd={jsonLd}
 >
-  <script is:inline>
-    // Splash temporarily disabled. Pre-seed the "seen" flag so the hero
-    // entrance script in this file (and the SoundManager) treat the visit
-    // as a return visit and render the hero immediately without waiting
-    // for the splash:done event. To re-enable: flip showSplash back to
-    // true in the BaseLayout props above and delete this seeding line.
-    if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem('kk-splash-seen', 'true');
-    }
-  </script>
-
   <style is:global>
-    html.splash-pending .home-hero__copy .logo-mark,
-    html.splash-pending .home-hero__copy h1,
-    html.splash-pending .home-hero__copy h2,
-    html.splash-pending .home-hero .hero-cta,
-    html.splash-pending .home-hero .gallery-caption,
-    html.splash-pending .home-hero .scroll-rail-wrap {
-      opacity: 0;
-    }
 
     /* Lock each tagline char's formatting context + GPU layer so the glyph shape
        (notably the Cormorant "f" with its long descender + crossbar) doesn't
@@ -191,6 +172,24 @@ const jsonLd = [
       font-variant-ligatures: none;
       font-kerning: none;
     }
+
+    .hero-cta a {
+      transition:
+        transform 120ms ease-out,
+        background-color var(--duration-hover) var(--ease-gallery),
+        color var(--duration-hover) var(--ease-gallery),
+        border-color var(--duration-hover) var(--ease-gallery);
+    }
+
+    .hero-cta a:active {
+      transform: scale(0.97);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-cta a:active {
+        transform: none;
+      }
+    }
   </style>
 
   <!-- ═══ 1. HERO ═══ -->
@@ -216,17 +215,12 @@ const jsonLd = [
     </div>
 
     <script is:inline>
-      // On first visit the hero tagline is driven by the GSAP entrance timeline,
-      // not by char-reveal.ts. Strip the class before the module script picks it up.
-      if (
-        typeof sessionStorage !== 'undefined' &&
-        sessionStorage.getItem('kk-splash-seen') !== 'true'
-      ) {
-        const heroTag = document.querySelector('.home-hero__copy h2.char-reveal');
-        if (heroTag) {
-          heroTag.classList.remove('char-reveal');
-          heroTag.setAttribute('data-entrance-defer', 'true');
-        }
+      // The hero tagline is driven by the GSAP entrance timeline below, not by
+      // char-reveal.ts. Strip the class before the module script picks it up.
+      const heroTag = document.querySelector('.home-hero__copy h2.char-reveal');
+      if (heroTag) {
+        heroTag.classList.remove('char-reveal');
+        heroTag.setAttribute('data-entrance-defer', 'true');
       }
     </script>
 
@@ -647,6 +641,7 @@ const jsonLd = [
 
     .recent-work__runfoot-link:hover { color: var(--color-on-surface-variant); }
     .recent-work__runfoot-link:hover span { transform: translateX(4px); }
+    .recent-work__runfoot-link:active { transform: scale(0.97); }
 
     @media (max-width: 640px) {
       .recent-work__title {
@@ -899,6 +894,10 @@ const jsonLd = [
       transform: translateX(4px);
     }
 
+    .journal__cta:active {
+      transform: scale(0.97);
+    }
+
     @media (max-width: 640px) {
       .journal__title {
         font-size: clamp(2rem, 9vw, 2.75rem);
@@ -931,7 +930,7 @@ const jsonLd = [
         <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">An invitation</p>
         <h2 class="contact-cta__title" data-gsap-chars>Start the conversation.</h2>
         <p class="contact-cta__deck reveal stagger-2">
-          Let&rsquo;s talk about your day. No obligations &mdash; just a conversation.
+          Let&rsquo;s talk about your day. No obligations. Just a conversation.
         </p>
         <div class="reveal stagger-3 contact-cta__actions">
           <span class="contact-cta__rule" aria-hidden="true"></span>
@@ -1080,12 +1079,6 @@ const jsonLd = [
   };
 
   const initHeroEntrance = () => {
-    const firstVisit = sessionStorage.getItem('kk-splash-seen') !== 'true';
-    if (!firstVisit) {
-      document.documentElement.classList.remove('splash-pending');
-      return () => {};
-    }
-
     // Split the hero tagline into per-char spans so GSAP can type it out.
     // Each sentence goes in its own .tagline-line wrapper so mobile CSS can
     // force sentence-level line breaks instead of wrapping mid-word.
@@ -1145,7 +1138,6 @@ const jsonLd = [
     gsap.set(targets, { opacity: 0 });
     gsap.set(h2Chars, { opacity: 0 });
     if (h2) gsap.set(h2, { opacity: 1 });
-    document.documentElement.classList.remove('splash-pending');
 
     // "Moments fade." → first 12 chars. After the tagline types in, these fade away
     // while "Memories don't." stays — the phrase demonstrates itself.
@@ -1198,8 +1190,8 @@ const jsonLd = [
         );
     };
 
-    document.addEventListener('splash:done', runEntrance, { once: true });
-    return () => document.removeEventListener('splash:done', runEntrance);
+    runEntrance();
+    return () => {};
   };
 
   // Desktop-only: upgrade section display headings + pull-quote from the

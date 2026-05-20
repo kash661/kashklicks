@@ -12,7 +12,7 @@ const { couple, location, coverImage, href } = Astro.props;
 ---
 
 <a href={href} class="group block" aria-label={`Watch ${couple} wedding film from ${location}`}>
-  <div class="relative overflow-hidden rounded-lg aspect-video">
+  <div class="relative overflow-hidden aspect-video">
     <Image
       src={coverImage}
       alt={`${couple}, ${location} wedding film`}
@@ -23,7 +23,7 @@ const { couple, location, coverImage, href } = Astro.props;
     />
     <!-- Play button overlay -->
     <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
-      <div class="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+      <div class="w-16 h-16 rounded-full border border-white/60 bg-transparent flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
         <svg class="w-6 h-6 text-accent ml-1" viewBox="0 0 24 24" fill="currentColor">
           <path d="M8 5v14l11-7z" />
         </svg>

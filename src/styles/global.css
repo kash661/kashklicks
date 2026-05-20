@@ -1085,11 +1085,17 @@ input.flatpickr-input + input.form-field__input {
   text-transform: uppercase;
   cursor: pointer;
   border: 0;
-  transition: background-color var(--duration-hover) var(--ease-gallery);
+  transition:
+    transform 120ms ease-out,
+    background-color var(--duration-hover) var(--ease-gallery);
 }
 
 .form-submit__button:hover {
   background: var(--color-primary-hover);
+}
+
+.form-submit__button:active {
+  transform: scale(0.97);
 }
 
 .form-submit__button:disabled {
@@ -1354,13 +1360,19 @@ input.flatpickr-input + input.form-field__input {
   margin-top: auto;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
-  transition: color var(--duration-hover) var(--ease-gallery),
-              border-color var(--duration-hover) var(--ease-gallery);
+  transition:
+    transform 120ms ease-out,
+    color var(--duration-hover) var(--ease-gallery),
+    border-color var(--duration-hover) var(--ease-gallery);
 }
 
 .pricing-card__cta:hover {
   color: var(--color-on-surface-variant);
   border-bottom-color: var(--color-on-surface);
+}
+
+.pricing-card__cta:active {
+  transform: scale(0.97);
 }
 
 .pricing-card__cta-arrow {
@@ -2058,4 +2070,31 @@ a[href] {
 button:disabled,
 [aria-disabled="true"] {
   cursor: not-allowed;
+}
+
+/* ── CTA press state — 120ms snap-down on tap/click ── */
+.nav-cta,
+.journal__cta,
+.recent-work__runfoot-link {
+  transition:
+    transform 120ms ease-out,
+    color var(--duration-hover) var(--ease-gallery),
+    background-color var(--duration-hover) var(--ease-gallery),
+    border-color var(--duration-hover) var(--ease-gallery);
+}
+
+.nav-cta:active,
+.journal__cta:active,
+.recent-work__runfoot-link:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-cta:active,
+  .journal__cta:active,
+  .recent-work__runfoot-link:active,
+  .form-submit__button:active,
+  .pricing-card__cta:active {
+    transform: none;
+  }
 }

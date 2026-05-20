@@ -70,12 +70,13 @@ const schema = {
       </div>
 
       {entries.length > 0 ? (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-10 gap-y-20">
           {entries.map((entry, i) => {
             const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
             const img = portfolioImages[imgPath]?.default;
+            const mosaicSpan = ['lg:col-span-5', 'lg:col-span-4', 'lg:col-span-3', 'lg:col-span-3', 'lg:col-span-4', 'lg:col-span-5'][i % 6];
             return img ? (
-              <div class:list={['reveal', `stagger-${(i % 5) + 1}`, i % 3 === 1 ? 'lg:mt-24' : '']}>
+              <div class:list={['reveal', `stagger-${(i % 6) + 1}`, mosaicSpan, i % 6 === 1 ? 'lg:mt-12' : '']}>
                 <PortfolioCard
                   couple={entry.couple}
                   location={entry.location}

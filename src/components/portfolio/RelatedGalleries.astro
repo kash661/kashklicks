@@ -32,19 +32,22 @@ const resolvedRelated = related
 {resolvedRelated.length > 0 && (
   <section class="section-frame py-[var(--spacing-section)]">
     <h2 class="section-title mb-[var(--spacing-block)] reveal">More <em>stories.</em></h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 reveal">
-      {resolvedRelated.map((entry, i) => (
-        <div class={`stagger-${(i % 5) + 1}`}>
-          <PortfolioCard
-            couple={entry.couple}
-            location={entry.location}
-            category={entry.category}
-            coverImage={entry.resolvedCover}
-            href={`/portfolio/${entry.slug ?? entry.id}`}
-            date={(entry as any).date ?? null}
-          />
-        </div>
-      ))}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-10 gap-y-20 reveal">
+      {resolvedRelated.map((entry, i) => {
+        const mosaicSpan = ['lg:col-span-5', 'lg:col-span-4', 'lg:col-span-3', 'lg:col-span-3', 'lg:col-span-4', 'lg:col-span-5'][i % 6];
+        return (
+          <div class:list={[`stagger-${(i % 6) + 1}`, mosaicSpan, i % 6 === 1 ? 'lg:mt-12' : '']}>
+            <PortfolioCard
+              couple={entry.couple}
+              location={entry.location}
+              category={entry.category}
+              coverImage={entry.resolvedCover}
+              href={`/portfolio/${entry.slug ?? entry.id}`}
+              date={(entry as any).date ?? null}
+            />
+          </div>
+        );
+      })}
     </div>
   </section>
 )}
