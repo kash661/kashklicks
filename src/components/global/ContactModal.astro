@@ -39,7 +39,9 @@ import ContactForm from '../forms/ContactForm.astro';
     if (!modal || (modal as any).__bound) return;
     (modal as any).__bound = true;
 
-    const openers = document.querySelectorAll<HTMLButtonElement>('[data-open-modal="contact-modal"]');
+    // Use HTMLElement so we accept both <button> and <a> triggers.
+    // PricingCard renders <a href="/contact/?open=1&service=...&package=..."> for graceful-degrade.
+    const openers = document.querySelectorAll<HTMLElement>('[data-open-modal="contact-modal"]');
     const closers = modal.querySelectorAll<HTMLButtonElement>('[data-close-modal]');
     let lastFocused: HTMLElement | null = null;
 
@@ -88,7 +90,13 @@ import ContactForm from '../forms/ContactForm.astro';
     }
 
     openers.forEach((btn) => {
-      btn.addEventListener('click', () => openModal(btn));
+      btn.addEventListener('click', (event) => {
+        // Suppress default link navigation only when the modal is reachable.
+        // If preventDefault throws or the modal fails to open, the <a> still
+        // navigates to /contact/?open=1&... which auto-opens via the search-param branch below.
+        event.preventDefault();
+        openModal(btn);
+      });
     });
 
     closers.forEach((btn) => {
@@ -120,8 +128,10 @@ import ContactForm from '../forms/ContactForm.astro';
           setField('source_page', window.location.pathname);
           const paramService = params.get('service');
           const paramPackage = params.get('package');
+          const paramPackageName = params.get('package_name');
           if (paramService) setField('event_type', paramService);
           if (paramPackage) setField('package_id', paramPackage);
+          if (paramPackageName) setField('package_name', paramPackageName);
           openModal();
         }, 450);
       });

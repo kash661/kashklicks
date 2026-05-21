@@ -141,17 +141,18 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
     <div class="container-editorial">
       <div class="grid-editorial items-center" style="min-height: 80svh;">
-        <!-- Review -->
-        <div class="col-span-12 md:col-span-5 reveal">
+        <!-- Review (mobile: below image, desktop: left col) -->
+        <div class="col-span-12 md:col-span-5 reveal order-2 md:order-1">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Wedding Photography</p>
           <blockquote class="text-display-md" style="max-width: 20ch;">
             "They made us feel like the only two people in the room."
           </blockquote>
           <p class="text-label-md text-on-surface-variant mt-8">Natalie &amp; Shavar</p>
           <p class="text-label-sm text-on-surface-muted">The Glenerin Inn, Mississauga</p>
-          <div class="mt-8">
+          <div class="mt-8 flex items-center gap-3 flex-wrap">
+            <Button href="#packages" variant="primary">See Packages</Button>
             <ShareButton
-              variant="labeled"
+              variant="icon"
               url="/services/wedding"
               title="Toronto Wedding Photography, AD Photography"
               text="Full-day and partial wedding coverage from $1,200."
@@ -159,8 +160,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             />
           </div>
         </div>
-        <!-- Portrait image + plaque -->
-        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2">
+        <!-- Portrait image + plaque (mobile: above review, desktop: right col) -->
+        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2 order-1 md:order-2 mb-[var(--spacing-element)] md:mb-0">
           <div class="aspect-[3/4] overflow-hidden hover-zoom">
             <Image
               src={heroImage}
@@ -298,7 +299,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
       <div class="text-center mt-16 reveal">
         <p class="text-label-sm text-on-surface-muted mb-2">Have questions? I'll get back to you within 24 hours, guaranteed.</p>
         <div class="mt-6">
-          <a href="/contact?service=wedding" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Me</a>
+          <a href="/contact?service=wedding" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover transition-interactive" style="transition-duration: var(--duration-hover-ui);">Contact Me</a>
         </div>
       </div>
     </div>
