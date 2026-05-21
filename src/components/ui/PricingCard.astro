@@ -105,15 +105,22 @@ const displayPrice = hasSale ? salePrice : price;
     </div>
   )}
 
-  <button
-    type="button"
+  {/*
+    Native-link fallback: if the modal script fails to bind (JS error earlier
+    in the page, slow hydration, etc.) the CTA still navigates to /contact/
+    with the package context preserved. Modal binding intercepts the click
+    via event.preventDefault() when JS is healthy.
+  */}
+  <a
+    href={`/contact/?open=1${service ? `&service=${encodeURIComponent(service)}` : ''}&package=${encodeURIComponent(id)}&package_name=${encodeURIComponent(name)}`}
     class="pricing-card__cta"
     data-open-modal="contact-modal"
     data-service={service}
     data-package={id}
     data-package-name={name}
+    role="button"
   >
     {ctaLabel}
     <span class="pricing-card__cta-arrow" aria-hidden="true">&rarr;</span>
-  </button>
+  </a>
 </article>
