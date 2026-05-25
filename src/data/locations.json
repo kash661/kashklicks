@@ -4,10 +4,21 @@
     "name": "Allan Gardens Conservatory",
     "area": "Downtown Toronto, Garden District",
     "vibe": "Lush, tropical, Victorian, serene, indoor",
-    "bestFor": ["Couples", "Engagements", "Portraits", "Families"],
-    "season": ["Year-round"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Portraits",
+      "Families"
+    ],
+    "season": [
+      "Year-round"
+    ],
     "zone": "Downtown",
-    "setting": ["Indoor", "Garden", "Historic"],
+    "setting": [
+      "Indoor",
+      "Garden",
+      "Historic"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Fully accessible indoor paths",
     "permits": "Free outdoors; indoor conservatory shoots require a City of Toronto commercial photography permit",
@@ -21,10 +32,20 @@
     "name": "Art Gallery of Hamilton",
     "area": "Hamilton, Downtown Core",
     "vibe": "Modern, architectural, urban, sleek, cultural",
-    "bestFor": ["Couples", "Engagements", "Editorial", "Portraits"],
-    "season": ["Year-round"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Editorial",
+      "Portraits"
+    ],
+    "season": [
+      "Year-round"
+    ],
     "zone": "Hamilton",
-    "setting": ["Urban", "Historic"],
+    "setting": [
+      "Urban",
+      "Historic"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Sidewalk and plaza access only",
     "permits": "Contact the gallery for exterior photography; groups of ten or more are subject to a fee",
@@ -38,10 +59,22 @@
     "name": "Bayfront Park",
     "area": "Hamilton, Waterfront",
     "vibe": "Open, breezy, lakefront, relaxed, urban nature",
-    "bestFor": ["Couples", "Engagements", "Families", "Portraits"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Families",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Hamilton",
-    "setting": ["Waterfront", "Urban"],
+    "setting": [
+      "Waterfront",
+      "Urban"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Flat paved paths along the lake",
     "permits": "No permit for small shoots, check City of Hamilton for commercial bookings",
@@ -55,10 +88,23 @@
     "name": "Casa Loma",
     "area": "Midtown Toronto, Forest Hill",
     "vibe": "Majestic, castle, historic, elegant, cinematic",
-    "bestFor": ["Pre-wedding", "Engagements", "Couples", "Editorial"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Historic", "Garden", "Indoor"],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Indoor"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Flat gardens with stairs inside the castle",
     "permits": "Paid photography permit required, $800 for a two-hour session. Book in advance with the Casa Loma events team.",
@@ -72,10 +118,22 @@
     "name": "Cherry Beach",
     "area": "Toronto, Port Lands",
     "vibe": "Industrial, skyline, rugged, beachy, expansive",
-    "bestFor": ["Pre-wedding", "Engagements", "Couples", "Portraits"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Waterfront", "Industrial"],
+    "setting": [
+      "Waterfront",
+      "Industrial"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Shoreline paths and open beach, some uneven sand",
     "permits": "City of Toronto commercial photography permit required for professional shoots",
@@ -89,10 +147,20 @@
     "name": "Distillery District",
     "area": "East Downtown Toronto, Old Town",
     "vibe": "Cobblestone, industrial chic, artistic, vibrant, European",
-    "bestFor": ["Engagements", "Couples", "Pre-wedding", "Editorial"],
-    "season": ["Year-round"],
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
     "zone": "Downtown",
-    "setting": ["Historic", "Urban"],
+    "setting": [
+      "Historic",
+      "Urban"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Flat pedestrian lanes, very walkable",
     "permits": "Private BIA property, commercial photography requires advance booking and a fee",
@@ -106,10 +174,22 @@
     "name": "Dundas Peak",
     "area": "Dundas, Hamilton",
     "vibe": "Dramatic, forested, cliff-edge, cinematic, autumnal",
-    "bestFor": ["Couples", "Engagements", "Cinematic engagement", "Portraits"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Cinematic engagement",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Hamilton",
-    "setting": ["Nature", "Forest"],
+    "setting": [
+      "Nature",
+      "Forest"
+    ],
     "walkingLevel": "Medium-Hard",
     "walkingNote": "Reservation required, steep paths with drop-offs",
     "permits": "No photography permit, but trail reservation required via Hamilton Conservation Authority",
@@ -123,10 +203,24 @@
     "name": "Evergreen Brick Works",
     "area": "Toronto, Don Valley",
     "vibe": "Industrial, reclaimed, architectural, cinematic, organic",
-    "bestFor": ["Editorial", "Cinematic engagement", "Couples", "Engagements", "Pre-wedding"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Editorial",
+      "Cinematic engagement",
+      "Couples",
+      "Engagements",
+      "Pre-wedding"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Industrial", "Historic", "Nature"],
+    "setting": [
+      "Industrial",
+      "Historic",
+      "Nature"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Brick paths, quarry trails, and stairs between levels",
     "permits": "Permit required for professional shoots, book through Evergreen",
@@ -140,10 +234,19 @@
     "name": "Graffiti Alley",
     "area": "Downtown Toronto, Queen West",
     "vibe": "Edgy, colourful, urban, raw, creative",
-    "bestFor": ["Engagements", "Couples", "Portraits", "Editorial"],
-    "season": ["Year-round"],
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Portraits",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
     "zone": "Downtown",
-    "setting": ["Urban"],
+    "setting": [
+      "Urban"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Narrow alley, five-minute stroll end to end",
     "permits": "Public laneway, small shoots usually fine. City film permit needed if blocking the lane.",
@@ -157,10 +260,23 @@
     "name": "Guild Park & Gardens",
     "area": "Scarborough, Bluffs Area",
     "vibe": "Fairytale, historic ruins, romantic garden",
-    "bestFor": ["Pre-wedding", "Engagements", "Save-the-date", "Families"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Save-the-date",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Bluffs",
-    "setting": ["Historic", "Garden", "Nature"],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Nature"
+    ],
     "walkingLevel": "Low-Medium",
     "walkingNote": "Paths and slopes",
     "permits": "Not required for engagement shoots or general photography",
@@ -174,10 +290,23 @@
     "name": "High Park",
     "area": "West Toronto, Roncesvalles",
     "vibe": "Seasonal, cherry blossoms, romantic, diverse backdrops",
-    "bestFor": ["Engagements", "Couples", "Pre-wedding", "Families"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Garden", "Nature", "Waterfront"],
+    "setting": [
+      "Garden",
+      "Nature",
+      "Waterfront"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Expansive grounds, lake access, some hills",
     "permits": "City of Toronto commercial photography permit required for professional shoots",
@@ -191,10 +320,24 @@
     "name": "Humber Arboretum",
     "area": "Northwest Toronto, Humber College",
     "vibe": "Lush, cinematic, romantic, riverfront, quiet",
-    "bestFor": ["Pre-wedding", "Engagements", "Couples", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Etobicoke",
-    "setting": ["Forest", "Nature", "Garden", "Waterfront"],
+    "setting": [
+      "Forest",
+      "Nature",
+      "Garden",
+      "Waterfront"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Winding trails through forest and meadow, riverside sections",
     "permits": "Free to access; contact the Arboretum for professional shoots",
@@ -208,10 +351,22 @@
     "name": "Humber Bay Arch Bridge",
     "area": "Etobicoke, Humber Bay",
     "vibe": "Modern, geometric, waterfront, sunset, serene",
-    "bestFor": ["Couples", "Engagements", "Proposals", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Proposals",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Etobicoke",
-    "setting": ["Waterfront", "Urban"],
+    "setting": [
+      "Waterfront",
+      "Urban"
+    ],
     "walkingLevel": "Low-Medium",
     "walkingNote": "Flat waterfront paths, the bridge span itself is about 140 metres",
     "permits": "City of Toronto commercial photography permit required for professional shoots",
@@ -225,10 +380,23 @@
     "name": "Kortright Centre for Conservation",
     "area": "Vaughan, Kleinburg",
     "vibe": "Peaceful, forested, natural, tranquil, woodland",
-    "bestFor": ["Couples", "Engagements", "Pre-wedding", "Families"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Vaughan",
-    "setting": ["Forest", "Nature", "Waterfront"],
+    "setting": [
+      "Forest",
+      "Nature",
+      "Waterfront"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Boardwalks and forest trails, some hills near the pond",
     "permits": "Admission paid at the gate, contact Kortright for professional bookings",
@@ -242,10 +410,22 @@
     "name": "Toronto Music Garden",
     "area": "Downtown Toronto, Harbourfront",
     "vibe": "Whimsical, romantic, natural, garden + city mix",
-    "bestFor": ["Couples", "Engagements", "Proposals", "Families"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Proposals",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Garden", "Waterfront"],
+    "setting": [
+      "Garden",
+      "Waterfront"
+    ],
     "walkingLevel": "Low-Medium",
     "walkingNote": "Manageable paths and hills",
     "permits": "Not needed for photos; required for civil ceremony bookings",
@@ -259,10 +439,22 @@
     "name": "Niagara Parks Botanical Gardens",
     "area": "Niagara Falls, Niagara Parkway",
     "vibe": "Romantic, European, sculpted, floral, unhurried",
-    "bestFor": ["Couples", "Engagements", "Pre-wedding", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Niagara",
-    "setting": ["Garden", "Historic"],
+    "setting": [
+      "Garden",
+      "Historic"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Flat paths through 40 hectares of themed gardens",
     "permits": "No permit for small engagement shoots, weddings require a Niagara Parks booking",
@@ -276,10 +468,24 @@
     "name": "Niagara-on-the-Lake",
     "area": "Niagara Region, Old Town",
     "vibe": "Charming, historic, cobblestone, vineyards, storybook",
-    "bestFor": ["Couples", "Engagements", "Pre-wedding", "Proposals"],
-    "season": ["Spring", "Summer", "Fall", "Winter"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Proposals"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
     "zone": "Niagara",
-    "setting": ["Urban", "Historic", "Garden"],
+    "setting": [
+      "Urban",
+      "Historic",
+      "Garden"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Easy stroll through old town streets and lakefront paths",
     "permits": "No permit for small engagement shoots, larger sessions should contact Niagara Parks",
@@ -293,10 +499,22 @@
     "name": "Osgoode Hall",
     "area": "Downtown Toronto, Queen Street",
     "vibe": "Neoclassical, stately, formal, elegant, green lawns",
-    "bestFor": ["Engagements", "Couples", "Portraits", "Editorial"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Portraits",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Historic", "Garden"],
+    "setting": [
+      "Historic",
+      "Garden"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Flat lawns and paths, courtyard access",
     "permits": "Law Society property, contact in advance for permission before professional shoots",
@@ -310,10 +528,23 @@
     "name": "Polson Pier",
     "area": "Toronto, Port Lands",
     "vibe": "Panoramic skyline, waterfront, iconic, cinematic, urban",
-    "bestFor": ["Couples", "Pre-wedding", "Engagements", "Portraits", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Pre-wedding",
+      "Engagements",
+      "Portraits",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Waterfront", "Urban"],
+    "setting": [
+      "Waterfront",
+      "Urban"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Flat paved pier along the harbour",
     "permits": "Private property used for events, small shoots typically fine when no event is active",
@@ -327,10 +558,23 @@
     "name": "Queen Victoria Park",
     "area": "Niagara Falls, Niagara Parkway",
     "vibe": "Dramatic, misty, powerful, iconic, green",
-    "bestFor": ["Couples", "Engagements", "Proposals", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall", "Winter"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Proposals",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
     "zone": "Niagara",
-    "setting": ["Waterfront", "Nature"],
+    "setting": [
+      "Waterfront",
+      "Nature"
+    ],
     "walkingLevel": "Low",
     "walkingNote": "Paved paths with falls vantage points, some inclines",
     "permits": "First-come first-served for outdoor photography, restricted when Niagara Parks ceremonies are running",
@@ -344,10 +588,21 @@
     "name": "RC Harris Water Treatment Center",
     "area": "Toronto East, Scarborough",
     "vibe": "Romantic, cinematic, historic architecture, waterfront",
-    "bestFor": ["Couples", "Pre-wedding", "Engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Pre-wedding",
+      "Engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Scarborough",
-    "setting": ["Historic", "Waterfront"],
+    "setting": [
+      "Historic",
+      "Waterfront"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Includes stairs and multiple spots",
     "permits": "Not needed for photography; required for vehicle access to curved road",
@@ -361,10 +616,22 @@
     "name": "Royal Botanical Gardens",
     "area": "Burlington, Hamilton Border",
     "vibe": "Lush, floral, serene, woodland, ever-changing blooms",
-    "bestFor": ["Couples", "Engagements", "Pre-wedding", "Portraits"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Hamilton",
-    "setting": ["Garden", "Nature"],
+    "setting": [
+      "Garden",
+      "Nature"
+    ],
     "walkingLevel": "Low-Medium",
     "walkingNote": "Winding trails and woodland paths, multiple garden zones",
     "permits": "Paid photography permit required, submit request via the RBG website",
@@ -378,10 +645,21 @@
     "name": "Scarborough Bluffs",
     "area": "Scarborough, Bluffs Area",
     "vibe": "Dramatic, coastal, wide-open, 'out of the city' feel",
-    "bestFor": ["Pre-wedding", "Couples", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Pre-wedding",
+      "Couples",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Bluffs",
-    "setting": ["Nature", "Waterfront"],
+    "setting": [
+      "Nature",
+      "Waterfront"
+    ],
     "walkingLevel": "Hard",
     "walkingNote": "Beach access involves steep inclines",
     "permits": "None required",
@@ -395,10 +673,18 @@
     "name": "TD Dominion Centre / King St",
     "area": "Downtown Toronto, Financial District",
     "vibe": "Urban, city, cinematic, street",
-    "bestFor": ["Couples", "Pre-wedding", "Portraits"],
-    "season": ["Year-round"],
+    "bestFor": [
+      "Couples",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Year-round"
+    ],
     "zone": "Downtown",
-    "setting": ["Urban"],
+    "setting": [
+      "Urban"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Stairs and movement between areas",
     "permits": "Not required",
@@ -412,10 +698,23 @@
     "name": "Toronto Islands",
     "area": "Downtown Toronto, Harbourfront",
     "vibe": "Beachy, nostalgic, skyline views, ferry-access, relaxed",
-    "bestFor": ["Pre-wedding", "Engagements", "Couples", "Families"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Downtown",
-    "setting": ["Waterfront", "Garden", "Nature"],
+    "setting": [
+      "Waterfront",
+      "Garden",
+      "Nature"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Ferry required, then 20-30 minutes walking between island sections",
     "permits": "City of Toronto commercial photography permit required for professional shoots",
@@ -429,10 +728,20 @@
     "name": "University of Toronto",
     "area": "Toronto, St. George Campus",
     "vibe": "Classic, historic, academic, European-inspired",
-    "bestFor": ["Engagements", "Pre-wedding", "Graduation", "Editorial"],
-    "season": ["Year-round"],
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Graduation",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
     "zone": "Downtown",
-    "setting": ["Historic", "Urban"],
+    "setting": [
+      "Historic",
+      "Urban"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Multiple courtyards and buildings to explore",
     "permits": "Some indoor and restricted areas require permission",
@@ -446,10 +755,23 @@
     "name": "Webster's Falls",
     "area": "Dundas, Hamilton",
     "vibe": "Misty, powerful, forested, romantic, adventurous",
-    "bestFor": ["Couples", "Engagements", "Pre-wedding", "Cinematic engagement"],
-    "season": ["Spring", "Summer", "Fall"],
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
     "zone": "Hamilton",
-    "setting": ["Waterfront", "Forest", "Nature"],
+    "setting": [
+      "Waterfront",
+      "Forest",
+      "Nature"
+    ],
     "walkingLevel": "Medium",
     "walkingNote": "Short trail to the viewpoint, steep sections near the base",
     "permits": "Reservation required via Hamilton Conservation Authority, no separate photography permit for small shoots",
@@ -457,5 +779,96 @@
     "travelTime": "60-75 minutes from downtown",
     "idealIf": "You want an intimate waterfall moment with forest trails and mist for an adventurous session.",
     "image": "websters-falls.jpg"
+  },
+  {
+    "id": "dundurn-castle",
+    "name": "Dundurn Castle",
+    "area": "Hamilton, York Boulevard",
+    "vibe": "Historic, Italianate, stately, estate, romantic",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "zone": "Hamilton",
+    "setting": [
+      "Historic",
+      "Garden"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat open grounds around the estate with a few steps at the main entrance",
+    "permits": "Groups under ten shoot permit-free on the grounds. Groups of ten or more require a City of Hamilton commercial photography permit at $218 CAD. Email museums@hamilton.ca to arrange.",
+    "parking": "Free on-site parking at 610 York Blvd",
+    "travelTime": "60-70 minutes from downtown Toronto via QEW",
+    "idealIf": "You want European estate grandeur, stone archways, and manicured gardens without leaving the GTA.",
+    "image": "dundurn-castle.jpg"
+  },
+  {
+    "id": "burlington-village",
+    "name": "Spencer Smith Park and Burlington Village",
+    "area": "Burlington, Lakefront",
+    "vibe": "Lakeside, breezy, iconic pier, village charm, cinematic",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "zone": "Burlington",
+    "setting": [
+      "Waterfront",
+      "Urban",
+      "Park"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat lakefront promenade and Brant Street Pier with minimal stairs; seamlessly walkable into downtown village streets",
+    "permits": "City of Burlington group photography contracts required for organized sessions; $103.40 (resident) or $144.70 (commercial/non-resident) per 90-minute block, booked via the Live and Play system; confirm commercial permit requirements with the City before large-group or styled shoots",
+    "parking": "Municipal paid lots and metered street parking on Lakeshore Road and Brant Street; arrive early on summer weekends as lots fill quickly during events",
+    "travelTime": "45-60 minutes from downtown Toronto",
+    "idealIf": "You want the open sweep of Lake Ontario framing every shot, the sculptural curve of Brant Street Pier as your backdrop, and a five-minute stroll to cobblestone village streets for a warmer, more intimate second act.",
+    "image": "burlington-village.jpg"
+  },
+  {
+    "id": "adamson-estate",
+    "name": "Adamson Estate",
+    "area": "Lakeview, Mississauga",
+    "vibe": "lakefront, heritage, romantic, stone manor, lush, cinematic, intimate",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "zone": "Mississauga",
+    "setting": [
+      "Outdoor",
+      "Historic",
+      "Waterfront",
+      "Architecture",
+      "Garden"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat lakefront grounds with ramp access to the main house; second floor is stairs only.",
+    "permits": "City of Mississauga commercial photography permit required for all professional and wedding shoots; personal photos are fine without a permit. Call 905-615-4100 to confirm current fees and booking.",
+    "parking": "Free on-site lot adjacent to the estate; limited spaces so arrive early or carpool on busy weekends.",
+    "travelTime": "30 min from Downtown",
+    "idealIf": "You want a circa-1920 Colonial Revival stone manor on Lake Ontario's shoreline, where heritage grandeur meets landscaped grounds and every frame carries a quiet, timeless weight.",
+    "image": "adamson-estate.jpg"
   }
 ]
