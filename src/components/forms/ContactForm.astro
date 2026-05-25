@@ -31,203 +31,178 @@ const referralOptions = [
     </div>
 
     <!-- Hidden context — auto-filled when Enquire is clicked from a
-         specific package so the backend sees which collection the
-         couple was looking at. -->
+         specific package CTA, or set via URL params on inline form. -->
     <input type="hidden" id="package_id" name="package_id" value="" />
     <input type="hidden" id="package_name" name="package_name" value="" />
     <input type="hidden" id="source_page" name="source_page" value="" />
 
-    <!-- ═══ I · ABOUT YOU ═══ -->
-    <fieldset class="form-section">
-      <legend class="form-section__legend">
-        <span class="form-section__number">I</span>
-        <span class="form-section__title">About You</span>
-      </legend>
+    <!-- ═══ Required fields — only 4 to keep the form fast on mobile ═══ -->
+    <div class="form-required-stack">
+      <div class="form-field">
+        <label for="name" class="form-field__label">
+          Your Name <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          autocomplete="given-name"
+          required
+          aria-required="true"
+          aria-describedby="name-error"
+          class="form-field__input"
+        />
+        <p id="name-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
-        <div class="form-field">
-          <label for="name" class="form-field__label">
-            Your Name <span class="form-field__required" aria-hidden="true">*</span>
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            autocomplete="given-name"
-            required
-            aria-required="true"
-            aria-describedby="name-error"
-            class="form-field__input"
-          />
-          <p id="name-error" class="form-error-msg form-field__error hidden" role="alert"></p>
-        </div>
+      <div class="form-field">
+        <label for="email" class="form-field__label">
+          Email <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="email"
+          required
+          aria-required="true"
+          aria-describedby="email-error"
+          class="form-field__input"
+        />
+        <p id="email-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
 
-        <div class="form-field">
-          <label for="partner_name" class="form-field__label">
-            Partner's Name <span class="form-field__optional">(if applicable)</span>
-          </label>
-          <input
-            type="text"
-            id="partner_name"
-            name="partner_name"
-            class="form-field__input"
-          />
-          <p class="form-error-msg form-field__error hidden" role="alert"></p>
-        </div>
+      <div class="form-field">
+        <label for="event_type" class="form-field__label">
+          What I'm Capturing <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <select
+          id="event_type"
+          name="event_type"
+          required
+          aria-required="true"
+          aria-describedby="event_type-error"
+          class="form-field__select"
+        >
+          <option value="" disabled selected>Select an occasion</option>
+          {eventTypeOptions.map((opt) => (
+            <option value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+        <p id="event_type-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
 
-        <div class="form-field">
-          <label for="email" class="form-field__label">
-            Email <span class="form-field__required" aria-hidden="true">*</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            autocomplete="email"
-            required
-            aria-required="true"
-            aria-describedby="email-error"
-            class="form-field__input"
-          />
-          <p id="email-error" class="form-error-msg form-field__error hidden" role="alert"></p>
-        </div>
+      <div class="form-field">
+        <label for="message" class="form-field__label">
+          Tell Me About Your Day <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          aria-required="true"
+          aria-describedby="message-error"
+          rows="5"
+          placeholder="Your story, the mood you're going for, Pinterest or Instagram links. Anything that helps me understand the day."
+          class="form-field__textarea"
+        ></textarea>
+        <p id="message-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
+    </div>
 
-        <div class="form-field">
-          <label for="phone" class="form-field__label">
-            Phone <span class="form-field__required" aria-hidden="true">*</span>
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            autocomplete="tel"
-            required
-            aria-required="true"
-            aria-describedby="phone-error"
-            placeholder="(416) 555 0199"
-            class="form-field__input"
-          />
-          <p id="phone-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+    <!-- ═══ Optional fields — collapsed by default, native <details> so it
+         works pre-hydration on any device. ═══ -->
+    <details class="form-extras">
+      <summary class="form-extras__summary">
+        <span class="form-extras__label">Add more details</span>
+        <span class="form-extras__hint">(optional, helps me prep)</span>
+        <span class="form-extras__icon" aria-hidden="true">+</span>
+      </summary>
+
+      <div class="form-extras__body">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="form-field">
+            <label for="partner_name" class="form-field__label">
+              Partner's Name <span class="form-field__optional">(if applicable)</span>
+            </label>
+            <input
+              type="text"
+              id="partner_name"
+              name="partner_name"
+              class="form-field__input"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="phone" class="form-field__label">
+              Phone <span class="form-field__optional">(optional)</span>
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              autocomplete="tel"
+              placeholder="(416) 555 0199"
+              class="form-field__input"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="event_date" class="form-field__label">
+              Event Date <span class="form-field__optional">(tentative is fine)</span>
+            </label>
+            <input
+              type="date"
+              id="event_date"
+              name="event_date"
+              class="form-field__input"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="guest_count" class="form-field__label">
+              Approximate Guest Count <span class="form-field__optional">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="guest_count"
+              name="guest_count"
+              placeholder="e.g. 50, 100+, or just the two of us"
+              class="form-field__input"
+            />
+          </div>
+
+          <div class="form-field sm:col-span-2">
+            <label for="location" class="form-field__label">
+              Venue or Location <span class="form-field__optional">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder="Venue name, a city, or 'Not sure yet'"
+              class="form-field__input"
+            />
+          </div>
+
+          <div class="form-field sm:col-span-2">
+            <label for="referral" class="form-field__label">
+              How Did You Find Me? <span class="form-field__optional">(optional)</span>
+            </label>
+            <select
+              id="referral"
+              name="referral"
+              class="form-field__select"
+            >
+              <option value="" disabled selected>Select one</option>
+              {referralOptions.map((opt) => (
+                <option value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
-    </fieldset>
-
-    <!-- ═══ II · YOUR DAY ═══ -->
-    <fieldset class="form-section">
-      <legend class="form-section__legend">
-        <span class="form-section__number">II</span>
-        <span class="form-section__title">Your Day</span>
-      </legend>
-
-      <div class="space-y-8">
-        <div class="form-field">
-          <label for="event_type" class="form-field__label">
-            What I'm Capturing <span class="form-field__required" aria-hidden="true">*</span>
-          </label>
-          <select
-            id="event_type"
-            name="event_type"
-            required
-            aria-required="true"
-            aria-describedby="event_type-error"
-            class="form-field__select"
-          >
-            <option value="" disabled selected>Select an occasion</option>
-            {eventTypeOptions.map((opt) => (
-              <option value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
-          <p id="event_type-error" class="form-error-msg form-field__error hidden" role="alert"></p>
-        </div>
-
-        <div class="form-field">
-          <label for="event_date" class="form-field__label">
-            Event Date <span class="form-field__optional">(tentative is fine)</span>
-          </label>
-          <input
-            type="date"
-            id="event_date"
-            name="event_date"
-            class="form-field__input"
-          />
-          <p class="form-field__help">
-            Haven't locked the date? Leave blank, I'll talk through options with you.
-          </p>
-        </div>
-
-        <div class="form-field">
-          <label for="location" class="form-field__label">
-            Venue or Location <span class="form-field__optional">(optional)</span>
-          </label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            placeholder="Venue name, a city, or 'Not sure yet'"
-            class="form-field__input"
-          />
-          <p class="form-field__help">
-            Still deciding? No problem. Light first, location second, I help you pick.
-          </p>
-        </div>
-
-        <div class="form-field">
-          <label for="guest_count" class="form-field__label">
-            Approximate Guest Count <span class="form-field__optional">(optional)</span>
-          </label>
-          <input
-            type="text"
-            id="guest_count"
-            name="guest_count"
-            placeholder="e.g. 50, 100+, or just the two of us"
-            class="form-field__input"
-          />
-        </div>
-      </div>
-    </fieldset>
-
-    <!-- ═══ III · THE VISION ═══ -->
-    <fieldset class="form-section">
-      <legend class="form-section__legend">
-        <span class="form-section__number">III</span>
-        <span class="form-section__title">The Vision</span>
-      </legend>
-
-      <div class="space-y-8">
-        <div class="form-field">
-          <label for="message" class="form-field__label">
-            Tell Me About Your Day <span class="form-field__required" aria-hidden="true">*</span>
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            required
-            aria-required="true"
-            aria-describedby="message-error"
-            rows="5"
-            placeholder="Your story, the mood you're going for, Pinterest or Instagram links. Anything that helps me understand the day."
-            class="form-field__textarea"
-          ></textarea>
-          <p id="message-error" class="form-error-msg form-field__error hidden" role="alert"></p>
-        </div>
-
-        <div class="form-field">
-          <label for="referral" class="form-field__label">
-            How Did You Find Me? <span class="form-field__optional">(optional)</span>
-          </label>
-          <select
-            id="referral"
-            name="referral"
-            class="form-field__select"
-          >
-            <option value="" disabled selected>Select one</option>
-            {referralOptions.map((opt) => (
-              <option value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </fieldset>
+    </details>
 
     <!-- Submit -->
     <div class="form-submit">
@@ -237,7 +212,10 @@ const referralOptions = [
         <span class="form-submit__arrow" aria-hidden="true">&rarr;</span>
       </button>
       <p class="form-submit__note">
-        <span class="form-field__required not-italic" aria-hidden="true">*</span> required · everything else is optional, share what you can
+        <span class="form-field__required not-italic" aria-hidden="true">*</span> required, the rest is optional. Share what you can.
+      </p>
+      <p class="form-submit__reply">
+        Reply within 24 hours, every time.
       </p>
     </div>
   </form>
@@ -262,7 +240,7 @@ const referralOptions = [
       </svg>
       <div>
         <p class="text-label-md text-on-surface">Something went wrong</p>
-        <p class="mt-1 text-body-lg text-on-surface-variant">Your message couldn't be sent. Please try again, or reach out directly at <a href="mailto:info@kashklicks.ca" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">info@kashklicks.ca</a> or DM me on Instagram for a faster reply.</p>
+        <p class="mt-1 text-body-lg text-on-surface-variant">Your message couldn't be sent. Please try again, or reach out directly at <a href="mailto:info@kashklicks.ca" class="underline hover:text-on-surface transition-interactive" style="transition-duration: var(--duration-hover-ui);">info@kashklicks.ca</a> or DM me on Instagram for a faster reply.</p>
         <button
           id="contact-retry-btn"
           type="button"
@@ -276,17 +254,127 @@ const referralOptions = [
   </div>
 </div>
 
+<style>
+  .form-required-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .form-extras {
+    margin-top: 2.5rem;
+    border-top: 1px solid rgba(175, 179, 174, 0.25);
+    padding-top: 1.5rem;
+  }
+
+  .form-extras__summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.25rem 0;
+  }
+  .form-extras__summary::-webkit-details-marker { display: none; }
+  .form-extras__summary::marker { content: ''; }
+
+  .form-extras__label {
+    font-size: 0.8125rem;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-on-surface);
+  }
+
+  .form-extras__hint {
+    font-size: 0.8125rem;
+    font-family: var(--font-sans);
+    color: var(--color-on-surface-muted);
+  }
+
+  .form-extras__icon {
+    margin-left: auto;
+    font-size: 1.5rem;
+    color: var(--color-on-surface-variant);
+    transition: transform var(--duration-hover-ui, var(--duration-hover)) var(--ease-gallery);
+    transform-origin: center;
+    line-height: 1;
+  }
+  .form-extras[open] > .form-extras__summary .form-extras__icon {
+    transform: rotate(45deg);
+  }
+
+  .form-extras__body {
+    padding-top: 2rem;
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-gallery);
+  }
+  .form-extras[open] > .form-extras__body {
+    opacity: 1;
+  }
+
+  .form-submit__reply {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    font-family: var(--font-sans);
+    color: var(--color-on-surface-muted);
+    letter-spacing: 0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .form-extras__body,
+    .form-extras__icon {
+      transition: none;
+    }
+    .form-extras[open] > .form-extras__body { opacity: 1; }
+  }
+</style>
+
 <script>
   function initContactForm() {
     const form = document.getElementById('contact-form') as HTMLFormElement | null;
-    const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (!form) return;
+    if ((form as any).__bound) return;
+    (form as any).__bound = true;
+
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
     const successEl = document.getElementById('contact-success');
     const errorEl = document.getElementById('contact-error');
     const retryBtn = document.getElementById('contact-retry-btn');
 
-    if (!form || !submitBtn || !successEl || !errorEl) return;
+    if (!submitBtn || !successEl || !errorEl) return;
 
     const originalBtnText = submitBtn.textContent;
+
+    // URL-param prefill — when PricingCard graceful-degrades to /contact/,
+    // its href carries ?service=...&package=...&package_name=... and #inquiry.
+    // Mirror what ContactModal does for in-place opens.
+    function applyUrlPrefill() {
+      const params = new URLSearchParams(window.location.search);
+      const sourcePage = form!.querySelector<HTMLInputElement>('#source_page');
+      if (sourcePage) sourcePage.value = window.location.pathname;
+
+      const service = params.get('service');
+      if (service) {
+        const select = form!.querySelector<HTMLSelectElement>('#event_type');
+        if (select && Array.from(select.options).some((o) => o.value === service)) {
+          select.value = service;
+        }
+      }
+
+      const pkg = params.get('package');
+      if (pkg) {
+        const pkgInput = form!.querySelector<HTMLInputElement>('#package_id');
+        if (pkgInput) pkgInput.value = pkg;
+      }
+
+      const pkgName = params.get('package_name');
+      if (pkgName) {
+        const pkgNameInput = form!.querySelector<HTMLInputElement>('#package_name');
+        if (pkgNameInput) pkgNameInput.value = pkgName;
+      }
+    }
+    applyUrlPrefill();
 
     function clearFieldError(field: HTMLElement) {
       const errMsg = field.closest('.form-field')?.querySelector('.form-error-msg') as HTMLElement | null;

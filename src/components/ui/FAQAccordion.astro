@@ -7,29 +7,19 @@ interface Props {
 const { items, defaultOpen = false } = Astro.props;
 ---
 
-<div class="faq-accordion" data-faq-accordion>
+<div class="faq-accordion">
   {items.map((item, i) => (
-    <div class:list={['faq-item', i === 0 && 'faq-item-first']}>
-      <button
-        type="button"
-        class="faq-summary flex items-center justify-between w-full text-left"
-        aria-expanded={defaultOpen && i === 0 ? 'true' : 'false'}
-      >
+    <details class:list={['faq-item', i === 0 && 'faq-item-first']} open={defaultOpen && i === 0}>
+      <summary class="faq-summary">
         <h3 class="text-body-lg font-medium pr-8">{item.question}</h3>
-        <span
-          class="faq-icon text-on-surface-variant text-2xl cubic-ease shrink-0"
-          style="transition-duration: var(--duration-slow);"
-          aria-hidden="true"
-        >+</span>
-      </button>
+        <span class="faq-icon text-on-surface-variant text-2xl shrink-0" aria-hidden="true">+</span>
+      </summary>
       <div class="faq-answer">
-        <div class="faq-answer-inner">
-          <p class="text-body-md text-on-surface-variant" style="padding-top: 8px; max-width: 65ch;">
-            {item.answer}
-          </p>
-        </div>
+        <p class="text-body-md text-on-surface-variant" style="padding-top: 8px; max-width: 65ch;">
+          {item.answer}
+        </p>
       </div>
-    </div>
+    </details>
   ))}
 </div>
 
@@ -41,36 +31,37 @@ const { items, defaultOpen = false } = Astro.props;
     padding-top: 0;
   }
 
+  /* Native <details>/<summary> — works without JS, no pre-hydration dead clicks.
+     Strip default disclosure marker + restore our own +/x indicator. */
   .faq-summary {
     cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    color: inherit;
-    font: inherit;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
   }
+  .faq-summary::-webkit-details-marker { display: none; }
+  .faq-summary::marker { content: ''; }
 
   .faq-icon {
     display: inline-block;
     transform-origin: center;
+    transition: transform var(--duration-hover-ui, var(--duration-hover)) var(--ease-gallery);
   }
-  .faq-summary[aria-expanded="true"] .faq-icon {
+  .faq-item[open] > .faq-summary .faq-icon {
     transform: rotate(45deg);
   }
 
+  /* Fade the answer body in on open. Height itself is native (snap), so we
+     animate opacity only — keeps the editorial calm without a janky height
+     interpolation across browsers. */
   .faq-answer {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows var(--duration-slow) var(--ease-gallery),
-                opacity var(--duration-slow) var(--ease-gallery);
     opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-gallery);
   }
-  .faq-answer-inner {
-    overflow: hidden;
-    min-height: 0;
-  }
-  .faq-summary[aria-expanded="true"] + .faq-answer {
-    grid-template-rows: 1fr;
+  .faq-item[open] > .faq-answer {
     opacity: 1;
   }
 
@@ -79,22 +70,6 @@ const { items, defaultOpen = false } = Astro.props;
     .faq-icon {
       transition: none;
     }
+    .faq-item[open] > .faq-answer { opacity: 1; }
   }
 </style>
-
-<script>
-  function initFaqAccordion() {
-    const buttons = document.querySelectorAll<HTMLButtonElement>('.faq-accordion .faq-summary');
-    buttons.forEach((btn) => {
-      if (btn.dataset.faqBound === 'true') return;
-      btn.dataset.faqBound = 'true';
-      btn.addEventListener('click', () => {
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      });
-    });
-  }
-
-  initFaqAccordion();
-  document.addEventListener('astro:after-swap', initFaqAccordion);
-</script>

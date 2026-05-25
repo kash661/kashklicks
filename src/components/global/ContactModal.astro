@@ -40,7 +40,9 @@ import ContactForm from '../forms/ContactForm.astro';
     (modal as any).__bound = true;
 
     // Use HTMLElement so we accept both <button> and <a> triggers.
-    // PricingCard renders <a href="/contact/?open=1&service=...&package=..."> for graceful-degrade.
+    // PricingCard renders <a href="/contact/?service=...&package=...#inquiry"> for graceful-degrade.
+    // The inline form on /contact/ reads those params and pre-fills itself;
+    // this modal binding is the in-place primary path on /services/* pages.
     const openers = document.querySelectorAll<HTMLElement>('[data-open-modal="contact-modal"]');
     const closers = modal.querySelectorAll<HTMLButtonElement>('[data-close-modal]');
     let lastFocused: HTMLElement | null = null;
@@ -93,7 +95,7 @@ import ContactForm from '../forms/ContactForm.astro';
       btn.addEventListener('click', (event) => {
         // Suppress default link navigation only when the modal is reachable.
         // If preventDefault throws or the modal fails to open, the <a> still
-        // navigates to /contact/?open=1&... which auto-opens via the search-param branch below.
+        // navigates to /contact/ where the inline form picks up the prefill params.
         event.preventDefault();
         openModal(btn);
       });
@@ -113,9 +115,11 @@ import ContactForm from '../forms/ContactForm.astro';
       document.body.classList.remove('modal-open');
     });
 
-    // Auto-open when deep-linked from a service package CTA
-    // (`/contact#inquiry` or `?open=1&service=wedding`). Honors prefill
-    // via `?service=` search param when auto-opening.
+    // Auto-open when deep-linked to a page that mounts this modal with
+    // `#inquiry` hash or legacy `?open=1` search param. Honors `?service=`
+    // prefill when auto-opening. (Note: /contact/ no longer mounts the
+    // modal — it uses an inline form — so this branch only fires on
+    // /services/* if those pages ever receive a hash deep link.)
     const params = new URLSearchParams(window.location.search);
     const shouldAutoOpen = window.location.hash === '#inquiry' || params.get('open') === '1';
     if (shouldAutoOpen) {

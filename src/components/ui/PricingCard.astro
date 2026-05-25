@@ -108,11 +108,13 @@ const displayPrice = hasSale ? salePrice : price;
   {/*
     Native-link fallback: if the modal script fails to bind (JS error earlier
     in the page, slow hydration, etc.) the CTA still navigates to /contact/
-    with the package context preserved. Modal binding intercepts the click
-    via event.preventDefault() when JS is healthy.
+    with the package context preserved. The inline form on /contact/ reads
+    these URL params and pre-fills event_type + hidden package fields. The
+    #inquiry hash scrolls to the form. Modal binding intercepts the click
+    via event.preventDefault() when JS is healthy on /services/* pages.
   */}
   <a
-    href={`/contact/?open=1${service ? `&service=${encodeURIComponent(service)}` : ''}&package=${encodeURIComponent(id)}&package_name=${encodeURIComponent(name)}`}
+    href={`/contact/?${service ? `service=${encodeURIComponent(service)}&` : ''}package=${encodeURIComponent(id)}&package_name=${encodeURIComponent(name)}#inquiry`}
     class="pricing-card__cta"
     data-open-modal="contact-modal"
     data-service={service}
