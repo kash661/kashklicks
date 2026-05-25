@@ -1,0 +1,59 @@
+---
+// Three-step "what happens next" explainer. Sans-bodied (informational
+// intent per the Digital Curator typography rule), serif roman-numeral
+// plates for editorial rhythm. Used alongside Studio Notes on /contact/.
+const steps = [
+  { numeral: 'I', body: 'You send the note.' },
+  { numeral: 'II', body: 'I read it the same day and reply within 24 hours.' },
+  { numeral: 'III', body: 'We hop on a quick call to plan it together.' },
+];
+---
+
+<div class="what-happens-next">
+  <p class="text-label-md text-on-surface-muted eyebrow-rule reveal">What Happens Next</p>
+
+  <dl class="what-happens-next__list">
+    {steps.map((step, i) => (
+      <div class={`what-happens-next__step reveal stagger-${i + 1}`}>
+        <dt class="what-happens-next__numeral">{step.numeral}</dt>
+        <dd class="what-happens-next__body">{step.body}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
+
+<style>
+  .what-happens-next__list {
+    margin-top: var(--spacing-element);
+    border-block: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 25%, transparent);
+  }
+
+  .what-happens-next__step {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 15%, transparent);
+  }
+  .what-happens-next__step:last-child {
+    border-bottom: none;
+  }
+
+  .what-happens-next__numeral {
+    flex: 0 0 6rem;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-on-surface);
+    letter-spacing: 0.02em;
+  }
+
+  .what-happens-next__body {
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--color-on-surface);
+    max-width: 38ch;
+  }
+</style>

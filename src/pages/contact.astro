@@ -1,14 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-import ContactModal from '../components/global/ContactModal.astro';
+import ContactForm from '../components/forms/ContactForm.astro';
+import WhatHappensNext from '../components/contact/WhatHappensNext.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import BookingLink from '../components/ui/BookingLink.astro';
 import { Image } from 'astro:assets';
 
 import faq from '../data/faq.json';
 import site from '../data/site.json';
+import testimonials from '../data/testimonials.json';
 import heroImage from '../assets/images/homepage/homepage-02.jpg';
+
+const featuredTestimonial = testimonials.find((t) => t.id === 'reema') ?? testimonials[0];
 
 // Dedupe FAQ by question — contact page shows the general set; service-specific
 // variants live on the individual service pages.
@@ -132,6 +136,11 @@ const contactPageSchema = {
             Share a little about your day, your vision, and the moments you want to remember. I'll take it from there.
           </p>
 
+          <!-- What Happens Next — 3-step explainer, sits above Studio Notes -->
+          <div class="mt-12">
+            <WhatHappensNext />
+          </div>
+
           <!-- Studio Colophon -->
           <div class="mt-16">
             <p class="text-label-md text-on-surface-muted mb-8 eyebrow-rule reveal">Studio Notes</p>
@@ -154,7 +163,7 @@ const contactPageSchema = {
                     style="transition-duration: var(--duration-hover);"
                   >
                     {site.email}
-                    <svg class="w-3.5 h-3.5 cubic-ease group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-on-surface-muted" style="transition-duration: var(--duration-hover);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5 transition-interactive group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-on-surface-muted" style="transition-duration: var(--duration-hover-ui);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 17L17 7M17 7H7M17 7V17" />
                     </svg>
                   </a>
@@ -171,7 +180,7 @@ const contactPageSchema = {
                     style="transition-duration: var(--duration-hover);"
                   >
                     {site.social.instagramHandle}
-                    <svg class="w-3.5 h-3.5 cubic-ease group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-on-surface-muted" style="transition-duration: var(--duration-hover);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5 transition-interactive group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-on-surface-muted" style="transition-duration: var(--duration-hover-ui);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 17L17 7M17 7H7M17 7V17" />
                     </svg>
                   </a>
@@ -187,43 +196,49 @@ const contactPageSchema = {
           </div>
         </div>
 
-        <!-- Right: Invitation card with modal trigger -->
+        <!-- Right: Inline form. Replaces the former dark "Open the Form"
+             modal-trigger card — eliminates the pre-hydration dead-click
+             failure mode on iOS Safari. -->
         <div class="col-span-12 lg:col-span-6 lg:col-start-7 mt-16 lg:mt-0">
-          <div class="bg-surface-dark text-on-dark p-10 lg:p-14 relative overflow-hidden reveal-right invitation-card">
-            <p class="text-label-md text-on-dark-variant eyebrow-rule eyebrow-rule-on-dark reveal stagger-1">Ready When You Are</p>
-            <h3 class="text-heading-lg text-on-dark mt-8 reveal stagger-2" style="max-width: 14ch;">
+          <div class="inquiry-form-block reveal-right">
+            <p class="text-label-md text-on-surface-muted eyebrow-rule reveal stagger-1">Inquiry</p>
+            <h3 class="text-heading-lg mt-8 reveal stagger-2" style="max-width: 14ch;">
               Begin the <em class="font-serif italic">inquiry.</em>
             </h3>
-            <p class="text-body-lg text-on-dark-variant mt-6 reveal stagger-3" style="max-width: 38ch;">
-              A quiet, one-page form. A few details about your day and your vision. I reply within 24 hours, every time.
+            <p class="text-body-lg text-on-surface-variant mt-6 reveal stagger-3" style="max-width: 42ch;">
+              Share a little about your day and your vision. I'll take it from there.
             </p>
 
-            <div class="mt-12 reveal stagger-4">
-              <button
-                type="button"
-                data-open-modal="contact-modal"
-                class="magnetic inline-flex items-center gap-4 whitespace-nowrap px-10 py-5 bg-background text-on-surface font-sans text-label-md hover:bg-surface-dim cubic-ease group relative"
-                style="transition-duration: var(--duration-hover);"
-              >
-                <span>Open the Form</span>
-                <svg class="w-4 h-4 cubic-ease group-hover:translate-x-1 arrow-nudge" style="transition-duration: var(--duration-hover);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-              <p class="text-label-sm text-on-dark-variant opacity-60 mt-6">
-                Takes about two minutes.
-              </p>
-              <div class="mt-8 pt-8 border-t border-on-dark-variant/15">
-                <p class="text-label-sm text-on-dark-variant opacity-60 mb-3">
-                  Or speak with AD directly
+            <div class="mt-10 reveal stagger-4">
+              <ContactForm />
+            </div>
+
+            <!-- Featured testimonial — adjacent to form. Speaks to the
+                 'will this feel awkward?' fear at the moment of decision. -->
+            <figure class="mt-14 pt-10 border-t border-on-surface-muted/20 reveal">
+              <blockquote>
+                <p class="text-quote text-on-surface italic" style="max-width: 32ch;">
+                  &ldquo;{featuredTestimonial.quote}&rdquo;
                 </p>
-                <BookingLink variant="text" class="text-on-dark-variant hover:text-on-dark">
-                  Book a 30-min consultation
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                </BookingLink>
-              </div>
+              </blockquote>
+              <figcaption class="mt-6">
+                <p class="text-label-md text-on-surface">{featuredTestimonial.name}</p>
+                <p class="text-label-sm text-on-surface-variant opacity-60">{featuredTestimonial.event}</p>
+              </figcaption>
+            </figure>
+
+            <!-- Secondary path: book a call directly. Text link, not a CTA
+                 block — the form is the primary action. -->
+            <div class="mt-10 pt-8 border-t border-on-surface-muted/20 reveal">
+              <p class="text-label-sm text-on-surface-muted mb-3">
+                Or speak with AD directly
+              </p>
+              <BookingLink variant="text" class="text-on-surface-variant hover:text-on-surface">
+                Book a 30-min consultation
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </BookingLink>
             </div>
           </div>
         </div>
@@ -242,7 +257,7 @@ const contactPageSchema = {
         <FAQAccordion items={contactFaq} defaultOpen />
       </div>
       <p class="text-label-sm text-on-surface-muted text-center mt-12 reveal">
-        Looking for package-specific answers? Visit my <a href="/services" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">services</a> pages.
+        Looking for package-specific answers? Visit my <a href="/services" class="underline hover:text-on-surface transition-interactive" style="transition-duration: var(--duration-hover-ui);">services</a> pages.
       </p>
     </div>
   </section>
@@ -271,7 +286,7 @@ const contactPageSchema = {
               style="transition-duration: var(--duration-hover);"
             >
               <span>View Portfolio</span>
-              <svg class="w-4 h-4 cubic-ease group-hover:translate-x-1" style="transition-duration: var(--duration-hover);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="w-4 h-4 transition-interactive group-hover:translate-x-1" style="transition-duration: var(--duration-hover-ui);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
@@ -281,7 +296,6 @@ const contactPageSchema = {
     </div>
   </section>
 
-  <ContactModal />
 </BaseLayout>
 
 <style>
@@ -311,6 +325,6 @@ const contactPageSchema = {
     }
   }
 
-  /* Modal dialog styles + script moved to ContactModal.astro. */
+  /* Form styles live in ContactForm.astro + global.css form tokens. */
 </style>
 
