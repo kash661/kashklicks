@@ -221,14 +221,14 @@ const referralOptions = [
   </form>
 
   <!-- Success state -->
-  <div id="contact-success" class="hidden bg-surface-dim p-10" role="status" aria-live="polite">
-    <p class="text-label-md text-on-surface-muted eyebrow-rule revealed mb-4">Thank You</p>
-    <h3 class="text-heading-lg font-serif">Your note is on its way.</h3>
-    <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 50ch;">
+  <div id="contact-success" class="hidden contact-success p-10" role="status" aria-live="polite">
+    <p class="text-label-md contact-success__eyebrow eyebrow-rule revealed mb-4">Sent · Thank You</p>
+    <h3 class="text-heading-lg font-serif contact-success__heading">Your note is on its way.</h3>
+    <p class="text-body-lg contact-success__body mt-4" style="max-width: 50ch;">
       I'll read it carefully and reply within 24 hours to start planning something with you.
     </p>
-    <p class="text-label-sm text-on-surface-muted mt-6">
-      In the meantime, browse my <a href="/portfolio/" class="text-on-surface hover:text-on-surface-variant cubic-ease underline" style="transition-duration: var(--duration-hover);">portfolio</a> for inspiration.
+    <p class="text-label-sm contact-success__meta mt-6">
+      In the meantime, browse my <a href="/portfolio/" class="contact-success__link cubic-ease underline" style="transition-duration: var(--duration-hover);">portfolio</a> for inspiration.
     </p>
   </div>
 
@@ -328,6 +328,17 @@ const referralOptions = [
     }
     .form-extras[open] > .form-extras__body { opacity: 1; }
   }
+
+  .contact-success {
+    background: #e7eede;
+  }
+  .contact-success__eyebrow { color: #4f6342; }
+  .contact-success .eyebrow-rule::after { background: #4f6342; }
+  .contact-success__heading { color: #283322; }
+  .contact-success__body { color: #4b5840; }
+  .contact-success__meta { color: #6b765f; }
+  .contact-success__link { color: #283322; transition-property: color; }
+  .contact-success__link:hover { color: #4f6342; }
 </style>
 
 <script>
