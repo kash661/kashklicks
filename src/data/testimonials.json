@@ -33,5 +33,14 @@
     "event": "Pre-Wedding",
     "quote": "The perfect blend of providing instruction when needed while also being able to just fall back and capture the most natural, beautiful moments.",
     "rating": 5
+  },
+  {
+    "id": "shubha-kaushik",
+    "name": "Shubha",
+    "event": "Pre-Wedding",
+    "quote": "We got the most beautiful engagement photos with Akash. Would love to get more with him again.",
+    "rating": 5,
+    "albumSlug": "shuba-rob",
+    "location": "RC Harris, Scarborough"
   }
 ]
