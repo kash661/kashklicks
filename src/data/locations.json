@@ -870,5 +870,35 @@
     "travelTime": "30 min from Downtown",
     "idealIf": "You want a circa-1920 Colonial Revival stone manor on Lake Ontario's shoreline, where heritage grandeur meets landscaped grounds and every frame carries a quiet, timeless weight.",
     "image": "adamson-estate.jpg"
+  },
+  {
+    "id": "aera-toronto",
+    "name": "Aera Toronto",
+    "area": "Downtown Toronto, Financial District",
+    "vibe": "Sky-high, modern, Italian, cinematic, sweeping city views, warm wood, candle-warm at night",
+    "bestFor": [
+      "Couples",
+      "Intimate Weddings",
+      "Engagements",
+      "Editorial",
+      "Receptions"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "zone": "Downtown",
+    "setting": [
+      "Indoor",
+      "Restaurant",
+      "Urban",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Indoor venue on the 38th floor of CIBC Square. Elevator access, no walking required between settings.",
+    "permits": "Private restaurant. Photography for booked private events is arranged directly with the venue.",
+    "parking": "Paid public parking at CIBC Square and surrounding Financial District lots. Union Station is a short walk for guests arriving by transit.",
+    "travelTime": "Downtown",
+    "idealIf": "You want a modern Italian, high-rise wedding venue with floor-to-ceiling Toronto skyline views and a warm dining-room feel.",
+    "image": "aera-toronto.jpg"
   }
 ]
