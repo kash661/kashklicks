@@ -11,8 +11,9 @@ import faq from '../data/faq.json';
 import site from '../data/site.json';
 import testimonials from '../data/testimonials.json';
 import heroImage from '../assets/images/homepage/homepage-02.jpg';
+import testimonialImage from '../assets/images/portfolio/shuba-rob-cover.jpg';
 
-const featuredTestimonial = testimonials.find((t) => t.id === 'reema') ?? testimonials[0];
+const featuredTestimonial = testimonials.find((t) => t.id === 'shubha-kaushik') ?? testimonials[0];
 
 // Dedupe FAQ by question — contact page shows the general set; service-specific
 // variants live on the individual service pages.
@@ -213,18 +214,36 @@ const contactPageSchema = {
               <ContactForm />
             </div>
 
-            <!-- Featured testimonial — adjacent to form. Speaks to the
-                 'will this feel awkward?' fear at the moment of decision. -->
+            <!-- Featured testimonial — adjacent to form. Quote + portrait
+                 from the same client's portfolio session — tells AND shows. -->
             <figure class="mt-14 pt-10 border-t border-on-surface-muted/20 reveal">
-              <blockquote>
-                <p class="text-quote text-on-surface italic" style="max-width: 32ch;">
-                  &ldquo;{featuredTestimonial.quote}&rdquo;
-                </p>
-              </blockquote>
-              <figcaption class="mt-6">
-                <p class="text-label-md text-on-surface">{featuredTestimonial.name}</p>
-                <p class="text-label-sm text-on-surface-variant opacity-60">{featuredTestimonial.event}</p>
-              </figcaption>
+              <div class="flex flex-col sm:flex-row sm:items-start gap-8">
+                <div class="shrink-0 w-48 aspect-[4/5] overflow-hidden">
+                  <Image
+                    src={testimonialImage}
+                    alt="Toronto pre-wedding portrait by AD Photography"
+                    widths={[240, 384, 480]}
+                    sizes="(max-width: 640px) 192px, 192px"
+                    quality={75}
+                    format="avif"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <blockquote>
+                    <p class="text-quote text-on-surface italic" style="max-width: 28ch;">
+                      &ldquo;{featuredTestimonial.quote}&rdquo;
+                    </p>
+                  </blockquote>
+                  <figcaption class="mt-6">
+                    <p class="text-label-md text-on-surface">{featuredTestimonial.name}</p>
+                    <p class="text-label-sm text-on-surface-variant opacity-60">
+                      {featuredTestimonial.event}{featuredTestimonial.location ? ` · ${featuredTestimonial.location}` : ''}
+                    </p>
+                  </figcaption>
+                </div>
+              </div>
             </figure>
 
             <!-- Secondary path: book a call directly. Text link, not a CTA
