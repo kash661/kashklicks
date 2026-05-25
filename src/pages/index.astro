@@ -232,13 +232,9 @@ const jsonLd = [
 
     <!-- Hero CTA anchored above the scroll rail -->
     <div class="absolute left-1/2 -translate-x-1/2 hero-cta z-10">
-      <a
-        href="/contact"
-        class="magnetic inline-flex items-center justify-center whitespace-nowrap px-9 py-3.5 border border-on-dark/70 text-on-dark font-sans text-[0.8125rem] tracking-[0.12em] uppercase hover:bg-on-dark hover:text-on-surface cubic-ease"
-        style="transition-duration: var(--duration-hover);"
-      >
+      <Button href="/contact" variant="ghost-on-dark" class="magnetic">
         Contact me
-      </a>
+      </Button>
     </div>
 
     <!-- Scroll indicator: hairline rail with a travelling dot -->
@@ -494,6 +490,7 @@ const jsonLd = [
       line-height: 1.04;
       letter-spacing: -0.02em;
       max-width: 18ch;
+      text-wrap: balance;
     }
 
     .recent-work__title em {
@@ -788,6 +785,7 @@ const jsonLd = [
       line-height: 1.05;
       letter-spacing: -0.02em;
       color: var(--color-on-surface);
+      text-wrap: balance;
     }
 
     .journal__post {
@@ -975,6 +973,7 @@ const jsonLd = [
       letter-spacing: -0.02em;
       color: var(--color-on-dark);
       margin: 0 0 1rem;
+      text-wrap: balance;
     }
 
     .contact-cta__deck {

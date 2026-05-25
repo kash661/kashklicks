@@ -56,9 +56,11 @@ const blogSchema = {
     </header>
 
     {posts.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-        {posts.map((post, i) => (
-          <a href={`/blog/${post.id}`} class="group block reveal" style={`transition-delay: ${(i % 3) * 100 + 100}ms;`}>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-12">
+        {posts.map((post, i) => {
+          const blogSpan = i % 5 < 2 ? 'lg:col-span-6' : 'lg:col-span-4';
+          return (
+          <a href={`/blog/${post.id}`} class:list={['group block reveal', blogSpan]} style={`transition-delay: ${(i % 5) * 80 + 100}ms;`}>
             <article>
               {post.data.coverImage ? (
                 <div class="aspect-[3/2] overflow-hidden bg-surface-dim image-caption" data-caption={post.data.tags[0] ?? 'Read'}>
@@ -78,7 +80,7 @@ const blogSchema = {
                 <div class="aspect-[3/2] bg-surface-dim" />
               )}
               <div class="mt-4">
-                <div class="flex items-center gap-3 text-label-sm text-on-surface-muted mb-3">
+                <div class="flex items-center gap-3 text-label-sm-soft text-on-surface-muted mb-3">
                   <time datetime={post.data.publishDate.toISOString()}>
                     {post.data.publishDate.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </time>
@@ -89,7 +91,7 @@ const blogSchema = {
                     </>
                   )}
                 </div>
-                <h2 class="text-heading-md group-hover:text-on-surface-variant cubic-ease" style="transition-duration: var(--duration-hover);">
+                <h2 class="text-heading-md group-hover:text-on-surface-variant transition-interactive" style="transition-duration: var(--duration-hover-ui);">
                   {post.data.title}
                 </h2>
                 <p class="text-body-lg text-on-surface-variant mt-2 line-clamp-3" style="max-width: 45ch;">
@@ -98,7 +100,8 @@ const blogSchema = {
               </div>
             </article>
           </a>
-        ))}
+          );
+        })}
       </div>
     ) : (
       <p class="text-body-lg text-on-surface-muted py-12">Blog posts coming soon. Check back for tips, guides, and behind-the-scenes stories.</p>

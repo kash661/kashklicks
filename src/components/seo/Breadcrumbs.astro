@@ -32,7 +32,7 @@ const schema = {
         {index === items.length - 1 ? (
           <span class="text-on-surface-variant" aria-current="page">{item.label}</span>
         ) : (
-          <a href={item.href} class="hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{item.label}</a>
+          <a href={item.href} class="hover:text-on-surface transition-interactive" style="transition-duration: var(--duration-hover-ui);">{item.label}</a>
         )}
       </li>
     ))}

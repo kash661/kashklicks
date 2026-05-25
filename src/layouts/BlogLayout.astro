@@ -76,7 +76,7 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
         <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">{tags[0] ?? 'Story'}</p>
         <h1 class="text-display-md leading-tight">{title}</h1>
         <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 55ch;">{description}</p>
-        <div class="flex items-center gap-3 text-label-sm text-on-surface-muted mt-8">
+        <div class="flex items-center gap-3 text-label-sm-soft text-on-surface-muted mt-8">
           <time datetime={publishDate.toISOString()}>{formattedDate}</time>
           {tags.length > 1 && (
             <>
@@ -112,9 +112,9 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
       </div>
 
       <footer class="mt-16 pt-8 border-t border-ghost">
-        <p class="text-label-sm text-on-surface-muted">Written by {author}</p>
+        <p class="text-label-sm-soft text-on-surface-muted">Written by {author}</p>
         <span class="magnetic inline-block mt-4">
-          <a href="/blog" class="text-label-md text-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">
+          <a href="/blog" class="text-label-md text-on-surface-variant hover:text-on-surface transition-interactive" style="transition-duration: var(--duration-hover-ui);">
             Back to Blog
           </a>
         </span>

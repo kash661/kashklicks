@@ -121,6 +121,7 @@
   --duration-slow: 600ms;
   --duration-deliberate: 900ms;
   --duration-hover: 500ms;
+  --duration-hover-ui: 200ms;
   --duration-page: 800ms;
   --duration-splash: 1200ms;
 
@@ -172,6 +173,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.05;
+  text-wrap: balance;
 }
 
 .text-display-md {
@@ -180,6 +182,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.1;
+  text-wrap: balance;
 }
 
 .text-heading-lg {
@@ -188,6 +191,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--fw-medium);
   letter-spacing: -0.01em;
   line-height: 1.2;
+  text-wrap: balance;
 }
 
 .text-heading-md {
@@ -195,6 +199,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   font-weight: var(--fw-bold);
   line-height: 1.3;
+  text-wrap: balance;
 }
 
 .text-body-lg {
@@ -202,6 +207,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.7;
+  text-wrap: pretty;
 }
 
 .text-body-md {
@@ -209,6 +215,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.6;
+  text-wrap: pretty;
 }
 
 .text-label-md {
@@ -227,6 +234,38 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.12em;
   line-height: 1.4;
   text-transform: uppercase;
+}
+
+/* Sentence-case variants of the label microtype. Use on content-adjacent
+   labels (gallery-plaque meta, pricing meta, captions, location strings,
+   blog post meta) so they read softer than wayfinding chrome. */
+.text-label-md-soft {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.text-label-sm-soft {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+/* Italic-serif caption variant. Reserve for image captions and editorial
+   meta lines where a softer, body-adjacent voice is warranted. */
+.text-caption-italic {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  font-style: italic;
+  letter-spacing: 0;
+  line-height: 1.5;
+  color: var(--color-on-surface-variant);
 }
 
 .text-quote {
@@ -618,17 +657,18 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
 }
 
-.scroll-progress::after {
-  content: '';
-  display: block;
+.scroll-progress-fill {
   height: 100%;
-  width: calc(var(--scroll-progress, 0) * 100%);
+  width: 100%;
   background: color-mix(in srgb, var(--color-on-surface) 70%, transparent);
-  transition: width 80ms linear;
+  will-change: transform;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 80ms linear;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-progress::after {
+  .scroll-progress-fill {
     transition: none;
   }
 }
@@ -779,6 +819,10 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 0;
   white-space: normal;
   line-height: 1.55;
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
 }
 
 .gallery-plaque__row {
@@ -818,7 +862,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   color: var(--color-on-surface-variant);
   white-space: nowrap;
-  transition: color var(--duration-hover) var(--ease-gallery);
+  transition: color var(--duration-hover-ui) var(--ease-gallery);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -827,13 +871,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .gallery-plaque__link-arrow {
   display: inline-block;
-  transition: transform var(--duration-hover) var(--ease-gallery);
+  transition: transform var(--duration-hover-ui) var(--ease-gallery);
 }
 
 .group:hover .gallery-plaque__link,
 .gallery-plaque__link:hover { color: var(--color-on-surface); }
-.group:hover .gallery-plaque__link-arrow,
-.gallery-plaque__link:hover .gallery-plaque__link-arrow { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .gallery-plaque__link-arrow,
+  .gallery-plaque__link:hover .gallery-plaque__link-arrow { transform: translateX(4px); }
+}
 
 @media (max-width: 640px) {
   .gallery-plaque__title {
@@ -1268,11 +1314,12 @@ input.flatpickr-input + input.form-field__input {
 }
 
 .pricing-card__price-kicker {
-  font-family: var(--font-sans);
-  font-size: 0.6875rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-on-surface-muted);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-on-surface-variant);
 }
 
 .pricing-card__price {
@@ -1286,6 +1333,7 @@ input.flatpickr-input + input.form-field__input {
   align-items: baseline;
   gap: 0.75rem;
   flex-wrap: wrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .pricing-card__price em {
@@ -1362,8 +1410,8 @@ input.flatpickr-input + input.form-field__input {
   border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
   transition:
     transform 120ms ease-out,
-    color var(--duration-hover) var(--ease-gallery),
-    border-color var(--duration-hover) var(--ease-gallery);
+    color var(--duration-hover-ui) var(--ease-gallery),
+    border-color var(--duration-hover-ui) var(--ease-gallery);
 }
 
 .pricing-card__cta:hover {
@@ -1377,7 +1425,7 @@ input.flatpickr-input + input.form-field__input {
 
 .pricing-card__cta-arrow {
   display: inline-block;
-  transition: transform var(--duration-hover) var(--ease-gallery);
+  transition: transform var(--duration-hover-ui) var(--ease-gallery);
 }
 
 .pricing-card__cta:hover .pricing-card__cta-arrow {
@@ -1421,6 +1469,7 @@ input.flatpickr-input + input.form-field__input {
   line-height: 1.04;
   letter-spacing: -0.02em;
   max-width: 18ch;
+  text-wrap: balance;
 }
 
 .section-title em {
@@ -1540,8 +1589,10 @@ input.flatpickr-input + input.form-field__input {
   transition: transform 2.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.hover-zoom:hover img {
-  transform: translateY(var(--parallax-y, 0px)) scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+  .hover-zoom:hover img {
+    transform: translateY(var(--parallax-y, 0px)) scale(1.04);
+  }
 }
 
 /* Card lift on hover — gentle rise with ambient shadow */
@@ -1550,9 +1601,11 @@ input.flatpickr-input + input.form-field__input {
               box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.card-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(26, 26, 24, 0.06);
+  }
 }
 
 /* Image caption — editorial label that fades in on hover.
@@ -1567,11 +1620,12 @@ input.flatpickr-input + input.form-field__input {
   left: 1.25rem;
   bottom: 1.25rem;
   color: var(--color-on-dark);
-  font-family: var(--font-sans);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 1.4;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.5;
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
@@ -1582,9 +1636,11 @@ input.flatpickr-input + input.form-field__input {
   max-width: calc(100% - 2.5rem);
 }
 
-.image-caption:hover::after {
-  opacity: 1;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .image-caption:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1814,16 +1870,10 @@ html {
 }
 
 html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;
-}
-
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 /* ── Prose (blog content) ──
@@ -1840,7 +1890,7 @@ body::-webkit-scrollbar,
 /* Drop cap on the opening paragraph */
 .prose-editorial > p:first-of-type::first-letter {
   font-family: var(--font-serif);
-  font-size: 4.5em;
+  font-size: 3.5em;
   font-weight: 400;
   float: left;
   line-height: 0.85;
@@ -1899,6 +1949,7 @@ body::-webkit-scrollbar,
 .prose-editorial p {
   margin-bottom: 1.5em;
   color: var(--color-on-surface-variant);
+  text-wrap: pretty;
 }
 
 .prose-editorial strong {
@@ -2052,6 +2103,16 @@ summary:focus-visible,
 
 /* ── Gallery transition easing ── */
 .cubic-ease {
+  transition-timing-function: var(--ease-gallery);
+}
+
+/* ── Interactive transition (Emil #1) ──
+   Explicit property list prevents `transition: all` from animating layout
+   properties (padding, border, width) on every hover. Pair with an inline
+   or class-level transition-duration. Use on hover targets where only
+   color / background / border / opacity / transform should animate. */
+.transition-interactive {
+  transition-property: color, background-color, border-color, opacity, transform;
   transition-timing-function: var(--ease-gallery);
 }
 

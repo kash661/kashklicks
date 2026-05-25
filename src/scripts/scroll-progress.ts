@@ -1,15 +1,18 @@
 // src/scripts/scroll-progress.ts
-// Updates --scroll-progress on :root as the document scrolls.
-// Consumed by .scroll-progress::after for a top-of-viewport hairline.
+// Updates transform: scaleX() on .scroll-progress-fill as the document scrolls.
+// GPU-accelerated via transform instead of CSS variable + layout recalc.
 
 export function initScrollProgress(): void {
-  const root = document.documentElement;
+  const progressFill = document.querySelector('.scroll-progress-fill') as HTMLElement | null;
+  if (!progressFill) return;
+
   let ticking = false;
 
   function update() {
+    const root = document.documentElement;
     const max = root.scrollHeight - root.clientHeight;
     const progress = max > 0 ? root.scrollTop / max : 0;
-    root.style.setProperty('--scroll-progress', String(progress));
+    progressFill!.style.transform = `scaleX(${progress})`;
     ticking = false;
   }
 

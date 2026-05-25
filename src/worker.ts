@@ -6,6 +6,26 @@
 const APPS_SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec';
 
+// Geo allowlist — North America + Europe. Audience is GTA-based wedding
+// clients and the diaspora across these markets; pings from elsewhere are
+// noise (bots, scrapers, off-target traffic). Fail-open if cf-ipcountry is
+// missing so legit edge edge-cases aren't blocked.
+const ALLOWED_COUNTRIES = new Set([
+  // North America
+  'US', 'CA', 'MX',
+  // EU-27
+  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR',
+  'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK',
+  'SI', 'ES', 'SE',
+  // EFTA
+  'CH', 'IS', 'LI', 'NO',
+  // UK + crown dependencies
+  'GB', 'GG', 'IM', 'JE',
+  // Other geographic Europe
+  'AD', 'AL', 'BA', 'BY', 'FO', 'GI', 'MC', 'MD', 'ME', 'MK', 'RS', 'RU',
+  'SM', 'TR', 'UA', 'VA', 'XK',
+]);
+
 async function handleEngagementLead(request: Request): Promise<Response> {
   if (request.method !== 'POST') {
     return new Response('Method Not Allowed', { status: 405 });
@@ -36,6 +56,23 @@ async function handleEngagementLead(request: Request): Promise<Response> {
 export default {
   async fetch(request: Request, env: { ASSETS: Fetcher }): Promise<Response> {
     const url = new URL(request.url);
+
+    // Geo-restrict to target markets. Diag ping is exempt so we can verify
+    // the worker is reachable from anywhere when triaging issues.
+    const country = request.headers.get('cf-ipcountry');
+    if (
+      url.pathname !== '/__diag/ping' &&
+      country &&
+      !ALLOWED_COUNTRIES.has(country)
+    ) {
+      return new Response('Not available in your region.', {
+        status: 403,
+        headers: {
+          'content-type': 'text/plain; charset=utf-8',
+          'cache-control': 'no-store',
+        },
+      });
+    }
 
     // Canonicalize www → apex. Preserves path + query string so UTM and
     // fbclid parameters survive the redirect. Uses 301 so search engines

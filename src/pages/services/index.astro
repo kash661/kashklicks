@@ -240,7 +240,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
             <p class="text-quote italic text-on-surface-variant mt-6" style="font-size: clamp(0.95rem, 1.1vw, 1.0625rem); line-height: 1.3;">
               {service.caption}
             </p>
-            <h2 class="text-heading-lg leading-[1.05] mt-2 min-h-[2.6em] service-title cubic-ease" style="transition-duration: var(--duration-hover);" set:html={service.title} />
+            <h2 class="text-heading-lg leading-[1.05] mt-2 min-h-[2.6em] service-title transition-interactive" style="transition-duration: var(--duration-hover-ui);" set:html={service.title} />
             <p class="text-body-md text-on-surface-variant mt-4">{service.description}</p>
 
             <!-- Footer: pinned to bottom so CTAs align across cards -->
@@ -263,7 +263,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
                 style="transition-duration: var(--duration-hover);"
               >
                 See Packages
-                <span class="service-arrow inline-block ml-2 cubic-ease" style="transition-duration: var(--duration-hover);">→</span>
+                <span class="service-arrow inline-block ml-2 transition-interactive" style="transition-duration: var(--duration-hover-ui);">→</span>
               </a>
             </div>
           </article>

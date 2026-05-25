@@ -1,7 +1,7 @@
 ---
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'ghost-on-dark';
   class?: string;
 }
 
@@ -13,6 +13,7 @@ const variants = {
   primary: 'bg-primary text-on-dark hover:bg-primary-hover px-8 py-4',
   secondary: 'border border-ghost text-primary hover:text-primary-hover px-6 py-3',
   ghost: 'text-on-surface-variant hover:text-on-surface px-4 py-2',
+  'ghost-on-dark': 'border border-on-dark/70 text-on-dark hover:bg-on-dark hover:text-on-surface px-9 py-3.5',
 };
 
 const classes = `${base} ${variants[variant]} ${className}`;
