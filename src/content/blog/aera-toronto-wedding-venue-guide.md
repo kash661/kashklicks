@@ -1,5 +1,5 @@
 ---
-title: "Aera Toronto Wedding Guide: Inside the Financial District's Cinematic Venue"
+title: "Aera Toronto Wedding Guide: A Photographer's Look"
 description: "Considering Aera Toronto for your wedding? A photographer's look inside the 38th-floor venue, best photo spots, light, and what couples should plan for."
 publishDate: 2026-05-28
 author: "AD"
@@ -7,6 +7,19 @@ coverImage: "../../assets/images/portfolio/grace-giovanni/02.jpg"
 coverImageAlt: "Aera Toronto wedding venue interior on the 38th floor of CIBC Square, floor-to-ceiling skyline windows and cloud-painted ceiling, by AD Photography"
 tags: ["Venue Guide", "Aera Toronto", "Downtown Toronto", "Wedding"]
 draft: false
+faq:
+  - question: "How much does a wedding at Aera Toronto cost?"
+    answer: "The venue books private events and pricing depends on the date, guest count, and menu. Aera does not publish a public price list. Inquire directly with the restaurant's events team for current rates."
+  - question: "Can we have the ceremony and reception at Aera?"
+    answer: "Yes. We've photographed weddings where the tea ceremony, the ceremony, and the dinner all happened in the same room within a few hours. The space is designed to host an entire wedding day in one place."
+  - question: "Do we need a photography permit at Aera Toronto?"
+    answer: "No. Aera is a private restaurant. Photography for your booked event is arranged directly with the venue. No City of Toronto commercial permit is required."
+  - question: "What is the best ceremony time at Aera Toronto?"
+    answer: "Aim to end your ceremony about forty-five minutes before sunset. This gives the strongest stretch of light for portraits and the cleanest transition into a cinematic blue-hour dinner."
+  - question: "Is there a backup if it rains?"
+    answer: "Aera is fully indoors. Weather does not affect the day directly. Heavy cloud cover can soften the skyline view in the late afternoon. Build a light backup window into the schedule if that matters to your portraits."
+  - question: "Is Aera Toronto accessible?"
+    answer: "Yes. Elevator access to the 38th floor of CIBC Square. No stairs are required. Confirm any specific accessibility needs with the venue when you book."
 ---
 
 Thirty-eight floors above downtown Toronto, behind the glass walls of CIBC Square, there's a dining room that has quietly become one of the most beautiful wedding venues in the city.

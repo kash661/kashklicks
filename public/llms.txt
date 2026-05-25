@@ -106,8 +106,13 @@ Couples, planners, and search engines find this studio via a wide range of query
 
 ## Blog
 
-- [Best Toronto Pre-Wedding Locations](https://kashklicks.ca/blog/best-toronto-pre-wedding-locations/)
-- [What to Wear for Your Pre-Wedding Shoot](https://kashklicks.ca/blog/what-to-wear-pre-wedding-shoot/)
+- [Adamson Estate Wedding Photography Guide, Mississauga](https://kashklicks.ca/blog/adamson-estate-wedding-photography-guide/): A photographer's deep-dive on Adamson Estate, the 1919 lakefront Mississauga heritage venue. Best photo spots, light timing, permit logistics, and what couples should plan for.
+- [Aera Toronto Wedding Guide: A Photographer's Look](https://kashklicks.ca/blog/aera-toronto-wedding-venue-guide/): Inside Aera Toronto, the 38th-floor wedding venue at CIBC Square. Best photo spots, light cycle, ceremony timing, and what couples should expect from the room.
+- [An Italian Night, 38 Floors Up: A Real Wedding at Aera Toronto](https://kashklicks.ca/blog/aera-toronto-wedding-grace-giovanni/): Grace and Giovanni's Italian wedding at Aera Toronto. Tea ceremony, vows under the cloud ceiling, long-table dinner, and skyline-lit blue hour.
+- [A Hamilton Wedding at St. Patrick's Parish and Dundurn Castle](https://kashklicks.ca/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/): Roxanne and Justin's Hamilton wedding day at St. Patrick's Catholic Parish and Dundurn Castle.
+- [Best Toronto Sunrise Photo Locations on Lake Ontario](https://kashklicks.ca/blog/best-toronto-sunrise-photo-locations-lake-ontario/): Five top sunrise spots along the Lake Ontario shoreline for cinematic photo sessions, with parking, light timing, and best season for each.
+- [6 Best Pre-Wedding Photography Locations in Toronto](https://kashklicks.ca/blog/best-toronto-pre-wedding-locations/): A walkthrough of six tried-and-tested Toronto and GTA locations for pre-wedding and engagement shoots, with timing, parking, and on-the-ground tips for each.
+- [What to Wear for Your Pre-Wedding Shoot](https://kashklicks.ca/blog/what-to-wear-pre-wedding-shoot/): Practical outfit advice for engagement and pre-wedding sessions, including coordinating without matching, what works on camera, and how to feel confident in front of the lens.
 
 ## Social
 
@@ -125,6 +130,8 @@ Full markdown representations of each page are available at:
 - [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · Adamson Estate Wedding Guide](https://kashklicks.ca/mirrors/blog/adamson-estate-wedding-photography-guide.md)
+- [Blog · Aera Toronto Wedding Guide](https://kashklicks.ca/mirrors/blog/aera-toronto-wedding-venue-guide.md)
 - [Contact](https://kashklicks.ca/mirrors/contact.md)
 - [Location Guide](https://kashklicks.ca/mirrors/location-guide.md)
 - [Services Overview](https://kashklicks.ca/mirrors/services.md)

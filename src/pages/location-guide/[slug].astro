@@ -158,6 +158,17 @@ const essentials = [
           )}
         </div>
       </div>
+
+      {loc.blogGuide && (
+        <div class="grid-editorial" style="margin-top: var(--spacing-block);">
+          <div class="col-span-12 md:col-span-8 md:col-start-3 reveal text-center">
+            <p class="text-label-md text-on-surface-muted tracking-wider mb-2">Photographer's Deep-Dive Guide</p>
+            <p class="text-body-lg text-on-surface" style="font-family: var(--font-serif); font-style: italic; max-width: 36ch; margin: 0 auto;">
+              <a href={loc.blogGuide.url} class="border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{loc.blogGuide.title} &rarr;</a>
+            </p>
+          </div>
+        </div>
+      )}
     </section>
 
     <!-- The Essentials -->

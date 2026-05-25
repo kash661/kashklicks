@@ -4,6 +4,11 @@ import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -13,6 +18,7 @@ interface Props {
   coverImage?: ImageMetadata;
   coverImageAlt?: string;
   tags?: string[];
+  faq?: FaqItem[];
 }
 
 const {
@@ -24,7 +30,10 @@ const {
   coverImage,
   coverImageAlt,
   tags = [],
+  faq,
 } = Astro.props;
+
+const coverImageUrl = coverImage ? new URL(coverImage.src, Astro.site).href : undefined;
 
 const blogPostSchema = {
   '@context': 'https://schema.org',
@@ -37,13 +46,30 @@ const blogPostSchema = {
   },
   datePublished: publishDate.toISOString(),
   ...(updatedDate && { dateModified: updatedDate.toISOString() }),
-  ...(coverImage && { image: coverImage.src }),
+  ...(coverImageUrl && { image: coverImageUrl }),
   publisher: {
     '@type': 'Organization',
     name: 'AD Photography',
     url: 'https://kashklicks.ca',
   },
 };
+
+const faqSchema = faq && faq.length > 0
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    }
+  : null;
+
+const pageSchemas = faqSchema ? [blogPostSchema, faqSchema] : blogPostSchema;
 
 const formattedDate = publishDate.toLocaleDateString('en-CA', {
   year: 'numeric',
@@ -56,7 +82,8 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
   title={title}
   description={description}
   ogType="article"
-  jsonLd={blogPostSchema}
+  ogImage={coverImageUrl}
+  jsonLd={pageSchemas}
   article={{
     publishedTime: publishDate.toISOString(),
     modifiedTime: updatedDate?.toISOString(),

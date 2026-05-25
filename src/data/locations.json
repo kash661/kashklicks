@@ -844,6 +844,10 @@
     "id": "adamson-estate",
     "name": "Adamson Estate",
     "area": "Lakeview, Mississauga",
+    "blogGuide": {
+      "url": "/blog/adamson-estate-wedding-photography-guide/",
+      "title": "Adamson Estate Wedding Photography Guide"
+    },
     "vibe": "lakefront, heritage, romantic, stone manor, lush, cinematic, intimate",
     "bestFor": [
       "Couples",
@@ -875,6 +879,10 @@
     "id": "aera-toronto",
     "name": "Aera Toronto",
     "area": "Downtown Toronto, Financial District",
+    "blogGuide": {
+      "url": "/blog/aera-toronto-wedding-venue-guide/",
+      "title": "Aera Toronto Wedding Guide: A Photographer's Look"
+    },
     "vibe": "Sky-high, modern, Italian, cinematic, sweeping city views, warm wood, candle-warm at night",
     "bestFor": [
       "Couples",
