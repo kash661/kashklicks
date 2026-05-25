@@ -16,7 +16,9 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 
 const ctaImage = (await import('../../assets/images/homepage/homepage-06.jpg')).default;
 
-const entries = portfolio.filter((p) => p.category === 'pre-wedding');
+const entries = portfolio
+  .filter((p) => p.category === 'pre-wedding')
+  .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 
 const businessRef = { '@id': `${site.url}/#business` };
 
