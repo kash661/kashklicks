@@ -85,7 +85,7 @@ const serviceSchema = {
     priceCurrency: 'CAD',
     priceSpecification: {
       '@type': 'PriceSpecification',
-      minPrice: '1200',
+      minPrice: '1400',
       priceCurrency: 'CAD',
     },
   },
@@ -96,7 +96,7 @@ const offerCatalogSchema = {
   '@type': 'OfferCatalog',
   name: 'Intimate Wedding Photography Packages, Toronto',
   description:
-    'Intimate wedding photography packages for Toronto and GTA couples. Coverage from $1,200.',
+    'Intimate wedding photography packages for Toronto and GTA couples. Coverage from $1,400.',
   url: `${site.url}/intimate-wedding-toronto`,
   offeredBy: businessRef,
   itemListElement: weddingPackages
@@ -127,7 +127,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
 <BaseLayout
   title="Intimate Wedding Photographer Toronto"
-  description="Solo editorial wedding photographer for Toronto couples. Church, civil, backyard, and small-venue ceremonies. Coverage from $1,200. Begin the conversation."
+  description="Solo editorial wedding photographer for Toronto couples. Church, civil, backyard, and small-venue ceremonies. Coverage from $1,400. Begin the conversation."
   canonicalUrl={`${site.url}/intimate-wedding-toronto`}
   jsonLd={jsonLd}
 >
@@ -205,7 +205,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             For couples getting married here. One photographer. Intimate ceremonies: church, civil, backyard, small venues.
           </p>
           <p class="text-label-sm text-on-surface-muted mt-6 tracking-widest uppercase">
-            Weddings from $1,200 · Solo · Photo-only
+            Weddings from $1,400 · Solo · Photo-only
           </p>
           <div class="mt-8">
             <span class="magnetic inline-block">
@@ -316,20 +316,20 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <h2 class="text-display-md">How I shoot a Toronto wedding.</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-surface-container">
-        <div class="bg-background p-6 md:p-10 reveal">
+      <div class="good-to-know-grid">
+        <div class="good-to-know-item reveal">
           <p class="text-heading-md font-serif italic mb-3">One photographer</p>
           <p class="text-body-md text-on-surface-variant">
             My full attention across your entire day. Multiple cameras so no moment slips away, one eye on the edit so your gallery feels like a single story.
           </p>
         </div>
-        <div class="bg-background p-6 md:p-10 reveal stagger-1">
+        <div class="good-to-know-item reveal stagger-1">
           <p class="text-heading-md font-serif italic mb-3">Photography only</p>
           <p class="text-body-md text-on-surface-variant">
             I shoot weddings on camera, not video. Film is for pre-wedding sessions. The wedding is documented in stills, honest, editorial, unhurried.
           </p>
         </div>
-        <div class="bg-background p-6 md:p-10 reveal stagger-2">
+        <div class="good-to-know-item reveal stagger-2">
           <p class="text-heading-md font-serif italic mb-3">Made here</p>
           <p class="text-body-md text-on-surface-variant">
             Toronto venues. Local families. Local stories. I know the churches, the halls, the backyards, and the light in each.
