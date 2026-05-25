@@ -900,5 +900,32 @@
     "travelTime": "Downtown",
     "idealIf": "You want a modern Italian, high-rise wedding venue with floor-to-ceiling Toronto skyline views and a warm dining-room feel.",
     "image": "aera-toronto.jpg"
+  },
+  {
+    "id": "st-patricks-parish-hamilton",
+    "name": "St. Patrick's Catholic Parish",
+    "area": "Hamilton, King Street East",
+    "vibe": "Gothic Revival, sacred, candlelit, starry-vault ceiling, gilded reredos",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "zone": "Hamilton",
+    "setting": [
+      "Indoor",
+      "Historic",
+      "Church"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "A few steps up to the main doors. Interior is flat-floor wood pews with a centre aisle.",
+    "permits": "St. Patrick's is an active parish church. Wedding photography happens inside the ceremony booking. Confirm with the parish office at stpatrickshamilton.ca for the photo and video terms set by your celebrant.",
+    "parking": "On-street parking along King Street East and side streets. Free Sunday street parking citywide; check signage on a weekday.",
+    "travelTime": "60-70 minutes from downtown Toronto via QEW and Burlington Street",
+    "idealIf": "You want a stone Gothic Revival cathedral interior in Hamilton with a painted starry-blue vault, a gilded reredos full of carved saints, and a rose window over the entrance.",
+    "image": "st-patricks-parish-hamilton.jpg"
   }
 ]
