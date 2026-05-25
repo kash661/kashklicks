@@ -20,6 +20,11 @@ const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/**/*.jpg',
+  { eager: true }
+);
+
 // A location counts as "shot here" if either a gallery folder exists for its
 // slug, or any portfolio entry's free-form `location` string contains the
 // slug words (loose match handles "Aera Toronto, Downtown" vs "aera-toronto").
@@ -35,14 +40,44 @@ const shotHereFor = (slug: string, name: string): boolean => {
   return portfolioLocStrings.some((loc) => loc.includes(slugWords) || loc.includes(lname));
 };
 
+// For "shot here" tiles, prefer a real session frame over the stock location
+// image. Priority: locations-gallery/<slug>/ first frame → matching portfolio
+// entry first frame → stock image fallback.
+const previewForShotLocation = (
+  slug: string,
+  name: string,
+  fallback: ImageMetadata
+): ImageMetadata => {
+  const galleryKey = Object.keys(galleryImages)
+    .filter((p) => p.includes(`/locations-gallery/${slug}/`))
+    .sort()[0];
+  if (galleryKey) return galleryImages[galleryKey].default;
+
+  const slugWords = slug.replace(/-/g, ' ');
+  const lname = name.toLowerCase();
+  const match = portfolioData.find((p) => {
+    const loc = (p.location ?? '').toLowerCase();
+    return loc.includes(slugWords) || loc.includes(lname);
+  });
+  if (match && Array.isArray(match.images) && match.images.length > 0) {
+    const portfolioKey = `/src/assets/images/portfolio/${match.slug}/${match.images[0]}`;
+    const img = portfolioImages[portfolioKey]?.default;
+    if (img) return img;
+  }
+
+  return fallback;
+};
+
 const sorted = [...locationsData].sort((a, b) => a.name.localeCompare(b.name));
 
 const tiles = sorted
   .map((loc) => {
     const imgPath = `/src/assets/images/locations/${loc.image}`;
-    const img = locationImages[imgPath]?.default;
-    if (!img) return null;
-    return { ...loc, img, shotHere: shotHereFor(loc.id, loc.name) };
+    const stockImg = locationImages[imgPath]?.default;
+    if (!stockImg) return null;
+    const shotHere = shotHereFor(loc.id, loc.name);
+    const img = shotHere ? previewForShotLocation(loc.id, loc.name, stockImg) : stockImg;
+    return { ...loc, img, shotHere };
   })
   .filter((t): t is NonNullable<typeof t> => t !== null);
 
