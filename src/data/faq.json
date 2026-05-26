@@ -23,6 +23,13 @@
     ]
   },
   {
+    "question": "Do you offer wedding videography?",
+    "answer": "I shoot photo only on wedding days. If you want both photo and video, ask in your inquiry and I'll pair you with a videographer I book often. The combined rate through me is usually friendlier than booking them direct, because we work together so often.",
+    "services": [
+      "wedding"
+    ]
+  },
+  {
     "question": "Are there travel fees?",
     "answer": "Yes, travel fees apply based on location. I will discuss this upfront during your consultation so there are no surprises.",
     "services": [
