@@ -917,29 +917,21 @@ const jsonLd = [
   </style>
 
   <!-- ═══ 8. CONTACT CTA ═══
-       A quiet cinematic close — the video remains as an atmospheric
-       bookend but the overlay lifts, the copy scales back, and the
-       call sits as a hairline-underlined invitation rather than a
-       solid-billboard button. Reads as intimate, not pitched. -->
-  <section class="contact-cta relative py-[var(--spacing-section)] overflow-hidden">
+       A cinematic close. The video runs unobstructed and the only
+       interface is a hairline-wrapped "Get in touch" anchored near
+       the bottom of the frame. Reads as a closing title card. -->
+  <section class="contact-cta relative overflow-hidden">
     <video muted loop playsinline preload="none" poster="/og-default.jpg" class="absolute inset-0 w-full h-full object-cover" aria-hidden="true" data-autoplay>
       <source src="https://kashklicks.b-cdn.net/kashklicks_backgroundMedia.mp4" type="video/mp4" />
     </video>
     <div class="contact-cta__scrim absolute inset-0"></div>
-    <div class="container-editorial relative z-10">
-      <div class="contact-cta__inner">
-        <p class="text-label-md text-on-dark-variant reveal eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-6">An invitation</p>
-        <h2 class="contact-cta__title" data-gsap-chars>Start the conversation.</h2>
-        <p class="contact-cta__deck reveal stagger-2">
-          Let&rsquo;s talk about your day. No obligations &mdash; just a conversation.
-        </p>
-        <div class="reveal stagger-3 contact-cta__actions">
-          <span class="contact-cta__rule" aria-hidden="true"></span>
-          <a href="/contact/" class="contact-cta__link magnetic">
-            Get in touch <span aria-hidden="true">&rarr;</span>
-          </a>
-          <span class="contact-cta__rule" aria-hidden="true"></span>
-        </div>
+    <div class="container-editorial relative z-10 contact-cta__inner">
+      <div class="reveal contact-cta__actions">
+        <span class="contact-cta__rule" aria-hidden="true"></span>
+        <a href="/contact/" class="contact-cta__link magnetic">
+          Get in touch <span aria-hidden="true">&rarr;</span>
+        </a>
+        <span class="contact-cta__rule" aria-hidden="true"></span>
       </div>
     </div>
   </section>
@@ -947,46 +939,26 @@ const jsonLd = [
   <style>
     .contact-cta {
       color: var(--color-on-dark);
+      min-height: 80vh;
+      display: flex;
+      align-items: flex-end;
+      padding-top: var(--spacing-section);
+      padding-bottom: var(--spacing-block);
     }
 
     .contact-cta__scrim {
       background:
         linear-gradient(180deg,
-          color-mix(in srgb, #000 28%, transparent) 0%,
-          color-mix(in srgb, #000 40%, transparent) 50%,
+          transparent 0%,
+          transparent 55%,
           color-mix(in srgb, #000 32%, transparent) 100%);
       pointer-events: none;
     }
 
     .contact-cta__inner {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      max-width: 36rem;
-      margin-inline: auto;
-    }
-
-    .contact-cta__title {
-      font-family: var(--font-serif);
-      font-weight: 400;
-      font-style: italic;
-      font-size: clamp(2.25rem, 5.2vw, 4.25rem);
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: var(--color-on-dark);
-      margin: 0 0 1rem;
-    }
-
-    .contact-cta__deck {
-      font-family: var(--font-serif);
-      font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-      font-style: italic;
-      font-weight: 400;
-      line-height: 1.6;
-      color: color-mix(in srgb, var(--color-on-dark) 82%, transparent);
-      margin: 0 0 2.5rem;
-      max-width: 42ch;
+      justify-content: center;
+      width: 100%;
     }
 
     .contact-cta__actions {
@@ -1030,11 +1002,8 @@ const jsonLd = [
     }
 
     @media (max-width: 640px) {
-      .contact-cta__title {
-        font-size: clamp(2rem, 9vw, 2.75rem);
-      }
-      .contact-cta__deck {
-        font-size: 1.0625rem;
+      .contact-cta {
+        min-height: 70vh;
       }
     }
   </style>

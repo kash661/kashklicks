@@ -38,6 +38,13 @@ const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#
       </div>
     </div>
 
+    <ul class="google-reviews__themes reveal stagger-2" role="list" aria-label="Themes couples mention most often">
+      <li class="google-reviews__theme">Natural, never posed</li>
+      <li class="google-reviews__theme">Calm, patient energy</li>
+      <li class="google-reviews__theme">Cinematic detail</li>
+      <li class="google-reviews__theme">Easy online gallery</li>
+    </ul>
+
     <ul class="google-reviews__grid" role="list">
       {featured.map((review, i) => (
         <li class="google-reviews__card reveal" style={`transition-delay: ${(i % 3) * 80}ms;`}>
@@ -171,6 +178,29 @@ const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#
     margin: 0;
   }
 
+  .google-reviews__themes {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto var(--spacing-block);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 52rem;
+  }
+
+  .google-reviews__theme {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    padding: 0.625rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 22%, transparent);
+    background: var(--color-surface);
+    line-height: 1;
+  }
+
   .google-reviews__grid {
     list-style: none;
     padding: 0;
@@ -249,9 +279,9 @@ const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#
   }
 
   .google-reviews__quote {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    line-height: 1.55;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.65;
     color: var(--color-on-surface);
     margin: 0;
     display: -webkit-box;
@@ -328,6 +358,14 @@ const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#
     }
     .google-reviews__quote {
       -webkit-line-clamp: 8;
+    }
+    .google-reviews__themes {
+      gap: 0.375rem;
+    }
+    .google-reviews__theme {
+      font-size: 0.625rem;
+      padding: 0.5rem 0.75rem;
+      letter-spacing: 0.14em;
     }
   }
 </style>
