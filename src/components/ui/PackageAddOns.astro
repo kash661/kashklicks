@@ -12,6 +12,7 @@ interface Props {
   items?: string[];
   packages?: Array<{ highlights: string[]; category: string }>;
   filterByCategory?: string;
+  extraItems?: string[];
 }
 
 const {
@@ -21,22 +22,24 @@ const {
   items: explicitItems,
   packages,
   filterByCategory,
+  extraItems,
 } = Astro.props;
 
 const isAddOn = (item: string) => item.includes('+$') || item.includes('available');
 
 let items: string[];
 if (explicitItems) {
-  items = explicitItems;
+  items = extraItems ? [...explicitItems, ...extraItems] : explicitItems;
 } else if (packages) {
   const filtered = filterByCategory
     ? packages.filter((p) => p.category === filterByCategory)
     : packages;
-  items = Array.from(
+  const extracted = Array.from(
     new Set(filtered.flatMap((p) => p.highlights.filter(isAddOn)))
   );
+  items = extraItems ? [...extracted, ...extraItems] : extracted;
 } else {
-  items = [];
+  items = extraItems ?? [];
 }
 ---
 
