@@ -10,6 +10,7 @@ const eventTypeOptions = [
 const referralOptions = [
   { value: 'instagram', label: 'Instagram' },
   { value: 'google', label: 'Google search' },
+  { value: 'reddit', label: 'Reddit' },
   { value: 'referral', label: 'A friend or family member' },
   { value: 'planner', label: 'Wedding planner or vendor' },
   { value: 'blog', label: 'Blog, article, or feature' },
@@ -70,6 +71,26 @@ const referralOptions = [
           class="form-field__input"
         />
         <p id="email-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
+
+      <div class="form-field">
+        <label for="referral" class="form-field__label">
+          How Did You Find Me? <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <select
+          id="referral"
+          name="referral"
+          required
+          aria-required="true"
+          aria-describedby="referral-error"
+          class="form-field__select"
+        >
+          <option value="" disabled selected>Select one</option>
+          {referralOptions.map((opt) => (
+            <option value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+        <p id="referral-error" class="form-error-msg form-field__error hidden" role="alert"></p>
       </div>
 
       <div class="form-field">
@@ -164,7 +185,7 @@ const referralOptions = [
 
           <div class="form-field">
             <label for="guest_count" class="form-field__label">
-              Approximate Guest Count <span class="form-field__optional">(optional)</span>
+              Approx. Guest Count <span class="form-field__optional">(optional)</span>
             </label>
             <input
               type="text"
@@ -186,22 +207,6 @@ const referralOptions = [
               placeholder="Venue name, a city, or 'Not sure yet'"
               class="form-field__input"
             />
-          </div>
-
-          <div class="form-field sm:col-span-2">
-            <label for="referral" class="form-field__label">
-              How Did You Find Me? <span class="form-field__optional">(optional)</span>
-            </label>
-            <select
-              id="referral"
-              name="referral"
-              class="form-field__select"
-            >
-              <option value="" disabled selected>Select one</option>
-              {referralOptions.map((opt) => (
-                <option value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
           </div>
         </div>
       </div>
