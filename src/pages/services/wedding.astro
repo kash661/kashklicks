@@ -218,35 +218,13 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
       </div>
 
-      <!-- Scroll indicator to journey -->
+      <!-- Scroll indicator to packages -->
       <div class="flex flex-col items-center mt-16 reveal stagger-3">
-        <p class="text-label-sm text-on-surface-muted mb-3">Your Journey</p>
+        <p class="text-label-sm text-on-surface-muted mb-3">Packages</p>
         <div class="scroll-chevron">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 9l6 6 6-6" />
           </svg>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <JourneyTimelineDesktop steps={weddingJourneySteps} />
-  <JourneyTimelineMobile steps={weddingJourneySteps} />
-
-  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
-  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
-    <div class="container-editorial">
-      <div class="text-center reveal">
-        <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
-        <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
-        <BookingLink variant="primary" label="Book Your Call" />
-        <div class="flex flex-col items-center mt-12">
-          <p class="text-body-md text-on-surface-variant mb-3">I believe in transparent pricing. See my packages below.</p>
-          <div class="scroll-chevron">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
         </div>
       </div>
     </div>
@@ -301,6 +279,20 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <div class="mt-6">
           <a href="/contact/?service=wedding" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Me</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <JourneyTimelineDesktop steps={weddingJourneySteps} />
+  <JourneyTimelineMobile steps={weddingJourneySteps} />
+
+  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center reveal">
+        <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
+        <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
+        <BookingLink variant="primary" label="Book Your Call" />
       </div>
     </div>
   </section>
