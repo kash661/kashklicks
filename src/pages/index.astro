@@ -191,6 +191,18 @@ const jsonLd = [
       font-variant-ligatures: none;
       font-kerning: none;
     }
+
+    /* Hero CTA — press-down feedback. Buttons must feel responsive.
+       Magnetic class writes to --magnetic-x/y; we set --press-scale on
+       :active so transform composes without conflict. */
+    .hero-cta a {
+      transition: background-color var(--duration-hover) var(--ease-gallery),
+                  color var(--duration-hover) var(--ease-gallery),
+                  --press-scale 140ms ease-out;
+    }
+    .hero-cta a:active {
+      --press-scale: 0.97;
+    }
   </style>
 
   <!-- ═══ 1. HERO ═══ -->
@@ -606,14 +618,14 @@ const jsonLd = [
       text-transform: uppercase;
       color: var(--color-on-surface-variant);
       white-space: nowrap;
-      transition: color var(--duration-hover) var(--ease-gallery);
+      transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
       flex-shrink: 0;
     }
 
     .recent-work__view span {
       display: inline-block;
       margin-left: 0.5rem;
-      transition: transform var(--duration-hover) var(--ease-gallery);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .recent-work__view:hover { color: var(--color-on-surface); }
@@ -636,13 +648,13 @@ const jsonLd = [
       text-transform: uppercase;
       color: var(--color-on-surface);
       white-space: nowrap;
-      transition: color var(--duration-hover) var(--ease-gallery);
+      transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .recent-work__runfoot-link span {
       display: inline-block;
       margin-left: 0.5rem;
-      transition: transform var(--duration-hover) var(--ease-gallery);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .recent-work__runfoot-link:hover { color: var(--color-on-surface-variant); }
@@ -888,7 +900,7 @@ const jsonLd = [
     .journal__cta span {
       display: inline-block;
       margin-left: 0.5rem;
-      transition: transform var(--duration-hover) var(--ease-gallery);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .journal__cta:hover {
@@ -926,7 +938,7 @@ const jsonLd = [
     </video>
     <div class="contact-cta__scrim absolute inset-0"></div>
     <div class="container-editorial relative z-10 contact-cta__inner">
-      <div class="reveal contact-cta__actions">
+      <div class="contact-cta__actions" data-cta-bracket>
         <span class="contact-cta__rule" aria-hidden="true"></span>
         <a href="/contact/" class="contact-cta__link magnetic">
           Get in touch <span aria-hidden="true">&rarr;</span>
@@ -990,7 +1002,7 @@ const jsonLd = [
     .contact-cta__link span {
       display: inline-block;
       margin-left: 0.5rem;
-      transition: transform var(--duration-hover) var(--ease-gallery);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .contact-cta__link:hover {
@@ -1012,6 +1024,7 @@ const jsonLd = [
 <script>
   import gsap from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { initHomepageMotion } from '../scripts/homepage-motion';
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -1232,18 +1245,22 @@ const jsonLd = [
   let cleanupPin = initHomeHero();
   let cleanupEntrance = initHeroEntrance();
   let cleanupHeadings = initSectionHeadings();
+  let cleanupMotion = initHomepageMotion();
 
   document.addEventListener('astro:page-load', () => {
     cleanupPin?.();
     cleanupEntrance?.();
     cleanupHeadings?.();
+    cleanupMotion?.();
     cleanupPin = initHomeHero();
     cleanupEntrance = initHeroEntrance();
     cleanupHeadings = initSectionHeadings();
+    cleanupMotion = initHomepageMotion();
   });
   document.addEventListener('astro:before-preparation', () => {
     cleanupPin?.();
     cleanupEntrance?.();
     cleanupHeadings?.();
+    cleanupMotion?.();
   });
 </script>

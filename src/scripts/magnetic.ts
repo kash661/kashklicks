@@ -2,6 +2,16 @@
  * Magnetic pull effect for buttons and interactive elements.
  * Add `magnetic` class to any element. It will subtly drift toward
  * the cursor when nearby (max 3px shift). Desktop only.
+ *
+ * Writes to CSS custom properties --magnetic-x / --magnetic-y so the
+ * transform property stays composable with other effects (e.g., :active
+ * scale press feedback on the same element). Those custom properties are
+ * @property-registered in global.css with a CSS transition, so the
+ * browser interpolates per-frame — no JS animation framework required.
+ *
+ * Replaced gsap.quickTo on 2026-05-26 PM to eliminate the 72KB GSAP
+ * static-import that magnetic.ts was bringing into every BaseLayout-using
+ * page on the site.
  */
 export function initMagnetic() {
   if (window.matchMedia('(pointer: coarse)').matches) return;
@@ -10,25 +20,20 @@ export function initMagnetic() {
   if (!elements.length) return;
 
   elements.forEach((el) => {
-    el.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
-
     el.addEventListener('mousemove', (e) => {
       const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = e.clientX - centerX;
-      const dy = e.clientY - centerY;
-
-      // Max 3px pull
+      const dx = e.clientX - rect.left - rect.width / 2;
+      const dy = e.clientY - rect.top - rect.height / 2;
       const maxPull = 3;
       const pullX = (dx / rect.width) * maxPull * 2;
       const pullY = (dy / rect.height) * maxPull * 2;
-
-      el.style.transform = `translate(${pullX}px, ${pullY}px)`;
+      el.style.setProperty('--magnetic-x', `${pullX}px`);
+      el.style.setProperty('--magnetic-y', `${pullY}px`);
     });
 
     el.addEventListener('mouseleave', () => {
-      el.style.transform = 'translate(0, 0)';
+      el.style.setProperty('--magnetic-x', '0px');
+      el.style.setProperty('--magnetic-y', '0px');
     });
   });
 }

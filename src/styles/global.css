@@ -1532,6 +1532,33 @@ input.flatpickr-input + input.form-field__input {
   transform: translateY(var(--parallax-y, 0px)) scale(1.04);
 }
 
+/* Magnetic — subtle cursor-tracking drift driven by magnetic.ts.
+   Uses custom properties so the transform property stays composable with
+   :active scale press feedback on the same element. The custom properties
+   are registered via @property so CSS transitions can interpolate them. */
+@property --magnetic-x {
+  syntax: '<length>';
+  initial-value: 0px;
+  inherits: false;
+}
+@property --magnetic-y {
+  syntax: '<length>';
+  initial-value: 0px;
+  inherits: false;
+}
+@property --press-scale {
+  syntax: '<number>';
+  initial-value: 1;
+  inherits: false;
+}
+
+.magnetic {
+  transform: translate(var(--magnetic-x), var(--magnetic-y)) scale(var(--press-scale));
+  transition:
+    --magnetic-x 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    --magnetic-y 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Card lift on hover — gentle rise with ambient shadow */
 .card-lift {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
