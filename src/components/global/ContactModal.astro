@@ -113,6 +113,7 @@ import ContactForm from '../forms/ContactForm.astro';
 
     modal.addEventListener('close', () => {
       document.body.classList.remove('modal-open');
+      lastFocused?.focus();
     });
 
     // Auto-open when deep-linked to a page that mounts this modal with

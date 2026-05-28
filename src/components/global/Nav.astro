@@ -45,7 +45,7 @@ const isActive = (item: { href: string; children?: { href: string }[] }) =>
         style="transition-duration: var(--duration-hover);"
         aria-current={isActive(item) ? 'page' : undefined}
         aria-haspopup={item.children ? 'true' : undefined}
-        aria-expanded={item.children ? 'false' : undefined}
+        data-astro-prefetch
       >
         {item.label}
         {item.children && (
@@ -62,13 +62,11 @@ const isActive = (item: { href: string; children?: { href: string }[] }) =>
         <div
           class="absolute top-full left-0 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible cubic-ease"
           style="transition-duration: var(--duration-hover);"
-          role="menu"
         >
           <div class="bg-surface shadow-ambient py-3 min-w-[200px]">
             {item.children.map((child) => (
               <a
                 href={child.href}
-                role="menuitem"
                 class:list={[
                   'nav-link block px-5 py-2.5 text-label-md cubic-ease',
                   currentPath === child.href

@@ -4,6 +4,7 @@ export const GET: APIRoute = () => {
   const body = [
     'User-agent: *',
     'Allow: /',
+    'Disallow: /dev/',
     '',
     'User-agent: GPTBot',
     'Disallow: /',

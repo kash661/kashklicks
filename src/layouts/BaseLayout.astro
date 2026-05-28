@@ -89,8 +89,8 @@ if (site.phone) {
     <meta name="facebook-domain-verification" content="mc68kqvbgdmd62i02mv8ni82r7955o" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Preconnect to external media + ad pixel origins -->
-    <link rel="preconnect" href="https://kashklicks.b-cdn.net" crossorigin />
+    <!-- Preconnect to ad pixel origins. (b-cdn.net is only used by the
+         below-fold homepage video, so its hint lives on the homepage, not here.) -->
     <link rel="preconnect" href="https://connect.facebook.net" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.clarity.ms" />
@@ -129,45 +129,43 @@ if (site.phone) {
         var isProd = h === 'kashklicks.ca' || h === 'www.kashklicks.ca';
         if (!isProd) return;
 
-        // Meta Pixel (1349154153697983)
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1349154153697983');
-        fbq('track', 'PageView');
-        document.addEventListener('astro:after-swap', function () {
-          if (typeof window.fbq === 'function') { window.fbq('track', 'PageView'); }
-        });
+        // Defer all third-party pixel loading to idle so the LCP hero + fonts
+        // own the initial bandwidth. The injected tags are async regardless; a
+        // sub-second idle delay doesn't affect PageView/Clarity sampling. No
+        // astro:after-swap re-track handlers — there is no ClientRouter, so the
+        // event never fires (this is a static MPA; each nav is a full load).
+        var onIdle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1200); };
+        onIdle(function () {
+          // Meta Pixel (1349154153697983)
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1349154153697983');
+          fbq('track', 'PageView');
 
-        // Google Ads / gtag (AW-18099849669)
-        var g = document.createElement('script');
-        g.async = true;
-        g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18099849669';
-        document.head.appendChild(g);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', 'AW-18099849669');
-        document.addEventListener('astro:after-swap', function () {
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'page_view', {
-              page_path: window.location.pathname + window.location.search
-            });
-          }
-        });
+          // Google Ads / gtag (AW-18099849669)
+          var g = document.createElement('script');
+          g.async = true;
+          g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18099849669';
+          document.head.appendChild(g);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'AW-18099849669');
 
-        // Microsoft Clarity (wfh1khoxjx)
-        (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "wfh1khoxjx");
+          // Microsoft Clarity (wfh1khoxjx)
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "wfh1khoxjx");
+        });
       })();
     </script>
     <noscript>
@@ -175,6 +173,9 @@ if (site.phone) {
         src="https://www.facebook.com/tr?id=1349154153697983&ev=PageView&noscript=1" />
     </noscript>
     <!-- End analytics block -->
+
+    <!-- Per-page <head> additions (e.g. page-specific resource hints) -->
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col bg-background text-on-surface">
     <div class="scroll-progress" aria-hidden="true"></div>

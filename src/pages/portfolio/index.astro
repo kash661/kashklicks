@@ -224,6 +224,7 @@ const gallerySchema = {
                 category={entry.category}
                 coverImage={img}
                 href={`/portfolio/${entry.slug ?? entry.id}/`}
+                data-astro-prefetch
                 date={entry.date ?? null}
               />
             </div>

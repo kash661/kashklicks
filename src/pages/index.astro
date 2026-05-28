@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
@@ -27,6 +27,11 @@ import recentPortraitLeft from '../assets/images/homepage/homepage-02-grace-giov
 import recentPortraitRight from '../assets/images/homepage/homepage-03-roxanne-justin.jpg';
 
 const testimonial = testimonials[0];
+
+// LCP hero preload: identical params to the <Image> below, so the hashed
+// AVIF srcset matches and the preload scanner can start the hero fetch
+// during <head> parse instead of waiting for the <img> in the body.
+const heroPreload = await getImage({ src: heroImage, widths: [768, 1280, 1600], format: 'avif', quality: 72 });
 
 const faqItems = [
   {
@@ -107,6 +112,11 @@ const jsonLd = [
   showSplash={false}
   jsonLd={jsonLd}
 >
+  <!-- b-cdn.net serves only the below-fold contact-CTA video; a light DNS
+       prefetch is enough (the connection opens on scroll via lazy-video). -->
+  <link slot="head" rel="dns-prefetch" href="https://kashklicks.b-cdn.net" />
+  <link slot="head" rel="preload" as="image" imagesrcset={heroPreload.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
+
   <script is:inline>
     // Splash temporarily disabled. Pre-seed the "seen" flag so the hero
     // entrance script in this file (and the SoundManager) treat the visit
