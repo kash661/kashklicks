@@ -31,7 +31,7 @@ const testimonial = testimonials[0];
 // LCP hero preload: identical params to the <Image> below, so the hashed
 // AVIF srcset matches and the preload scanner can start the hero fetch
 // during <head> parse instead of waiting for the <img> in the body.
-const heroPreload = await getImage({ src: heroImage, widths: [768, 1280, 1600], format: 'avif', quality: 72 });
+const heroPreload = await getImage({ src: heroImage, widths: [480, 640, 768, 1280, 1600], format: 'avif', quality: 72 });
 
 const faqItems = [
   {
@@ -221,7 +221,7 @@ const jsonLd = [
       src={heroImage}
       alt="Toronto wedding photographer AD Photography, Mehak and Manal session"
       class="home-hero__image absolute inset-0 w-full h-full object-cover"
-      widths={[768, 1280, 1600]}
+      widths={[480, 640, 768, 1280, 1600]}
       sizes="100vw"
       quality={72}
       format="avif"
