@@ -24,3 +24,9 @@ Thumbs.db
 docs/superpowers/
 docs/research/
 src/assets/images/portfolio/.originals/
+
+# Test & local runtime artifacts
+.wrangler/
+test-results/
+playwright-report/
+.playwright-mcp/

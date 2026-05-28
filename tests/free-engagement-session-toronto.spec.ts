@@ -3,27 +3,28 @@ import { test, expect } from '@playwright/test';
 const URL = '/free-engagement-session-toronto/';
 
 test.describe('Free Engagement Session LP', () => {
-  test('renders hero, how-it-works, FAQ, form', async ({ page }) => {
+  test('renders hero, how-it-works, FAQ, and inquiry form', async ({ page }) => {
     await page.goto(URL);
 
-    await expect(page.getByRole('heading', { name: /your love story/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /how the gift works/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /frequently asked/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /tell me about your wedding/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /engagement session, on me/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /think of it like a cake tasting/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /questions before the tasting/i })).toBeVisible();
+    await expect(page.locator('#eof-form-1')).toBeVisible();
   });
 
-  test('hero CTA links to how-the-gift-works', async ({ page }) => {
+  test('secondary CTA links to the how-it-works section', async ({ page }) => {
     await page.goto(URL);
-    const cta = page.getByRole('link', { name: /see how it works/i });
+    const cta = page.getByRole('link', { name: /how the tasting works/i });
     await expect(cta).toHaveAttribute('href', '#how-the-gift-works');
   });
 
-  test('stage 1 email-only form shows expected fields; stage 2 hidden', async ({ page }) => {
+  test('inquiry form shows its core fields', async ({ page }) => {
     await page.goto(URL);
+    // Single-stage form. (The wedding-date input is intentionally excluded —
+    // flatpickr swaps it for a visible altInput and hides the original.)
+    await expect(page.locator('#eof-name')).toBeVisible();
     await expect(page.locator('#eof-email')).toBeVisible();
-    await expect(page.locator('#eof-wedding-month')).toBeVisible();
-    await expect(page.locator('#eof-name')).not.toBeVisible();
-    await expect(page.locator('#eof-city')).not.toBeVisible();
+    await expect(page.locator('#eof-venue')).toBeVisible();
   });
 
   test('robots meta is noindex', async ({ page }) => {
@@ -34,7 +35,7 @@ test.describe('Free Engagement Session LP', () => {
 
   test('FAQ first item is open by default', async ({ page }) => {
     await page.goto(URL);
-    const firstFaq = page.locator('.faq-item-first button').first();
-    await expect(firstFaq).toHaveAttribute('aria-expanded', 'true');
+    // Native <details> accordion — first item carries the `open` attribute.
+    await expect(page.locator('details.faq-item-first[open]')).toHaveCount(1);
   });
 });

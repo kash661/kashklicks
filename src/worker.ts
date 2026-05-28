@@ -105,6 +105,12 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
+    // Dev/preview-only scratch pages — never reachable on the live site. They
+    // stay accessible under `astro dev` (no Worker) for design reference.
+    if (path.startsWith('/dev/') && url.hostname === 'kashklicks.ca') {
+      return new Response('Not Found', { status: 404, headers: { 'cache-control': 'no-store' } });
+    }
+
     // Diagnostic ping — confirms a user's request reached the Worker (vs being
     // intercepted by a cached asset 404, carrier middleware, or a content blocker).
     if (path === '/__diag/ping') {
