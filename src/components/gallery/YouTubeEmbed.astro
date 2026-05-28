@@ -41,20 +41,88 @@ if (url.includes('youtu.be/')) {
   }
 }
 
-const embedParams = new URLSearchParams({ rel: '0' });
+// Click-to-load facade: render only the YouTube poster + play affordance, and
+// swap in the real player iframe on click. This keeps hundreds of KB of YouTube
+// player JS + third-party connections off the page until the user actually
+// presses play — critical on portfolio detail pages where the first film sits
+// above the fold and would otherwise boot the full player eagerly.
+const embedParams = new URLSearchParams({ rel: '0', autoplay: '1' });
 if (startSeconds > 0) embedParams.set('start', String(startSeconds));
 const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?${embedParams.toString()}`;
+
+const poster = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+const posterFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 ---
 
 {videoId && (
-  <div class="aspect-video overflow-hidden bg-surface-container">
-    <iframe
-      src={embedUrl}
-      title={title}
-      loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      class="w-full h-full border-0"
-    ></iframe>
+  <div class="aspect-video overflow-hidden bg-surface-container relative">
+    <button
+      type="button"
+      class="yt-facade group absolute inset-0 block w-full h-full cursor-pointer"
+      data-embed={embedUrl}
+      data-title={title}
+      data-poster-fallback={posterFallback}
+      aria-label={`Play video: ${title}`}
+    >
+      <img
+        src={poster}
+        alt=""
+        width="1280"
+        height="720"
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover"
+      />
+      <span
+        class="absolute inset-0 bg-surface-dark/20 cubic-ease group-hover:bg-surface-dark/10"
+        style="transition-duration: var(--duration-hover);"
+      ></span>
+      <span class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <span
+          class="flex items-center justify-center w-16 h-16 bg-on-dark/90 cubic-ease group-hover:scale-110"
+          style="transition-duration: var(--duration-hover);"
+        >
+          <svg class="w-6 h-6 text-surface-dark ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </span>
+      </span>
+    </button>
   </div>
 )}
+
+<script>
+  function initYouTubeFacades() {
+    const facades = document.querySelectorAll<HTMLButtonElement>('.yt-facade');
+    facades.forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = 'true';
+
+      // maxresdefault is crisp but missing on some uploads — fall back to the
+      // always-present hqdefault without an inline (CSP-sensitive) handler.
+      const img = btn.querySelector<HTMLImageElement>('img');
+      const fallback = btn.dataset.posterFallback;
+      if (img && fallback) {
+        img.addEventListener('error', () => { img.src = fallback; }, { once: true });
+      }
+
+      btn.addEventListener('click', () => {
+        const embed = btn.dataset.embed;
+        if (!embed) return;
+        const iframe = document.createElement('iframe');
+        iframe.src = embed;
+        iframe.title = btn.dataset.title || '';
+        iframe.setAttribute(
+          'allow',
+          'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+        );
+        iframe.allowFullscreen = true;
+        iframe.className = 'w-full h-full border-0';
+        const wrap = btn.parentElement;
+        if (wrap) wrap.replaceChildren(iframe);
+      });
+    });
+  }
+
+  initYouTubeFacades();
+</script>

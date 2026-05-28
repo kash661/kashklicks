@@ -58,7 +58,7 @@ const blogSchema = {
     {posts.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
         {posts.map((post, i) => (
-          <a href={`/blog/${post.id}`} class="group block reveal" style={`transition-delay: ${(i % 3) * 100 + 100}ms;`}>
+          <a href={`/blog/${post.id}/`} class="group block reveal" style={`transition-delay: ${(i % 3) * 100 + 100}ms;`}>
             <article>
               {post.data.coverImage ? (
                 <div class="aspect-[3/2] overflow-hidden bg-surface-dim image-caption" data-caption={post.data.tags[0] ?? 'Read'}>

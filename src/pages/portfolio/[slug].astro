@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import GalleryImage from '../../components/gallery/GalleryImage.astro';
-import Lightbox from '../../components/gallery/Lightbox.astro';
 import YouTubeEmbed from '../../components/gallery/YouTubeEmbed.astro';
 import RelatedGalleries from '../../components/portfolio/RelatedGalleries.astro';
 import Button from '../../components/ui/Button.astro';
@@ -74,7 +73,7 @@ const schemas: any[] = [{
   '@type': 'ImageGallery',
   name: `${entry.couple}, ${categoryLabel} Photography at ${entry.location}`,
   description: pageDescription,
-  url: `${site.url}/portfolio/${entry.slug ?? entry.id}`,
+  url: `${site.url}/portfolio/${entry.slug ?? entry.id}/`,
   datePublished: entry.date,
   creator: { '@type': 'LocalBusiness', name: 'AD Photography', url: site.url },
   contentLocation: {
@@ -226,6 +225,4 @@ const remainingImages = galleryImages;
     ctaLabel="Get in Touch"
     background="surface-dim"
   />
-
-  <Lightbox />
 </BaseLayout>

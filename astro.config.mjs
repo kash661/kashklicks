@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://kashklicks.ca',
-  trailingSlash: 'ignore',
+  trailingSlash: 'always',
   vite: {
     plugins: [tailwindcss()],
     server: {
@@ -19,6 +19,7 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/dev/') &&
         !page.includes('/font-lab') &&
+        !page.includes('/free-engagement-session-toronto') &&
         !page.endsWith('/404/'),
       serialize(item) {
         const url = item.url.replace('https://kashklicks.ca', '').replace(/\/$/, '');

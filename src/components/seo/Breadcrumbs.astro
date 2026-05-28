@@ -12,6 +12,18 @@ interface Props {
 
 const { items } = Astro.props;
 
+// Canonicalize internal hrefs to the trailing-slash form the Worker 301-forces,
+// so neither the rendered links nor the BreadcrumbList JSON-LD URLs trigger a
+// redirect hop. Leaves external/hash/query/file-extension links untouched.
+function withTrailingSlash(href: string): string {
+  if (/^https?:\/\//.test(href)) return href;
+  const [pathAndQuery, hash] = href.split('#');
+  const [path, query] = pathAndQuery.split('?');
+  if (query !== undefined) return href; // has a query string — leave as-is
+  if (path === '/' || path.endsWith('/') || /\.[^/]+$/.test(path)) return href;
+  return hash !== undefined ? `${path}/#${hash}` : `${path}/`;
+}
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -19,7 +31,7 @@ const schema = {
     '@type': 'ListItem',
     position: index + 1,
     name: item.label,
-    item: new URL(item.href, Astro.site).href,
+    item: new URL(withTrailingSlash(item.href), Astro.site).href,
   })),
 };
 ---
@@ -32,7 +44,7 @@ const schema = {
         {index === items.length - 1 ? (
           <span class="text-on-surface-variant" aria-current="page">{item.label}</span>
         ) : (
-          <a href={item.href} class="hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{item.label}</a>
+          <a href={withTrailingSlash(item.href)} class="hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{item.label}</a>
         )}
       </li>
     ))}

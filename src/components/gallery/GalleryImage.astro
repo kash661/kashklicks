@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 interface Props {
   src: ImageMetadata;
@@ -8,10 +8,21 @@ interface Props {
 }
 
 const { src, alt, gallery = 'gallery' } = Astro.props;
+
+// Lightbox target: a capped, re-encoded variant instead of the multi-MB raw
+// original. GLightbox loads whatever the href resolves to, so a ~1920px WebP
+// gives full-screen quality at a fraction of the bytes (raw originals run
+// 1-3MB each). Width is clamped to the source so we never upscale.
+const lightbox = await getImage({
+  src,
+  width: Math.min(src.width, 1920),
+  format: 'webp',
+  quality: 72,
+});
 ---
 
 <a
-  href={src.src}
+  href={lightbox.src}
   class="glightbox block overflow-hidden group cursor-pointer"
   data-gallery={gallery}
   aria-label={`View full size: ${alt}`}

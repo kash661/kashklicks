@@ -40,7 +40,7 @@ const resolvedRelated = related
             location={entry.location}
             category={entry.category}
             coverImage={entry.resolvedCover}
-            href={`/portfolio/${entry.slug ?? entry.id}`}
+            href={`/portfolio/${entry.slug ?? entry.id}/`}
             date={(entry as any).date ?? null}
           />
         </div>

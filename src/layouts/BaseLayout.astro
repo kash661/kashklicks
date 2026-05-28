@@ -225,7 +225,14 @@ if (site.phone) {
 
         const lightboxElements = document.querySelectorAll('.glightbox');
         if (lightboxElements.length > 0) {
-          import('glightbox').then(({ default: GLightbox }) => {
+          // Self-host glightbox CSS via the bundler and load it lazily alongside
+          // the JS — only on pages that actually have a lightbox. Replaces the
+          // render-blocking jsdelivr <link> that used to live in Lightbox.astro.
+          Promise.all([
+            import('glightbox'),
+            // @ts-ignore — CSS side-effect import, code-split + injected by Vite
+            import('glightbox/dist/css/glightbox.min.css'),
+          ]).then(([{ default: GLightbox }]) => {
             GLightbox({ selector: '.glightbox', loop: true, touchNavigation: true, closeOnOutsideClick: true, skin: 'clean' });
           });
         }

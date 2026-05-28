@@ -41,7 +41,7 @@ const others = locationsData
   .filter((l) => l.id !== loc.id)
   .sort((a, b) => a.name.localeCompare(b.name));
 
-const canonicalUrl = `${site.url}/location-guide/${loc.id}`;
+const canonicalUrl = `${site.url}/location-guide/${loc.id}/`;
 
 const placeSchema = {
   '@context': 'https://schema.org',
@@ -220,7 +220,7 @@ const essentials = [
             const otherImg = locationImages[`/src/assets/images/locations/${other.image}`]?.default;
             return otherImg ? (
               <a
-                href={`/location-guide/${other.id}`}
+                href={`/location-guide/${other.id}/`}
                 class="group block reveal"
                 style={`transition-delay: ${(i % 3) * 80 + 100}ms;`}
               >

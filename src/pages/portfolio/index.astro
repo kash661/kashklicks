@@ -26,7 +26,7 @@ const chapters = [
     eyebrow: 'Chapter I',
     title: 'Weddings',
     description: 'Full-day coverage of your wedding, unobtrusive and cinematic. From getting ready to the last dance.',
-    href: '/portfolio/weddings',
+    href: '/portfolio/weddings/',
     image: weddingFeature,
     caption: 'Wedding Day Stories',
     alt: 'Toronto wedding photography portfolio preview by AD Photography',
@@ -35,7 +35,7 @@ const chapters = [
     eyebrow: 'Chapter II',
     title: 'Pre-Weddings',
     description: 'Engagement and pre-wedding sessions at Toronto\'s most stunning locations. Your love story, before the big day.',
-    href: '/portfolio/pre-weddings',
+    href: '/portfolio/pre-weddings/',
     image: preWeddingFeature,
     caption: 'Before The Big Day',
     alt: 'Toronto pre-wedding photography portfolio preview',
@@ -44,7 +44,7 @@ const chapters = [
     eyebrow: 'Chapter III',
     title: 'Civil Ceremony',
     description: 'Intimate courthouse and city hall stories. Small ceremonies, same attention to every detail.',
-    href: '/portfolio/civil-ceremony',
+    href: '/portfolio/civil-ceremony/',
     image: civilFeature,
     caption: 'Intimate. Uncomplicated.',
     alt: 'Toronto civil ceremony photography portfolio preview',
@@ -53,7 +53,7 @@ const chapters = [
     eyebrow: 'Chapter IV',
     title: 'Films',
     description: 'Motion, sound, and feeling brought together. Cinematic wedding and pre-wedding films.',
-    href: '/portfolio/films',
+    href: '/portfolio/films/',
     image: filmsFeature,
     caption: 'Love, In Motion',
     alt: 'Toronto wedding films portfolio reel preview',
@@ -223,7 +223,7 @@ const gallerySchema = {
                 location={entry.location}
                 category={entry.category}
                 coverImage={img}
-                href={`/portfolio/${entry.slug ?? entry.id}`}
+                href={`/portfolio/${entry.slug ?? entry.id}/`}
                 date={entry.date ?? null}
               />
             </div>

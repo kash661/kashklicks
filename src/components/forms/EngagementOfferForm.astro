@@ -615,6 +615,11 @@ const APPS_SCRIPT_URL = "/r/eof-7k2x";
     // actually reached the proxy, masking failures.
     e.preventDefault();
 
+    // Honeypot: bots fill the hidden _gotcha field — bail silently (mirrors
+    // ContactForm). The worker enforces this server-side too as defence-in-depth.
+    var honeypot = form1.querySelector('[name="_gotcha"]');
+    if (honeypot && honeypot.value) return;
+
     var nameVal  = (nameField  && nameField.value  || '').trim();
     var emailVal = (emailField && emailField.value || '').trim();
     if (!nameVal) {

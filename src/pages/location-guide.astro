@@ -180,7 +180,7 @@ const locationListSchema = [
         <div class="location-mosaic">
           {shotTiles.map((loc, i) => (
             <a
-              href={`/location-guide/${loc.id}`}
+              href={`/location-guide/${loc.id}/`}
               class="mosaic-tile reveal"
               aria-label={`View details for ${loc.name}`}
               data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')}`.toLowerCase()}
@@ -230,7 +230,7 @@ const locationListSchema = [
       <div class="location-mosaic" data-search-target>
       {recommendedTiles.map((loc, i) => (
         <a
-          href={`/location-guide/${loc.id}`}
+          href={`/location-guide/${loc.id}/`}
           class="mosaic-tile reveal"
           aria-label={`View details for ${loc.name}`}
           data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')}`.toLowerCase()}

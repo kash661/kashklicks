@@ -143,7 +143,7 @@ const services = baseServices.map((s) => {
   return {
     ...s,
     hasSale: saleId !== null,
-    saleHref: saleId ? `/services/${s.slug}#${saleId}` : null,
+    saleHref: saleId ? `/services/${s.slug}/#${saleId}` : null,
   };
 });
 
@@ -174,7 +174,7 @@ const offerCatalogSchema = {
   itemListElement: services.map((s) => ({
     '@type': 'Offer',
     name: s.altTitle,
-    url: `${site.url}/services/${s.slug}`,
+    url: `${site.url}/services/${s.slug}/`,
     ...(s.startingAt && { price: s.startingAt, priceCurrency: 'CAD' }),
   })),
 };
@@ -250,7 +250,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
                   From <span class="text-heading-md text-on-surface">${service.startingAt}</span>
                 </p>
                 <ShareButton
-                  url={`/services/${service.slug}`}
+                  url={`/services/${service.slug}/`}
                   title={`${service.altTitle}, AD Photography`}
                   text={service.description}
                   label={`Share ${service.altTitle} package`}
@@ -258,7 +258,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
                 />
               </div>
               <a
-                href={`/services/${service.slug}`}
+                href={`/services/${service.slug}/`}
                 class="service-cta inline-flex items-center justify-center w-full px-6 py-3 bg-primary text-on-dark text-label-md hover:bg-primary-hover cubic-ease"
                 style="transition-duration: var(--duration-hover);"
               >
