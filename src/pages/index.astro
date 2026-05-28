@@ -1022,11 +1022,16 @@ const jsonLd = [
 </BaseLayout>
 
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import { initHomepageMotion } from '../scripts/homepage-motion';
+  // GSAP (~114KB raw / ~46KB gzip) drives only scroll effects + the currently
+  // disabled first-visit entrance — none of which are needed before idle. Load
+  // it lazily off the critical path; the hero copy is shown immediately below.
+  import type GsapType from 'gsap';
 
-  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.remove('splash-pending');
+
+  let gsap: typeof GsapType;
+  let ScrollTrigger: unknown;
+  let initHomepageMotion: () => unknown;
 
   const initHomeHero = () => {
     const hero = document.querySelector<HTMLElement>('.home-hero');
@@ -1242,25 +1247,24 @@ const jsonLd = [
     return () => mm.revert();
   };
 
-  let cleanupPin = initHomeHero();
-  let cleanupEntrance = initHeroEntrance();
-  let cleanupHeadings = initSectionHeadings();
-  let cleanupMotion = initHomepageMotion();
-
-  document.addEventListener('astro:page-load', () => {
-    cleanupPin?.();
-    cleanupEntrance?.();
-    cleanupHeadings?.();
-    cleanupMotion?.();
-    cleanupPin = initHomeHero();
-    cleanupEntrance = initHeroEntrance();
-    cleanupHeadings = initSectionHeadings();
-    cleanupMotion = initHomepageMotion();
-  });
-  document.addEventListener('astro:before-preparation', () => {
-    cleanupPin?.();
-    cleanupEntrance?.();
-    cleanupHeadings?.();
-    cleanupMotion?.();
+  // Defer the GSAP download + all scroll/entrance init to idle. Scroll effects
+  // are scroll-triggered (not needed at first paint) and the entrance is the
+  // disabled first-visit path, so nothing here is on the critical path.
+  const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 200));
+  onIdle(() => {
+    Promise.all([
+      import('gsap'),
+      import('gsap/ScrollTrigger'),
+      import('../scripts/homepage-motion'),
+    ]).then(([g, st, hm]) => {
+      gsap = g.default;
+      ScrollTrigger = st.ScrollTrigger;
+      initHomepageMotion = hm.initHomepageMotion;
+      gsap.registerPlugin(ScrollTrigger as any);
+      initHomeHero();
+      initHeroEntrance();
+      initSectionHeadings();
+      initHomepageMotion();
+    });
   });
 </script>

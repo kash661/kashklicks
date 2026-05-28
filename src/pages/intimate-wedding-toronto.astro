@@ -139,8 +139,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     ]} />
   </div>
 
-  <!-- flatpickr (date picker) — CDN + Digital Curator theme overrides -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" />
+  <!-- flatpickr (date picker) — Digital Curator theme overrides. The library
+       CSS itself is lazy-injected by the loader below (off the critical path). -->
   <style is:global>
     /* Editorial overrides for flatpickr — flat corners, neutral palette */
     .flatpickr-calendar {
@@ -815,8 +815,35 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     })();
   </script>
 
-  <!-- flatpickr script (loaded once; no-op if page already has it) -->
-  <script is:inline src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+  <!-- flatpickr · lazy-loaded off critical path (IG webview perf / paid-ads
+       LCP + INP). CSS + JS are injected on requestIdleCallback OR on first
+       date-field focus, whichever comes first, then the date input is upgraded
+       via window.__initLpDatePicker. -->
+  <script is:inline>
+    (function () {
+      var FP_CSS = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css';
+      var FP_JS  = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13';
+      var loaded = false;
+      function load() {
+        if (loaded) return; loaded = true;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet'; l.href = FP_CSS;
+        document.head.appendChild(l);
+        var s = document.createElement('script');
+        s.src = FP_JS; s.async = true;
+        s.onload = function () {
+          if (typeof window.__initLpDatePicker === 'function') window.__initLpDatePicker();
+        };
+        document.head.appendChild(s);
+      }
+      var onIdle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1200); };
+      onIdle(load);
+      document.addEventListener('focusin', function (e) {
+        var t = e.target;
+        if (t && t.matches && t.matches('#lp-date')) load();
+      }, { passive: true });
+    })();
+  </script>
 
   <!-- ═══ LP inquiry form init + Lead event gate ═══
        Lead fires ONLY if visitor qualified (45s dwell OR 60% scroll).
@@ -833,9 +860,14 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
         var originalBtnText = submitBtn.textContent;
 
-        // Init flatpickr on the ceremony date input
-        var dateInput = document.getElementById('lp-date');
-        if (dateInput && typeof window.flatpickr === 'function') {
+        // flatpickr is lazy-loaded (see loader above). Expose an idempotent
+        // initializer the loader calls on script load, and run it now in case
+        // flatpickr is already present. If it never loads, #lp-date stays a
+        // usable text input (graceful degradation).
+        window.__initLpDatePicker = function () {
+          var dateInput = document.getElementById('lp-date');
+          if (!dateInput || dateInput._fpInit || typeof window.flatpickr !== 'function') return;
+          dateInput._fpInit = true;
           window.flatpickr(dateInput, {
             dateFormat: 'Y-m-d',
             altInput: true,
@@ -844,7 +876,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             disableMobile: false,
             monthSelectorType: 'static'
           });
-        }
+        };
+        window.__initLpDatePicker();
 
         // Phone validation: strip non-digits, require ≥10 digits (NANP standard)
         function isValidPhone(value) {

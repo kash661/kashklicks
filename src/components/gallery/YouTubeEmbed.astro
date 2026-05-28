@@ -98,12 +98,16 @@ const posterFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
       if (btn.dataset.bound) return;
       btn.dataset.bound = 'true';
 
-      // maxresdefault is crisp but missing on some uploads — fall back to the
-      // always-present hqdefault without an inline (CSP-sensitive) handler.
+      // maxresdefault is crisp but missing on some uploads. YouTube signals
+      // "no maxres" two ways: a 404 (error event) OR a 120x90 placeholder served
+      // with HTTP 200 (no error). Handle both by swapping to the always-present
+      // hqdefault. No inline (CSP-sensitive) handler.
       const img = btn.querySelector<HTMLImageElement>('img');
       const fallback = btn.dataset.posterFallback;
       if (img && fallback) {
-        img.addEventListener('error', () => { img.src = fallback; }, { once: true });
+        const useFallback = () => { if (img.src !== fallback) img.src = fallback; };
+        img.addEventListener('error', useFallback, { once: true });
+        img.addEventListener('load', () => { if (img.naturalWidth <= 120) useFallback(); }, { once: true });
       }
 
       btn.addEventListener('click', () => {
