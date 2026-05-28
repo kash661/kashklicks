@@ -16,6 +16,16 @@ const referralOptions = [
   { value: 'blog', label: 'Blog, article, or feature' },
   { value: 'other', label: 'Somewhere else' },
 ];
+
+// Local-pivot qualifier. A four-rung geographic ladder so destination work
+// (elsewhere in Canada vs outside Canada) is separable from local GTA work.
+// Forwarded by worker.ts into the Inquiries sheet as `event_region`.
+const regionOptions = [
+  { value: 'toronto-gta', label: 'Toronto / GTA' },
+  { value: 'ontario', label: 'Elsewhere in Ontario' },
+  { value: 'canada', label: 'Elsewhere in Canada' },
+  { value: 'international', label: 'Outside Canada' },
+];
 ---
 
 <div id="contact-form-wrapper">
@@ -37,8 +47,31 @@ const referralOptions = [
     <input type="hidden" id="package_name" name="package_name" value="" />
     <input type="hidden" id="source_page" name="source_page" value="" />
 
-    <!-- ═══ Required fields — only 4 to keep the form fast on mobile ═══ -->
+    <!-- Date-first framing: the photographer books a limited number of dates
+         each year, so the inquiry opens on the date before anything else. -->
+    <p class="form-intro">I book a limited number of dates each year, so let's start with yours.</p>
+
+    <!-- ═══ Required fields, date-first ═══ -->
     <div class="form-required-stack">
+      <div class="form-field">
+        <label for="event_date" class="form-field__label">
+          Your Date <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          inputmode="text"
+          id="event_date"
+          name="event_date"
+          required
+          aria-required="true"
+          aria-describedby="event_date-error"
+          placeholder='e.g. June 2027, or "not sure yet"'
+          autocomplete="off"
+          class="form-field__input"
+        />
+        <p id="event_date-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
+
       <div class="form-field">
         <label for="name" class="form-field__label">
           Your Name <span class="form-field__required" aria-hidden="true">*</span>
@@ -74,23 +107,23 @@ const referralOptions = [
       </div>
 
       <div class="form-field">
-        <label for="referral" class="form-field__label">
-          How Did You Find Me? <span class="form-field__required" aria-hidden="true">*</span>
+        <label for="event_region" class="form-field__label">
+          Where will it take place? <span class="form-field__required" aria-hidden="true">*</span>
         </label>
         <select
-          id="referral"
-          name="referral"
+          id="event_region"
+          name="event_region"
           required
           aria-required="true"
-          aria-describedby="referral-error"
+          aria-describedby="event_region-error"
           class="form-field__select"
         >
-          <option value="" disabled selected>Select one</option>
-          {referralOptions.map((opt) => (
+          <option value="" disabled selected>Select a region</option>
+          {regionOptions.map((opt) => (
             <option value={opt.value}>{opt.label}</option>
           ))}
         </select>
-        <p id="referral-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+        <p id="event_region-error" class="form-error-msg form-field__error hidden" role="alert"></p>
       </div>
 
       <div class="form-field">
@@ -111,6 +144,26 @@ const referralOptions = [
           ))}
         </select>
         <p id="event_type-error" class="form-error-msg form-field__error hidden" role="alert"></p>
+      </div>
+
+      <div class="form-field">
+        <label for="referral" class="form-field__label">
+          How Did You Find Me? <span class="form-field__required" aria-hidden="true">*</span>
+        </label>
+        <select
+          id="referral"
+          name="referral"
+          required
+          aria-required="true"
+          aria-describedby="referral-error"
+          class="form-field__select"
+        >
+          <option value="" disabled selected>Select one</option>
+          {referralOptions.map((opt) => (
+            <option value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+        <p id="referral-error" class="form-error-msg form-field__error hidden" role="alert"></p>
       </div>
 
       <div class="form-field">
@@ -164,21 +217,6 @@ const referralOptions = [
               name="phone"
               autocomplete="tel"
               placeholder="(416) 555 0199"
-              class="form-field__input"
-            />
-          </div>
-
-          <div class="form-field">
-            <label for="event_date" class="form-field__label">
-              Event Date <span class="form-field__optional">(tentative is fine)</span>
-            </label>
-            <input
-              type="text"
-              inputmode="text"
-              id="event_date"
-              name="event_date"
-              placeholder="e.g. June 2027, or 'tentative'"
-              autocomplete="off"
               class="form-field__input"
             />
           </div>
@@ -263,6 +301,15 @@ const referralOptions = [
 </div>
 
 <style>
+  .form-intro {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    margin-bottom: 2rem;
+    max-width: 46ch;
+  }
+
   .form-required-stack {
     display: flex;
     flex-direction: column;

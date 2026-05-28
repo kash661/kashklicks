@@ -1,0 +1,89 @@
+---
+/**
+ * BookingNote
+ * -----------
+ * Quiet availability / scarcity line. Single source of truth for the
+ * "now booking" copy so it stays consistent across the hero, the homepage
+ * Investment block, and service-page pricing CTAs.
+ *
+ * tone:
+ *   'dark'  — placement over the hero photo (on-dark text, no dot)
+ *   'light' — placement on cream / surface backgrounds (on-surface text + calm dot)
+ * compact:
+ *   true  — uppercase micro-label, short copy (hero CTA cluster)
+ *   false — sentence-case line led by a 5px square dot (pricing surfaces)
+ *
+ * Copy is true (solo photographer, finite capacity), carries no dashes,
+ * and uses the solo first-person voice.
+ */
+interface Props {
+  tone?: 'dark' | 'light';
+  compact?: boolean;
+  text?: string;
+  class?: string;
+}
+
+const {
+  tone = 'light',
+  compact = false,
+  text = compact
+    ? 'Now booking 2026 and 2027'
+    : 'Now booking 2026 and 2027. I take a limited number of weddings each year.',
+  class: className = '',
+} = Astro.props;
+---
+
+{compact ? (
+  <p class:list={['booking-note booking-note--compact', `booking-note--${tone}`, className]}>{text}</p>
+) : (
+  <p class:list={['booking-note booking-note--full', `booking-note--${tone}`, className]}>
+    <span class="booking-note__dot" aria-hidden="true"></span>
+    <span>{text}</span>
+  </p>
+)}
+
+<style>
+  .booking-note {
+    font-family: var(--font-sans);
+    margin: 0;
+  }
+
+  /* Compact: uppercase micro-label for the hero CTA cluster. */
+  .booking-note--compact {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Full: sentence-case line led by a calm square dot for pricing surfaces. */
+  .booking-note--full {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .booking-note--dark {
+    color: var(--color-on-dark);
+    opacity: 0.8;
+  }
+
+  .booking-note--light {
+    color: var(--color-on-surface-variant);
+  }
+
+  /* Reuses the .service-sale-dot visual language: a 5px square, on-surface,
+     0.75 opacity. Nudged down to sit on the first text line when copy wraps. */
+  .booking-note__dot {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.5em;
+    background: var(--color-on-surface);
+    opacity: 0.75;
+  }
+</style>

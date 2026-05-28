@@ -9,6 +9,7 @@ import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
+import BookingNote from '../../components/global/BookingNote.astro';
 import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
 import GearStrip from '../../components/global/GearStrip.astro';
 import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
@@ -277,6 +278,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
       <!-- CTA below packages -->
       <div class="text-center mt-16 reveal">
+        <BookingNote tone="light" class="justify-center mb-3" />
         <p class="text-label-sm text-on-surface-muted mb-2">Have questions? I'll get back to you within 24 hours, guaranteed.</p>
         <div class="mt-6">
           <a href="/contact/?service=wedding" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Me</a>
