@@ -1,0 +1,152 @@
+---
+/**
+ * ReviewStrip
+ * -----------
+ * Compact "Reviewed on" proof unit for the inquiry surface (the full
+ * GoogleReviews section lives only on the homepage). Data-driven: only
+ * `enabled` platforms render, so nothing is ever fabricated. Google numbers
+ * are single-sourced from google-reviews.json. WeddingWire / The Knot stay
+ * disabled (no numbers) until the owner claims those profiles, at which point
+ * the unit becomes a true multi-platform strip with hairline dividers.
+ *
+ * Framing per CRO research: warm, specific, low-count-positive
+ * ("5.0 from 14 couples"), never "only 14 reviews".
+ */
+import googleReviews from '../../data/google-reviews.json';
+
+const { aggregate } = googleReviews;
+
+const platforms = [
+  {
+    id: 'google',
+    name: 'Google',
+    enabled: true,
+    rating: aggregate.rating,
+    count: aggregate.count,
+    url: aggregate.profileUrl,
+  },
+  { id: 'weddingwire', name: 'WeddingWire', enabled: false, rating: null, count: null, url: '' },
+  { id: 'theknot', name: 'The Knot', enabled: false, rating: null, count: null, url: '' },
+];
+
+const live = platforms.filter((p) => p.enabled);
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['review-strip', className]}>
+  <span class="review-strip__label">Reviewed on</span>
+  <ul class="review-strip__list" role="list">
+    {live.map((p) => (
+      <li class="review-strip__item">
+        <a
+          href={p.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="review-strip__link"
+          aria-label={`${p.rating} out of 5 from ${p.count} reviews on ${p.name}`}
+        >
+          {p.id === 'google' && (
+            <svg class="review-strip__logo" width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.99 10.99 0 0 0 12 23z"/>
+              <path fill="#FBBC04" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.83z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A10.99 10.99 0 0 0 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z"/>
+            </svg>
+          )}
+          <span class="review-strip__score">{p.rating.toFixed(1)}</span>
+          <span class="review-strip__stars" aria-hidden="true">
+            {Array.from({ length: 5 }).map(() => (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#f9ab00" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </span>
+          <span class="review-strip__count">from {p.count} couples</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .review-strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.875rem;
+  }
+
+  .review-strip__label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    line-height: 1;
+  }
+
+  .review-strip__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.875rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Hairline divider appears only when a second platform is added. */
+  .review-strip__item + .review-strip__item {
+    padding-left: 0.875rem;
+    border-left: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 35%, transparent);
+  }
+
+  .review-strip__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    font-family: var(--font-sans);
+    color: var(--color-on-surface);
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .review-strip__link:hover {
+    color: var(--color-on-surface-variant);
+  }
+
+  .review-strip__link:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 3px;
+  }
+
+  .review-strip__logo {
+    flex-shrink: 0;
+  }
+
+  .review-strip__score {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .review-strip__stars {
+    display: inline-flex;
+    gap: 0.0625rem;
+  }
+
+  .review-strip__count {
+    font-size: 0.8125rem;
+    color: var(--color-on-surface-variant);
+    letter-spacing: 0.01em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .review-strip__link {
+      transition: none;
+    }
+  }
+</style>

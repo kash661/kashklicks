@@ -1,5 +1,6 @@
 ---
 import ContactForm from '../forms/ContactForm.astro';
+import InstagramChat from './InstagramChat.astro';
 ---
 
 <dialog
@@ -28,6 +29,11 @@ import ContactForm from '../forms/ContactForm.astro';
     </div>
 
     <div class="contact-modal-body">
+      <!-- Fast path first: Akash answers Instagram DMs daily, rarely email. -->
+      <div class="contact-modal-channel">
+        <InstagramChat />
+        <p class="contact-modal-or">Or use the form below.</p>
+      </div>
       <ContactForm />
     </div>
   </div>
@@ -251,6 +257,20 @@ import ContactForm from '../forms/ContactForm.astro';
     padding: 2rem;
     scrollbar-width: thin;
     scrollbar-color: var(--color-surface-container) var(--color-background);
+  }
+
+  .contact-modal-channel {
+    margin-bottom: 2rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid rgba(175, 179, 174, 0.25);
+  }
+
+  .contact-modal-or {
+    margin-top: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-on-surface-muted);
+    letter-spacing: 0.02em;
   }
 
   @media (min-width: 768px) {

@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import ContactForm from '../components/forms/ContactForm.astro';
+import ReviewStrip from '../components/global/ReviewStrip.astro';
+import InstagramChat from '../components/global/InstagramChat.astro';
 import WhatHappensNext from '../components/contact/WhatHappensNext.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import BookingLink from '../components/ui/BookingLink.astro';
@@ -210,7 +212,20 @@ const contactPageSchema = {
               Share a little about your day and your vision. I'll take it from there.
             </p>
 
-            <div class="mt-10">
+            <!-- Trust proof adjacent to the form (CRO: social proof lifts form
+                 completion when it sits within the same visual frame). -->
+            <ReviewStrip class="mt-8 reveal" />
+
+            <!-- Fast path: Akash answers Instagram DMs daily, rarely email.
+                 Prominent but on-brand; the form below is the full intake. -->
+            <div class="mt-8 reveal">
+              <InstagramChat />
+              <p class="text-label-sm text-on-surface-muted mt-6">
+                Or tell me about your day with the form below.
+              </p>
+            </div>
+
+            <div class="mt-8">
               <ContactForm />
             </div>
 

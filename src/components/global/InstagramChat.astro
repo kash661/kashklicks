@@ -1,0 +1,108 @@
+---
+/**
+ * InstagramChat
+ * -------------
+ * Instagram-DM click-to-chat affordance. Akash answers DMs daily and rarely
+ * checks email, so this is a genuine fast path, surfaced as a prominent
+ * editorial button (bordered, monochrome glyph, no IG gradient) above the
+ * inquiry form. The form stays the primary structured intake (it feeds the
+ * Inquiries sheet); this is the fast alternative.
+ *
+ * Link: ig.me/m/<username> is Meta's official "send message" deep link
+ * (opens IG Direct in-app on mobile, IG web on desktop). Instagram has no
+ * reliable URL param to pre-fill DM text, so the note tells couples what to
+ * send instead.
+ */
+import site from '../../data/site.json';
+
+const username = site.social.instagramHandle.replace(/^@/, '');
+const dmUrl = `https://ig.me/m/${username}`;
+
+interface Props {
+  note?: string;
+  class?: string;
+}
+
+const {
+  note = 'Fastest reply. I answer DMs daily. Just send your date and venue.',
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['ig-chat', className]}>
+  <a href={dmUrl} target="_blank" rel="noopener noreferrer" class="ig-chat__btn magnetic">
+    <svg class="ig-chat__glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none" />
+    </svg>
+    <span class="ig-chat__label">DM me on Instagram</span>
+    <span class="ig-chat__arrow" aria-hidden="true">&rarr;</span>
+  </a>
+  {note && <p class="ig-chat__note">{note}</p>}
+</div>
+
+<style>
+  .ig-chat__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-on-surface) 25%, transparent);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    transition: background-color var(--duration-hover) var(--ease-gallery),
+                color var(--duration-hover) var(--ease-gallery),
+                border-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .ig-chat__btn:hover {
+    background: var(--color-on-surface);
+    color: var(--color-on-dark);
+    border-color: var(--color-on-surface);
+  }
+
+  .ig-chat__btn:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 2px;
+  }
+
+  .ig-chat__glyph {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+  }
+
+  /* Keep the label on one line — a two-line button label is a mobile tell. */
+  .ig-chat__label {
+    white-space: nowrap;
+  }
+
+  .ig-chat__arrow {
+    display: inline-block;
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .ig-chat__btn:hover .ig-chat__arrow {
+    transform: translateX(3px);
+  }
+
+  .ig-chat__note {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+    max-width: 38ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ig-chat__btn,
+    .ig-chat__arrow {
+      transition: none;
+    }
+  }
+</style>
