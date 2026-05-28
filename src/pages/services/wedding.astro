@@ -11,8 +11,7 @@ import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
 import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
 import GearStrip from '../../components/global/GearStrip.astro';
-import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
-import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
+import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
 import gearStripCard01 from '../../assets/images/portfolio/ayushi-parth/25.jpg';
 import gearStripCard04 from '../../assets/images/gear/04-wedding-override.jpg';
 import ctaImage from '../../assets/images/homepage/homepage-01.jpg';
@@ -286,8 +285,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <JourneyTimelineDesktop steps={weddingJourneySteps} />
-  <JourneyTimelineMobile steps={weddingJourneySteps} />
+  <JourneyTimeline steps={weddingJourneySteps} />
 
   <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
   <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">

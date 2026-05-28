@@ -3,8 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import Button from '../components/ui/Button.astro';
 import FinalCTA from '../components/global/FinalCTA.astro';
-import JourneyTimelineDesktop from '../components/services/JourneyTimelineDesktop.astro';
-import JourneyTimelineMobile from '../components/services/JourneyTimelineMobile.astro';
+import JourneyTimeline from '../components/services/JourneyTimeline.astro';
 import { Image } from 'astro:assets';
 
 import portraitImage from '../assets/images/about/akash-portrait.jpg';
@@ -188,13 +187,7 @@ const aboutJourneySteps = [
     </div>
   </section>
 
-  <JourneyTimelineDesktop
-    steps={aboutJourneySteps}
-    eyebrow="My Process"
-    title="How It Works"
-    intro="Four steps, no surprises. From the first message to the final gallery, here is exactly what to expect."
-  />
-  <JourneyTimelineMobile
+  <JourneyTimeline
     steps={aboutJourneySteps}
     eyebrow="My Process"
     title="How It Works"

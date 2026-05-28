@@ -1,0 +1,70 @@
+---
+// Single responsive Journey Timeline. One DOM for both layouts:
+//   - mobile: left-edge line, single column, content to the right of the line
+//   - desktop (>=768px): centered line, steps alternate right/left
+// Layout is pure CSS reflow (see global.css .journey-* rules); motion is one
+// gsap.matchMedia block (journey-timeline.ts). Replaces the old
+// JourneyTimelineDesktop + JourneyTimelineMobile pair (same `steps` contract).
+export interface JourneyStep {
+  label: string;
+  title: string;
+  body: string;
+  hint?: string;
+}
+
+interface Props {
+  steps: JourneyStep[];
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+}
+
+const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intro } = Astro.props;
+---
+
+<section
+  class="bg-background"
+  style="padding: var(--spacing-section) 0;"
+  data-journey-timeline
+>
+  <div class="container-editorial">
+    <div class="text-center mb-12 md:mb-16 reveal">
+      <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">{eyebrow}</p>
+      <h2 class="text-display-md">{title}</h2>
+      {intro && (
+        <p class="text-body-lg text-on-surface-variant mx-auto mt-6" style="max-width: 48ch;">{intro}</p>
+      )}
+    </div>
+
+    <div class="journey-track">
+      <div class="journey-line"></div>
+
+      {steps.map((step, i) => {
+        const isLast = i === steps.length - 1;
+        const side = i % 2 === 0 ? 'right' : 'left';
+        return (
+          <div
+            class={`journey-step ${isLast ? '' : 'journey-step--gap'}`}
+            data-step-index={i}
+            data-side={side}
+          >
+            <div class="journey-dot"></div>
+            <div class="journey-step-content">
+              <p class="journey-label text-label-sm text-on-surface-muted mb-2">{step.label}</p>
+              <h3 class="journey-title text-heading-lg font-serif">{step.title}</h3>
+              <p class="journey-body text-body-md text-on-surface-variant mt-3">{step.body}</p>
+              {step.hint && (
+                <p class="journey-hint text-label-sm text-on-surface-muted mt-3">{step.hint}</p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initJourneyTimeline } from '../../scripts/journey-timeline';
+  initJourneyTimeline();
+</script>

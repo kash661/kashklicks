@@ -1697,56 +1697,92 @@ input.flatpickr-input + input.form-field__input {
   }
 }
 
-/* Journey Timeline — GSAP scroll-linked line draw */
-
-/* Desktop variant — centered vertical line */
-.journey-line-desktop {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  background: var(--color-on-surface-muted);
-  transform: translateX(-50%);
-  transform-origin: top center;
-  /* CSS default = visible. GSAP overrides to scaleY(0) on init, then animates. */
+/* Journey Timeline — single responsive component, GSAP scroll-linked line draw.
+   Mobile-first: left-edge line, single column, content right of the line.
+   Desktop (>=768px): centered line, steps alternate right/left. */
+.journey-track {
+  position: relative;
 }
 
-/* Mobile variant — left-edge vertical line */
-.journey-line-mobile {
+/* Line — mobile default: left edge. transform-origin: top so GSAP scaleY draws
+   downward at both breakpoints (only the vertical origin matters for scaleY). */
+.journey-line {
   position: absolute;
   left: 14px;
   top: 0;
   width: 1px;
   height: 100%;
   background: var(--color-on-surface-muted);
-  transform-origin: top left;
+  transform-origin: top;
+  /* CSS default = visible. GSAP overrides to scaleY(0) on init, then animates. */
 }
 
-/* Shared dot */
+/* Dot — mobile default: on the left line. */
 .journey-dot {
   width: 10px;
   height: 10px;
   background: var(--color-primary);
   border: 2px solid var(--color-background);
   position: absolute;
+  left: 14px;
+  top: 8px;
+  transform: translateX(-50%);
   z-index: 1;
   /* CSS default = visible, full-scale. GSAP overrides to opacity 0, scale 0.4 on init. */
 }
 
-.journey-dot-desktop {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.journey-dot-mobile {
-  left: 14px;
-  transform: translateX(-50%);
-}
-
-/* Step content — CSS default = visible. GSAP overrides on init. */
+/* Step — mobile default: single column, content padded right of the line. */
 .journey-step {
   position: relative;
+}
+.journey-step--gap {
+  margin-bottom: 3rem; /* mb-12 */
+}
+.journey-step-content {
+  padding-left: 2rem;
+  text-align: left;
+  /* CSS default = visible. GSAP overrides opacity/x on init. */
+}
+
+/* Desktop: centered line + alternating sides. */
+@media (min-width: 768px) {
+  .journey-track {
+    max-width: 56rem; /* max-w-4xl */
+    margin-inline: auto;
+    padding: 0 1rem;
+  }
+  .journey-line {
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: top center;
+  }
+  .journey-dot {
+    left: 50%;
+  }
+  .journey-step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .journey-step--gap {
+    margin-bottom: 6rem; /* mb-24 */
+  }
+  .journey-step[data-side='right'] .journey-step-content {
+    grid-column: 2;
+    padding-left: 3rem;
+    text-align: left;
+  }
+  .journey-step[data-side='left'] .journey-step-content {
+    grid-column: 1;
+    padding-left: 0;
+    padding-right: 3rem;
+    text-align: right;
+  }
+  .journey-body {
+    max-width: 36ch;
+  }
+  .journey-step[data-side='left'] .journey-body {
+    margin-left: auto; /* right-align the 36ch block on left-side steps */
+  }
 }
 
 /* Scale-on-scroll: starts slightly smaller, JS adds .scaled */

@@ -7,8 +7,7 @@ import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
-import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
-import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
+import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
 import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
@@ -366,8 +365,7 @@ const preWeddingJourneySteps = [
     </div>
   </section>
 
-  <JourneyTimelineDesktop steps={preWeddingJourneySteps} />
-  <JourneyTimelineMobile steps={preWeddingJourneySteps} />
+  <JourneyTimeline steps={preWeddingJourneySteps} />
 
   <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
   <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">

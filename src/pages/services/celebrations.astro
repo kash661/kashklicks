@@ -11,8 +11,7 @@ import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
 import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
 import { Image } from 'astro:assets';
-import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
-import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
+import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
 
 import packages from '../../data/packages.json';
 import faqData from '../../data/faq.json';
@@ -264,8 +263,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <JourneyTimelineDesktop steps={celebrationsJourneySteps} />
-  <JourneyTimelineMobile steps={celebrationsJourneySteps} />
+  <JourneyTimeline steps={celebrationsJourneySteps} />
 
   <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
   <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">

@@ -6,8 +6,7 @@ import PackageAddOns from '../../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
-import JourneyTimelineDesktop from '../../components/services/JourneyTimelineDesktop.astro';
-import JourneyTimelineMobile from '../../components/services/JourneyTimelineMobile.astro';
+import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
 import ContactModal from '../../components/global/ContactModal.astro';
@@ -255,8 +254,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     </div>
   </section>
 
-  <JourneyTimelineDesktop steps={civilCeremonyJourneySteps} />
-  <JourneyTimelineMobile steps={civilCeremonyJourneySteps} />
+  <JourneyTimeline steps={civilCeremonyJourneySteps} />
 
   <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
   <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
