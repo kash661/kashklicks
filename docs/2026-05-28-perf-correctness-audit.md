@@ -5,6 +5,36 @@
 **Method:** 12 dimension finders → per-dimension adversarial verification (refute-by-default + completeness critic) → empirical build-metrics pass. 25 agents, 74 verified findings.
 **Build status:** clean — 84 pages, 3,693 image variants, 6.75s, exit 0, zero warnings.
 
+---
+
+## ⚙️ Implementation status (2026-05-28, branch `perf/audit-fixes-2026-05-28`)
+
+**Shipped & browser-verified** (2 commits, build clean, Playwright-checked: hero visible, GSAP pin inits on idle, facade click-to-load, flatpickr lazy-init, 0 console errors):
+
+| Fix | Status |
+|-----|--------|
+| #8 Lightbox 589MB → capped WebP (`getImage`) | ✅ ~90% lighter (1081kB→134kB sample) |
+| #9 YouTube click-to-load facade | ✅ 0 player JS until click; maxres→hqdefault poster fallback |
+| #4 GLightbox double-init + self-host CSS | ✅ removed `Lightbox.astro`, CSS lazy via BaseLayout |
+| #7 Homepage GSAP defer | ✅ entry chunk 114KB→4KB, GSAP now idle dynamic-import |
+| #5 intimate-wedding flatpickr lazy | ✅ idle/focus loader + idempotent re-init |
+| #6 + Theme A trailing-slash | ✅ `trailingSlash:'always'` + 12 card hrefs + chapters + canonicals + breadcrumbs + schema urls |
+| #2 Open form proxy | ✅ Origin allowlist + honeypot (worker + EOF client) + 8s timeout |
+| Worker hygiene | ✅ asset bypass, single-hop www+slash redirect, security headers + no-store, diag colo/country relabel |
+| P2 noindex LP in sitemap | ✅ excluded |
+
+**Blocked on you (can't fix from code):**
+- **#1 EOF Google Ads conversion fires null** — the code path is ready; you must create the LP conversion action in Google Ads and paste its `AW-18099849669/<label>` into `free-engagement-session-toronto.astro:1149` (replace `null`). Until then this paid LP reports 0 Google conversions.
+
+**Re-classified after verification:**
+- **#3 Splash reduced-motion** — *dormant, not live.* The splash is currently disabled (`index.astro:107 showSplash={false}` + `kk-splash-seen` pre-seeded). Fix the reduced-motion guard in `SplashOverlay`/`MobileSplashOverlay` **before** re-enabling the splash; not urgent while disabled.
+
+**Not yet done (P2/P3 backlog):** pixels idle-defer, b-cdn preconnect scope, LCP hero preload, oversized fallback `src`, og:image dimensions, location-guide meta-description length, nav `aria-expanded`/`role=menu`, ContactModal Escape focus return, dup desktop/mobile components, gear double-eager image, dev-page build exclusion, consent gate, prefetch activation, and the remaining P3 polish list below.
+
+**Note:** the YouTube facade logs one cosmetic `maxresdefault 404` in console for videos lacking a max-res thumbnail (then swaps to hqdefault) — inherent to the facade pattern, functionally fine.
+
+---
+
 **Headline verdict:** This is a well-engineered site. The critical-path fundamentals are right (AVIF/WebP images, font preloading, lazy glightbox, tree-shaken shared JS, correct caching headers, scoped CSP, clean secret hygiene, no dead internal links). There are **0 P0 (production-breaking) issues**. The real wins cluster in three themes: **(1) finish the lazy-loading job** (GSAP, flatpickr, glightbox, YouTube, pixels), **(2) fix a site-wide trailing-slash mismatch** that 301-redirects most internal clicks, and **(3) a few revenue/measurement bugs** (dead Google Ads conversion, open form proxy, oversized lightbox originals).
 
 ---
