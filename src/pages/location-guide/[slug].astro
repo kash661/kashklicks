@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import Button from '../../components/ui/Button.astro';
 import LocationCarousel from '../../components/ui/LocationCarousel.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import FinalCTA from '../../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 import locationsData from '../../data/locations.json';
@@ -83,13 +84,62 @@ const essentials = [
   { num: '04', label: 'Travel', ...travel },
   { num: '05', label: 'Season', head: loc.season.join(', '), rest: '' },
 ];
+
+// Location-specific FAQ, built from the same structured fields shown in
+// The Essentials, re-framed as Q&A so each guide emits a unique FAQPage
+// (the biggest schema gap on these pages). Every answer comes from real
+// location data; items with no source data are skipped. No fabrication.
+const oxford = (arr: string[]): string =>
+  arr.length <= 1 ? (arr[0] ?? '')
+  : arr.length === 2 ? `${arr[0]} and ${arr[1]}`
+  : `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
+
+const seasonAnswer = loc.season?.length
+  ? (loc.season.length === 1 && /year-round/i.test(loc.season[0])
+      ? `${loc.name} photographs well year-round.`
+      : `${loc.name} is at its best in ${oxford(loc.season)}.`)
+  : '';
+
+const travelRaw = (loc.travelTime ?? '').trim();
+const travelAnswer = travelRaw
+  ? (/min|hour/i.test(travelRaw)
+      ? `${loc.name} is about ${travelRaw.replace(/\s*from downtown/i, '').toLowerCase()} from downtown Toronto.`
+      : `${loc.name} is in ${travelRaw.toLowerCase()} Toronto.`)
+  : '';
+
+const walkAnswer = [
+  loc.walkingLevel ? `Walking is ${loc.walkingLevel.toLowerCase()}.` : '',
+  loc.walkingNote ?? '',
+].filter(Boolean).join(' ');
+
+const locationFaq = [
+  loc.permits && { question: `Do I need a permit to photograph at ${loc.name}?`, answer: loc.permits },
+  loc.parking && { question: `Where do we park at ${loc.name}?`, answer: loc.parking },
+  walkAnswer && { question: `How much walking is involved at ${loc.name}?`, answer: walkAnswer },
+  seasonAnswer && { question: `When is the best time of year for photos at ${loc.name}?`, answer: seasonAnswer },
+  travelAnswer && { question: `How far is ${loc.name} from downtown Toronto?`, answer: travelAnswer },
+].filter(Boolean) as { question: string; answer: string }[];
+
+const faqSchema = locationFaq.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: locationFaq.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      })),
+    }
+  : null;
+
+const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
 ---
 
 <BaseLayout
   title={`${loc.name}, Toronto Photography Location`}
   description={`Photography at ${loc.name} in ${loc.area}. ${loc.vibe}`}
   canonicalUrl={canonicalUrl}
-  jsonLd={[placeSchema]}
+  jsonLd={jsonLdBlocks}
 >
   <article>
     <!-- Intro -->
@@ -255,6 +305,22 @@ const essentials = [
         </div>
       </div>
     </section>
+
+    {locationFaq.length > 0 && (
+      <section class="container-editorial" style="padding: var(--spacing-section) 0;">
+        <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+          <div class="col-span-12 md:col-span-7 reveal">
+            <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Frequently Asked</p>
+            <h2 class="text-display-md font-serif">Shooting at {loc.name}.</h2>
+          </div>
+        </div>
+        <div class="grid-editorial">
+          <div class="col-span-12 md:col-span-10 md:col-start-2 reveal stagger-1">
+            <FAQAccordion items={locationFaq} />
+          </div>
+        </div>
+      </section>
+    )}
 
     <FinalCTA
       title={`Let's shoot at ${loc.name}.`}
