@@ -27,7 +27,7 @@ const schema = {
   '@type': 'ImageGallery',
   name: 'Toronto Pre-Wedding Photography Gallery, AD Photography',
   description: 'Pre-wedding and engagement photography portfolio in Toronto and the GTA by AD Photography.',
-  url: new URL('/portfolio/pre-weddings', Astro.site).href,
+  url: new URL('/portfolio/pre-weddings/', Astro.site).href,
   creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
   image: entries.map((entry) => ({
     '@type': 'ImageObject',
@@ -46,8 +46,8 @@ const schema = {
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Pre-Weddings', href: '/portfolio/pre-weddings' },
+      { label: 'Portfolio', href: '/portfolio/' },
+      { label: 'Pre-Weddings', href: '/portfolio/pre-weddings/' },
     ]} />
   </div>
 
@@ -111,7 +111,7 @@ const schema = {
     title="Plan your session."
     body="From location scouting to outfit guidance, I walk through every detail with you. Let's plan a session that feels like you."
     ctaLabel="Begin The Conversation"
-    ctaHref="/contact?service=pre-wedding"
+    ctaHref="/contact/?service=pre-wedding"
     background="background"
     image={ctaImage}
     imageAlt="Toronto pre-wedding couple portrait by AD Photography"

@@ -69,7 +69,7 @@ const gallerySchema = {
   '@type': 'ImageGallery',
   name: 'AD Photography Portfolio',
   description: 'Toronto wedding, pre-wedding, civil ceremony, and film portfolio by AD Photography.',
-  url: new URL('/portfolio', Astro.site).href,
+  url: new URL('/portfolio/', Astro.site).href,
   creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
   image: allEntries.map((entry) => ({
     '@type': 'ImageObject',
@@ -88,7 +88,7 @@ const gallerySchema = {
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Portfolio', href: '/portfolio/' },
     ]} />
   </div>
 

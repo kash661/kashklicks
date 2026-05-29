@@ -121,8 +121,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Services', href: '/services' },
-      { label: 'Civil Ceremony', href: '/services/civil-ceremony' },
+      { label: 'Services', href: '/services/' },
+      { label: 'Civil Ceremony', href: '/services/civil-ceremony/' },
     ]} />
   </div>
 
@@ -136,7 +136,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <div class="mt-8 flex justify-center reveal stagger-3">
           <ShareButton
             variant="labeled"
-            url="/services/civil-ceremony"
+            url="/services/civil-ceremony/"
             title="Toronto Civil Ceremony Photography, AD Photography"
             text="Intimate civil ceremony coverage from $500."
             label="Share"
@@ -313,7 +313,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     title="Let's capture your ceremony."
     body="Book a free consultation. No pressure, just a conversation about your vision."
     ctaLabel="Begin Your Journey"
-    ctaHref="/contact?service=civil-ceremony"
+    ctaHref="/contact/?service=civil-ceremony"
     image={ctaImage}
     imageAlt="Toronto civil ceremony couple portrait after vows by AD Photography"
     imageCaption="Begin Your Story"

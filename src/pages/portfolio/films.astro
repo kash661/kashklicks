@@ -30,7 +30,7 @@ const schema = {
   '@type': 'ImageGallery',
   name: 'Toronto Wedding Films, AD Photography',
   description: 'Cinematic wedding and pre-wedding films by AD Photography in Toronto and the GTA.',
-  url: new URL('/portfolio/films', Astro.site).href,
+  url: new URL('/portfolio/films/', Astro.site).href,
   creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
   image: entries.map((entry) => ({
     '@type': 'ImageObject',
@@ -49,8 +49,8 @@ const schema = {
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Films', href: '/portfolio/films' },
+      { label: 'Portfolio', href: '/portfolio/' },
+      { label: 'Films', href: '/portfolio/films/' },
     ]} />
   </div>
 
@@ -115,7 +115,7 @@ const schema = {
     title="Want a film of your story?"
     body="Films are offered as an add-on to my wedding and pre-wedding coverage. Let's talk about what your reel could look like."
     ctaLabel="Begin The Conversation"
-    ctaHref="/contact?service=film"
+    ctaHref="/contact/?service=film"
     background="background"
     image={ctaImage}
     imageAlt="Toronto wedding film still by AD Photography"

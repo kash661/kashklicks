@@ -114,8 +114,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Services', href: '/services' },
-      { label: 'Celebrations', href: '/services/celebrations' },
+      { label: 'Services', href: '/services/' },
+      { label: 'Celebrations', href: '/services/celebrations/' },
     ]} />
   </div>
 
@@ -133,7 +133,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           <div class="mt-8">
             <ShareButton
               variant="labeled"
-              url="/services/celebrations"
+              url="/services/celebrations/"
               title="Toronto Event Photography, AD Photography"
               text="Birthdays, bridal showers, and private events from $550."
               label="Share"
@@ -356,7 +356,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     title="Let's make it memorable."
     body="Book a free consultation. No pressure, just a conversation about your celebration."
     ctaLabel="Begin Your Journey"
-    ctaHref="/contact?service=celebrations"
+    ctaHref="/contact/?service=celebrations"
     background="background"
     image={ctaImage}
     imageAlt="Toronto celebration photography by AD Photography"

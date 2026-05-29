@@ -25,7 +25,7 @@ const schema = {
   '@type': 'ImageGallery',
   name: 'Toronto Wedding Photography Gallery, AD Photography',
   description: 'Wedding day photography portfolio in Toronto and the GTA by AD Photography.',
-  url: new URL('/portfolio/weddings', Astro.site).href,
+  url: new URL('/portfolio/weddings/', Astro.site).href,
   creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
   image: entries.map((entry) => ({
     '@type': 'ImageObject',
@@ -44,8 +44,8 @@ const schema = {
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Weddings', href: '/portfolio/weddings' },
+      { label: 'Portfolio', href: '/portfolio/' },
+      { label: 'Weddings', href: '/portfolio/weddings/' },
     ]} />
   </div>
 
@@ -109,7 +109,7 @@ const schema = {
     title="Reserve your date."
     body="Looking for wedding day coverage? Let's talk about your vision and find the right fit."
     ctaLabel="Begin The Conversation"
-    ctaHref="/contact?service=wedding"
+    ctaHref="/contact/?service=wedding"
     image={ctaImage}
     imageAlt="Toronto wedding couple portrait by AD Photography"
     imageCaption="A Full Day"

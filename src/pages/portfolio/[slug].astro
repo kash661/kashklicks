@@ -118,9 +118,9 @@ const remainingImages = galleryImages;
     <div class="container-editorial">
       <Breadcrumbs items={[
         { label: 'Home', href: '/' },
-        { label: 'Portfolio', href: '/portfolio' },
-        { label: categoryLabel, href: `/portfolio/${categorySlug}` },
-        { label: entry.couple, href: `/portfolio/${entry.slug ?? entry.id}` },
+        { label: 'Portfolio', href: '/portfolio/' },
+        { label: categoryLabel, href: `/portfolio/${categorySlug}/` },
+        { label: entry.couple, href: `/portfolio/${entry.slug ?? entry.id}/` },
       ]} />
 
       <figure class="gallery-plaque gallery-plaque--standalone reveal mt-[var(--spacing-block)]">

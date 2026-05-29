@@ -12,12 +12,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 // Mobile-only menu: fold "About" under "Resources" and drop the standalone About entry
 const mobileItems = navigation.items
-  .filter((item) => item.href !== '/about')
+  .filter((item) => item.href !== '/about/')
   .map((item) => {
     if (item.label === 'Resources') {
       return {
         ...item,
-        children: [...(item.children ?? []), { label: 'About', href: '/about' }],
+        children: [...(item.children ?? []), { label: 'About', href: '/about/' }],
       };
     }
     return item;

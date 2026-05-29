@@ -132,8 +132,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <div class="sr-only">
     <Breadcrumbs items={[
       { label: 'Home', href: '/' },
-      { label: 'Services', href: '/services' },
-      { label: 'Wedding', href: '/services/wedding' },
+      { label: 'Services', href: '/services/' },
+      { label: 'Wedding', href: '/services/wedding/' },
     ]} />
   </div>
 
@@ -153,7 +153,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <Button href="#packages" variant="primary">See Packages</Button>
             <ShareButton
               variant="icon"
-              url="/services/wedding"
+              url="/services/wedding/"
               title="Toronto Wedding Photography, AD Photography"
               text="Full-day and partial wedding coverage from $1,400."
               label="Share"
@@ -359,7 +359,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     title="Let's plan your day."
     body="Book a free consultation. No pressure, just a conversation about your vision."
     ctaLabel="Begin Your Journey"
-    ctaHref="/contact?service=wedding"
+    ctaHref="/contact/?service=wedding"
     background="background"
     image={ctaImage}
     imageAlt="Toronto wedding couple portrait by AD Photography"

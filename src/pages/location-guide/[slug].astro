@@ -60,8 +60,8 @@ const placeSchema = {
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Location Guide', href: '/location-guide' },
-  { label: loc.name, href: `/location-guide/${loc.id}` },
+  { label: 'Location Guide', href: '/location-guide/' },
+  { label: loc.name, href: `/location-guide/${loc.id}/` },
 ];
 
 // Split long detail strings into headline + supporting text
@@ -260,7 +260,7 @@ const essentials = [
       title={`Let's shoot at ${loc.name}.`}
       body="Let's talk about your vision and map the perfect session."
       ctaLabel="Start the Conversation"
-      ctaHref={`/contact?location=${loc.id}`}
+      ctaHref={`/contact/?location=${loc.id}`}
       background="background"
     />
   </article>
