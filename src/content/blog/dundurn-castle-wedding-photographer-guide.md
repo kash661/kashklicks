@@ -136,6 +136,8 @@ The house is a museum with restricted interior photography. Plan your session fo
 
 Dundurn Castle is one of the most architectural locations in the Hamilton area, grand and quiet and made for formal portraits. If you are planning a wedding or engagement session here and want a photographer who knows the estate and how to work the light, we would love to talk.
 
+Shooting elsewhere in the city? Here is how I approach a [Hamilton wedding](/wedding-photographer-hamilton/).
+
 [**View wedding and pre-wedding packages →**](/services/wedding/)
 
 Or [send a note about Dundurn Castle](/contact?venue=dundurn-castle) and tell us what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.

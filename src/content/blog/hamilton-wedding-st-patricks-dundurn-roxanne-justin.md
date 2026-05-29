@@ -11,7 +11,7 @@ draft: false
 
 We have been sitting with Roxanne and Justin's wedding for the past few days, and we wanted to share it because it is one of the cleanest examples of how a Hamilton wedding can use the city's two best photo venues in a single afternoon.
 
-The day moved across three locations that sit ten minutes apart from each other. A Gothic Revival cathedral on King Street East. A lakeside park along Hamilton Harbour. The Italianate grounds of Dundurn Castle. If you are planning a wedding in Hamilton and trying to picture what an actual day with this venue combination looks like, here it is.
+The day moved across three locations that sit ten minutes apart from each other. A Gothic Revival cathedral on King Street East. A lakeside park along Hamilton Harbour. The Italianate grounds of Dundurn Castle. If you are planning a wedding in Hamilton and trying to picture what an actual day with this venue combination looks like, here it is. If you are looking for a [Hamilton wedding photographer](/wedding-photographer-hamilton/), here is how I cover the city.
 
 ## St. Patrick's Catholic Parish, Hamilton
 

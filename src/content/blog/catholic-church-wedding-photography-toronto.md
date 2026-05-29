@@ -128,7 +128,7 @@ A short receiving line, 20 to 40 minutes of family photos at the church if allow
 
 ## Photograph your church wedding
 
-A Catholic church wedding deserves a photographer who understands its rhythm and its rules, and who can work within them quietly while still capturing the weight of the day. If you are planning a church wedding in the GTA or Hamilton, we would love to talk.
+A Catholic church wedding deserves a photographer who understands its rhythm and its rules, and who can work within them quietly while still capturing the weight of the day. If you are planning a church wedding in the GTA or Hamilton, we would love to talk. See more on how I shoot [Hamilton weddings](/wedding-photographer-hamilton/).
 
 [**View wedding photography packages →**](/services/wedding/)
 

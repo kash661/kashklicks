@@ -53,6 +53,10 @@ export default defineConfig({
         if (url === '/privacy' || url === '/terms') {
           return { ...item, priority: 0.3, changefreq: 'yearly' };
         }
+        // City landing pages (e.g. /wedding-photographer-hamilton/)
+        if (url.startsWith('/wedding-photographer-')) {
+          return { ...item, priority: 0.85, changefreq: 'monthly' };
+        }
         // Default: location guides and anything else
         return { ...item, priority: 0.7, changefreq: 'monthly' };
       },
