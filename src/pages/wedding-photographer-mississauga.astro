@@ -1,0 +1,294 @@
+---
+/*
+ * Hallmark · system-managed (defers to .claude/CLAUDE.md "Digital Curator")
+ * page: Mississauga wedding photographer (city landing) · reuses the validated city-page pattern (sibling of wedding-photographer-hamilton.astro)
+ * honest-copy: hero quote is the REAL Natalie + Shavar pullQuote from portfolio.json
+ * no fabricated metrics/testimonials · no em/en dashes · tokens + components reused
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import Button from '../components/ui/Button.astro';
+import FAQAccordion from '../components/ui/FAQAccordion.astro';
+import PortfolioFinalCTA from '../components/global/PortfolioFinalCTA.astro';
+import { Image } from 'astro:assets';
+import site from '../data/site.json';
+
+import heroImage from '../assets/images/portfolio/natalie-shavar/03.jpg';
+import whyImage from '../assets/images/portfolio/ayushi-parth-adamson/05.jpg';
+import preWeddingImage from '../assets/images/portfolio/ayushi-parth-adamson/12.jpg';
+
+const mississaugaVenues = [
+  { name: 'The Glenerin Inn', href: '/blog/glenerin-inn-wedding-photographer-guide/', note: 'A Tudor-style country hotel with stone, ivy, and warm low-lit interiors. The most natural home in the city for an intimate wedding that stays in one place all day.' },
+  { name: 'Adamson Estate', href: '/location-guide/adamson-estate/', note: 'A 1919 lakefront manor in Lakeview, with formal gardens, a long tree-lined drive, and Lake Ontario at the foot of the lawn. A permit venue that earns the paperwork.' },
+  { name: 'Lakeshore and Humber Bay', href: '/location-guide/humber-bay-arch-bridge/', note: 'The waterfront from Port Credit out to Humber Bay, where the Toronto skyline sits across open water and the light goes gold right at the end of the day.' },
+];
+
+const mississaugaFaq = [
+  { question: 'Do you travel to Mississauga for weddings?', answer: 'Yes. Mississauga is part of my regular GTA coverage and travel to the city is included in every wedding collection. There is no separate travel fee.' },
+  { question: 'What are the best wedding venues in Mississauga?', answer: 'The Glenerin Inn for an intimate Tudor-hotel wedding, Adamson Estate for lakefront heritage portraits, and the Port Credit to Lakeshore waterfront for open-water golden hour. Each has a full guide linked above.' },
+  { question: 'Do I need a permit to photograph at Adamson Estate?', answer: 'Yes. Adamson Estate is a City of Mississauga heritage site, so a professional photography permit is required. I help you arrange it during planning, well before the day, so nothing holds up the shoot.' },
+  { question: 'How much is a wedding photographer in Mississauga?', answer: 'Wedding collections start at $1,400 for focused coverage and scale to full-day storytelling at $3,800. Mississauga is priced the same as Toronto, with travel included. The full breakdown is on the wedding photography page.' },
+  { question: 'Do you shoot lakefront pre-wedding sessions in Mississauga?', answer: "Often. Adamson Estate, Jack Darling Park, and the Port Credit waterfront are some of the best golden-hour spots in the west GTA. Ayushi and Parth's session ran right through the Adamson grounds." },
+  { question: 'Can you cover a Glenerin Inn wedding?', answer: "Yes. I photographed Natalie and Shavar's wedding at the Glenerin Inn. A hotel that holds the whole day in one place suits the calm, candid way I work." },
+];
+
+const businessRef = { '@id': `${site.url}/#business` };
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Mississauga Wedding Photography',
+  description: 'Wedding photography in Mississauga by AD Photography. Coverage at the Glenerin Inn, Adamson Estate, and the Lakeshore waterfront, with travel from Toronto included.',
+  provider: businessRef,
+  areaServed: {
+    '@type': 'City',
+    name: 'Mississauga',
+    address: { '@type': 'PostalAddress', addressRegion: 'ON', addressCountry: 'CA' },
+  },
+  serviceType: 'Wedding Photography',
+  image: `${site.url}/og-default.jpg`,
+  url: `${site.url}/wedding-photographer-mississauga/`,
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: mississaugaFaq.map((q) => ({
+    '@type': 'Question',
+    name: q.question,
+    acceptedAnswer: { '@type': 'Answer', text: q.answer },
+  })),
+};
+
+const jsonLd = [serviceSchema, faqPageSchema];
+---
+
+<BaseLayout
+  title="Mississauga Wedding Photographer"
+  description="Mississauga wedding photographer covering the Glenerin Inn, Adamson Estate, and the Lakeshore waterfront. Real Mississauga weddings, transparent pricing, travel included."
+  jsonLd={jsonLd}
+>
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Mississauga Wedding Photographer', href: '/wedding-photographer-mississauga/' },
+    ]} />
+  </div>
+
+  <!-- ═══ HERO: real Mississauga couple quote + portrait ═══ -->
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="min-height: 80svh;">
+        <div class="col-span-12 md:col-span-5 reveal order-2 md:order-1">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Mississauga · Wedding Photography</p>
+          <blockquote class="text-display-md" style="max-width: 22ch;">
+            "I keep going back to the one where I'm walking and my veil is flying everywhere. I didn't even know you took that."
+          </blockquote>
+          <p class="text-label-md text-on-surface-variant mt-8">Natalie &amp; Shavar</p>
+          <p class="text-label-sm text-on-surface-muted">The Glenerin Inn and Spa, Mississauga</p>
+          <div class="mt-8 flex items-center gap-3 flex-wrap">
+            <Button href="#investment" variant="primary">See Investment</Button>
+            <Button href="/contact/?location=mississauga" variant="secondary">Start the Conversation</Button>
+          </div>
+        </div>
+        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2 order-1 md:order-2 mb-[var(--spacing-element)] md:mb-0">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={heroImage}
+              alt="Natalie and Shavar during their wedding at the Glenerin Inn in Mississauga, by AD Photography"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={75}
+              format="avif"
+              class="w-full h-full object-cover parallax-img"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Wedding</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">The Glenerin Inn, Mississauga</span>
+            </div>
+            <p class="gallery-plaque__title">Natalie <em>&amp;</em> Shavar</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHY MISSISSAUGA (carries the H1) ═══ -->
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
+          <Image
+            src={whyImage}
+            alt="Ayushi and Parth pre-wedding session in the gardens of Adamson Estate, Mississauga, by AD Photography"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Why Mississauga</p>
+          <h1 class="section-title char-reveal">Wedding photographer in <em>Mississauga.</em></h1>
+          <p class="section-deck text-on-surface-variant mt-8 measure-wide">
+            Mississauga is a lake city. The best of it sits along the water, from the heritage lawns of Adamson Estate in Lakeview to the Port Credit waterfront, with the Toronto skyline across the bay as a backdrop most cities would envy.
+          </p>
+          <p class="text-body-md text-on-surface-variant mt-5 measure-wide">
+            I shoot it candidly and cinematically, with light prompting over long posed set-ups. The waterfront gives soft open shade through the afternoon and a long, slow golden hour off the lake. The Glenerin Inn does the opposite, warm and contained, a whole wedding held under one roof. I plan the day around whichever light your venue gives.
+          </p>
+          <p class="text-body-md text-on-surface-variant mt-5 measure-wide">
+            Based in Toronto and a short drive from the west GTA, I cover Mississauga regularly, with travel included.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MISSISSAUGA VENUES ═══ -->
+  <section class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-7">
+          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">The Venues</p>
+          <h2 class="section-title reveal stagger-1">Where I shoot in <em>Mississauga.</em></h2>
+        </div>
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0">
+          <p class="section-deck text-on-surface-variant reveal stagger-2 measure-wide">
+            A short list I know well, from an intimate hotel wedding to lakefront heritage portraits.
+          </p>
+        </div>
+      </div>
+
+      <ul class="venue-list reveal stagger-2">
+        {mississaugaVenues.map((v) => (
+          <li class="venue-row">
+            <a href={v.href} class="venue-row__name text-heading-md font-serif cubic-ease" style="transition-duration: var(--duration-hover);">
+              {v.name}
+            </a>
+            <p class="venue-row__note text-body-md text-on-surface-variant measure-wide">{v.note}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ REAL MISSISSAUGA WORK (proof) ═══ -->
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="reveal" style="max-width: 60ch;">
+        <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Real Mississauga Work</p>
+        <h2 class="section-title">A wedding and a <em>love story.</em></h2>
+        <p class="section-deck text-on-surface-variant mt-8">
+          Natalie and Shavar married at the Glenerin Inn, the whole day held in one warm, candle-lit place. Ayushi and Parth ran their pre-wedding through the gardens and lakeshore of Adamson Estate. Two very different Mississauga days, the same quiet, candid approach.
+        </p>
+        <div class="mt-8 flex items-center gap-3 flex-wrap">
+          <Button href="/portfolio/natalie-shavar/" variant="primary">See the wedding</Button>
+          <Button href="/portfolio/ayushi-parth-adamson/" variant="secondary">See the love story</Button>
+        </div>
+      </div>
+
+      <div class="grid-editorial items-center mt-12">
+        <div class="col-span-12 lg:col-span-7 aspect-[16/10] overflow-hidden reveal hover-zoom">
+          <Image
+            src={preWeddingImage}
+            alt="Ayushi and Parth walking the tree-lined drive at Adamson Estate, Mississauga, by AD Photography"
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 1024px) 100vw, 58vw"
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-12 lg:col-span-4 lg:col-start-9 reveal stagger-2 mt-8 lg:mt-0">
+          <p class="text-quote italic text-on-surface-variant">Read the venue guides.</p>
+          <p class="text-body-md text-on-surface-variant mt-4 measure-wide">
+            Planning around a specific venue? There are full photographer's guides to the <a href="/blog/glenerin-inn-wedding-photographer-guide/" class="underline-link">Glenerin Inn</a> and <a href="/blog/adamson-estate-wedding-photography-guide/" class="underline-link">Adamson Estate</a>, with light, timing, and permit notes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ INVESTMENT (condensed, funnels to canonical service page) ═══ -->
+  <section id="investment" class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 lg:col-span-6 reveal">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Investment</p>
+          <h2 class="section-title">Mississauga wedding <em>collections.</em></h2>
+        </div>
+        <div class="col-span-12 lg:col-span-5 lg:col-start-8 reveal stagger-2 mt-6 lg:mt-0">
+          <p class="section-deck text-on-surface-variant measure-wide">
+            Wedding collections start at $1,400 for focused coverage and scale to full-day storytelling at $3,800. Mississauga is priced the same as Toronto, with travel to the city included. Every collection includes a pre-wedding consultation and a private online gallery.
+          </p>
+          <div class="mt-8">
+            <Button href="/services/wedding/" variant="primary">See the full packages</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ (Mississauga-specific, FAQPage schema) ═══ -->
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial max-w-3xl">
+      <div class="text-center mb-12 reveal">
+        <h2 class="text-heading-lg font-serif italic">Mississauga questions</h2>
+      </div>
+      <div class="reveal stagger-1">
+        <FAQAccordion items={mississaugaFaq} />
+      </div>
+    </div>
+  </section>
+
+  <PortfolioFinalCTA
+    title="Let's plan your Mississauga day."
+    body="Book a free consultation. No pressure, just a conversation about your venue, your timeline, and the light off the lake."
+    ctaLabel="Begin Your Journey"
+    ctaHref="/contact/?location=mississauga"
+    background="background"
+    image={heroImage}
+    imageAlt="Mississauga wedding couple portrait at the Glenerin Inn by AD Photography"
+    imageCaption="Begin Your Journey"
+  />
+</BaseLayout>
+
+<style>
+  .venue-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-block);
+  }
+  @media (min-width: 768px) {
+    .venue-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--spacing-block);
+    }
+  }
+  .venue-row__name {
+    display: inline-block;
+    color: var(--color-on-surface);
+  }
+  .venue-row__name:hover {
+    color: var(--color-primary);
+  }
+  .venue-row__note {
+    margin-top: 0.5rem;
+  }
+  .underline-link {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--color-on-surface);
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+  .underline-link:hover {
+    color: var(--color-primary);
+  }
+</style>

@@ -144,6 +144,8 @@ No. Photo access is part of your venue booking. Just confirm your photo window i
 
 The Glenerin Inn is one of the GTA's quietest, most cinematic estate venues, with a garden ceremony and a candlelit reception in one place. If you are planning your wedding here and want a photographer who knows the deck, the light, and the domed room, we would love to talk.
 
+Planning a Mississauga wedding? See how I cover the city on my [Mississauga wedding photographer](/wedding-photographer-mississauga/) page.
+
 [**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about The Glenerin Inn](/contact?venue=glenerin-inn) and tell us what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.
