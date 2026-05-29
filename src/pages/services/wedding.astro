@@ -13,7 +13,6 @@ import BookingNote from '../../components/global/BookingNote.astro';
 import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
 import GearStrip from '../../components/global/GearStrip.astro';
 import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
-import PackageComparison from '../../components/services/PackageComparison.astro';
 import gearStripCard01 from '../../assets/images/portfolio/ayushi-parth/25.jpg';
 import gearStripCard04 from '../../assets/images/gear/04-wedding-override.jpg';
 import ctaImage from '../../assets/images/homepage/homepage-01.jpg';
@@ -246,8 +245,6 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           </p>
         </div>
       </div>
-
-      <PackageComparison packages={weddingPackages} class="reveal" />
 
       <div class="pricing-grid reveal stagger-3">
         {weddingPackages.map((pkg, i) => (
