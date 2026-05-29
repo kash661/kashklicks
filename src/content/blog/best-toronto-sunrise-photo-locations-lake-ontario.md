@@ -2,7 +2,7 @@
 title: "5 Best Sunrise Photo Shoot Locations Along Lake Ontario"
 description: "Where to chase first light around the GTA. Five east-facing Lake Ontario spots from Scarborough Bluffs to Paletta Mansion that we love for sunrise sessions."
 publishDate: 2026-05-25
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/locations/adamson-estate.jpg"
 coverImageAlt: "Sunrise over Lake Ontario at Adamson Estate, Mississauga heritage mansion grounds glowing in first light, by AD Photography"
 tags: ["Locations", "Sunrise", "Toronto", "GTA", "Lake Ontario"]

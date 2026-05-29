@@ -2,7 +2,7 @@
 title: "The Glenerin Inn Wedding Guide, Mississauga"
 description: "Considering The Glenerin Inn for your wedding? A photographer's look inside the stone estate in Mississauga: the ceremony deck, the domed room, and best light."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/natalie-shavar/08.jpg"
 coverImageAlt: "An outdoor wedding ceremony on the deck at The Glenerin Inn, Mississauga, under a canopy of tall maples in September light, by AD Photography"
 tags: ["Venue Guide", "Glenerin Inn", "Mississauga", "Wedding"]
@@ -144,6 +144,6 @@ No. Photo access is part of your venue booking. Just confirm your photo window i
 
 The Glenerin Inn is one of the GTA's quietest, most cinematic estate venues, with a garden ceremony and a candlelit reception in one place. If you are planning your wedding here and want a photographer who knows the deck, the light, and the domed room, we would love to talk.
 
-[**View wedding photography packages →**](/services)
+[**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about The Glenerin Inn](/contact?venue=glenerin-inn) and tell us what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.

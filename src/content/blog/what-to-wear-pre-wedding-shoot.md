@@ -2,7 +2,7 @@
 title: "What to Wear to Your Pre-Wedding Photo Shoot"
 description: "Not sure what to wear for your engagement or pre-wedding session? Here's our practical guide to choosing outfits that photograph beautifully."
 publishDate: 2025-02-20
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/alex-aziz/17.jpg"
 coverImageAlt: "Alex and Aziz pre-wedding styling landscape frame by AD Photography, coordinated outfits in Toronto"
 tags: ["Tips", "Pre-Wedding", "Style"]

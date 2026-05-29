@@ -9,7 +9,7 @@ const blog = defineCollection({
       description: z.string(),
       publishDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
-      author: z.string().default('AD'),
+      author: z.string().default('Akash Desai'),
       coverImage: image(),
       coverImageAlt: z.string(),
       tags: z.array(z.string()).default([]),

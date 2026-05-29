@@ -2,7 +2,7 @@
 title: "Aera Toronto Wedding Guide: A Photographer's Look"
 description: "Considering Aera Toronto for your wedding? A photographer's look inside the 38th-floor venue, best photo spots, light, and what couples should plan for."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/grace-giovanni/02.jpg"
 coverImageAlt: "Aera Toronto wedding venue interior on the 38th floor of CIBC Square, floor-to-ceiling skyline windows and cloud-painted ceiling, by AD Photography"
 tags: ["Venue Guide", "Aera Toronto", "Downtown Toronto", "Wedding"]
@@ -186,7 +186,7 @@ If you want to add an outdoor portrait stretch, the [TD Centre and surrounding F
 
 Aera is one of the most quietly cinematic wedding venues in downtown Toronto. If you're planning a wedding here and want a photographer who already knows the room, the light cycle, and the corners that work, we'd love to talk.
 
-[**View wedding photography packages →**](/services)
+[**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about Aera Toronto](/contact?venue=aera-toronto) and tell us what you're planning. We always start with a conversation about the day, the family, and the moments that matter most.
 

@@ -2,7 +2,7 @@
 title: "6 Best Pre-Wedding Photography Locations in Toronto"
 description: "Planning a pre-wedding or engagement shoot in Toronto? Here are our top 6 tried-and-tested locations for stunning photos, with tips on timing, parking, and what to expect."
 publishDate: 2025-03-15
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/ayushi-parth/01.jpg"
 coverImageAlt: "Ayushi and Parth pre-wedding shoot at a Toronto location, wide cinematic landscape by AD Photography"
 tags: ["Locations", "Pre-Wedding", "Toronto"]

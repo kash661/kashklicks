@@ -2,7 +2,7 @@
 title: "Catholic Church Wedding Photography: What to Expect"
 description: "A Catholic church wedding has its own rhythm and rules. A photographer's honest guide to flash, timing, the Mass, and how a church ceremony photographs."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/roxanne-justin/03.jpg"
 coverImageAlt: "The interior of St. Patrick's Catholic Parish in Hamilton, painted starry vault and gilded altar, light through the rose window, by AD Photography"
 tags: ["Wedding", "Church Wedding", "Catholic Wedding", "Hamilton", "Toronto"]
@@ -130,6 +130,6 @@ A short receiving line, 20 to 40 minutes of family photos at the church if allow
 
 A Catholic church wedding deserves a photographer who understands its rhythm and its rules, and who can work within them quietly while still capturing the weight of the day. If you are planning a church wedding in the GTA or Hamilton, we would love to talk.
 
-[**View wedding photography packages →**](/services)
+[**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about your church wedding](/contact?venue=church-wedding) and tell us your parish and your date. We always start with a conversation about the day, the people, and the moments that matter most.

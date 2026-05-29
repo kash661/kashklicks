@@ -2,7 +2,7 @@
 title: "What a Toronto Wedding Photographer Costs, and What Changes the Price"
 description: "An honest 2026 breakdown of what a wedding photographer costs in Toronto, from City Hall coverage to a full day, what drives the price, and what we charge."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/natalie-shavar/03.jpg"
 coverImageAlt: "An estate wedding ceremony under old maples at The Glenerin Inn near Toronto, soft September light, by AD Photography"
 tags: ["Pricing", "Wedding", "Toronto", "Civil Ceremony", "Intimate Wedding"]
@@ -96,7 +96,7 @@ Every package includes the edited high-resolution gallery, delivered properly.
 
 Two things make our pricing work the way it does. First, we shoot solo by design. One photographer, one consistent eye on your whole day, no rotating crew and no second-shooter upsell unless you genuinely need it. Second, we keep the pricing transparent, because the alternative is a market that hides the number until you are emotionally committed, and we would rather just tell you.
 
-See the current packages on our [services page](/services). If you are weighing a smaller wedding, our guides to a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide) and an [intimate backyard wedding](/blog/intimate-backyard-wedding-toronto) show what those days actually look like.
+See the current packages on our [services page](/services/wedding/). If you are weighing a smaller wedding, our guides to a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide) and an [intimate backyard wedding](/blog/intimate-backyard-wedding-toronto) show what those days actually look like. If an intimate wedding is what you are picturing, here is [how we shoot intimate Toronto weddings](/intimate-wedding-toronto/).
 
 ## Frequently asked questions
 
@@ -124,6 +124,6 @@ To get you on a call first. We list ours openly instead.
 
 If you want a clear number and a photographer who tells you what things cost up front, you are in the right place. Tell us your date and what you are planning, and we will point you to the coverage that fits.
 
-[**View wedding photography packages →**](/services)
+[**View wedding photography packages →**](/services/wedding/)
 
 Or [send us a note](/contact) and we will start with a real conversation about the day, the people, and the moments that matter most.

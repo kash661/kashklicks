@@ -2,7 +2,7 @@
 title: "From St. Patrick's to Dundurn Castle: A Real Hamilton Wedding"
 description: "Roxanne and Justin's Hamilton wedding moved from a Gothic Revival cathedral on King Street East to the Italianate grounds of Dundurn Castle. Inside the venues, the light, and the day."
 publishDate: 2026-05-25
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/roxanne-justin/21.jpg"
 coverImageAlt: "Roxanne and Justin embrace on the church steps of St. Patrick's Catholic Parish in Hamilton while family clap and cheer around them, featured by AD Photography"
 tags: ["Real Wedding", "St. Patrick's Parish", "Dundurn Castle", "Venues", "Hamilton", "Wedding"]

@@ -2,7 +2,7 @@
 title: "University of Toronto Engagement Photos: A Location Guide"
 description: "Planning engagement photos at the University of Toronto? A photographer's guide to Knox College, UC, and King's College Circle, the best light, and seasons."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/priyanka-saurav/02.jpg"
 coverImageAlt: "A couple under the Gothic stone arches of Knox College at the University of Toronto in autumn light, by AD Photography"
 tags: ["Photo Location", "University of Toronto", "Engagement", "Pre-Wedding", "Toronto"]
@@ -132,6 +132,6 @@ October for autumn colour, spring for warm light through the arches. Strong year
 
 The U of T campus is one of Toronto's most timeless backdrops, and we know the route, the light, and how to handle the permit so the day runs smoothly. If you are planning an engagement or pre-wedding session here, we would love to talk.
 
-[**View pre-wedding and wedding packages →**](/services)
+[**View pre-wedding and wedding packages →**](/services/pre-wedding/)
 
 Or [send a note about a U of T session](/contact?venue=university-of-toronto) and tell us what you are planning. We always start with a conversation about the shoot, the looks, and the frames you are hoping for.

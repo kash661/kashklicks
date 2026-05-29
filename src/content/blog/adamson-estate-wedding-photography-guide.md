@@ -2,7 +2,7 @@
 title: "Adamson Estate Wedding Photography Guide, Mississauga"
 description: "Planning a wedding or engagement shoot at Adamson Estate? Inside the lakefront Mississauga venue: best photo spots, light timing, what couples should know."
 publishDate: 2026-05-25
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/ayushi-parth-adamson/02.jpg"
 coverImageAlt: "Adamson Estate's 1919 stone manor and lakefront grounds in Mississauga, late afternoon golden light, by AD Photography"
 tags: ["Venue Guide", "Adamson Estate", "Mississauga", "Wedding"]
@@ -152,7 +152,7 @@ Stand on the back lawn with the manor behind you and the lake at the far edge of
 
 **How much does a photography session at Adamson Estate cost?**
 
-The venue itself is free for personal use. A commercial photography permit for a professional or wedding shoot is required and the fee is set by the City of Mississauga. Call 905-615-4100 to confirm current rates. Our own pre-wedding packages start at a fixed rate that includes the session and the edited gallery. See our [services page](/services) for current options.
+The venue itself is free for personal use. A commercial photography permit for a professional or wedding shoot is required and the fee is set by the City of Mississauga. Call 905-615-4100 to confirm current rates. Our own pre-wedding packages start at a fixed rate that includes the session and the edited gallery. See our [services page](/services/pre-wedding/) for current options.
 
 **Can we get married at Adamson Estate?**
 
@@ -178,6 +178,6 @@ If you want to add a second location to the same day, we love [the Toronto water
 
 Adamson is one of the GTA's quietest, most cinematic venues for a pre-wedding session, a small ceremony, or a portrait series. If you've been planning a session here and want a photographer who already knows the grounds, the light, and the corners that work, we'd love to talk.
 
-[**View wedding photography packages →**](/services)
+[**View pre-wedding packages →**](/services/pre-wedding/)
 
 Or [send a note about Adamson Estate](/contact?venue=adamson-estate) and tell us what you're planning. We always start with a conversation about the day, the family, and the moments that matter most.

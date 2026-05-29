@@ -2,7 +2,7 @@
 title: "RC Harris Engagement Photos: A Toronto Location Guide"
 description: "Planning engagement or pre-wedding photos at RC Harris? A photographer's guide to Toronto's Art Deco waterworks: best spots, light, seasons, and access."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/manisha-harish/02.jpg"
 coverImageAlt: "A couple in front of the Art Deco limestone towers of the RC Harris Water Treatment Plant on the Toronto lakeshore, by AD Photography"
 tags: ["Photo Location", "RC Harris", "Scarborough", "Engagement", "Pre-Wedding"]
@@ -158,6 +158,6 @@ No. It is an active water facility. All portraits happen on the exterior grounds
 
 RC Harris is one of Toronto's most cinematic locations, and one of the few that rewards you in every season. If you are planning an engagement or pre-wedding session here and want a photographer who already knows the staircases, the light, and the corners that work, we would love to talk.
 
-[**View pre-wedding and wedding packages →**](/services)
+[**View pre-wedding and wedding packages →**](/services/pre-wedding/)
 
 Or [send a note about RC Harris](/contact?venue=rc-harris) and tell us what you are planning. We always start with a conversation about the shoot, the looks, and the kind of frames you are hoping for.

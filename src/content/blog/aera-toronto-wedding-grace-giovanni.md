@@ -2,7 +2,7 @@
 title: "An Italian Night, 38 Floors Up: A Real Wedding at Aera Toronto"
 description: "Grace and Giovanni's Italian wedding at Aera Toronto, 38 floors above downtown. Why this skyline venue works for intimate, cinematic Toronto weddings."
 publishDate: 2026-05-25
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/grace-giovanni/27.jpg"
 coverImageAlt: "Grace and Giovanni's wedding toast at Aera Toronto, long Italian dinner table glowing under candlelight on the 38th floor of CIBC Square, by AD Photography"
 tags: ["Real Wedding", "Aera Toronto", "Venues", "Toronto", "Italian Wedding"]

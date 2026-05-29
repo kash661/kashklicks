@@ -2,7 +2,7 @@
 title: "Backyard Wedding in Toronto: A Photographer's Real-Day Guide"
 description: "Planning an intimate backyard wedding in Toronto? A real summer day at a family home, plus what to know about tents, noise, neighbours, and timing."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/nora-ali/02.jpg"
 coverImageAlt: "A backyard wedding at a Toronto family home, cedar fence strung with warm bulbs and a gazebo ceremony canopy at golden hour, by AD Photography"
 tags: ["Real Wedding", "Backyard Wedding", "Intimate Wedding", "Toronto", "Wedding"]
@@ -94,9 +94,9 @@ We build the whole timeline backward from sunset. Tell us your date and we will 
 
 ## What a backyard wedding costs to photograph
 
-A backyard wedding is an intimate wedding, and intimate weddings do not need ten hours of coverage. Most of our backyard couples book a half-day, enough to cover the ceremony, the golden-hour portraits, and the first part of the evening. That keeps the photography budget sensible without missing anything that matters.
+A backyard wedding is an [intimate wedding](/intimate-wedding-toronto/), and intimate weddings do not need ten hours of coverage. Most of our backyard couples book a half-day, enough to cover the ceremony, the golden-hour portraits, and the first part of the evening. That keeps the photography budget sensible without missing anything that matters.
 
-We have written a full, honest breakdown of GTA wedding pricing, including what drives the number up and what we charge, here: [what an intimate Toronto wedding costs](/intimate-toronto-wedding-photography-cost).
+We have written a full, honest breakdown of GTA wedding pricing, including what drives the number up and what we charge, here: [what an intimate Toronto wedding costs](/blog/intimate-toronto-wedding-photography-cost/).
 
 ## Who a backyard wedding is right for
 
@@ -134,6 +134,6 @@ Start the ceremony two to three hours before sunset. Soft light for vows, golden
 
 A backyard wedding is small, warm, and completely yours, and it is one of the most beautiful days a photographer can shoot. If you are planning one in the GTA and want someone who will stay close and quiet and let the evening unfold, we would love to talk.
 
-[**View wedding photography packages →**](/services)
+[**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about your backyard wedding](/contact?venue=backyard-toronto) and tell us your date and what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.

@@ -2,7 +2,7 @@
 title: "Toronto City Hall Wedding: A Photographer's Guide"
 description: "Getting married at Toronto City Hall? A photographer's guide to how the civil ceremony works, what it costs, and where to take portraits right after."
 publishDate: 2026-05-28
-author: "AD"
+author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/anushka-anthony/03.jpg"
 coverImageAlt: "A couple on Nathan Phillips Square after their Toronto City Hall wedding, the curved towers of New City Hall rising behind them, by AD Photography"
 tags: ["Venue Guide", "Toronto City Hall", "Civil Ceremony", "Downtown Toronto", "Wedding"]
@@ -162,7 +162,7 @@ If a church or a heritage estate is more your speed, that is a different day. Yo
 
 **How much does it cost to get married at Toronto City Hall?**
 
-Budget for two separate fees. An Ontario marriage licence is around $160 and is valid for 90 days. The civil ceremony in the Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on toronto.ca before you book. Our Civil Ceremony coverage is a separate fixed package that includes the ceremony and the portraits afterward. See our [services page](/services) for current options.
+Budget for two separate fees. An Ontario marriage licence is around $160 and is valid for 90 days. The civil ceremony in the Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on toronto.ca before you book. Our Civil Ceremony coverage is a separate fixed package that includes the ceremony and the portraits afterward. See our [services page](/services/civil-ceremony/) for current options.
 
 **Is the ceremony at Old City Hall or New City Hall?**
 
@@ -188,6 +188,6 @@ A tight loop: Nathan Phillips Square, then Old City Hall's sandstone facade, the
 
 A City Hall wedding is small, fast, and completely real, and the downtown core gives it more beautiful backdrops than almost any venue in the city. If you are planning a ceremony here and want a photographer who already knows the chamber, the loop, and the light, we would love to talk.
 
-[**View wedding photography packages →**](/services)
+[**View wedding photography packages →**](/services/civil-ceremony/)
 
 Or [send a note about your City Hall wedding](/contact?venue=toronto-city-hall) and tell us your date and what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.
