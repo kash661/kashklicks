@@ -82,7 +82,11 @@
       "architecture",
       "heritage",
       "south-asian"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/toronto-city-hall-wedding-photographer-guide/",
+      "title": "Toronto City Hall Wedding: A Photographer's Guide"
+    }
   },
   {
     "id": "shuba-rob",
@@ -119,7 +123,11 @@
       "lakefront",
       "south-asian",
       "art-deco"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/rc-harris-engagement-photos-toronto/",
+      "title": "RC Harris Engagement Photos: A Toronto Location Guide"
+    }
   },
   {
     "id": "alex-aziz",
@@ -270,7 +278,11 @@
       "architecture",
       "campus",
       "autumn"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/university-of-toronto-engagement-photos/",
+      "title": "University of Toronto Engagement Photos: A Location Guide"
+    }
   },
   {
     "id": "meghna-puneeth",
@@ -384,7 +396,11 @@
       "fairy-lights",
       "south-asian",
       "convertible"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/rc-harris-engagement-photos-toronto/",
+      "title": "RC Harris Engagement Photos: A Toronto Location Guide"
+    }
   },
   {
     "id": "winter-special",
@@ -456,7 +472,11 @@
       "south-asian",
       "editorial",
       "lakefront"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/rc-harris-engagement-photos-toronto/",
+      "title": "RC Harris Engagement Photos: A Toronto Location Guide"
+    }
   },
   {
     "id": "swati-geevan",
@@ -495,7 +515,11 @@
       "skyline",
       "south-asian",
       "spring"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/university-of-toronto-engagement-photos/",
+      "title": "University of Toronto Engagement Photos: A Location Guide"
+    }
   },
   {
     "id": "mania-hitesh",
@@ -538,7 +562,11 @@
       "art-deco",
       "south-asian",
       "editorial"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/rc-harris-engagement-photos-toronto/",
+      "title": "RC Harris Engagement Photos: A Toronto Location Guide"
+    }
   },
   {
     "id": "natalie-shavar",
@@ -612,7 +640,11 @@
       "heritage-inn",
       "late-summer",
       "reception"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/glenerin-inn-wedding-photographer-guide/",
+      "title": "The Glenerin Inn Wedding Guide, Mississauga"
+    }
   },
   {
     "id": "anushka-anthony",
@@ -669,7 +701,11 @@
       "playful",
       "daytime",
       "architecture"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/toronto-city-hall-wedding-photographer-guide/",
+      "title": "Toronto City Hall Wedding: A Photographer's Guide"
+    }
   },
   {
     "id": "preet-roxana",
@@ -716,7 +752,11 @@
       "editorial",
       "tuxedo-dog",
       "heart-balloons"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/university-of-toronto-engagement-photos/",
+      "title": "University of Toronto Engagement Photos: A Location Guide"
+    }
   },
   {
     "id": "mitali-purv",
@@ -836,7 +876,11 @@
       "string-lights",
       "evening",
       "candlelit"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/intimate-backyard-wedding-toronto/",
+      "title": "Backyard Wedding in Toronto: A Photographer's Real-Day Guide"
+    }
   },
   {
     "id": "raman-manpreet",
@@ -920,7 +964,11 @@
       "art-deco",
       "editorial",
       "downtown"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/rc-harris-engagement-photos-toronto/",
+      "title": "RC Harris Engagement Photos: A Toronto Location Guide"
+    }
   },
   {
     "id": "vikrant-sahib",
@@ -966,7 +1014,11 @@
       "heritage",
       "south-asian",
       "candid"
-    ]
+    ],
+    "blogGuide": {
+      "url": "/blog/dundurn-castle-wedding-photographer-guide/",
+      "title": "Dundurn Castle Wedding Photos: A Hamilton Location Guide"
+    }
   },
   {
     "id": "ayushi-parth-adamson",
@@ -1199,7 +1251,11 @@
       "candid",
       "multicultural"
     ],
-    "metaDescription": "Wedding photography of Roxanne and Justin at St. Patrick's Catholic Parish and Dundurn Castle in Hamilton. View the full gallery curated by KashKlicks Studios."
+    "metaDescription": "Wedding photography of Roxanne and Justin at St. Patrick's Catholic Parish and Dundurn Castle in Hamilton. View the full gallery curated by KashKlicks Studios.",
+    "blogGuide": {
+      "url": "/blog/catholic-church-wedding-photography-toronto/",
+      "title": "Catholic Church Wedding Photography: What to Expect"
+    }
   },
   {
     "id": "harsh-bhayva",

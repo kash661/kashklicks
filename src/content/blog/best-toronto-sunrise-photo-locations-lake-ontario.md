@@ -57,6 +57,8 @@ The [Humber Bay Arch Bridge](/location-guide/humber-bay-arch-bridge) is a short 
 
 **Vibe:** Heritage mansion, lakefront lawn, Mississauga hush
 
+![A couple on the lakefront lawn at Adamson Estate looking out over Lake Ontario beneath a soft dawn sky, by AD Photography](../../assets/images/portfolio/ayushi-parth-adamson/06.jpg)
+
 [Adamson Estate](/location-guide/adamson-estate) is one of our quietest discoveries. The grounds run right to the edge of Lake Ontario in Mississauga's Lakeview neighbourhood, and the historic mansion sits set back behind a long lawn that opens straight onto the water. At sunrise the lawn fills with sidelight coming in from the east, and the mansion's east-facing wing warms up a few minutes later. We usually shoot the lake side first and the architecture second.
 
 **Best time to shoot:** From first light through about thirty minutes after sunrise. The lawn glows, then the mansion glows, then the light flattens out.

@@ -17,6 +17,8 @@ After years of shooting across Toronto and the GTA, here are our absolute favour
 
 **Vibe:** Cinematic, romantic, Art Deco architecture meets waterfront
 
+![A couple at the Art Deco limestone tower of RC Harris on the Toronto lakeshore, by AD Photography](../../assets/images/locations-gallery/rc-harris/04.jpg)
+
 This Scarborough landmark is one of the most stunning photography locations in all of Toronto. The combination of grand Art Deco architecture and Lake Ontario views creates a dramatic, almost European feel that photographs beautifully.
 
 **Best time to shoot:** Late afternoon for golden hour light hitting the building's facade. The waterfront side catches sunset perfectly.
@@ -29,6 +31,8 @@ This Scarborough landmark is one of the most stunning photography locations in a
 
 **Vibe:** Whimsical, romantic, garden meets city
 
+![A couple in the Toronto Music Garden with the harbourfront and city skyline behind them, by AD Photography](../../assets/images/locations-gallery/music-garden/05.jpg)
+
 Nestled along the Harbourfront, the Music Garden is a hidden gem that offers incredible variety in a small area. From winding garden paths to open waterfront views, you can get a dozen different looks without walking far.
 
 **Best time to shoot:** Early morning on weekdays for fewer crowds. Weekend mornings work too, but expect visitors by 10am.
@@ -38,6 +42,8 @@ Nestled along the Harbourfront, the Music Garden is a hidden gem that offers inc
 ## 3. Guild Park & Gardens
 
 **Vibe:** Fairytale, historic ruins, romantic gardens
+
+![A couple among the classical stone columns and architectural ruins of Guild Park & Gardens in Scarborough, by AD Photography](../../assets/images/locations-gallery/guild-park/00.jpg)
 
 Guild Park feels like stepping into another world. The scattered architectural ruins from demolished Toronto buildings create a one-of-a-kind backdrop that looks like a European destination, right here in Scarborough.
 
@@ -59,6 +65,8 @@ If you want that "destination beach" feel without leaving Toronto, the Bluffs de
 
 **Vibe:** Classic, historic, European-inspired academia
 
+![A couple on the University of Toronto's St. George campus, Convocation Hall and the city skyline beyond, by AD Photography](../../assets/images/locations-gallery/uoft/09.jpg)
+
 UofT's St. George campus is arguably the most versatile location on this list. Gothic stone buildings, ivy-covered walls, modern architecture, and quiet courtyards all within walking distance of each other.
 
 **Best time to shoot:** Weekends when campus is quieter. Late afternoon light through the stone archways is gorgeous.
@@ -68,6 +76,8 @@ UofT's St. George campus is arguably the most versatile location on this list. G
 ## 6. TD Dominion Centre / King Street
 
 **Vibe:** Urban, modern, cinematic street photography
+
+![A couple crossing King Street West past a passing streetcar in Toronto's financial district, by AD Photography](../../assets/images/locations-gallery/td-centre/10.jpg)
 
 For couples who love the city, downtown Toronto's financial district offers sleek, modern backdrops that photograph beautifully, especially at night. The Mies van der Rohe-designed TD towers are iconic.
 

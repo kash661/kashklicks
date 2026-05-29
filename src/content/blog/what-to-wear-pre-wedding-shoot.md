@@ -67,6 +67,8 @@ Traditional South Asian outfits photograph *beautifully*. The colours, the drapi
 - Lenghas, sarees, and sherwanis create gorgeous movement and drama
 - Plan extra time for traditional outfit changes since they take longer
 
+![A couple in coordinated wedding attire, a teal lehenga with silver detailing paired with a cream outfit, at a Toronto pre-wedding shoot, by AD Photography](../../assets/images/portfolio/winter-special/04.jpg)
+
 ## Our Role
 
 Don't stress too much about this. During your consultation, we'll chat about your location, the vibe you're going for, and help you narrow down outfit ideas. We want you to show up feeling excited and confident. We handle the rest.
