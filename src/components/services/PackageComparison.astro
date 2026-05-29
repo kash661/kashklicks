@@ -108,13 +108,14 @@ const rows = [
     border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
   }
 
-  /* Recommended column: faint tonal tint + a 2px top rule. No colour, no pill. */
+  /* Recommended column lifts as a lighter (white) column against the
+     surface-dim section, plus a 2px top rule. No colour, no pill. */
   .pkg-compare__head.is-popular {
-    background: var(--color-surface-dim);
+    background: var(--color-surface);
     box-shadow: inset 0 2px 0 0 var(--color-on-surface);
   }
   .pkg-compare__cell.is-popular {
-    background: var(--color-surface-dim);
+    background: var(--color-surface);
   }
 
   .pkg-compare__flag {
