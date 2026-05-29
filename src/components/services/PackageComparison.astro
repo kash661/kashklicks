@@ -1,0 +1,167 @@
+---
+/**
+ * PackageComparison
+ * -----------------
+ * At-a-glance side-by-side comparison of a service's tiers. Renders at
+ * >=768px only; on mobile the stacked PricingCards already carry the same
+ * data (no value in cramming a 3-column table into 320px). All values come
+ * from packages.json (single source) — no hardcoded numbers, no fabricated
+ * rows. The shared "engagement session" value is stated once as a footnote
+ * rather than as an identical-across-columns row.
+ *
+ * Semantic <table> for accessibility; borderless with hairline row rules per
+ * the Digital Curator system (0px radius, no full-box border, no gold).
+ */
+interface Pkg {
+  id: string;
+  name: string;
+  price: number | null;
+  salePrice?: number | null;
+  currency?: string;
+  duration?: string;
+  photos?: string;
+  popular?: boolean;
+}
+
+interface Props {
+  packages: Pkg[];
+  /** Rows to show, in order. Each pulls a structured field off the package. */
+  caption?: string;
+  class?: string;
+}
+
+const { packages, caption = 'Every wedding package includes an engagement session.', class: className = '' } = Astro.props;
+
+const fmt = (n: number) => `$${n.toLocaleString('en-CA')}`;
+
+const rows = [
+  { label: 'Coverage', get: (p: Pkg) => p.duration ?? '—' },
+  { label: 'Edited photos', get: (p: Pkg) => p.photos ?? '—' },
+  {
+    label: 'Starting price',
+    get: (p: Pkg) =>
+      p.salePrice
+        ? `${fmt(p.salePrice)} (was ${fmt(p.price ?? 0)})`
+        : p.price != null
+          ? fmt(p.price)
+          : 'On request',
+  },
+];
+---
+
+<div class:list={['pkg-compare', className]}>
+  <table class="pkg-compare__table">
+    <caption class="sr-only">Compare wedding photography packages</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="pkg-compare__corner"><span class="sr-only">Feature</span></th>
+        {packages.map((p) => (
+          <th scope="col" class:list={['pkg-compare__head', p.popular && 'is-popular']}>
+            {p.popular && <span class="pkg-compare__flag">Most Popular</span>}
+            <span class="pkg-compare__tier">{p.name}</span>
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <th scope="row" class="pkg-compare__rowlabel">{row.label}</th>
+          {packages.map((p) => (
+            <td class:list={['pkg-compare__cell', p.popular && 'is-popular']}>{row.get(p)}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  {caption && <p class="pkg-compare__caption">{caption}</p>}
+</div>
+
+<style>
+  /* Desktop/tablet enhancement only — mobile uses the stacked PricingCards. */
+  .pkg-compare {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .pkg-compare {
+      display: block;
+      margin-bottom: var(--spacing-block);
+    }
+  }
+
+  .pkg-compare__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+  }
+
+  .pkg-compare__corner {
+    width: 28%;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+  }
+
+  .pkg-compare__head {
+    text-align: left;
+    vertical-align: bottom;
+    padding: 0 1.5rem 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 30%, transparent);
+  }
+
+  /* Recommended column: faint tonal tint + a 2px top rule. No colour, no pill. */
+  .pkg-compare__head.is-popular {
+    background: var(--color-surface-dim);
+    box-shadow: inset 0 2px 0 0 var(--color-on-surface);
+  }
+  .pkg-compare__cell.is-popular {
+    background: var(--color-surface-dim);
+  }
+
+  .pkg-compare__flag {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    margin-bottom: 0.5rem;
+  }
+
+  .pkg-compare__tier {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-on-surface);
+  }
+
+  .pkg-compare__rowlabel {
+    text-align: left;
+    font-weight: 400;
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    padding: 1.125rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 18%, transparent);
+  }
+
+  .pkg-compare__cell {
+    padding: 1.125rem 1.5rem;
+    font-size: 1rem;
+    color: var(--color-on-surface);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 18%, transparent);
+    vertical-align: baseline;
+  }
+
+  tbody tr:last-child .pkg-compare__rowlabel,
+  tbody tr:last-child .pkg-compare__cell {
+    border-bottom: none;
+  }
+
+  .pkg-compare__caption {
+    margin-top: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+  }
+</style>
