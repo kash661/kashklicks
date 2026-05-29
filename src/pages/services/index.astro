@@ -4,6 +4,7 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
 import FinalCTA from '../../components/global/FinalCTA.astro';
+import PhotoDelivery from '../../components/services/PhotoDelivery.astro';
 import { Image } from 'astro:assets';
 import site from '../../data/site.json';
 import portfolio from '../../data/portfolio.json';
@@ -320,6 +321,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
       syncIndicator();
     }
   </script>
+
+  <PhotoDelivery />
 
   <!-- Slow infinite marquee of portrait photos -->
   {marqueeImages.length > 0 && (

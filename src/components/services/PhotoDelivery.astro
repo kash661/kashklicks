@@ -1,0 +1,83 @@
+---
+/**
+ * PhotoDelivery
+ * -------------
+ * "How you'll receive your photos" reassurance block for the /services index
+ * (the overview page sells four services but never says how the work is
+ * delivered; the detail pages already cover delivery via JourneyTimeline, so
+ * this lives only on the index to avoid duplication).
+ *
+ * Reuses the WhatHappensNext explainer voice: serif italic numeral plates +
+ * sans body, hairline rows, no box, 0px radius. Content is honest, drawn from
+ * packages/FAQ/reviews; no SaaS vendor name; photo-only (no film).
+ */
+const steps = [
+  { numeral: 'I', body: 'A sneak peek lands within days of the shoot, while the full gallery is edited.' },
+  { numeral: 'II', body: 'Your private online gallery, high resolution and simple to view and share with family.' },
+  { numeral: 'III', body: 'The full gallery, every edited image, delivered within 2 to 3 months.' },
+];
+---
+
+<section class="container-editorial" style="padding: var(--spacing-section) 0;">
+  <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+    <div class="col-span-12 md:col-span-7 reveal">
+      <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">After the shoot</p>
+      <h2 class="text-display-md font-serif">How your photos <em class="italic">arrive.</em></h2>
+    </div>
+    <div class="col-span-12 md:col-span-5 md:col-start-8 reveal stagger-2 mt-6 md:mt-0">
+      <p class="text-body-lg text-on-surface-variant" style="max-width: 40ch;">
+        Every image is yours to download and keep.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-editorial">
+    <div class="col-span-12 md:col-span-10 md:col-start-2 reveal stagger-1">
+      <dl class="photo-delivery__list">
+        {steps.map((step, i) => (
+          <div class={`photo-delivery__step reveal stagger-${i + 1}`}>
+            <dt class="photo-delivery__numeral">{step.numeral}</dt>
+            <dd class="photo-delivery__body">{step.body}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .photo-delivery__list {
+    margin: 0;
+    border-block: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 25%, transparent);
+  }
+
+  .photo-delivery__step {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-muted) 15%, transparent);
+  }
+  .photo-delivery__step:last-child {
+    border-bottom: none;
+  }
+
+  .photo-delivery__numeral {
+    flex: 0 0 4rem;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-on-surface);
+    letter-spacing: 0.02em;
+  }
+
+  .photo-delivery__body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--color-on-surface);
+    max-width: 52ch;
+  }
+</style>
