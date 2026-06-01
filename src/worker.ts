@@ -86,11 +86,32 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Static assets carry their own caching from _headers and never need the
-    // redirect/form/diag logic below. Short-circuit so the worker doesn't run
-    // its full decision chain on every hashed JS/CSS/font/sound request
-    // (run_worker_first executes this handler on every asset otherwise).
-    if (path.startsWith('/_astro/') || path.startsWith('/fonts/') || path.startsWith('/sounds/')) {
+    // Fingerprinted, content-hashed assets (/_astro/* and /fonts/*) — cache
+    // forever. Cloudflare applies _headers rules CUMULATIVELY, so each asset
+    // matches BOTH its own immutable rule AND the catch-all `/*` rule and comes
+    // back with a doubled, self-contradictory header:
+    //   cache-control: public, max-age=0, must-revalidate, public, max-age=31536000, immutable
+    // Browsers honor the FIRST directive (max-age=0, must-revalidate), so they
+    // revalidate every immutable asset on every view and never cache it durably;
+    // worse, must-revalidate forbids serving the cached copy when a revalidation
+    // fails, so a transient blip (deploy swap, CDN hiccup, flaky mobile) shows a
+    // broken image with no retry, and it recurs. These filenames change whenever
+    // their content does, so overwrite Cache-Control with the correct single
+    // value (Headers.set replaces the doubled value outright).
+    if (path.startsWith('/_astro/') || path.startsWith('/fonts/')) {
+      const assetRes = await env.ASSETS.fetch(request);
+      const headers = new Headers(assetRes.headers);
+      headers.set('cache-control', 'public, max-age=31536000, immutable');
+      return new Response(assetRes.body, {
+        status: assetRes.status,
+        statusText: assetRes.statusText,
+        headers,
+      });
+    }
+
+    // Other static prefixes (non-hashed) short-circuit the redirect/form/diag
+    // chain below but keep their _headers caching as-is.
+    if (path.startsWith('/sounds/')) {
       return env.ASSETS.fetch(request);
     }
 
