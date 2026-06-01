@@ -226,6 +226,7 @@ const gallerySchema = {
                 href={`/portfolio/${entry.slug ?? entry.id}/`}
                 data-astro-prefetch
                 date={entry.date ?? null}
+                priority={i < 2}
               />
             </div>
           ) : null;

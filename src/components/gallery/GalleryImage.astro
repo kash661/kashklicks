@@ -5,9 +5,12 @@ interface Props {
   src: ImageMetadata;
   alt: string;
   gallery?: string;
+  /** Eager-load + high fetch priority. Set on the first 1-2 images so the
+   *  above-the-fold gallery photo is the LCP, not a lazy-deferred box. */
+  priority?: boolean;
 }
 
-const { src, alt, gallery = 'gallery' } = Astro.props;
+const { src, alt, gallery = 'gallery', priority = false } = Astro.props;
 
 // Lightbox target: a capped, re-encoded variant instead of the multi-MB raw
 // original. GLightbox loads whatever the href resolves to, so a ~1920px WebP
@@ -35,6 +38,7 @@ const lightbox = await getImage({
     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
     class="w-full h-auto object-cover cubic-ease"
     style="transition-duration: var(--duration-slow);"
-    loading="lazy"
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
   />
 </a>

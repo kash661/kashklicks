@@ -9,9 +9,12 @@ interface Props {
   href: string;
   date?: string | null;
   plateOverride?: string;
+  /** Eager-load + high fetch priority. Set on the first row of covers so the
+   *  above-the-fold cover is the LCP, not a lazy-deferred box. */
+  priority?: boolean;
 }
 
-const { couple, location, category, coverImage, href, date, plateOverride } = Astro.props;
+const { couple, location, category, coverImage, href, date, plateOverride, priority = false } = Astro.props;
 
 const categoryLabels: Record<string, string> = {
   'pre-wedding': 'Pre-Wedding',
@@ -39,7 +42,8 @@ const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
         widths={[400, 600, 800]}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         class="w-full h-full object-cover"
-        loading="lazy"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchpriority={priority ? 'high' : 'auto'}
       />
     </div>
     <figcaption class="gallery-plaque">

@@ -113,15 +113,21 @@ const contactPageSchema = {
         </figure>
       </div>
 
-      <!-- Scroll cue -->
-      <div class="flex flex-col items-center mt-20 reveal stagger-4">
-        <p class="text-label-sm text-on-surface-muted mb-3">Tell Me About Your Day</p>
-        <div class="scroll-chevron">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-on-surface-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <!-- Scroll cue → jumps to the inquiry form. Was a decorative, non-interactive
+           chevron that invited taps but did nothing (dead-click source in Clarity);
+           now a real anchor with hover + focus states. -->
+      <a
+        href="#inquiry"
+        aria-label="Scroll to the inquiry form"
+        class="group flex flex-col items-center mt-20 reveal stagger-4 cursor-pointer focus:outline-none focus-visible:[outline:2px_solid_var(--color-on-surface-muted)] focus-visible:[outline-offset:8px]"
+      >
+        <span class="text-label-sm text-on-surface-muted group-hover:text-on-surface group-focus-visible:text-on-surface mb-3 cubic-ease" style="transition-duration: var(--duration-hover-ui);">Tell Me About Your Day</span>
+        <span class="scroll-chevron text-on-surface-muted group-hover:text-on-surface group-focus-visible:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover-ui);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M6 9l6 6 6-6" />
           </svg>
-        </div>
-      </div>
+        </span>
+      </a>
     </div>
   </section>
 

@@ -163,12 +163,13 @@ const remainingImages = galleryImages;
           )}
           {remainingImages.length > 0 && (
             <div class="columns-2 lg:columns-3" style="column-gap: var(--spacing-tight);">
-              {remainingImages.map((img) => (
+              {remainingImages.map((img, i) => (
                 <div class="mb-[var(--spacing-tight)] break-inside-avoid">
                   <GalleryImage
                     src={img.src}
                     alt={img.alt}
                     gallery={entry.id}
+                    priority={i < 2}
                   />
                 </div>
               ))}

@@ -78,6 +78,7 @@ const schema = {
                   coverImage={img}
                   href={`/portfolio/${entry.slug ?? entry.id}/`}
                   date={entry.date ?? null}
+                  priority={i < 2}
                 />
               </div>
             ) : null;
