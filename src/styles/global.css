@@ -1372,6 +1372,15 @@ input.flatpickr-input + input.form-field__input {
   transform: translateX(4px);
 }
 
+:root {
+  /* Soft editorial shadows for the package tiles — large blur, negative
+     spread, low alpha. Lifts a white tile off the cream wall without the
+     heavy drop-shadow the brand forbids. Three rungs of a depth ladder. */
+  --shadow-card: 0 14px 30px -24px rgba(26, 26, 24, 0.22), 0 5px 12px -9px rgba(26, 26, 24, 0.10);
+  --shadow-card-raised: 0 30px 60px -32px rgba(26, 26, 24, 0.28), 0 10px 22px -12px rgba(26, 26, 24, 0.14);
+  --shadow-card-pressed: 0 8px 18px -16px rgba(26, 26, 24, 0.20), 0 3px 7px -6px rgba(26, 26, 24, 0.10);
+}
+
 /* ── Mobile package accordion (pre-wedding page) ──────────────────────────
    PricingCard with accordion={true} becomes a compact tap-to-open row on
    phones/small tablets (< 1024px). This removes the filter on mobile (whose
@@ -1391,15 +1400,20 @@ input.flatpickr-input + input.form-field__input {
   /* The accordion replaces the filter on mobile. */
   #package-filter { display: none; }
 
-  /* Connected list: kill the grid gap, separate rows with hairline seams. */
-  #package-grid { gap: 0; }
-  .pricing-card--accordion { padding: 1.5rem 1.25rem; gap: 0; }
-  .pricing-card--accordion + .pricing-card--accordion {
-    border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 24%, transparent);
+  /* Tonal depth: each package is a white tile lifted off the cream wall by a
+     soft editorial shadow (no borders, no rounded corners). The white-on-cream
+     contrast + the shadow are what make the flat list pop, on-brand. */
+  #package-grid { gap: 1rem; }
+  .pricing-card--accordion {
+    padding: 1.5rem 1.25rem;
+    gap: 0;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--duration-hover) var(--ease-gallery),
+                transform var(--duration-hover) var(--ease-gallery);
   }
-  /* Uniform rows: drop the featured tonal lift + the floating badge on mobile;
-     the struck price in the summary already signals the offer. */
-  .pricing-card--accordion[data-featured="true"] { background: transparent; box-shadow: none; }
+  /* The featured (on-sale) tile sits one rung higher in the depth ladder. */
+  .pricing-card--accordion[data-featured="true"] { box-shadow: var(--shadow-card-raised); }
   .pricing-card--accordion .pricing-card__badge { display: none; }
 
   /* Compact meta line (tag · price), mobile-only. */
@@ -1419,11 +1433,18 @@ input.flatpickr-input + input.form-field__input {
     text-transform: uppercase;
     color: var(--color-on-surface-muted);
   }
-  .pricing-card--accordion .pricing-card__summary-price { color: var(--color-on-surface); }
+  .pricing-card--accordion .pricing-card__summary-price {
+    font-family: var(--font-serif);
+    font-size: 1.625rem;
+    line-height: 1;
+    letter-spacing: -0.015em;
+    color: var(--color-on-surface);
+  }
   .pricing-card--accordion .pricing-card__summary-price s {
+    font-size: 1.0625rem;
     color: var(--color-on-surface-muted);
     text-decoration-thickness: 1px;
-    margin-left: 0.35rem;
+    margin-left: 0.4rem;
   }
 
   /* Chevron hint, top-right of the row. Shown only once JS makes the row
@@ -1473,15 +1494,33 @@ input.flatpickr-input + input.form-field__input {
   #package-grid.is-enhanced .pricing-card--accordion.is-open .pricing-card__deck { display: block; }
   #package-grid.is-enhanced .pricing-card--accordion.is-open .pricing-card__chev { transform: rotate(90deg); }
 
-  /* Press + focus feedback on the tappable head. */
-  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__head:active { opacity: 0.65; }
+  /* Open tile rises in the depth ladder so the eye locks onto it. */
+  #package-grid.is-enhanced .pricing-card--accordion.is-open { box-shadow: var(--shadow-card-raised); }
+
+  /* Press: the whole tile depresses a touch (tactile), not just a fade. */
+  #package-grid.is-enhanced .pricing-card--accordion:has(.pricing-card__head:active) {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-card-pressed);
+  }
   #package-grid.is-enhanced .pricing-card--accordion .pricing-card__head:focus-visible {
     outline: 2px solid var(--color-on-surface);
-    outline-offset: 6px;
+    outline-offset: 4px;
   }
 }
 
+/* Desktop: the same tonal depth — pre-wedding cards become white tiles lifted
+   off the cream wall, featured a rung higher. Scoped to .pricing-card--accordion
+   so wedding / civil / celebrations pricing stays exactly as it was. */
+@media (min-width: 1024px) {
+  .pricing-card--accordion {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+  .pricing-card--accordion[data-featured="true"] { box-shadow: var(--shadow-card-raised); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .pricing-card--accordion,
   .pricing-card--accordion .pricing-card__body-wrap,
   .pricing-card--accordion .pricing-card__chev { transition: none; }
 }
