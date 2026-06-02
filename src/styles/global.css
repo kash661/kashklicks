@@ -1372,6 +1372,120 @@ input.flatpickr-input + input.form-field__input {
   transform: translateX(4px);
 }
 
+/* ── Mobile package accordion (pre-wedding page) ──────────────────────────
+   PricingCard with accordion={true} becomes a compact tap-to-open row on
+   phones/small tablets (< 1024px). This removes the filter on mobile (whose
+   "fade, don't hide" behaviour made "Photos Only" look blank) and makes all
+   packages scannable at once. Desktop (>= 1024px) is untouched: body-wrap and
+   body default to display:contents, so the card's subgrid still maps its
+   head + price-block + included + cta directly. Other pages never pass the
+   accordion prop, so they are unaffected. */
+
+.pricing-card__body-wrap,
+.pricing-card__body { display: contents; }
+
+.pricing-card__summary,
+.pricing-card__chev { display: none; }
+
+@media (max-width: 1023px) {
+  /* The accordion replaces the filter on mobile. */
+  #package-filter { display: none; }
+
+  /* Connected list: kill the grid gap, separate rows with hairline seams. */
+  #package-grid { gap: 0; }
+  .pricing-card--accordion { padding: 1.5rem 1.25rem; gap: 0; }
+  .pricing-card--accordion + .pricing-card--accordion {
+    border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 24%, transparent);
+  }
+  /* Uniform rows: drop the featured tonal lift + the floating badge on mobile;
+     the struck price in the summary already signals the offer. */
+  .pricing-card--accordion[data-featured="true"] { background: transparent; box-shadow: none; }
+  .pricing-card--accordion .pricing-card__badge { display: none; }
+
+  /* Compact meta line (tag · price), mobile-only. */
+  .pricing-card--accordion .pricing-card__summary {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.35rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--color-on-surface-variant);
+  }
+  .pricing-card--accordion .pricing-card__summary-tag {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+  }
+  .pricing-card--accordion .pricing-card__summary-price { color: var(--color-on-surface); }
+  .pricing-card--accordion .pricing-card__summary-price s {
+    color: var(--color-on-surface-muted);
+    text-decoration-thickness: 1px;
+    margin-left: 0.35rem;
+  }
+
+  /* Chevron hint, top-right of the row. Shown only once JS makes the row
+     tappable, so a no-JS phone (cards fully open) shows no false affordance. */
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__chev {
+    display: block;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.25rem;
+    font-size: 1.625rem;
+    line-height: 1;
+    color: var(--color-on-surface-muted);
+    transition: transform 300ms var(--ease-gallery);
+  }
+
+  /* The summary carries the price on mobile; hide the big desktop price block
+     so the price is not shown twice. */
+  .pricing-card--accordion .pricing-card__price-block { display: none; }
+
+  /* Body stacks its own children (it is the collapsible region). */
+  .pricing-card--accordion .pricing-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  /* Collapse only once JS marks the grid enhanced — a no-JS phone keeps the
+     fully-open cards (today's behaviour), never a blank state. */
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__head { cursor: pointer; }
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__deck { display: none; }
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__body-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 480ms var(--ease-gallery);
+  }
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__body {
+    overflow: hidden;
+  }
+  #package-grid.is-enhanced .pricing-card--accordion.is-open .pricing-card__body-wrap {
+    grid-template-rows: 1fr;
+  }
+  /* Breathing room above the revealed content — only when open, so the
+     collapsed row clips clean to the head (no residual padding strip). */
+  #package-grid.is-enhanced .pricing-card--accordion.is-open .pricing-card__body {
+    padding-top: 1.5rem;
+  }
+  #package-grid.is-enhanced .pricing-card--accordion.is-open .pricing-card__deck { display: block; }
+  #package-grid.is-enhanced .pricing-card--accordion.is-open .pricing-card__chev { transform: rotate(90deg); }
+
+  /* Press + focus feedback on the tappable head. */
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__head:active { opacity: 0.65; }
+  #package-grid.is-enhanced .pricing-card--accordion .pricing-card__head:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-card--accordion .pricing-card__body-wrap,
+  .pricing-card--accordion .pricing-card__chev { transition: none; }
+}
+
 /* ── Section frame — thin fading hairlines at top + bottom of a
    portfolio grid section. Non-intrusive tonal seam without a hard
    color shift. Mirrors the homepage Recent Work treatment. */

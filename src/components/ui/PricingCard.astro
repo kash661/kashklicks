@@ -20,6 +20,9 @@ interface Props {
   service?: string;
   ctaLabel?: string;
   filterMeta?: FilterMeta;
+  /* Opt-in: render as a mobile tap-to-open accordion row (pre-wedding page).
+     Off by default, so every other page renders byte-identical to before. */
+  accordion?: boolean;
 }
 
 const {
@@ -36,6 +39,7 @@ const {
   service,
   ctaLabel = 'Enquire',
   filterMeta,
+  accordion = false,
 } = Astro.props;
 
 const romans = ['I', 'II', 'III', 'IV', 'V', 'VI'];
@@ -51,11 +55,16 @@ const includedItems = highlights.filter((item) => !isAddOn(item));
 
 const hasSale = !!salePrice;
 const displayPrice = hasSale ? salePrice : price;
+
+// Mobile accordion (pre-wedding only): the compact tag shown on the collapsed
+// row. Derived from the same data the desktop card already uses.
+const accordionTag = custom ? 'Custom' : (filterMeta?.film ? 'Film' : 'Photos');
 ---
 
 <article
   id={id}
-  class:list={['pricing-card', filterMeta ? 'package-card' : '']}
+  class:list={['pricing-card', filterMeta ? 'package-card' : '', accordion ? 'pricing-card--accordion' : '']}
+  data-accordion={accordion ? '' : undefined}
   data-featured={isFeatured ? 'true' : undefined}
   data-film={filterMeta ? (filterMeta.film ? 'true' : 'false') : undefined}
   data-sale={filterMeta ? (filterMeta.sale ? 'true' : 'false') : undefined}
@@ -75,8 +84,29 @@ const displayPrice = hasSale ? salePrice : price;
     </p>
     <h3 class="pricing-card__name">{name}</h3>
     <p class="pricing-card__deck">{description}</p>
+    {accordion && (
+      <p class="pricing-card__summary">
+        {custom ? (
+          <span class="pricing-card__summary-price">Custom</span>
+        ) : (
+          <Fragment>
+            <span class="pricing-card__summary-tag">{accordionTag}</span>
+            <span class="pricing-card__summary-sep" aria-hidden="true">&middot;</span>
+            <span class="pricing-card__summary-price">
+              {hasSale ? (
+                <Fragment>${displayPrice?.toLocaleString()} <s>${price?.toLocaleString()}</s></Fragment>
+              ) : (
+                <Fragment>from ${displayPrice?.toLocaleString()}</Fragment>
+              )}
+            </span>
+          </Fragment>
+        )}
+      </p>
+    )}
+    {accordion && <span class="pricing-card__chev" aria-hidden="true">&rsaquo;</span>}
   </header>
 
+  <div class="pricing-card__body-wrap"><div class="pricing-card__body">
   {custom ? (
     <div class="pricing-card__price-block">
       <span class="pricing-card__price-kicker">Investment</span>
@@ -125,4 +155,5 @@ const displayPrice = hasSale ? salePrice : price;
     {ctaLabel}
     <span class="pricing-card__cta-arrow" aria-hidden="true">&rarr;</span>
   </a>
+  </div></div>
 </article>
