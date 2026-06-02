@@ -362,99 +362,12 @@ const preWeddingJourneySteps = [
 
       <!--
         Mobile-only package accordion. Below 1024px each package collapses to a
-        compact tap-to-open row (the desktop 3-up grid + filters are untouched).
-        Fixes the Clarity issue where "Photos Only" faded cards to near-zero
-        opacity and the screen looked blank. No-JS / desktop => cards render
-        fully open, so nothing can break into a blank state.
+        compact tap-to-open row (the desktop grid + filters are untouched).
+        Shared controller in src/scripts/package-accordion.ts; no-JS / desktop
+        leaves the cards fully open, so nothing can break into a blank state.
       -->
       <script>
-        function initPackageAccordion() {
-          const grid = document.getElementById('package-grid');
-          if (!grid) return;
-          const cards = Array.from(
-            grid.querySelectorAll<HTMLElement>('.pricing-card--accordion')
-          );
-          if (!cards.length) return;
-
-          const mq = window.matchMedia('(max-width: 1023px)');
-          const headOf = (card: HTMLElement) =>
-            card.querySelector<HTMLElement>('.pricing-card__head');
-          const wrapOf = (card: HTMLElement) =>
-            card.querySelector<HTMLElement>('.pricing-card__body-wrap');
-
-          function setOpen(card: HTMLElement, open: boolean) {
-            card.classList.toggle('is-open', open);
-            headOf(card)?.setAttribute('aria-expanded', open ? 'true' : 'false');
-          }
-
-          // Single-open: opening one closes the rest.
-          function openOnly(card: HTMLElement) {
-            cards.forEach((c) => setOpen(c, c === card));
-          }
-
-          function toggle(card: HTMLElement) {
-            if (!mq.matches) return; // never touch desktop
-            if (card.classList.contains('is-open')) setOpen(card, false);
-            else openOnly(card);
-          }
-
-          function enhance() {
-            if (grid.dataset.accOn === 'true') return;
-            grid.dataset.accOn = 'true';
-            grid.classList.add('is-enhanced');
-
-            cards.forEach((card, i) => {
-              const head = headOf(card);
-              const wrap = wrapOf(card);
-              if (!head) return;
-              if (wrap && !wrap.id) wrap.id = (card.id || 'pkg-' + i) + '-body';
-              head.setAttribute('role', 'button');
-              head.setAttribute('tabindex', '0');
-              head.setAttribute('aria-expanded', 'false');
-              if (wrap) head.setAttribute('aria-controls', wrap.id);
-              // Concise screen-reader label: name + tag/price, not the full deck.
-              const nm = card.querySelector('.pricing-card__name')?.textContent?.trim() || '';
-              const sm = card.querySelector('.pricing-card__summary')?.textContent
-                ?.replace(/\s+/g, ' ').trim() || '';
-              head.setAttribute('aria-label', sm ? nm + ', ' + sm : nm);
-
-              if (head.dataset.accBound !== 'true') {
-                head.dataset.accBound = 'true';
-                head.addEventListener('click', () => toggle(card));
-                head.addEventListener('keydown', (e: KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-                    e.preventDefault();
-                    toggle(card);
-                  }
-                });
-              }
-              card.classList.remove('is-open');
-            });
-
-            // Open the on-sale package by default (fallback: first package).
-            const def = cards.find((c) => c.dataset.sale === 'true') || cards[0];
-            if (def) openOnly(def);
-          }
-
-          function teardown() {
-            if (grid.dataset.accOn !== 'true') return;
-            grid.dataset.accOn = 'false';
-            grid.classList.remove('is-enhanced');
-            cards.forEach((card) => {
-              card.classList.remove('is-open');
-              const head = headOf(card);
-              head?.removeAttribute('role');
-              head?.removeAttribute('tabindex');
-              head?.removeAttribute('aria-expanded');
-              head?.removeAttribute('aria-controls');
-            });
-          }
-
-          const apply = () => (mq.matches ? enhance() : teardown());
-          apply();
-          mq.addEventListener('change', apply);
-        }
-
+        import { initPackageAccordion } from '../../scripts/package-accordion';
         initPackageAccordion();
         document.addEventListener('astro:after-swap', initPackageAccordion);
       </script>

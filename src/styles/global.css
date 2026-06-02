@@ -1471,6 +1471,14 @@ input.flatpickr-input + input.form-field__input {
     gap: 1.75rem;
   }
 
+  /* Single-package pages (civil, celebrations) never JS-enhance, so their tile
+     stays fully open as a static elevated card. Give its body the same breathing
+     room the open accordion state gets. The :not(.is-enhanced) drops this the
+     instant a multi-package grid is enhanced, so collapsed rows still clip clean. */
+  .pricing-grid:not(.is-enhanced) .pricing-card--accordion .pricing-card__body {
+    padding-top: 1.5rem;
+  }
+
   /* Collapse only once JS marks the grid enhanced — a no-JS phone keeps the
      fully-open cards (today's behaviour), never a blank state. */
   #package-grid.is-enhanced .pricing-card--accordion .pricing-card__head { cursor: pointer; }

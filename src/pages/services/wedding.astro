@@ -250,7 +250,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
       </div>
 
-      <div class="pricing-grid reveal stagger-3">
+      <div class="pricing-grid reveal stagger-3" id="package-grid">
         {weddingPackages.map((pkg, i) => (
           <PricingCard
             id={pkg.id}
@@ -264,9 +264,17 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             ordinal={i}
             service="wedding"
             ctaLabel="Enquire"
+            accordion={true}
+            accordionTag={pkg.duration}
           />
         ))}
       </div>
+
+      <script>
+        import { initPackageAccordion } from '../../scripts/package-accordion';
+        initPackageAccordion();
+        document.addEventListener('astro:after-swap', initPackageAccordion);
+      </script>
 
       <!-- Shared add-ons section (pulled from all wedding packages above) -->
       <div class="mt-12">

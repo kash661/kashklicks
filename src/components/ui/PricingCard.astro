@@ -23,6 +23,9 @@ interface Props {
   /* Opt-in: render as a mobile tap-to-open accordion row (pre-wedding page).
      Off by default, so every other page renders byte-identical to before. */
   accordion?: boolean;
+  /* Optional explicit tag for the collapsed row (e.g. "Up to 6 hours").
+     Falls back to a Photos/Film label derived from filterMeta. */
+  accordionTag?: string;
 }
 
 const {
@@ -40,6 +43,7 @@ const {
   ctaLabel = 'Enquire',
   filterMeta,
   accordion = false,
+  accordionTag,
 } = Astro.props;
 
 const romans = ['I', 'II', 'III', 'IV', 'V', 'VI'];
@@ -56,9 +60,10 @@ const includedItems = highlights.filter((item) => !isAddOn(item));
 const hasSale = !!salePrice;
 const displayPrice = hasSale ? salePrice : price;
 
-// Mobile accordion (pre-wedding only): the compact tag shown on the collapsed
-// row. Derived from the same data the desktop card already uses.
-const accordionTag = custom ? 'Custom' : (filterMeta?.film ? 'Film' : 'Photos');
+// Mobile accordion: the compact tag shown on the collapsed row. Pages may pass
+// an explicit `accordionTag` (e.g. coverage duration); otherwise it derives a
+// Photos/Film label from filterMeta.
+const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos');
 ---
 
 <article
@@ -90,7 +95,7 @@ const accordionTag = custom ? 'Custom' : (filterMeta?.film ? 'Film' : 'Photos');
           <span class="pricing-card__summary-price">Custom</span>
         ) : (
           <Fragment>
-            <span class="pricing-card__summary-tag">{accordionTag}</span>
+            <span class="pricing-card__summary-tag">{accordionTagLabel}</span>
             <span class="pricing-card__summary-sep" aria-hidden="true">&middot;</span>
             <span class="pricing-card__summary-price">
               {hasSale ? (
