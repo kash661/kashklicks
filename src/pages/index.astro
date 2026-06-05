@@ -27,12 +27,21 @@ import recentWide from '../assets/images/portfolio/meghna-puneeth/06.jpg';
 import recentPortraitLeft from '../assets/images/homepage/homepage-02-grace-giovanni-hero.jpg';
 import recentPortraitRight from '../assets/images/homepage/homepage-03-roxanne-justin.jpg';
 
+// Contact CTA closing card — art-directed (portrait on mobile, landscape on desktop).
+// Replaces an 11.3MB Bunny.net background video.
+import contactMobile from '../assets/images/homepage/homepage-06.jpg';
+import contactDesktop from '../assets/images/portfolio/ayushi-parth/01.jpg';
+
 const testimonial = testimonials[0];
 
 // LCP hero preload: identical params to the <Image> below, so the hashed
 // AVIF srcset matches and the preload scanner can start the hero fetch
 // during <head> parse instead of waiting for the <img> in the body.
 const heroPreload = await getImage({ src: heroImage, widths: [480, 640, 768, 1280, 1600], format: 'avif', quality: 72 });
+
+// Contact CTA: serve the portrait crop to phones, the landscape Toronto-skyline shot to desktop.
+const contactMobileImg = await getImage({ src: contactMobile, widths: [480, 768, 1080], format: 'avif', quality: 70 });
+const contactDesktopImg = await getImage({ src: contactDesktop, widths: [1024, 1440, 1920, 2560], format: 'avif', quality: 70 });
 
 const faqItems = [
   {
@@ -113,9 +122,6 @@ const jsonLd = [
   showSplash={false}
   jsonLd={jsonLd}
 >
-  <!-- b-cdn.net serves only the below-fold contact-CTA video; a light DNS
-       prefetch is enough (the connection opens on scroll via lazy-video). -->
-  <link slot="head" rel="dns-prefetch" href="https://kashklicks.b-cdn.net" />
   <link slot="head" rel="preload" as="image" imagesrcset={heroPreload.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
 
   <script is:inline>
@@ -945,9 +951,17 @@ const jsonLd = [
        interface is a hairline-wrapped "Get in touch" anchored near
        the bottom of the frame. Reads as a closing title card. -->
   <section class="contact-cta relative overflow-hidden">
-    <video muted loop playsinline preload="none" poster="/og-default.jpg" class="absolute inset-0 w-full h-full object-cover" aria-hidden="true" data-autoplay>
-      <source src="https://kashklicks.b-cdn.net/kashklicks_backgroundMedia.mp4" type="video/mp4" />
-    </video>
+    <picture>
+      <source media="(min-width: 768px)" type="image/avif" srcset={contactDesktopImg.srcSet.attribute} sizes="100vw" />
+      <source type="image/avif" srcset={contactMobileImg.srcSet.attribute} sizes="100vw" />
+      <img
+        src={contactMobileImg.src}
+        alt=""
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
     <div class="contact-cta__scrim absolute inset-0"></div>
     <div class="container-editorial relative z-10 contact-cta__inner">
       <div class="contact-cta__actions" data-cta-bracket>
