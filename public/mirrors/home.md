@@ -88,7 +88,7 @@ Sneak peek within days. Full wedding gallery in 2 to 3 months; pre-wedding and c
 Let's talk about your day. No obligations, just a conversation.
 
 **CTA:** [Get in Touch](/contact)
-**Background:** Looping video from kashklicks.b-cdn.net
+**Background:** Wedding photograph behind the closing call-to-action.
 
 ---
 

@@ -89,8 +89,7 @@ if (site.phone) {
     <meta name="facebook-domain-verification" content="mc68kqvbgdmd62i02mv8ni82r7955o" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Preconnect to ad pixel origins. (b-cdn.net is only used by the
-         below-fold homepage video, so its hint lives on the homepage, not here.) -->
+    <!-- Preconnect to ad pixel origins. -->
     <link rel="preconnect" href="https://connect.facebook.net" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.clarity.ms" />
@@ -201,7 +200,6 @@ if (site.phone) {
       import { initScrollReveal } from '../scripts/scroll-reveal';
       import { initParallax } from '../scripts/parallax';
       import { initScrollProgress } from '../scripts/scroll-progress';
-      import { initLazyVideo } from '../scripts/lazy-video';
       import { initSoundState } from '../scripts/sound-manager';
       import { initCharReveal } from '../scripts/char-reveal';
       import { initMagnetic } from '../scripts/magnetic';
@@ -218,7 +216,6 @@ if (site.phone) {
 
         // Deferred — below-fold or interaction-triggered
         onIdle(() => {
-          initLazyVideo();
           initMagnetic();
           initSoundState();
           initCalendly();
