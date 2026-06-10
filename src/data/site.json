@@ -16,7 +16,15 @@
     "lng": -79.3832
   },
   "hours": {
-    "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
     "opens": "09:00",
     "closes": "21:00",
     "note": "By appointment"
@@ -27,5 +35,15 @@
     "pinterest": "https://pinterest.com/kashklicks",
     "youtube": "https://youtube.com/@kashklicksStudios"
   },
-  "areasServed": ["Toronto", "Mississauga", "Brampton", "Markham", "Vaughan", "Oakville", "Burlington", "GTA"]
+  "areasServed": [
+    "Toronto",
+    "Mississauga",
+    "Brampton",
+    "Markham",
+    "Vaughan",
+    "Oakville",
+    "Burlington",
+    "GTA"
+  ],
+  "whatsapp": ""
 }

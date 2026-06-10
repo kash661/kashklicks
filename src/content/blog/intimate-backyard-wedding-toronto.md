@@ -58,7 +58,7 @@ Dinner was one long table down the middle of the lawn. The cedar fence behind it
 
 ![An intimate evening portrait of the couple in the glow of backyard string lights, Toronto, by AD Photography](../../assets/images/portfolio/nora-ali/30.jpg)
 
-We stole the couple away for a few minutes at golden hour, then again once the lights took over. A backyard at dusk gives you a kind of warmth you cannot rent. The full gallery from their evening is here: [Nora + Ali's backyard wedding](/portfolio/nora-ali).
+We stole the couple away for a few minutes at golden hour, then again once the lights took over. A backyard at dusk gives you a kind of warmth you cannot rent. The full gallery from their evening is here: [Nora + Ali's backyard wedding](/portfolio/nora-ali/).
 
 ## How to plan a backyard wedding in Toronto
 
@@ -106,7 +106,7 @@ We have written a full, honest breakdown of GTA wedding pricing, including what 
 
 **You care how the photos feel, not just how they look.** Honest light, personal details, people who actually know each other. A backyard gives a photographer everything and asks for very little.
 
-If a backyard is not an option but you still want intimate, a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide) gives you the same small, real feeling downtown.
+If a backyard is not an option but you still want intimate, a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide/) gives you the same small, real feeling downtown.
 
 ## Frequently asked questions
 

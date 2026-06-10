@@ -17,7 +17,7 @@
   },
   {
     "question": "Are there travel fees?",
-    "answer": "GTA is typically included. Anything beyond, I discuss upfront. No surprises.",
+    "answer": "GTA travel is included. Beyond the GTA, travel is at cost and quoted upfront. No surprises.",
     "services": [
       "wedding"
     ]
@@ -31,7 +31,7 @@
   },
   {
     "question": "Are there travel fees?",
-    "answer": "Yes, travel fees apply based on location. I will discuss this upfront during your consultation so there are no surprises.",
+    "answer": "GTA travel is included. Beyond the GTA, travel is at cost and quoted upfront. No surprises.",
     "services": [
       "pre-wedding",
       "civil-ceremony",
@@ -87,10 +87,22 @@
   },
   {
     "question": "How long until I get my photos?",
-    "answer": "Sneak peek within days. Full gallery in 1 to 3 weeks depending on the package.",
+    "answer": "Sneak peek within days. Full gallery in 1 to 3 weeks.",
     "services": [
-      "pre-wedding",
-      "civil-ceremony",
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "How long until I get my photos?",
+    "answer": "Sneak peek within days. Full gallery in 2 to 4 weeks.",
+    "services": [
+      "civil-ceremony"
+    ]
+  },
+  {
+    "question": "How long until I get my photos?",
+    "answer": "Sneak peek within days. Full gallery within 2 weeks.",
+    "services": [
       "celebrations"
     ]
   },

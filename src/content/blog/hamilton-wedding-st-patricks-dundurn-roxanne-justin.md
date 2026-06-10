@@ -15,7 +15,7 @@ The day moved across three locations that sit ten minutes apart from each other.
 
 ## St. Patrick's Catholic Parish, Hamilton
 
-The ceremony was held at [St. Patrick's Catholic Parish](/location-guide/st-patricks-parish-hamilton) on King Street East. The church is stone Gothic Revival, built in 1877, with a painted starry-blue vault running across the ceiling and a gilded reredos behind the altar full of carved saint figures. A rose window sits over the front doors and pulls afternoon light onto the entire centre aisle.
+The ceremony was held at [St. Patrick's Catholic Parish](/location-guide/st-patricks-parish-hamilton/) on King Street East. The church is stone Gothic Revival, built in 1877, with a painted starry-blue vault running across the ceiling and a gilded reredos behind the altar full of carved saint figures. A rose window sits over the front doors and pulls afternoon light onto the entire centre aisle.
 
 ![The Gothic Revival nave of St. Patrick's Catholic Parish in Hamilton, afternoon light from the rose window down the aisle, by AD Photography](../../assets/images/portfolio/roxanne-justin/04.jpg)
 
@@ -41,7 +41,7 @@ The lakeside park is a quiet add-on to a Hamilton wedding day. Most couples shoo
 
 ## Dundurn Castle: The Closing Chapter
 
-The final chapter belongs to [Dundurn Castle](/location-guide/dundurn-castle). The couple walks the tree-lined allee toward the Italianate facade, Roxanne glancing back over her shoulder mid-step, yellow petals across the path. There is a twirl on the lawn beneath the columned portico, the dress flaring across the grass. A quiet seated portrait at the column base, classical and still.
+The final chapter belongs to [Dundurn Castle](/location-guide/dundurn-castle/). The couple walks the tree-lined allee toward the Italianate facade, Roxanne glancing back over her shoulder mid-step, yellow petals across the path. There is a twirl on the lawn beneath the columned portico, the dress flaring across the grass. A quiet seated portrait at the column base, classical and still.
 
 ![Roxanne and Justin walking the tree-lined allee toward the Italianate facade of Dundurn Castle, by AD Photography](../../assets/images/portfolio/roxanne-justin/44.jpg)
 
@@ -51,6 +51,6 @@ The light goes soft. The day ends the way good wedding days do, with two people 
 
 ## See the Full Gallery
 
-The full 52-image gallery from Roxanne and Justin's Hamilton wedding lives on our portfolio: [Roxanne + Justin at St. Patrick's Parish and Dundurn Castle](/portfolio/roxanne-justin).
+The full 52-image gallery from Roxanne and Justin's Hamilton wedding lives on our portfolio: [Roxanne + Justin at St. Patrick's Parish and Dundurn Castle](/portfolio/roxanne-justin/).
 
-If you are planning a Hamilton wedding, or you want to talk about combining a church ceremony with a Dundurn Castle portrait session, [reach out here](/contact). We always start with a conversation about your day, your family, and the moments that matter most to you.
+If you are planning a Hamilton wedding, or you want to talk about combining a church ceremony with a Dundurn Castle portrait session, [reach out here](/contact/#inquiry). We always start with a conversation about your day, your family, and the moments that matter most to you.

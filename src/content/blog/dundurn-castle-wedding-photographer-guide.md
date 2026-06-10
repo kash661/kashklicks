@@ -64,7 +64,7 @@ The tree-lined drive is one of the best features on the property. Walk a couple 
 
 ![A wedding portrait on the grounds of Dundurn Castle, the Italianate estate behind, Hamilton, by AD Photography](../../assets/images/portfolio/roxanne-justin/46.jpg)
 
-Dundurn also closed out Roxanne and Justin's Hamilton wedding day, after their ceremony at St. Patrick's Parish. The Italianate facade and the columned portico turned the final portraits of the day into something architectural and grand. You can see their full wedding here: [Roxanne + Justin's Hamilton wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin).
+Dundurn also closed out Roxanne and Justin's Hamilton wedding day, after their ceremony at St. Patrick's Parish. The Italianate facade and the columned portico turned the final portraits of the day into something architectural and grand. You can see their full wedding here: [Roxanne + Justin's Hamilton wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/).
 
 ## The best photo spots at Dundurn Castle
 

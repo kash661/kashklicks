@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import ContactForm from '../components/forms/ContactForm.astro';
 import ReviewStrip from '../components/global/ReviewStrip.astro';
 import InstagramChat from '../components/global/InstagramChat.astro';
+import WhatsAppChat from '../components/global/WhatsAppChat.astro';
 import WhatHappensNext from '../components/contact/WhatHappensNext.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import BookingLink from '../components/ui/BookingLink.astro';
@@ -136,7 +137,7 @@ const contactPageSchema = {
     <div class="container-editorial">
       <div class="grid-editorial items-center">
         <!-- Left: Brand statement + studio colophon -->
-        <div class="col-span-12 lg:col-span-5">
+        <div class="col-span-12 lg:col-span-5 order-2 lg:order-none mt-16 lg:mt-0">
           <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule reveal">Tell Me About Your Day</p>
           <h2 class="text-display-md reveal stagger-1" style="margin-top: var(--spacing-element); max-width: 14ch;">
             The conversation <em>starts here.</em>
@@ -208,7 +209,7 @@ const contactPageSchema = {
         <!-- Right: Inline form. Replaces the former dark "Open the Form"
              modal-trigger card — eliminates the pre-hydration dead-click
              failure mode on iOS Safari. -->
-        <div class="col-span-12 lg:col-span-6 lg:col-start-7 mt-16 lg:mt-0">
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 order-1 lg:order-none">
           <div class="inquiry-form-block reveal-right">
             <p class="text-label-md text-on-surface-muted eyebrow-rule">Inquiry</p>
             <h3 class="text-heading-lg mt-8" style="max-width: 14ch;">
@@ -226,6 +227,7 @@ const contactPageSchema = {
                  Prominent but on-brand; the form below is the full intake. -->
             <div class="mt-8 reveal">
               <InstagramChat />
+              <WhatsAppChat class="mt-4" note="" />
               <p class="text-label-sm text-on-surface-muted mt-6">
                 Or tell me about your day with the form below.
               </p>

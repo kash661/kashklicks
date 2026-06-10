@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
+import ReviewStrip from '../../components/global/ReviewStrip.astro';
 import PackageAddOns from '../../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
@@ -221,6 +222,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <h2 class="section-title mx-auto">One package. <em>Everything you need.</em></h2>
       </div>
 
+      <ReviewStrip class="reveal mb-12" />
       <div class="pricing-grid reveal stagger-1">
         {civilPackages.map((pkg: any, i: number) => (
           <PricingCard
@@ -319,7 +321,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     title="Let's capture your ceremony."
     body="Book a free consultation. No pressure, just a conversation about your vision."
     ctaLabel="Begin Your Journey"
-    ctaHref="/contact/?service=civil-ceremony"
+    ctaHref="/contact/?service=civil-ceremony#inquiry"
     image={ctaImage}
     imageAlt="Toronto civil ceremony couple portrait after vows by AD Photography"
     imageCaption="Begin Your Story"

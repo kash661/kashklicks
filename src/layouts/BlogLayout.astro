@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import FinalCTA from '../components/global/FinalCTA.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -154,4 +155,11 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
       </footer>
     </div>
   </article>
+
+  <FinalCTA
+    eyebrow="Planning your own?"
+    title="Let's talk about your date."
+    body="I reply within 24 hours, every time. Tell me your date and venue and I'll take it from there."
+    ctaLabel="Check my date"
+  />
 </BaseLayout>

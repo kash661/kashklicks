@@ -76,7 +76,7 @@ By the end of golden hour we were back on the lakefront. The wind picked up off 
 
 ![Final intimate frame of Ayushi and Parth hand in hand on the back lawn at Adamson Estate at last light by AD Photography](../../assets/images/portfolio/ayushi-parth-adamson/22.jpg)
 
-The full gallery from their afternoon is on our portfolio: [Ayushi + Parth at Adamson Estate](/portfolio/ayushi-parth-adamson).
+The full gallery from their afternoon is on our portfolio: [Ayushi + Parth at Adamson Estate](/portfolio/ayushi-parth-adamson/).
 
 ## The five best photo spots at Adamson Estate
 
@@ -172,7 +172,7 @@ If you've hired a professional photographer the City asks for a commercial photo
 
 **Where else nearby do you recommend?**
 
-If you want to add a second location to the same day, we love [the Toronto waterfront and downtown spots](/blog/best-toronto-pre-wedding-locations) for skyline-led frames. They pair well with Adamson's quieter heritage feel.
+If you want to add a second location to the same day, we love [the Toronto waterfront and downtown spots](/blog/best-toronto-pre-wedding-locations/) for skyline-led frames. They pair well with Adamson's quieter heritage feel.
 
 ## Photograph your day at Adamson Estate
 

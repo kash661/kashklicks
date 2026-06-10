@@ -73,4 +73,4 @@ Traditional South Asian outfits photograph *beautifully*. The colours, the drapi
 
 Don't stress too much about this. During your consultation, we'll chat about your location, the vibe you're going for, and help you narrow down outfit ideas. We want you to show up feeling excited and confident. We handle the rest.
 
-[Book your consultation →](/contact)
+[Book your consultation →](/contact/#inquiry)

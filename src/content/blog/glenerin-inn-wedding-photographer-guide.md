@@ -64,7 +64,7 @@ When Natalie came down the aisle, the deck went quiet in the way that matters, t
 
 ![A candlelit reception in the domed room at The Glenerin Inn, warm sconces and arched windows, by AD Photography](../../assets/images/portfolio/natalie-shavar/28.jpg)
 
-By evening we were inside, in the domed room with the candles lit and the sconces glowing. The shift from the bright garden ceremony to the warm interior gave the day a natural arc. A day this seamless does not happen on its own. Natalie and Shavar's wedding was planned and coordinated by [Tsunki Event Planning](https://www.instagram.com/tsunkiep/), who kept the whole evening flowing so everyone, us included, could just be present for it. The full gallery from their wedding is here: [Natalie + Shavar at The Glenerin Inn](/portfolio/natalie-shavar).
+By evening we were inside, in the domed room with the candles lit and the sconces glowing. The shift from the bright garden ceremony to the warm interior gave the day a natural arc. A day this seamless does not happen on its own. Natalie and Shavar's wedding was planned and coordinated by [Tsunki Event Planning](https://www.instagram.com/tsunkiep/), who kept the whole evening flowing so everyone, us included, could just be present for it. The full gallery from their wedding is here: [Natalie + Shavar at The Glenerin Inn](/portfolio/natalie-shavar/).
 
 ## The best photo spots at The Glenerin Inn
 
@@ -108,7 +108,7 @@ The terraces around the manor give you wider establishing shots and room for fam
 
 **Parking and access.** On-site parking for guests and vendors. Confirm any restrictions for evening photos or drones with the venue.
 
-**Pair it in the cluster.** If you are comparing GTA estate venues, our guides to [Adamson Estate](/blog/adamson-estate-wedding-photography-guide) and [Aera Toronto](/blog/aera-toronto-wedding-venue-guide) show two other distinct looks, lakefront heritage and downtown modern.
+**Pair it in the cluster.** If you are comparing GTA estate venues, our guides to [Adamson Estate](/blog/adamson-estate-wedding-photography-guide/) and [Aera Toronto](/blog/aera-toronto-wedding-venue-guide/) show two other distinct looks, lakefront heritage and downtown modern.
 
 ## Who The Glenerin Inn is right for
 

@@ -9,6 +9,7 @@ import { Image } from 'astro:assets';
 import site from '../../data/site.json';
 import portfolio from '../../data/portfolio.json';
 import packages from '../../data/packages.json';
+import ReviewStrip from '../../components/global/ReviewStrip.astro';
 
 // Marquee: pick portrait photos from portfolio, round-robin across galleries.
 // Targets: 3 wedding, 8 pre-wedding, 5 civil-ceremony.
@@ -211,6 +212,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
   <!-- Packages in a row -->
   <section class="pb-[var(--spacing-block)]">
     <div class="container-editorial">
+      <ReviewStrip class="reveal mb-12" />
       <div class="services-scroller flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16" data-services-scroller>
         {services.map((service, i) => (
           <article class:list={['service-card group flex flex-col h-full pt-8 reveal', `stagger-${i + 1}`]} style="border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);">

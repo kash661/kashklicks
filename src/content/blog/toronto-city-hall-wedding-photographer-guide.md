@@ -76,7 +76,7 @@ Then we went outside. The curved towers of New City Hall framed them from above,
 
 ![Relaxed portrait of a couple on the open plaza of Nathan Phillips Square, modern City Hall architecture behind, by AD Photography](../../assets/images/portfolio/anushka-anthony/20.jpg)
 
-The full gallery from their morning is here: [Anushka + Anthony at Toronto City Hall](/portfolio/anushka-anthony).
+The full gallery from their morning is here: [Anushka + Anthony at Toronto City Hall](/portfolio/anushka-anthony/).
 
 ## How the civil ceremony actually works
 
@@ -116,7 +116,7 @@ A five minute walk west on Queen Street brings you to Osgoode Hall, and this is 
 
 ![A couple framed by the iron gates and brick corridor at Osgoode Hall, Toronto, by AD Photography](../../assets/images/portfolio/sonia-achyut/30.jpg)
 
-One important note: Osgoode Hall belongs to the Law Society of Ontario, not the City. The grounds have their own photography rules, and access is sometimes limited during construction or court events. Confirm current access with the Law Society before you build it into your plan, because a City permit does not cover it. We photographed Sonia and Achyut on this exact two-building arc, from Old City Hall to Osgoode, in a single relaxed afternoon. The full set is here: [Sonia + Achyut, Old City Hall and Osgoode Hall](/portfolio/sonia-achyut).
+One important note: Osgoode Hall belongs to the Law Society of Ontario, not the City. The grounds have their own photography rules, and access is sometimes limited during construction or court events. Confirm current access with the Law Society before you build it into your plan, because a City permit does not cover it. We photographed Sonia and Achyut on this exact two-building arc, from Old City Hall to Osgoode, in a single relaxed afternoon. The full set is here: [Sonia + Achyut, Old City Hall and Osgoode Hall](/portfolio/sonia-achyut/).
 
 ### 4. The Financial District
 
@@ -156,7 +156,7 @@ If you want one more look, walk south a few minutes toward King and Bay. Bronze 
 
 **You might do more later.** Plenty of couples marry at City Hall now and host a larger celebration down the road. A City Hall wedding does not close any doors. It just gets the important part done, beautifully.
 
-If a church or a heritage estate is more your speed, that is a different day. You can see how that looks in our [Hamilton church and Dundurn Castle wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin), or pair a downtown ceremony with the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations) for a separate portrait session.
+If a church or a heritage estate is more your speed, that is a different day. You can see how that looks in our [Hamilton church and Dundurn Castle wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/), or pair a downtown ceremony with the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations/) for a separate portrait session.
 
 ## Frequently asked questions
 

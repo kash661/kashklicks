@@ -99,6 +99,6 @@ The "best" location is the one that fits *you*. Here's a quick guide:
 
 Every package includes location guidance. I'll help you find the spot that matches your style, your outfits, and the look you're going for.
 
-[View our full location guide →](/location-guide)
+[View our full location guide →](/location-guide/)
 
-[Ready to book? Get in touch →](/contact)
+[Ready to book? Get in touch →](/contact/#inquiry)

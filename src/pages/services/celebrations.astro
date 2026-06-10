@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
+import ReviewStrip from '../../components/global/ReviewStrip.astro';
 import PackageAddOns from '../../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
@@ -127,9 +128,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <div class="col-span-12 md:col-span-5 reveal">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Events &amp; Celebrations</p>
           <blockquote class="text-display-md" style="max-width: 20ch;">
-            "The best celebrations are the ones where nobody is performing. Just people, together, being happy."
+            "Akash is amazing to work with! He photographed my bridal shower and all the photos are gorgeous."
           </blockquote>
-          <p class="text-label-sm text-on-surface-muted mt-8">Toronto</p>
+          <p class="text-label-sm text-on-surface-muted mt-8">Amanda Lupo &middot; Bridal Shower &middot; Google review</p>
           <div class="mt-8">
             <ShareButton
               variant="labeled"
@@ -230,6 +231,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
       </div>
 
+      <ReviewStrip class="reveal mb-12" />
       <div class="pricing-grid reveal stagger-3">
         {eventPackages.map((pkg, i) => (
           <PricingCard
@@ -362,7 +364,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
     title="Let's make it memorable."
     body="Book a free consultation. No pressure, just a conversation about your celebration."
     ctaLabel="Begin Your Journey"
-    ctaHref="/contact/?service=celebrations"
+    ctaHref="/contact/?service=celebrations#inquiry"
     background="background"
     image={ctaImage}
     imageAlt="Toronto celebration photography by AD Photography"

@@ -130,7 +130,7 @@ Below the lawns the ground turns to rock and open water. This is the wild, natur
 
 **You are shooting off-season.** If your date is in late fall or winter, RC Harris is one of the few Toronto spots that looks intentional rather than cold. The architecture carries it.
 
-If you want to pair RC Harris with other spots, see our guide to the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations), and our notes on [what to wear for a pre-wedding shoot](/blog/what-to-wear-pre-wedding-shoot) before the day.
+If you want to pair RC Harris with other spots, see our guide to the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations/), and our notes on [what to wear for a pre-wedding shoot](/blog/what-to-wear-pre-wedding-shoot/) before the day.
 
 ## Frequently asked questions
 

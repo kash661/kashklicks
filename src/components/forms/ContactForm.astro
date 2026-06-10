@@ -148,13 +148,11 @@ const regionOptions = [
 
       <div class="form-field">
         <label for="referral" class="form-field__label">
-          How Did You Find Me? <span class="form-field__required" aria-hidden="true">*</span>
+          How Did You Find Me? <span class="form-field__optional">(optional)</span>
         </label>
         <select
           id="referral"
           name="referral"
-          required
-          aria-required="true"
           aria-describedby="referral-error"
           class="form-field__select"
         >
@@ -418,7 +416,12 @@ const regionOptions = [
     function applyUrlPrefill() {
       const params = new URLSearchParams(window.location.search);
       const sourcePage = form!.querySelector<HTMLInputElement>('#source_page');
-      if (sourcePage) sourcePage.value = window.location.pathname;
+      // Location guides and venue pages link here with ?location=/?venue=.
+      // Fold that into source_page so the sheet keeps the attribution.
+      const refLocation = params.get('location') || params.get('venue');
+      if (sourcePage) {
+        sourcePage.value = window.location.pathname + (refLocation ? ` (via ${refLocation})` : '');
+      }
 
       const service = params.get('service');
       if (service) {

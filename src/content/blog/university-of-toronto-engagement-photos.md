@@ -100,7 +100,7 @@ The quiet option. Elegant quadrangles, chapel-like architecture, and enclosed co
 
 **Getting there.** The campus sits between Queen's Park, St. George, and Museum stations, so transit is easy. Driving means paid lots or metered street parking nearby.
 
-**Pair it with a second location.** A campus session and a downtown or lakefront session combine beautifully. See our guide to the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations) for spots that pair well, like the waterfront or [RC Harris](/blog/rc-harris-engagement-photos-toronto).
+**Pair it with a second location.** A campus session and a downtown or lakefront session combine beautifully. See our guide to the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations/) for spots that pair well, like the waterfront or [RC Harris](/blog/rc-harris-engagement-photos-toronto/).
 
 ## Who the University of Toronto is right for
 

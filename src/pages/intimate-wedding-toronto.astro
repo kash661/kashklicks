@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import PricingCard from '../components/ui/PricingCard.astro';
+import ReviewStrip from '../components/global/ReviewStrip.astro';
 import PackageAddOns from '../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import Button from '../components/ui/Button.astro';
@@ -317,9 +318,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
       <div class="good-to-know-grid">
         <div class="good-to-know-item">
-          <p class="text-heading-md font-serif italic mb-3">One photographer</p>
+          <p class="text-heading-md font-serif italic mb-3">One lead photographer</p>
           <p class="text-body-md text-on-surface-variant">
-            My full attention across your entire day. Multiple cameras so no moment slips away, one eye on the edit so your gallery feels like a single story.
+            My full attention across your entire day. On The Full Day a second pair of hands can cover the ceremony, briefed by me and edited by me, so your gallery still reads as one eye, one story.
           </p>
         </div>
         <div class="good-to-know-item">
@@ -355,6 +356,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
       </div>
 
+      <ReviewStrip class="reveal mb-12" />
       <div class="pricing-grid reveal stagger-3">
         {weddingPackages.map((pkg, i) => (
           <PricingCard

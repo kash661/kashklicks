@@ -25,7 +25,7 @@ The Bluffs are the most theatrical sunrise location in the GTA. We almost always
 
 **Pro tip:** Bring footwear you can get wet. The best frames are right at the waterline, and the sand near the cliffs is soft and damp. We always pack a microfibre towel for the couple's shoes.
 
-We've put together a fuller breakdown of the Bluffs on our [Scarborough Bluffs location guide](/location-guide/scarborough-bluffs), including notes on the clifftop spots and what each one offers.
+We've put together a fuller breakdown of the Bluffs on our [Scarborough Bluffs location guide](/location-guide/scarborough-bluffs/), including notes on the clifftop spots and what each one offers.
 
 ## 2. The Beaches and Leuty Lifeguard Station
 
@@ -45,7 +45,7 @@ The Beaches boardwalk runs along the south edge of Toronto from Woodbine all the
 
 This is the spot we go to when a couple says they want "that Toronto sunrise photo." Humber Bay Park East is a small peninsula on the west side of the city, and at the east edge of the park there is a small pond and shoreline that frames the entire downtown skyline across the water. At sunrise the sun comes up behind and to the right of the CN Tower, and within a few minutes the west faces of the glass towers light up and reflect into the pond if the water is calm.
 
-The [Humber Bay Arch Bridge](/location-guide/humber-bay-arch-bridge) is a short walk away if you want a second backdrop in the same session.
+The [Humber Bay Arch Bridge](/location-guide/humber-bay-arch-bridge/) is a short walk away if you want a second backdrop in the same session.
 
 **Best time to shoot:** Five to fifteen minutes after sunrise, when the skyline glass starts to glow but the sky still holds blue. The pond reflection holds best before any wind picks up.
 
@@ -59,7 +59,7 @@ The [Humber Bay Arch Bridge](/location-guide/humber-bay-arch-bridge) is a short 
 
 ![A couple on the lakefront lawn at Adamson Estate looking out over Lake Ontario beneath a soft dawn sky, by AD Photography](../../assets/images/portfolio/ayushi-parth-adamson/06.jpg)
 
-[Adamson Estate](/location-guide/adamson-estate) is one of our quietest discoveries. The grounds run right to the edge of Lake Ontario in Mississauga's Lakeview neighbourhood, and the historic mansion sits set back behind a long lawn that opens straight onto the water. At sunrise the lawn fills with sidelight coming in from the east, and the mansion's east-facing wing warms up a few minutes later. We usually shoot the lake side first and the architecture second.
+[Adamson Estate](/location-guide/adamson-estate/) is one of our quietest discoveries. The grounds run right to the edge of Lake Ontario in Mississauga's Lakeview neighbourhood, and the historic mansion sits set back behind a long lawn that opens straight onto the water. At sunrise the lawn fills with sidelight coming in from the east, and the mansion's east-facing wing warms up a few minutes later. We usually shoot the lake side first and the architecture second.
 
 **Best time to shoot:** From first light through about thirty minutes after sunrise. The lawn glows, then the mansion glows, then the light flattens out.
 
@@ -81,4 +81,4 @@ The drive to Burlington is worth it. Paletta Lakefront Park is a fourteen-acre h
 
 ## Before You Book a Sunrise Session
 
-Sunrise sessions are the best-kept secret in wedding photography. The light is unreal, the locations are empty, and your photos look like nothing else in your album. If you want us to plan one with you, [reach out here](/contact) and tell us which of these spots speaks to you. We'll handle the rest.
+Sunrise sessions are the best-kept secret in wedding photography. The light is unreal, the locations are empty, and your photos look like nothing else in your album. If you want us to plan one with you, [reach out here](/contact/#inquiry) and tell us which of these spots speaks to you. We'll handle the rest.

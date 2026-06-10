@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
+import ReviewStrip from '../../components/global/ReviewStrip.astro';
 import PackageAddOns from '../../components/ui/PackageAddOns.astro';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import Button from '../../components/ui/Button.astro';
@@ -270,6 +271,7 @@ const preWeddingJourneySteps = [
       </div>
 
       <!-- All packages in a 3-up grid with filter data attributes -->
+      <ReviewStrip class="reveal mb-12" />
       <div class="pricing-grid reveal stagger-3" id="package-grid">
         {preWeddingPackages.map((pkg, i) => (
           <PricingCard
@@ -372,6 +374,14 @@ const preWeddingJourneySteps = [
         document.addEventListener('astro:after-swap', initPackageAccordion);
       </script>
 
+      <!-- Proof at the point of price doubt (verbatim Google review) -->
+      <div class="text-center mt-16 reveal">
+        <blockquote class="text-quote mx-auto" style="max-width: 32ch;">
+          "The photos turned out absolutely beautiful, and the best part was the quick delivery without compromising on quality."
+        </blockquote>
+        <p class="text-label-sm text-on-surface-muted mt-6">Priyanka Goyat &middot; Pre-wedding &middot; Google review</p>
+      </div>
+
       <!-- CTA below packages -->
       <div class="text-center mt-16 reveal">
         <p class="text-label-sm text-on-surface-muted mb-2">Have questions? I'll get back to you within 24 hours, guaranteed.</p>
@@ -440,7 +450,7 @@ const preWeddingJourneySteps = [
     title="Let's capture your story."
     body="Book a free consultation. No pressure, just a conversation about your vision."
     ctaLabel="Begin Your Journey"
-    ctaHref="/contact/?service=pre-wedding"
+    ctaHref="/contact/?service=pre-wedding#inquiry"
     background="background"
     image={ctaImage}
     imageAlt="Toronto pre-wedding couple portrait by AD Photography"

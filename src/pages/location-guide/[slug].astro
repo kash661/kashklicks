@@ -251,6 +251,18 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
     </section>
 
     <!-- Also worth scouting -->
+    {/* Mid-guide CTA: these pages run ~20,000px on mobile with the only
+        conversion action at the very bottom. One band at peak practical
+        intent (right after The Essentials). Reuses the shipped FinalCTA. */}
+    <FinalCTA
+      eyebrow="Photograph here"
+      title={`Want photos at ${loc.name}?`}
+      body="Tell me your date. I shoot here often and know the corners and the light worth chasing."
+      ctaLabel="Check my date"
+      ctaHref={`/contact/?location=${loc.id}#inquiry`}
+      background="background"
+    />
+
     <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
       <div class="container-editorial">
         <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
@@ -326,7 +338,7 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
       title={`Let's shoot at ${loc.name}.`}
       body="Let's talk about your vision and map the perfect session."
       ctaLabel="Start the Conversation"
-      ctaHref={`/contact/?location=${loc.id}`}
+      ctaHref={`/contact/?location=${loc.id}#inquiry`}
       background="background"
     />
   </article>

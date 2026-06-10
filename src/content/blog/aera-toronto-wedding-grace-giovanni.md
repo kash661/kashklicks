@@ -23,7 +23,7 @@ Look up and you'll see the cloud mural painted across the ceiling. It glows abov
 
 For couples planning a wedding here, it's worth knowing that Aera is built around one long family-style table. The whole evening is anchored to it. If you've been imagining an Italian dinner where everyone is in the same conversation, this is the room.
 
-We've put together a fuller breakdown of the space on our [Aera Toronto location guide](/location-guide/aera-toronto), with notes on light, timing, and what to expect from each part of the room.
+We've put together a fuller breakdown of the space on our [Aera Toronto location guide](/location-guide/aera-toronto/), with notes on light, timing, and what to expect from each part of the room.
 
 ## The Tea Ceremony Started Quiet
 
@@ -53,8 +53,8 @@ That is what a wedding at Aera Toronto looks like when you let the room do its j
 
 ## See the Full Gallery
 
-The full 50-image gallery from Grace and Giovanni's day lives on our portfolio: [Grace + Giovanni at Aera Toronto](/portfolio/grace-giovanni).
+The full 50-image gallery from Grace and Giovanni's day lives on our portfolio: [Grace + Giovanni at Aera Toronto](/portfolio/grace-giovanni/).
 
-If you're considering Aera Toronto for your own wedding, our [Aera Toronto wedding venue guide](/blog/aera-toronto-wedding-venue-guide) walks through the best photo spots, the light cycle, and what couples should plan for, from a photographer who has worked the floor.
+If you're considering Aera Toronto for your own wedding, our [Aera Toronto wedding venue guide](/blog/aera-toronto-wedding-venue-guide/) walks through the best photo spots, the light cycle, and what couples should plan for, from a photographer who has worked the floor.
 
-If you're planning a wedding at Aera Toronto, or anywhere else in the GTA, and you'd like us to photograph it the way we photographed this one, [reach out here](/contact). We always start with a conversation about your day, your family, and the moments that matter most to you.
+If you're planning a wedding at Aera Toronto, or anywhere else in the GTA, and you'd like us to photograph it the way we photographed this one, [reach out here](/contact/#inquiry). We always start with a conversation about your day, your family, and the moments that matter most to you.

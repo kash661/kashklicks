@@ -94,9 +94,9 @@ Our pricing is on the site, openly, because you should be able to plan without a
 
 Every package includes the edited high-resolution gallery, delivered properly.
 
-Two things make our pricing work the way it does. First, we shoot solo by design. One photographer, one consistent eye on your whole day, no rotating crew and no second-shooter upsell unless you genuinely need it. Second, we keep the pricing transparent, because the alternative is a market that hides the number until you are emotionally committed, and we would rather just tell you.
+Two things make our pricing work the way it does. First, we shoot solo by design. One lead photographer, one consistent eye on your whole day, no rotating crew. Where a package includes a second pair of hands for the ceremony, they are briefed and edited by the same eye, so the gallery still reads as one voice. Second, we keep the pricing transparent, because the alternative is a market that hides the number until you are emotionally committed, and we would rather just tell you.
 
-See the current packages on our [services page](/services/wedding/). If you are weighing a smaller wedding, our guides to a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide) and an [intimate backyard wedding](/blog/intimate-backyard-wedding-toronto) show what those days actually look like. If an intimate wedding is what you are picturing, here is [how we shoot intimate Toronto weddings](/intimate-wedding-toronto/).
+See the current packages on our [services page](/services/wedding/). If you are weighing a smaller wedding, our guides to a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide/) and an [intimate backyard wedding](/blog/intimate-backyard-wedding-toronto/) show what those days actually look like. If an intimate wedding is what you are picturing, here is [how we shoot intimate Toronto weddings](/intimate-wedding-toronto/).
 
 ## Frequently asked questions
 
@@ -126,4 +126,4 @@ If you want a clear number and a photographer who tells you what things cost up 
 
 [**View wedding photography packages →**](/services/wedding/)
 
-Or [send us a note](/contact) and we will start with a real conversation about the day, the people, and the moments that matter most.
+Or [send us a note](/contact/#inquiry) and we will start with a real conversation about the day, the people, and the moments that matter most.

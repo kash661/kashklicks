@@ -80,7 +80,7 @@ Afterwards we walked them down the arched corridor for portraits. Two minutes of
 
 By evening the room had turned cinematic. Candle runners ran the length of the long table. The skyline started to glitter outside the windows. Toasts went up in one sweeping curve down the table, every face caught in the same warm light.
 
-The full story of their day lives on our [Aera Toronto real wedding blog](/blog/aera-toronto-wedding-grace-giovanni). The full 50-image gallery lives on the portfolio: [Grace + Giovanni at Aera Toronto](/portfolio/grace-giovanni).
+The full story of their day lives on our [Aera Toronto real wedding blog](/blog/aera-toronto-wedding-grace-giovanni/). The full 50-image gallery lives on the portfolio: [Grace + Giovanni at Aera Toronto](/portfolio/grace-giovanni/).
 
 ## The five best photo spots at Aera Toronto
 
@@ -180,7 +180,7 @@ Yes. Elevator access to the 38th floor. No stairs required. Confirm any specific
 
 **Where else nearby for outdoor portraits?**
 
-If you want to add an outdoor portrait stretch, the [TD Centre and surrounding Financial District courtyards](/blog/best-toronto-pre-wedding-locations) are a four-minute walk from CIBC Square. Beautiful architecture, easy in-and-out.
+If you want to add an outdoor portrait stretch, the [TD Centre and surrounding Financial District courtyards](/blog/best-toronto-pre-wedding-locations/) are a four-minute walk from CIBC Square. Beautiful architecture, easy in-and-out.
 
 ## Photograph your wedding at Aera Toronto
 
@@ -190,4 +190,4 @@ Aera is one of the most quietly cinematic wedding venues in downtown Toronto. If
 
 Or [send a note about Aera Toronto](/contact?venue=aera-toronto) and tell us what you're planning. We always start with a conversation about the day, the family, and the moments that matter most.
 
-And if you'd like to see what a full wedding day at Aera actually feels like, our [Grace and Giovanni real wedding story](/blog/aera-toronto-wedding-grace-giovanni) walks through one from open to close.
+And if you'd like to see what a full wedding day at Aera actually feels like, our [Grace and Giovanni real wedding story](/blog/aera-toronto-wedding-grace-giovanni/) walks through one from open to close.

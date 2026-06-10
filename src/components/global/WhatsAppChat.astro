@@ -1,0 +1,113 @@
+---
+/**
+ * WhatsAppChat
+ * ------------
+ * WhatsApp click-to-chat affordance, sibling of InstagramChat. A large share
+ * of the audience is WhatsApp-native, and the site otherwise has no phone
+ * path at all.
+ *
+ * Gated on site.json `whatsapp` (digits with country code, e.g. "14165551234"):
+ * renders NOTHING until the owner sets a number, so shipping this component
+ * is safe before the number decision lands.
+ *
+ * Link: wa.me/<number>?text=... is the official click-to-chat deep link and,
+ * unlike Instagram, supports pre-filled text.
+ */
+import site from '../../data/site.json';
+
+const number = (site as Record<string, unknown>).whatsapp as string | undefined;
+const digits = (number || '').replace(/\D/g, '');
+const prefill = encodeURIComponent('Hi Akash, my date is ');
+const waUrl = `https://wa.me/${digits}?text=${prefill}`;
+
+interface Props {
+  note?: string;
+  class?: string;
+}
+
+const {
+  note = 'On WhatsApp? Message me there. Just send your date and venue.',
+  class: className = '',
+} = Astro.props;
+---
+
+{
+  digits && (
+    <div class:list={['wa-chat', className]}>
+      <a href={waUrl} target="_blank" rel="noopener noreferrer" class="wa-chat__btn magnetic">
+        <svg class="wa-chat__glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" />
+          <path d="M9.2 8.4c.2-.5.5-.5.7-.5h.6c.2 0 .4 0 .5.4.2.5.6 1.6.6 1.7 0 .1.1.3 0 .5-.2.3-.3.5-.5.7-.2.2-.3.4-.1.7.2.3.8 1.2 1.7 1.9 1.1.9 2 1.1 2.3 1.2.3.1.5.1.6-.1.2-.2.7-.8.9-1 .2-.3.4-.2.6-.1l1.8.8c.2.1.4.2.4.3 0 .2 0 .8-.3 1.5" />
+        </svg>
+        <span class="wa-chat__label">Message me on WhatsApp</span>
+        <span class="wa-chat__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      {note && <p class="wa-chat__note">{note}</p>}
+    </div>
+  )
+}
+
+<style>
+  .wa-chat__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-on-surface) 25%, transparent);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    transition: background-color var(--duration-hover) var(--ease-gallery),
+                color var(--duration-hover) var(--ease-gallery),
+                border-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .wa-chat__btn:hover {
+    background: var(--color-on-surface);
+    color: var(--color-on-dark);
+    border-color: var(--color-on-surface);
+  }
+
+  .wa-chat__btn:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 2px;
+  }
+
+  .wa-chat__glyph {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+  }
+
+  /* Keep the label on one line — a two-line button label is a mobile tell. */
+  .wa-chat__label {
+    white-space: nowrap;
+  }
+
+  .wa-chat__arrow {
+    display: inline-block;
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .wa-chat__btn:hover .wa-chat__arrow {
+    transform: translateX(3px);
+  }
+
+  .wa-chat__note {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+    max-width: 38ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wa-chat__btn,
+    .wa-chat__arrow {
+      transition: none;
+    }
+  }
+</style>

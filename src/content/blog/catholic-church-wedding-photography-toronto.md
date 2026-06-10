@@ -66,7 +66,7 @@ There is a stillness to the sacred moments, the kneeling at the altar, the vow e
 
 ![The Gothic narthex doorway of St. Patrick's Parish framing the couple, Hamilton, by AD Photography](../../assets/images/portfolio/roxanne-justin/02.jpg)
 
-The Gothic narthex doorway frames silhouettes like a postcard, a reminder that a church gives you architectural drama you cannot manufacture anywhere else. You can see the full day, from the church to Dundurn Castle, here: [Roxanne + Justin's Hamilton wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin).
+The Gothic narthex doorway frames silhouettes like a postcard, a reminder that a church gives you architectural drama you cannot manufacture anywhere else. You can see the full day, from the church to Dundurn Castle, here: [Roxanne + Justin's Hamilton wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/).
 
 ## The timeline reality
 
@@ -96,13 +96,13 @@ A church gives you light and architecture you cannot get anywhere else, if you k
 
 **Confirm your post-ceremony window inside the church.** Ask whether another service follows and how long you have for family photos before you need to clear out.
 
-**Plan portraits at a second location.** Most of your couple and party portraits will happen away from the church. If you are in Hamilton, [Dundurn Castle](/blog/dundurn-castle-wedding-photographer-guide) is a natural pairing, the way it was for Roxanne and Justin.
+**Plan portraits at a second location.** Most of your couple and party portraits will happen away from the church. If you are in Hamilton, [Dundurn Castle](/blog/dundurn-castle-wedding-photographer-guide/) is a natural pairing, the way it was for Roxanne and Justin.
 
 **Hire someone who has shot churches.** This is not the day to find out your photographer does not know church etiquette. The rules are real, and working within them quietly is a skill.
 
 ## If a church is not your path
 
-A Catholic church wedding is one beautiful way to marry, but not the only one. If you want something smaller and civil, our guide to a [Toronto City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide) shows the intimate, no-fuss alternative downtown.
+A Catholic church wedding is one beautiful way to marry, but not the only one. If you want something smaller and civil, our guide to a [Toronto City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide/) shows the intimate, no-fuss alternative downtown.
 
 ## Frequently asked questions
 
