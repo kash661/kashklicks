@@ -77,6 +77,7 @@ const organizationSchema: Record<string, any> = {
 if (site.phone) {
   organizationSchema.telephone = site.phone;
 }
+organizationSchema.logo = `${site.url}/apple-touch-icon.png`;
 ---
 
 <!doctype html>
