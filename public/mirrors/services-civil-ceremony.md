@@ -42,6 +42,7 @@ Intimate doesn't mean less important. I capture the beauty and emotion of your c
 ## Civil Ceremony Package
 
 - **The Civil Ceremony — $500** (up to 2 hours, ceremony + couples portraits, 150+ edited photos, private online gallery)
+- **The Elopement — $901.25** (up to 4 hours, ceremony + couples portraits + the dinner or reception after, 250+ edited photos, private online gallery)
 
 ---
 

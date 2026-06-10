@@ -275,5 +275,30 @@
     "popular": false,
     "custom": false,
     "order": 1
+  },
+  {
+    "id": "elopement",
+    "name": "The Elopement",
+    "category": "Civil Ceremony",
+    "price": 901.25,
+    "currency": "CAD",
+    "salePrice": null,
+    "description": "The whole small day. Civil ceremony, couple shoot, and the celebration after, photographed end to end.",
+    "duration": "Up to 4 hours",
+    "photos": "250+",
+    "film": false,
+    "highlights": [
+      "Up to 4 hours coverage",
+      "Ceremony coverage",
+      "Couples shoot nearby the venue",
+      "The dinner or reception after",
+      "Unlimited edited photos (250+)",
+      "Private online gallery",
+      "Fujifilm film simulation add-on +$50",
+      "Instax guest prints add-on +$60 (up to 50 prints)",
+      "Additional hours available at $200/hr"
+    ],
+    "popular": true,
+    "order": 2
   }
 ]

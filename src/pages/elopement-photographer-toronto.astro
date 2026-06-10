@@ -76,7 +76,7 @@ const jsonLd = [
     provider: { '@id': `${site.url}/#business` },
     offers: [
       { '@type': 'Offer', name: 'The Civil Ceremony', price: '500', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
-      { '@type': 'Offer', name: 'The Essentials', price: '1400', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
+      { '@type': 'Offer', name: 'The Elopement', price: '901.25', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
     ],
   },
   {
@@ -228,26 +228,26 @@ const jsonLd = [
           <a href="/contact/?service=civil-ceremony&package=civil-ceremony&package_name=The%20Civil%20Ceremony#inquiry" class="el-pkg__cta magnetic">Check my date <span aria-hidden="true">&rarr;</span></a>
         </article>
 
-        <article class="el-pkg">
-          <p class="text-label-sm text-on-surface-muted">Intimate Wedding</p>
-          <h3 class="text-heading-lg" style="margin-top: 0.5rem;">The Essentials</h3>
-          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">For elopements with a dinner after. Vows through the toasts.</p>
-          <p class="el-pkg__price">$1,400</p>
+        <article class="el-pkg el-pkg--popular">
+          <p class="text-label-sm text-on-surface-muted">The Whole Small Day</p>
+          <h3 class="text-heading-lg" style="margin-top: 0.5rem;">The Elopement</h3>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">Ceremony, couple shoot, and the celebration after. Vows through the toasts.</p>
+          <p class="el-pkg__price">$901.25</p>
           <ul class="el-pkg__list">
-            <li>Up to 6 hours coverage</li>
-            <li>Ceremony, portraits &amp; the dinner after</li>
-            <li>Unlimited edited photos (200+)</li>
-            <li>Engagement session included (Love Story Mini)</li>
+            <li>Up to 4 hours coverage</li>
+            <li>Ceremony + couples portraits</li>
+            <li>The dinner or reception after</li>
+            <li>Unlimited edited photos (250+)</li>
             <li>Private online gallery</li>
           </ul>
-          <a href="/contact/?service=wedding&package=wedding-base&package_name=The%20Essentials#inquiry" class="el-pkg__cta magnetic">Check my date <span aria-hidden="true">&rarr;</span></a>
+          <a href="/contact/?service=civil-ceremony&package=elopement&package_name=The%20Elopement#inquiry" class="el-pkg__cta magnetic">Check my date <span aria-hidden="true">&rarr;</span></a>
         </article>
 
         <article class="el-pkg el-pkg--quiet">
-          <p class="text-label-sm text-on-surface-muted">In Between</p>
+          <p class="text-label-sm text-on-surface-muted">Anything Else</p>
           <h3 class="text-heading-lg" style="margin-top: 0.5rem;">Make It Yours</h3>
-          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">Anything between the two. More hours, a second location, a morning ceremony and an evening table.</p>
-          <p class="el-pkg__price el-pkg__price--text">Built around your day</p>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">More hours, a second location, a morning ceremony and an evening table. Built around your day.</p>
+          <p class="el-pkg__price el-pkg__price--text">One clear quote</p>
           <ul class="el-pkg__list">
             <li>Start from either package</li>
             <li>Add only the hours you need</li>
@@ -256,6 +256,7 @@ const jsonLd = [
           <a href="/contact/?service=civil-ceremony#inquiry" class="el-pkg__cta magnetic">Tell me your plan <span aria-hidden="true">&rarr;</span></a>
         </article>
       </div>
+
     </div>
   </section>
 
@@ -420,6 +421,8 @@ const jsonLd = [
   @media (max-width: 900px) { .el-pkg-grid { grid-template-columns: 1fr; gap: 2rem; max-width: 520px; } }
   .el-pkg { background: var(--color-surface); padding: 2rem; display: flex; flex-direction: column; }
   .el-pkg--quiet { background: transparent; border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+  .el-pkg--popular { outline: 1px solid color-mix(in srgb, var(--color-on-surface) 45%, transparent); outline-offset: -1px; position: relative; }
+  .el-pkg--popular::before { content: 'Most Popular'; position: absolute; top: -0.6rem; left: 2rem; background: var(--color-surface-dark); color: var(--color-on-dark); font-family: var(--font-sans); font-size: 0.625rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.25rem 0.75rem; }
   .el-pkg__price { font-family: var(--font-serif); font-style: italic; font-size: clamp(2.25rem, 4vw, 3rem); color: var(--color-on-surface); margin: 1.25rem 0 0; line-height: 1; }
   .el-pkg__price--text { font-size: 1.4rem; line-height: 1.3; }
   .el-pkg__list { list-style: none; margin: 1.5rem 0 0; padding: 0; }

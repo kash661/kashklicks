@@ -19,7 +19,7 @@ faq:
   - question: "Why don't most Toronto photographers show their prices?"
     answer: "Most of the market hides pricing to get you onto a call before you see a number. We take the opposite view. Showing prices respects your time and lets you plan honestly, so our packages are listed openly on our services page."
   - question: "What does AD Photography charge?"
-    answer: "Our pricing is public. The Civil Ceremony package is $500, wedding day coverage starts at $1,400 (The Essentials, 6 hours), The Full Day is $2,500, and The Complete Story is $3,800 for up to 14 hours with a second photographer. Pre-wedding sessions start at $350. Every package includes the edited high-resolution gallery."
+    answer: "Our pricing is public. The Civil Ceremony package is $500, The Elopement (4 hours, ceremony through the reception after) is $901.25, wedding day coverage starts at $1,400 (The Essentials, 6 hours), The Full Day is $2,500, and The Complete Story is $3,800 for up to 14 hours with a second photographer. Pre-wedding sessions start at $350. Every package includes the edited high-resolution gallery."
 ---
 
 Here is the question every couple actually wants answered, and the one most photographers make you book a call to hear: what does this cost?
