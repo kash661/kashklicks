@@ -103,4 +103,4 @@ Every package includes location guidance. I'll help you find the spot that match
 
 [Ready to book? Get in touch →](/contact/#inquiry)
 
-Every one of these spots works with my [pre-wedding packages from $350](/services/pre-wedding/), and each linked guide has the parking and permit details.
+Every one of these spots works with my [pre-wedding packages from $351.25](/services/pre-wedding/), and each linked guide has the parking and permit details.

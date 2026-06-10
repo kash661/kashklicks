@@ -170,7 +170,7 @@ const offerCatalogSchema = {
   '@type': 'OfferCatalog',
   '@id': offersId,
   name: 'AD Photography Services',
-  description: 'Photography and videography services in Toronto by AD Photography, from $350.',
+  description: 'Photography and videography services in Toronto by AD Photography, from $351.25.',
   url: `${site.url}/services`,
   offeredBy: businessRef,
   itemListElement: services.map((s) => ({
@@ -186,7 +186,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
 <BaseLayout
   title="Toronto Wedding Photography Services"
-  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $350. View packages, pricing, and book a free consultation."
+  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $351.25. View packages, pricing, and book a free consultation."
   ogImage={new URL('/og-services.jpg', site.url).href}
   jsonLd={jsonLd}
 >

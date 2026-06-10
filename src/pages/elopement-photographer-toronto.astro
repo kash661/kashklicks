@@ -18,9 +18,9 @@ import BookingNote from '../components/global/BookingNote.astro';
 import { Image } from 'astro:assets';
 
 import heroImage from '../assets/images/portfolio/anushka-anthony/13.jpg';
-import galSonia from '../assets/images/portfolio/sonia-achyut/11.jpg';
+import galSonia from '../assets/images/portfolio/sonia-achyut-cover.jpg';
 import galAnushka from '../assets/images/portfolio/anushka-anthony/04.jpg';
-import galAlex from '../assets/images/portfolio/alex-aziz/09.jpg';
+import galAlex from '../assets/images/portfolio/alex-aziz-cover.jpg';
 import site from '../data/site.json';
 import googleReviews from '../data/google-reviews.json';
 
@@ -45,11 +45,11 @@ const faqs = [
   },
   {
     q: 'Can we get the raw files?',
-    a: 'Yes. For sessions and civil ceremonies, raw photo files are $50 and raw video files are $100. Most couples find the edited gallery is what they actually want, but the option is there.',
+    a: 'Yes. For sessions and civil ceremonies, raw photo files are $51.25 and raw video files are $101.25. Most couples find the edited gallery is what they actually want, but the option is there.',
   },
   {
     q: 'Is a weekday elopement cheaper?',
-    a: 'No, and I would rather be straight about it: my pricing is flat and public. The Civil Ceremony is $500 whether it is a Tuesday morning or a Saturday afternoon. Weekdays are easier to book at City Hall, though.',
+    a: 'No, and I would rather be straight about it: my pricing is flat and public. The Civil Ceremony is $501.25 whether it is a Tuesday morning or a Saturday afternoon. Weekdays are easier to book at City Hall, though.',
   },
 ];
 
@@ -61,9 +61,9 @@ const steps = [
 ];
 
 const galleries = [
-  { no: 'No. I', img: galSonia, alt: 'Sonia reading her vows to Achyut during their Toronto City Hall civil ceremony', venue: 'Toronto City Hall · Osgoode Hall', couple: 'Sonia + Achyut', href: '/portfolio/sonia-achyut/' },
+  { no: 'No. I', img: galSonia, alt: 'Sonia and Achyut after their civil ceremony at Toronto City Hall and Osgoode Hall', venue: 'Toronto City Hall · Osgoode Hall', couple: 'Sonia + Achyut', href: '/portfolio/sonia-achyut/' },
   { no: 'No. II', img: galAnushka, alt: 'Anushka and Anthony walking out of the wedding chamber doors just married, Toronto City Hall', venue: 'Toronto City Hall', couple: 'Anushka + Anthony', href: '/portfolio/anushka-anthony/' },
-  { no: 'No. III', img: galAlex, alt: 'Alex showing her wedding ring while Aziz kisses her cheek, downtown Toronto civil ceremony', venue: 'TD Centre · Commerce Court', couple: 'Alex + Aziz', href: '/portfolio/alex-aziz/' },
+  { no: 'No. III', img: galAlex, alt: 'Alex and Aziz, civil ceremony portraits at TD Centre and Commerce Court', venue: 'TD Centre · Commerce Court', couple: 'Alex + Aziz', href: '/portfolio/alex-aziz/' },
 ];
 
 const jsonLd = [
@@ -75,7 +75,7 @@ const jsonLd = [
     areaServed: 'Toronto, Ontario',
     provider: { '@id': `${site.url}/#business` },
     offers: [
-      { '@type': 'Offer', name: 'The Civil Ceremony', price: '500', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
+      { '@type': 'Offer', name: 'The Civil Ceremony', price: '501.25', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
       { '@type': 'Offer', name: 'The Elopement', price: '901.25', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
     ],
   },
@@ -92,8 +92,8 @@ const jsonLd = [
 ---
 
 <BaseLayout
-  title="Toronto Elopement Photographer | Packages from $500"
-  description="Elopement photography in Toronto from $500. City Hall ceremonies, backyard vows and intimate weddings with 2 to 20 guests, photographed by one calm photographer. Flat, public pricing."
+  title="Toronto Elopement Photographer | Packages from $501.25"
+  description="Elopement photography in Toronto from $501.25. City Hall ceremonies, backyard vows and intimate weddings with 2 to 20 guests, photographed by one calm photographer. Flat, public pricing."
   jsonLd={jsonLd}
 >
   <!-- ═══ 01 · Hero ═══ -->
@@ -105,7 +105,7 @@ const jsonLd = [
 
     <div class="el-masthead reveal" style="margin-top: var(--spacing-block);">
       <span><b>Elopements</b> &middot; Now booking 2026 &amp; 2027</span>
-      <span>Toronto, ON &middot; From $500</span>
+      <span>Toronto, ON &middot; From $501.25</span>
     </div>
 
     <div class="el-hero">
@@ -217,7 +217,7 @@ const jsonLd = [
           <p class="text-label-sm text-on-surface-muted">Elopement</p>
           <h3 class="text-heading-lg" style="margin-top: 0.5rem;">The Civil Ceremony</h3>
           <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">The City Hall classic. Ceremony, portraits, done by lunch.</p>
-          <p class="el-pkg__price">$500</p>
+          <p class="el-pkg__price">$501.25</p>
           <ul class="el-pkg__list">
             <li>Up to 2 hours coverage</li>
             <li>Ceremony + couples portraits</li>
