@@ -137,3 +137,5 @@ A backyard wedding is small, warm, and completely yours, and it is one of the mo
 [**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about your backyard wedding](/contact?venue=backyard-toronto) and tell us your date and what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.
+
+Planning something even smaller? See my [Toronto elopement photography packages](/elopement-photographer-toronto/), from $500.
