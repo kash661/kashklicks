@@ -187,6 +187,41 @@ const aboutJourneySteps = [
     </div>
   </section>
 
+  <!-- ═══ THE LUCKY $1.25 · sava pricing story ═══
+       Hallmark · component-scope · genre: editorial · theme: Digital Curator (project system)
+       Quiet white beat between The Approach (dim) and the process timeline. -->
+  <section class="bg-surface" style="padding: var(--spacing-section) 0;" aria-labelledby="lucky-sava-heading">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <figure class="col-span-12 md:col-span-4 reveal lucky-sava-figure">
+          <span class="lucky-sava-glyph" aria-hidden="true">सवा</span>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Sava</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">Sanskrit</span>
+            </div>
+            <p class="gallery-plaque__title"><em>One and a quarter</em>, the auspicious measure</p>
+          </figcaption>
+        </figure>
+
+        <div class="col-span-12 md:col-span-7 md:col-start-6 reveal stagger-1">
+          <p class="text-label-md text-on-surface-muted eyebrow-rule">A Small Superstition</p>
+          <h2 id="lucky-sava-heading" class="text-display-md italic" style="margin-top: var(--spacing-element);">The Lucky $1.25</h2>
+          <p class="text-body-lg text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 58ch;">
+            Look closely at my packages and you will see every price ends in $1.25. It is not a typo, and it is not a rounding trick. It is a small piece of my heritage written into the numbers.
+          </p>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 58ch;">
+            In Sanskrit it is called sava, one and a quarter. In Hindu tradition that little extra is auspicious. Temple offerings are a rupee and a quarter, prasad is measured at a kilo and a quarter, because a round number closes a story and a quarter more means it keeps growing. The same belief lives inside the shagun envelopes at every Indian wedding, where the gift is $51 or $101, never $50 or $100, so the blessing stays whole and the extra one marks a new beginning.
+          </p>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: var(--spacing-element); max-width: 58ch;">
+            So that is what the $1.25 is. My shagun to the two of you. A little good energy folded into the price, and a quiet wish that whatever begins in front of my camera keeps growing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <JourneyTimeline
     steps={aboutJourneySteps}
     eyebrow="My Process"
@@ -329,6 +364,27 @@ const aboutJourneySteps = [
       font-size: clamp(2.25rem, 10vw, 2.75rem);
       line-height: 1.08;
       letter-spacing: -0.015em;
+    }
+  }
+
+  /* The Lucky $1.25: oversized Devanagari glyph as the section's visual.
+     Decorative (aria-hidden); the plaque carries the readable caption.
+     Devanagari has no italic tradition, keep it upright. */
+  .lucky-sava-glyph {
+    display: block;
+    font-family: var(--font-serif), 'Kohinoor Devanagari', 'Devanagari MT', 'Noto Serif Devanagari', serif;
+    font-size: clamp(5.5rem, 11vw, 8.5rem);
+    line-height: 1.15;
+    color: var(--color-on-surface-muted);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .lucky-sava-figure {
+    margin: 0;
+  }
+  @media (max-width: 767px) {
+    .lucky-sava-figure {
+      margin-bottom: var(--spacing-block);
     }
   }
 
