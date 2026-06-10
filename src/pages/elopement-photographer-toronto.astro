@@ -15,7 +15,7 @@ import Button from '../components/ui/Button.astro';
 import FinalCTA from '../components/global/FinalCTA.astro';
 import ReviewStrip from '../components/global/ReviewStrip.astro';
 import BookingNote from '../components/global/BookingNote.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 import heroImage from '../assets/images/portfolio/anushka-anthony/13.jpg';
 import galSonia from '../assets/images/portfolio/sonia-achyut-cover.jpg';
@@ -25,6 +25,10 @@ import site from '../data/site.json';
 import googleReviews from '../data/google-reviews.json';
 
 const meghna = googleReviews.reviews.find((r) => r.name === 'Meghna Dhillon');
+
+// Page-specific OG image (1200-wide jpg from the hero frame) for shares + image SEO
+const ogHero = await getImage({ src: heroImage, width: 1200, format: 'jpg', quality: 80 });
+const ogImageUrl = new URL(ogHero.src, site.url).href;
 
 const faqs = [
   {
@@ -95,6 +99,7 @@ const jsonLd = [
   title="Toronto Elopement Photographer | Packages from $501.25"
   description="Elopement photography in Toronto from $501.25. City Hall ceremonies, backyard vows and intimate weddings with 2 to 20 guests, photographed by one calm photographer. Flat, public pricing."
   jsonLd={jsonLd}
+  ogImage={ogImageUrl}
 >
   <!-- ═══ 01 · Hero ═══ -->
   <section class="container-editorial" style="padding-top: var(--spacing-section);">
@@ -198,7 +203,7 @@ const jsonLd = [
     <div class="container-editorial">
       <div class="el-label-row reveal">
         <span class="el-label-row__no">03</span>
-        <span class="el-label-row__tag text-label-sm">Packages</span>
+        <span class="el-label-row__tag text-label-sm">Elopement Packages</span>
         <span class="el-label-row__line"></span>
       </div>
       <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
@@ -288,6 +293,29 @@ const jsonLd = [
             <p class="text-body-md text-on-surface-variant" style="max-width: 34ch;">{s.body}</p>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══ Where couples elope: ties the page into the location-guide cluster ═══ -->
+  <section style="padding: 0 0 var(--spacing-section);">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-4 reveal">
+          <h2 class="text-heading-lg">Where couples <em class="italic text-on-surface-variant">elope</em> in Toronto.</h2>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 1rem; max-width: 32ch;">Beyond the wedding chambers. Each guide has the parking, permits, and the light worth chasing.</p>
+        </div>
+        <div class="col-span-12 md:col-span-7 md:col-start-6 mt-8 md:mt-0 reveal stagger-1">
+          <ul class="el-venues">
+            <li><a href="/location-guide/osgoode-hall/" class="el-link">Osgoode Hall</a><span> &middot; neoclassical columns two minutes from City Hall</span></li>
+            <li><a href="/location-guide/td-centre/" class="el-link">TD Centre &amp; King Street</a><span> &middot; sharp downtown lines for an editorial walk</span></li>
+            <li><a href="/location-guide/toronto-islands/" class="el-link">Toronto Islands</a><span> &middot; a ferry ride to quiet beaches and skyline views</span></li>
+            <li><a href="/location-guide/rc-harris/" class="el-link">RC Harris Water Treatment Plant</a><span> &middot; Art Deco above the lake in Scarborough</span></li>
+            <li><a href="/location-guide/music-garden/" class="el-link">Toronto Music Garden</a><span> &middot; winding waterfront paths for soft evening light</span></li>
+            <li><a href="/location-guide/allan-gardens/" class="el-link">Allan Gardens Conservatory</a><span> &middot; warm Victorian glasshouse, works in deep winter</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -446,6 +474,11 @@ const jsonLd = [
   .el-link { color: var(--color-on-surface-variant); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 45%, transparent); transition: color var(--duration-hover) var(--ease-gallery), border-color var(--duration-hover) var(--ease-gallery); }
   .el-link:hover { color: var(--color-on-surface); border-color: var(--color-on-surface); }
   .el-link:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
+
+  .el-venues { list-style: none; margin: 0; padding: 0; }
+  .el-venues li { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-on-surface-variant); padding: 0.85rem 0; border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 18%, transparent); }
+  .el-venues li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 18%, transparent); }
+  .el-venues a { font-family: var(--font-serif); font-size: 1.05rem; color: var(--color-on-surface); }
 
   .el-faq { border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
   .el-faq:last-child { border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
