@@ -516,6 +516,33 @@ const regionOptions = [
           form.classList.add('hidden');
           successEl.classList.remove('hidden');
           successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+          // Ad-platform conversion events. No engagement gate here: unlike the
+          // paid LP, completing this 7-field form is itself the qualification.
+          // try/catch because tracking must never break the success UI
+          // (in-app browsers can throw on blocked storage/APIs).
+          try {
+            const sourcePage = location.pathname || '/contact/';
+            if (typeof window.fbq === 'function') {
+              window.fbq('track', 'Lead', {
+                content_name: sourcePage,
+                content_category: 'wedding-inquiry',
+              });
+            }
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'conversion', {
+                send_to: 'AW-18099849669/T8MMCMX8gp4cEMWT17ZD',
+                value: 650.0,
+                currency: 'CAD',
+                transaction_id: '',
+              });
+            }
+            if (typeof window.clarity === 'function') {
+              window.clarity('event', 'lead_form_submit');
+            }
+          } catch {
+            /* never block the success state on tracking */
+          }
         } else {
           throw new Error(`Form submission failed: ${response.status}`);
         }

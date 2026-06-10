@@ -39,7 +39,11 @@ const categoryLabels: Record<string, string> = {
   'civil-ceremony': 'Civil Ceremony',
 };
 const categoryLabel = categoryLabels[entry.category] || entry.category;
-const categorySlug = entry.category === 'pre-wedding' ? 'pre-weddings' : entry.category;
+const categorySlugs: Record<string, string> = {
+  'pre-wedding': 'pre-weddings',
+  'wedding': 'weddings',
+};
+const categorySlug = categorySlugs[entry.category] || entry.category;
 
 // Singular form for the gallery plate label
 const plateLabels: Record<string, string> = {

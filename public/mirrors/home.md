@@ -31,7 +31,7 @@
 ## Investment
 
 **Eyebrow:** Investment
-**Heading:** Wedding packages starting at $1,200.
+**Heading:** Wedding packages starting at $1,400.
 
 Every package includes a pre-shoot consultation, professionally edited images, and a private online gallery.
 

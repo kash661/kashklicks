@@ -13,7 +13,7 @@ AD Photography is a solo photographer and filmmaker operation. Intentionally foc
 ### Wedding Day Photography
 Full-day and partial coverage of your wedding, from getting ready to the last dance. Unobtrusive, cinematic, honest.
 
-- Starting at $1,200
+- Starting at $1,400
 - Details: https://kashklicks.ca/services/wedding/
 
 ### Pre-Wedding and Engagement Shoots

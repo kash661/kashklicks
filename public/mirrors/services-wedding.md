@@ -2,7 +2,7 @@
 
 **URL:** https://kashklicks.ca/services/wedding/
 **Title:** Toronto Wedding Photography | AD Photography
-**Description:** Toronto wedding day photography packages from $1,200. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation.
+**Description:** Toronto wedding day photography packages from $1,400. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation.
 
 ---
 
@@ -43,11 +43,11 @@ From getting ready to the last dance, I capture every moment of your wedding day
 
 ## Wedding Packages
 
-- **The Essentials — $1,200** (up to 6 hours, 200+ edited photos, intimate weddings and elopements)
-- **The Full Day — $2,400** (up to 10 hours, 400+ edited photos, second shooter for ceremony or reception, Love Story + Film session included)
-- **The Complete Story — $3,800** (up to 14 hours, 600+ edited photos, extended second-shooter coverage, Love Story + Film session included)
+- **The Essentials — $1,400** (up to 6 hours, 200+ edited photos, intimate weddings and elopements)
+- **The Full Day — $2,500** (up to 10 hours, 400+ edited photos, second shooter for ceremony or reception, Love Story + Film session included)
+- **The Complete Story — $3,800** (up to 14 hours, 600+ edited photos, extended second-shooter coverage, Love Story + Film session included, priority 2-3 week delivery included)
 
-Every package includes a free pre-wedding consultation, priority 2-3 week delivery available for +$500, and additional second photographer hours at $100/hr.
+Every package includes a free pre-wedding consultation, priority 2-3 week delivery available for +$500 (already included with The Complete Story), and additional second photographer hours at $100/hr.
 
 ---
 
