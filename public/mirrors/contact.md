@@ -44,7 +44,7 @@ I prompt, not pose. Natural movements, real reactions. The photos end up looking
 I still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all I ask.
 
 ### Can I get the raw files?
-Yes. Raw photos are $120 for weddings, $50 for pre-wedding, civil ceremony, and celebrations. Raw video is $250 for weddings, $100 for other sessions. Delivered digitally with your edited gallery.
+Yes. Raw photos are $121.25 for weddings, $51.25 for pre-wedding, civil ceremony, and celebrations. Raw video is $251.25 for weddings, $101.25 for other sessions. Delivered digitally with your edited gallery.
 
 ### Are there travel fees?
 GTA is typically included. Anything beyond, I discuss upfront. No surprises.

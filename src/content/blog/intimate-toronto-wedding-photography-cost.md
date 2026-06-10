@@ -128,4 +128,4 @@ If you want a clear number and a photographer who tells you what things cost up 
 
 Or [send us a note](/contact/#inquiry) and we will start with a real conversation about the day, the people, and the moments that matter most.
 
-Eloping? My [Toronto elopement packages](/elopement-photographer-toronto/) are flat and public: $500 for the civil ceremony, $901.25 for the whole small day.
+Eloping? My [Toronto elopement packages](/elopement-photographer-toronto/) are flat and public: $501.25 for the civil ceremony, $901.25 for the whole small day.

@@ -2,7 +2,7 @@
 
 **URL:** https://kashklicks.ca/services/pre-wedding/
 **Title:** Toronto Pre-Wedding Photography | AD Photography
-**Description:** Toronto pre-wedding and engagement photography from $350. Cinematic sessions at stunning locations with outfit guidance and optional films. Book a free consultation.
+**Description:** Toronto pre-wedding and engagement photography from $351.25. Cinematic sessions at stunning locations with outfit guidance and optional films. Book a free consultation.
 
 ---
 
@@ -42,11 +42,11 @@ Your love story deserves to be told beautifully, before the big day even arrives
 
 ## Pre-Wedding Packages
 
-- Love Story Mini — $350 (up to 2 hours, 1 location, 50+ photos)
-- Love Story Duo — $550 (up to 3 hours, 2 locations, 2 outfits, 80+ photos)
-- Love Story + Film — $550 (up to 3 hours, 40 photos + 1–2 minute film)
-- The Signature Session — $850 (up to 5 hours, 2 locations, 70+ photos + 3–4 minute film)
-- The Pre Wedding — $1,450 (up to 10 hours, 3 locations, 150+ photos + 5–7 minute 4K film)
+- Love Story Mini — $351.25 (up to 2 hours, 1 location, 50+ photos)
+- Love Story Duo — $551.25 (up to 3 hours, 2 locations, 2 outfits, 80+ photos)
+- Love Story + Film — $551.25 (up to 3 hours, 40 photos + 1–2 minute film)
+- The Signature Session — $851.25 (up to 5 hours, 2 locations, 70+ photos + 3–4 minute film)
+- The Pre Wedding — $1,451.25 (up to 10 hours, 3 locations, 150+ photos + 5–7 minute 4K film)
 - Make It Yours — custom pricing
 
 ---

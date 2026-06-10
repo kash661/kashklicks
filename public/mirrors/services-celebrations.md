@@ -2,7 +2,7 @@
 
 **URL:** https://kashklicks.ca/services/celebrations/
 **Title:** Toronto Event Photography | AD Photography
-**Description:** Event and celebration photography in Toronto. Birthdays, bridal showers, corporate events from $550. Relaxed, natural coverage. Book a free consultation.
+**Description:** Event and celebration photography in Toronto. Birthdays, bridal showers, corporate events from $551.25. Relaxed, natural coverage. Book a free consultation.
 
 ---
 
@@ -40,7 +40,7 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 
 ## Event Packages
 
-- **Celebrations — $550** (minimum 2 hours, unlimited edited photos, private online gallery, 2-week delivery, additional hours at $150/hr)
+- **Celebrations — $551.25** (minimum 2 hours, unlimited edited photos, private online gallery, 2-week delivery, additional hours at $151.25/hr)
 
 ---
 

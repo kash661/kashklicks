@@ -2,7 +2,7 @@
 
 **URL:** https://kashklicks.ca/services/wedding/
 **Title:** Toronto Wedding Photography | AD Photography
-**Description:** Toronto wedding day photography packages from $1,400. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation.
+**Description:** Toronto wedding day photography packages from $1,401.25. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation.
 
 ---
 
@@ -43,11 +43,11 @@ From getting ready to the last dance, I capture every moment of your wedding day
 
 ## Wedding Packages
 
-- **The Essentials — $1,400** (up to 6 hours, 200+ edited photos, intimate weddings and elopements)
-- **The Full Day — $2,500** (up to 10 hours, 400+ edited photos, second shooter for ceremony or reception, Love Story + Film session included)
-- **The Complete Story — $3,800** (up to 14 hours, 600+ edited photos, extended second-shooter coverage, Love Story + Film session included, priority 2-3 week delivery included)
+- **The Essentials — $1,401.25** (up to 6 hours, 200+ edited photos, intimate weddings and elopements)
+- **The Full Day — $2,501.25** (up to 10 hours, 400+ edited photos, second shooter for ceremony or reception, Love Story + Film session included)
+- **The Complete Story — $3,801.25** (up to 14 hours, 600+ edited photos, extended second-shooter coverage, Love Story + Film session included, priority 2-3 week delivery included)
 
-Every package includes a free pre-wedding consultation, priority 2-3 week delivery available for +$500 (already included with The Complete Story), and additional second photographer hours at $100/hr.
+Every package includes a free pre-wedding consultation, priority 2-3 week delivery available for +$501.25 (already included with The Complete Story), and additional second photographer hours at $101.25/hr.
 
 ---
 
@@ -62,7 +62,7 @@ Every package includes a free pre-wedding consultation, priority 2-3 week delive
 
 ## FAQ
 
-- Can I get the raw files? — Yes, $120 for raw photos, $250 for raw video.
+- Can I get the raw files? — Yes, $121.25 for raw photos, $251.25 for raw video.
 - Are there travel fees? — GTA is typically included. Anything beyond, I discuss upfront.
 - When is the best time to shoot? — Golden hour. Overcast days work beautifully too.
 - Do you help pick a location? — Yes. Light first, location second.
