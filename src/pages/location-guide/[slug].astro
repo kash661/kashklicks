@@ -38,9 +38,27 @@ const galleryForThis = Object.entries(galleryImages)
 const landscapeFromGallery = galleryForThis.find((i) => i.width > i.height);
 const img = landscapeFromGallery ?? coverImg;
 
-const others = locationsData
-  .filter((l) => l.id !== loc.id)
-  .sort((a, b) => a.name.localeCompare(b.name));
+// Real city per zone. The old title template hardcoded "Toronto" onto all
+// 32 guides, mislabeling 12 Hamilton/Niagara/Burlington/Vaughan/Mississauga
+// venues with a phrase nobody searches.
+const zoneCity: Record<string, string> = {
+  Downtown: 'Toronto',
+  Bluffs: 'Toronto',
+  Etobicoke: 'Toronto',
+  Scarborough: 'Toronto',
+  Hamilton: 'Hamilton',
+  Niagara: 'Niagara',
+  Vaughan: 'Vaughan',
+  Mississauga: 'Mississauga',
+  Burlington: 'Burlington',
+};
+const city = zoneCity[loc.zone] || 'Toronto';
+
+// Siblings: 6 max, same zone first, then alphabetical fill. The old grid
+// listed all 31 other venues on every page (link-equity smear, scroll bloat).
+const sameZone = locationsData.filter((l) => l.id !== loc.id && l.zone === loc.zone);
+const otherZone = locationsData.filter((l) => l.id !== loc.id && l.zone !== loc.zone);
+const others = [...sameZone, ...otherZone.sort((a, b) => a.name.localeCompare(b.name))].slice(0, 6);
 
 const canonicalUrl = `${site.url}/location-guide/${loc.id}/`;
 
@@ -49,7 +67,7 @@ const placeSchema = {
   '@type': 'TouristAttraction',
   '@id': canonicalUrl,
   name: loc.name,
-  description: loc.vibe,
+  description: loc.vibeLine || loc.vibe,
   url: canonicalUrl,
   address: {
     '@type': 'PostalAddress',
@@ -136,8 +154,8 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
 ---
 
 <BaseLayout
-  title={`${loc.name}, Toronto Photography Location`}
-  description={`Photography at ${loc.name} in ${loc.area}. ${loc.vibe}`}
+  title={`${loc.name} Wedding & Engagement Photos | ${city}`}
+  description={`Wedding and engagement photography at ${loc.name} in ${loc.area}. Permits, parking, best light, and what I shoot there.`}
   canonicalUrl={canonicalUrl}
   jsonLd={jsonLdBlocks}
 >
@@ -154,7 +172,7 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
           </div>
           <div class="col-span-12 md:col-span-6 md:col-start-7 reveal stagger-2 mt-6 md:mt-0">
             <p class="text-quote text-on-surface-variant italic" style="font-family: var(--font-serif); max-width: 45ch;">
-              "{loc.vibe}"
+              {loc.vibeLine || loc.vibe}
             </p>
           </div>
         </div>
@@ -219,7 +237,37 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
           </div>
         </div>
       )}
+
+      {/* Money-page links: guides previously linked to zero service pages */}
+      <div class="grid-editorial" style="margin-top: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-8 md:col-start-3 reveal text-center">
+          <p class="text-label-sm text-on-surface-muted tracking-wider mb-3">Shooting here with me</p>
+          <p class="text-body-md text-on-surface-variant">
+            <a href="/services/pre-wedding/" class="border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Pre-wedding sessions from $350 &rarr;</a>
+            <span class="mx-3" aria-hidden="true">&middot;</span>
+            <a href="/services/wedding/" class="border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Wedding photography from $1,400 &rarr;</a>
+          </p>
+        </div>
+      </div>
     </section>
+
+    {loc.story && (
+      <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+        <div class="container-editorial">
+          <div class="grid-editorial">
+            <div class="col-span-12 md:col-span-4 reveal">
+              <p class="text-label-md text-on-surface-muted eyebrow-rule mb-4">Field Notes</p>
+              <h2 class="text-display-md font-serif">Shooting at {loc.name}.</h2>
+            </div>
+            <div class="col-span-12 md:col-span-7 md:col-start-6 reveal stagger-2 mt-8 md:mt-0">
+              {loc.story.split('\n\n').map((para: string) => (
+                <p class="text-body-lg text-on-surface-variant" style="margin-bottom: 1.25rem; max-width: 60ch;">{para}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
 
     <!-- The Essentials -->
     <section style="padding: var(--spacing-block) 0 var(--spacing-section); background: var(--color-background);">

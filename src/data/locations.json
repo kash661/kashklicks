@@ -25,7 +25,8 @@
     "parking": "Metered street parking on Jarvis, paid lots within a five-minute walk",
     "travelTime": "Downtown",
     "idealIf": "You want tropical, Victorian-glasshouse backdrops that work rain, shine, or in deep winter.",
-    "image": "allan-gardens.jpg"
+    "image": "allan-gardens.jpg",
+    "vibeLine": "Tropical palms under Victorian glass, warm and quiet no matter what Toronto's weather is doing outside."
   },
   {
     "id": "art-gallery-hamilton",
@@ -52,7 +53,8 @@
     "parking": "Street and nearby paid lots",
     "travelTime": "45-60 minutes from downtown",
     "idealIf": "You want bold architectural lines and urban energy for a stylized, editorial feel.",
-    "image": "art-gallery-hamilton.jpg"
+    "image": "art-gallery-hamilton.jpg",
+    "vibeLine": "A modern gallery in Hamilton's downtown core where bold lines and plaza light do the editorial work."
   },
   {
     "id": "bayfront-park",
@@ -81,7 +83,8 @@
     "parking": "Free on-site lot and street parking",
     "travelTime": "45-60 minutes from downtown",
     "idealIf": "You want soft lake light and city-edge greenery for a relaxed, unhurried session.",
-    "image": "bayfront-park.jpg"
+    "image": "bayfront-park.jpg",
+    "vibeLine": "An open stretch of Hamilton waterfront where soft lake light meets greenery right at the city's edge."
   },
   {
     "id": "casa-loma",
@@ -111,7 +114,8 @@
     "parking": "Limited on-site, valet and nearby public lots",
     "travelTime": "15-20 minutes from downtown",
     "idealIf": "You want castle grandeur, manicured gardens, and skyline views without leaving the city.",
-    "image": "casa-loma.jpg"
+    "image": "casa-loma.jpg",
+    "vibeLine": "A stone castle above midtown Toronto, manicured gardens at its feet and the skyline beyond."
   },
   {
     "id": "cherry-beach",
@@ -140,7 +144,8 @@
     "parking": "Free lots near Polson Pier and Cherry Beach",
     "travelTime": "15-20 minutes from downtown",
     "idealIf": "You want an unmistakably Toronto skyline across open water with a gritty, cinematic edge.",
-    "image": "cherry-beach.jpg"
+    "image": "cherry-beach.jpg",
+    "vibeLine": "A rough stretch of city beach in the Port Lands with the whole Toronto skyline sitting across open water."
   },
   {
     "id": "distillery-district",
@@ -167,7 +172,8 @@
     "parking": "Paid on-site garages, valet options",
     "travelTime": "Downtown",
     "idealIf": "You want cobblestone, brick warehouses, and European old-world charm right downtown.",
-    "image": "distillery-district.jpg"
+    "image": "distillery-district.jpg",
+    "vibeLine": "Car-free cobblestone lanes and brick warehouses that feel like old Europe, right in downtown Toronto."
   },
   {
     "id": "dundas-peak",
@@ -196,7 +202,8 @@
     "parking": "Paid lot at Spencer Gorge entry, then hike in",
     "travelTime": "60-75 minutes from downtown",
     "idealIf": "You want dramatic cliff-edge views and tree-tunnel light for a destination-feel shoot without leaving Ontario.",
-    "image": "dundas-peak.jpg"
+    "image": "dundas-peak.jpg",
+    "vibeLine": "Tree-tunnel light on the hike in, then a cliff edge over a valley that goes full orange in the fall."
   },
   {
     "id": "evergreen-brick-works",
@@ -227,7 +234,8 @@
     "parking": "Free on-site lot and shuttle from Broadview Station",
     "travelTime": "15 minutes from downtown",
     "idealIf": "You want reclaimed industrial texture, brick, and quarry nature all in one frame.",
-    "image": "evergreen-brick-works.jpg"
+    "image": "evergreen-brick-works.jpg",
+    "vibeLine": "An old brickworks in the Don Valley where reclaimed industrial brick and green quarry trails share one frame."
   },
   {
     "id": "graffiti-alley",
@@ -253,7 +261,8 @@
     "parking": "Metered street parking on Queen West, nearby paid lots",
     "travelTime": "Downtown",
     "idealIf": "You want bold, colour-saturated street art as a punchy contrast to clean styling.",
-    "image": "graffiti-alley.jpg"
+    "image": "graffiti-alley.jpg",
+    "vibeLine": "A narrow Queen West laneway painted end to end, loud colour on every wall that cuts hard against clean styling."
   },
   {
     "id": "guild-park",
@@ -283,7 +292,9 @@
     "parking": "Free on-site",
     "travelTime": "25-35 minutes from downtown",
     "idealIf": "You want elegant, cinematic destination-feel imagery without leaving the city.",
-    "image": "guild-park.jpg"
+    "image": "guild-park.jpg",
+    "vibeLine": "Stone columns rescued from demolished Toronto buildings, standing in a garden that feels like old Europe.",
+    "story": "Guild Park is the closest thing Toronto has to shooting in Europe without the flight. The ruins are real. Columns and carved stone archways saved from demolished Toronto buildings, set down in a garden in Scarborough. Nothing else in the city looks like it.\n\nThe main ruins area is compact, but I never run out of angles there. Greco-Roman columns, carved archways, garden running between them. I plan two to three hours and use all of it.\n\nGolden hour is when the place earns its reputation. The stone catches warm light and the whole garden goes amber. Spring and fall are my favourite windows, with the garden in bloom or turning colour behind the columns.\n\nOne session stays with me. Ayushi and Parth finished a three-location day here, the last chapter after Toronto Harbour and RC Harris. Ayushi changed into a tiered pink ruffle gown, Parth into a light linen suit, and they walked hand in hand through the carved archways like they had all the time in the world. The ruins did not have to do anything. They just held the frame.\n\nPractical notes, because they matter. Parking is free on site. No permit is needed for engagement shoots or general photography, which is rare for a place that looks this grand. From downtown, plan 25 to 35 minutes. The paths have a few slopes but nothing demanding. If you want photos that feel like a destination shoot without leaving the city, this is the spot I think of first."
   },
   {
     "id": "high-park",
@@ -313,7 +324,8 @@
     "parking": "Street parking on perimeter, small paid lots inside",
     "travelTime": "20 minutes from downtown",
     "idealIf": "You want romantic cherry blossoms, fall colour, and lake vignettes all in one sprawling park.",
-    "image": "high-park.jpg"
+    "image": "high-park.jpg",
+    "vibeLine": "A sprawling park that turns pink with cherry blossoms each spring and burns red along the lake every fall."
   },
   {
     "id": "humber-arboretum",
@@ -344,7 +356,8 @@
     "parking": "Free parking on weekends at Humber College lots",
     "travelTime": "30-40 minutes from downtown",
     "idealIf": "You want natural, romantic scenery with forest, water, and garden elements, and you don't mind a drive.",
-    "image": "humber-arboretum.jpg"
+    "image": "humber-arboretum.jpg",
+    "vibeLine": "Winding forest trails that open onto the Humber, green and quiet enough to forget you're still in Toronto."
   },
   {
     "id": "humber-bay-arch-bridge",
@@ -373,7 +386,9 @@
     "parking": "Free lots at Humber Bay Park East and West",
     "travelTime": "20 minutes from downtown",
     "idealIf": "You want a sculptural, modern frame against the lake with skyline and sunset in the backdrop.",
-    "image": "humber-bay-arch-bridge.jpg"
+    "image": "humber-bay-arch-bridge.jpg",
+    "vibeLine": "A sculptural arch over the lake that frames couples against the skyline as the sun goes down.",
+    "story": "Most couples find this bridge on their phones before they find me. The draw is the arch itself, a big modern curve over the water that works like a ready-made frame. The span runs about 140 metres, which is more room than the photos suggest, so even on a busy evening I can usually find a quiet stretch of railing.\n\nSunset is when I book it. The light comes in low across the lake, and the downtown skyline sits in the background catching the last warm colour. I put the couple mid-span first, framed by the structure, then move down to the waterfront path for wider frames with the whole arch behind them.\n\nFor sunrise I flip the plan. I start at the pond in Humber Bay Park East, where the sun comes up behind and to the right of the CN Tower, and on a calm morning the glass towers reflect in the pond. Then we make the short walk over to the bridge for a second backdrop in the same session.\n\nThe practical stuff is easy here. Parking is free in the lots at Humber Bay Park East and West. The paths are flat, so heels survive. The city does require a commercial photography permit for professional shoots, and I handle that before the session. I shoot it spring through fall, and it sits twenty minutes from downtown, which is hard to believe once you are standing over the water."
   },
   {
     "id": "kortright-centre",
@@ -403,7 +418,8 @@
     "parking": "Free on-site parking with admission",
     "travelTime": "30-40 minutes from downtown",
     "idealIf": "You want quiet forest, ponds, and boardwalks with minimal crowds for a nature-immersed session.",
-    "image": "kortright-centre.jpg"
+    "image": "kortright-centre.jpg",
+    "vibeLine": "Forest trails and pond boardwalks in Vaughan, quiet enough that strangers rarely wander into the frame."
   },
   {
     "id": "music-garden",
@@ -432,7 +448,9 @@
     "parking": "2-minute walk away",
     "travelTime": "Downtown",
     "idealIf": "You prefer romantic garden aesthetics while staying downtown. Comfortable with weekend crowds.",
-    "image": "music-garden.jpg"
+    "image": "music-garden.jpg",
+    "vibeLine": "Winding garden paths and ornamental grasses at the water's edge, with the downtown towers rising right behind.",
+    "story": "The Music Garden is small, and that is exactly why I keep bringing couples here. The garden is laid out in sections inspired by Bach's music, and each section has its own character. Winding paths give way to ornamental grasses, then granite pillars, then the trees open and you are at the waterfront with the downtown towers behind you. I can get a dozen different looks without asking a couple to walk more than a few minutes.\n\nTiming matters here. Early weekday mornings are the quiet window. Weekend mornings work too, but visitors start arriving around 10am, so I shoot the open waterfront first and save the hedge maze for later. That maze is my favourite corner for close-ups. The hedges wrap around a couple and the city disappears for a frame or two.\n\nHarsh and Bhayva's session started at Blue Mountain that morning, so the Music Garden became the city half of their day, softer afternoon light, new outfits. There is a black and white frame from that session I keep coming back to. The two of them tucked behind one of the granite pillars, laughing about something I will never know. Later, on the curb at Queens Quay, a streetcar crossed in motion blur while they stood perfectly still. That is what this place gives you, a quiet pocket of green with the whole city moving right past it.\n\nPractical bits: no permit needed for photo sessions, parking is a two minute walk away, and the paths are manageable with a few hills. Spring through fall is the season."
   },
   {
     "id": "niagara-botanical-gardens",
@@ -461,7 +479,8 @@
     "parking": "Free on-site parking",
     "travelTime": "90-120 minutes from downtown",
     "idealIf": "You want European-style garden serenity on quiet weekdays for soft, relaxed portraits.",
-    "image": "niagara-botanical-gardens.jpg"
+    "image": "niagara-botanical-gardens.jpg",
+    "vibeLine": "Forty hectares of sculpted gardens that feel more like Europe than Niagara, especially on a quiet weekday."
   },
   {
     "id": "niagara-on-the-lake",
@@ -492,7 +511,8 @@
     "parking": "Street and lot parking in town",
     "travelTime": "100-120 minutes from downtown",
     "idealIf": "You want storybook old-town charm with flower boxes, colonial buildings, and lake views.",
-    "image": "niagara-on-the-lake.jpg"
+    "image": "niagara-on-the-lake.jpg",
+    "vibeLine": "Flower boxes and colonial storefronts down to the lake, the closest Ontario gets to a storybook village."
   },
   {
     "id": "osgoode-hall",
@@ -521,7 +541,9 @@
     "parking": "Paid lots nearby on Queen Street, limited street parking",
     "travelTime": "Downtown",
     "idealIf": "You want formal, symmetrical architecture and manicured lawns for timeless portraits.",
-    "image": "osgoode-hall.jpg"
+    "image": "osgoode-hall.jpg",
+    "vibeLine": "Neoclassical columns and manicured lawns behind iron gates that were built to keep cattle out.",
+    "story": "Osgoode Hall is my favourite stop on the downtown loop. It sits a five minute walk west of City Hall on Queen Street, behind wrought iron gates that were built to keep cattle out. Step through them and the plaza noise drops away. After the busy square, this is the quiet green chapter.\n\nI work it in an order. Gardens first, while the courtyards still hold their shade. Then the Palladian columns on the south face. Then back to the iron gates and the warm brick corridor, which frame a couple better than almost anything downtown. Late morning through mid afternoon is my window. The grounds stay calm even when Nathan Phillips Square is packed.\n\nI photographed Sonia and Achyut here after their City Hall ceremony. Old City Hall was the theatrical half of their afternoon. Osgoode was the hushed one. I saved the gates for last, at golden hour, the final stop of their walk.\n\nPractical notes. The grounds belong to the Law Society of Ontario, not the City, so a Toronto photo permit does not cover them. Ask for permission in advance, and know access is sometimes limited during construction or court events. Parking means paid lots nearby on Queen, with limited street spots. The walking is easy, flat lawns and paths with courtyard access. And come spring through fall. This place is about the green."
   },
   {
     "id": "polson-pier",
@@ -551,7 +573,8 @@
     "parking": "Free lot on-site with 100+ spaces",
     "travelTime": "15-20 minutes from downtown",
     "idealIf": "You want the most iconic Toronto skyline shot from across the inner harbour.",
-    "image": "polson-pier.jpg"
+    "image": "polson-pier.jpg",
+    "vibeLine": "A flat paved pier across the inner harbour where the whole Toronto skyline lines up in one frame."
   },
   {
     "id": "queen-victoria-park",
@@ -581,7 +604,8 @@
     "parking": "Multiple paid lots along the parkway",
     "travelTime": "100 minutes from downtown",
     "idealIf": "You want the iconic mist, rainbows, and Horseshoe Falls as your backdrop.",
-    "image": "queen-victoria-park.jpg"
+    "image": "queen-victoria-park.jpg",
+    "vibeLine": "Green parkland facing Horseshoe Falls, with mist hanging in the air and rainbows on sunny days."
   },
   {
     "id": "rc-harris",
@@ -609,7 +633,13 @@
     "parking": "Free street parking until 4pm",
     "travelTime": "20-30 minutes from downtown",
     "idealIf": "You want cinematic, romantic imagery blending architecture with waterfront scenery and don't mind walking and wind.",
-    "image": "rc-harris.jpg"
+    "image": "rc-harris.jpg",
+    "blogGuide": {
+      "url": "/blog/rc-harris-engagement-photos-toronto/",
+      "title": "RC Harris Engagement Photos: A Toronto Location Guide"
+    },
+    "vibeLine": "A 1930s Art Deco waterworks above the lake that makes two people look like a film still without trying.",
+    "story": "RC Harris is the location I keep coming back to. It is a 1930s Art Deco waterworks above Lake Ontario, limestone towers and tiered stone staircases, with open lawns running down to a rocky shoreline. Locals call it the Palace of Purification. Stand a couple in front of that stone and the picture is half built before anyone moves.\n\nI usually start at the main facade, then work down the staircases to the iron-railing walkway along the lake edge. There are heavy heritage doors painted deep green set into the stone, small details that read rich on camera. Below the lawns the ground turns to rock and open water, the wild counterpoint to all that polished limestone.\n\nGolden hour is the reason to book it. The ninety minutes before sunset make the stone glow and the lake go silver. Early morning is a close second, and the grounds are at their quietest then.\n\nThe wind off the lake sounds like a problem and is actually a gift. One September session, Shuba and Rob showed up with zero agenda, just comfortable clothes and real ease with each other. Within five minutes they were laughing hard enough that I almost missed the first frame, and the wind kept catching Shuba's hair at exactly the right moment. I barely directed them. The lake set the pace.\n\nPractical notes: you do not need a permit for a photo session here, street parking is free until 4pm, and there are stairs between the spots, so wear shoes you can walk in. It is twenty to thirty minutes from downtown."
   },
   {
     "id": "royal-botanical-gardens",
@@ -638,7 +668,8 @@
     "parking": "On-site paid lots at each garden entrance",
     "travelTime": "45-60 minutes from downtown",
     "idealIf": "You want a peaceful oasis of blooms and trails that looks different every visit.",
-    "image": "royal-botanical-gardens.jpg"
+    "image": "royal-botanical-gardens.jpg",
+    "vibeLine": "A quiet sprawl of gardens and woodland trails where the blooms are never the same two visits in a row."
   },
   {
     "id": "scarborough-bluffs",
@@ -666,7 +697,9 @@
     "parking": "Paid parking",
     "travelTime": "30-40 minutes from downtown",
     "idealIf": "You want destination beach and cliff aesthetics without leaving Toronto. Comfortable with crowds and hiking.",
-    "image": "scarborough-bluffs.jpg"
+    "image": "scarborough-bluffs.jpg",
+    "vibeLine": "White clay cliffs over a sandy beach, the closest thing Toronto has to a destination coastline.",
+    "story": "The Bluffs are one of the few places in Toronto where I can promise a couple their photos will not look like the city. I almost always shoot from Bluffer's Park at lake level rather than the clifftop parks. The drive down Brimley Road ends at a big paid lot, with the white clay cliffs rising behind the beach.\n\nSunrise is my favourite window here. I ask couples to meet me about 25 minutes before the sun comes up, early enough to claim the spit of beach at the east end of the park. The sun clears the water first. A few minutes later the cliffs catch it, going from blue to peach to fully lit in about fifteen minutes, and that little gap is where the best frames live. Sunset works too. The beach faces west, so golden light pours onto the sand at the end of the day.\n\nA few honest notes. Getting down to the beach involves steep inclines, so wear shoes you can walk in and save the formal pair for the sand. The strongest images happen right at the waterline, where the sand is soft and damp, so I pack a microfibre towel for the couple's shoes. No permit is needed, parking is paid in season, and at sunrise the lot is nearly empty. I book this spot from spring through fall. If you want destination beach and cliff photos without leaving Toronto, and you do not mind a bit of a hike, this is the place."
   },
   {
     "id": "td-centre",
@@ -691,7 +724,9 @@
     "parking": "Paid parking",
     "travelTime": "Downtown",
     "idealIf": "You prefer sleek, urban, downtown modern aesthetics over nature-focused styles.",
-    "image": "td-centre.jpg"
+    "image": "td-centre.jpg",
+    "vibeLine": "Mies van der Rohe's towers and a King Street streetcar rolling past, the city at its most cinematic.",
+    "story": "TD Centre is where I send couples who want the city itself in their photos. Mies van der Rohe designed the towers, and it is still the most cinematic block downtown. If you would rather have glass and clean lines than gardens, this is your spot.\n\nI usually start in the courtyards around the towers, then work toward King Street West. The variety inside a few blocks is what makes it work. Modern towers on one side, older brick buildings and narrow side streets on the other. If a couple wants some green to balance the glass, St. James Park is close by.\n\nLight matters here more than at most locations. Golden hour puts warm light on the glass. Blue hour turns the whole district moody. It photographs beautifully at night too. I tell couples to come on a weekend if they can. The streets are quieter and nobody is rushing the shot.\n\nOne of my favourite frames from a session here is a couple crossing King Street with a streetcar passing right behind them. You cannot stage that timing. You watch the tracks, wait, and take the shot when it comes.\n\nThe practical stuff: no permit needed. Plan for paid parking. Expect a medium walk with some stairs and movement between areas. And it works year-round. The architecture does not care what month it is."
   },
   {
     "id": "toronto-islands",
@@ -721,7 +756,9 @@
     "parking": "Paid lots at Jack Layton Ferry Terminal, TTC recommended",
     "travelTime": "30-40 minutes from downtown including ferry",
     "idealIf": "You want beaches, gardens, and the full Toronto skyline across the harbour in one session.",
-    "image": "toronto-islands.jpg"
+    "image": "toronto-islands.jpg",
+    "vibeLine": "A short ferry ride to quiet beaches and cottage lanes, with the full Toronto skyline across the water.",
+    "story": "The session starts before I take a single photo. Something happens on the ferry. By the time the boat docks, the city noise is behind you, and couples stop posing and start being themselves. That is half my job done.\n\nI plan the Islands as a slow afternoon into sunset. The walking is real, 20 to 30 minutes between sections of the island, so I tell couples to wear comfortable shoes and carry the fancy ones. In fall, the maples around the island cottages turn red and orange and the grass disappears under leaves. I have photographed a couple under one of those trees and the whole frame just went warm.\n\nI save the beach for the last hour of light. This is the photo people come for: the full Toronto skyline across the harbour with open water in front of it. One session ended on a driftwood log right at the waterline. The sky behind the CN Tower turned deep orange and they sat there holding hands while I worked. Those frames are still some of my favourites.\n\nA few practical things. Professional shoots here need a City of Toronto commercial photography permit, so this is a location to plan, not one to wing. Budget 30 to 40 minutes from downtown including the ferry. There are paid lots at Jack Layton Ferry Terminal, but the TTC is honestly easier."
   },
   {
     "id": "uoft",
@@ -748,7 +785,13 @@
     "parking": "$10 on weekends",
     "travelTime": "Downtown",
     "idealIf": "You want classic, elegant European-influenced photos right in downtown Toronto with diverse backdrops.",
-    "image": "uoft.jpg"
+    "image": "uoft.jpg",
+    "blogGuide": {
+      "url": "/blog/university-of-toronto-engagement-photos/",
+      "title": "University of Toronto Engagement Photos: A Location Guide"
+    },
+    "vibeLine": "Gothic cloisters and century-old stone that feel like Oxford dropped into downtown Toronto.",
+    "story": "I keep coming back to the St. George campus. Knox College first, almost always. The cloister there is a covered stone arcade wrapped around a lawn, and it keeps the light soft and even, no matter how harsh the day is. The symmetry does half the composition for me. From there it is a short walk to University College's quad, then out to King's College Circle for the wide frames, Convocation Hall's dome on one side and the CN Tower rising past the rooflines.\n\nLate afternoon is the light I want. Around 3 PM in early October the sun hits the eastern facades and carves shadow into the arches. October is the month if you can only pick one. The ivy on Knox turns orange and the walkways fill with fallen leaves. Mornings are the quiet option if you want the courtyards to yourselves.\n\nOne session here stays with me. Preet and Roxana arrived with red heart balloons and their goldendoodle in a full tuxedo. Every time they kissed, the dog trotted into the frame like he knew exactly where to stand. I just kept shooting. You do not interrupt timing like that.\n\nA few practical notes. The courtyards and buildings sit close together, so the day moves at a walking pace. Weekends are calmer than weekdays in term, and parking runs about $10 on a weekend. Some indoor and restricted areas need permission, so I plan the route around whatever is open. And if you met here, like Priyanka and Saurav did, the campus carries a meaning no rented backdrop ever will."
   },
   {
     "id": "websters-falls",
@@ -778,7 +821,8 @@
     "parking": "Designated paid lot at the falls conservation area",
     "travelTime": "60-75 minutes from downtown",
     "idealIf": "You want an intimate waterfall moment with forest trails and mist for an adventurous session.",
-    "image": "websters-falls.jpg"
+    "image": "websters-falls.jpg",
+    "vibeLine": "A waterfall in the Dundas forest that you hear before you see, with mist drifting all the way up the trail."
   },
   {
     "id": "dundurn-castle",
@@ -808,7 +852,13 @@
     "parking": "Free on-site parking at 610 York Blvd",
     "travelTime": "60-70 minutes from downtown Toronto via QEW",
     "idealIf": "You want European estate grandeur, stone archways, and manicured gardens without leaving the GTA.",
-    "image": "dundurn-castle.jpg"
+    "image": "dundurn-castle.jpg",
+    "blogGuide": {
+      "url": "/blog/dundurn-castle-wedding-photographer-guide/",
+      "title": "Dundurn Castle Wedding Photos: A Hamilton Location Guide"
+    },
+    "vibeLine": "An 1830s Italianate villa above Hamilton Harbour that reads like a European estate, an hour from Toronto.",
+    "story": "Dundurn does most of the work for me. It is an 1830s Italianate villa on a rise above Hamilton Harbour, and the columned portico is the frame everyone comes for. I usually start there, then walk couples up the tree-lined drive. With the sun behind them at golden hour, the allee gives you a natural leading line and that European estate feeling in a single frame. The light is best in late afternoon, when the stone goes warm and the columns gain depth.\n\nThe parkland matters more than people expect. Old trees and wide grass, the house small in the distance. In early spring and late fall the branches are bare and the grounds read like an old English estate. Summer brings the full canopy. It works in every season.\n\nVikrant and Sahib drove in from out of town for a single afternoon, both in head-to-toe black against the pale stone. The castle gave the day a grand, quiet first act before the session softened into the Burlington lakefront. Roxanne and Justin closed their wedding here after their ceremony at St. Patrick's, walking the allee with yellow petals across the path, Roxanne glancing back over her shoulder mid-step.\n\nA few practical notes. Parking is free on site at 610 York Boulevard. Groups under ten shoot permit-free on the grounds, and ten or more needs a City of Hamilton permit at 218 dollars. The grounds are flat and easy to walk, with a few steps at the main entrance. From downtown Toronto, plan on 60 to 70 minutes on the QEW."
   },
   {
     "id": "burlington-village",
@@ -838,7 +888,9 @@
     "parking": "Municipal paid lots and metered street parking on Lakeshore Road and Brant Street; arrive early on summer weekends as lots fill quickly during events",
     "travelTime": "45-60 minutes from downtown Toronto",
     "idealIf": "You want the open sweep of Lake Ontario framing every shot, the sculptural curve of Brant Street Pier as your backdrop, and a five-minute stroll to cobblestone village streets for a warmer, more intimate second act.",
-    "image": "burlington-village.jpg"
+    "image": "burlington-village.jpg",
+    "vibeLine": "The curve of Brant Street Pier over open water, and cobblestone village streets a five-minute stroll away.",
+    "story": "Burlington's lakefront is one of the easiest locations I shoot. The promenade at Spencer Smith Park is flat with almost no stairs, so couples in long outfits or heels can actually move between spots. I usually start at the water. The curve of Brant Street Pier gives me a clean line with nothing but Lake Ontario behind it, and the wind off the lake does half the work with hair and hems.\n\nThen I walk five minutes into the village, and that short walk is the whole reason I bring couples here. Brant Street has painted-railing porches and brick storefronts, and the mood softens completely without anyone moving a car.\n\nVikrant and Sahib's session is the one I think of. Burlington was the second act of their pre-wedding day. They changed into matching blue stripes and the village pulled them somewhere lighter. There is a frame at a small green cafe table where Sahib cups her own face in her hands, grinning at Vikrant across the table. You can see exactly how she looks at him when no one is around. They finished back at the water in black, the lake gone pale grey, Sahib's cheek resting on Vikrant's shoulder at the railing, looking straight into the lens.\n\nPractical notes. Parking is municipal lots and meters on Lakeshore Road and Brant Street, and on summer weekends they fill fast, so arrive early. Organized sessions need a City of Burlington photography contract, roughly $103 to $145 per 90-minute block depending on residency, booked through the city's Live and Play system. Sort that out before the date, not after."
   },
   {
     "id": "adamson-estate",
@@ -873,7 +925,9 @@
     "parking": "Free on-site lot adjacent to the estate; limited spaces so arrive early or carpool on busy weekends.",
     "travelTime": "30 min from Downtown",
     "idealIf": "You want a circa-1920 Colonial Revival stone manor on Lake Ontario's shoreline, where heritage grandeur meets landscaped grounds and every frame carries a quiet, timeless weight.",
-    "image": "adamson-estate.jpg"
+    "image": "adamson-estate.jpg",
+    "vibeLine": "A 1919 stone manor where the late light comes off Lake Ontario and warms the ivy and the lawn.",
+    "story": "Adamson Estate is the quietest place I shoot in the GTA. It sits behind a low stone wall on a residential street in Lakeview, Mississauga, and once you walk through the gate the traffic noise just stops. Wind off the lake, the odd gull, and a 1919 stone manor that does most of the compositional work for me.\n\nI work the grounds in a loop. The lakefront terrace first, because the bounce light coming off the water is strongest in the last two hours before sunset and fills faces with almost no harsh shadow. Then the brick courtyards behind the house, where the patterned walls and one deep archway give me three different backdrops within twenty feet. If there is energy left, the wooded path on the east side filters the light into long beams in late spring and fall.\n\nI photographed Ayushi and Parth's pre-wedding session here on a clear afternoon. Ayushi wore a cream lehenga that caught every bit of that bounced lake light, Parth was in deep charcoal, and the session ended on the lakefront as the wind picked up and the light went the soft amber that only happens between 7:45 and 8:15 in early summer. I let them stand still and let the lake do the rest.\n\nPractical notes. The City of Mississauga asks for a commercial photography permit for professional shoots, so call 905-615-4100 before you book. Parking is a free lot on site, small, so arrive early on weekends. The grounds are flat with ramp access to the house. Shoot it May through October. Skip winter, the wind off the lake is brutal."
   },
   {
     "id": "aera-toronto",
@@ -907,7 +961,9 @@
     "parking": "Paid public parking at CIBC Square and surrounding Financial District lots. Union Station is a short walk for guests arriving by transit.",
     "travelTime": "Downtown",
     "idealIf": "You want a modern Italian, high-rise wedding venue with floor-to-ceiling Toronto skyline views and a warm dining-room feel.",
-    "image": "aera-toronto.jpg"
+    "image": "aera-toronto.jpg",
+    "vibeLine": "A modern Italian dining room 38 floors over downtown that turns candle-warm just as the skyline lights up.",
+    "story": "Aera sits on the 38th floor of CIBC Square, and the room does most of my work for me. Floor-to-ceiling windows wrap the dining space, so a clear afternoon fills it with soft city sun. There is a cloud mural painted across the ceiling, and below it one long family-style table that anchors the whole evening.\n\nThe shot I go for first is the arched corridor with the mirror at the far end. I pull couples there within thirty minutes of the ceremony, before anyone wanders into the hallway with a phone. A bride in a veil walking toward that mirror needs almost no direction from me.\n\nThe light has a clear cycle. Mid-afternoon is the most forgiving, with soft side light through the south-facing glass. I try to get the ceremony to end about forty-five minutes before sunset. That sets up skyline portraits at the windows, then the twenty minutes after sunset when the city lights up while the room still holds candlelight. That stretch is the rarest light the venue offers.\n\nAt Grace and Giovanni's wedding the day opened with a tea ceremony by the windows. Grace held the cup with both hands in front of her grandmother while the afternoon light caught the side of her face. By dinner, candle runners ran the length of the long table and the skyline glittered behind the toasts. Late in the meal I pulled them to a quiet corner of the windows for one blue-hour frame.\n\nPractical notes: it is a private restaurant, so photography is arranged with the venue, no city permit. Elevator to the 38th floor. Fully indoors, so rain never moves the schedule."
   },
   {
     "id": "st-patricks-parish-hamilton",
@@ -934,6 +990,12 @@
     "parking": "On-street parking along King Street East and side streets. Free Sunday street parking citywide; check signage on a weekday.",
     "travelTime": "60-70 minutes from downtown Toronto via QEW and Burlington Street",
     "idealIf": "You want a stone Gothic Revival cathedral interior in Hamilton with a painted starry-blue vault, a gilded reredos full of carved saints, and a rose window over the entrance.",
-    "image": "st-patricks-parish-hamilton.jpg"
+    "image": "st-patricks-parish-hamilton.jpg",
+    "blogGuide": {
+      "url": "/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/",
+      "title": "From St. Patrick's to Dundurn Castle: A Real Hamilton Wedding"
+    },
+    "vibeLine": "An 1877 stone Gothic Revival church with a painted starry-blue vault and a rose window that lights the centre aisle.",
+    "story": "St. Patrick's is a stone Gothic Revival church on King Street East, built in 1877, and it photographs like it knows it. A painted starry-blue vault runs across the ceiling. The gilded reredos behind the altar is full of carved saints. A rose window sits over the front doors and pulls afternoon light down the entire centre aisle, which is exactly where you want it.\n\nI shoot the empty room first. Sun through the rose window onto the wood pews, the painted Latin inscription glowing across the apse. Then the day arrives. When Roxanne walked that aisle on her father's arm, the pipe organ tall in the loft behind her, the whole room shifted. I work the side aisles quietly with fast lenses and the window light. This is an active parish, so flash is a conversation with your celebrant, never an assumption. The restrained frames end up the strongest anyway. Roxanne kneeling at the altar, veil pooling on the tile, is one of my favourite photographs from that day.\n\nThe narthex doorway is the corner I keep going back to. It frames the recessional as a silhouette, two people walking out into the light. Then the front steps, where everything loosens. At Roxanne and Justin's wedding, a grandfather clapped with both hands over his head while the two of them hugged through the noise.\n\nPractical notes. Parking is on-street along King East and the side streets, and Sunday street parking is free citywide. A few steps lead up to the main doors and the floor inside is flat, easy for grandparents. Photography happens inside your ceremony booking, so confirm the photo terms with the parish office before the day."
   }
 ]
