@@ -1,0 +1,458 @@
+---
+/**
+ * Elopement money page — built 2026-06-10 from the Claude Design mockup
+ * (KashKlicks.zip / Elopement.html), post-hallmark audit.
+ * Brief: vault _context/specs/2026-06-10-elopement-page-design-brief.md
+ * SEO plan Month 1, top move #1. Targets "elopement photographer toronto".
+ *
+ * Audit fixes vs mockup: civil delivery corrected to the canonical
+ * "2 to 4 weeks" (mockup said 1-3); film add-on slot omitted entirely
+ * (video packages unpriced); mockup chrome replaced with site components.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import Button from '../components/ui/Button.astro';
+import FinalCTA from '../components/global/FinalCTA.astro';
+import ReviewStrip from '../components/global/ReviewStrip.astro';
+import BookingNote from '../components/global/BookingNote.astro';
+import { Image } from 'astro:assets';
+
+import heroImage from '../assets/images/portfolio/anushka-anthony-cover.jpg';
+import galSonia from '../assets/images/portfolio/sonia-achyut-cover.jpg';
+import galAnushka from '../assets/images/portfolio/anushka-anthony-cover.jpg';
+import galAlex from '../assets/images/portfolio/alex-aziz-cover.jpg';
+import site from '../data/site.json';
+import googleReviews from '../data/google-reviews.json';
+
+const meghna = googleReviews.reviews.find((r) => r.name === 'Meghna Dhillon');
+
+const faqs = [
+  {
+    q: 'Do you only photograph City Hall elopements?',
+    a: 'No. City Hall is the classic, but I photograph backyards, restaurant dinners, Osgoode Hall, living rooms, anywhere intimate. If it fits 2 to 20 people, it fits me.',
+  },
+  {
+    q: 'When will we see our photos?',
+    a: 'A sneak peek within days. For civil ceremonies the full gallery arrives in 2 to 4 weeks. For longer days I confirm the timeline before you book, so there are no surprises.',
+  },
+  {
+    q: 'Is travel included?',
+    a: 'GTA travel is included. Beyond the GTA, travel is at cost and quoted upfront, before you commit to anything.',
+  },
+  {
+    q: 'What do we need to legally marry in Toronto?',
+    a: 'A marriage licence (about $160, valid 90 days) and two witnesses aged 18 or older. If you want the City Hall wedding chambers, book them online or by phone. The practical guide above covers the rest.',
+  },
+  {
+    q: 'Can we get the raw files?',
+    a: 'Yes. For sessions and civil ceremonies, raw photo files are $50 and raw video files are $100. Most couples find the edited gallery is what they actually want, but the option is there.',
+  },
+  {
+    q: 'Is a weekday elopement cheaper?',
+    a: 'No, and I would rather be straight about it: my pricing is flat and public. The Civil Ceremony is $500 whether it is a Tuesday morning or a Saturday afternoon. Weekdays are easier to book at City Hall, though.',
+  },
+];
+
+const steps = [
+  { n: 'i.', title: 'The marriage licence', body: 'About $160, issued by the city, and valid for 90 days. Bring it with you on the day.' },
+  { n: 'ii.', title: 'The ceremony', body: 'A City Hall wedding chamber ceremony runs about $325 including tax. Short, real, and lovelier than its reputation.' },
+  { n: 'iii.', title: 'Two witnesses', body: 'Anyone 18 or older. Two friends, two parents, or two people who love you enough to show up on a weekday.' },
+  { n: 'iv.', title: 'Booking the chamber', body: 'Wedding chambers are booked online or by phone through the city. Pick the slot, then send me the date.' },
+];
+
+const galleries = [
+  { no: 'No. I', img: galSonia, alt: 'Sonia and Achyut after their civil ceremony at Toronto City Hall and Osgoode Hall', venue: 'Toronto City Hall · Osgoode Hall', couple: 'Sonia + Achyut', href: '/portfolio/sonia-achyut/' },
+  { no: 'No. II', img: galAnushka, alt: 'Anushka and Anthony on their elopement day at Toronto City Hall', venue: 'Toronto City Hall', couple: 'Anushka + Anthony', href: '/portfolio/anushka-anthony/' },
+  { no: 'No. III', img: galAlex, alt: 'Alex and Aziz, civil ceremony portraits at TD Centre and Commerce Court', venue: 'TD Centre · Commerce Court', couple: 'Alex + Aziz', href: '/portfolio/alex-aziz/' },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${site.url}/elopement-photographer-toronto/#service`,
+    serviceType: 'Elopement photography',
+    areaServed: 'Toronto, Ontario',
+    provider: { '@id': `${site.url}/#business` },
+    offers: [
+      { '@type': 'Offer', name: 'The Civil Ceremony', price: '500', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
+      { '@type': 'Offer', name: 'The Essentials', price: '1400', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Toronto Elopement Photographer | Packages from $500"
+  description="Elopement photography in Toronto from $500. City Hall ceremonies, backyard vows and intimate weddings with 2 to 20 guests, photographed by one calm photographer. Flat, public pricing."
+  jsonLd={jsonLd}
+>
+  <!-- ═══ 01 · Hero ═══ -->
+  <section class="container-editorial" style="padding-top: var(--spacing-section);">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Elopements', href: '/elopement-photographer-toronto/' },
+    ]} />
+
+    <div class="el-masthead reveal" style="margin-top: var(--spacing-block);">
+      <span><b>Elopements</b> &middot; Now booking 2026 &amp; 2027</span>
+      <span>Toronto, ON &middot; From $500</span>
+    </div>
+
+    <div class="el-hero">
+      <div class="reveal">
+        <div class="el-label-row">
+          <span class="el-label-row__no">01</span>
+          <span class="el-label-row__tag text-label-sm">Elope In Toronto</span>
+          <span class="el-label-row__line"></span>
+        </div>
+        {/* Decorative display line; the real h1 is the keyword lede below. */}
+        <p class="text-display-lg el-display" aria-hidden="true">
+          <span class="block">Married, <em class="italic">quietly</em>.</span>
+          <span class="block">Small, <em class="italic">on purpose</em>.</span>
+        </p>
+        <h1 class="text-body-lg text-on-surface-variant el-lede" style="margin-top: var(--spacing-element); max-width: 44ch;">
+          Toronto elopement photographer for City Hall days, backyard vows, and small rooms full of people you love.
+        </h1>
+
+        <ReviewStrip class="reveal" style="margin-top: 2.25rem;" />
+
+        <div class="flex flex-wrap items-center gap-3" style="margin-top: 2.25rem;">
+          <Button href="/contact/?service=civil-ceremony#inquiry" variant="primary">Check my date</Button>
+          <Button href="#packages" variant="ghost">See packages &rarr;</Button>
+        </div>
+        <BookingNote tone="light" style="margin-top: 1.25rem;" />
+      </div>
+
+      <figure class="el-portrait reveal stagger-1">
+        <div class="hover-zoom">
+          <Image
+            src={heroImage}
+            alt="Anushka and Anthony just married at Toronto City Hall, photographed by AD Photography"
+            widths={[480, 720, 960]}
+            sizes="(max-width: 860px) 100vw, 42vw"
+            quality={80}
+            loading="eager"
+            fetchpriority="high"
+            class="el-portrait__img"
+          />
+        </div>
+        <figcaption class="gallery-plaque" style="margin-top: 1rem;">
+          <div class="gallery-plaque__line">
+            <span class="gallery-plaque__plate">Civil Ceremony</span>
+            <span class="gallery-plaque__rule"></span>
+            <span class="gallery-plaque__meta">Toronto City Hall</span>
+          </div>
+          <p class="gallery-plaque__title">Just married, <em>just us</em></p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ 02 · Small on purpose ═══ -->
+  <section class="bg-surface" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="el-label-row reveal">
+        <span class="el-label-row__no">02</span>
+        <span class="el-label-row__tag text-label-sm">Small On Purpose</span>
+        <span class="el-label-row__line"></span>
+      </div>
+      <div class="el-story-grid">
+        <div class="reveal">
+          <h2 class="text-display-md" style="max-width: 18ch;">A considered wedding, not a <em class="italic text-on-surface-variant">lesser</em> one.</h2>
+          <div style="margin-top: 2rem;">
+            <p class="el-story-p">You are not skipping anything. You looked at the production, the seating charts, the eighteen month timeline, and you chose the part that matters: the two of you, the words, and a few people you love in the room.</p>
+            <p class="el-story-p">I photograph it the same way you planned it. I am one photographer with one calm voice. No crew, no shot list barked across the room, no choreography. I arrive early, I keep things easy, and I stay out of the way of <em class="italic text-on-surface">the real thing</em>.</p>
+            <p class="el-story-p">City Hall on a Tuesday. A backyard with twelve chairs. A long restaurant table after the vows. I have photographed this exact day many times, and it deserves to be done beautifully.</p>
+          </div>
+        </div>
+        <div class="el-facts reveal stagger-1">
+          <div class="el-fact">
+            <span class="el-fact__k text-label-sm">Guest count</span>
+            <span class="el-fact__v">2 to 20 people<small>Just you two, or the closest few</small></span>
+          </div>
+          <div class="el-fact">
+            <span class="el-fact__k text-label-sm">Where</span>
+            <span class="el-fact__v">City Hall, backyards, restaurants<small>Osgoode Hall, the Island ferry, anywhere intimate</small></span>
+          </div>
+          <div class="el-fact">
+            <span class="el-fact__k text-label-sm">Replies</span>
+            <span class="el-fact__v">Within 24 hours, every time<small>From me, never a form letter</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 · Packages ═══ -->
+  <section id="packages" class="bg-surface-dim" style="padding: var(--spacing-section) 0; scroll-margin-top: 100px;">
+    <div class="container-editorial">
+      <div class="el-label-row reveal">
+        <span class="el-label-row__no">03</span>
+        <span class="el-label-row__tag text-label-sm">Packages</span>
+        <span class="el-label-row__line"></span>
+      </div>
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-7">
+          <h2 class="text-display-md reveal">Two honest packages. Flat, <em class="italic text-on-surface-variant">public</em> pricing.</h2>
+        </div>
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0">
+          <p class="text-body-lg text-on-surface-variant reveal stagger-1">No quote forms, no "starting at" games. These are the real numbers, the same ones I give everyone.</p>
+        </div>
+      </div>
+
+      <ReviewStrip class="reveal mb-12" />
+
+      <div class="el-pkg-grid reveal stagger-1">
+        <article class="el-pkg">
+          <p class="text-label-sm text-on-surface-muted">Elopement</p>
+          <h3 class="text-heading-lg" style="margin-top: 0.5rem;">The Civil Ceremony</h3>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">The City Hall classic. Ceremony, portraits, done by lunch.</p>
+          <p class="el-pkg__price">$500</p>
+          <ul class="el-pkg__list">
+            <li>Up to 2 hours coverage</li>
+            <li>Ceremony + couples portraits</li>
+            <li>150+ edited photos</li>
+            <li>Private online gallery</li>
+            <li>Sneak peek within days, full gallery in 2 to 4 weeks</li>
+          </ul>
+          <a href="/contact/?service=civil-ceremony&package=civil-ceremony&package_name=The%20Civil%20Ceremony#inquiry" class="el-pkg__cta magnetic">Check my date <span aria-hidden="true">&rarr;</span></a>
+        </article>
+
+        <article class="el-pkg">
+          <p class="text-label-sm text-on-surface-muted">Intimate Wedding</p>
+          <h3 class="text-heading-lg" style="margin-top: 0.5rem;">The Essentials</h3>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">For elopements with a dinner after. Vows through the toasts.</p>
+          <p class="el-pkg__price">$1,400</p>
+          <ul class="el-pkg__list">
+            <li>Up to 6 hours coverage</li>
+            <li>Ceremony, portraits &amp; the dinner after</li>
+            <li>Unlimited edited photos (200+)</li>
+            <li>Engagement session included (Love Story Mini)</li>
+            <li>Private online gallery</li>
+          </ul>
+          <a href="/contact/?service=wedding&package=wedding-base&package_name=The%20Essentials#inquiry" class="el-pkg__cta magnetic">Check my date <span aria-hidden="true">&rarr;</span></a>
+        </article>
+
+        <article class="el-pkg el-pkg--quiet">
+          <p class="text-label-sm text-on-surface-muted">In Between</p>
+          <h3 class="text-heading-lg" style="margin-top: 0.5rem;">Make It Yours</h3>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 0.75rem;">Anything between the two. More hours, a second location, a morning ceremony and an evening table.</p>
+          <p class="el-pkg__price el-pkg__price--text">Built around your day</p>
+          <ul class="el-pkg__list">
+            <li>Start from either package</li>
+            <li>Add only the hours you need</li>
+            <li>One conversation, one clear quote</li>
+          </ul>
+          <a href="/contact/?service=civil-ceremony#inquiry" class="el-pkg__cta magnetic">Tell me your plan <span aria-hidden="true">&rarr;</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 · The practical part ═══ -->
+  <section style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="el-label-row reveal">
+        <span class="el-label-row__no">04</span>
+        <span class="el-label-row__tag text-label-sm">The Practical Part</span>
+        <span class="el-label-row__line"></span>
+      </div>
+      <div class="grid-editorial" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-7 reveal">
+          <h2 class="text-display-md">How eloping in Toronto <em class="italic text-on-surface-variant">actually</em> works.</h2>
+          <p class="text-body-lg text-on-surface-variant" style="margin-top: 1.5rem; max-width: 55ch;">The legal part is simpler than most couples expect. Four things to arrange, all of them straightforward. If anything here is unclear, just ask me.</p>
+        </div>
+        <div class="col-span-12 md:col-span-4 md:col-start-9 mt-8 md:mt-0 reveal stagger-1">
+          <p class="text-body-md text-on-surface-variant">The short version: licence, chamber, two witnesses, done.</p>
+          <p style="margin-top: 1rem;">
+            <a href="/blog/toronto-city-hall-wedding-photographer-guide/" class="el-link text-label-md">Read my full City Hall guide <span aria-hidden="true">&rarr;</span></a>
+          </p>
+        </div>
+      </div>
+      <div class="el-steps-grid reveal stagger-1">
+        {steps.map((s) => (
+          <div class="el-step">
+            <span class="el-step__n">{s.n}</span>
+            <h3 class="text-heading-md">{s.title}</h3>
+            <p class="text-body-md text-on-surface-variant" style="max-width: 34ch;">{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 · Real elopements ═══ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="el-label-row reveal">
+        <span class="el-label-row__no">05</span>
+        <span class="el-label-row__tag text-label-sm">Real Elopements</span>
+        <span class="el-label-row__line"></span>
+      </div>
+      <div class="el-gal-grid reveal stagger-1">
+        {galleries.map((g) => (
+          <a href={g.href} class="el-gal group">
+            <div class="hover-zoom el-gal__frame">
+              <Image src={g.img} alt={g.alt} widths={[400, 640]} sizes="(max-width: 760px) 100vw, 33vw" quality={78} loading="lazy" class="el-gal__img" />
+            </div>
+            <div class="gallery-plaque" style="margin-top: 1rem;">
+              <div class="gallery-plaque__line">
+                <span class="gallery-plaque__plate">{g.no}</span>
+                <span class="gallery-plaque__rule"></span>
+                <span class="gallery-plaque__meta">{g.venue}</span>
+              </div>
+              <p class="gallery-plaque__title">{g.couple}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <figure class="reveal" style="margin: var(--spacing-section) auto 0; max-width: 52ch; text-align: center;">
+        <blockquote style="margin: 0;">
+          <p class="text-quote">&ldquo;{meghna ? meghna.text : ''}&rdquo;</p>
+        </blockquote>
+        <figcaption class="text-label-sm text-on-surface-muted" style="margin-top: 1.5rem;">Meghna Dhillon &middot; Google review</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ 06 · FAQ ═══ -->
+  <section style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="el-label-row reveal">
+        <span class="el-label-row__no">06</span>
+        <span class="el-label-row__tag text-label-sm">Questions</span>
+        <span class="el-label-row__line"></span>
+      </div>
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-4 reveal">
+          <h2 class="text-display-md">Asked before <em class="italic text-on-surface-variant">booking</em>.</h2>
+          <p class="text-body-md text-on-surface-variant" style="margin-top: 1.25rem; max-width: 30ch;">Short, honest answers to what couples ask me most about eloping.</p>
+        </div>
+        <div class="col-span-12 md:col-span-7 md:col-start-6 mt-10 md:mt-0 reveal stagger-1">
+          {faqs.map((f) => (
+            <details class="el-faq">
+              <summary class="el-faq__q">
+                <span class="text-heading-md">{f.q}</span>
+                <span class="el-faq__icon" aria-hidden="true">+</span>
+              </summary>
+              <p class="text-body-md text-on-surface-variant el-faq__a">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Closing ═══ -->
+  <FinalCTA
+    eyebrow="Ready when you are"
+    title="Is your date still open?"
+    body="Tell me where and when. City Hall, a backyard, a restaurant after. I read every inquiry myself and reply within 24 hours, every time."
+    ctaLabel="Check my date"
+    ctaHref="/contact/?service=civil-ceremony#inquiry"
+    background="surface-dark"
+  />
+</BaseLayout>
+
+<style>
+  .el-masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent);
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .el-masthead span {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+  }
+  .el-masthead b { color: var(--color-on-surface); font-weight: 500; }
+
+  .el-label-row { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.5rem; }
+  .el-label-row__no { font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--color-on-surface-muted); }
+  .el-label-row__tag { color: var(--color-on-surface-muted); }
+  .el-label-row__line { flex: 1; height: 1px; background: color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+
+  .el-hero {
+    display: grid;
+    grid-template-columns: 6fr 5fr;
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+    padding-bottom: var(--spacing-section);
+  }
+  @media (max-width: 860px) { .el-hero { grid-template-columns: 1fr; gap: 3rem; } }
+  .el-display { line-height: 0.98; max-width: 14ch; }
+  .el-display em { color: var(--color-on-surface-variant); }
+  .el-lede { font-weight: 400; letter-spacing: 0; line-height: 1.7; }
+  .el-portrait { margin: 0; }
+  .el-portrait .hover-zoom { aspect-ratio: 3 / 4; overflow: hidden; background: var(--color-surface-container); }
+  .el-portrait__img { width: 100%; height: 100%; object-fit: cover; }
+
+  .el-story-grid { display: grid; grid-template-columns: 7fr 4fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+  @media (max-width: 860px) { .el-story-grid { grid-template-columns: 1fr; gap: 3rem; } }
+  .el-story-p { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.8; color: var(--color-on-surface-variant); margin: 0 0 1.5rem; max-width: 58ch; }
+  .el-story-p:last-child { margin-bottom: 0; }
+
+  .el-facts { display: flex; flex-direction: column; }
+  .el-fact { display: flex; flex-direction: column; gap: 0.4rem; padding: 1.25rem 0; border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+  .el-fact:last-child { border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+  .el-fact__k { color: var(--color-on-surface-muted); }
+  .el-fact__v { font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-on-surface); line-height: 1.4; }
+  .el-fact__v small { display: block; font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-on-surface-variant); margin-top: 0.3rem; }
+
+  .el-pkg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+  @media (max-width: 900px) { .el-pkg-grid { grid-template-columns: 1fr; gap: 2rem; max-width: 520px; } }
+  .el-pkg { background: var(--color-surface); padding: 2rem; display: flex; flex-direction: column; }
+  .el-pkg--quiet { background: transparent; border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+  .el-pkg__price { font-family: var(--font-serif); font-style: italic; font-size: clamp(2.25rem, 4vw, 3rem); color: var(--color-on-surface); margin: 1.25rem 0 0; line-height: 1; }
+  .el-pkg__price--text { font-size: 1.4rem; line-height: 1.3; }
+  .el-pkg__list { list-style: none; margin: 1.5rem 0 0; padding: 0; }
+  .el-pkg__list li { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-on-surface-variant); padding: 0.6rem 0; border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 15%, transparent); }
+  .el-pkg__cta { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.75rem; padding: 0.9rem 1.5rem; background: var(--color-primary); color: var(--color-on-dark); font-family: var(--font-sans); font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background-color var(--duration-hover) var(--ease-gallery); }
+  .el-pkg__cta:hover { background: var(--color-primary-hover); }
+  .el-pkg__cta:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+
+  .el-steps-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 3rem); }
+  @media (max-width: 980px) { .el-steps-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .el-steps-grid { grid-template-columns: 1fr; } }
+  .el-step { display: flex; flex-direction: column; gap: 0.85rem; border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 35%, transparent); padding-top: 1.5rem; }
+  .el-step__n { font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--color-on-surface-muted); line-height: 1; }
+
+  .el-gal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  @media (max-width: 760px) { .el-gal-grid { grid-template-columns: 1fr; max-width: 480px; } }
+  .el-gal { text-decoration: none; color: inherit; display: block; }
+  .el-gal__frame { aspect-ratio: 4 / 5; overflow: hidden; background: var(--color-surface-container); }
+  .el-gal__img { width: 100%; height: 100%; object-fit: cover; }
+
+  .el-link { color: var(--color-on-surface-variant); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 45%, transparent); transition: color var(--duration-hover) var(--ease-gallery), border-color var(--duration-hover) var(--ease-gallery); }
+  .el-link:hover { color: var(--color-on-surface); border-color: var(--color-on-surface); }
+  .el-link:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
+
+  .el-faq { border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+  .el-faq:last-child { border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 25%, transparent); }
+  .el-faq__q { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; padding: 1.4rem 0; cursor: pointer; list-style: none; }
+  .el-faq__q::-webkit-details-marker { display: none; }
+  .el-faq__icon { font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-on-surface-muted); transition: transform var(--duration-hover) var(--ease-gallery); flex-shrink: 0; }
+  .el-faq[open] .el-faq__icon { transform: rotate(45deg); }
+  .el-faq__a { padding: 0 0 1.5rem; max-width: 58ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .el-faq__icon, .el-pkg__cta { transition: none; }
+  }
+</style>
