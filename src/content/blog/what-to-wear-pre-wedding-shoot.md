@@ -75,4 +75,4 @@ Don't stress too much about this. During your consultation, we'll chat about you
 
 [Book your consultation →](/contact/#inquiry)
 
-Still picking a spot? Start with the [6 best pre-wedding locations in Toronto](/blog/best-toronto-pre-wedding-locations/), then see [pre-wedding session packages from $350](/services/pre-wedding/).
+Still picking a spot? Start with the [6 best pre-wedding locations in Toronto](/blog/best-toronto-pre-wedding-locations/), then see [pre-wedding session packages from $351.25](/services/pre-wedding/).

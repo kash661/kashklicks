@@ -97,7 +97,7 @@ const offerCatalogSchema = {
   '@context': 'https://schema.org',
   '@type': 'OfferCatalog',
   name: 'Wedding Photography Packages',
-  description: 'Toronto wedding day photography packages by AD Photography. Full-day and partial-day coverage from $1,400.',
+  description: 'Toronto wedding day photography packages by AD Photography. Full-day and partial-day coverage from $1,401.25.',
   url: `${site.url}/services/wedding`,
   offeredBy: businessRef,
   itemListElement: weddingPackages.filter((p) => p.price !== null).map((p) => ({
@@ -126,7 +126,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
 <BaseLayout
   title="Toronto Wedding Photography"
-  description="Toronto wedding day photography packages from $1,400. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation."
+  description="Toronto wedding day photography packages from $1,401.25. Full-day and partial coverage with ceremony, reception, and candid moments. Book a free consultation."
   jsonLd={jsonLd}
 >
   <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
@@ -156,7 +156,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
               variant="icon"
               url="/services/wedding/"
               title="Toronto Wedding Photography, AD Photography"
-              text="Full-day and partial wedding coverage from $1,400."
+              text="Full-day and partial wedding coverage from $1,401.25."
               label="Share"
             />
           </div>

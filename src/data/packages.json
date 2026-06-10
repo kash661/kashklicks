@@ -3,7 +3,7 @@
     "id": "pre-wedding-full",
     "name": "The Pre Wedding",
     "category": "Pre-Wedding",
-    "price": 1450,
+    "price": 1451.25,
     "currency": "CAD",
     "description": "My signature pre-wedding experience. Up to 10 hours of coverage across 3 locations with 3 outfit changes, 150+ high-resolution photos, and a custom 5-7 minute cinematic 4K film.",
     "duration": "Up to 10 hours",
@@ -18,8 +18,8 @@
       "5-7 minute custom cinematic 4K film",
       "30-40 second trailer / save-the-date",
       "Private online gallery",
-      "Fujifilm film simulation add-on +$50",
-      "Vintage Canon throwback candids +$75"
+      "Fujifilm film simulation add-on +$51.25",
+      "Vintage Canon throwback candids +$76.25"
     ],
     "popular": false,
     "order": 1
@@ -28,8 +28,8 @@
     "id": "love-story-film",
     "name": "The Signature Session",
     "category": "Pre-Wedding",
-    "price": 850,
-    "salePrice": 750,
+    "price": 851.25,
+    "salePrice": 751.25,
     "currency": "CAD",
     "description": "The perfect balance of photography and film. Up to 5 hours across 2 locations with 70+ edited photos and a 3-4 minute cinematic 4K film.",
     "duration": "Up to 5 hours",
@@ -44,8 +44,8 @@
       "3-4 minute cinematic 4K film",
       "30-40 second trailer",
       "Private online gallery",
-      "Fujifilm film simulation add-on +$50",
-      "Vintage Canon throwback candids +$75"
+      "Fujifilm film simulation add-on +$51.25",
+      "Vintage Canon throwback candids +$76.25"
     ],
     "popular": true,
     "order": 3
@@ -54,7 +54,7 @@
     "id": "love-story-mini-film",
     "name": "Love Story + Film",
     "category": "Pre-Wedding",
-    "price": 550,
+    "price": 551.25,
     "currency": "CAD",
     "description": "A compact session with both photo and video. Up to 3 hours at 1 location with 40 edited photos and a 1-2 minute 4K film.",
     "duration": "Up to 3 hours",
@@ -68,8 +68,8 @@
       "40 edited photos",
       "1-2 minute cinematic 4K film",
       "Private online gallery",
-      "Fujifilm film simulation add-on +$50",
-      "Vintage Canon throwback candids +$75"
+      "Fujifilm film simulation add-on +$51.25",
+      "Vintage Canon throwback candids +$76.25"
     ],
     "popular": true,
     "order": 2
@@ -78,7 +78,7 @@
     "id": "love-story-duo",
     "name": "Love Story Duo",
     "category": "Pre-Wedding",
-    "price": 550,
+    "price": 551.25,
     "currency": "CAD",
     "description": "A photo-only session with room to explore. Up to 3 hours across 2 locations with 2 outfit changes and 80+ beautifully edited photos.",
     "duration": "Up to 3 hours",
@@ -91,8 +91,8 @@
       "80+ high-resolution edited photos",
       "Private online gallery",
       "1-week delivery",
-      "Fujifilm film simulation add-on +$50",
-      "Vintage Canon throwback candids +$75"
+      "Fujifilm film simulation add-on +$51.25",
+      "Vintage Canon throwback candids +$76.25"
     ],
     "popular": false,
     "order": 4
@@ -101,7 +101,7 @@
     "id": "love-story",
     "name": "Love Story Mini",
     "category": "Pre-Wedding",
-    "price": 350,
+    "price": 351.25,
     "currency": "CAD",
     "description": "A beautiful photo-only session. Up to 2 hours at 1 location with 50+ edited high-resolution photos.",
     "duration": "Up to 2 hours",
@@ -114,8 +114,8 @@
       "50+ high-resolution edited photos",
       "Private online gallery",
       "1-week delivery",
-      "Fujifilm film simulation add-on +$50",
-      "Vintage Canon throwback candids +$75"
+      "Fujifilm film simulation add-on +$51.25",
+      "Vintage Canon throwback candids +$76.25"
     ],
     "popular": false,
     "order": 5
@@ -145,7 +145,7 @@
     "id": "wedding-essential",
     "name": "The Essentials",
     "category": "Wedding",
-    "price": 1400,
+    "price": 1401.25,
     "currency": "CAD",
     "description": "Clean, beautiful coverage of your wedding day. Perfect for intimate weddings and elopements, with up to 6 hours of photography and all the key moments captured.",
     "duration": "Up to 6 hours",
@@ -160,11 +160,11 @@
       "Private online gallery",
       "1 to 2 month delivery",
       "Four cameras, four looks: Sony editorial, Fuji film sim, vintage Canon, handheld compact",
-      "Instax guest prints add-on +$60 (up to 50 prints)",
-      "Handheld compact for your crew +$100 refundable deposit",
-      "Additional hours available at $300/hr",
-      "Second photographer +$100/hr",
-      "Priority 2-3 week delivery available +$500"
+      "Instax guest prints add-on +$61.25 (up to 50 prints)",
+      "Handheld compact for your crew +$101.25 refundable deposit",
+      "Additional hours available at $301.25/hr",
+      "Second photographer +$101.25/hr",
+      "Priority 2-3 week delivery available +$501.25"
     ],
     "popular": false,
     "includesEngagementSession": true,
@@ -174,8 +174,8 @@
     "id": "wedding-full",
     "name": "The Full Day",
     "category": "Wedding",
-    "price": 2500,
-    "salePrice": 2300,
+    "price": 2501.25,
+    "salePrice": 2301.25,
     "currency": "CAD",
     "description": "My most popular wedding package. Full-day coverage from getting ready through the last dance. Every moment, every detail, beautifully documented.",
     "duration": "Up to 10 hours",
@@ -190,10 +190,10 @@
       "Private online gallery",
       "2 to 3 month delivery",
       "Four cameras, four looks: Sony editorial, Fuji film sim, vintage Canon, handheld compact",
-      "Instax guest prints add-on +$60 (up to 50 prints)",
-      "Handheld compact for your crew +$100 refundable deposit",
-      "Second photographer +$100/hr",
-      "Priority 2-3 week delivery available +$500"
+      "Instax guest prints add-on +$61.25 (up to 50 prints)",
+      "Handheld compact for your crew +$101.25 refundable deposit",
+      "Second photographer +$101.25/hr",
+      "Priority 2-3 week delivery available +$501.25"
     ],
     "popular": true,
     "includesEngagementSession": true,
@@ -203,7 +203,7 @@
     "id": "wedding-premium",
     "name": "The Complete Story",
     "category": "Wedding",
-    "price": 3800,
+    "price": 3801.25,
     "currency": "CAD",
     "description": "The ultimate wedding experience. Extended full-day coverage with a second photographer, engagement session included, and priority delivery.",
     "duration": "Up to 14 hours",
@@ -218,9 +218,9 @@
       "Private online gallery",
       "Priority 2 to 3 week delivery included",
       "Four cameras, four looks: Sony editorial, Fuji film sim, vintage Canon, handheld compact",
-      "Instax guest prints add-on +$60 (up to 50 prints)",
-      "Handheld compact for your crew +$100 refundable deposit",
-      "Additional second photographer hours +$100/hr"
+      "Instax guest prints add-on +$61.25 (up to 50 prints)",
+      "Handheld compact for your crew +$101.25 refundable deposit",
+      "Additional second photographer hours +$101.25/hr"
     ],
     "popular": false,
     "includesEngagementSession": true,
@@ -230,7 +230,7 @@
     "id": "celebrations",
     "name": "Celebrations",
     "category": "Events",
-    "price": 550,
+    "price": 551.25,
     "currency": "CAD",
     "description": "Coverage for birthdays, bridal showers, baby showers, and private parties. Minimum 2 hours of coverage with unlimited edited photos.",
     "duration": "Minimum 2 hours",
@@ -241,10 +241,10 @@
       "Unlimited edited photos",
       "Private online gallery",
       "2-week delivery",
-      "Vintage Canon throwback candids +$75",
-      "Instax guest prints add-on +$60 (up to 50 prints)",
-      "Handheld compact for your crew +$100 refundable deposit",
-      "Additional hours available at $150/hr"
+      "Vintage Canon throwback candids +$76.25",
+      "Instax guest prints add-on +$61.25 (up to 50 prints)",
+      "Handheld compact for your crew +$101.25 refundable deposit",
+      "Additional hours available at $151.25/hr"
     ],
     "popular": false,
     "order": 5
@@ -253,7 +253,7 @@
     "id": "civil-ceremony",
     "name": "The Civil Ceremony",
     "category": "Civil Ceremony",
-    "price": 500,
+    "price": 501.25,
     "currency": "CAD",
     "salePrice": null,
     "description": "Intimate coverage of your civil ceremony with a couples portrait session nearby. Simple, beautiful, and everything you need.",
@@ -266,14 +266,39 @@
       "Ceremony coverage",
       "Couples shoot nearby the venue",
       "Private online gallery",
-      "Fujifilm film simulation add-on +$50",
-      "Vintage Canon throwback candids +$75",
-      "Instax guest prints add-on +$60 (up to 50 prints)",
-      "Handheld compact for your crew +$100 refundable deposit",
-      "Additional hours available at $200/hr"
+      "Fujifilm film simulation add-on +$51.25",
+      "Vintage Canon throwback candids +$76.25",
+      "Instax guest prints add-on +$61.25 (up to 50 prints)",
+      "Handheld compact for your crew +$101.25 refundable deposit",
+      "Additional hours available at $201.25/hr"
     ],
     "popular": false,
     "custom": false,
     "order": 1
+  },
+  {
+    "id": "elopement",
+    "name": "The Elopement",
+    "category": "Civil Ceremony",
+    "price": 901.25,
+    "currency": "CAD",
+    "salePrice": null,
+    "description": "The whole small day. Civil ceremony, couple shoot, and the celebration after, photographed end to end.",
+    "duration": "Up to 4 hours",
+    "photos": "250+",
+    "film": false,
+    "highlights": [
+      "Up to 4 hours coverage",
+      "Ceremony coverage",
+      "Couples shoot nearby the venue",
+      "The dinner or reception after",
+      "Unlimited edited photos (250+)",
+      "Private online gallery",
+      "Fujifilm film simulation add-on +$51.25",
+      "Instax guest prints add-on +$61.25 (up to 50 prints)",
+      "Additional hours available at $201.25/hr"
+    ],
+    "popular": true,
+    "order": 2
   }
 ]

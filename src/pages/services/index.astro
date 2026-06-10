@@ -105,7 +105,7 @@ const baseServices = [
     caption: 'Full-Day Coverage',
     slug: 'wedding',
     description: 'Full-day and partial coverage of your wedding, from getting ready to the last dance. Unobtrusive, cinematic, honest.',
-    startingAt: 1400,
+    startingAt: 1401.25,
     image: 'wedding',
   },
   {
@@ -115,7 +115,7 @@ const baseServices = [
     caption: 'Before The Big Day',
     slug: 'pre-wedding',
     description: 'Cinematic photography and filmmaking sessions at Toronto\'s most stunning locations. Your love story, before the big day.',
-    startingAt: 350,
+    startingAt: 351.25,
     image: 'pre-wedding',
   },
   {
@@ -125,7 +125,7 @@ const baseServices = [
     caption: 'Intimate. Uncomplicated.',
     slug: 'civil-ceremony',
     description: 'Intimate doesn\'t mean less important. City hall, courthouse, or any intimate venue, captured with the same care as a full wedding.',
-    startingAt: 500,
+    startingAt: 501.25,
     image: 'civil-celebrations',
   },
   {
@@ -135,7 +135,7 @@ const baseServices = [
     caption: 'Every Gathering, Remembered',
     slug: 'celebrations',
     description: 'Birthdays, bridal showers, baby showers, and every gathering worth remembering. Relaxed, natural coverage.',
-    startingAt: 550,
+    startingAt: 551.25,
     image: 'celebrations',
   },
 ];
@@ -170,7 +170,7 @@ const offerCatalogSchema = {
   '@type': 'OfferCatalog',
   '@id': offersId,
   name: 'AD Photography Services',
-  description: 'Photography and videography services in Toronto by AD Photography, from $350.',
+  description: 'Photography and videography services in Toronto by AD Photography, from $351.25.',
   url: `${site.url}/services`,
   offeredBy: businessRef,
   itemListElement: services.map((s) => ({
@@ -186,7 +186,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
 <BaseLayout
   title="Toronto Wedding Photography Services"
-  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $350. View packages, pricing, and book a free consultation."
+  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $351.25. View packages, pricing, and book a free consultation."
   ogImage={new URL('/og-services.jpg', site.url).href}
   jsonLd={jsonLd}
 >
