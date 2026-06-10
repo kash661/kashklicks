@@ -25,11 +25,15 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 );
 
 // Resolve images - try subfolder first, then flat
-const galleryImages = entry.images.map((imgName: string) => {
+// Varied per-image alts: identical alt text repeated 50x per gallery reads
+// as spam to Google Images; venue + photo position keeps each unique.
+const galleryImages = entry.images.map((imgName: string, i: number) => {
   const subfolderPath = `/src/assets/images/portfolio/${entry.id}/${imgName}`;
   const flatPath = `/src/assets/images/portfolio/${imgName}`;
   const img = portfolioImages[subfolderPath]?.default || portfolioImages[flatPath]?.default;
-  return img ? { src: img, alt: `${entry.couple}, ${entry.location} photography by AD Photography` } : null;
+  return img
+    ? { src: img, alt: `${entry.couple} at ${entry.location}, photo ${i + 1} of ${entry.images.length}, by AD Photography` }
+    : null;
 }).filter(Boolean) as { src: ImageMetadata; alt: string }[];
 
 // Category label mapping

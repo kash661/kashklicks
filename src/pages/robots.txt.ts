@@ -59,6 +59,7 @@ export const GET: APIRoute = () => {
     'Disallow: /',
     '',
     'Sitemap: https://kashklicks.ca/sitemap-index.xml',
+    'Sitemap: https://kashklicks.ca/image-sitemap.xml',
     '',
   ].join('\n');
 
