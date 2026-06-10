@@ -17,6 +17,8 @@ interface Props {
   noIndex?: boolean;
   robots?: string;
   jsonLd?: Record<string, any> | Record<string, any>[];
+  /** Extra properties (e.g. aggregateRating, review) merged into the sitewide LocalBusiness node. Homepage only. */
+  businessExtras?: Record<string, any>;
   transparentHeader?: boolean;
   showSplash?: boolean;
   article?: {
@@ -36,6 +38,7 @@ const {
   noIndex,
   robots,
   jsonLd,
+  businessExtras,
   transparentHeader = false,
   showSplash = false,
   article,
@@ -78,6 +81,9 @@ if (site.phone) {
   organizationSchema.telephone = site.phone;
 }
 organizationSchema.logo = `${site.url}/apple-touch-icon.png`;
+if (businessExtras) {
+  Object.assign(organizationSchema, businessExtras);
+}
 ---
 
 <!doctype html>

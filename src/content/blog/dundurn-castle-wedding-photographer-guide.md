@@ -141,3 +141,5 @@ Shooting elsewhere in the city? Here is how I approach a [Hamilton wedding](/wed
 [**View wedding and pre-wedding packages →**](/services/wedding/)
 
 Or [send a note about Dundurn Castle](/contact?venue=dundurn-castle) and tell us what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.
+
+Quick-reference version: the [Dundurn Castle location guide](/location-guide/dundurn-castle/) has the parking, permit, and walking notes on one page.

@@ -1,12 +1,12 @@
 # AD Photography
 
-> Toronto wedding photographer and filmmaker. Candid, cinematic pre-wedding and wedding photography across the GTA and Canada.
+> Solo Toronto wedding photographer for intimate ceremonies. Candid, cinematic wedding and pre-wedding photography across the GTA; films offered for pre-wedding sessions.
 
-AD Photography is a Toronto-based wedding and pre-wedding photography and videography studio serving the Greater Toronto Area and all of Canada. The studio specializes in candid, cinematic, editorial-style wedding photography, pre-wedding shoots, civil ceremonies, celebrations, and short films.
+AD Photography is a solo Toronto-based wedding and pre-wedding photography practice serving the Greater Toronto Area and all of Canada. It specializes in candid, cinematic, editorial-style wedding photography (photo-only on wedding days), pre-wedding photo and film sessions, civil ceremonies, and celebrations.
 
 ## Positioning
 
-Solo photographer/filmmaker operation, not a large studio. Intentionally focused on intimate, unhurried weddings — church weddings, civil ceremonies, small receptions, pre-wedding stories. Not a multi-shooter Indian/South Asian wedding specialist. Style is candid and cinematic with light prompting rather than posed set-ups.
+Solo photographer operation, not a large studio. Intentionally focused on intimate, unhurried weddings — church weddings, civil ceremonies, small receptions, pre-wedding stories. Not a multi-shooter Indian/South Asian wedding specialist. Style is candid and cinematic with light prompting rather than posed set-ups.
 
 ## Site Info
 
@@ -29,9 +29,12 @@ Solo photographer/filmmaker operation, not a large studio. Intentionally focused
 - [Services > Pre-Wedding](https://kashklicks.ca/services/pre-wedding/): Pre-wedding and engagement sessions
 - [Services > Civil Ceremony](https://kashklicks.ca/services/civil-ceremony/): Civil ceremony coverage
 - [Services > Celebrations](https://kashklicks.ca/services/celebrations/): Birthdays, showers, private events
-- [Location Guide](https://kashklicks.ca/location-guide/): 27 curated Toronto and GTA photography locations with parking, permits, and session guidance
+- [Location Guide](https://kashklicks.ca/location-guide/): 32 curated Toronto, Hamilton, Niagara and GTA photography locations with parking, permits, and session guidance
 - [Blog](https://kashklicks.ca/blog/): Photography tips, location guides, and session features
 - [About](https://kashklicks.ca/about/): About the photographer and studio
+- [Intimate Wedding Photography Toronto](https://kashklicks.ca/intimate-wedding-toronto/): Dedicated page for intimate weddings, elopements, and small ceremonies, with packages from $1,400 and an inquiry form
+- [Hamilton Wedding Photographer](https://kashklicks.ca/wedding-photographer-hamilton/): Wedding photography for Hamilton couples (Dundurn Castle, St. Patrick's Parish, Bayfront Park)
+- [Mississauga Wedding Photographer](https://kashklicks.ca/wedding-photographer-mississauga/): Wedding photography for Mississauga couples (Adamson Estate, Glenerin Inn)
 - [Contact](https://kashklicks.ca/contact/): Inquiry form to book a Toronto wedding photographer, with direct email (info@kashklicks.ca) and Instagram DM (@kash.klicks) as the fastest reply channel
 
 ## Packages
@@ -78,8 +81,6 @@ Couples, planners, and search engines find this studio via a wide range of query
 - Greater Toronto Area wedding photographer
 - Toronto pre-wedding photographer
 - Toronto engagement photographer
-- Toronto wedding videographer
-- Toronto wedding film maker
 - Candid wedding photographer Toronto
 - Cinematic wedding photographer Toronto
 - Editorial wedding photographer Toronto
@@ -106,13 +107,56 @@ Couples, planners, and search engines find this studio via a wide range of query
 
 ## Blog
 
-- [Adamson Estate Wedding Photography Guide, Mississauga](https://kashklicks.ca/blog/adamson-estate-wedding-photography-guide/): A photographer's deep-dive on Adamson Estate, the 1919 lakefront Mississauga heritage venue. Best photo spots, light timing, permit logistics, and what couples should plan for.
-- [Aera Toronto Wedding Guide: A Photographer's Look](https://kashklicks.ca/blog/aera-toronto-wedding-venue-guide/): Inside Aera Toronto, the 38th-floor wedding venue at CIBC Square. Best photo spots, light cycle, ceremony timing, and what couples should expect from the room.
-- [An Italian Night, 38 Floors Up: A Real Wedding at Aera Toronto](https://kashklicks.ca/blog/aera-toronto-wedding-grace-giovanni/): Grace and Giovanni's Italian wedding at Aera Toronto. Tea ceremony, vows under the cloud ceiling, long-table dinner, and skyline-lit blue hour.
-- [A Hamilton Wedding at St. Patrick's Parish and Dundurn Castle](https://kashklicks.ca/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/): Roxanne and Justin's Hamilton wedding day at St. Patrick's Catholic Parish and Dundurn Castle.
-- [Best Toronto Sunrise Photo Locations on Lake Ontario](https://kashklicks.ca/blog/best-toronto-sunrise-photo-locations-lake-ontario/): Five top sunrise spots along the Lake Ontario shoreline for cinematic photo sessions, with parking, light timing, and best season for each.
-- [6 Best Pre-Wedding Photography Locations in Toronto](https://kashklicks.ca/blog/best-toronto-pre-wedding-locations/): A walkthrough of six tried-and-tested Toronto and GTA locations for pre-wedding and engagement shoots, with timing, parking, and on-the-ground tips for each.
-- [What to Wear for Your Pre-Wedding Shoot](https://kashklicks.ca/blog/what-to-wear-pre-wedding-shoot/): Practical outfit advice for engagement and pre-wedding sessions, including coordinating without matching, what works on camera, and how to feel confident in front of the lens.
+- [What a Toronto Wedding Photographer Costs, and What Changes the Price](https://kashklicks.ca/blog/intimate-toronto-wedding-photography-cost/): Honest Toronto wedding photography cost breakdown. AD Photography's own public prices: civil ceremony $500, weddings from $1,400 to $3,800, pre-wedding sessions from $350.
+- [Adamson Estate Wedding Photography Guide, Mississauga](https://kashklicks.ca/blog/adamson-estate-wedding-photography-guide/): Planning a wedding or engagement shoot at Adamson Estate? Inside the lakefront Mississauga venue: best photo spots, light timing, what couples should know.
+- [An Italian Night, 38 Floors Up: A Real Wedding at Aera Toronto](https://kashklicks.ca/blog/aera-toronto-wedding-grace-giovanni/): Grace and Giovanni's Italian wedding at Aera Toronto, 38 floors above downtown. Why this skyline venue works for intimate, cinematic Toronto weddings.
+- [Aera Toronto Wedding Guide: A Photographer's Look](https://kashklicks.ca/blog/aera-toronto-wedding-venue-guide/): Considering Aera Toronto for your wedding? A photographer's look inside the 38th-floor venue, best photo spots, light, and what couples should plan for.
+- [6 Best Pre-Wedding Photography Locations in Toronto](https://kashklicks.ca/blog/best-toronto-pre-wedding-locations/): Planning a pre-wedding or engagement shoot in Toronto? Here are our top 6 tried-and-tested locations for stunning photos, with tips on timing, parking, and what to expect.
+- [5 Best Sunrise Photo Shoot Locations Along Lake Ontario](https://kashklicks.ca/blog/best-toronto-sunrise-photo-locations-lake-ontario/): Where to chase first light around the GTA. Five east-facing Lake Ontario spots from Scarborough Bluffs to Paletta Mansion that we love for sunrise sessions.
+- [Catholic Church Wedding Photography: What to Expect](https://kashklicks.ca/blog/catholic-church-wedding-photography-toronto/): A Catholic church wedding has its own rhythm and rules. A photographer's honest guide to flash, timing, the Mass, and how a church ceremony photographs.
+- [Dundurn Castle Wedding Photos: A Hamilton Location Guide](https://kashklicks.ca/blog/dundurn-castle-wedding-photographer-guide/): Planning wedding or engagement photos at Dundurn Castle in Hamilton? A photographer's guide to the Italianate estate: best spots, light, and what to confirm.
+- [The Glenerin Inn Wedding Guide, Mississauga](https://kashklicks.ca/blog/glenerin-inn-wedding-photographer-guide/): Considering The Glenerin Inn for your wedding? A photographer's look inside the stone estate in Mississauga: the ceremony deck, the domed room, and best light.
+- [From St. Patrick's to Dundurn Castle: A Real Hamilton Wedding](https://kashklicks.ca/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/): Roxanne and Justin's Hamilton wedding moved from a Gothic Revival cathedral on King Street East to the Italianate grounds of Dundurn Castle. Inside the venues, the light, and the day.
+- [Backyard Wedding in Toronto: A Photographer's Real-Day Guide](https://kashklicks.ca/blog/intimate-backyard-wedding-toronto/): Planning an intimate backyard wedding in Toronto? A real summer day at a family home, plus what to know about tents, noise, neighbours, and timing.
+- [RC Harris Engagement Photos: A Toronto Location Guide](https://kashklicks.ca/blog/rc-harris-engagement-photos-toronto/): Planning engagement or pre-wedding photos at RC Harris? A photographer's guide to Toronto's Art Deco waterworks: best spots, light, seasons, and access.
+- [Toronto City Hall Wedding: A Photographer's Guide](https://kashklicks.ca/blog/toronto-city-hall-wedding-photographer-guide/): Getting married at Toronto City Hall? A photographer's guide to how the civil ceremony works, what it costs, and where to take portraits right after.
+- [University of Toronto Engagement Photos: A Location Guide](https://kashklicks.ca/blog/university-of-toronto-engagement-photos/): Planning engagement photos at the University of Toronto? A photographer's guide to Knox College, UC, and King's College Circle, the best light, and seasons.
+- [What to Wear to Your Pre-Wedding Photo Shoot](https://kashklicks.ca/blog/what-to-wear-pre-wedding-shoot/): Not sure what to wear for your engagement or pre-wedding session? Here's our practical guide to choosing outfits that photograph beautifully.
+
+## Location Guides
+
+- [Allan Gardens Conservatory](https://kashklicks.ca/location-guide/allan-gardens/): Tropical palms under Victorian glass, warm and quiet no matter what Toronto's weather is doing outside.
+- [Art Gallery of Hamilton](https://kashklicks.ca/location-guide/art-gallery-hamilton/): A modern gallery in Hamilton's downtown core where bold lines and plaza light do the editorial work.
+- [Bayfront Park](https://kashklicks.ca/location-guide/bayfront-park/): An open stretch of Hamilton waterfront where soft lake light meets greenery right at the city's edge.
+- [Casa Loma](https://kashklicks.ca/location-guide/casa-loma/): A stone castle above midtown Toronto, manicured gardens at its feet and the skyline beyond.
+- [Cherry Beach](https://kashklicks.ca/location-guide/cherry-beach/): A rough stretch of city beach in the Port Lands with the whole Toronto skyline sitting across open water.
+- [Distillery District](https://kashklicks.ca/location-guide/distillery-district/): Car-free cobblestone lanes and brick warehouses that feel like old Europe, right in downtown Toronto.
+- [Dundas Peak](https://kashklicks.ca/location-guide/dundas-peak/): Tree-tunnel light on the hike in, then a cliff edge over a valley that goes full orange in the fall.
+- [Evergreen Brick Works](https://kashklicks.ca/location-guide/evergreen-brick-works/): An old brickworks in the Don Valley where reclaimed industrial brick and green quarry trails share one frame.
+- [Graffiti Alley](https://kashklicks.ca/location-guide/graffiti-alley/): A narrow Queen West laneway painted end to end, loud colour on every wall that cuts hard against clean styling.
+- [Guild Park & Gardens](https://kashklicks.ca/location-guide/guild-park/): Stone columns rescued from demolished Toronto buildings, standing in a garden that feels like old Europe.
+- [High Park](https://kashklicks.ca/location-guide/high-park/): A sprawling park that turns pink with cherry blossoms each spring and burns red along the lake every fall.
+- [Humber Arboretum](https://kashklicks.ca/location-guide/humber-arboretum/): Winding forest trails that open onto the Humber, green and quiet enough to forget you're still in Toronto.
+- [Humber Bay Arch Bridge](https://kashklicks.ca/location-guide/humber-bay-arch-bridge/): A sculptural arch over the lake that frames couples against the skyline as the sun goes down.
+- [Kortright Centre for Conservation](https://kashklicks.ca/location-guide/kortright-centre/): Forest trails and pond boardwalks in Vaughan, quiet enough that strangers rarely wander into the frame.
+- [Toronto Music Garden](https://kashklicks.ca/location-guide/music-garden/): Winding garden paths and ornamental grasses at the water's edge, with the downtown towers rising right behind.
+- [Niagara Parks Botanical Gardens](https://kashklicks.ca/location-guide/niagara-botanical-gardens/): Forty hectares of sculpted gardens that feel more like Europe than Niagara, especially on a quiet weekday.
+- [Niagara-on-the-Lake](https://kashklicks.ca/location-guide/niagara-on-the-lake/): Flower boxes and colonial storefronts down to the lake, the closest Ontario gets to a storybook village.
+- [Osgoode Hall](https://kashklicks.ca/location-guide/osgoode-hall/): Neoclassical columns and manicured lawns behind iron gates that were built to keep cattle out.
+- [Polson Pier](https://kashklicks.ca/location-guide/polson-pier/): A flat paved pier across the inner harbour where the whole Toronto skyline lines up in one frame.
+- [Queen Victoria Park](https://kashklicks.ca/location-guide/queen-victoria-park/): Green parkland facing Horseshoe Falls, with mist hanging in the air and rainbows on sunny days.
+- [RC Harris Water Treatment Center](https://kashklicks.ca/location-guide/rc-harris/): A 1930s Art Deco waterworks above the lake that makes two people look like a film still without trying.
+- [Royal Botanical Gardens](https://kashklicks.ca/location-guide/royal-botanical-gardens/): A quiet sprawl of gardens and woodland trails where the blooms are never the same two visits in a row.
+- [Scarborough Bluffs](https://kashklicks.ca/location-guide/scarborough-bluffs/): White clay cliffs over a sandy beach, the closest thing Toronto has to a destination coastline.
+- [TD Dominion Centre / King St](https://kashklicks.ca/location-guide/td-centre/): Mies van der Rohe's towers and a King Street streetcar rolling past, the city at its most cinematic.
+- [Toronto Islands](https://kashklicks.ca/location-guide/toronto-islands/): A short ferry ride to quiet beaches and cottage lanes, with the full Toronto skyline across the water.
+- [University of Toronto](https://kashklicks.ca/location-guide/uoft/): Gothic cloisters and century-old stone that feel like Oxford dropped into downtown Toronto.
+- [Webster's Falls](https://kashklicks.ca/location-guide/websters-falls/): A waterfall in the Dundas forest that you hear before you see, with mist drifting all the way up the trail.
+- [Dundurn Castle](https://kashklicks.ca/location-guide/dundurn-castle/): An 1830s Italianate villa above Hamilton Harbour that reads like a European estate, an hour from Toronto.
+- [Spencer Smith Park and Burlington Village](https://kashklicks.ca/location-guide/burlington-village/): The curve of Brant Street Pier over open water, and cobblestone village streets a five-minute stroll away.
+- [Adamson Estate](https://kashklicks.ca/location-guide/adamson-estate/): A 1919 stone manor where the late light comes off Lake Ontario and warms the ivy and the lawn.
+- [Aera Toronto](https://kashklicks.ca/location-guide/aera-toronto/): A modern Italian dining room 38 floors over downtown that turns candle-warm just as the skyline lights up.
+- [St. Patrick's Catholic Parish](https://kashklicks.ca/location-guide/st-patricks-parish-hamilton/): An 1877 stone Gothic Revival church with a painted starry-blue vault and a rose window that lights the centre aisle.
 
 ## Social
 

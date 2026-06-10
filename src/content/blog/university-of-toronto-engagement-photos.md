@@ -135,3 +135,5 @@ The U of T campus is one of Toronto's most timeless backdrops, and we know the r
 [**View pre-wedding and wedding packages →**](/services/pre-wedding/)
 
 Or [send a note about a U of T session](/contact?venue=university-of-toronto) and tell us what you are planning. We always start with a conversation about the shoot, the looks, and the frames you are hoping for.
+
+Quick-reference version: the [U of T location guide](/location-guide/uoft/) has the parking, permit, and walking notes on one page.

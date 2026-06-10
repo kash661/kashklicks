@@ -58,7 +58,7 @@ const coupleParts = entry.couple.split(/\s*[+&]\s*/);
 const coupleHasAmp = coupleParts.length === 2 && coupleParts[0] && coupleParts[1];
 
 // SEO
-const pageTitle = `${entry.couple} | ${categoryLabel} Photography`;
+const pageTitle = `${entry.couple}${entry.shortLocation ? `, ${entry.shortLocation}` : ''} | ${categoryLabel} Photography`;
 const pageDescription = entry.story?.body?.slice(0, 155) ||
   `${categoryLabel} photography of ${entry.couple} at ${entry.location}. View the full gallery by AD Photography, Toronto wedding photographer.`;
 

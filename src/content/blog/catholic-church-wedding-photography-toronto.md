@@ -133,3 +133,5 @@ A Catholic church wedding deserves a photographer who understands its rhythm and
 [**View wedding photography packages →**](/services/wedding/)
 
 Or [send a note about your church wedding](/contact?venue=church-wedding) and tell us your parish and your date. We always start with a conversation about the day, the people, and the moments that matter most.
+
+Shooting a Hamilton church wedding? See the [St. Patrick's Parish location guide](/location-guide/st-patricks-parish-hamilton/).

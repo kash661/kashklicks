@@ -238,7 +238,8 @@
       "ruins",
       "south-asian",
       "golden-hour"
-    ]
+    ],
+    "shortLocation": "Toronto Harbour"
   },
   {
     "id": "priyanka-saurav",
@@ -1079,7 +1080,8 @@
       "lift",
       "walking",
       "bare-trees"
-    ]
+    ],
+    "shortLocation": "Adamson Estate"
   },
   {
     "id": "grace-giovanni",

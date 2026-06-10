@@ -59,7 +59,7 @@ const faqItems = [
   {
     question: 'How long until I get my photos?',
     answer: 'Sneak peek within days. Full gallery in 2 to 3 months. Priority 2-3 week delivery is available for an additional fee.',
-  },
+  }
 ];
 
 // Journal: latest two blog posts
@@ -85,37 +85,28 @@ const jsonLd = [
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },
     })),
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': 'https://kashklicks.ca/#business',
-    name: 'AD Photography',
-    url: 'https://kashklicks.ca',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: googleReviews.aggregate.rating,
-      reviewCount: googleReviews.aggregate.count,
-      bestRating: 5,
-      worstRating: 1,
-    },
-    review: googleReviews.reviews.map((r) => ({
-      '@type': 'Review',
-      author: { '@type': 'Person', name: r.name },
-      datePublished: r.datePublished,
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: r.rating,
-        bestRating: 5,
-        worstRating: 1,
-      },
-      reviewBody: r.text,
-    })),
-  },
+  }
 ];
+const businessExtras = {
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: googleReviews.aggregate.rating,
+    reviewCount: googleReviews.aggregate.count,
+    bestRating: 5,
+    worstRating: 1,
+  },
+  review: googleReviews.reviews.map((r) => ({
+    '@type': 'Review',
+    author: { '@type': 'Person', name: r.name },
+    datePublished: r.datePublished,
+    reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+    reviewBody: r.text,
+  })),
+};
 ---
 
 <BaseLayout
+  businessExtras={businessExtras}
   title="Home"
   description="Solo Toronto wedding photographer for intimate ceremonies, plus pre-wedding photo and film sessions across the GTA. Transparent packages from $350."
   transparentHeader={true}

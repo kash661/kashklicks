@@ -246,6 +246,12 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
             <a href="/services/pre-wedding/" class="border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Pre-wedding sessions from $350 &rarr;</a>
             <span class="mx-3" aria-hidden="true">&middot;</span>
             <a href="/services/wedding/" class="border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Wedding photography from $1,400 &rarr;</a>
+            {(city === 'Hamilton' || city === 'Mississauga') && (
+              <>
+                <span class="mx-3" aria-hidden="true">&middot;</span>
+                <a href={`/wedding-photographer-${city.toLowerCase()}/`} class="border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{city} wedding photographer &rarr;</a>
+              </>
+            )}
           </p>
         </div>
       </div>

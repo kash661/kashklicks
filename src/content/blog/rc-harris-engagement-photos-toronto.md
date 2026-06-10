@@ -161,3 +161,5 @@ RC Harris is one of Toronto's most cinematic locations, and one of the few that 
 [**View pre-wedding and wedding packages →**](/services/pre-wedding/)
 
 Or [send a note about RC Harris](/contact?venue=rc-harris) and tell us what you are planning. We always start with a conversation about the shoot, the looks, and the kind of frames you are hoping for.
+
+Quick-reference version: the [RC Harris location guide](/location-guide/rc-harris/) has the parking, permit, and walking notes on one page.

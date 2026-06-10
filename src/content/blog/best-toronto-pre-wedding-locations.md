@@ -13,7 +13,7 @@ Choosing the right location is one of the most important decisions for your pre-
 
 After years of shooting across Toronto and the GTA, here are our absolute favourite locations for pre-wedding and engagement sessions.
 
-## 1. RC Harris Water Treatment Center
+## 1. [RC Harris](/location-guide/rc-harris/) Water Treatment Center
 
 **Vibe:** Cinematic, romantic, Art Deco architecture meets waterfront
 
@@ -27,7 +27,7 @@ This Scarborough landmark is one of the most stunning photography locations in a
 
 **Pro tip:** Bring comfortable shoes. There's a lot of walking between the building exterior, the curved road, and the waterfront spots. The wind off the lake can be strong, so plan your outfit accordingly.
 
-## 2. Toronto Music Garden
+## 2. [Toronto Music Garden](/location-guide/music-garden/)
 
 **Vibe:** Whimsical, romantic, garden meets city
 
@@ -39,7 +39,7 @@ Nestled along the Harbourfront, the Music Garden is a hidden gem that offers inc
 
 **Pro tip:** The garden is designed in sections inspired by Bach's music. Each section has a different character, and the winding hedge maze area is perfect for intimate close-ups.
 
-## 3. Guild Park & Gardens
+## 3. [Guild Park](/location-guide/guild-park/) & Gardens
 
 **Vibe:** Fairytale, historic ruins, romantic gardens
 
@@ -51,7 +51,7 @@ Guild Park feels like stepping into another world. The scattered architectural r
 
 **Pro tip:** The main ruins area is compact but offers incredible variety. Plan for 2-3 hours to explore all the nooks and angles.
 
-## 4. Scarborough Bluffs
+## 4. [Scarborough Bluffs](/location-guide/scarborough-bluffs/)
 
 **Vibe:** Dramatic, coastal, wide-open sky
 
@@ -61,7 +61,7 @@ If you want that "destination beach" feel without leaving Toronto, the Bluffs de
 
 **Important note:** Getting down to the beach requires a hike. Wear shoes you can walk in and save your formal shoes for the beach. The path is steep and can be slippery.
 
-## 5. University of Toronto (St. George Campus)
+## 5. [University of Toronto](/location-guide/uoft/) (St. George Campus)
 
 **Vibe:** Classic, historic, European-inspired academia
 
@@ -102,3 +102,5 @@ Every package includes location guidance. I'll help you find the spot that match
 [View our full location guide →](/location-guide/)
 
 [Ready to book? Get in touch →](/contact/#inquiry)
+
+Every one of these spots works with my [pre-wedding packages from $350](/services/pre-wedding/), and each linked guide has the parking and permit details.
