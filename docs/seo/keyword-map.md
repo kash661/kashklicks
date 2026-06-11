@@ -32,13 +32,13 @@ Solo photographer/filmmaker. Toronto-based. Focus on intimate weddings, civil ce
 |------|---------------|--------|
 | best-toronto-pre-wedding-locations | best pre-wedding locations Toronto | published |
 | what-to-wear-pre-wedding-shoot | what to wear pre-wedding shoot | published |
+| scarborough-bluffs-pre-wedding-photos-toronto | Scarborough Bluffs photography | published |
 
 ## Keyword Gaps (target with future content)
 
 - "fall engagement photos Toronto"
 - "wedding photography timeline planning"
 - "how to choose a wedding photographer"
-- "Scarborough Bluffs photography"
 - "Aga Khan Museum engagement photos"
 - "winter engagement photos Toronto"
 - "how much does a wedding photographer cost Toronto"
