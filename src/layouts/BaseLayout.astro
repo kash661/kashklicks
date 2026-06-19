@@ -3,6 +3,7 @@ import SEO from '../components/seo/SEO.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/global/Header.astro';
 import Footer from '../components/global/Footer.astro';
+import WhatsAppButton from '../components/global/WhatsAppButton.astro';
 import SplashOverlay from '../components/global/SplashOverlay.astro';
 import MobileSplashOverlay from '../components/global/MobileSplashOverlay.astro';
 import site from '../data/site.json';
@@ -49,6 +50,7 @@ const organizationSchema: Record<string, any> = {
   '@type': 'LocalBusiness',
   '@id': `${site.url}/#business`,
   name: site.name,
+  alternateName: site.alternateName,
   url: site.url,
   image: `${site.url}/og-default.jpg`,
   description: site.description,
@@ -203,6 +205,7 @@ if (businessExtras) {
       <slot />
     </main>
     <Footer />
+    <WhatsAppButton />
 
 
     <script>
