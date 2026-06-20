@@ -55,6 +55,8 @@ Guild Park feels like stepping into another world. The scattered architectural r
 
 **Vibe:** Dramatic, coastal, wide-open sky
 
+![A couple on the sandy beach beneath the white clay cliffs of the Scarborough Bluffs, Lake Ontario at the shoreline, by AD Photography](../../assets/images/portfolio/swati-saksham/03.jpg)
+
 If you want that "destination beach" feel without leaving Toronto, the Bluffs deliver. The towering cliffs and sandy beach create a landscape that looks nothing like the rest of the city.
 
 **Best time to shoot:** Sunset. The west-facing beach catches golden light perfectly. Arrive 2 hours before sunset to get beach shots and cliff-top shots.
