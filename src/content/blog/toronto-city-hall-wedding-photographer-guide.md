@@ -9,7 +9,7 @@ tags: ["Venue Guide", "Toronto City Hall", "Civil Ceremony", "Downtown Toronto",
 draft: false
 faq:
   - question: "How much does it cost to get married at Toronto City Hall?"
-    answer: "Budget for two separate fees. An Ontario marriage licence from the City is around $160 and is valid for 90 days. The civil ceremony in the City Hall Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on toronto.ca before you book. AD Photography's Civil Ceremony coverage is a separate fixed package that covers the ceremony and the portraits afterward."
+    answer: "Budget for two separate fees. An Ontario marriage licence from the City is around $180 and is valid for 90 days. The civil ceremony in the City Hall Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on toronto.ca before you book. AD Photography's Civil Ceremony coverage is a separate fixed package that covers the ceremony and the portraits afterward."
   - question: "Is the ceremony at Old City Hall or New City Hall?"
     answer: "The classic City Hall Wedding Chamber is inside New City Hall at 100 Queen Street West, the modern building with the two curved towers on Nathan Phillips Square. Old City Hall, the sandstone clock tower building across Bay Street, was a courthouse for decades and has recently reopened a separate chamber for civil ceremonies too. Most couples mean New City Hall when they picture a City Hall wedding, then use Old City Hall's facade as a photo backdrop."
   - question: "How many guests can you bring to a City Hall ceremony?"
@@ -40,7 +40,7 @@ If you are thinking about getting married at Toronto City Hall, this is everythi
 
 **What you need:** An Ontario marriage licence issued within the last 90 days, two witnesses who are 18 or older, and government photo ID.
 
-**Cost:** Roughly $160 for the marriage licence and around $325 including tax for the City Hall ceremony. Confirm current rates on toronto.ca, since the City updates them.
+**Cost:** Roughly $180 for the marriage licence and around $325 including tax for the City Hall ceremony. Confirm current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/), since the City updates them.
 
 **Walking level:** Low. Everything is flat downtown sidewalk. The portrait loop is a few blocks at most.
 
@@ -82,7 +82,7 @@ The full gallery from their morning is here: [Anushka + Anthony at Toronto City 
 
 The part most guides skip. Here is the real sequence.
 
-**1. Get your marriage licence first.** This is separate from the ceremony. Apply for an Ontario marriage licence from the City with valid photo ID for both of you. If either of you was married before, bring proof of divorce or a death certificate for the former spouse. The licence costs around $160 and is valid for 90 days, so do not get it too early.
+**1. Get your marriage licence first.** This is separate from the ceremony. Apply for an Ontario marriage licence from the City with valid photo ID for both of you. If either of you was married before, bring proof of divorce or a death certificate for the former spouse. The licence costs around $180 and is valid for 90 days, so do not get it too early.
 
 **2. Book the ceremony.** Once you have the licence sorted, reserve a time slot with the City's wedding chambers, usually online or by phone, and pay the ceremony fee at booking. Weekday slots are the ones couples want and they fill up, especially late morning and Fridays. Reserve your date as early as you can.
 
@@ -162,7 +162,7 @@ If a church or a heritage estate is more your speed, that is a different day. Yo
 
 **How much does it cost to get married at Toronto City Hall?**
 
-Budget for two separate fees. An Ontario marriage licence is around $160 and is valid for 90 days. The civil ceremony in the Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on toronto.ca before you book. Our Civil Ceremony coverage is a separate fixed package that includes the ceremony and the portraits afterward. See our [services page](/services/civil-ceremony/) for current options.
+Budget for two separate fees. An Ontario marriage licence is around $180 and is valid for 90 days. The civil ceremony in the Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/) before you book. Our Civil Ceremony coverage is a separate fixed package that includes the ceremony and the portraits afterward. See our [services page](/services/civil-ceremony/) for current options.
 
 **Is the ceremony at Old City Hall or New City Hall?**
 
