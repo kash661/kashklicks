@@ -29,7 +29,7 @@
     "name": "The Signature Session",
     "category": "Pre-Wedding",
     "price": 851.25,
-    "salePrice": 751.25,
+    "salePrice": 699,
     "currency": "CAD",
     "description": "The perfect balance of photography and film. Up to 5 hours across 2 locations with 70+ edited photos and a 3-4 minute cinematic 4K film.",
     "duration": "Up to 5 hours",
@@ -37,12 +37,11 @@
     "outfits": 2,
     "photos": "70+",
     "film": true,
-    "filmDetails": "3-4 minute 4K film + 30-40 second trailer",
+    "filmDetails": "3-4 minute 4K film",
     "highlights": [
       "2 locations, 2 outfits",
       "70+ high-resolution edited photos",
       "3-4 minute cinematic 4K film",
-      "30-40 second trailer",
       "Private online gallery",
       "Fujifilm film simulation add-on +$51.25",
       "Vintage Canon throwback candids +$76.25"
