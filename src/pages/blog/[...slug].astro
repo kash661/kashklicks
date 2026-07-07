@@ -24,6 +24,7 @@ const { Content } = await render(post);
   coverImageAlt={post.data.coverImageAlt}
   tags={post.data.tags}
   faq={post.data.faq}
+  slug={post.id}
 >
   <Content />
 </BlogLayout>

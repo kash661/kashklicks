@@ -4,6 +4,8 @@ import FinalCTA from '../components/global/FinalCTA.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import site from '../data/site.json';
+import gitDates from '../data/git-dates.json';
 
 interface FaqItem {
   question: string;
@@ -20,6 +22,7 @@ interface Props {
   coverImageAlt?: string;
   tags?: string[];
   faq?: FaqItem[];
+  slug?: string;
 }
 
 const {
@@ -32,7 +35,19 @@ const {
   coverImageAlt,
   tags = [],
   faq,
+  slug,
 } = Astro.props;
+
+// dateModified precedence: frontmatter updatedDate, else the post's last git
+// commit date (from the prebuilt src/data/git-dates.json snapshot), else the
+// publish date. The git-dates entry already folds in updatedDate/publishDate,
+// so a shallow CI clone with no git history still resolves via the committed
+// snapshot. Build never depends on git being present at build time.
+const gitBlogDates = gitDates.blog as Record<string, string>;
+const gitModified = slug ? gitBlogDates[slug] : undefined;
+const dateModified = updatedDate
+  ? updatedDate.toISOString()
+  : gitModified ?? publishDate.toISOString();
 
 // Social/OG card: a dedicated 1200x630 crop so the hardcoded og:image
 // dimensions are truthful and we don't ship a 2-3MB full-res cover as the
@@ -50,14 +65,22 @@ const blogPostSchema = {
   author: {
     '@type': 'Person',
     name: author,
+    url: `${site.url}/about/`,
+    sameAs: [site.social.instagram],
   },
   datePublished: publishDate.toISOString(),
-  ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+  dateModified,
   ...(coverImageUrl && { image: coverImageUrl }),
   publisher: {
     '@type': 'Organization',
     name: 'AD Photography',
-    url: 'https://kashklicks.ca',
+    url: site.url,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${site.url}/apple-touch-icon.png`,
+      width: 180,
+      height: 180,
+    },
   },
 };
 
@@ -93,7 +116,7 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
   jsonLd={pageSchemas}
   article={{
     publishedTime: publishDate.toISOString(),
-    modifiedTime: updatedDate?.toISOString(),
+    modifiedTime: dateModified,
     author,
     tags,
   }}
