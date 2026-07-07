@@ -35,7 +35,7 @@
 
 Every package includes a pre-shoot consultation, professionally edited images, and a private online gallery.
 
-**CTA:** [View Packages](/services)
+**CTA:** [View Packages](https://kashklicks.ca/services/)
 
 **Featured image caption:** Full-Day Coverage
 
@@ -87,7 +87,7 @@ Sneak peek within days. Full wedding gallery in 2 to 3 months; pre-wedding and c
 
 Let's talk about your day. No obligations, just a conversation.
 
-**CTA:** [Get in Touch](/contact)
+**CTA:** [Get in Touch](https://kashklicks.ca/contact/)
 **Background:** Wedding photograph behind the closing call-to-action.
 
 ---
@@ -105,6 +105,6 @@ Let's talk about your day. No obligations, just a conversation.
 
 ## Schema.org Structured Data
 
-- LocalBusiness: name, address (Toronto, ON, CA), geo, areaServed (Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, GTA), priceRange $351.25 - $3801.25, email info@kashklicks.ca, sameAs (Instagram, Pinterest, YouTube)
+- LocalBusiness: name, address (Toronto, ON, CA), geo, areaServed (Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, GTA), priceRange $351.25 - $3801.25, email info@kashklicks.ca, sameAs (Instagram, Pinterest, YouTube, Google Business)
 - WebSite: name, url, description
 - FAQPage: top homepage questions

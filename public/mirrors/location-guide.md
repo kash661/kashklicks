@@ -6,7 +6,7 @@ Every location on this guide has been photographed by AD Photography. Each detai
 
 Location guidance is included with every package. If you can't choose, I'll help you find the right fit for your story.
 
-## All Locations (27)
+## All Locations (32)
 
 - [Allan Gardens Conservatory](https://kashklicks.ca/location-guide/allan-gardens/), Downtown Toronto, Garden District. Lush, tropical, Victorian, serene, indoor.
 - [Art Gallery of Hamilton](https://kashklicks.ca/location-guide/art-gallery-hamilton/), Hamilton, Downtown Core. Modern, architectural, urban, sleek, cultural.
@@ -22,6 +22,7 @@ Location guidance is included with every package. If you can't choose, I'll help
 - [Humber Arboretum](https://kashklicks.ca/location-guide/humber-arboretum/), Northwest Toronto, Humber College. Lush, cinematic, romantic, riverfront, quiet.
 - [Humber Bay Arch Bridge](https://kashklicks.ca/location-guide/humber-bay-arch-bridge/), Etobicoke, Humber Bay. Modern, geometric, waterfront, sunset, serene.
 - [Kortright Centre for Conservation](https://kashklicks.ca/location-guide/kortright-centre/), Vaughan, Kleinburg. Peaceful, forested, natural, tranquil, woodland.
+- [Toronto Music Garden](https://kashklicks.ca/location-guide/music-garden/), Downtown Toronto, Harbourfront. Whimsical, romantic, natural, garden + city mix.
 - [Niagara Parks Botanical Gardens](https://kashklicks.ca/location-guide/niagara-botanical-gardens/), Niagara Falls, Niagara Parkway. Romantic, European, sculpted, floral, unhurried.
 - [Niagara-on-the-Lake](https://kashklicks.ca/location-guide/niagara-on-the-lake/), Niagara Region, Old Town. Charming, historic, cobblestone, vineyards, storybook.
 - [Osgoode Hall](https://kashklicks.ca/location-guide/osgoode-hall/), Downtown Toronto, Queen Street. Neoclassical, stately, formal, elegant, green lawns.
@@ -32,9 +33,13 @@ Location guidance is included with every package. If you can't choose, I'll help
 - [Scarborough Bluffs](https://kashklicks.ca/location-guide/scarborough-bluffs/), Scarborough, Bluffs Area. Dramatic, coastal, wide-open, 'out of the city' feel.
 - [TD Dominion Centre / King St](https://kashklicks.ca/location-guide/td-centre/), Downtown Toronto, Financial District. Urban, city, cinematic, street.
 - [Toronto Islands](https://kashklicks.ca/location-guide/toronto-islands/), Downtown Toronto, Harbourfront. Beachy, nostalgic, skyline views, ferry-access, relaxed.
-- [Toronto Music Garden](https://kashklicks.ca/location-guide/music-garden/), Downtown Toronto, Harbourfront. Whimsical, romantic, natural, garden + city mix.
 - [University of Toronto](https://kashklicks.ca/location-guide/uoft/), Toronto, St. George Campus. Classic, historic, academic, European-inspired.
 - [Webster's Falls](https://kashklicks.ca/location-guide/websters-falls/), Dundas, Hamilton. Misty, powerful, forested, romantic, adventurous.
+- [Dundurn Castle](https://kashklicks.ca/location-guide/dundurn-castle/), Hamilton, York Boulevard. Historic, Italianate, stately, estate, romantic.
+- [Spencer Smith Park and Burlington Village](https://kashklicks.ca/location-guide/burlington-village/), Burlington, Lakefront. Lakeside, breezy, iconic pier, village charm, cinematic.
+- [Adamson Estate](https://kashklicks.ca/location-guide/adamson-estate/), Lakeview, Mississauga. lakefront, heritage, romantic, stone manor, lush, cinematic, intimate.
+- [Aera Toronto](https://kashklicks.ca/location-guide/aera-toronto/), Downtown Toronto, Financial District. Sky-high, modern, Italian, cinematic, sweeping city views, warm wood, candle-warm at night.
+- [St. Patrick's Catholic Parish](https://kashklicks.ca/location-guide/st-patricks-parish-hamilton/), Hamilton, King Street East. Gothic Revival, sacred, candlelit, starry-vault ceiling, gilded reredos.
 
 ## Related
 

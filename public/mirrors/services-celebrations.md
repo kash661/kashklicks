@@ -1,4 +1,4 @@
-# Toronto Event Photography — AD Photography
+# Toronto Event Photography, AD Photography
 
 **URL:** https://kashklicks.ca/services/celebrations/
 **Title:** Toronto Event Photography | AD Photography
@@ -31,16 +31,16 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 
 ## Your Journey
 
-1. Book a Consultation — free, no-obligation call about your event.
-2. Planning Together — timing, venue, coverage, must-have moments.
-3. Your Event — I blend in and capture everything naturally.
-4. Full Delivery — complete gallery within 2 weeks.
+1. **Book a Consultation.** Free, no-obligation call about your event.
+2. **Planning Together.** Timing, venue, coverage, must-have moments.
+3. **Your Event.** I blend in and capture everything naturally.
+4. **Full Delivery.** Complete gallery within 2 weeks.
 
 ---
 
 ## Event Packages
 
-- **Celebrations — $551.25** (minimum 2 hours, unlimited edited photos, private online gallery, 2-week delivery, additional hours at $151.25/hr)
+- **Celebrations: $551.25** (minimum 2 hours, Unlimited edited photos)
 
 ---
 
@@ -62,14 +62,14 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 ## Contact CTA
 
 **Heading:** Let's make it memorable.
-**CTA:** [Begin Your Journey](/contact?service=celebrations)
+**CTA:** [Begin Your Journey](https://kashklicks.ca/contact/?service=celebrations)
 
 ---
 
 ## Schema.org Structured Data
 
 - Service (Toronto Event Photography, provider @id LocalBusiness)
-- OfferCatalog (one Offer item)
+- OfferCatalog (1 Offer items)
 - FAQPage
 - BreadcrumbList
 - LocalBusiness (site-wide from BaseLayout)

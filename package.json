@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev --host",
     "generate:git-dates": "node scripts/generate-git-dates.mjs",
-    "build": "node scripts/generate-git-dates.mjs && astro build",
+    "prebuild-ai": "node scripts/generate-ai-files.mjs",
+    "build": "node scripts/generate-git-dates.mjs && node scripts/generate-ai-files.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "playwright test",

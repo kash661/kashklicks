@@ -1,4 +1,4 @@
-# Toronto Civil Ceremony Photography — AD Photography
+# Toronto Civil Ceremony Photography, AD Photography
 
 **URL:** https://kashklicks.ca/services/civil-ceremony/
 **Title:** Toronto Civil Ceremony Photography | AD Photography
@@ -11,7 +11,7 @@
 **H1:** Toronto Civil Ceremony Photography
 **Pull quote:** Every venue tells a story.
 
-Six-image venue mosaic: civil ceremony venue exteriors, ring and details, couple after vows, candid moments, venue interiors, final portraits — all at Toronto city hall and small venue locations.
+Six-image venue mosaic: civil ceremony venue exteriors, ring and details, couple after vows, candid moments, venue interiors, final portraits, all at Toronto city hall and small venue locations.
 
 ---
 
@@ -32,24 +32,24 @@ Intimate doesn't mean less important. I capture the beauty and emotion of your c
 
 ## Your Journey
 
-1. Book a Consultation — free, no-obligation call.
-2. Planning Together — venue, timing, coverage needs.
-3. Your Ceremony Day — simple and beautiful.
-4. Full Delivery — within 2 to 4 weeks.
+1. **Book a Consultation.** Free, no-obligation call.
+2. **Planning Together.** Venue, timing, coverage needs.
+3. **Your Ceremony Day.** Simple and beautiful.
+4. **Full Delivery.** Within 2 to 4 weeks.
 
 ---
 
-## Civil Ceremony Package
+## Civil Ceremony Packages
 
-- **The Civil Ceremony — $501.25** (up to 2 hours, ceremony + couples portraits, 150+ edited photos, private online gallery)
-- **The Elopement — $901.25** (up to 4 hours, ceremony + couples portraits + the dinner or reception after, 250+ edited photos, private online gallery)
+- **The Civil Ceremony: $501.25** (up to 2 hours, 150+ edited photos)
+- **The Elopement: $901.25** (up to 4 hours, 250+ edited photos)
 
 ---
 
 ## Good to Know
 
 - Free consultation with every booking.
-- Location guidance — light first, location second.
+- Location guidance, light first, location second.
 - Travel fees apply based on venue location, discussed upfront.
 - Canada-wide and destination ceremonies welcome.
 
@@ -58,14 +58,14 @@ Intimate doesn't mean less important. I capture the beauty and emotion of your c
 ## Contact CTA
 
 **Heading:** Let's capture your ceremony.
-**CTA:** [Begin Your Journey](/contact?service=civil-ceremony)
+**CTA:** [Begin Your Journey](https://kashklicks.ca/contact/?service=civil-ceremony)
 
 ---
 
 ## Schema.org Structured Data
 
 - Service (Toronto Civil Ceremony Photography, provider @id LocalBusiness)
-- OfferCatalog (one Offer item)
+- OfferCatalog (2 Offer items)
 - FAQPage
 - BreadcrumbList
 - LocalBusiness (site-wide from BaseLayout)
