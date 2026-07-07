@@ -1,4 +1,4 @@
-# About Akash — AD Photography
+# About Akash, AD Photography
 
 **URL:** https://kashklicks.ca/about/
 **Title:** About Akash, Toronto Wedding Photographer | AD Photography
@@ -6,7 +6,7 @@
 
 ---
 
-## The Experience — The Quiet Observer
+## The Experience, The Quiet Observer
 
 Toronto wedding photographer and videographer.
 
@@ -45,7 +45,7 @@ When I am not shooting someone else's story, I am chasing my own. Light, archite
 
 ## Areas Served
 
-Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Destination weddings across Canada and internationally.
+Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
 
 ## Contact
 

@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev --host",
-    "build": "astro build",
+    "prebuild-ai": "node scripts/generate-ai-files.mjs",
+    "build": "pnpm run prebuild-ai && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "playwright test",

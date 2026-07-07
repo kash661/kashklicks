@@ -1,4 +1,4 @@
-# Toronto Wedding Photography Services — AD Photography
+# Toronto Wedding Photography Services, AD Photography
 
 > Wedding, pre-wedding, civil ceremony, and event photography and videography services in Toronto and the GTA. Cinematic coverage from $351.25. Book a free consultation.
 
@@ -53,6 +53,6 @@ Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the 
 
 ## Related Pages
 
-- [Portfolio](https://kashklicks.ca/portfolio/) - Full gallery of wedding and pre-wedding sessions
-- [About](https://kashklicks.ca/about/) - About Akash, the photographer
-- [Location Guide](https://kashklicks.ca/location-guide/) - Toronto photography location recommendations
+- [Portfolio](https://kashklicks.ca/portfolio/), full gallery of wedding and pre-wedding sessions
+- [About](https://kashklicks.ca/about/), about Akash, the photographer
+- [Location Guide](https://kashklicks.ca/location-guide/), Toronto photography location recommendations
