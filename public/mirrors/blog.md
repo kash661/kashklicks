@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue
+
+- **URL:** https://kashklicks.ca/blog/old-city-hall-wedding-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/old-city-hall-wedding-toronto.md
+- **Published:** 2026-07-06
+- **Tags:** Venue Guide, Old City Hall, Civil Ceremony, Downtown Toronto, Wedding
+- **Summary:** Toronto's Old City Hall, the 1899 sandstone courthouse, now hosts civil wedding ceremonies. How booking, cost, and photos work, from a downtown photographer.
+
 ### Scarborough Bluffs Pre-Wedding Photos: A Toronto Beach Guide
 
 - **URL:** https://kashklicks.ca/blog/scarborough-bluffs-pre-wedding-photos-toronto/
