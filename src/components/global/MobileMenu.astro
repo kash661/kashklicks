@@ -57,7 +57,7 @@ const mobileItems = navigation.items
               <a
                 href={item.href}
                 class:list={[
-                  'text-heading-md cubic-ease',
+                  'text-heading-md cubic-ease block py-2 -my-2',
                   currentPath === item.href && 'menu-link-active',
                   isActive(item) ? 'text-on-surface font-semibold' : 'text-on-surface-variant hover:text-on-surface',
                 ]}
@@ -68,13 +68,13 @@ const mobileItems = navigation.items
               </a>
             </div>
             {item.children && (
-              <ul class="mt-2 ml-10 space-y-1">
+              <ul class="mt-1 ml-10">
                 {item.children.map((child) => (
                   <li>
                     <a
                       href={child.href}
                       class:list={[
-                        'text-label-sm cubic-ease inline-block whitespace-nowrap',
+                        'text-label-sm cubic-ease block py-3 whitespace-nowrap',
                         currentPath === child.href && 'menu-link-active',
                         currentPath === child.href
                           ? 'text-on-surface font-semibold'
