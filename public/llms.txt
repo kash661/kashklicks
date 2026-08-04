@@ -111,6 +111,7 @@ Couples, planners, and search engines find this studio via a wide range of query
 
 Recent real sessions and galleries, newest first. Each links to the full online gallery.
 
+- [Karen + Micheal at Niagara Parks Botanical Gardens, Niagara Falls](https://kashklicks.ca/portfolio/karen-micheal/): Wedding session. 2026-07-05.
 - [Josie + Nelson at Toronto Music Garden, Toronto](https://kashklicks.ca/portfolio/josie-nelson/): Pre-Wedding session. 2026-06-12.
 - [Harsh + Bhayva at Toronto Music Garden + Blue Mountain](https://kashklicks.ca/portfolio/harsh-bhayva/): Pre-Wedding session, with cinematic film. 2026-05-25.
 - [Grace + Giovanni at Aera Toronto, Downtown](https://kashklicks.ca/portfolio/grace-giovanni/): Wedding session. 2026-05-24.
@@ -139,6 +140,8 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 
 ## Blog
 
+- [A Botanical Gardens Wedding in Niagara Falls: Karen + Micheal](https://kashklicks.ca/blog/niagara-botanical-gardens-wedding-karen-micheal/): Karen and Micheal married on a garden path at the Niagara Parks Botanical Gardens, signed the register with a feather quill, and finished the day above the gorge. A real Niagara wedding.
+- [Niagara Parks Botanical Gardens Wedding Photos: A Niagara Falls Location Guide](https://kashklicks.ca/blog/niagara-parks-botanical-gardens-wedding-photographer-guide/): Planning wedding or engagement photos at the Niagara Parks Botanical Gardens? A photographer's guide to the permit rules, the parking, the best gardens, and the best months to come.
 - [Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue](https://kashklicks.ca/blog/old-city-hall-wedding-toronto/): Toronto's Old City Hall, the 1899 sandstone courthouse, now hosts civil wedding ceremonies. How booking, cost, and photos work, from a downtown photographer.
 - [Scarborough Bluffs Pre-Wedding Photos: A Toronto Beach Guide](https://kashklicks.ca/blog/scarborough-bluffs-pre-wedding-photos-toronto/): Planning pre-wedding photos at the Scarborough Bluffs? A photographer's guide to Bluffer's Park beach: the cliffs, the light, parking, and a real session.
 - [Aera Toronto Wedding Guide: A Photographer's Look](https://kashklicks.ca/blog/aera-toronto-wedding-venue-guide/): Considering Aera Toronto for your wedding? A photographer's look inside the 38th-floor venue, best photo spots, light, and what couples should plan for.
@@ -209,6 +212,8 @@ Full markdown representations of each page are available at:
 - [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · A Botanical Gardens Wedding in Niagara Falls: Karen + Micheal](https://kashklicks.ca/mirrors/blog/niagara-botanical-gardens-wedding-karen-micheal.md)
+- [Blog · Niagara Parks Botanical Gardens Wedding Photos: A Niagara Falls Location Guide](https://kashklicks.ca/mirrors/blog/niagara-parks-botanical-gardens-wedding-photographer-guide.md)
 - [Blog · Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue](https://kashklicks.ca/mirrors/blog/old-city-hall-wedding-toronto.md)
 - [Blog · Scarborough Bluffs Pre-Wedding Photos: A Toronto Beach Guide](https://kashklicks.ca/mirrors/blog/scarborough-bluffs-pre-wedding-photos-toronto.md)
 - [Blog · Aera Toronto Wedding Guide: A Photographer's Look](https://kashklicks.ca/mirrors/blog/aera-toronto-wedding-venue-guide.md)

@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (25)
+## Sessions (26)
+
+### Karen + Micheal
+
+- **Gallery:** https://kashklicks.ca/portfolio/karen-micheal/
+- **Type:** Wedding
+- **Location:** Niagara Parks Botanical Gardens, Niagara Falls
+- **Date:** 2026-07-05
 
 ### Josie + Nelson
 

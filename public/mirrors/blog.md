@@ -12,6 +12,22 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### A Botanical Gardens Wedding in Niagara Falls: Karen + Micheal
+
+- **URL:** https://kashklicks.ca/blog/niagara-botanical-gardens-wedding-karen-micheal/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/niagara-botanical-gardens-wedding-karen-micheal.md
+- **Published:** 2026-08-03
+- **Tags:** Real Wedding, Niagara Parks Botanical Gardens, Venues, Niagara Falls, Wedding
+- **Summary:** Karen and Micheal married on a garden path at the Niagara Parks Botanical Gardens, signed the register with a feather quill, and finished the day above the gorge. A real Niagara wedding.
+
+### Niagara Parks Botanical Gardens Wedding Photos: A Niagara Falls Location Guide
+
+- **URL:** https://kashklicks.ca/blog/niagara-parks-botanical-gardens-wedding-photographer-guide/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/niagara-parks-botanical-gardens-wedding-photographer-guide.md
+- **Published:** 2026-08-03
+- **Tags:** Venue Guide, Niagara Parks Botanical Gardens, Niagara Falls, Wedding, Pre-Wedding
+- **Summary:** Planning wedding or engagement photos at the Niagara Parks Botanical Gardens? A photographer's guide to the permit rules, the parking, the best gardens, and the best months to come.
+
 ### Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue
 
 - **URL:** https://kashklicks.ca/blog/old-city-hall-wedding-toronto/
