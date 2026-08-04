@@ -17,7 +17,7 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 - **Gallery:** https://kashklicks.ca/portfolio/karen-micheal/
 - **Type:** Wedding
 - **Location:** Niagara Parks Botanical Gardens, Niagara Falls
-- **Date:** 2026-07-05
+- **Date:** 2026-07-04
 
 ### Josie + Nelson
 

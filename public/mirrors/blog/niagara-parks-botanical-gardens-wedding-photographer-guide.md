@@ -111,6 +111,8 @@ The Conservatory can also be rented as an indoor ceremony space with special per
 
 **Parking is not free.** This is the one thing couples get wrong. The lots at the Butterfly Conservatory are pay and display at eight dollars an hour. There is a thirty five dollar annual pass for this site and a fifty dollar pass covering most Niagara Parks lots, which is worth it if you are pairing several Parkway locations in one day.
 
+The exception is worth asking about. If you are booking a ceremony on the property, Niagara Parks can arrange a flat rate for your guests, so ask for it in writing when you get your venue quote. That is why couples who were guests at a Niagara Parks wedding often remember parking as free while couples turning up for an engagement shoot pay by the hour.
+
 **Dawn to dusk means dawn to dusk.** No night photography with artificial lighting without prior written approval. Plan your golden hour against the actual sunset time, not an hour of margin you do not have.
 
 **No drones.** Recreational drones are not permitted anywhere on Niagara Parks property. This is not a grey area.

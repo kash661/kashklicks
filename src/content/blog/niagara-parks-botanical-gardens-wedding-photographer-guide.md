@@ -13,7 +13,7 @@ faq:
   - question: "Can you get married at the Niagara Parks Botanical Gardens?"
     answer: "Yes, but holding a ceremony is a separate paid booking through Niagara Parks Weddings, and it is not the same thing as the free photography access. Willow Pond on the Botanical Gardens property is a bookable ceremony site with a two hour block, and there is also a Wedding Arbour. Paying the rental fee gives you exclusive use of that location for your block. Request a current quote directly, since prices change year to year."
   - question: "Is parking free at the Niagara Parks Botanical Gardens?"
-    answer: "No. This is the thing couples most often get wrong. The lots at the Botanical Gardens and Butterfly Conservatory are pay and display at 8 dollars per hour. There is a 35 dollar annual pass covering this site, and a 50 dollar pass covering most Niagara Parks lots, which is worth it if you are shooting several Parkway locations in one day."
+    answer: "Not for a normal visit. The lots at the Botanical Gardens and Butterfly Conservatory are pay and display at 8 dollars per hour. There is a 35 dollar annual pass covering this site, and a 50 dollar pass covering most Niagara Parks lots, which is worth it if you are shooting several Parkway locations in one day. If you are booking a ceremony on the property, Niagara Parks can arrange a flat rate for your guests, so ask for it in writing in your venue quote."
   - question: "Can you take wedding photos inside the Butterfly Conservatory?"
     answer: "Only with a reservation. A staged wedding photo session inside the Conservatory is booked through Niagara Parks Weddings with rental fees starting at 250 dollars, and space is limited. Any fresh flowers you bring in have to be ordered through a Niagara Parks florist to protect the butterflies. General admission on its own does not cover a posed session with a dress and a bouquet."
   - question: "What is the best time of year for photos at the Botanical Gardens?"
@@ -127,6 +127,8 @@ The Conservatory can also be rented as an indoor ceremony space with special per
 ## Practical notes
 
 **Parking is not free.** This is the one thing couples get wrong. The lots at the Butterfly Conservatory are pay and display at eight dollars an hour. There is a thirty five dollar annual pass for this site and a fifty dollar pass covering most Niagara Parks lots, which is worth it if you are pairing several Parkway locations in one day.
+
+The exception is worth asking about. If you are booking a ceremony on the property, Niagara Parks can arrange a flat rate for your guests, so ask for it in writing when you get your venue quote. That is why couples who were guests at a Niagara Parks wedding often remember parking as free while couples turning up for an engagement shoot pay by the hour.
 
 **Dawn to dusk means dawn to dusk.** No night photography with artificial lighting without prior written approval. Plan your golden hour against the actual sunset time, not an hour of margin you do not have.
 
