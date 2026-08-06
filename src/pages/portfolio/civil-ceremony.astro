@@ -16,7 +16,10 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 
 const ctaImage = (await import('../../assets/images/homepage/civil-service-detail.jpg')).default;
 
-const entries = portfolio.filter((p) => p.category === 'civil-ceremony');
+// See pre-weddings.astro for what `alsoIn` does.
+const entries = portfolio.filter(
+  (p: any) => p.category === 'civil-ceremony' || p.alsoIn?.includes('civil-ceremony')
+);
 
 const businessRef = { '@id': `${site.url}/#business` };
 

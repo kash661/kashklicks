@@ -12,6 +12,30 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots
+
+- **URL:** https://kashklicks.ca/blog/toronto-islands-wedding-photos-guide/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-islands-wedding-photos-guide.md
+- **Published:** 2026-08-05
+- **Tags:** Venue Guide, Toronto Islands, Toronto, Wedding, Civil Ceremony, Pre-Wedding
+- **Summary:** Planning a wedding ceremony or photo shoot on the Toronto Islands? A photographer's guide to the permit you actually need, the ferry timing that ruins days, and where to shoot.
+
+### Toronto Music Garden Proposal Photography: A Skyline Spot Downtown
+
+- **URL:** https://kashklicks.ca/blog/toronto-music-garden-proposal-photography/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-music-garden-proposal-photography.md
+- **Published:** 2026-08-05
+- **Tags:** Photo Location, Toronto Music Garden, Proposal, Engagement, Harbourfront, Downtown Toronto
+- **Summary:** Planning a proposal at the Toronto Music Garden? A photographer's guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot actually works.
+
+### Shooting a Wes Anderson Style Wedding Film on the SIRUI 40mm Anamorphic
+
+- **URL:** https://kashklicks.ca/blog/wes-anderson-wedding-film-sirui-40mm-anamorphic/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/wes-anderson-wedding-film-sirui-40mm-anamorphic.md
+- **Published:** 2026-08-05
+- **Tags:** Wedding Film, Anamorphic, SIRUI, Gear, Toronto Islands, Behind the Scenes
+- **Summary:** A Toronto Islands wedding film shot on the SIRUI 40mm T1.8 1.33x autofocus anamorphic. Why anamorphic for a wedding, what the lens actually does, and the Wes Anderson techniques behind the edit.
+
 ### A Botanical Gardens Wedding in Niagara Falls: Karen + Micheal
 
 - **URL:** https://kashklicks.ca/blog/niagara-botanical-gardens-wedding-karen-micheal/

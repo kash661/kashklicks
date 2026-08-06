@@ -16,8 +16,11 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 
 const ctaImage = (await import('../../assets/images/homepage/homepage-06.jpg')).default;
 
+// `alsoIn` lets one gallery list under a second category without duplicating the
+// entry (e.g. a civil ceremony that was also a couples shoot). `category` stays
+// the primary one used for the breadcrumb, label and related galleries.
 const entries = portfolio
-  .filter((p) => p.category === 'pre-wedding')
+  .filter((p: any) => p.category === 'pre-wedding' || p.alsoIn?.includes('pre-wedding'))
   .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 
 const businessRef = { '@id': `${site.url}/#business` };

@@ -10,7 +10,21 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (26)
+## Sessions (29)
+
+### Harsh + Payal
+
+- **Gallery:** https://kashklicks.ca/portfolio/harsh-payal/
+- **Type:** Civil Ceremony (photo and film)
+- **Location:** Toronto Islands & Downtown Toronto
+- **Date:** 2026-07-26
+
+### Jashan + Dhillon
+
+- **Gallery:** https://kashklicks.ca/portfolio/jashan-dhillon/
+- **Type:** Civil Ceremony
+- **Location:** Toronto City Hall & Osgoode Hall, Toronto
+- **Date:** 2026-07-18
 
 ### Karen + Micheal
 
@@ -25,6 +39,13 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 - **Type:** Pre-Wedding
 - **Location:** Toronto Music Garden, Toronto
 - **Date:** 2026-06-12
+
+### Margarita + Mike
+
+- **Gallery:** https://kashklicks.ca/portfolio/margarita-mike/
+- **Type:** Pre-Wedding
+- **Location:** Toronto Music Garden, Toronto
+- **Date:** 2026-06-04
 
 ### Harsh + Bhayva
 
