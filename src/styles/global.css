@@ -1446,6 +1446,15 @@ input.flatpickr-input + input.form-field__input {
     text-decoration-thickness: 1px;
     margin-left: 0.4rem;
   }
+  /* Custom badge text on the collapsed row (the desktop badge pill is hidden
+     on mobile, so the note carries it here). */
+  .pricing-card--accordion .pricing-card__summary-note {
+    flex-basis: 100%;
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
 
   /* Chevron hint, top-right of the row. Shown only once JS makes the row
      tappable, so a no-JS phone (cards fully open) shows no false affordance. */
