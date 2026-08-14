@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Student Headshots in Toronto: A Session at Albion Library
+
+- **URL:** https://kashklicks.ca/blog/student-headshots-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/student-headshots-toronto.md
+- **Published:** 2026-08-14
+- **Tags:** Headshots, Albion Public Library, Etobicoke, Students, Behind the Scenes
+- **Summary:** Student headshots in Toronto from $151.25. A real session at Albion Public Library, minutes from Humber North, plus on location sessions at any GTA campus.
+
 ### Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots
 
 - **URL:** https://kashklicks.ca/blog/toronto-islands-wedding-photos-guide/

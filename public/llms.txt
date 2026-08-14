@@ -42,7 +42,7 @@ Solo photographer operation, not a large studio. Intentionally focused on intima
 
 ### Pre-Wedding
 - Love Story Mini: $351.25 (up to 2 hours, 1 location, 50+ edited photos)
-- Love Story + Film: $551.25 (up to 3 hours, 1 location, 40 edited photos, 1-2 minute 4K film)
+- Love Story + Film: $551.25 (3-4 hours, 1 location, 40 edited photos, 2-3 minute 4K film)
 - Love Story Duo: $551.25 (up to 3 hours, 2 locations, 2 outfits, 80+ edited photos)
 - The Signature Session: $851.25 (up to 5 hours, 2 locations, 2 outfits, 70+ edited photos, 3-4 minute 4K film)
 - The Pre Wedding: $1,451.25 (up to 10 hours, 3 locations, 3 outfits, 150+ edited photos, 5-7 minute custom 4K film + 30-40 second trailer/save-the-date)
@@ -143,6 +143,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 
 ## Blog
 
+- [Student Headshots in Toronto: A Session at Albion Library](https://kashklicks.ca/blog/student-headshots-toronto/): Student headshots in Toronto from $151.25. A real session at Albion Public Library, minutes from Humber North, plus on location sessions at any GTA campus.
 - [Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots](https://kashklicks.ca/blog/toronto-islands-wedding-photos-guide/): Planning a wedding ceremony or photo shoot on the Toronto Islands? A photographer's guide to the permit you actually need, the ferry timing that ruins days, and where to shoot.
 - [Toronto Music Garden Proposal Photography: A Skyline Spot Downtown](https://kashklicks.ca/blog/toronto-music-garden-proposal-photography/): Planning a proposal at the Toronto Music Garden? A photographer's guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot actually works.
 - [Shooting a Wes Anderson Style Wedding Film on the SIRUI 40mm Anamorphic](https://kashklicks.ca/blog/wes-anderson-wedding-film-sirui-40mm-anamorphic/): A Toronto Islands wedding film shot on the SIRUI 40mm T1.8 1.33x autofocus anamorphic. Why anamorphic for a wedding, what the lens actually does, and the Wes Anderson techniques behind the edit.
@@ -218,6 +219,7 @@ Full markdown representations of each page are available at:
 - [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · Student Headshots in Toronto: A Session at Albion Library](https://kashklicks.ca/mirrors/blog/student-headshots-toronto.md)
 - [Blog · Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots](https://kashklicks.ca/mirrors/blog/toronto-islands-wedding-photos-guide.md)
 - [Blog · Toronto Music Garden Proposal Photography: A Skyline Spot Downtown](https://kashklicks.ca/mirrors/blog/toronto-music-garden-proposal-photography.md)
 - [Blog · Shooting a Wes Anderson Style Wedding Film on the SIRUI 40mm Anamorphic](https://kashklicks.ca/mirrors/blog/wes-anderson-wedding-film-sirui-40mm-anamorphic.md)
