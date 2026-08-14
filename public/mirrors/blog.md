@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Are Professional Headshots Worth It? An Honest Answer
+
+- **URL:** https://kashklicks.ca/blog/are-professional-headshots-worth-it/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/are-professional-headshots-worth-it.md
+- **Published:** 2026-08-14
+- **Tags:** Headshots, LinkedIn, Career, Toronto
+- **Summary:** An honest answer from a Toronto photographer. What a professional headshot actually does for you, what the numbers really say, and packages from $151.25.
+
 ### Student Headshots in Toronto: A Session at Albion Library
 
 - **URL:** https://kashklicks.ca/blog/student-headshots-toronto/

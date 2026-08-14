@@ -143,6 +143,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 
 ## Blog
 
+- [Are Professional Headshots Worth It? An Honest Answer](https://kashklicks.ca/blog/are-professional-headshots-worth-it/): An honest answer from a Toronto photographer. What a professional headshot actually does for you, what the numbers really say, and packages from $151.25.
 - [Student Headshots in Toronto: A Session at Albion Library](https://kashklicks.ca/blog/student-headshots-toronto/): Student headshots in Toronto from $151.25. A real session at Albion Public Library, minutes from Humber North, plus on location sessions at any GTA campus.
 - [Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots](https://kashklicks.ca/blog/toronto-islands-wedding-photos-guide/): Planning a wedding ceremony or photo shoot on the Toronto Islands? A photographer's guide to the permit you actually need, the ferry timing that ruins days, and where to shoot.
 - [Toronto Music Garden Proposal Photography: A Skyline Spot Downtown](https://kashklicks.ca/blog/toronto-music-garden-proposal-photography/): Planning a proposal at the Toronto Music Garden? A photographer's guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot actually works.
@@ -219,6 +220,7 @@ Full markdown representations of each page are available at:
 - [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · Are Professional Headshots Worth It? An Honest Answer](https://kashklicks.ca/mirrors/blog/are-professional-headshots-worth-it.md)
 - [Blog · Student Headshots in Toronto: A Session at Albion Library](https://kashklicks.ca/mirrors/blog/student-headshots-toronto.md)
 - [Blog · Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots](https://kashklicks.ca/mirrors/blog/toronto-islands-wedding-photos-guide.md)
 - [Blog · Toronto Music Garden Proposal Photography: A Skyline Spot Downtown](https://kashklicks.ca/mirrors/blog/toronto-music-garden-proposal-photography.md)

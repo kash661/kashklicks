@@ -62,7 +62,7 @@ If you are at OCAD University, George Brown College, Centennial College, U of T 
 
 Not every headshot is for a student. Usually it is a bio page going live next week or a job hunt that just started, and the photo becomes urgent after being ignored for a year.
 
-For that I come to your office and we work in the lobby or against whatever wall your building gave you, or we pick a spot in the city and meet there. The Professional session runs up to an hour with two or three outfit changes, so you leave with a formal frame and a warmer one for the about page. Everything is listed on the [headshot packages page](/services/headshots/).
+For that I come to your office and we work in the lobby or against whatever wall your building gave you, or we pick a spot in the city and meet there. The Professional session runs up to an hour with two or three outfit changes, so you leave with a formal frame and a warmer one for the about page. Everything is listed on the [headshot packages page](/services/headshots/). And if you are still deciding whether any of this is worth booking, I wrote an [honest answer to that question](/blog/are-professional-headshots-worth-it/) too.
 
 ## What it costs
 
