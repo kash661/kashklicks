@@ -10,7 +10,7 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (29)
+## Sessions (30)
 
 ### Harsh + Payal
 
@@ -116,6 +116,13 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 - **Type:** Pre-Wedding (photo and film)
 - **Location:** University of Toronto & Toronto Island
 - **Date:** 2026-04-11
+
+### Mehak + Kamal
+
+- **Gallery:** https://kashklicks.ca/portfolio/mehak-kamal/
+- **Type:** Wedding
+- **Location:** Penticton & Kelowna, BC
+- **Date:** 2026-04-04
 
 ### Vanika + Mayank
 
