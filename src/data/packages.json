@@ -300,5 +300,53 @@
     ],
     "popular": true,
     "order": 2
+  },
+  {
+    "id": "headshots-professional",
+    "name": "The Professional",
+    "category": "Headshots",
+    "price": 301.25,
+    "currency": "CAD",
+    "description": "A relaxed on location headshot session for LinkedIn, your company profile, and your personal brand. Up to 1 hour with outfit changes, directed so you look like yourself on your best day.",
+    "duration": "Up to 1 hour",
+    "photos": "5 retouched + full gallery",
+    "film": false,
+    "highlights": [
+      "Up to 1 hour on location",
+      "2-3 outfit changes",
+      "5 fully retouched headshots",
+      "Full gallery of every good frame, lightly edited (30+)",
+      "LinkedIn, website and print crops included",
+      "Private online gallery",
+      "1-week delivery",
+      "Extra retouched image +$26.25",
+      "Express 48-hour delivery +$51.25"
+    ],
+    "popular": true,
+    "order": 1
+  },
+  {
+    "id": "headshots-student",
+    "name": "The Student",
+    "category": "Headshots",
+    "price": 151.25,
+    "currency": "CAD",
+    "badge": "Student discount, valid student ID required",
+    "description": "A quick, affordable session for students and new grads. LinkedIn, grad school applications, and your first job hunt, covered at a student rate.",
+    "duration": "30 minutes",
+    "photos": "2 retouched + gallery",
+    "film": false,
+    "highlights": [
+      "30 minute session, 1 location",
+      "1 outfit, bring a backup",
+      "2 fully retouched headshots",
+      "Gallery of every good frame (15+)",
+      "LinkedIn-ready crops",
+      "Private online gallery",
+      "1-week delivery",
+      "Extra retouched image +$26.25"
+    ],
+    "popular": false,
+    "order": 2
   }
 ]

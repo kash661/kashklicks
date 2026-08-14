@@ -133,5 +133,40 @@
     "pages": [
       "free-engagement-session-toronto"
     ]
+  },
+  {
+    "question": "What should I wear for my headshot?",
+    "answer": "Solid colours photograph best. Avoid busy patterns and large logos, and bring a second option so we have a backup on the day. I send a short what to wear guide once you book, so you show up knowing exactly what works.",
+    "services": [
+      "headshots"
+    ]
+  },
+  {
+    "question": "Where do headshot sessions happen?",
+    "answer": "On location, wherever suits you. Your office, your campus, or a spot in the city with great light. Travel within the GTA is included.",
+    "services": [
+      "headshots"
+    ]
+  },
+  {
+    "question": "How fast will I get my headshots?",
+    "answer": "Your full gallery lands within a few days. Once you pick your favourites, the retouched files follow within a week. If you need them sooner, 48-hour express delivery is available as an add-on.",
+    "services": [
+      "headshots"
+    ]
+  },
+  {
+    "question": "How does the student discount work?",
+    "answer": "Show a valid student ID when you book. The student rate applies to current students and to grads within a year of graduating.",
+    "services": [
+      "headshots"
+    ]
+  },
+  {
+    "question": "Can you photograph our whole team?",
+    "answer": "Yes. Team and office headshots are quoted per group, so everyone matches in light and framing. Get in touch with your headcount and location and I will put a number together.",
+    "services": [
+      "headshots"
+    ]
   }
 ]
