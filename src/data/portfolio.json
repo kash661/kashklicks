@@ -2913,6 +2913,13 @@
       "71.jpg": "Zoha holds hands with a young girl mid dance while the circle claps them on",
       "72.jpg": "Two guests clap with their hands high as Zoha keeps dancing beside them",
       "73.jpg": "Two kids lean on the terrace railing looking out at the condo towers in Maple"
-    }
+    },
+    "vendors": [
+      {
+        "role": "Planning",
+        "name": "Tsunki Event Planning",
+        "url": "https://www.instagram.com/tsunkiep/"
+      }
+    ]
   }
 ]

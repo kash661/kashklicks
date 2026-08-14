@@ -221,6 +221,18 @@ const remainingImages = galleryImages;
                 </p>
               </div>
             )}
+            {(entry as any).vendors?.length > 0 && (
+              <div class="mt-[var(--spacing-block)]">
+                <span class="text-label-md text-on-surface-muted">Vendor Team</span>
+                {(entry as any).vendors.map((vendor: { role: string; name: string; url?: string }) => (
+                  <p class="text-body-md text-on-surface-variant mt-[var(--spacing-tight)]">
+                    {vendor.role} &middot; {vendor.url ? (
+                      <a href={vendor.url} target="_blank" rel="noopener" class="border-b border-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{vendor.name}</a>
+                    ) : vendor.name}
+                  </p>
+                ))}
+              </div>
+            )}
           </aside>
         )}
       </div>
