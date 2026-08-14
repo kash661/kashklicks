@@ -1,0 +1,394 @@
+---
+/*
+ * Hallmark · macrostructure: digital-curator-service-page · theme: locked design system · design-system: .claude/CLAUDE.md
+ * page: Toronto headshots (service page) · sibling of services/celebrations.astro
+ * honest-copy: hero is a statement, NOT a review. The Google reviews are from
+ *   wedding and event clients, and there are no headshot reviews to quote yet.
+ * no fabricated metrics/testimonials · no em/en dashes · tokens + components reused
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import PricingCard from '../../components/ui/PricingCard.astro';
+import ReviewStrip from '../../components/global/ReviewStrip.astro';
+import PackageAddOns from '../../components/ui/PackageAddOns.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
+import BookingLink from '../../components/ui/BookingLink.astro';
+import ShareButton from '../../components/ui/ShareButton.astro';
+import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import ContactModal from '../../components/global/ContactModal.astro';
+import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
+import { Image } from 'astro:assets';
+import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
+
+import packages from '../../data/packages.json';
+import faqData from '../../data/faq.json';
+import site from '../../data/site.json';
+
+import heroImage from '../../assets/images/homepage/headshots-hero.jpg';
+import serviceDetailImage from '../../assets/images/homepage/headshots-service-detail.jpg';
+import momentImage from '../../assets/images/homepage/headshots-moment.jpg';
+import momentImageTwo from '../../assets/images/homepage/headshots-moment-2.jpg';
+import ctaImage from '../../assets/images/homepage/headshots-cta.jpg';
+
+const headshotsJourneySteps = [
+  {
+    label: 'Step 01',
+    title: 'Book a Session',
+    body: 'Pick your package and tell me what the photos are for. A quick call or a few messages is all it takes.',
+  },
+  {
+    label: 'Step 02',
+    title: 'Plan the Look',
+    body: 'I help you pick outfits, a location, and a time of day with great light. Office, campus, or a spot in the city.',
+  },
+  {
+    label: 'Step 03',
+    title: 'The Session',
+    body: 'Relaxed and directed. I pose you, crack a few jokes, and shoot more than we need so you have real choices.',
+  },
+  {
+    label: 'Step 04',
+    title: 'Pick and Retouch',
+    body: 'You pick your favourites from the gallery, I retouch them, and every crop you need is delivered within a week.',
+  },
+];
+
+const headshotPackages = packages.filter((p) => p.category === 'Headshots').sort((a, b) => a.order - b.order);
+const headshotFaq = faqData.filter((q: any) => q.services && q.services.includes('headshots'));
+
+const headshotsService = {
+  title: 'Headshots',
+  description: 'Headshots for LinkedIn, company profiles, applications, and personal brands. Sessions run on location in natural light, relaxed and fully directed, so you end up with a photo that looks like you on a good day instead of a stiff corporate portrait.',
+  includes: [
+    '30 or 60 minute sessions',
+    'On location, outdoors or at your office',
+    'Fully retouched headshots + a full gallery',
+    'LinkedIn, website and print crops',
+    'Private online gallery',
+    '1-week delivery',
+  ],
+};
+
+const businessRef = { '@id': `${site.url}/#business` };
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Toronto Headshot Photography',
+  description: headshotsService.description,
+  provider: businessRef,
+  areaServed: { '@type': 'City', name: 'Toronto' },
+  serviceType: 'Headshot Photography',
+  image: `${site.url}/og-default.jpg`,
+};
+
+const offerCatalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Headshot Photography Packages',
+  description: 'Toronto headshot photography packages by AD Photography. Professional and student sessions on location from $151.25.',
+  url: `${site.url}/services/headshots`,
+  offeredBy: businessRef,
+  itemListElement: headshotPackages.filter((p) => p.price !== null).map((p) => ({
+    '@type': 'Offer',
+    name: p.name,
+    description: p.description,
+    price: p.salePrice || p.price,
+    priceCurrency: p.currency,
+    availability: 'https://schema.org/InStock',
+    seller: businessRef,
+  })),
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: headshotFaq.map((q: any) => ({
+    '@type': 'Question',
+    name: q.question,
+    acceptedAnswer: { '@type': 'Answer', text: q.answer },
+  })),
+};
+
+const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
+---
+
+<BaseLayout
+  title="Toronto Headshot Photographer"
+  description="Professional and student headshot packages in Toronto. On location sessions in natural light from $151.25. LinkedIn, corporate and grad photos. Book a free consultation."
+  jsonLd={jsonLd}
+>
+  <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services/' },
+      { label: 'Headshots', href: '/services/headshots/' },
+    ]} />
+  </div>
+
+  <!-- Hero: Statement + portrait image.
+       No review here on purpose: the Google reviews are from wedding and event
+       clients, so quoting one under a headshot would misattribute it. -->
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-block);">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="min-height: 80svh;">
+        <!-- Statement -->
+        <div class="col-span-12 md:col-span-5 reveal">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Headshots</p>
+          <blockquote class="text-display-md" style="max-width: 20ch;">
+            Your first impression happens before you say a word.
+          </blockquote>
+          <p class="text-label-sm text-on-surface-muted mt-8">LinkedIn &middot; Corporate profiles &middot; Applications &middot; Personal brands</p>
+          <div class="mt-8">
+            <ShareButton
+              variant="labeled"
+              url="/services/headshots/"
+              title="Toronto Headshot Photography, AD Photography"
+              text="Professional and student headshot sessions from $151.25."
+              label="Share"
+            />
+          </div>
+        </div>
+        <!-- Portrait image + plaque -->
+        <figure class="col-span-12 md:col-span-6 md:col-start-7 reveal-right stagger-2">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={heroImage}
+              alt="Professional LinkedIn headshot of a smiling man in a black suit outside a modern Toronto office building, by AD Photography"
+              widths={[640, 960, 1280]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={75}
+              format="avif"
+              class="w-full h-full object-cover parallax-img"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="gallery-plaque">
+            <div class="gallery-plaque__line">
+              <span class="gallery-plaque__plate">Headshot</span>
+              <span class="gallery-plaque__rule" aria-hidden="true"></span>
+              <span class="gallery-plaque__meta">Toronto</span>
+            </div>
+            <p class="gallery-plaque__title">Look the part, still <em>yourself.</em></p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICE DESCRIPTION ═══ -->
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
+          <Image
+            src={serviceDetailImage}
+            alt="Corporate headshot of a smiling man in a black suit standing with his arms crossed outside a Toronto office"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            quality={75}
+            class="w-full h-full object-cover parallax-img"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">What I Offer</p>
+          <h1 class="section-title char-reveal">Toronto headshot <em>photography.</em></h1>
+          <p class="section-deck text-on-surface-variant mt-8 measure-wide">{headshotsService.description}</p>
+          <p class="text-label-sm text-on-surface-muted uppercase tracking-widest mt-10 mb-4">What's Included</p>
+          <ul class="space-y-3">
+            {headshotsService.includes.map((item) => (
+              <li class="text-body-md text-on-surface-variant pl-5 relative">
+                <span class="absolute left-0 top-0 text-on-surface-muted" aria-hidden="true">/</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Scroll indicator to packages -->
+      <a
+        href="#packages"
+        aria-label="Scroll to packages"
+        class="group flex flex-col items-center mt-16 reveal stagger-3 cursor-pointer focus:outline-none focus-visible:[outline:2px_solid_var(--color-on-surface-muted)] focus-visible:[outline-offset:8px]"
+      >
+        <span class="text-label-sm text-on-surface-muted group-hover:text-on-surface group-focus-visible:text-on-surface mb-3 cubic-ease" style="transition-duration: var(--duration-hover-ui);">Packages</span>
+        <span class="scroll-chevron text-on-surface-muted group-hover:text-on-surface group-focus-visible:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover-ui);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ HEADSHOT PACKAGES ═══ -->
+  <section id="packages" class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-7">
+          <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">Sessions &amp; Pricing</p>
+          <h2 class="section-title reveal stagger-1">Headshot <em>packages.</em></h2>
+        </div>
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0">
+          <p class="section-deck text-on-surface-variant reveal stagger-2 measure-wide">
+            Both sessions are on location and fully directed, so you never have to work out what to do with your hands. The student rate covers current students and grads within a year of graduating, with a valid student ID at the session.
+          </p>
+        </div>
+      </div>
+
+      <ReviewStrip class="reveal mb-12" />
+      <div class="pricing-grid reveal stagger-3">
+        {headshotPackages.map((pkg, i) => (
+          <PricingCard
+            id={pkg.id}
+            name={pkg.name}
+            price={pkg.price}
+            salePrice={pkg.salePrice}
+            description={pkg.description}
+            highlights={pkg.highlights}
+            popular={pkg.popular}
+            featured={!!pkg.salePrice}
+            ordinal={i}
+            service="headshots"
+            ctaLabel="Enquire"
+            accordion={true}
+            accordionTag={pkg.duration}
+          />
+        ))}
+      </div>
+
+      <!-- Shared add-ons section (pulled from both headshot packages above) -->
+      <div class="mt-12">
+        <PackageAddOns
+          title="Add-Ons & Extras"
+          description="Optional upgrades you can add to either headshot session."
+          packages={headshotPackages}
+        />
+      </div>
+
+      <!-- CTA below packages -->
+      <div class="text-center mt-16 reveal">
+        <p class="text-label-sm text-on-surface-muted mb-2">Have questions? I'll get back to you within 24 hours, guaranteed.</p>
+        <div class="mt-6">
+          <a href="/contact/?service=headshots" class="magnetic inline-flex items-center justify-center whitespace-nowrap px-12 py-5 bg-primary text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease" style="transition-duration: var(--duration-hover);">Contact Me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <JourneyTimeline steps={headshotsJourneySteps} />
+
+  <!-- ═══ CALENDLY CTA (post-journey) ═══ -->
+  <section class="bg-background" style="padding: 0 0 var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center reveal">
+        <h3 class="text-heading-lg font-serif mb-2">Ready to start?</h3>
+        <p class="text-body-md text-on-surface-variant mb-8">Book a free 30-minute consultation call</p>
+        <BookingLink variant="primary" label="Book Your Call" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EDITORIAL INTERLUDE ═══
+       Offset photo pair borrowed from the homepage signature section: the
+       narrower right frame drops below the left one so the row never reads
+       as a symmetrical two-up. -->
+  <section class="bg-surface" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-center">
+        <div class="col-span-12 md:col-span-3 reveal">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">The Difference</p>
+          <p class="text-quote text-on-surface-variant" style="max-width: 24ch;">
+            One great photo does more for you than a hundred almost good ones.
+          </p>
+        </div>
+        <figure class="col-span-12 md:col-span-4 md:col-start-5 mt-10 md:mt-0 reveal-left stagger-2">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={momentImage}
+              alt="Full length business portrait of a man in a black suit seated on a bench outside a Toronto office building, by AD Photography"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              quality={75}
+              class="w-full h-full object-cover parallax-img"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+        <figure class="col-span-12 md:col-span-3 md:col-start-10 mt-3 md:mt-24 reveal-right stagger-3">
+          <div class="aspect-[3/4] overflow-hidden hover-zoom">
+            <Image
+              src={momentImageTwo}
+              alt="Full length professional portrait of a man in a black suit standing on the sidewalk beside a glass Toronto office building, by AD Photography"
+              widths={[320, 480, 640]}
+              sizes="(max-width: 768px) 100vw, 25vw"
+              quality={75}
+              class="w-full h-full object-cover parallax-img"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GOOD TO KNOW ═══ -->
+  <section class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="text-center mb-16 reveal">
+        <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">Before You Book</p>
+        <h2 class="section-title mx-auto">Good to <em>know.</em></h2>
+      </div>
+
+      <div class="good-to-know-grid">
+        <div class="good-to-know-item reveal">
+          <p class="text-heading-md font-serif italic mb-3">Free consultation</p>
+          <p class="text-body-md text-on-surface-variant">Included with every booking. A short call to work out what the photos are for and how you want to come across.</p>
+        </div>
+        <div class="good-to-know-item reveal stagger-1">
+          <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
+          <p class="text-body-md text-on-surface-variant">Light first, location second. Your office, your campus, or a spot in the city. One good wall and an hour of soft light is usually all it takes.</p>
+        </div>
+        <div class="good-to-know-item reveal stagger-2">
+          <p class="text-heading-md font-serif italic mb-3">GTA travel included</p>
+          <p class="text-body-md text-on-surface-variant">No surprise fees. Travel within the Greater Toronto Area is typically covered. Anything beyond, I discuss upfront.</p>
+        </div>
+        <div class="good-to-know-item reveal stagger-3">
+          <p class="text-heading-md font-serif italic mb-3">What to wear help</p>
+          <p class="text-body-md text-on-surface-variant">I send a short guide before every session so you show up ready. Solid colours, a second option in the bag, nothing to think about on the day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial max-w-3xl">
+      <div class="text-center mb-12 reveal">
+        <h2 class="text-heading-lg font-serif italic">Questions you might have</h2>
+      </div>
+      <div class="reveal stagger-1">
+        <FAQAccordion items={headshotFaq} />
+      </div>
+    </div>
+  </section>
+
+  <PortfolioFinalCTA
+    eyebrow="Need a headshot?"
+    title="Let's make it easy."
+    body="Book a free consultation. Twenty minutes on location can carry your profile for years."
+    ctaLabel="Begin Your Journey"
+    ctaHref="/contact/?service=headshots#inquiry"
+    background="background"
+    image={ctaImage}
+    imageAlt="Relaxed corporate headshot of a smiling man in a black suit seated outdoors in Toronto, by AD Photography"
+    imageCaption="Book Your Session"
+  />
+
+  <ContactModal />
+  <FloatingPackagesLink />
+</BaseLayout>
