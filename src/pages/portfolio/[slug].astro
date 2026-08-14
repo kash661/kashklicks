@@ -62,6 +62,9 @@ const plateLabels: Record<string, string> = {
 const platePrimary = plateLabels[entry.category] || entry.category;
 const plateLabel = entry.hasFilm ? `${platePrimary} · Film` : platePrimary;
 
+// Optional vendor credits shown under the plaque title
+const vendors: { role: string; name: string; url?: string }[] = (entry as any).vendors ?? [];
+
 const coupleParts = entry.couple.split(/\s*[+&]\s*/);
 const coupleHasAmp = coupleParts.length === 2 && coupleParts[0] && coupleParts[1];
 
@@ -148,6 +151,18 @@ const remainingImages = galleryImages;
             <>{coupleParts[0]} <em>&amp;</em> {coupleParts[1]}</>
           ) : entry.couple}
         </h1>
+        {vendors.length > 0 && (
+          <p class="text-label-sm text-on-surface-muted mt-4">
+            {vendors.map((vendor, i) => (
+              <>
+                {i > 0 && <span aria-hidden="true"> &middot;&nbsp; </span>}
+                <span class="whitespace-nowrap">{vendor.role}&nbsp;{vendor.url ? (
+                  <a href={vendor.url} target="_blank" rel="noopener" class="border-b border-on-surface-muted hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{vendor.name}</a>
+                ) : vendor.name}</span>
+              </>
+            ))}
+          </p>
+        )}
       </figure>
     </div>
   </section>
@@ -219,18 +234,6 @@ const remainingImages = galleryImages;
                 <p class="text-body-md text-on-surface-variant mt-[var(--spacing-tight)]">
                   <a href={entry.blogGuide.url} class="border-b border-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{entry.blogGuide.title} &rarr;</a>
                 </p>
-              </div>
-            )}
-            {(entry as any).vendors?.length > 0 && (
-              <div class="mt-[var(--spacing-block)]">
-                <span class="text-label-md text-on-surface-muted">Vendor Team</span>
-                {(entry as any).vendors.map((vendor: { role: string; name: string; url?: string }) => (
-                  <p class="text-body-md text-on-surface-variant mt-[var(--spacing-tight)]">
-                    {vendor.role} &middot; {vendor.url ? (
-                      <a href={vendor.url} target="_blank" rel="noopener" class="border-b border-on-surface-variant hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{vendor.name}</a>
-                    ) : vendor.name}
-                  </p>
-                ))}
               </div>
             )}
           </aside>
