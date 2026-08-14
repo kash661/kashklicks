@@ -43,6 +43,7 @@ const categoryLabels: Record<string, string> = {
   'pre-wedding': 'Pre-Weddings',
   'wedding': 'Weddings',
   'civil-ceremony': 'Civil Ceremony',
+  'celebrations': 'Celebrations',
 };
 const categoryLabel = categoryLabels[entry.category] || entry.category;
 const categorySlugs: Record<string, string> = {
@@ -56,6 +57,7 @@ const plateLabels: Record<string, string> = {
   'pre-wedding': 'Pre-Wedding',
   'wedding': 'Wedding',
   'civil-ceremony': 'Civil Ceremony',
+  'celebrations': 'Celebration',
 };
 const platePrimary = plateLabels[entry.category] || entry.category;
 const plateLabel = entry.hasFilm ? `${platePrimary} · Film` : platePrimary;

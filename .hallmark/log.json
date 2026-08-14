@@ -1,6 +1,13 @@
 [
   {
     "date": "2026-08-14",
+    "macrostructure": "digital-curator-portfolio-category",
+    "theme": "locked (Digital Curator)",
+    "enrichment": "client photography",
+    "brief": "celebrations portfolio category page, anchored by zoha-moe anniversary gallery"
+  },
+  {
+    "date": "2026-08-14",
     "macrostructure": "digital-curator-service-page",
     "theme": "locked (Digital Curator)",
     "enrichment": "client photography",

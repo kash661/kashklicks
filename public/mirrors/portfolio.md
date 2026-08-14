@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (30)
+## Sessions (31)
+
+### Zoha + Moe
+
+- **Gallery:** https://kashklicks.ca/portfolio/zoha-moe/
+- **Type:** celebrations
+- **Location:** Private Venue, Maple
+- **Date:** 2026-08-01
 
 ### Harsh + Payal
 
