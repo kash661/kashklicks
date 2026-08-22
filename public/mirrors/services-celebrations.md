@@ -40,6 +40,7 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 
 ## Event Packages
 
+- **The Hourly: $100** (book by the hour, 40 edited per hour photos)
 - **Celebrations: $551.25** (minimum 2 hours, Unlimited edited photos)
 
 ---
@@ -69,7 +70,7 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 ## Schema.org Structured Data
 
 - Service (Toronto Event Photography, provider @id LocalBusiness)
-- OfferCatalog (1 Offer items)
+- OfferCatalog (2 Offer items)
 - FAQPage
 - BreadcrumbList
 - LocalBusiness (site-wide from BaseLayout)

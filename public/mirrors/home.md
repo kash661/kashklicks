@@ -2,7 +2,7 @@
 
 **URL:** https://kashklicks.ca/
 **Title:** AD Photography | Toronto Wedding Photographer & Videographer
-**Description:** Toronto wedding photographer and filmmaker. AD Photography captures candid, cinematic pre-wedding and wedding photography across the GTA and Canada. Packages from $151.25.
+**Description:** Toronto wedding photographer and filmmaker. AD Photography captures candid, cinematic pre-wedding and wedding photography across the GTA and Canada. Packages from $100.
 
 ---
 

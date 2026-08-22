@@ -3,7 +3,7 @@
     "id": "pre-wedding-full",
     "name": "The Pre Wedding",
     "category": "Pre-Wedding",
-    "price": 1451.25,
+    "price": 1251.25,
     "currency": "CAD",
     "description": "My signature pre-wedding experience. Up to 10 hours of coverage across 3 locations with 3 outfit changes, 150+ high-resolution photos, and a custom 5-7 minute cinematic 4K film.",
     "duration": "Up to 10 hours",
@@ -28,7 +28,7 @@
     "id": "love-story-film",
     "name": "The Signature Session",
     "category": "Pre-Wedding",
-    "price": 851.25,
+    "price": 751.25,
     "currency": "CAD",
     "badge": "Special discount, message for more info",
     "description": "The perfect balance of photography and film. Up to 5 hours across 2 locations with 70+ edited photos and a 3-4 minute cinematic 4K film.",
@@ -248,6 +248,27 @@
     ],
     "popular": false,
     "order": 5
+  },
+  {
+    "id": "celebrations-hourly",
+    "name": "The Hourly",
+    "category": "Events",
+    "price": 100,
+    "currency": "CAD",
+    "description": "Pay as you go coverage for smaller parties and shorter events. $100 per hour, with 40 edited photos for every hour of coverage.",
+    "duration": "Book by the hour",
+    "photos": "40 edited per hour",
+    "film": false,
+    "highlights": [
+      "$100 per hour of coverage",
+      "40 edited photos per hour",
+      "Private online gallery",
+      "2-week delivery",
+      "Vintage Canon throwback candids +$76.25",
+      "Instax guest prints add-on +$61.25 (up to 50 prints)"
+    ],
+    "popular": false,
+    "order": 6
   },
   {
     "id": "civil-ceremony",

@@ -79,7 +79,7 @@ const offerCatalogSchema = {
   '@context': 'https://schema.org',
   '@type': 'OfferCatalog',
   name: 'Event & Celebrations Photography Packages',
-  description: 'Toronto event and celebration photography packages by AD Photography. Birthdays, bridal showers, baby showers, and more from $551.25.',
+  description: 'Toronto event and celebration photography packages by AD Photography. Birthdays, bridal showers, baby showers, and more from $100.',
   url: `${site.url}/services/celebrations`,
   offeredBy: businessRef,
   itemListElement: eventPackages.filter((p) => p.price !== null).map((p) => ({
@@ -108,7 +108,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
 
 <BaseLayout
   title="Toronto Event Photography"
-  description="Event and celebration photography in Toronto. Birthdays, bridal showers, corporate events from $551.25. Relaxed, natural coverage. Book a free consultation."
+  description="Event and celebration photography in Toronto. Birthdays, bridal showers, corporate events from $100. Relaxed, natural coverage. Book a free consultation."
   jsonLd={jsonLd}
 >
   <!-- Breadcrumbs (visually hidden, still crawled by Google for search snippets) -->
@@ -136,7 +136,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
               variant="labeled"
               url="/services/celebrations/"
               title="Toronto Event Photography, AD Photography"
-              text="Birthdays, bridal showers, and private events from $551.25."
+              text="Birthdays, bridal showers, and private events from $100."
               label="Share"
             />
           </div>

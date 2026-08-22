@@ -64,14 +64,19 @@ async function handleEngagementLead(request: Request): Promise<Response> {
       upstream = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         body: formData,
-        redirect: 'follow',
+        redirect: 'manual',
         signal: controller.signal,
       });
     } finally {
       clearTimeout(timeout);
     }
 
-    const ok = upstream.ok;
+    // Apps Script answers a successful doPost with a 302 redirect to its
+    // one-time echo URL; the sheet write has already happened by then. The
+    // echo endpoint now rejects followed requests (405), which made every
+    // successful submission render the error state, so never follow the
+    // redirect and treat any 2xx/3xx as success.
+    const ok = upstream.status >= 200 && upstream.status < 400;
     return new Response(
       `<!doctype html><meta charset="utf-8"><title>${ok ? 'OK' : 'ERR'}</title>${ok ? 'ok' : 'err'}`,
       { status: ok ? 200 : 502, headers: HTML_HEADERS },
