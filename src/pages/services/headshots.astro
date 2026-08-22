@@ -25,7 +25,6 @@ import faqData from '../../data/faq.json';
 import site from '../../data/site.json';
 
 import heroImage from '../../assets/images/homepage/headshots-hero.jpg';
-import serviceDetailImage from '../../assets/images/homepage/headshots-service-detail.jpg';
 import momentImage from '../../assets/images/homepage/headshots-moment.jpg';
 import momentImageTwo from '../../assets/images/homepage/headshots-moment-2.jpg';
 import ctaImage from '../../assets/images/homepage/headshots-cta.jpg';
@@ -182,18 +181,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
   <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
     <div class="container-editorial">
       <div class="grid-editorial items-center" style="margin-bottom: var(--spacing-block);">
-        <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
-          <Image
-            src={serviceDetailImage}
-            alt="Corporate headshot of a smiling man in a black suit standing with his arms crossed outside a Toronto office"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 1024px) 100vw, 42vw"
-            quality={75}
-            class="w-full h-full object-cover parallax-img"
-            loading="lazy"
-          />
-        </div>
-        <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2 order-1 lg:order-2">
+        <div class="col-span-12 lg:col-span-7 reveal stagger-2">
           <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">What I Offer</p>
           <h1 class="section-title char-reveal">Toronto headshot <em>photography.</em></h1>
           <p class="section-deck text-on-surface-variant mt-8 measure-wide">{headshotsService.description}</p>

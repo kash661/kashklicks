@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Affordable Photographer in Toronto: What $100 Per Hour Actually Gets You
+
+- **URL:** https://kashklicks.ca/blog/affordable-photographer-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/affordable-photographer-toronto.md
+- **Published:** 2026-08-22
+- **Tags:** Celebrations, Pricing, Events, Toronto
+- **Summary:** An honest look at hiring an affordable photographer in Toronto. My hourly event rate is $100 per hour with 40 edited photos per hour, and this is exactly what it covers, what it does not, and when a package is the smarter buy.
+
 ### Are Professional Headshots Worth It? An Honest Answer
 
 - **URL:** https://kashklicks.ca/blog/are-professional-headshots-worth-it/

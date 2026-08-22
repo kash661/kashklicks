@@ -146,6 +146,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 
 ## Blog
 
+- [Affordable Photographer in Toronto: What $100 Per Hour Actually Gets You](https://kashklicks.ca/blog/affordable-photographer-toronto/): An honest look at hiring an affordable photographer in Toronto. My hourly event rate is $100 per hour with 40 edited photos per hour, and this is exactly what it covers, what it does not, and when a package is the smarter buy.
 - [Are Professional Headshots Worth It? An Honest Answer](https://kashklicks.ca/blog/are-professional-headshots-worth-it/): An honest answer from a Toronto photographer. What a professional headshot actually does for you, what the numbers really say, and packages from $151.25.
 - [Student Headshots in Toronto: A Session at Albion Library](https://kashklicks.ca/blog/student-headshots-toronto/): Student headshots in Toronto from $151.25. A real session at Albion Public Library, minutes from Humber North, plus on location sessions at any GTA campus.
 - [Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots](https://kashklicks.ca/blog/toronto-islands-wedding-photos-guide/): Planning a wedding ceremony or photo shoot on the Toronto Islands? A photographer's guide to the permit you actually need, the ferry timing that ruins days, and where to shoot.
@@ -223,6 +224,7 @@ Full markdown representations of each page are available at:
 - [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · Affordable Photographer in Toronto: What $100 Per Hour Actually Gets You](https://kashklicks.ca/mirrors/blog/affordable-photographer-toronto.md)
 - [Blog · Are Professional Headshots Worth It? An Honest Answer](https://kashklicks.ca/mirrors/blog/are-professional-headshots-worth-it.md)
 - [Blog · Student Headshots in Toronto: A Session at Albion Library](https://kashklicks.ca/mirrors/blog/student-headshots-toronto.md)
 - [Blog · Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots](https://kashklicks.ca/mirrors/blog/toronto-islands-wedding-photos-guide.md)
