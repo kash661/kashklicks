@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (31)
+## Sessions (32)
+
+### Nidhi + Derek
+
+- **Gallery:** https://kashklicks.ca/portfolio/nidhi-derek/
+- **Type:** Civil Ceremony
+- **Location:** Guild Park and Gardens, Scarborough
+- **Date:** 2026-08-15
 
 ### Zoha + Moe
 
