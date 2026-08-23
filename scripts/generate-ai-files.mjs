@@ -200,6 +200,7 @@ const CATEGORY_LABEL = {
   'pre-wedding': 'Pre-Wedding',
   wedding: 'Wedding',
   'civil-ceremony': 'Civil Ceremony',
+  proposals: 'Proposal',
 };
 const galleries = portfolio
   .map((e) => ({
@@ -292,6 +293,7 @@ function pagesList() {
     [`${SITE_URL}/portfolio/weddings/`, 'Portfolio > Weddings', 'Wedding day galleries'],
     [`${SITE_URL}/portfolio/pre-weddings/`, 'Portfolio > Pre-Weddings', 'Pre-wedding and engagement sessions'],
     [`${SITE_URL}/portfolio/civil-ceremony/`, 'Portfolio > Civil Ceremony', 'Civil ceremony and courthouse weddings'],
+    [`${SITE_URL}/portfolio/proposals/`, 'Portfolio > Proposals', 'Surprise proposal galleries across Toronto and the GTA'],
     [`${SITE_URL}/portfolio/films/`, 'Portfolio > Films', 'Wedding and pre-wedding short films'],
     [`${SITE_URL}/services/`, 'Services', 'Photography and videography service offerings and package pricing'],
     [`${SITE_URL}/services/wedding/`, 'Services > Wedding', 'Wedding day coverage'],
@@ -587,6 +589,7 @@ function buildPortfolioMirror() {
   p(`- [Weddings](${SITE_URL}/portfolio/weddings/)`);
   p(`- [Pre-Weddings](${SITE_URL}/portfolio/pre-weddings/)`);
   p(`- [Civil Ceremony](${SITE_URL}/portfolio/civil-ceremony/)`);
+  p(`- [Proposals](${SITE_URL}/portfolio/proposals/)`);
   p(`- [Films](${SITE_URL}/portfolio/films/)`);
   p();
   p('## Related');

@@ -57,7 +57,7 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 ### Margarita + Mike
 
 - **Gallery:** https://kashklicks.ca/portfolio/margarita-mike/
-- **Type:** Pre-Wedding
+- **Type:** Proposal
 - **Location:** Toronto Music Garden, Toronto
 - **Date:** 2026-06-04
 
@@ -241,6 +241,7 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 - [Weddings](https://kashklicks.ca/portfolio/weddings/)
 - [Pre-Weddings](https://kashklicks.ca/portfolio/pre-weddings/)
 - [Civil Ceremony](https://kashklicks.ca/portfolio/civil-ceremony/)
+- [Proposals](https://kashklicks.ca/portfolio/proposals/)
 - [Films](https://kashklicks.ca/portfolio/films/)
 
 ## Related

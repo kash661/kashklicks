@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import PortfolioCard from '../../components/ui/PortfolioCard.astro';
+import Button from '../../components/ui/Button.astro';
+import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import { Image } from 'astro:assets';
+
+import portfolio from '../../data/portfolio.json';
+import site from '../../data/site.json';
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/*.jpg',
+  { eager: true }
+);
+
+const ctaImage = (await import('../../assets/images/portfolio/margarita-mike/21.jpg')).default;
+
+// See pre-weddings.astro for what `alsoIn` does.
+const entries = portfolio
+  .filter((p: any) => p.category === 'proposals' || p.alsoIn?.includes('proposals'))
+  .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
+
+const businessRef = { '@id': `${site.url}/#business` };
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: 'Toronto Proposal Photography Gallery, AD Photography',
+  description: 'Surprise proposal photography portfolio in Toronto and the GTA by AD Photography.',
+  url: new URL('/portfolio/proposals/', Astro.site).href,
+  creator: { '@type': 'LocalBusiness', name: 'AD Photography', ...businessRef },
+  image: entries.map((entry) => ({
+    '@type': 'ImageObject',
+    name: `${entry.couple}, Proposal`,
+    description: `Proposal photography of ${entry.couple} at ${entry.location}`,
+    contentLocation: { '@type': 'Place', name: entry.location },
+  })),
+};
+---
+
+<BaseLayout
+  title="Toronto Proposal Photography Portfolio"
+  description="Browse my Toronto surprise proposal photography portfolio. Real proposals photographed from a distance across Toronto and the GTA, plus the mini shoot after the yes."
+  jsonLd={schema}
+>
+  <div class="sr-only">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Portfolio', href: '/portfolio/' },
+      { label: 'Proposals', href: '/portfolio/proposals/' },
+    ]} />
+  </div>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section class="section-frame bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial items-end" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-7 reveal">
+          <p class="text-label-md text-on-surface-muted mb-6 eyebrow-rule">Proposals</p>
+          <h1 class="section-title char-reveal">The yes, exactly as it <em>happened.</em></h1>
+        </div>
+        <div class="col-span-12 md:col-span-5 md:col-start-8 mt-6 md:mt-0 reveal stagger-2">
+          <p class="section-deck text-on-surface-variant measure-wide">
+            Surprise proposals across Toronto and the GTA. I stay out of sight until the question is asked, then we take a short walk and photograph the two of you once it sinks in.
+          </p>
+        </div>
+      </div>
+
+      {entries.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
+          {entries.map((entry, i) => {
+            const imgPath = `/src/assets/images/portfolio/${entry.coverImage}`;
+            const img = portfolioImages[imgPath]?.default;
+            return img ? (
+              <div class:list={['reveal', `stagger-${(i % 5) + 1}`, i % 3 === 1 ? 'lg:mt-24' : '']}>
+                <PortfolioCard
+                  couple={entry.couple}
+                  location={entry.location}
+                  category={entry.category}
+                  coverImage={img}
+                  href={`/portfolio/${entry.slug ?? entry.id}/`}
+                  date={entry.date ?? null}
+                  priority={i < 2}
+                />
+              </div>
+            ) : null;
+          })}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-body-lg text-on-surface-muted">New proposals coming soon. Check back or browse my other chapters.</p>
+          <div class="mt-8">
+            <span class="magnetic inline-block"><Button href="/portfolio/" variant="secondary">View All Work</Button></span>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ═══ PHILOSOPHY ═══ -->
+  <section class="bg-background" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <p class="text-quote">
+          "You only get one first reaction. My job is to be far enough away that you forget I am there, and close enough to catch it."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <PortfolioFinalCTA
+    title="Plan the moment."
+    body="Tell me roughly where and when you are thinking. I will help you pick the spot, the timing, and where I stand, so nothing gives it away."
+    ctaLabel="Begin The Conversation"
+    ctaHref="/contact/?service=proposal#inquiry"
+    image={ctaImage}
+    imageAlt="Toronto surprise proposal photography by AD Photography"
+    imageCaption="The Question"
+  />
+</BaseLayout>
