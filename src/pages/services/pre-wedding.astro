@@ -23,6 +23,7 @@ import heroImage from '../../assets/images/homepage/homepage-06.jpg';
 const preWeddingServiceImage = (await import('../../assets/images/homepage/prewedding-service-detail.jpg')).default;
 
 const preWeddingPackages = packages.filter((p) => p.category === 'Pre-Wedding').sort((a, b) => a.order - b.order);
+const proposalPackage = packages.find((p) => p.category === 'Proposals');
 const preWeddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('pre-wedding'));
 
 const preWeddingService = {
@@ -39,6 +40,9 @@ const preWeddingService = {
 };
 
 const businessRef = { '@id': `${site.url}/#business` };
+
+// The proposal package is sold from this page, so it belongs in the same offer catalog.
+const offerPackages = proposalPackage ? [...preWeddingPackages, proposalPackage] : preWeddingPackages;
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -58,7 +62,7 @@ const offerCatalogSchema = {
   description: 'Toronto pre-wedding and engagement photography packages by AD Photography. Sessions starting from $351.25.',
   url: `${site.url}/services/pre-wedding`,
   offeredBy: businessRef,
-  itemListElement: preWeddingPackages.filter((p) => p.price !== null).map((p) => ({
+  itemListElement: offerPackages.filter((p) => p.price !== null).map((p) => ({
     '@type': 'Offer',
     name: p.name,
     description: p.description,
@@ -311,7 +315,9 @@ const preWeddingJourneySteps = [
       <script>
         function initPackageFilter() {
           const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
-          const cards = document.querySelectorAll<HTMLElement>('.package-card');
+          // Scoped to the grid: package cards rendered elsewhere on the page
+          // (the proposal section below) must never be dimmed by these pills.
+          const cards = document.querySelectorAll<HTMLElement>('#package-grid .package-card');
           if (!pills.length || !cards.length) return;
 
           function setActive(activeId: string) {
@@ -395,6 +401,50 @@ const preWeddingJourneySteps = [
       </div>
     </div>
   </section>
+
+  <!--
+    ═══ PROPOSAL PACKAGE ═══
+    Anchor is "proposal-package", not "proposal": PricingCard uses its id prop
+    for both the card's DOM id and the package= inquiry param, so "proposal"
+    has to stay on the card.
+  -->
+  {proposalPackage && (
+    <section id="proposal-package" class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
+      <div class="container-editorial">
+        <div class="grid-editorial items-center">
+          <div class="col-span-12 lg:col-span-6">
+            <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">The Question</p>
+            <h2 class="section-title reveal stagger-1">Planning to <em>propose?</em></h2>
+            <p class="section-deck text-on-surface-variant mt-8 measure-wide reveal stagger-2">
+              You stay in the moment. We stay out of sight and catch the yes as it happens.
+              One hour of coverage, around 80 photos, and your film look photos in your inbox the next day.
+            </p>
+          </div>
+          <div class="col-span-12 lg:col-span-5 lg:col-start-8 mt-10 lg:mt-0 reveal stagger-3">
+            {/*
+              Wrapped in .pricing-grid so the single card picks up the same
+              flex fallback the other one-package pages use. It has no
+              #package-grid id, so the mobile accordion controller skips it
+              and the card stays fully open.
+            */}
+            <div class="pricing-grid">
+              <PricingCard
+                id={proposalPackage.id}
+                name={proposalPackage.name}
+                price={proposalPackage.price}
+                description={proposalPackage.description}
+                highlights={proposalPackage.highlights}
+                service="proposal"
+                ctaLabel="Enquire"
+                accordion={true}
+                ordinal={0}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
   <JourneyTimeline steps={preWeddingJourneySteps} />
 

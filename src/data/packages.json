@@ -142,6 +142,28 @@
     "order": 6
   },
   {
+    "id": "proposal",
+    "name": "The Proposal",
+    "category": "Proposals",
+    "price": 325,
+    "currency": "CAD",
+    "description": "A surprise proposal captured from a distance, then a mini shoot to celebrate the yes. One hour of discreet coverage with around 80 photos. Your Fujifilm film simulation photos arrive the next day, and the rest follow fully edited.",
+    "duration": "1 hour",
+    "locations": 1,
+    "photos": "Around 80",
+    "film": false,
+    "highlights": [
+      "1 hour of discreet coverage",
+      "Around 80 photos",
+      "Fujifilm film simulation photos delivered next day",
+      "Remaining photos fully edited after",
+      "Help planning the spot and timing",
+      "Private online gallery"
+    ],
+    "popular": false,
+    "order": 1
+  },
+  {
     "id": "wedding-essential",
     "name": "The Essentials",
     "category": "Wedding",
