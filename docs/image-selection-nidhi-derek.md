@@ -32,17 +32,24 @@ DSC06372.jpg | 30.jpg | R8 | Wide Landscape | detail | clean
 XT954676.jpg | 31.jpg | R9 | Tall Portrait | solo | clean
 DSC06367.jpg | 32.jpg | R10 | Wide Landscape | editorial | clean
 DSC06161.jpg | 33.jpg | R11 | Tall Portrait | solo | clean
-XT954502.jpg | 34.jpg | R12 | Tall Portrait | walking | clean
-XT954529.jpg | 35.jpg | R13 | Tall Portrait | embrace | clean
-XT954602.jpg | 36.jpg | R14 | Tall Portrait | walking | bw
-XT954713.jpg | 37.jpg | R15 | Tall Portrait | embrace | clean
+XT954502.jpg | 35.jpg | R12 | Tall Portrait | walking | clean
+XT954529.jpg | 36.jpg | R13 | Tall Portrait | embrace | clean
+XT954602.jpg | 40.jpg | R14 | Tall Portrait | walking | bw
+XT954713.jpg | 39.jpg | R15 | Tall Portrait | embrace | clean
 XT954611.jpg | 38.jpg | R16 | Tall Portrait | motion | clean
-XT954726.jpg | 39.jpg | R17 | Tall Portrait | embrace | clean
-XT954705.jpg | 40.jpg | R18 | Tall Portrait | editorial | motion-blur
-XT954556.jpg | 41.jpg | R19 | Tall Portrait | walking | clean
-DSC06311.jpg | 42.jpg | R20 | Tall Portrait | motion | motion-blur
-XT954794.jpg | 43.jpg | R21 | Tall Portrait | motion | motion-blur
-DSC06335.jpg | 44.jpg | R22 | Tall Portrait | lookback | motion-blur
+XT954726.jpg | 41.jpg | R17 | Tall Portrait | embrace | clean
+XT954705.jpg | 42.jpg | R18 | Tall Portrait | editorial | motion-blur
+XT954556.jpg | 43.jpg | R19 | Tall Portrait | walking | clean
+DSC06311.jpg | 46.jpg | R20 | Tall Portrait | motion | motion-blur
+XT954794.jpg | 48.jpg | R21 | Tall Portrait | motion | motion-blur
+DSC06335.jpg | 50.jpg | R22 | Tall Portrait | lookback | motion-blur
+
+AKASH-ADD 6.jpeg | 34.jpg | hand-add | Tall Portrait | detail | grain-haze
+AKASH-ADD 3.jpeg | 37.jpg | hand-add | Tall Portrait | portrait | clean
+AKASH-ADD 4.jpeg | 45.jpg | hand-add | Tall Portrait | walking | clean
+AKASH-ADD 2.jpeg | 47.jpg | hand-add | Tall Portrait | detail | grain-haze
+AKASH-ADD 5.jpeg | 49.jpg | hand-add | Tall Portrait | walking | grain-haze
+AKASH-ADD 7.jpeg | 44.jpg | hand-add | Tall Portrait | detail | grain-haze
 
 # Cut: nidhi-derek
 DSC05104.jpg
