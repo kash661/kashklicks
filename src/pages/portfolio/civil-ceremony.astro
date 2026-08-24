@@ -17,9 +17,10 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 const ctaImage = (await import('../../assets/images/homepage/civil-service-detail.jpg')).default;
 
 // See pre-weddings.astro for what `alsoIn` does.
-const entries = portfolio.filter(
-  (p: any) => p.category === 'civil-ceremony' || p.alsoIn?.includes('civil-ceremony')
-);
+// Most recent session first — sorted by session date, not array position.
+const entries = portfolio
+  .filter((p: any) => p.category === 'civil-ceremony' || p.alsoIn?.includes('civil-ceremony'))
+  .sort((a: any, b: any) => (b.date || '').localeCompare(a.date || ''));
 
 const businessRef = { '@id': `${site.url}/#business` };
 
