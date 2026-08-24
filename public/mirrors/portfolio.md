@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (32)
+## Sessions (33)
+
+### Lavina + Raeed
+
+- **Gallery:** https://kashklicks.ca/portfolio/lavina-raeed/
+- **Type:** Proposal
+- **Location:** Guild Park and Gardens, Scarborough
+- **Date:** 2026-08-23
 
 ### Nidhi + Derek
 
