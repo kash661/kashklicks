@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Château des Charmes Proposal Photography: A Surprise Winery Proposal in Niagara on the Lake
+
+- **URL:** https://kashklicks.ca/blog/chateau-des-charmes-proposal-photography/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/chateau-des-charmes-proposal-photography.md
+- **Published:** 2026-08-28
+- **Tags:** Photo Location, Château des Charmes, Proposal, Engagement, Niagara on the Lake, Niagara, Winery
+- **Summary:** A surprise proposal at Château des Charmes winery in Niagara on the Lake, plus a photographer's guide to the fountain, the vines and the lavender door.
+
 ### Affordable Photographer in Toronto: What $100 Per Hour Actually Gets You
 
 - **URL:** https://kashklicks.ca/blog/affordable-photographer-toronto/
