@@ -242,7 +242,7 @@ function packageLineParts(p) {
     parts.push(`${p.locations} location${p.locations > 1 ? 's' : ''}`);
   }
   if (typeof p.outfits === 'number' && p.outfits > 1) {
-    parts.push(`${p.outfits} outfits`);
+    parts.push(`${p.outfits} outfit changes`);
   }
   const ph = photosLabel(p.photos);
   if (ph) parts.push(ph);
@@ -841,7 +841,7 @@ function buildServicePreWeddingMirror() {
   p("### What's Included");
   p('- Professional photography and optional videography');
   p('- Location scouting and guidance');
-  p('- Outfit and styling consultation');
+  p('- Outfit planning and styling advice');
   p('- High-resolution edited photos');
   p('- Custom cinematic films (select packages)');
   p('- Private online gallery');
@@ -872,7 +872,7 @@ function buildServicePreWeddingMirror() {
   p();
   p('- Free consultation included with every booking.');
   p('- Location guidance, light first, location second.');
-  p('- Outfit changes welcome within package limits.');
+  p('- Outfit changes welcome within package limits. Couples bring their own outfits.');
   p('- Quick turnaround: most galleries delivered in 1 to 3 weeks.');
   p();
   p('---');
