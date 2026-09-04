@@ -22,7 +22,7 @@ Your love story deserves to be told beautifully, before the big day even arrives
 ### What's Included
 - Professional photography and optional videography
 - Location scouting and guidance
-- Outfit and styling consultation
+- Outfit planning and styling advice
 - High-resolution edited photos
 - Custom cinematic films (select packages)
 - Private online gallery
@@ -44,9 +44,9 @@ Your love story deserves to be told beautifully, before the big day even arrives
 
 - **Love Story Mini: $351.25** (up to 2 hours, 1 location, 50+ edited photos)
 - **Love Story + Film: $551.25** (3-4 hours, 1 location, 40 edited photos, 2-3 minute 4K film)
-- **Love Story Duo: $551.25** (up to 3 hours, 2 locations, 2 outfits, 80+ edited photos)
-- **The Signature Session: $751.25** (up to 5 hours, 2 locations, 2 outfits, 70+ edited photos, 3-4 minute 4K film)
-- **The Pre Wedding: $1,251.25** (up to 10 hours, 3 locations, 3 outfits, 150+ edited photos, 5-7 minute custom 4K film + 30-40 second trailer/save-the-date)
+- **Love Story Duo: $551.25** (up to 3 hours, 2 locations, 2 outfit changes, 80+ edited photos)
+- **The Signature Session: $751.25** (up to 5 hours, 2 locations, 2 outfit changes, 70+ edited photos, 3-4 minute 4K film)
+- **The Pre Wedding: $1,251.25** (up to 10 hours, 3 locations, 3 outfit changes, 150+ edited photos, 5-7 minute custom 4K film + 30-40 second trailer/save-the-date)
 - **Make It Yours: Custom pricing** (start from any package above and customize locations, hours, and coverage)
 
 ---
@@ -55,7 +55,7 @@ Your love story deserves to be told beautifully, before the big day even arrives
 
 - Free consultation included with every booking.
 - Location guidance, light first, location second.
-- Outfit changes welcome within package limits.
+- Outfit changes welcome within package limits. Couples bring their own outfits.
 - Quick turnaround: most galleries delivered in 1 to 3 weeks.
 
 ---
