@@ -43,7 +43,7 @@ Your love story deserves to be told beautifully, before the big day even arrives
 ## Pre-Wedding Packages
 
 - **Love Story Mini: $351.25** (up to 2 hours, 1 location, 50+ edited photos)
-- **Love Story + Film: $551.25** (up to 3 hours, 1 location, 40 edited photos, 1-2 minute 4K film)
+- **Love Story + Film: $551.25** (3-4 hours, 1 location, 40 edited photos, 2-3 minute 4K film)
 - **Love Story Duo: $551.25** (up to 3 hours, 2 locations, 2 outfits, 80+ edited photos)
 - **The Signature Session: $851.25** (up to 5 hours, 2 locations, 2 outfits, 70+ edited photos, 3-4 minute 4K film)
 - **The Pre Wedding: $1,451.25** (up to 10 hours, 3 locations, 3 outfits, 150+ edited photos, 5-7 minute custom 4K film + 30-40 second trailer/save-the-date)
