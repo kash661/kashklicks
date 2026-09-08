@@ -79,7 +79,7 @@ const testimonial = testimonials[0];
 // LCP hero preload: identical params to the <Image> below, so the hashed
 // AVIF srcset matches and the preload scanner can start the hero fetch
 // during <head> parse instead of waiting for the <img> in the body.
-const heroPreload = await getImage({ src: heroImage, widths: [480, 640, 768, 1280, 1600], format: 'avif', quality: 72 });
+const heroPreload = await getImage({ src: heroImage, width: 1600, widths: [480, 640, 768, 1280, 1600], format: 'avif', quality: 72 });
 
 // Contact CTA: serve the portrait crop to phones, the landscape Toronto-skyline shot to desktop.
 const contactMobileImg = await getImage({ src: contactMobile, widths: [480, 768, 1080], format: 'avif', quality: 70 });
@@ -261,6 +261,7 @@ const businessExtras = {
       src={heroImage}
       alt="Toronto wedding photographer AD Photography, Mehak and Manal session"
       class="home-hero__image absolute inset-0 w-full h-full object-cover"
+      width={1600}
       widths={[480, 640, 768, 1280, 1600]}
       sizes="100vw"
       quality={72}
@@ -345,8 +346,8 @@ const businessExtras = {
           alt="Candid Toronto wedding photography, Ayushi and Parth"
           class="parallax-img"
           widths={[640, 960, 1280]}
-          sizes="(max-width: 768px) 100vw, 58vw"
-          quality={80}
+          sizes="(max-width: 640px) calc(100vw - 3rem), 34vh"
+          quality={72}
         />
         <div class="gallery-caption text-on-surface">
           <p class="font-medium">Ayushi + Parth</p>
@@ -359,8 +360,8 @@ const businessExtras = {
           alt="Toronto pre-wedding portrait, Alex and Aziz"
           class="parallax-img"
           widths={[640, 960]}
-          sizes="(max-width: 768px) 100vw, 42vw"
-          quality={80}
+          sizes="(max-width: 640px) calc(100vw - 3rem), min(42vw, 75vh)"
+          quality={72}
         />
         <div class="gallery-caption text-on-surface">
           <p class="font-medium">Alex + Aziz</p>
