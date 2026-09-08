@@ -145,8 +145,9 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **URL:** https://kashklicks.ca/blog/intimate-toronto-wedding-photography-cost/
 - **Mirror:** https://kashklicks.ca/mirrors/blog/intimate-toronto-wedding-photography-cost.md
 - **Published:** 2026-05-28
+- **Updated:** 2026-09-08
 - **Tags:** Pricing, Wedding, Toronto, Civil Ceremony, Intimate Wedding
-- **Summary:** Planning a 2027 wedding? Real Toronto rates, my packages, and what changes the price. Civil ceremony from $501.25, wedding coverage from $1,401.25.
+- **Summary:** What a Toronto wedding photographer costs for a 2027 wedding. My full package prices with hours and photo counts, real GTA rate ranges, and what changes the price.
 
 ### RC Harris Engagement Photos: A Toronto Location Guide
 

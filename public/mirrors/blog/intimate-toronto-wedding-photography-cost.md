@@ -3,126 +3,178 @@
 **URL:** https://kashklicks.ca/blog/intimate-toronto-wedding-photography-cost/
 **Author:** Akash (AD Photography)
 **Published:** 2026-05-28
+**Updated:** 2026-09-08
 **Tags:** Pricing, Wedding, Toronto, Civil Ceremony, Intimate Wedding
 
 ---
 
-Here is the question every couple actually wants answered, and the one most photographers make you book a call to hear: what does this cost?
+The first thing almost every couple asks me is what it costs, and it is the one thing most Toronto wedding photographers make you book a call to hear. I would rather just tell you.
 
-We will answer it plainly. This is an honest look at what wedding photography really costs in Toronto and the GTA in 2026, what makes one quote three times another, and exactly what we charge and why. No call required.
+This page has my real rates for the 2027 wedding season, package by package, with hours and photo counts and what each one includes. The package numbers come straight from my own pricing page. The wider cost ranges further down are what I see quoted around the GTA when couples forward me the other proposals they are weighing, so you can judge whether a number someone sent you is normal. No form, no discovery call, no price sheet that arrives three days later.
 
-A quick note on why this page exists. When we studied the Toronto market, only a handful of photographers showed their prices at all. Most hide them. We think that is backwards. If you are planning a wedding, you deserve to know the number before you spend an evening on a sales call.
+I publish prices because hiding them felt backwards to me. When I went looking at the Toronto market, only a handful of photographers showed a number anywhere on their site. If you are building a wedding budget, you deserve that number before you spend an evening on a sales call.
 
-## Toronto wedding photography prices at a glance
+## Toronto wedding photographer cost at a glance
 
-**Pre-wedding session:** From $351.25. Up to two hours at one location, with 50 or more edited photos.
+**Wedding day coverage:** From $1,401.25 for up to 6 hours. Full day coverage is $2,501.25 for up to 10 hours. The longest package is $3,801.25 for up to 14 hours.
 
-**Civil ceremony:** $501.25. Covers the ceremony and the portraits right after.
+**Civil ceremony:** $501.25 for up to 2 hours. The whole small day, ceremony through the dinner after, is $901.25.
 
-**Wedding day:** From $1,401.25 for six hours. The Full Day is $2,501.25, and The Complete Story is $3,801.25 for up to fourteen hours with a second photographer.
+**Pre wedding session:** From $351.25 for up to 2 hours at one location.
 
-**What is included:** Every package includes the edited high resolution gallery.
+**In every wedding package:** An engagement session before the day, unlimited edited high resolution photos, and a private online gallery.
 
-**What changes the price:** Hours of coverage, whether a second shooter is added, albums and prints, an engagement session, and how established the photographer is.
+**What changes the price:** Hours of coverage, a second photographer, an engagement session, albums and prints, travel, delivery speed, and how established the photographer is.
 
-## What wedding photography actually costs in the GTA
+**What the wider GTA market quotes:** Roughly $450 to $1,200 for a short civil ceremony, $1,200 to $3,000 for an intimate half day, and $2,800 to $5,500 for a full day.
 
-These are real 2026 ranges for professional photographers in Toronto and the GTA. Not luxury-only rates, and not the rock-bottom marketplace listings. Honest middle.
+**Who shoots it:** Me. One photographer, one camera bag, one point of view for the whole day.
 
-**A short City Hall or civil ceremony (1 to 2 hours): about $450 to $1,200.**
+Prices current as of September 2026 and quoted in Canadian dollars.
 
-One photographer, the ceremony, and a short set of portraits nearby. The lower end is solid newer and mid-range professionals. The upper end is more established brands. Some high-end photographers do not offer short coverage at all, because it does not fit a full-day calendar.
+## My 2027 wedding photography packages and rates
 
-**An intimate or backyard wedding (half day, 4 to 6 hours): about $1,200 to $3,000.**
+These are the same numbers that sit on my packages page. Every wedding package is photography, and every one includes an engagement session before the wedding day, which most of the market charges extra for.
 
-Enough to cover the ceremony, the portraits, and the first part of the celebration. Entry professionals sit at the lower end, established photographers in the middle, premium names above it, sometimes with an engagement session included.
+### Wedding day packages
 
-**A full-day wedding (8 to 10 hours): about $2,800 to $5,500 for most professionals.**
+| Package | Price | Hours | Photos | What is included |
+|---|---|---|---|---|
+| The Essentials | $1,401.25 | Up to 6 | 200+ | Getting ready, ceremony and reception, couple portraits, and an engagement session (Love Story Mini, 2 hours, 50+ photos). |
+| The Full Day | $2,501.25 | Up to 10 | 400+ | The whole day plus a sneak peek inside 24 hours, a second photographer for the ceremony or the reception, and an engagement session with photo and film. |
+| The Complete Story | $3,801.25 | Up to 14 | 600+ | Extended coverage plus a second photographer, a 24 hour sneak peek, and priority delivery in 2 to 3 weeks. |
 
-Getting ready through reception. Well-known and in-demand photographers run $4,500 to $7,000, often with extras like a second shooter or an album. Luxury and editorial names go past $7,000, sometimes well past it.
+The Full Day is running at $2,301.25 right now, below its listed $2,501.25, so check the [wedding packages page](/services/wedding/) for the live number before you budget.
 
-The honest summary: if your budget is under $2,000, you are looking at short coverage or a newer photographer. A realistic budget for a full-day professional in the GTA is $3,000 to $5,000 and up.
+### Civil ceremony and elopement rates
 
-## What actually drives the price
+| Package | Price | Hours | Photos | What is included |
+|---|---|---|---|---|
+| The Civil Ceremony | $501.25 | Up to 2 | 150+ | The ceremony itself and a couple portrait session near the venue. |
+| The Elopement | $901.25 | Up to 4 | 250+ | Ceremony, portraits, and the dinner or small reception after. |
 
-Price is not really about hours alone. It is time, skill, and what you walk away with. These are the levers.
+Both sit on the [civil ceremony page](/services/civil-ceremony/), and my flat [Toronto elopement packages](/elopement-photographer-toronto/) explain which of the two fits a small day better.
 
-![A couple's civil ceremony at Toronto City Hall, an intimate short-coverage wedding, by AD Photography](../../assets/images/portfolio/anushka-anthony/11.jpg)
+### Pre wedding session prices
 
-**Hours of coverage.** The biggest single factor. More hours means more shooting and far more editing afterward. Many photographers set a minimum on peak-season Saturdays.
+| Package | Price | Hours | Photos | What is included |
+|---|---|---|---|---|
+| Love Story Mini | $351.25 | Up to 2 | 50+ | One location, one outfit, gallery in about a week. |
+| Love Story Duo | $551.25 | Up to 3 | 80+ | Two locations, two outfit changes, photo only. |
+| Love Story + Film | $551.25 | 3 to 4 | 40 | One location, plus a 2 to 3 minute cinematic 4K film. |
+| The Signature Session | $751.25 | Up to 5 | 70+ | Two locations, two outfits, and a 3 to 4 minute 4K film. |
+| The Pre Wedding | $1,251.25 | Up to 10 | 150+ | Three locations, three outfit changes, a 5 to 7 minute film and a save the date trailer. |
 
-**A second shooter.** Adding a second photographer usually adds $400 to $1,000 or more. Worth it for large weddings or two simultaneous getting-ready locations. Often unnecessary for intimate days.
+Full session details are on the [pre wedding page](/services/pre-wedding/).
 
-![An intimate backyard wedding at golden hour in Toronto, half-day coverage, by AD Photography](../../assets/images/portfolio/nora-ali/14.jpg)
+## What changes the price
 
-**Albums and prints.** A real fine-art album can add several hundred to a couple thousand dollars. Optional, but it is the thing your grandchildren will actually hold.
+![A couple's civil ceremony at Toronto City Hall, an intimate short coverage wedding, by AD Photography](../../assets/images/portfolio/anushka-anthony/11.jpg)
 
-**An engagement session.** Sometimes bundled into mid and high packages, sometimes a $300 to $800 add-on. It is also the best way to feel comfortable in front of the camera before the day that counts.
+The cost of a wedding photographer is not really about talent. It is about time, what is bundled in, and how limited the photographer's calendar is. These are the levers that move the price, and I have put my own numbers against each one so you can see where the money actually goes.
 
-![A full-day wedding portrait at a heritage venue near Toronto, by AD Photography](../../assets/images/portfolio/natalie-shavar/05.jpg)
+**Hours of coverage.** The single biggest factor. Every extra hour is an hour of shooting and several more hours of culling and editing behind it. My extra wedding hours are $301.25 each, and extra civil ceremony hours are $201.25 each. Most photographers also set a minimum on peak season Saturdays.
 
-**Experience and demand.** Photographers with a deep portfolio, reliable delivery, proper backup systems, and insurance charge more, because their dates are limited and the risk to you is lower. You are paying for the day going right.
+**A second photographer.** Across the market this adds roughly $400 to $1,000 or more. I shoot solo by design, so on The Essentials a second photographer is $101.25 per hour if you want one. The Full Day includes one for the ceremony or the reception, and The Complete Story includes one outright. When a second set of hands does come, I brief them and edit their frames myself, so the gallery still reads in one voice.
 
-**Travel and multiple locations.** Venues outside the core GTA add travel. A day that hops between a hotel, a church, a park, and a hall needs more hours and more planning.
+![An intimate backyard wedding at golden hour in Toronto, half day coverage, by AD Photography](../../assets/images/portfolio/nora-ali/14.jpg)
 
-**Season and day of week.** Peak Saturdays from May to October are the most in demand and the most expensive. Off-season and weekday weddings can sometimes book shorter, cheaper coverage.
+**An engagement session.** Most of the market sells this as a $300 to $800 add on. I include one in all three wedding packages, partly because it is the best way to stop feeling awkward in front of a camera before the day that counts. The Essentials includes Love Story Mini. The Full Day and The Complete Story include Love Story + Film.
 
-## How to compare photographers without getting fooled
+**Albums and prints.** A real fine art album adds several hundred to a couple of thousand dollars with most studios. I do not sell albums. You get the full resolution files, so you can order from any printer you like and pay the printer, not me. What I do offer on the day is Instax guest prints for $61.25, up to 50 of them, which people end up loving more than they expect.
 
-A few honest tips, even if you do not book us:
+**Travel and multiple locations.** There is no travel fee in my published packages, so a Toronto or GTA venue is quoted at the package price. A venue well outside the GTA is a conversation I have with you before you book, never after. What really adds cost is a day that hops between a hotel, a church, a park and a hall, because that day needs more hours and much more planning.
 
-**Ask for a full gallery, not the Instagram highlights.** Anyone can post ten great frames. Ask to see every photo from one real wedding, start to finish. That is the true test of consistency.
+**Delivery speed.** Standard delivery is 1 to 2 months on The Essentials and 2 to 3 months on the longer packages. Priority delivery in 2 to 3 weeks is $501.25 and is already included in The Complete Story.
 
-**Compare what is included, line by line.** Hours, second shooter, engagement session, number of edited images, album, and your rights to use the photos. A cheaper quote with half the inclusions is not actually cheaper.
+![A full day wedding portrait at a heritage venue near Toronto, by AD Photography](../../assets/images/portfolio/natalie-shavar/05.jpg)
 
-**Make sure you like the person.** They will be next to you at the most emotional moments of your day. The work matters, but so does the feeling of having them there.
+**How established the photographer is.** A deep portfolio, dual card backups, insurance, and a record of delivering on time cost money to maintain, and the dates are finite. You are paying for the day going right.
 
-## What we charge, and why
+**Season and day of week.** Peak Saturdays from May through October are the most in demand and the most expensive. An off season date or a weekday can often book shorter, less expensive coverage.
 
-![A full-day Hamilton wedding, church ceremony through portraits, by AD Photography](../../assets/images/portfolio/roxanne-justin/06.jpg)
+## How much does a wedding photographer cost in Toronto? What I see quoted
 
-Our pricing is on the site, openly, because you should be able to plan without a phone call.
+These are the ranges I see quoted around the GTA for professional coverage. Not the luxury tier, and not the rock bottom marketplace listings.
 
-**Civil ceremony coverage** starts at a fixed rate for a short ceremony and the portraits right after. Built for City Hall and civil weddings.
+**A short City Hall or civil ceremony, 1 to 2 hours: about $450 to $1,200.** One photographer, the ceremony, and a short set of portraits nearby. The lower end is newer and mid market professionals. The upper end is more established brands. Plenty of full day photographers do not offer short coverage at all, because it does not fit a Saturday calendar.
 
-**Intimate and half-day weddings** sit in the mid range, the right fit for backyard weddings, small church weddings, and intimate celebrations.
+**An intimate or backyard wedding, 4 to 6 hours: about $1,200 to $3,000.** Enough for the ceremony, the portraits, and the first part of the celebration. Entry level professionals sit at the bottom of that range, established photographers in the middle, premium names above it.
 
-**Full-day coverage** scales from there, getting ready through reception.
+**A full day wedding, 8 to 10 hours: about $2,800 to $5,500.** Getting ready through the reception. Well known and heavily booked photographers run $4,500 to $7,000, often with a second photographer or an album folded in. Editorial and luxury studios go past $7,000, sometimes well past it.
 
-Every package includes the edited high-resolution gallery, delivered properly.
+The honest summary: a realistic budget for a full day professional in the GTA is $3,000 to $5,000 and up. My Full Day sits under that at $2,501.25 because I run solo and keep the overhead low, not because the day is shorter.
 
-Two things make our pricing work the way it does. First, we shoot solo by design. One lead photographer, one consistent eye on your whole day, no rotating crew. Where a package includes a second pair of hands for the ceremony, they are briefed and edited by the same eye, so the gallery still reads as one voice. Second, we keep the pricing transparent, because the alternative is a market that hides the number until you are emotionally committed, and we would rather just tell you.
+## If your wedding photography budget is under $2,000
 
-See the current packages on our [services page](/services/wedding/). If you are weighing a smaller wedding, our guides to a [City Hall wedding](/blog/toronto-city-hall-wedding-photographer-guide/) and an [intimate backyard wedding](/blog/intimate-backyard-wedding-toronto/) show what those days actually look like. If an intimate wedding is what you are picturing, here is [how we shoot intimate Toronto weddings](/intimate-wedding-toronto/).
+Here is the plain answer on what that budget buys, because I would rather you plan around a real cost than a hopeful one.
+
+At $1,401.25, The Essentials gives you up to 6 hours, 200 or more edited photos, and an engagement session before the day. That covers a getting ready window, the ceremony, couple portraits, and the first stretch of the reception. For an intimate wedding, a church ceremony, or an [intimate backyard wedding](/blog/intimate-backyard-wedding-toronto/), 6 hours is genuinely enough. Most of the days I love shooting fit inside it.
+
+What you trade off under $2,000 is length, not quality. You will likely skip the last dance and the late night. You will not get a second photographer covering two getting ready rooms at once. You will not get an album included.
+
+Three ways couples make that work. Start coverage later and let the getting ready happen off camera, which buys you the whole evening instead. Pick an off season or weekday date. Or move the portraits earlier so the hours you pay for land on the moments you want back.
+
+If your day genuinely runs ten hours with two locations and 150 guests, be honest about the budget. Under $2,000 in the GTA means short coverage or a newer photographer. Both are real options. Neither is a full day.
+
+## Are rates different for a City Hall or civil ceremony wedding?
+
+Yes, and mostly because the day is shorter.
+
+Two sets of fees apply. The City charges you directly: roughly $180 for an Ontario marriage licence, and around $325 including tax for the ceremony in the Toronto City Hall Wedding Chamber. The City sets those and updates them, so confirm the current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/) before you budget. My [City Hall wedding guide](/blog/toronto-city-hall-wedding-photographer-guide/) walks through booking them, the 22 seat chamber, and the portrait loop right outside the doors.
+
+Photography sits on top of that. My Civil Ceremony package is $501.25 for up to 2 hours, which covers the ceremony and a portrait walk around Nathan Phillips Square, Old City Hall and Osgoode Hall. If you want the dinner after included, The Elopement is $901.25 for up to 4 hours. If your plans grow into a fuller intimate celebration, [how I shoot intimate Toronto weddings](/intimate-wedding-toronto/) shows what that looks like.
+
+## How to compare packages without getting fooled
+
+![A full day Hamilton wedding, church ceremony through portraits, by AD Photography](../../assets/images/portfolio/roxanne-justin/06.jpg)
+
+Three things I would check, even if you never hire me.
+
+**Ask for a full gallery, not the Instagram grid.** Anyone can post ten good frames. Ask to see every photo from one complete wedding. Consistency across 400 images is the only real test.
+
+**Compare inclusions line by line.** Hours, second photographer, engagement session, number of edited images, delivery time, album, and your rights to use the photos. A cheaper quote missing half of those is not cheaper. This is why my tables above put hours and photo counts next to every price.
+
+**Make sure you like the person.** They stand next to you at the most emotional moments of your day. The portfolio matters, and so does whether their presence makes you relax.
 
 ## Frequently asked questions
 
 **How much does a wedding photographer cost in Toronto?**
 
-In 2026, roughly $450 to $1,200 for a short City Hall ceremony, $1,200 to $3,000 for an intimate half-day, and $2,800 to $5,500 for a full day with most established professionals. Premium names go higher.
+Around the GTA I see about $450 to $1,200 for a short civil ceremony, $1,200 to $3,000 for an intimate half day, and $2,800 to $5,500 for a full day with established professionals. My own rates start at $1,401.25 for wedding day coverage and $501.25 for a civil ceremony.
 
-**Why do some photographers cost so much more?**
+**What do your wedding photography packages include?**
 
-Hours, second shooter, albums, engagement session, experience, and demand. Two very different quotes usually mean two very different products, so compare inclusions, not just price.
+All three include an engagement session, unlimited edited high resolution photos, and a private gallery. The Essentials is $1,401.25 for 6 hours, The Full Day is $2,501.25 for 10 hours with a second photographer for part of the day, and The Complete Story is $3,801.25 for 14 hours with priority delivery.
 
-**How much is a City Hall or civil ceremony photographer?**
+**Are rates different for a City Hall or civil ceremony wedding?**
 
-About $450 to $1,200 for one to two hours with portraits. Our Civil Ceremony coverage is a fixed package for exactly that.
+Yes. A civil ceremony is $501.25 for up to 2 hours because the day is short. City fees are separate, roughly $180 for the licence and $325 for the ceremony itself.
 
-**Do you need a second shooter?**
+**Do you charge travel for weddings outside Toronto?**
 
-Not for most intimate weddings, City Hall ceremonies, or backyard weddings. One experienced photographer keeps the day calm and the cost down.
+There is no travel fee in my published packages. If a venue sits well outside the GTA I tell you what it adds before you book.
 
-**Why don't most photographers show their prices?**
+**Is a second photographer worth it?**
 
-To get you on a call first. We list ours openly instead.
+Not for most intimate weddings, City Hall ceremonies, or backyard celebrations. It earns its place with large guest counts or two getting ready locations running at once. On The Essentials it is $101.25 per hour.
 
-## Let's talk about your day
+**How much is a pre wedding shoot in Toronto?**
 
-If you want a clear number and a photographer who tells you what things cost up front, you are in the right place. Tell us your date and what you are planning, and we will point you to the coverage that fits.
+Mine start at $351.25 for 2 hours and 50 or more photos, and run to $1,251.25 for a full day across three locations with a cinematic film.
 
-[**View wedding photography packages →**](/services/wedding/)
+**Can I book photos only, without a film?**
 
-Or [send us a note](/contact/#inquiry) and we will start with a real conversation about the day, the people, and the moments that matter most.
+Every wedding package is photography. Film belongs to the pre wedding sessions, and even there Love Story Mini and Love Story Duo are photo only.
 
-Eloping? My [Toronto elopement packages](/elopement-photographer-toronto/) are flat and public: $501.25 for the civil ceremony, $901.25 for the whole small day.
+**Why do some Toronto wedding photographers cost so much more than others?**
+
+Hours, inclusions, and demand. Two quotes that look far apart are usually selling very different things.
+
+## Tell me your date
+
+If you want a clear number and a photographer who puts it in writing before the call, you are in the right place. Tell me your date and roughly what the day looks like, and I will point you to the coverage that actually fits it.
+
+[**View wedding photography packages and prices →**](/services/wedding/)
+
+Or [send me a note](/contact/#inquiry) and I will start with a real conversation about the day, the people, and the moments you want back.
