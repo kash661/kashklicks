@@ -44,6 +44,10 @@ const {
 // italic ampersand between the two names.
 const parts = couple.split(/\s*[+&]\s*/);
 const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
+
+// Meta line segments: each "Wedding · Venue · Photo + Film" piece becomes an
+// inline-block so a narrow screen breaks the line at a dot, never mid phrase.
+const metaParts = meta.split(/\s*·\s*/).filter(Boolean);
 ---
 
 <section class="coming-soon" aria-labelledby={`${id}-title`}>
@@ -77,7 +81,11 @@ const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
               <>{couple}, <em>coming soon.</em></>
             )}
           </h2>
-          <p class="coming-soon__meta">{meta}</p>
+          <p class="coming-soon__meta">
+            {metaParts.map((part, i) => (
+              <span class="coming-soon__meta-item">{part}{i < metaParts.length - 1 ? ' \u00b7' : ''}</span>
+            ))}
+          </p>
         </div>
         <div class="coming-soon__bottom">
           <p class="coming-soon__body">{body}</p>
@@ -128,6 +136,21 @@ const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
     line-height: 1.7;
     color: var(--color-on-dark-variant);
     margin-top: 1.5rem;
+  }
+
+  .coming-soon__meta-item {
+    display: inline-block;
+    margin-right: 0.35em;
+  }
+
+  .coming-soon__meta-item:last-child {
+    margin-right: 0;
+  }
+
+  /* Breathing room between the caps line and the paragraph. On desktop the
+     stretched rail adds the void on top of this; on mobile this IS the gap. */
+  .coming-soon__bottom {
+    margin-top: 2.5rem;
   }
 
   .coming-soon__body {
@@ -196,8 +219,16 @@ const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
       font-size: clamp(2rem, 9vw, 3rem);
     }
 
+    .coming-soon__meta {
+      margin-top: 1.25rem;
+      font-size: 0.625rem;
+      letter-spacing: 0.18em;
+      line-height: 1.9;
+    }
+
     .coming-soon__body {
       max-width: none;
+      font-size: 1rem;
     }
   }
 
