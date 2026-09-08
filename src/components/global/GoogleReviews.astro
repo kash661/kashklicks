@@ -34,7 +34,7 @@ const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#
             ))}
           </span>
         </div>
-        <p class="google-reviews__count">from {aggregate.count} verified reviews</p>
+        <p class="google-reviews__count">from {aggregate.countLabel ?? aggregate.count} verified reviews</p>
       </div>
     </div>
 
@@ -89,7 +89,7 @@ const avatarPalette = ['#1a73e8', '#34a853', '#ea4335', '#f9ab00', '#673ab7', '#
         target="_blank"
         rel="noopener noreferrer"
         class="google-reviews__cta magnetic"
-        aria-label={`Read all ${aggregate.count} reviews on Google in a new tab`}
+        aria-label={`Read all ${aggregate.countLabel ?? aggregate.count} reviews on Google in a new tab`}
       >
         Read all reviews on Google <span aria-hidden="true">&rarr;</span>
       </a>

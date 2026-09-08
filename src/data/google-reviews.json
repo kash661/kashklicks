@@ -1,7 +1,8 @@
 {
   "aggregate": {
     "rating": 5.0,
-    "count": 17,
+    "count": 20,
+    "countLabel": "20+",
     "businessName": "KashKlicksStudios",
     "profileUrl": "https://maps.app.goo.gl/46xUNUsJkw8qMSCj8",
     "writeReviewUrl": "https://maps.app.goo.gl/46xUNUsJkw8qMSCj8"

@@ -22,7 +22,7 @@ const platforms = [
     name: 'Google',
     enabled: true,
     rating: aggregate.rating,
-    count: aggregate.count,
+    count: aggregate.countLabel ?? aggregate.count,
     url: aggregate.profileUrl,
   },
   { id: 'weddingwire', name: 'WeddingWire', enabled: false, rating: null, count: null, url: '' },
