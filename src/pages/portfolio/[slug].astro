@@ -256,3 +256,30 @@ const remainingImages = galleryImages;
     background="surface-dim"
   />
 </BaseLayout>
+
+<script>
+  // GLightbox lives here, not in BaseLayout. This is the only page that
+  // renders GalleryImage.astro, so it is the only page that emits .glightbox
+  // anchors. Astro's build graph follows dynamic imports, so a plain CSS
+  // import inside the shared layout hoisted a render blocking glightbox
+  // stylesheet onto all 84 pages. Importing the stylesheet with `?inline`
+  // returns it as a string and keeps it out of the CSS graph entirely; we
+  // inject it as one <style> tag next to the lazily loaded JS. The lightbox
+  // only opens on click, so styles arriving with the script are early enough.
+  const lightboxElements = document.querySelectorAll('.glightbox');
+  if (lightboxElements.length > 0) {
+    Promise.all([
+      import('glightbox'),
+      // @ts-ignore CSS imported as a string, not injected by Vite
+      import('glightbox/dist/css/glightbox.min.css?inline'),
+    ]).then(([{ default: GLightbox }, css]) => {
+      if (!document.getElementById('glightbox-css')) {
+        const style = document.createElement('style');
+        style.id = 'glightbox-css';
+        style.textContent = (css as { default: string }).default;
+        document.head.appendChild(style);
+      }
+      GLightbox({ selector: '.glightbox', loop: true, touchNavigation: true, closeOnOutsideClick: true, skin: 'clean' });
+    });
+  }
+</script>
