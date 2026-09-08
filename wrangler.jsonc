@@ -9,6 +9,12 @@
     "not_found_handling": "404-page",
     "run_worker_first": true
   },
+  // Kill switch for the Ontario Parks fall colour route + panel. Set to
+  // anything other than "true" (or remove it) and /api/fall-colour.json 404s,
+  // which hides the panel on the front end with no code change.
+  "vars": {
+    "FALL_COLOUR_ENABLED": "true"
+  },
   "observability": {
     "enabled": true
   }
