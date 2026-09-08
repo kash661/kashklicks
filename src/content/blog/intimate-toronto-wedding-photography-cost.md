@@ -1,6 +1,6 @@
 ---
-title: "What a Toronto Wedding Photographer Costs, and What Changes the Price"
-description: "An honest 2026 breakdown of what a wedding photographer costs in Toronto, from City Hall coverage to a full day, what drives the price, and what we charge."
+title: "Toronto Wedding Photographer Cost 2027: Packages and Rates"
+description: "Planning a 2027 wedding? Real Toronto rates, my packages, and what changes the price. Civil ceremony from $501.25, wedding coverage from $1,401.25."
 publishDate: 2026-05-28
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/natalie-shavar/03.jpg"

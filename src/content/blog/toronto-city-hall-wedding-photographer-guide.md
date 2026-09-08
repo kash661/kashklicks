@@ -1,6 +1,6 @@
 ---
-title: "Toronto City Hall Wedding: A Photographer's Guide"
-description: "Getting married at Toronto City Hall? A photographer's guide to how the civil ceremony works, what it costs, and where to take portraits right after."
+title: "Toronto City Hall Wedding: Cost, How to Book, Photos"
+description: "How to get married at Toronto City Hall. The licence and ceremony fees, the 22 seat Wedding Chamber, and where to take portraits right after."
 publishDate: 2026-05-28
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/anushka-anthony/03.jpg"
