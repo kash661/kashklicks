@@ -86,8 +86,200 @@ async function handleEngagementLead(request: Request): Promise<Response> {
   }
 }
 
+// ── Ontario Parks fall colour report ──────────────────────────────────────
+// ontarioparks.ca/fallcolour has no API: the page ships its dataset as a
+// literal array inside an inline <script>. We parse that array server side,
+// keep only the factual fields (park, region, percentages, dominant colour,
+// report date, coordinates) and republish them as JSON for the on-site panel.
+// The content is © King's Printer for Ontario, so the panel credits and links
+// the source, and the whole route sits behind the FALL_COLOUR_ENABLED kill
+// switch in wrangler.jsonc.
+const FALL_COLOUR_SOURCE = 'Ontario Parks Fall Colour Report';
+const FALL_COLOUR_SOURCE_URL = 'https://www.ontarioparks.ca/fallcolour';
+const FALL_COLOUR_UA =
+  'kashklicks.ca fall colour panel (+https://kashklicks.ca/; hello@kashklicks.ca)';
+
+// Cache API keys. They are never routable paths, only cache identities.
+const FALL_COLOUR_FRESH_KEY = 'https://kashklicks.ca/__cache/fall-colour/fresh';
+const FALL_COLOUR_STALE_KEY = 'https://kashklicks.ca/__cache/fall-colour/stale';
+const FALL_COLOUR_FRESH_TTL = 21600; // 6 hours — the report updates a few times a day.
+const FALL_COLOUR_STALE_TTL = 604800; // 7 days — last known good copy for outages.
+const FALL_COLOUR_FAILURE_TTL = 600; // 10 minutes — don't hammer a broken upstream.
+const FALL_COLOUR_UPSTREAM_TIMEOUT = 8000;
+// A successful parse always yields dozens of rows. Anything smaller means the
+// page markup changed or we got an error/interstitial page, so treat it as a
+// failure and keep serving the stale copy instead of publishing garbage.
+const FALL_COLOUR_MIN_PARKS = 10;
+
+interface FallColourPark {
+  park: string;
+  slug: string;
+  region: string;
+  colourChange: number;
+  leafFall: number;
+  dominantColour: string;
+  reportDate: string | null;
+  lat: number;
+  lng: number;
+}
+
+function fallColourPercent(value: unknown): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.min(100, Math.max(0, Math.round(n)));
+}
+
+function fallColourSlug(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Slice the inline array out of the HTML and parse it. Returns [] on any
+// surprise so the caller can fall back rather than throw.
+function extractParks(html: string): FallColourPark[] {
+  const start = html.indexOf('[{"id":');
+  if (start === -1) return [];
+  const end = html.indexOf('}];', start);
+  if (end === -1) return [];
+
+  let rows: unknown;
+  try {
+    rows = JSON.parse(html.slice(start, end + 2));
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(rows)) return [];
+
+  const parks: FallColourPark[] = [];
+  for (const row of rows as Record<string, unknown>[]) {
+    if (!row || typeof row !== 'object') continue;
+    if (row.reporting !== 'yes') continue;
+
+    const park = typeof row.park_name === 'string' ? row.park_name.trim() : '';
+    if (!park) continue;
+
+    const lat = Number(row.lat);
+    const lng = Number(row.lng);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+    if (lat === 0 && lng === 0) continue;
+
+    // The feed spells the same region two ways ("Northwest" / "Northwestern").
+    const rawRegion = typeof row.region === 'string' ? row.region.trim() : '';
+    const region = rawRegion === 'Northwest' ? 'Northwestern' : rawRegion;
+
+    const seconds = Number(row.report_date);
+    const reportDate =
+      Number.isFinite(seconds) && seconds > 0 ? new Date(seconds * 1000).toISOString() : null;
+
+    const shortname = typeof row.shortname === 'string' ? row.shortname.trim() : '';
+
+    parks.push({
+      park,
+      slug: shortname || fallColourSlug(park),
+      region,
+      colourChange: fallColourPercent(row.colour_change),
+      leafFall: fallColourPercent(row.leaf_fall),
+      dominantColour: typeof row.dominant_colour === 'string' ? row.dominant_colour.trim() : '',
+      reportDate,
+      lat,
+      lng,
+    });
+  }
+
+  return parks;
+}
+
+function fallColourBody(parks: FallColourPark[]): string {
+  return JSON.stringify({
+    source: FALL_COLOUR_SOURCE,
+    sourceUrl: FALL_COLOUR_SOURCE_URL,
+    fetchedAt: new Date().toISOString(),
+    parks,
+  });
+}
+
+function fallColourHeaders(maxAge: number): Record<string, string> {
+  return {
+    'content-type': 'application/json; charset=utf-8',
+    'cache-control': `public, max-age=${maxAge}`,
+    'x-content-type-options': 'nosniff',
+  };
+}
+
+async function handleFallColour(request: Request, ctx: ExecutionContext): Promise<Response> {
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new Response('Method Not Allowed', {
+      status: 405,
+      headers: { allow: 'GET, HEAD', 'cache-control': 'no-store' },
+    });
+  }
+
+  // `caches` is absent in some local/test runtimes; every use is optional.
+  const cache: Cache | undefined =
+    typeof caches !== 'undefined' ? (caches as unknown as { default?: Cache }).default : undefined;
+
+  if (cache) {
+    const fresh = await cache.match(FALL_COLOUR_FRESH_KEY);
+    if (fresh) {
+      const headers = new Headers(fresh.headers);
+      headers.set('x-kk-cache', 'hit');
+      return new Response(fresh.body, { status: fresh.status, headers });
+    }
+  }
+
+  let parks: FallColourPark[] = [];
+  try {
+    const upstream = await fetch(FALL_COLOUR_SOURCE_URL, {
+      headers: { 'user-agent': FALL_COLOUR_UA, accept: 'text/html' },
+      signal: AbortSignal.timeout(FALL_COLOUR_UPSTREAM_TIMEOUT),
+    });
+    if (upstream.ok) parks = extractParks(await upstream.text());
+  } catch {
+    parks = [];
+  }
+
+  if (parks.length >= FALL_COLOUR_MIN_PARKS) {
+    const body = fallColourBody(parks);
+    const response = new Response(body, { headers: fallColourHeaders(FALL_COLOUR_FRESH_TTL) });
+    if (cache) {
+      ctx.waitUntil(cache.put(FALL_COLOUR_FRESH_KEY, response.clone()));
+      // Second copy with a much longer TTL: the outage fallback below.
+      ctx.waitUntil(
+        cache.put(
+          FALL_COLOUR_STALE_KEY,
+          new Response(body, { headers: fallColourHeaders(FALL_COLOUR_STALE_TTL) }),
+        ),
+      );
+    }
+    return response;
+  }
+
+  // Upstream is down, slow, or shaped differently than we expect. Serve the
+  // last good copy rather than an empty panel.
+  if (cache) {
+    const stale = await cache.match(FALL_COLOUR_STALE_KEY);
+    if (stale) {
+      const headers = new Headers(stale.headers);
+      headers.set('x-kk-fallback', 'stale');
+      headers.set('cache-control', `public, max-age=${FALL_COLOUR_FAILURE_TTL}`);
+      return new Response(stale.body, { status: 200, headers });
+    }
+  }
+
+  return new Response(fallColourBody([]), {
+    status: 503,
+    headers: fallColourHeaders(FALL_COLOUR_FAILURE_TTL),
+  });
+}
+
 export default {
-  async fetch(request: Request, env: { ASSETS: Fetcher }): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: { ASSETS: Fetcher; FALL_COLOUR_ENABLED?: string },
+    ctx: ExecutionContext,
+  ): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
 
@@ -175,6 +367,27 @@ export default {
       path === '/api/engagement-lead'
     ) {
       return handleEngagementLead(request);
+    }
+
+    // Ontario Parks fall colour JSON for the on-site panel. Sits ABOVE the
+    // trailing-slash canonicalization (which already exempts paths with a file
+    // extension) so the `.json` path is never touched, and behind the
+    // FALL_COLOUR_ENABLED var so the whole feature can be switched off from
+    // wrangler.jsonc without a code change.
+    if (path === '/api/fall-colour.json') {
+      if (env.FALL_COLOUR_ENABLED !== 'true') {
+        return new Response('Not Found', { status: 404, headers: { 'cache-control': 'no-store' } });
+      }
+      return handleFallColour(request, ctx);
+    }
+
+    // Legacy Webflow URL. It still earns impressions in Search Console, and it
+    // used to take TWO hops (slash canonicalization here, then the _redirects
+    // rule). Collapse both variants into a single 301 straight to the service
+    // page; the query string rides along because only the pathname changes.
+    if (path === '/civil-ceremony' || path === '/civil-ceremony/') {
+      url.pathname = '/services/civil-ceremony/';
+      return Response.redirect(url.toString(), 301);
     }
 
     // Canonicalize trailing slash (apex host). Astro builds directory-style
