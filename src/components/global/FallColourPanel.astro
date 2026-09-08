@@ -1,0 +1,391 @@
+---
+/**
+ * Fall colour right now — a facts-only panel built from the Ontario Parks
+ * Fall Colour Report (via our own /api/fall-colour.json worker route).
+ *
+ * Renders hidden and stays hidden unless the data is genuinely useful:
+ * at least three parks within `maxKm` of Toronto in the nearby regions, a
+ * report no older than 14 days, and either some colour change or a month in
+ * the Sep to Nov window. Nothing on the page moves if the route is off or the
+ * upstream is down.
+ *
+ * The data is © King's Printer for Ontario. We republish only the plain facts
+ * and always show the credit line with a link back to the source.
+ */
+interface Props {
+  /** Maximum rows rendered. */
+  limit?: number;
+  /** Straight line distance from Toronto, in kilometres. */
+  maxKm?: number;
+  eyebrow?: string;
+  heading?: string;
+  /** Italic tail of the heading, matching the site's section-title pattern. */
+  headingAccent?: string;
+}
+
+const {
+  limit = 6,
+  maxKm = 350,
+  eyebrow = 'Fall colour right now',
+  heading = 'Where the leaves',
+  headingAccent = 'have turned.',
+} = Astro.props;
+---
+
+<!-- Zero height anchor. The panel itself renders `hidden`, and a display:none
+     element has no box for IntersectionObserver to measure, so the "is the
+     reader near this part of the page" check watches this marker instead. -->
+<div class="fall-colour-anchor" data-fall-colour-anchor aria-hidden="true"></div>
+
+<section
+  class="fall-colour section-frame bg-background"
+  data-fall-colour
+  data-limit={String(limit)}
+  data-max-km={String(maxKm)}
+  aria-labelledby="fall-colour-heading"
+  hidden
+>
+  <div class="container-editorial">
+    <div class="fall-colour__intro reveal">
+      <p class="text-label-md text-on-surface-muted eyebrow-rule mb-6">{eyebrow}</p>
+      <h2 id="fall-colour-heading" class="fall-colour__title">{heading} <em>{headingAccent}</em></h2>
+      <p class="fall-colour__lede">
+        Live readings from the parks closest to Toronto, so you can time a session while the
+        colour is still up in the trees.
+      </p>
+    </div>
+
+    <ul class="fall-colour__list" role="list" data-fall-colour-list></ul>
+
+    <p class="fall-colour__credit reveal">
+      Source: <a
+        href="https://www.ontarioparks.ca/fallcolour"
+        target="_blank"
+        rel="noopener nofollow">Ontario Parks Fall Colour Report</a
+      >, updated <span data-fall-colour-updated></span>. Not affiliated with Ontario Parks.
+    </p>
+  </div>
+</section>
+
+<style>
+  .fall-colour-anchor {
+    height: 0;
+  }
+
+  .fall-colour {
+    background: var(--color-background);
+    color: var(--color-on-surface);
+    padding: var(--spacing-section) 0;
+  }
+
+  .fall-colour[hidden] {
+    display: none;
+  }
+
+  .fall-colour__intro {
+    max-width: 44rem;
+    margin-bottom: var(--spacing-block);
+  }
+
+  .fall-colour__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 4.6vw, 3.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--color-on-surface);
+    margin: 0 0 1.25rem;
+  }
+
+  .fall-colour__title em {
+    font-style: italic;
+  }
+
+  .fall-colour__lede {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  /* Hairline rows, no cards, no rounding. */
+  .fall-colour__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 22%, transparent);
+  }
+
+  .fall-colour__row {
+    display: grid;
+    grid-template-columns: 0.5rem minmax(9rem, 1.1fr) minmax(7rem, 0.8fr) minmax(12rem, 1.4fr) auto;
+    align-items: baseline;
+    column-gap: 1.5rem;
+    padding: 1.125rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 22%, transparent);
+  }
+
+  .fall-colour__swatch {
+    width: 0.5rem;
+    height: 0.5rem;
+    align-self: center;
+    background: var(--fall-colour-swatch, var(--color-on-surface-muted));
+  }
+
+  /* Swatch hues stay local to this component: they describe third-party data,
+     not the site's palette, so they are deliberately not new global tokens. */
+  .fall-colour__swatch--green { --fall-colour-swatch: #6b7f5e; }
+  .fall-colour__swatch--yellow { --fall-colour-swatch: #c2a12f; }
+  .fall-colour__swatch--orange { --fall-colour-swatch: #bd7133; }
+  .fall-colour__swatch--red { --fall-colour-swatch: var(--color-error); }
+  .fall-colour__swatch--brown { --fall-colour-swatch: #7a5c42; }
+  .fall-colour__swatch--mixed {
+    background: linear-gradient(135deg, #c2a12f 0%, #bd7133 55%, var(--color-error) 100%);
+  }
+
+  .fall-colour__park {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.3;
+    color: var(--color-on-surface);
+  }
+
+  .fall-colour__region,
+  .fall-colour__date {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+  }
+
+  .fall-colour__date {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .fall-colour__numbers {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+  }
+
+  .fall-colour__credit {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--color-on-surface-muted);
+    margin: 1.5rem 0 0;
+  }
+
+  .fall-colour__credit a {
+    color: var(--color-on-surface-variant);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .fall-colour__credit a:hover {
+    color: var(--color-on-surface);
+  }
+
+  @media (max-width: 768px) {
+    .fall-colour__row {
+      grid-template-columns: 0.5rem 1fr auto;
+      column-gap: 1rem;
+      row-gap: 0.375rem;
+      align-items: center;
+    }
+    .fall-colour__park {
+      grid-column: 2;
+    }
+    .fall-colour__date {
+      grid-column: 3;
+    }
+    .fall-colour__region {
+      grid-column: 2 / -1;
+    }
+    .fall-colour__numbers {
+      grid-column: 2 / -1;
+    }
+  }
+</style>
+
+<script>
+  // Toronto city hall, the anchor every distance is measured from.
+  const TORONTO = { lat: 43.6532, lng: -79.3832 };
+  // Everything else on the report is a long weekend away, not a session drive.
+  const NEARBY_REGIONS = new Set(['Algonquin', 'Southeastern', 'Southwestern']);
+  const SWATCHES = new Set(['green', 'yellow', 'orange', 'red', 'mixed', 'brown']);
+  const MAX_REPORT_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+  const MIN_ROWS = 3;
+  const FETCH_TIMEOUT = 5000;
+  const NEAR_VIEWPORT = '600px 0px';
+
+  type Park = {
+    park: string;
+    region: string;
+    colourChange: number;
+    leafFall: number;
+    dominantColour: string;
+    reportDate: string | null;
+    lat: number;
+    lng: number;
+  };
+
+  const section = document.querySelector<HTMLElement>('[data-fall-colour]');
+  const list = section?.querySelector<HTMLUListElement>('[data-fall-colour-list]');
+  const updatedSlot = section?.querySelector<HTMLElement>('[data-fall-colour-updated]');
+
+  function haversineKm(lat: number, lng: number): number {
+    const toRad = (deg: number) => (deg * Math.PI) / 180;
+    const dLat = toRad(lat - TORONTO.lat);
+    const dLng = toRad(lng - TORONTO.lng);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(TORONTO.lat)) * Math.cos(toRad(lat)) * Math.sin(dLng / 2) ** 2;
+    return 6371 * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+  }
+
+  const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
+  const longDate = new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  function cell(className: string, text: string): HTMLSpanElement {
+    const el = document.createElement('span');
+    el.className = className;
+    el.textContent = text;
+    return el;
+  }
+
+  function render(parks: (Park & { km: number })[], newest: Date): void {
+    if (!section || !list || !updatedSlot) return;
+
+    const rows = document.createDocumentFragment();
+    for (const p of parks) {
+      // Anything the report invents beyond the six known words falls back to
+      // the neutral "mixed" swatch rather than throwing or rendering blank.
+      const colour = String(p.dominantColour || '').trim();
+      const key = colour.toLowerCase();
+      const swatchKey = SWATCHES.has(key) ? key : 'mixed';
+
+      const row = document.createElement('li');
+      row.className = 'fall-colour__row';
+
+      const swatch = document.createElement('span');
+      swatch.className = `fall-colour__swatch fall-colour__swatch--${swatchKey}`;
+      swatch.setAttribute('role', 'img');
+      swatch.setAttribute('aria-label', `${colour || 'Mixed'} leaves`);
+      row.append(swatch);
+
+      row.append(cell('fall-colour__park', p.park));
+      row.append(cell('fall-colour__region', p.region));
+      row.append(
+        cell(
+          'fall-colour__numbers',
+          `${p.colourChange}% colour change, ${p.leafFall}% leaf fall`,
+        ),
+      );
+      row.append(
+        cell(
+          'fall-colour__date',
+          p.reportDate ? `reported ${shortDate.format(new Date(p.reportDate))}` : 'reported today',
+        ),
+      );
+
+      rows.append(row);
+    }
+
+    list.replaceChildren(rows);
+    updatedSlot.textContent = longDate.format(newest);
+
+    section.hidden = false;
+    section.classList.add('revealed');
+    section.querySelectorAll('.reveal').forEach((el) => el.classList.add('revealed'));
+  }
+
+  async function load(): Promise<boolean> {
+    if (!section) return false;
+
+    const limit = Number(section.dataset.limit) || 6;
+    const maxKm = Number(section.dataset.maxKm) || 350;
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+
+    let payload: { parks?: Park[] };
+    try {
+      const response = await fetch('/api/fall-colour.json', { signal: controller.signal });
+      if (!response.ok) return false;
+      payload = await response.json();
+    } catch {
+      return false;
+    } finally {
+      clearTimeout(timer);
+    }
+
+    const all = Array.isArray(payload?.parks) ? payload.parks : [];
+
+    const nearby = all
+      .filter((p) => p && NEARBY_REGIONS.has(p.region))
+      .map((p) => ({ ...p, km: haversineKm(Number(p.lat), Number(p.lng)) }))
+      .filter((p) => Number.isFinite(p.km) && p.km <= maxKm);
+
+    if (nearby.length < MIN_ROWS) return false;
+
+    // A report nobody has refreshed in a fortnight is not "right now".
+    const stamps = nearby
+      .map((p) => (p.reportDate ? new Date(p.reportDate).getTime() : NaN))
+      .filter((t) => Number.isFinite(t));
+    if (!stamps.length) return false;
+    const newest = Math.max(...stamps);
+    if (Date.now() - newest > MAX_REPORT_AGE_MS) return false;
+
+    // Out of season a table of zeroes is noise, so say nothing at all.
+    const month = new Date().getMonth();
+    const inSeason = month >= 8 && month <= 10;
+    if (!inSeason && nearby.every((p) => Number(p.colourChange) === 0)) return false;
+
+    nearby.sort((a, b) => Number(b.colourChange) - Number(a.colourChange) || a.km - b.km);
+
+    render(nearby.slice(0, limit), new Date(newest));
+    return true;
+  }
+
+  if (section) {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      observer?.disconnect();
+      void load().then((shown) => {
+        // Terminal state, so a look at the DOM answers "did it decide to hide?"
+        section.dataset.fallColourState = shown ? 'shown' : 'hidden';
+      });
+    };
+
+    const observer =
+      'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            (entries) => {
+              if (entries.some((entry) => entry.isIntersecting)) start();
+            },
+            { rootMargin: NEAR_VIEWPORT },
+          )
+        : null;
+    const anchor = document.querySelector<HTMLElement>('[data-fall-colour-anchor]');
+    observer?.observe(anchor ?? section);
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(start, { timeout: 4000 });
+    } else {
+      setTimeout(start, 1200);
+    }
+  }
+</script>
