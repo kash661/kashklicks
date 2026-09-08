@@ -248,7 +248,8 @@ const total = gear.length;
     font-size: 0.6875rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-on-surface-muted);
+    /* muted was 1.9:1 against the card surface, below the contrast minimum */
+    color: var(--color-on-surface-variant);
   }
 
   /* Hidden on desktop — GearBreaker.astro handles 1024px+ */
