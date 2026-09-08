@@ -125,7 +125,9 @@ const { transparent = false } = Astro.props;
         }
       };
       window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+      // Deferred to the next frame. Reading window.scrollY during startup
+      // forced the document's first full layout before anything painted.
+      requestAnimationFrame(onScroll);
     }
 
     // Mobile menu toggle

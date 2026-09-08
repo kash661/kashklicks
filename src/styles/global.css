@@ -1613,7 +1613,14 @@ input.flatpickr-input + input.form-field__input {
   transition: none !important;
 }
 
-/* Scroll reveal — applied by IntersectionObserver */
+/* Scroll reveal — applied by IntersectionObserver.
+   Without JavaScript nothing ever adds .revealed, so the content would stay
+   invisible. The fallback below shows it in its final state instead. */
+html:not(.js) :is(.reveal, .reveal-left, .reveal-right) {
+  opacity: 1;
+  transform: none;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);

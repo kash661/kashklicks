@@ -20,7 +20,9 @@ export function initScrollProgress(): void {
     }
   }
 
-  update();
+  // Deferred to the next frame: reading scrollHeight/clientHeight here forces
+  // a full layout, and doing it during startup pushed back the first paint.
+  requestAnimationFrame(update);
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', update, { passive: true });
 }

@@ -19,18 +19,27 @@ export function initParallax(): void {
     let ticking = false;
 
     function updateParallax() {
-      const scrollY = window.scrollY;
+      ticking = false;
+      // Phones get transform: none from CSS below 640px, so measuring and
+      // writing here would burn a layout per scroll frame for nothing.
+      if (window.innerWidth < 640) return;
+
+      // Read pass first, write pass second. Interleaving them made every
+      // element after the first invalidate the layout the next one read.
+      const viewportCenter = window.innerHeight / 2;
+      const offsets: number[] = [];
       parallaxElements.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const elementCenter = rect.top + rect.height / 2;
-        const viewportCenter = window.innerHeight / 2;
-        const offset = (elementCenter - viewportCenter) * 0.08;
-        el.style.setProperty('--parallax-y', `${offset}px`);
+        offsets.push((elementCenter - viewportCenter) * 0.08);
       });
-      ticking = false;
+      parallaxElements.forEach((el, i) => {
+        el.style.setProperty('--parallax-y', `${offsets[i]}px`);
+      });
     }
 
     window.addEventListener('scroll', () => {
+      if (window.innerWidth < 640) return;
       if (!ticking) {
         requestAnimationFrame(updateParallax);
         ticking = true;

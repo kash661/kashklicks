@@ -7,8 +7,9 @@
 export function initScrollReveal(): void {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const allRevealElements = document.querySelectorAll<HTMLElement>(
-    '.reveal, .reveal-left, .reveal-right, .unmask, .unmask-l, .unmask-r'
+    '.reveal, .reveal-left, .reveal-right'
   );
+  if (!allRevealElements.length) return;
 
   if (prefersReducedMotion) {
     allRevealElements.forEach((el) => {
@@ -17,40 +18,41 @@ export function initScrollReveal(): void {
     return;
   }
 
-  // Immediately reveal elements already in the viewport on page load, with
-  // their transitions temporarily suppressed so they appear in their final
-  // state without fading in. Stops the "flicker" when a new page loads and
-  // above-the-fold content pops from opacity 0 -> 1 over 600ms.
-  const viewportH = window.innerHeight;
-  allRevealElements.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < viewportH && rect.bottom > 0) {
-      el.classList.add('no-reveal-transition', 'revealed');
-    }
-  });
-  // Re-enable transitions on the next frame so scroll-triggered reveals
-  // below the fold animate normally.
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.querySelectorAll('.no-reveal-transition').forEach((el) => {
-        el.classList.remove('no-reveal-transition');
-      });
-    });
-  });
+  // Elements already in the viewport on load are revealed with their
+  // transitions temporarily suppressed, so they appear in their final state
+  // instead of fading in. That used to mean measuring every element with
+  // getBoundingClientRect before the first frame, which forced a full layout
+  // and delayed the paint. The observer's first delivery carries the same
+  // information for free, so it does the work now.
+  let firstDelivery = true;
 
   const observer = new IntersectionObserver(
     (entries) => {
+      const initialPass = firstDelivery;
+      firstDelivery = false;
+
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
+        if (!entry.isIntersecting) return;
+        if (initialPass) {
+          entry.target.classList.add('no-reveal-transition');
         }
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      });
+
+      if (!initialPass) return;
+      // Re-enable transitions on the next frame so scroll-triggered reveals
+      // below the fold animate normally.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.no-reveal-transition').forEach((el) => {
+            el.classList.remove('no-reveal-transition');
+          });
+        });
       });
     },
     { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
   );
 
-  allRevealElements.forEach((el) => {
-    if (!el.classList.contains('revealed')) observer.observe(el);
-  });
+  allRevealElements.forEach((el) => observer.observe(el));
 }
