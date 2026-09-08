@@ -95,12 +95,20 @@ const permits = split(loc.permits);
 const parking = split(loc.parking);
 const travel = split(loc.travelTime);
 
+// The Permits row is the natural doorway to the consolidated permit table,
+// which carries the fee, contact and parking facts for every location on the
+// site in one place. One link, on the row that already raises the question.
 const essentials = [
-  { num: '01', label: 'Walking', ...walking },
-  { num: '02', label: 'Permits', ...permits },
-  { num: '03', label: 'Parking', ...parking },
-  { num: '04', label: 'Travel', ...travel },
-  { num: '05', label: 'Season', head: loc.season.join(', '), rest: '' },
+  { num: '01', label: 'Walking', ...walking, link: null },
+  {
+    num: '02',
+    label: 'Permits',
+    ...permits,
+    link: { href: '/toronto-photo-permits/', label: 'all Toronto photo permits in one table' },
+  },
+  { num: '03', label: 'Parking', ...parking, link: null },
+  { num: '04', label: 'Travel', ...travel, link: null },
+  { num: '05', label: 'Season', head: loc.season.join(', '), rest: '', link: null },
 ];
 
 // Location-specific FAQ, built from the same structured fields shown in
@@ -297,6 +305,11 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
               <div class="essentials-value">
                 <p class="text-heading-md font-serif">{e.head}</p>
                 {e.rest && <p class="text-body-md text-on-surface-variant mt-2">{e.rest}</p>}
+                {e.link && (
+                  <p class="text-body-md mt-3">
+                    <a href={e.link.href} class="text-on-surface-variant border-b border-on-surface-muted hover:text-on-surface hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{e.link.label}</a>
+                  </p>
+                )}
               </div>
             </li>
           ))}

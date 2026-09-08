@@ -31,6 +31,7 @@ Solo photographer operation, not a large studio. Intentionally focused on intima
 - [Services > Civil Ceremony](https://kashklicks.ca/services/civil-ceremony/): Civil ceremony coverage
 - [Services > Celebrations](https://kashklicks.ca/services/celebrations/): Birthdays, showers, private events
 - [Location Guide](https://kashklicks.ca/location-guide/): 32 curated Toronto, Hamilton, Niagara and GTA photography locations with parking, permits, and session guidance
+- [Toronto Photo Permits](https://kashklicks.ca/toronto-photo-permits/): Permit requirement, published fee, booking contact and parking for 33 Toronto and GTA photography locations in one table, with the unknown facts marked rather than guessed
 - [Blog](https://kashklicks.ca/blog/): Photography tips, location guides, and session features
 - [About](https://kashklicks.ca/about/): About the photographer and studio
 - [Toronto Elopement Photographer](https://kashklicks.ca/elopement-photographer-toronto/): Elopement and City Hall wedding photography, packages from $501.25 (Civil Ceremony) and $901.25 (The Elopement, 4 hours incl. the reception after), custom quotes beyond that, with a practical how-to-elope-in-Toronto guide
@@ -257,5 +258,6 @@ Full markdown representations of each page are available at:
 - [Blog · What to Wear to Your Pre-Wedding Photo Shoot](https://kashklicks.ca/mirrors/blog/what-to-wear-pre-wedding-shoot.md)
 - [Contact](https://kashklicks.ca/mirrors/contact.md)
 - [Location Guide](https://kashklicks.ca/mirrors/location-guide.md)
+- [Toronto Photo Permits](https://kashklicks.ca/mirrors/toronto-photo-permits.md)
 - [Services Overview](https://kashklicks.ca/mirrors/services.md)
 - [Portfolio](https://kashklicks.ca/mirrors/portfolio.md)
