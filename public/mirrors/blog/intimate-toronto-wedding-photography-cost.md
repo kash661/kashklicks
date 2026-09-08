@@ -1,4 +1,4 @@
-# What a Toronto Wedding Photographer Costs, and What Changes the Price
+# Toronto Wedding Photographer Cost 2027: Packages and Rates
 
 **URL:** https://kashklicks.ca/blog/intimate-toronto-wedding-photography-cost/
 **Author:** Akash (AD Photography)
@@ -12,6 +12,18 @@ Here is the question every couple actually wants answered, and the one most phot
 We will answer it plainly. This is an honest look at what wedding photography really costs in Toronto and the GTA in 2026, what makes one quote three times another, and exactly what we charge and why. No call required.
 
 A quick note on why this page exists. When we studied the Toronto market, only a handful of photographers showed their prices at all. Most hide them. We think that is backwards. If you are planning a wedding, you deserve to know the number before you spend an evening on a sales call.
+
+## Toronto wedding photography prices at a glance
+
+**Pre-wedding session:** From $351.25. Up to two hours at one location, with 50 or more edited photos.
+
+**Civil ceremony:** $501.25. Covers the ceremony and the portraits right after.
+
+**Wedding day:** From $1,401.25 for six hours. The Full Day is $2,501.25, and The Complete Story is $3,801.25 for up to fourteen hours with a second photographer.
+
+**What is included:** Every package includes the edited high resolution gallery.
+
+**What changes the price:** Hours of coverage, whether a second shooter is added, albums and prints, an engagement session, and how established the photographer is.
 
 ## What wedding photography actually costs in the GTA
 

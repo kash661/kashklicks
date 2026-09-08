@@ -140,13 +140,13 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Tags:** Real Wedding, Backyard Wedding, Intimate Wedding, Toronto, Wedding
 - **Summary:** Planning an intimate backyard wedding in Toronto? A real summer day at a family home, plus what to know about tents, noise, neighbours, and timing.
 
-### What a Toronto Wedding Photographer Costs, and What Changes the Price
+### Toronto Wedding Photographer Cost 2027: Packages and Rates
 
 - **URL:** https://kashklicks.ca/blog/intimate-toronto-wedding-photography-cost/
 - **Mirror:** https://kashklicks.ca/mirrors/blog/intimate-toronto-wedding-photography-cost.md
 - **Published:** 2026-05-28
 - **Tags:** Pricing, Wedding, Toronto, Civil Ceremony, Intimate Wedding
-- **Summary:** An honest 2026 breakdown of what a wedding photographer costs in Toronto, from City Hall coverage to a full day, what drives the price, and what we charge.
+- **Summary:** Planning a 2027 wedding? Real Toronto rates, my packages, and what changes the price. Civil ceremony from $501.25, wedding coverage from $1,401.25.
 
 ### RC Harris Engagement Photos: A Toronto Location Guide
 
@@ -156,13 +156,13 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Tags:** Photo Location, RC Harris, Scarborough, Engagement, Pre-Wedding
 - **Summary:** Planning engagement or pre-wedding photos at RC Harris? A photographer's guide to Toronto's Art Deco waterworks: best spots, light, seasons, and access.
 
-### Toronto City Hall Wedding: A Photographer's Guide
+### Toronto City Hall Wedding: Cost, How to Book, Photos
 
 - **URL:** https://kashklicks.ca/blog/toronto-city-hall-wedding-photographer-guide/
 - **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-city-hall-wedding-photographer-guide.md
 - **Published:** 2026-05-28
 - **Tags:** Venue Guide, Toronto City Hall, Civil Ceremony, Downtown Toronto, Wedding
-- **Summary:** Getting married at Toronto City Hall? A photographer's guide to how the civil ceremony works, what it costs, and where to take portraits right after.
+- **Summary:** How to get married at Toronto City Hall. The licence and ceremony fees, the 22 seat Wedding Chamber, and where to take portraits right after.
 
 ### University of Toronto Engagement Photos: A Location Guide
 
