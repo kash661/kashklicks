@@ -301,6 +301,7 @@ function pagesList() {
     [`${SITE_URL}/services/civil-ceremony/`, 'Services > Civil Ceremony', 'Civil ceremony coverage'],
     [`${SITE_URL}/services/celebrations/`, 'Services > Celebrations', 'Birthdays, showers, private events'],
     [`${SITE_URL}/location-guide/`, 'Location Guide', `${locations.length} curated Toronto, Hamilton, Niagara and GTA photography locations with parking, permits, and session guidance`],
+    [`${SITE_URL}/toronto-photo-permits/`, 'Toronto Photo Permits', `Permit requirement, published fee, booking contact and parking for ${locations.length + 1} Toronto and GTA photography locations in one table, with the unknown facts marked rather than guessed`],
     [`${SITE_URL}/blog/`, 'Blog', 'Photography tips, location guides, and session features'],
     [`${SITE_URL}/about/`, 'About', 'About the photographer and studio'],
     [`${SITE_URL}/elopement-photographer-toronto/`, 'Toronto Elopement Photographer', `Elopement and City Hall wedding photography, packages from ${civil} (Civil Ceremony) and ${elope} (The Elopement, 4 hours incl. the reception after), custom quotes beyond that, with a practical how-to-elope-in-Toronto guide`],
@@ -364,6 +365,7 @@ const PAGE_MIRRORS = [
   ['blog.md', 'Blog'],
   ['contact.md', 'Contact'],
   ['location-guide.md', 'Location Guide'],
+  ['toronto-photo-permits.md', 'Toronto Photo Permits'],
   ['services.md', 'Services Overview'],
   ['portfolio.md', 'Portfolio'],
 ];
@@ -630,6 +632,90 @@ function buildLocationGuideMirror() {
   p(`- [Book a consultation](${SITE_URL}/contact/)`);
   p(`- [Services & packages](${SITE_URL}/services/)`);
   p(`- [Blog: Best Toronto pre-wedding locations](${SITE_URL}/blog/best-toronto-pre-wedding-locations/)`);
+
+  return out.join('\n');
+}
+
+/* -------------------------------------------------------------------------- */
+/* Toronto photo permits mirror                                                */
+/* -------------------------------------------------------------------------- */
+
+// Old City Hall has real search demand and permit facts in its own blog post,
+// but no location-guide entry, so it lives on the page (and here) as a single
+// extra row. Twin of the same row in src/pages/toronto-photo-permits.astro.
+// Source: src/content/blog/old-city-hall-wedding-toronto.md.
+const OLD_CITY_HALL_PERMIT_ROW = {
+  name: 'Old City Hall',
+  url: `${SITE_URL}/blog/old-city-hall-wedding-toronto/`,
+  zone: 'Downtown',
+  permitNeeded: 'Sometimes',
+  permits:
+    'No permit for a small party with a handheld camera on the public sidewalks or on Nathan Phillips Square. A City permit is needed for tripods, lighting stands, or a staged production. Osgoode Hall next door is separate Law Society property.',
+  permitFee: null,
+  permitContact: null,
+  parking: null,
+};
+
+function buildPhotoPermitsMirror() {
+  const out = [];
+  const p = (line = '') => out.push(line);
+
+  const UNKNOWN = 'Confirm with the venue';
+  const rows = [
+    ...locations.map((loc) => ({
+      name: loc.name,
+      url: `${SITE_URL}/location-guide/${loc.id}/`,
+      zone: loc.zone,
+      permitNeeded: loc.permitNeeded,
+      permits: loc.permits,
+      permitFee: loc.permitFee ?? null,
+      permitContact: loc.permitContact ?? null,
+      parking: loc.parking ?? null,
+    })),
+    OLD_CITY_HALL_PERMIT_ROW,
+  ].sort((a, b) => a.name.localeCompare(b.name));
+
+  const fee = (r) => r.permitFee ?? (r.permitNeeded === 'No' ? 'No permit fee' : UNKNOWN);
+  const contact = (r) => r.permitContact ?? (r.permitNeeded === 'No' ? 'No booking needed' : UNKNOWN);
+  const parking = (r) => r.parking ?? UNKNOWN;
+
+  const noPermit = rows.filter((r) => r.permitNeeded === 'No');
+
+  p('# Toronto Photo Permits');
+  p();
+  p(`Permit requirement, published fee, booking contact and parking for ${rows.length} photography locations across Toronto and the GTA, in one table.`);
+  p();
+  p('Every value below comes from the location guides on this site or from a fact confirmed directly with the venue. Where a venue does not publish a fee or a contact, the cell reads "Confirm with the venue" rather than carrying a guessed number.');
+  p();
+  p('Fees change. Last verified September 2026. Confirm with the venue before you book.');
+  p();
+  p(`## Locations that need no photography permit (${noPermit.length} of ${rows.length})`);
+  p();
+  for (const r of noPermit) {
+    p(`- ${stripDashes(r.name)}: ${stripDashes(r.permits)}`);
+  }
+  p();
+  p(`## All locations (${rows.length})`);
+  p();
+  p('| Location | Region | Permit needed | Fee | Book with | Parking |');
+  p('|---|---|---|---|---|---|');
+  for (const r of rows) {
+    const cells = [
+      `[${stripDashes(r.name)}](${r.url})`,
+      stripDashes(r.zone),
+      stripDashes(r.permitNeeded),
+      stripDashes(fee(r)),
+      stripDashes(contact(r)),
+      stripDashes(parking(r)),
+    ].map((c) => String(c).replace(/\|/g, '/'));
+    p(`| ${cells.join(' | ')} |`);
+  }
+  p();
+  p('## Related');
+  p();
+  p(`- [Full page](${SITE_URL}/toronto-photo-permits/)`);
+  p(`- [Location guide](${SITE_URL}/location-guide/)`);
+  p(`- [Book a session](${SITE_URL}/contact/)`);
 
   return out.join('\n');
 }
@@ -1353,6 +1439,7 @@ function main() {
   writes.push([join(MIRRORS_DIR, 'services-civil-ceremony.md'), buildServiceCivilCeremonyMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-celebrations.md'), buildServiceCelebrationsMirror()]);
   writes.push([join(MIRRORS_DIR, 'location-guide.md'), buildLocationGuideMirror()]);
+  writes.push([join(MIRRORS_DIR, 'toronto-photo-permits.md'), buildPhotoPermitsMirror()]);
   writes.push([join(MIRRORS_DIR, 'blog.md'), buildBlogIndexMirror()]);
   writes.push([join(MIRRORS_DIR, 'portfolio.md'), buildPortfolioMirror()]);
 

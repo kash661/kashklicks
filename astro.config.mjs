@@ -73,6 +73,7 @@ export default defineConfig({
           url === '/about' ||
           url === '/contact' ||
           url === '/location-guide' ||
+          url === '/toronto-photo-permits' ||
           url.startsWith('/portfolio/')
         ) {
           return { ...base, priority: 0.8, changefreq: 'monthly' };
