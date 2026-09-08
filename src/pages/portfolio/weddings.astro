@@ -4,10 +4,14 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PortfolioCard from '../../components/ui/PortfolioCard.astro';
 import Button from '../../components/ui/Button.astro';
 import PortfolioFinalCTA from '../../components/global/PortfolioFinalCTA.astro';
+import ComingSoonFeature from '../../components/global/ComingSoonFeature.astro';
 import { Image } from 'astro:assets';
 
 import portfolio from '../../data/portfolio.json';
 import site from '../../data/site.json';
+
+// Next in the gallery (Josie + Nelson, Guild Park)
+import comingSoonImage from '../../assets/images/homepage/homepage-08-josie-nelson-sendoff.jpg';
 
 const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/images/portfolio/*.jpg',
@@ -97,6 +101,21 @@ const schema = {
       )}
     </div>
   </section>
+
+  <!-- ═══ NEXT IN THE GALLERY ═══
+       Dark band closing the gallery run, before the philosophy note. -->
+  <ComingSoonFeature
+    id="josie-nelson-coming-soon"
+    couple="Josie + Nelson"
+    meta="Wedding · Guild Park & Gardens, Scarborough · Photo + Film"
+    body="Their wedding day at Guild Park is in the edit now. A tented reception, a candlelit send off, and a full film, all landing here soon."
+    linkLabel="See their pre-wedding"
+    linkHref="/portfolio/josie-nelson/"
+    linkAriaLabel="See Josie and Nelson's pre-wedding gallery at the Toronto Music Garden"
+    image={comingSoonImage}
+    imageAlt="Josie and Nelson kiss during a candlelit send off as guests raise candles outside the tented reception at Guild Park, Scarborough"
+    imageCaption="The send off, Guild Park"
+  />
 
   <!-- ═══ PHILOSOPHY ═══ -->
   <section class="bg-background" style="padding: var(--spacing-section) 0;">

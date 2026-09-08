@@ -1,0 +1,211 @@
+---
+/**
+ * ComingSoonFeature
+ * -----------------
+ * Dark editorial band announcing a gallery still in the edit. One DOM
+ * tree, responsive purely through CSS: the image leads on mobile and
+ * holds columns 1 to 5 on desktop, with the text rail on columns 7 to
+ * 12. On desktop the rail stretches so the heading tops out level with
+ * the image and the link sits level with its bottom edge. The gap in
+ * between is deliberate negative space.
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+  id?: string;
+  couple: string;
+  meta: string;
+  body: string;
+  linkLabel: string;
+  linkHref: string;
+  linkAriaLabel?: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  imageCaption?: string;
+}
+
+const {
+  id = 'coming-soon',
+  couple,
+  meta,
+  body,
+  linkLabel,
+  linkHref,
+  linkAriaLabel,
+  image,
+  imageAlt,
+  imageCaption,
+} = Astro.props;
+
+// Same split rule as PortfolioCard: "Josie + Nelson" renders with an
+// italic ampersand between the two names.
+const parts = couple.split(/\s*[+&]\s*/);
+const hasAmpersand = parts.length === 2 && parts[0] && parts[1];
+---
+
+<section class="coming-soon" aria-labelledby={`${id}-title`}>
+  <div class="container-editorial">
+    <div class="grid-editorial coming-soon__grid">
+
+      <div class="col-span-12 md:col-span-5 reveal-left">
+        <div
+          class="coming-soon__frame hover-zoom image-caption aspect-[2/3] overflow-hidden bg-surface-container"
+          data-caption={imageCaption}
+        >
+          <Image
+            src={image}
+            alt={imageAlt}
+            widths={[480, 640, 960, 1280]}
+            sizes="(max-width: 768px) 100vw, 42vw"
+            quality={80}
+            loading="lazy"
+            class="w-full h-full object-cover parallax-img"
+          />
+        </div>
+      </div>
+
+      <div class="col-span-12 md:col-span-6 md:col-start-7 coming-soon__text reveal stagger-2">
+        <div class="coming-soon__top">
+          <h2 id={`${id}-title`} class="coming-soon__title">
+            {hasAmpersand ? (
+              <>{parts[0]}{' '}<em>&amp;</em> {parts[1]}, <em>coming soon.</em></>
+            ) : (
+              <>{couple}, <em>coming soon.</em></>
+            )}
+          </h2>
+          <p class="coming-soon__meta">{meta}</p>
+        </div>
+        <div class="coming-soon__bottom">
+          <p class="coming-soon__body">{body}</p>
+          <a href={linkHref} class="coming-soon__link magnetic" aria-label={linkAriaLabel}>
+            {linkLabel} <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hallmark · component: coming-soon teaser · genre: editorial · theme: locked (Digital Curator, dark band)
+   * pre-emit critique: P5 H5 E4 S5 R5 V4 · states: link default/hover/focus-visible · contrast: on-dark on surface-dark */
+
+  .coming-soon {
+    background: var(--color-surface-dark);
+    color: var(--color-on-dark);
+    padding-block: var(--spacing-section);
+  }
+
+  .coming-soon__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 5.8vw, 5.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+    overflow-wrap: anywhere;
+    min-width: 0;
+    color: var(--color-on-dark);
+    margin: 0;
+  }
+
+  .coming-soon__title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-on-dark-variant);
+  }
+
+  .coming-soon__meta {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1.7;
+    color: var(--color-on-dark-variant);
+    margin-top: 1.5rem;
+  }
+
+  .coming-soon__body {
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-on-dark-variant);
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  .coming-soon__link {
+    display: inline-block;
+    margin-top: 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-on-dark);
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .coming-soon__link span {
+    display: inline-block;
+    margin-left: 0.5rem;
+    transition: transform 220ms var(--ease-gallery);
+  }
+
+  .coming-soon__link:hover {
+    color: var(--color-on-dark-variant);
+  }
+
+  .coming-soon__link:hover span {
+    transform: translateX(4px);
+  }
+
+  .coming-soon__link:focus-visible {
+    outline: 2px solid var(--color-on-dark);
+    outline-offset: 4px;
+  }
+
+  .coming-soon__link:active span {
+    transform: translateX(2px);
+  }
+
+  /* Desktop: the text rail stretches to the height of the image so the
+     heading and the link pin to the top and bottom of the photograph.
+     The void between them is the point. */
+  @media (min-width: 768px) {
+    .coming-soon__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-self: stretch;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .coming-soon__text {
+      margin-top: 2rem;
+      text-align: left;
+    }
+
+    .coming-soon__title {
+      font-size: clamp(2rem, 9vw, 3rem);
+    }
+
+    .coming-soon__body {
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .coming-soon__link,
+    .coming-soon__link span {
+      transition: none;
+    }
+
+    .coming-soon__link:hover span,
+    .coming-soon__link:active span {
+      transform: none;
+    }
+  }
+</style>

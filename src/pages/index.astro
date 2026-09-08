@@ -9,6 +9,7 @@ import GearBreaker from '../components/global/GearBreaker.astro';
 import MobileGearBreaker from '../components/global/MobileGearBreaker.astro';
 import GoogleReviews from '../components/global/GoogleReviews.astro';
 import BookingNote from '../components/global/BookingNote.astro';
+import ComingSoonFeature from '../components/global/ComingSoonFeature.astro';
 import testimonials from '../data/testimonials.json';
 import googleReviews from '../data/google-reviews.json';
 
@@ -26,6 +27,9 @@ import investmentImage from '../assets/images/homepage/homepage-04-grace-giovann
 import recentWide from '../assets/images/portfolio/meghna-puneeth/06.jpg';
 import recentPortraitLeft from '../assets/images/homepage/homepage-02-grace-giovanni-hero.jpg';
 import recentPortraitRight from '../assets/images/homepage/homepage-03-roxanne-justin.jpg';
+
+// Next in the gallery (Josie + Nelson, Guild Park)
+import comingSoonImage from '../assets/images/homepage/homepage-08-josie-nelson-sendoff.jpg';
 
 // Contact CTA closing card — art-directed (portrait on mobile, landscape on desktop).
 // Replaces an 11.3MB Bunny.net background video.
@@ -693,6 +697,23 @@ const businessExtras = {
       }
     }
   </style>
+
+  <!-- ═══ 5b. NEXT IN THE GALLERY ═══
+       Dark band between two light sections. Recent Work is surface-dim
+       above, the destinations breaker is background below, so this
+       tonal drop reads as a deliberate beat rather than a new page. -->
+  <ComingSoonFeature
+    id="josie-nelson-coming-soon"
+    couple="Josie + Nelson"
+    meta="Wedding · Guild Park & Gardens, Scarborough · Photo + Film"
+    body="Their wedding day at Guild Park is in the edit now. A tented reception, a candlelit send off, and a full film, all landing here soon."
+    linkLabel="See their pre-wedding"
+    linkHref="/portfolio/josie-nelson/"
+    linkAriaLabel="See Josie and Nelson's pre-wedding gallery at the Toronto Music Garden"
+    image={comingSoonImage}
+    imageAlt="Josie and Nelson kiss during a candlelit send off as guests raise candles outside the tented reception at Guild Park, Scarborough"
+    imageCaption="The send off, Guild Park"
+  />
 
   <!-- ═══ BREAKER · WHERE I'VE SHOT ═══
        Horizontal motion breaker — continuous right-to-left marquee of
