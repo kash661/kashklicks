@@ -125,7 +125,7 @@ Email marriage@toronto.ca to request a date. Get your marriage licence first and
 
 ## Photograph your Old City Hall wedding
 
-Old City Hall is one of the most beautiful rooms in the city, and for the first time in a generation you can be married inside it. If you are planning a ceremony here, or downtown at all, I would love to hear about it.
+Old City Hall is one of the most beautiful rooms in the city, and for the first time in a generation you can be married inside it. If you are planning a ceremony here, or downtown at all, I would love to hear about it. If the ceremony is the start of a longer day, I also work as an [intimate wedding photographer in Toronto](/intimate-wedding-toronto/), for church, backyard, and small venue weddings.
 
 [**See civil ceremony photography →**](/services/civil-ceremony/)
 
