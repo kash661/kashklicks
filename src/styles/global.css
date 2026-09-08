@@ -1653,14 +1653,20 @@ input.flatpickr-input + input.form-field__input {
   transform: translateX(0);
 }
 
-/* Per-character reveal wrappers (produced by char-reveal.ts). Three-layer
-   structure: sentence → word → char.
+/* Per-character reveal wrappers. The homepage hero tagline ships pre split
+   from the build; every other .char-reveal heading is split at runtime by
+   char-reveal.ts. Both produce the same three layer structure:
+   sentence line → word → char.
    • Sentence is inline by default so short headings keep flowing; at <=767px
      it flips to block, so multi-sentence taglines break between sentences
      on mobile ("Moments fade." / "Memories don't." on their own lines).
-   • Word uses white-space: nowrap so inline-block char shards can never
-     wrap mid-word. Lines only break between words.
-   • Char is the animated unit; styles set inline by the script. */
+   • Word uses white-space: nowrap so char shards can never wrap mid-word.
+     Lines only break between words.
+   • Char is the animated unit and stays a plain inline span. No inline-block,
+     no transform, no backface-visibility, no will-change: 26 letters used to
+     cost 26 compositor layers before the first frame. Disabling kerning,
+     ligatures and contextual alternates is what actually keeps the italic
+     glyph shape stable across the fade. */
 .char-reveal-line {
   display: inline;
 }
@@ -1672,6 +1678,40 @@ input.flatpickr-input + input.form-field__input {
 .char-reveal-word {
   display: inline-block;
   white-space: nowrap;
+}
+.char-reveal-char {
+  font-feature-settings: "kern" 0, "liga" 0, "calt" 0, "clig" 0, "dlig" 0, "hlig" 0;
+  font-variant-ligatures: none;
+  font-kerning: none;
+  transition: opacity 0.08s var(--ease-gallery);
+  transition-delay: calc(var(--i, 0) * 35ms);
+}
+
+/* Letters are only hidden when a script is present to reveal them. Without
+   JavaScript the heading paints as ordinary text. */
+html.js .char-reveal:not(.is-in) .char-reveal-char {
+  opacity: 0;
+}
+
+/* Once the reveal has finished, the opening clause settles back so the closing
+   clause carries the line. Opacity comes from the element's dataset. */
+.char-reveal.is-settled .char-reveal-char.is-prefix {
+  opacity: var(--fade-prefix-opacity, 0.4);
+  transition: opacity 1.5s var(--ease-gallery);
+  transition-delay: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char-reveal-char {
+    transition: none;
+    transition-delay: 0s;
+  }
+  html.js .char-reveal:not(.is-in) .char-reveal-char {
+    opacity: 1;
+  }
+  .char-reveal.is-settled .char-reveal-char.is-prefix {
+    transition: none;
+  }
 }
 
 /* Parallax container — desktop only; mobile gets flat placement for perf + framing. */

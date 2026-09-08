@@ -1,113 +1,158 @@
 /**
  * Character-by-character reveal for display headings.
- * Add `char-reveal` class to any heading. Text fades in letter-by-letter
- * when the element enters the viewport.
+ *
+ * Add `char-reveal` to any heading. The homepage hero tagline arrives already
+ * split from the build (`data-presplit`), so this script never touches its
+ * markup. Every other heading is split here, once, at the same three layer
+ * structure the build emits: sentence line -> word -> char.
+ *
+ * The script only writes classes and a `--i` index. All timing, opacity and
+ * glyph stabilisation lives in global.css, so no letter gets an inline style,
+ * a transform, or a compositor layer of its own.
  */
 
+interface CharCounter {
+  index: number;
+}
+
 // Split a block of text into sentences on ". " boundaries, keeping trailing
-// periods attached. Works for the kinds of short display text this script
-// handles; deliberately lightweight (no full NLP).
+// periods attached. Deliberately lightweight (no full NLP) and matched to the
+// build-time helper in src/pages/index.astro.
 function splitSentences(text: string): string[] {
   const parts = text.split(/(?<=\.)\s+(?=[A-Z])/).map((s) => s.trim()).filter(Boolean);
   return parts.length ? parts : [text];
 }
 
-export function initCharReveal() {
+// Collapse the source formatting whitespace so indented markup does not turn
+// into stray spaces once every word is wrapped.
+function normaliseWhitespace(el: HTMLElement): void {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const texts: Text[] = [];
+  let node: Node | null = walker.nextNode();
+  while (node) {
+    texts.push(node as Text);
+    node = walker.nextNode();
+  }
+  texts.forEach((t) => {
+    t.data = t.data.replace(/\s+/g, ' ');
+  });
+  if (texts.length) {
+    texts[0].data = texts[0].data.replace(/^\s+/, '');
+    texts[texts.length - 1].data = texts[texts.length - 1].data.replace(/\s+$/, '');
+  }
+}
+
+function appendWords(text: string, target: Node, counter: CharCounter): void {
+  const tokens = text.split(/(\s+)/);
+  tokens.forEach((token) => {
+    if (token === '') return;
+    if (/^\s+$/.test(token)) {
+      target.appendChild(document.createTextNode(' '));
+      return;
+    }
+    const word = document.createElement('span');
+    word.className = 'char-reveal-word';
+    for (const char of token) {
+      const span = document.createElement('span');
+      span.className = 'char-reveal-char';
+      span.style.setProperty('--i', String(counter.index));
+      span.setAttribute('aria-hidden', 'true');
+      span.textContent = char;
+      word.appendChild(span);
+      counter.index += 1;
+    }
+    target.appendChild(word);
+  });
+}
+
+// Walk the original nodes and rebuild them into `target`. Element children are
+// cloned shallowly first, so an <em> inside a heading keeps its tag, its
+// classes and therefore its italic styling instead of being flattened away.
+function appendNodes(nodes: Node[], target: Node, counter: CharCounter): void {
+  nodes.forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      appendWords(node.textContent || '', target, counter);
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+    const source = node as HTMLElement;
+    const wrapper = source.cloneNode(false) as HTMLElement;
+    appendNodes(Array.from(source.childNodes), wrapper, counter);
+    target.appendChild(wrapper);
+  });
+}
+
+function splitElement(el: HTMLElement): void {
+  normaliseWhitespace(el);
+  const text = (el.textContent || '').trim();
+  if (!text) return;
+  el.setAttribute('aria-label', text);
+
+  const counter: CharCounter = { index: 0 };
+  const fragment = document.createDocumentFragment();
+  const hasElementChildren = Array.from(el.childNodes).some(
+    (n) => n.nodeType === Node.ELEMENT_NODE
+  );
+
+  if (hasElementChildren) {
+    // Structure has to be preserved, so the whole heading becomes one line.
+    const line = document.createElement('span');
+    line.className = 'char-reveal-line';
+    appendNodes(Array.from(el.childNodes), line, counter);
+    fragment.appendChild(line);
+  } else {
+    const sentences = splitSentences(text);
+    sentences.forEach((sentence, sIdx) => {
+      const line = document.createElement('span');
+      line.className = 'char-reveal-line';
+      appendWords(sentence, line, counter);
+      fragment.appendChild(line);
+      if (sIdx < sentences.length - 1) {
+        fragment.appendChild(document.createTextNode(' '));
+      }
+    });
+  }
+
+  el.textContent = '';
+  el.appendChild(fragment);
+
+  const fadeCount = parseInt(el.dataset.fadePrefixCount || '0', 10);
+  if (fadeCount > 0) {
+    const chars = el.querySelectorAll<HTMLElement>('.char-reveal-char');
+    for (let i = 0; i < Math.min(fadeCount, chars.length); i += 1) {
+      chars[i].classList.add('is-prefix');
+    }
+  }
+}
+
+export function initCharReveal(): void {
   const elements = document.querySelectorAll<HTMLElement>('.char-reveal');
   if (!elements.length) return;
 
   elements.forEach((el) => {
-    const text = (el.textContent || '').trim();
-    el.textContent = '';
-    el.setAttribute('aria-label', text);
-
-    // Structure: sentence → word → char.
-    //   • Sentence wrappers give multi-sentence text (e.g. "Moments fade.
-    //     Memories don't.") a stable place to line-break on mobile.
-    //   • Word wrappers keep each word atomic so the browser can only break
-    //     between words — never mid-word into inline-block char shards.
-    //   • Char wrappers are the animated unit; styles below stabilise glyph
-    //     shape across opacity fades.
-    const sentences = splitSentences(text);
-    let charIndex = 0;
-
-    sentences.forEach((sentence, sIdx) => {
-      const line = document.createElement('span');
-      line.className = 'char-reveal-line';
-
-      const tokens = sentence.split(/(\s+)/);
-      tokens.forEach((token) => {
-        if (token === '') return;
-        if (/^\s+$/.test(token)) {
-          line.appendChild(document.createTextNode(' '));
-          return;
-        }
-        const word = document.createElement('span');
-        word.className = 'char-reveal-word';
-        for (const char of token) {
-          const span = document.createElement('span');
-          span.className = 'char-reveal-char';
-          span.textContent = char;
-          span.style.opacity = '0';
-          span.style.transition = 'opacity 0.08s cubic-bezier(0.22, 1, 0.36, 1)';
-          span.style.transitionDelay = `${charIndex * 35}ms`;
-          // Stabilise glyph across the opacity fade. Italic serifs
-          // (Cormorant/Noir et Blanc) trigger contextual alternates on
-          // letter-pair transitions — pinning a GPU layer and disabling
-          // kern/ligatures/contextual alternates locks each char to its
-          // default form.
-          span.style.display = 'inline-block';
-          span.style.transform = 'translate3d(0, 0, 0)';
-          span.style.backfaceVisibility = 'hidden';
-          span.style.willChange = 'opacity';
-          span.style.fontFeatureSettings =
-            '"kern" 0, "liga" 0, "calt" 0, "clig" 0, "dlig" 0, "hlig" 0';
-          span.style.fontVariantLigatures = 'none';
-          span.style.fontKerning = 'none';
-          span.setAttribute('aria-hidden', 'true');
-          word.appendChild(span);
-          charIndex += 1;
-        }
-        line.appendChild(word);
-      });
-
-      el.appendChild(line);
-      if (sIdx < sentences.length - 1) {
-        el.appendChild(document.createTextNode(' '));
-      }
-    });
+    if (el.querySelector('.char-reveal-char')) return; // already split at build time
+    splitElement(el);
   });
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const target = entry.target as HTMLElement;
-          const chars = target.querySelectorAll<HTMLSpanElement>('.char-reveal-char');
-          chars.forEach((span) => {
-            span.style.opacity = '1';
-          });
+        if (!entry.isIntersecting) return;
+        const target = entry.target as HTMLElement;
+        observer.unobserve(target);
 
-          // Optional: after the full char-reveal finishes, fade the first N
-          // letter spans to a lower opacity (used for tagline emphasis where
-          // the first clause should settle back once it has been read).
-          const fadeCount = parseInt(target.dataset.fadePrefixCount || '0', 10);
-          if (fadeCount > 0) {
-            const fadeOpacity = target.dataset.fadePrefixOpacity || '0.4';
-            const totalDuration = chars.length * 35 + 120;
-            setTimeout(() => {
-              chars.forEach((span, idx) => {
-                if (idx < fadeCount) {
-                  span.style.transition = 'opacity 1500ms cubic-bezier(0.22, 1, 0.36, 1)';
-                  span.style.transitionDelay = '0ms';
-                  span.style.opacity = fadeOpacity;
-                }
-              });
-            }, totalDuration + 400);
-          }
-
-          observer.unobserve(entry.target);
+        const fadeOpacity = target.dataset.fadePrefixOpacity;
+        if (fadeOpacity) {
+          target.style.setProperty('--fade-prefix-opacity', fadeOpacity);
         }
+
+        target.classList.add('is-in');
+
+        // Let the staggered fade finish before the opening clause settles back.
+        const charCount = target.querySelectorAll('.char-reveal-char').length;
+        window.setTimeout(() => {
+          target.classList.add('is-settled');
+        }, charCount * 35 + 520);
       });
     },
     { threshold: 0.3 }

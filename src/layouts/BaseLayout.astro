@@ -92,6 +92,10 @@ if (businessExtras) {
 <html lang="en-CA">
   <head>
     <meta charset="UTF-8" />
+    <!-- JavaScript availability flag. CSS uses `html.js` to hide anything it
+         is only allowed to hide because a script will bring it back, so the
+         page never leaves content invisible when scripts fail to run. -->
+    <script is:inline>document.documentElement.className += ' js';</script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#faf9f6" />
     <meta name="author" content="AD Photography" />

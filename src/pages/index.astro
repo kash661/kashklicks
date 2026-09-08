@@ -36,6 +36,44 @@ import comingSoonImage from '../assets/images/homepage/homepage-08-josie-nelson-
 import contactMobile from '../assets/images/homepage/homepage-06.jpg';
 import contactDesktop from '../assets/images/portfolio/ayushi-parth/01.jpg';
 
+// Hero tagline, split into per character spans at build time.
+// Doing the split here instead of in the browser means the very first paint
+// already carries the finished markup: no script has to rewrite the heading,
+// nothing forces an extra layout, and the letters are plain inline spans
+// rather than 26 separate compositor layers. char-reveal.ts only observes it.
+function splitForReveal(text: string, prefixCount = 0): string {
+  const escapeHtml = (value: string) =>
+    value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const sentences = text
+    .split(/(?<=\.)\s+(?=[A-Z])/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+  let index = 0;
+  return sentences
+    .map((sentence) => {
+      const words = sentence
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((word) => {
+          const chars = Array.from(word)
+            .map((char) => {
+              const cls = index < prefixCount ? 'char-reveal-char is-prefix' : 'char-reveal-char';
+              const span = `<span class="${cls}" style="--i:${index}" aria-hidden="true">${escapeHtml(char)}</span>`;
+              index += 1;
+              return span;
+            })
+            .join('');
+          return `<span class="char-reveal-word">${chars}</span>`;
+        });
+      return `<span class="char-reveal-line">${words.join(' ')}</span>`;
+    })
+    .join(' ');
+}
+
+const heroTagline = "Moments fade. Memories don't.";
+// First 12 letters are the opening clause, which settles back once read.
+const heroTaglineHtml = splitForReveal(heroTagline, 12);
+
 const testimonial = testimonials[0];
 
 // LCP hero preload: identical params to the <Image> below, so the hashed
@@ -236,7 +274,14 @@ const businessExtras = {
     <div class="home-hero__copy absolute inset-0 flex flex-col items-center justify-center text-center px-6">
       <p class="logo-mark text-[0.8125rem] text-on-dark eyebrow-rule eyebrow-rule-center eyebrow-rule-on-dark mb-8">AD Photos</p>
       <h1 class="text-body-md text-on-dark/70 font-normal order-2 mt-6 max-w-[36ch] mx-auto">Solo Toronto wedding photographer for intimate ceremonies. Pre-weddings in photo and film.</h1>
-      <h2 class="text-display-lg text-on-dark char-reveal order-1" data-fade-prefix-count="12" data-fade-prefix-opacity="0.4">Moments fade. Memories don't.</h2>
+      <h2
+        class="text-display-lg text-on-dark char-reveal order-1"
+        data-presplit
+        data-fade-prefix-count="12"
+        data-fade-prefix-opacity="0.4"
+        aria-label={heroTagline}
+        set:html={heroTaglineHtml}
+      ></h2>
     </div>
 
     <script is:inline>
@@ -1104,6 +1149,11 @@ const businessExtras = {
     return () => mm.revert();
   };
 
+  // Dead while the splash is disabled and `kk-splash-seen` is pre seeded above.
+  // If the splash is ever turned back on, this must animate the spans the build
+  // already emitted instead of wiping the heading and re splitting it, otherwise
+  // the pre split markup that lets the hero paint without JavaScript is thrown
+  // away on the first visit.
   const initHeroEntrance = () => {
     const firstVisit = sessionStorage.getItem('kk-splash-seen') !== 'true';
     if (!firstVisit) {
