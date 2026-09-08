@@ -2243,6 +2243,61 @@ body::-webkit-scrollbar,
   margin: 3.5em auto;
 }
 
+/* Tables inside blog prose (price tables on the cost hub).
+   display:block + overflow-x:auto lets a wide markdown table scroll inside
+   itself on phones instead of pushing the whole page sideways. */
+.prose-editorial table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 2em 0;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-on-surface-variant);
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose-editorial thead th {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: var(--fw-medium, 500);
+  color: var(--color-on-surface-muted);
+  text-align: left;
+  white-space: nowrap;
+  padding: 0 1.25rem 0.75rem 0;
+  border-bottom: 1px solid var(--color-on-surface-muted);
+}
+
+.prose-editorial tbody td {
+  padding: 1rem 1.25rem 1rem 0;
+  border-bottom: 1px solid rgba(175, 179, 174, 0.28);
+  vertical-align: top;
+}
+
+.prose-editorial tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* First two columns are the package name and the price: keep them readable
+   and unwrapped so the number is always scannable. */
+.prose-editorial tbody td:first-child {
+  color: var(--color-on-surface);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.prose-editorial tbody td:nth-child(2) {
+  color: var(--color-on-surface);
+  white-space: nowrap;
+}
+
+.prose-editorial tbody td:last-child {
+  min-width: 22ch;
+}
+
 .prose-editorial img {
   width: 100%;
   height: auto;
