@@ -1,0 +1,16 @@
+---
+// Scratch page for the Ontario Parks fall colour panel. The Worker 404s every
+// /dev/* path on kashklicks.ca, so this is reachable in `astro dev` and
+// `astro preview` only. Playwright mounts the panel here so the specs do not
+// depend on the pre-wedding page's layout.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FallColourPanel from '../../components/global/FallColourPanel.astro';
+---
+
+<BaseLayout
+  title="Fall colour panel (dev)"
+  description="Development preview of the Ontario Parks fall colour panel."
+  noIndex={true}
+>
+  <FallColourPanel />
+</BaseLayout>
