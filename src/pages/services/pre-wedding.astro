@@ -39,6 +39,17 @@ const preWeddingService = {
   ],
 };
 
+// Fast facts block. Every value below is copied from packages.json, the
+// includes list above, or the journey steps further down, so the block cannot
+// drift into a claim the rest of the page does not already make.
+const preWeddingFastFacts = [
+  { label: 'Starting price', value: 'From $351.25 for Love Story Mini. Up to 2 hours at 1 location with 50+ edited photos.' },
+  { label: 'Session length', value: '2 to 10 hours depending on the package, across 1 to 3 locations.' },
+  { label: 'Photo or film', value: 'Photo only sessions, or photo with a custom cinematic 4K film on select packages.' },
+  { label: 'Where I shoot', value: 'Toronto and the GTA. I help you choose the spot, and light comes first.' },
+  { label: 'Delivery', value: 'Your full gallery and final film within 1 to 3 weeks, in a private online gallery.' },
+];
+
 const businessRef = { '@id': `${site.url}/#business` };
 
 // The proposal package is sold from this page, so it belongs in the same offer catalog.
@@ -211,6 +222,21 @@ const preWeddingJourneySteps = [
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+
+      <!-- ═══ FAST FACTS — plain answers for search results and AI summaries ═══ -->
+      <div class="grid-editorial" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 lg:col-span-10 lg:col-start-2 reveal stagger-3">
+          <h2 class="text-label-sm text-on-surface-muted uppercase tracking-widest mb-6">Pre wedding shoots at a glance</h2>
+          <dl>
+            {preWeddingFastFacts.map((fact) => (
+              <div class="border-t border-on-surface-muted/20 py-4 md:grid md:grid-cols-12 md:gap-6">
+                <dt class="text-label-sm text-on-surface uppercase tracking-widest md:col-span-4">{fact.label}</dt>
+                <dd class="text-body-md text-on-surface-variant mt-2 md:mt-0 md:col-span-8">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
 

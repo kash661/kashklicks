@@ -38,9 +38,17 @@ If you are thinking about getting married at Toronto City Hall, this is everythi
 
 **Guest capacity:** About 22 people total, including the couple and two witnesses. Seating for roughly 15, standing room for a few more.
 
+**How long it runs:** About ten to fifteen minutes for the ceremony itself.
+
 **What you need:** An Ontario marriage licence issued within the last 90 days, two witnesses who are 18 or older, and government photo ID.
 
+**How to book:** Get the marriage licence first, then book a ceremony slot with the City's wedding chambers online or by phone and pay the fee at booking. Weekday slots fill quickly.
+
 **Cost:** Roughly $180 for the marriage licence and around $325 including tax for the City Hall ceremony. Confirm current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/), since the City updates them.
+
+**The other chamber:** Old City Hall across Bay Street now runs its own civil ceremonies in the former Council Chamber, listed by the City at $337.95 including tax for a thirty minute slot. My [Old City Hall wedding guide](/blog/old-city-hall-wedding-toronto/) covers that one.
+
+**Where portraits happen:** Nathan Phillips Square, the sandstone facade of Old City Hall, the gardens and iron gates of Osgoode Hall, and the Financial District. All of it is a five to ten minute walk.
 
 **Walking level:** Low. Everything is flat downtown sidewalk. The portrait loop is a few blocks at most.
 
