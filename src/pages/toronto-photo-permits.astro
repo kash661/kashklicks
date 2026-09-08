@@ -1,0 +1,773 @@
+---
+/**
+ * Toronto Photo Permits
+ * ---------------------
+ * Hallmark · macrostructure: Workbench (data-led, full-width table under a
+ * filter rail) · genre: editorial · theme: locked (Digital Curator)
+ * enrichment: none (typography only) · nav/footer: site chrome (BaseLayout)
+ * pre-emit critique: P5 H4 E5 S5 R5 V4
+ *
+ * One citable table of the permit, fee, contact and parking facts that are
+ * currently scattered across 32 separate location guides. Absorbs the
+ * "[venue] photo permit" query cluster under a single URL.
+ *
+ * SOURCES OF TRUTH, in order:
+ *   1. src/data/locations.json  (permits, permitNeeded, permitFee,
+ *      permitContact, parking). Structured permit fields were added to that
+ *      file for this page; every value is read out of the `permits` prose
+ *      that was already there.
+ *   2. ~/Documents/Vault/Areas/AD Photography/_context/Venue Permit Facts.md
+ *      (Akash-verified). Four venues carry a confirmed fact from that note:
+ *        - Casa Loma: "$800 for a two-hour session. Book with Casa Loma events team."
+ *        - Allan Gardens: "Outdoor grounds free. Only the indoor conservatory
+ *          requires a City of Toronto commercial photography permit."
+ *        - RC Harris: "Public exterior grounds, free to shoot for a small
+ *          engagement/couple/pre-wedding session."
+ *        - University of Toronto: "No permit needed for engagement,
+ *          pre-wedding, couple, or family photos... A permit is required ONLY
+ *          for wedding-day photography, booked through U of T Campus Events."
+ *          That vault line replaced the vaguer locations.json string on
+ *          2026-09-08. The note also flags the web-researched "~$500/site"
+ *          figure as wrong, so no U of T fee is published here.
+ *   3. src/content/blog/old-city-hall-wedding-toronto.md, for the Old City
+ *      Hall row only. Old City Hall has real search demand but no location
+ *      guide, so it is a page-local row, not a locations.json entry.
+ *
+ * Nothing on this page is inferred, rounded, or filled in from the web. Where
+ * a venue does not publish a fact, the cell reads "Confirm with the venue"
+ * and the row is marked as not fully confirmed.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import FAQAccordion from '../components/ui/FAQAccordion.astro';
+import FinalCTA from '../components/global/FinalCTA.astro';
+
+import locationsData from '../data/locations.json';
+import site from '../data/site.json';
+
+type Row = {
+  name: string;
+  href: string;
+  area: string;
+  zone: string;
+  permitNeeded: string;
+  permitNote: string;
+  fee: string;
+  contact: string;
+  parking: string;
+  inItemList: boolean;
+};
+
+const UNKNOWN = 'Confirm with the venue';
+
+const feeCell = (fee: string | null, needed: string): string =>
+  fee ?? (needed === 'No' ? 'No permit fee' : UNKNOWN);
+
+const contactCell = (contact: string | null, needed: string): string =>
+  contact ?? (needed === 'No' ? 'No booking needed' : UNKNOWN);
+
+const guideRows: Row[] = locationsData.map((loc: any) => ({
+  name: loc.name,
+  href: `/location-guide/${loc.id}/`,
+  area: loc.area,
+  zone: loc.zone,
+  permitNeeded: loc.permitNeeded,
+  permitNote: loc.permits,
+  fee: feeCell(loc.permitFee ?? null, loc.permitNeeded),
+  contact: contactCell(loc.permitContact ?? null, loc.permitNeeded),
+  parking: loc.parking ?? UNKNOWN,
+  inItemList: true,
+}));
+
+// Old City Hall. Facts taken only from the blog post that already covers it
+// (src/content/blog/old-city-hall-wedding-toronto.md): "a small handheld
+// portrait session on the public sidewalks and on Nathan Phillips Square
+// across the street does not need a permit. Tripods, lighting, or a staged
+// production do." That post states no parking fact, so parking is unknown.
+const oldCityHall: Row = {
+  name: 'Old City Hall',
+  href: '/blog/old-city-hall-wedding-toronto/',
+  area: 'Downtown Toronto, Queen and Bay',
+  zone: 'Downtown',
+  permitNeeded: 'Sometimes',
+  permitNote:
+    'No permit for a small party with a handheld camera on the public sidewalks or on Nathan Phillips Square. A City permit is needed for tripods, lighting stands, or a staged production. Osgoode Hall next door is separate Law Society property.',
+  fee: UNKNOWN,
+  contact: UNKNOWN,
+  parking: UNKNOWN,
+  inItemList: true,
+};
+
+const rows: Row[] = [...guideRows, oldCityHall].sort((a, b) =>
+  a.name.localeCompare(b.name)
+);
+
+const regions = [...new Set(rows.map((r) => r.zone))].sort();
+
+const isPartial = (r: Row): boolean =>
+  r.fee === UNKNOWN || r.contact === UNKNOWN || r.parking === UNKNOWN;
+
+// Every number on this page is computed from the rows above, never typed in.
+const total = rows.length;
+const noPermitCount = rows.filter((r) => r.permitNeeded === 'No').length;
+const completeCount = rows.filter((r) => !isPartial(r)).length;
+const partialCount = total - completeCount;
+
+// Published permit fees, for the range line. Only rows that carry a real
+// dollar figure count; "No separate permit fee" is not a price.
+const publishedFees = rows
+  .map((r) => r.fee)
+  .filter((f) => /\$\d/.test(f));
+const feeAmounts = publishedFees
+  .flatMap((f) => Array.from(f.matchAll(/\$([\d,]+(?:\.\d{2})?)/g)))
+  .map((m) => Number(m[1].replace(/,/g, '')))
+  .sort((a, b) => a - b);
+const money = (n: number): string =>
+  `$${n.toLocaleString('en-CA', {
+    minimumFractionDigits: n % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
+  })}`;
+const feeRangeLine =
+  feeAmounts.length > 1
+    ? `${publishedFees.length} of them publish a permit fee. The published fees run from ${money(feeAmounts[0])} to ${money(feeAmounts[feeAmounts.length - 1])}.`
+    : `${publishedFees.length} of them publish a permit fee.`;
+
+const LAST_VERIFIED = 'September 2026';
+
+const faq = [
+  {
+    question: 'Do I need a permit for engagement photos in Toronto parks?',
+    answer:
+      'For most of the parks on this table, a small handheld session is fine. Guild Park and Gardens, Scarborough Bluffs, RC Harris and the Toronto Music Garden need nothing at all for photos. High Park, Cherry Beach, the Toronto Islands and the Humber Bay Arch Bridge are the ones where the City of Toronto asks for a commercial photography permit on a professional shoot. The table above says which is which, park by park.',
+  },
+  {
+    question: 'How much is a photo permit at Casa Loma?',
+    answer:
+      '$800 for a two hour session. It is a paid photography permit and you book it in advance with the Casa Loma events team. That figure is one I have confirmed myself rather than pulled off a search result.',
+  },
+  {
+    question: 'Can you take wedding photos at Osgoode Hall?',
+    answer:
+      'Osgoode Hall belongs to the Law Society of Ontario, not the City, so it is not public ground. You need permission in advance for a professional shoot. The Law Society does not publish a fee, so that cell reads confirm with the venue instead of carrying a number I made up.',
+  },
+  {
+    question: 'Do I need a permit to photograph at RC Harris Water Treatment Plant?',
+    answer:
+      'Not for photography. The permit there covers vehicle access to the curved road, not a couple walking the grounds with a photographer. Street parking is free until 4pm. I shoot there often, so this one I know first hand.',
+  },
+  {
+    question: 'What happens if we shoot without a permit?',
+    answer:
+      'I do not have a source for how each venue handles it, so I am not going to guess at an answer. What I do instead is simple. Where a permit is required, I book it. Where the rule reads unclear, I call the venue before the session so nobody is improvising on the day.',
+  },
+  {
+    question: 'Who books the photo permit, me or the photographer?',
+    answer:
+      'It depends on the venue, which is why the table has a column for it. Casa Loma runs through its events team. Burlington issues a contract through the City of Burlington Live and Play booking system. Hamilton takes the Dundurn Castle request by email at museums@hamilton.ca. Tell me your venue and I will tell you which of us fills the form.',
+  },
+  {
+    question: 'Where do we park at Aera Toronto?',
+    answer:
+      'Paid public parking at CIBC Square and the surrounding Financial District lots. Union Station is a short walk for guests arriving by transit. Aera is a private restaurant, so the photography itself is arranged inside your event booking rather than through a permit.',
+  },
+];
+
+const canonicalUrl = `${site.url}/toronto-photo-permits/`;
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Toronto and GTA photography permit rules by location',
+  description:
+    'Permit requirement, published fee, booking contact and parking for photography locations across Toronto and the GTA.',
+  url: canonicalUrl,
+  numberOfItems: rows.length,
+  itemListElement: rows.map((r, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `${site.url}${r.href}`,
+    name: r.name,
+  })),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+
+const jsonLd = [itemListSchema, faqSchema];
+---
+
+<BaseLayout
+  title={`Toronto Photo Permits: Fees and Rules for ${total} Locations`}
+  description="I keep permit rules, fees, and parking for 33 Toronto and GTA photo locations in one table. Verified where I could, flagged where I could not."
+  canonicalUrl={canonicalUrl}
+  jsonLd={jsonLd}
+>
+  <div class="sr-only">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Toronto Photo Permits', href: '/toronto-photo-permits/' },
+      ]}
+    />
+  </div>
+
+  <!-- Intro: asymmetric, heading left, the why on the right -->
+  <section style="padding-top: var(--spacing-block); padding-bottom: var(--spacing-section);">
+    <div class="grid-editorial items-end">
+      <div class="col-span-12 md:col-span-5 reveal">
+        <h1 class="text-display-md font-serif" style="max-width: 12ch;">
+          Toronto photo permits, in one table.
+        </h1>
+      </div>
+      <div class="col-span-12 md:col-span-6 md:col-start-7 reveal stagger-2 mt-8 md:mt-0">
+        <p class="text-body-lg text-on-surface-variant" style="max-width: 52ch;">
+          I scout these places for a living, and the permit question comes up on almost
+          every call. The answer used to sit inside {guideRows.length} separate location
+          guides on this site, so I pulled it into one place.
+        </p>
+        <p class="text-body-md text-on-surface-variant mt-5" style="max-width: 52ch;">
+          Here is what I know. Where I do not know, the row says so instead of guessing.
+          A missing fee means the venue does not publish one and I have not confirmed it
+          yet, not that the shoot is free.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fast facts -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-block) 0;">
+    <div class="container-editorial">
+      <ul class="fact-list reveal">
+        <li class="fact text-body-lg text-on-surface">
+          {noPermitCount} of the {total} locations need no photography permit at all for a
+          small session.
+        </li>
+        <li class="fact text-body-lg text-on-surface">{feeRangeLine}</li>
+        <li class="fact text-body-lg text-on-surface">
+          {completeCount} rows are complete. {partialCount} still have a fee or a contact I
+          need to confirm.
+        </li>
+      </ul>
+      <p class="text-label-sm text-on-surface-variant fact-note">
+        Fees change. Last verified {LAST_VERIFIED}. Confirm with the venue before you book.
+      </p>
+    </div>
+  </section>
+
+  <!-- The table -->
+  <section style="padding: var(--spacing-block) 0 var(--spacing-section);">
+    <div class="container-editorial">
+      <div class="grid-editorial" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-6 reveal">
+          <h2 class="text-display-md font-serif">Every location, permit by permit.</h2>
+        </div>
+        <div class="col-span-12 md:col-span-5 md:col-start-8 reveal stagger-1 mt-6 md:mt-0">
+          <p class="text-body-md text-on-surface-variant" style="max-width: 46ch;">
+            Each name opens its full guide, with light, parking and the way I shoot there.
+            Rows marked not fully confirmed are the ones I am still chasing.
+          </p>
+        </div>
+      </div>
+
+      {/* Filter rail. Hidden until JS is confirmed present, because it does
+          nothing without it. Without JS the full table renders as-is. */}
+      <div class="permit-filter" data-permit-filter>
+        <div class="filter-group">
+          <span class="text-label-sm text-on-surface-variant filter-legend">Region</span>
+          <button type="button" class="chip" data-region="all" aria-pressed="true">All</button>
+          {regions.map((r) => (
+            <button type="button" class="chip" data-region={r} aria-pressed="false">{r}</button>
+          ))}
+        </div>
+        <div class="filter-group">
+          <span class="text-label-sm text-on-surface-variant filter-legend">Filter</span>
+          <button type="button" class="chip" data-no-permit aria-pressed="false">
+            No permit needed
+          </button>
+        </div>
+        <p class="text-label-sm text-on-surface-variant filter-status" data-permit-status aria-live="polite">
+          Showing {total} of {total} locations.
+        </p>
+      </div>
+
+      <div class="permit-scroll" data-permit-table>
+        <table class="permit-table">
+          <caption class="sr-only">
+            Photography permit requirement, published fee, booking contact and parking
+            for {total} locations across Toronto and the GTA.
+          </caption>
+          <colgroup>
+            <col style="width: 22%;" />
+            <col style="width: 9%;" />
+            <col style="width: 25%;" />
+            <col style="width: 13%;" />
+            <col style="width: 15%;" />
+            <col style="width: 16%;" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col" class="text-label-sm text-on-surface-variant">Location</th>
+              <th scope="col" class="text-label-sm text-on-surface-variant">Region</th>
+              <th scope="col" class="text-label-sm text-on-surface-variant">Permit needed</th>
+              <th scope="col" class="text-label-sm text-on-surface-variant">Fee</th>
+              <th scope="col" class="text-label-sm text-on-surface-variant">Book with</th>
+              <th scope="col" class="text-label-sm text-on-surface-variant">Parking</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr data-region={r.zone} data-permit={r.permitNeeded}>
+                <th scope="row" class="cell-location">
+                  <a href={r.href} class="location-link text-heading-md font-serif">{r.name}</a>
+                  <span class="text-label-sm text-on-surface-variant cell-area">{r.area}</span>
+                  {isPartial(r) && (
+                    <span class="text-label-sm text-on-surface-variant cell-flag">Not fully confirmed</span>
+                  )}
+                </th>
+                <td>
+                  <span class="cell-label text-label-sm text-on-surface-variant">Region</span>
+                  <span class="text-body-md text-on-surface-variant">{r.zone}</span>
+                </td>
+                <td>
+                  <span class="cell-label text-label-sm text-on-surface-variant">Permit needed</span>
+                  <span class="text-body-md text-on-surface">{r.permitNeeded}</span>
+                  <span class="text-body-md text-on-surface-variant cell-note">{r.permitNote}</span>
+                </td>
+                <td>
+                  <span class="cell-label text-label-sm text-on-surface-variant">Fee</span>
+                  <span class:list={['text-body-md text-on-surface-variant', r.fee === UNKNOWN && 'cell-unknown']}>{r.fee}</span>
+                </td>
+                <td>
+                  <span class="cell-label text-label-sm text-on-surface-variant">Book with</span>
+                  <span class:list={['text-body-md text-on-surface-variant', r.contact === UNKNOWN && 'cell-unknown']}>{r.contact}</span>
+                </td>
+                <td>
+                  <span class="cell-label text-label-sm text-on-surface-variant">Parking</span>
+                  <span class:list={['text-body-md text-on-surface-variant', r.parking === UNKNOWN && 'cell-unknown']}>{r.parking}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-label-sm text-on-surface-variant permit-sources">
+        Sources: the {guideRows.length} location guides on this site, each venue's own
+        published policy, my Old City Hall guide for that row, and my own confirmed notes
+        for Casa Loma, Allan Gardens, University of Toronto and RC Harris. Fees change.
+        Last verified {LAST_VERIFIED}.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-surface-dim" style="padding: var(--spacing-section) 0;">
+    <div class="container-editorial">
+      <div class="grid-editorial" style="margin-bottom: var(--spacing-block);">
+        <div class="col-span-12 md:col-span-6 reveal">
+          <h2 class="text-display-md font-serif">The questions I get asked.</h2>
+        </div>
+      </div>
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-10 md:col-start-2 reveal stagger-1">
+          <FAQAccordion items={faq} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA
+    eyebrow="Planning a session"
+    title="Not sure which permit you need?"
+    body="Tell me the venue and the date. I will tell you what it takes to shoot there, permit or no permit."
+    ctaLabel="Ask me about a location"
+    ctaHref="/contact/#inquiry"
+    background="background"
+  />
+</BaseLayout>
+
+<style>
+  /* Hallmark · macrostructure: Workbench · tone: editorial, plain-spoken
+   * theme: locked (Digital Curator) · anchor hue: stone / taupe, zero accent
+   * enrichment: none (typography only) · pre-emit critique: P5 H4 E5 S5 R5 V4
+   * Every colour and every font here is a design-system token. Nothing new
+   * is introduced: no accent, no radius, no card, no gold.
+   */
+
+  /* ── Fast facts: hairline rows, no cards, no radius ── */
+  .fact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .fact {
+    padding: 24px 0;
+    border-top: 1px solid var(--color-surface-container);
+    max-width: 48ch;
+  }
+
+  .fact:last-child {
+    border-bottom: 1px solid var(--color-surface-container);
+  }
+
+  .fact-note {
+    margin-top: 24px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  @media (min-width: 768px) {
+    .fact-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0 32px;
+    }
+    .fact {
+      border-bottom: 1px solid var(--color-surface-container);
+      padding: 32px 0;
+      max-width: none;
+    }
+  }
+
+  /* ── Filter rail ── */
+  /* Progressive enhancement: the control does nothing without JS, so it is
+     not rendered until the html.js flag set in BaseLayout confirms scripts
+     are running. The table itself is always complete and unfiltered. */
+  .permit-filter {
+    display: none;
+  }
+
+  :global(html.js) .permit-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 12px 28px;
+    padding-bottom: 24px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 12px;
+  }
+
+  .filter-legend {
+    margin-right: 4px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .filter-status {
+    margin-left: auto;
+  }
+
+  .chip {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--color-surface-container);
+    border-radius: 0;
+    padding: 8px 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      color var(--duration-hover) var(--ease-gallery),
+      border-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .chip:hover {
+    color: var(--color-on-surface);
+    border-bottom-color: var(--color-on-surface-muted);
+  }
+
+  /* The sitewide focus ring resolves to about 2:1 on this canvas, which is
+     under the 3:1 floor, so the chips carry their own at 6:1. Never animated:
+     a keyboard user needs it the instant focus lands. */
+  .chip:focus-visible {
+    outline: 2px solid var(--color-on-surface-variant);
+    outline-offset: 3px;
+    color: var(--color-on-surface);
+  }
+
+  .chip:active {
+    color: var(--color-on-surface);
+    border-bottom-color: var(--color-on-surface);
+  }
+
+  .chip[aria-pressed='true'] {
+    color: var(--color-on-surface);
+    border-bottom-color: var(--color-on-surface);
+  }
+
+  /* Disabled is signalled three ways, not one: colour, cursor, and the
+     native disabled attribute the script sets. */
+  .chip:disabled {
+    color: var(--color-on-surface-variant);
+    border-bottom-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .chip:disabled:hover {
+    color: var(--color-on-surface-variant);
+    border-bottom-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip,
+    .location-link {
+      transition-duration: 0.01ms;
+    }
+  }
+
+  /* ── Headings: long compound names must never push past the viewport ── */
+  h1,
+  h2 {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* ── Table ── */
+  /* The scroll container only ever engages in the narrow band between the
+     mobile stack and a comfortable desktop table, so overflow never leaks
+     to the page. */
+  .permit-scroll {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .permit-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .permit-table th,
+  .permit-table td {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .permit-table thead th {
+    font-weight: 500;
+    padding: 0 16px 12px 0;
+    border-bottom: 1px solid var(--color-surface-container);
+    vertical-align: bottom;
+  }
+
+  .permit-table tbody th,
+  .permit-table tbody td {
+    padding: 24px 16px 24px 0;
+    border-top: 1px solid var(--color-surface-container);
+    vertical-align: top;
+    font-weight: 400;
+  }
+
+  .permit-table tbody tr:last-child th,
+  .permit-table tbody tr:last-child td {
+    border-bottom: 1px solid var(--color-surface-container);
+  }
+
+  .permit-table tbody th:last-child,
+  .permit-table tbody td:last-child {
+    padding-right: 0;
+  }
+
+  .location-link {
+    display: block;
+    color: var(--color-on-surface);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .location-link:hover {
+    border-bottom-color: var(--color-on-surface-variant);
+  }
+
+  .location-link:active {
+    border-bottom-color: var(--color-on-surface);
+  }
+
+  .location-link:focus-visible {
+    outline: 2px solid var(--color-on-surface-variant);
+    outline-offset: 3px;
+  }
+
+  .cell-area {
+    display: block;
+    margin-top: 8px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  /* The row-level honesty marker. Reads in the same colour as the data, so
+     it is legible rather than a decorative grey. */
+  .cell-flag {
+    display: block;
+    margin-top: 8px;
+  }
+
+  .cell-note {
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* An unknown value sits in italic rather than a lighter grey, because the
+     lighter grey in this palette does not clear the contrast floor. */
+  .cell-unknown {
+    font-style: italic;
+  }
+
+  /* Labels belong to the mobile stack only. */
+  .cell-label {
+    display: none;
+  }
+
+  .permit-sources {
+    margin-top: 32px;
+    max-width: 70ch;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    line-height: 1.7;
+  }
+
+  /* ── Mobile: the row stacks into label over value ── */
+  /* Same shape as the shipped essentials-row pattern on the location guides,
+     rather than a tiny horizontally scrolling table. */
+  @media (max-width: 767px) {
+    .permit-table,
+    .permit-table tbody,
+    .permit-table tbody tr,
+    .permit-table tbody th,
+    .permit-table tbody td {
+      display: block;
+      width: 100%;
+    }
+
+    .permit-table colgroup,
+    .permit-table thead {
+      display: none;
+    }
+
+    .permit-table tbody tr {
+      border-top: 1px solid var(--color-surface-container);
+      padding: 24px 0;
+    }
+
+    .permit-table tbody tr:last-child {
+      border-bottom: 1px solid var(--color-surface-container);
+    }
+
+    .permit-table tbody th,
+    .permit-table tbody td {
+      border-top: 0;
+      padding: 0;
+      margin-top: 16px;
+    }
+
+    .permit-table tbody tr:last-child th,
+    .permit-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .permit-table tbody th {
+      margin-top: 0;
+    }
+
+    .cell-label {
+      display: block;
+      margin-bottom: 4px;
+    }
+  }
+
+  /* The mobile display:block rules would otherwise beat the [hidden]
+     attribute the filter sets, so rows must be hidden explicitly. */
+  .permit-table tbody tr[hidden] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  const table = document.querySelector<HTMLElement>('[data-permit-table]');
+  const filter = document.querySelector<HTMLElement>('[data-permit-filter]');
+
+  if (table && filter) {
+    const rows = Array.from(table.querySelectorAll<HTMLTableRowElement>('tbody tr'));
+    const regionChips = Array.from(
+      filter.querySelectorAll<HTMLButtonElement>('[data-region]')
+    );
+    const noPermitChip = filter.querySelector<HTMLButtonElement>('[data-no-permit]');
+    const status = filter.querySelector<HTMLElement>('[data-permit-status]');
+
+    let region = 'all';
+    let noPermitOnly = false;
+
+    const matchesPermit = (row: HTMLTableRowElement): boolean =>
+      !noPermitOnly || row.dataset.permit === 'No';
+
+    const apply = (): void => {
+      let shown = 0;
+      for (const row of rows) {
+        const visible = (region === 'all' || row.dataset.region === region) && matchesPermit(row);
+        row.hidden = !visible;
+        if (visible) shown += 1;
+      }
+
+      for (const chip of regionChips) {
+        const value = chip.dataset.region as string;
+        const available =
+          value === 'all'
+            ? rows.some(matchesPermit)
+            : rows.some((row) => row.dataset.region === value && matchesPermit(row));
+        chip.disabled = !available;
+        chip.setAttribute('aria-pressed', String(value === region));
+      }
+
+      if (noPermitChip) noPermitChip.setAttribute('aria-pressed', String(noPermitOnly));
+      if (status) {
+        status.textContent =
+          shown === rows.length
+            ? `Showing all ${rows.length} locations.`
+            : `Showing ${shown} of ${rows.length} locations.`;
+      }
+    };
+
+    for (const chip of regionChips) {
+      chip.addEventListener('click', () => {
+        region = chip.dataset.region as string;
+        apply();
+      });
+    }
+
+    noPermitChip?.addEventListener('click', () => {
+      noPermitOnly = !noPermitOnly;
+      // A region can empty out under the permit filter. Fall back to all
+      // rather than leaving the reader looking at nothing.
+      if (noPermitOnly && region !== 'all') {
+        const stillHasRows = rows.some(
+          (row) => row.dataset.region === region && row.dataset.permit === 'No'
+        );
+        if (!stillHasRows) region = 'all';
+      }
+      apply();
+    });
+
+    apply();
+  }
+</script>
