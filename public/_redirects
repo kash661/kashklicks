@@ -29,5 +29,10 @@
 /portraits/                                           /services/                   301
 /investment/                                          /services/                   301
 
+# Webflow legacy URLs (GSC "not found" list, 2026-09-08)
+/contact-us/                                          /contact/                    301
+/travel/                                              /services/                   301
+/category/studio/                                     /services/headshots/         301
+
 # Webflow placeholder/stub pages (never built out, no SEO equity)
 /new-page-*                                           /                            301
