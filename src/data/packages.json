@@ -3,7 +3,7 @@
     "id": "pre-wedding-full",
     "name": "The Pre Wedding",
     "category": "Pre-Wedding",
-    "price": 1251.25,
+    "price": 1451.25,
     "currency": "CAD",
     "description": "My signature pre-wedding experience. Up to 10 hours of coverage across 3 locations with 3 outfit changes, 150+ high-resolution photos, and a custom 5-7 minute cinematic 4K film.",
     "duration": "Up to 10 hours",
@@ -22,13 +22,14 @@
       "Vintage Canon throwback candids +$76.25"
     ],
     "popular": false,
-    "order": 1
+    "order": 1,
+    "salePrice": 1251.25
   },
   {
     "id": "love-story-film",
     "name": "The Signature Session",
     "category": "Pre-Wedding",
-    "price": 751.25,
+    "price": 851.25,
     "currency": "CAD",
     "description": "The perfect balance of photography and film. Up to 5 hours across 2 locations with 70+ edited photos and a 3-4 minute cinematic 4K film.",
     "duration": "Up to 5 hours",
@@ -46,7 +47,9 @@
       "Vintage Canon throwback candids +$76.25"
     ],
     "popular": true,
-    "order": 3
+    "order": 3,
+    "salePrice": 751.25,
+    "badge": "Most Popular"
   },
   {
     "id": "love-story-mini-film",
@@ -70,7 +73,7 @@
       "Fujifilm film simulation add-on +$51.25",
       "Vintage Canon throwback candids +$76.25"
     ],
-    "popular": true,
+    "popular": false,
     "order": 2
   },
   {
