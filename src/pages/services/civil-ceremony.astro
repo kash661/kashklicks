@@ -214,7 +214,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
       </div>
 
       <!-- 6-image mosaic: 3 portraits + 3 landscapes matching reference -->
-      <!-- 6 images, natural ratios, no cropping -->
+      <!-- Landscapes keep their natural 16:9. Portraits are locked to 2:3 (the
+           shape of the first portrait) so the three portrait tiles line up. -->
       <div class="columns-1 md:columns-3 gap-3">
         {galleryImages.map((img, i) => (
           <div class={`mb-3 break-inside-avoid overflow-hidden hover-zoom ${i >= 4 ? 'hidden md:block' : ''} ${i % 2 === 0 ? 'reveal-left' : 'reveal-right'} stagger-${(i % 5) + 1}`}>
@@ -225,7 +226,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
               sizes="(max-width: 768px) 50vw, 33vw"
               quality={80}
               format="avif"
-              class="w-full h-auto"
+              class={img.orient === 'portrait' ? 'w-full h-auto aspect-[2/3] object-cover' : 'w-full h-auto'}
               loading={i < 2 ? 'eager' : 'lazy'}
               fetchpriority={i < 2 ? 'high' : 'auto'}
             />
