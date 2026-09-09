@@ -27,6 +27,7 @@ import investmentImage from '../assets/images/homepage/homepage-04-grace-giovann
 import recentWide from '../assets/images/portfolio/meghna-puneeth/06.jpg';
 import recentPortraitLeft from '../assets/images/homepage/homepage-02-grace-giovanni-hero.jpg';
 import recentPortraitRight from '../assets/images/homepage/homepage-03-roxanne-justin.jpg';
+import recentPortraitVeil from '../assets/images/homepage/homepage-10-josie-nelson-veil.jpg';
 
 // Next in the gallery (Josie + Nelson, Guild Park)
 import comingSoonImage from '../assets/images/homepage/homepage-08-josie-nelson-sendoff.jpg';
@@ -508,6 +509,37 @@ const businessExtras = {
               <p class="recent-work__couple">Roxanne <em>&amp;</em> Justin</p>
               <a href="/portfolio/roxanne-justin/" class="recent-work__view" aria-label="View Roxanne and Justin's story">
                 View story <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </figcaption>
+        </article>
+      </div>
+
+      <div class="grid-editorial recent-work__pair">
+        <!-- Plate IV -->
+        <article class="recent-work__story col-span-12 md:col-span-5 md:col-start-4 mt-12 md:mt-24 reveal stagger-2">
+          <div class="recent-work__frame">
+            <a href="/portfolio/josie-nelson/" class="gallery-frame hover-zoom !w-full block group" aria-label="View Josie and Nelson's pre-wedding album">
+              <Image
+                src={recentPortraitVeil}
+                alt="Toronto wedding photography at Guild Park, Josie and Nelson forehead to forehead under her veil"
+                class="parallax-img !w-full !max-h-none aspect-[3/4] object-cover"
+                widths={[480, 640, 960]}
+                sizes="(max-width: 768px) 100vw, 42vw"
+                quality={80}
+              />
+            </a>
+          </div>
+          <figcaption class="recent-work__caption">
+            <div class="recent-work__plate-line">
+              <span class="recent-work__plate">Plate IV</span>
+              <span class="recent-work__plate-rule"></span>
+              <span class="recent-work__meta-text">Guild Park &amp; Gardens, Scarborough &middot; Summer 2026</span>
+            </div>
+            <div class="recent-work__couple-row">
+              <p class="recent-work__couple">Josie <em>&amp;</em> Nelson</p>
+              <a href="/portfolio/josie-nelson/" class="recent-work__view" aria-label="View Josie and Nelson's pre-wedding story">
+                View their pre-wedding <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
           </figcaption>
