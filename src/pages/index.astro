@@ -31,10 +31,10 @@ import recentPortraitRight from '../assets/images/homepage/homepage-03-roxanne-j
 // Next in the gallery (Josie + Nelson, Guild Park)
 import comingSoonImage from '../assets/images/homepage/homepage-08-josie-nelson-sendoff.jpg';
 
-// Contact CTA closing card — art-directed (portrait on mobile, landscape on desktop).
+// Contact CTA closing card — art-directed (portrait on mobile, Josie + Nelson on desktop).
 // Replaces an 11.3MB Bunny.net background video.
 import contactMobile from '../assets/images/homepage/homepage-06.jpg';
-import contactDesktop from '../assets/images/portfolio/ayushi-parth/01.jpg';
+import contactDesktop from '../assets/images/homepage/homepage-09-josie-nelson-contact.jpg';
 
 // Hero tagline, split into per character spans at build time.
 // Doing the split here instead of in the browser means the very first paint
@@ -1040,6 +1040,12 @@ const businessExtras = {
       align-items: flex-end;
       padding-top: var(--spacing-section);
       padding-bottom: var(--spacing-block);
+    }
+
+    @media (min-width: 768px) {
+      .contact-cta img {
+        object-position: 50% 28%;
+      }
     }
 
     .contact-cta__scrim {
