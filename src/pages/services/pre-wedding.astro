@@ -319,6 +319,7 @@ const preWeddingJourneySteps = [
             service="pre-wedding"
             ctaLabel="Enquire"
             badge={pkg.badge}
+            coverage={pkg.custom ? undefined : pkg.film ? 'photo-video' : 'photo'}
             accordion={true}
             filterMeta={{
               film: pkg.film,
@@ -463,6 +464,7 @@ const preWeddingJourneySteps = [
                 highlights={proposalPackage.highlights}
                 service="proposal"
                 ctaLabel="Enquire"
+                coverage="photo"
                 accordion={true}
                 ordinal={0}
               />

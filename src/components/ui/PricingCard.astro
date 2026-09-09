@@ -29,6 +29,8 @@ interface Props {
   /* Optional explicit tag for the collapsed row (e.g. "Up to 6 hours").
      Falls back to a Photos/Film label derived from filterMeta. */
   accordionTag?: string;
+  /* Coverage badge shown on every card: photo only, or photo with film. */
+  coverage?: 'photo' | 'photo-video';
 }
 
 const {
@@ -48,7 +50,10 @@ const {
   filterMeta,
   accordion = false,
   accordionTag,
+  coverage,
 } = Astro.props;
+
+const coverageLabel = coverage === 'photo-video' ? 'Photo + video' : coverage === 'photo' ? 'Photo only' : undefined;
 
 const romans = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 const plateLabel = ordinal != null ? `Package ${romans[ordinal] ?? ordinal + 1}` : 'Package';
@@ -93,6 +98,9 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
   <header class="pricing-card__head">
     <p class="pricing-card__eyebrow">
       <span class="pricing-card__eyebrow-label">{plateLabel}</span>
+      {coverageLabel && (
+        <span class="pricing-card__coverage" data-coverage={coverage}>{coverageLabel}</span>
+      )}
     </p>
     <h3 class="pricing-card__name">{name}</h3>
     <p class="pricing-card__deck">{description}</p>
@@ -102,7 +110,13 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
           <span class="pricing-card__summary-price">Custom</span>
         ) : (
           <Fragment>
-            <span class="pricing-card__summary-tag">{accordionTagLabel}</span>
+            {coverageLabel && accordionTag && (
+              <Fragment>
+                <span class="pricing-card__summary-tag">{coverageLabel}</span>
+                <span class="pricing-card__summary-sep" aria-hidden="true">&middot;</span>
+              </Fragment>
+            )}
+            <span class="pricing-card__summary-tag">{accordionTag ?? coverageLabel ?? accordionTagLabel}</span>
             <span class="pricing-card__summary-sep" aria-hidden="true">&middot;</span>
             <span class="pricing-card__summary-price">
               {hasSale ? (

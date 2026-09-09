@@ -1225,6 +1225,24 @@ input.flatpickr-input + input.form-field__input {
   color: var(--color-on-surface-variant);
 }
 
+/* Coverage badge: photo only, or photo with film. Sits on the eyebrow line
+   beside the plate label, hairline pill in the same small caps voice. */
+.pricing-card__coverage {
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+  border-radius: 999px;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+}
+.pricing-card__coverage[data-coverage="photo-video"] {
+  color: var(--color-on-surface);
+  border-color: color-mix(in srgb, var(--color-on-surface) 55%, transparent);
+}
+
 .pricing-card__tag {
   font-family: var(--font-serif);
   font-style: italic;
