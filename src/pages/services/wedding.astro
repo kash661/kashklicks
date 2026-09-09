@@ -23,7 +23,7 @@ import packages from '../../data/packages.json';
 import faqData from '../../data/faq.json';
 import site from '../../data/site.json';
 
-import heroImage from '../../assets/images/homepage/wedding-hero-natalie.jpg';
+import heroImage from '../../assets/images/portfolio/karen-micheal/44.jpg';
 const weddingServiceImage = (await import('../../assets/images/homepage/homepage-10-josie-nelson-veil.jpg')).default;
 
 const weddingPackages = packages.filter((p) => p.category === 'Wedding').sort((a, b) => a.order - b.order);
@@ -166,7 +166,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           <div class="aspect-[3/4] overflow-hidden hover-zoom">
             <Image
               src={heroImage}
-              alt="Natalie and Shavar wedding photography at The Glenerin Inn by AD Photography"
+              alt="Karen and Micheal wedding photography at Niagara Parks Botanical Gardens by AD Photography"
               widths={[640, 960, 1280]}
               sizes="(max-width: 768px) 100vw, 50vw"
               quality={75}
@@ -180,9 +180,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             <div class="gallery-plaque__line">
               <span class="gallery-plaque__plate">Wedding</span>
               <span class="gallery-plaque__rule" aria-hidden="true"></span>
-              <span class="gallery-plaque__meta">The Glenerin Inn, Mississauga</span>
+              <span class="gallery-plaque__meta">Niagara Parks Botanical Gardens, Niagara Falls</span>
             </div>
-            <p class="gallery-plaque__title">Natalie <em>&amp;</em> Shavar</p>
+            <p class="gallery-plaque__title">Karen <em>&amp;</em> Micheal</p>
           </figcaption>
         </figure>
       </div>
