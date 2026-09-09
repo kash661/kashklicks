@@ -24,7 +24,7 @@ import faqData from '../../data/faq.json';
 import site from '../../data/site.json';
 
 import heroImage from '../../assets/images/homepage/wedding-hero-natalie.jpg';
-const weddingServiceImage = (await import('../../assets/images/homepage/wedding-service-detail.jpg')).default;
+const weddingServiceImage = (await import('../../assets/images/homepage/homepage-10-josie-nelson-veil.jpg')).default;
 
 const weddingPackages = packages.filter((p) => p.category === 'Wedding').sort((a, b) => a.order - b.order);
 const weddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('wedding'));
@@ -196,7 +196,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <div class="col-span-12 lg:col-span-5 aspect-[3/4] overflow-hidden reveal-left hover-zoom order-2 lg:order-1 mt-10 lg:mt-0">
           <Image
             src={weddingServiceImage}
-            alt="Toronto wedding couple portrait, full-day coverage by AD Photography"
+            alt="Josie and Nelson forehead to forehead under her veil at Guild Park, Toronto wedding photography by AD Photography"
             widths={[400, 600, 800]}
             sizes="(max-width: 1024px) 100vw, 42vw"
             class="w-full h-full object-cover parallax-img"
