@@ -17,7 +17,7 @@ import googleReviews from '../data/google-reviews.json';
 import heroImage from '../assets/images/hero/hero-main.jpg';
 
 // Signature Style pair
-import signatureLeft from '../assets/images/homepage/homepage-07.jpg';
+import signatureLeft from '../assets/images/homepage/homepage-07-josie-nelson-guild-park.jpg';
 import signatureRight from '../assets/images/portfolio/alex-aziz/05.jpg';
 
 // Investment
@@ -31,10 +31,10 @@ import recentPortraitRight from '../assets/images/homepage/homepage-03-roxanne-j
 // Next in the gallery (Josie + Nelson, Guild Park)
 import comingSoonImage from '../assets/images/homepage/homepage-08-josie-nelson-sendoff.jpg';
 
-// Contact CTA closing card — art-directed (portrait on mobile, Josie + Nelson on desktop).
+// Contact CTA closing card — art-directed (portrait on mobile, landscape on desktop).
 // Replaces an 11.3MB Bunny.net background video.
 import contactMobile from '../assets/images/homepage/homepage-06.jpg';
-import contactDesktop from '../assets/images/homepage/homepage-09-josie-nelson-contact.jpg';
+import contactDesktop from '../assets/images/portfolio/ayushi-parth/01.jpg';
 
 // Hero tagline, split into per character spans at build time.
 // Doing the split here instead of in the browser means the very first paint
@@ -343,15 +343,15 @@ const businessExtras = {
       <div class="col-span-12 md:col-span-7 gallery-frame hover-zoom reveal-left">
         <Image
           src={signatureLeft}
-          alt="Candid Toronto wedding photography, Ayushi and Parth"
+          alt="Candid Toronto wedding photography, Josie and Nelson walking across the lawn at Guild Park"
           class="parallax-img"
           widths={[640, 960, 1280]}
           sizes="(max-width: 640px) calc(100vw - 3rem), 34vh"
           quality={72}
         />
         <div class="gallery-caption text-on-surface">
-          <p class="font-medium">Ayushi + Parth</p>
-          <p class="text-on-surface-variant">Toronto</p>
+          <p class="font-medium">Josie + Nelson</p>
+          <p class="text-on-surface-variant">Guild Park, Scarborough</p>
         </div>
       </div>
       <div class="col-span-12 md:col-span-5 mt-3 md:mt-24 gallery-frame hover-zoom reveal-right stagger-2">
@@ -1040,12 +1040,6 @@ const businessExtras = {
       align-items: flex-end;
       padding-top: var(--spacing-section);
       padding-bottom: var(--spacing-block);
-    }
-
-    @media (min-width: 768px) {
-      .contact-cta img {
-        object-position: 50% 28%;
-      }
     }
 
     .contact-cta__scrim {
