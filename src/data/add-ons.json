@@ -8,7 +8,8 @@
       "Wedding"
     ],
     "max": 6,
-    "status": "locked"
+    "status": "locked",
+    "note": "Your gallery is not capped, so more hours simply means more photographs."
   },
   {
     "id": "wedding-overtime",
@@ -31,7 +32,8 @@
       "Civil Ceremony"
     ],
     "max": 6,
-    "status": "locked"
+    "status": "locked",
+    "note": "Your gallery is not capped, so more hours simply means more photographs."
   },
   {
     "id": "extra-hours-events",
@@ -42,7 +44,8 @@
       "Events"
     ],
     "max": 8,
-    "status": "locked"
+    "status": "locked",
+    "note": "Around 40 edited photographs for every hour of coverage."
   },
   {
     "id": "extra-hour-prewedding",
@@ -138,7 +141,8 @@
     "categories": [
       "*"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Measured from Toronto. Anywhere in the GTA is already included."
   },
   {
     "id": "travel-150-300",
@@ -148,7 +152,8 @@
     "categories": [
       "*"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Measured from Toronto. Anywhere in the GTA is already included."
   },
   {
     "id": "travel-beyond",
@@ -196,29 +201,6 @@
     "source": "locations.json"
   },
   {
-    "id": "fuji-film-sim",
-    "label": "Fujifilm film simulation",
-    "price": 51.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding",
-      "Civil Ceremony"
-    ],
-    "status": "locked"
-  },
-  {
-    "id": "vintage-canon",
-    "label": "Vintage Canon throwback candids",
-    "price": 76.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding",
-      "Events",
-      "Civil Ceremony"
-    ],
-    "status": "locked"
-  },
-  {
     "id": "film-35mm",
     "label": "A roll of 35mm film",
     "price": 76.25,
@@ -231,19 +213,6 @@
     "max": 6,
     "status": "proposed",
     "note": "Film is film. I cannot promise every frame comes out."
-  },
-  {
-    "id": "polaroid-24",
-    "label": "Polaroid pack, 24 frames",
-    "price": 151.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding",
-      "Pre-Wedding",
-      "Events",
-      "Civil Ceremony"
-    ],
-    "status": "proposed"
   },
   {
     "id": "instax-50",
@@ -320,22 +289,8 @@
       "Events",
       "Proposals"
     ],
-    "max": 20,
+    "max": 10,
     "status": "locked"
-  },
-  {
-    "id": "advanced-retouching",
-    "label": "Advanced retouching",
-    "price": 76.25,
-    "unit": "per-image",
-    "categories": [
-      "Headshots",
-      "Wedding",
-      "Pre-Wedding"
-    ],
-    "max": 20,
-    "status": "proposed",
-    "note": "Finer skin and detail work on a chosen image."
   },
   {
     "id": "object-removal",
@@ -426,7 +381,7 @@
     ],
     "max": 3,
     "status": "proposed",
-    "note": "Cut from your photographs. This is not video coverage."
+    "note": "Filmed on the day. This is real video, not something made from your photographs."
   },
   {
     "id": "raw-photos-wedding",
@@ -480,16 +435,6 @@
       "*"
     ],
     "max": 5,
-    "status": "proposed"
-  },
-  {
-    "id": "archive-retrieval",
-    "label": "Retrieving your gallery later",
-    "price": 101.25,
-    "unit": "flat",
-    "categories": [
-      "*"
-    ],
     "status": "proposed"
   },
   {
@@ -548,21 +493,9 @@
     "note": "For team bookings. Covers your website, LinkedIn and recruiting, for everyone photographed, with no time limit. One person booking their own headshot already has business use included."
   },
   {
-    "id": "hmua",
-    "label": "Hair and makeup, arranged for you",
-    "price": 151.25,
-    "unit": "at-cost",
-    "categories": [
-      "Headshots",
-      "Pre-Wedding"
-    ],
-    "status": "proposed",
-    "note": "Booked with an artist I trust and charged at their rate, from this amount."
-  },
-  {
     "id": "rain-date",
     "label": "Rain date protection",
-    "price": 51.25,
+    "price": 15.25,
     "unit": "flat",
     "categories": [
       "Pre-Wedding",

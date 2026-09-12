@@ -34,17 +34,12 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "fuji-film-sim",
-      "vintage-canon",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "hmua",
       "rain-date",
       "raw-video-sessions",
       "travel-50-150",
@@ -54,7 +49,6 @@
       "parking-tolls",
       "location-permit",
       "gallery-extension",
-      "archive-retrieval",
       "flights"
     ]
   },
@@ -87,17 +81,12 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "fuji-film-sim",
-      "vintage-canon",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "hmua",
       "rain-date",
       "raw-video-sessions",
       "travel-50-150",
@@ -106,8 +95,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -139,17 +127,12 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "fuji-film-sim",
-      "vintage-canon",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "hmua",
       "rain-date",
       "raw-video-sessions",
       "travel-50-150",
@@ -158,8 +141,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -191,17 +173,12 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "fuji-film-sim",
-      "vintage-canon",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "hmua",
       "rain-date",
       "raw-video-sessions",
       "travel-50-150",
@@ -210,8 +187,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -240,17 +216,12 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "fuji-film-sim",
-      "vintage-canon",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "hmua",
       "rain-date",
       "travel-50-150",
       "travel-150-300",
@@ -258,8 +229,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -288,17 +258,12 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "fuji-film-sim",
-      "vintage-canon",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "hmua",
       "rain-date",
       "travel-50-150",
       "travel-150-300",
@@ -306,8 +271,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -359,10 +323,7 @@
     "addOnIds": [
       "extra-hour-prewedding",
       "additional-location",
-      "vintage-canon",
-      "polaroid-24",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
@@ -373,8 +334,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -415,7 +375,6 @@
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "wedding-film",
@@ -425,7 +384,6 @@
       "post-wedding-slideshow",
       "vertical-reel",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "raw-photos-wedding",
       "raw-video-wedding",
@@ -436,8 +394,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -479,7 +436,6 @@
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "wedding-film",
@@ -489,7 +445,6 @@
       "post-wedding-slideshow",
       "vertical-reel",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "raw-photos-wedding",
       "raw-video-wedding",
@@ -500,8 +455,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -541,7 +495,6 @@
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "wedding-film",
@@ -550,7 +503,6 @@
       "post-wedding-slideshow",
       "vertical-reel",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "raw-photos-wedding",
       "raw-video-wedding",
@@ -561,8 +513,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -589,11 +540,9 @@
     },
     "addOnIds": [
       "extra-hours-events",
-      "vintage-canon",
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "extra-retouched",
       "object-removal",
       "vertical-reel",
@@ -606,8 +555,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -630,11 +578,9 @@
     "order": 6,
     "priceIsRate": true,
     "addOnIds": [
-      "vintage-canon",
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "extra-retouched",
       "object-removal",
       "vertical-reel",
@@ -647,8 +593,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -677,29 +622,23 @@
     },
     "addOnIds": [
       "extra-hours-civil",
-      "fuji-film-sim",
-      "vintage-canon",
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
       "parent-gallery",
-      "hmua",
       "travel-50-150",
       "travel-150-300",
       "travel-beyond",
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -728,29 +667,23 @@
     },
     "addOnIds": [
       "extra-hours-civil",
-      "fuji-film-sim",
-      "vintage-canon",
       "instax-50",
       "instax-100",
       "handheld-compact",
-      "polaroid-24",
       "film-35mm",
       "drone",
       "extra-retouched",
-      "advanced-retouching",
       "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
       "parent-gallery",
-      "hmua",
       "travel-50-150",
       "travel-150-300",
       "travel-beyond",
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -779,22 +712,19 @@
     },
     "addOnIds": [
       "extra-retouched",
-      "advanced-retouching",
       "background-replacement",
       "express-48h-headshots",
       "headshots-additional-person",
       "headshots-onsite",
       "headshots-extra-30",
       "headshots-team-licence",
-      "hmua",
       "travel-50-150",
       "travel-150-300",
       "travel-beyond",
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   },
   {
@@ -832,8 +762,7 @@
       "accommodation",
       "parking-tolls",
       "location-permit",
-      "gallery-extension",
-      "archive-retrieval"
+      "gallery-extension"
     ]
   }
 ]
