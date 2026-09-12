@@ -149,6 +149,11 @@ export function initConfigurator(): void {
     // selected states
     all('[data-cfg-category]').forEach((b) =>
       b.setAttribute('aria-pressed', String(b.dataset.cfgCategory === state.categoryId)));
+    const cards = form.querySelector<HTMLElement>('.cfg-cards');
+    if (cards) {
+      if (state.categoryId) cards.setAttribute('data-has-selection', '');
+      else cards.removeAttribute('data-has-selection');
+    }
     all('[data-step="question"]').forEach((sec) => {
       const qid = sec.dataset.qId!;
       sec.querySelectorAll<HTMLElement>('[data-cfg-answer]').forEach((b) =>
@@ -197,6 +202,10 @@ export function initConfigurator(): void {
     const showFrom = seq[state.step]?.dataset.step;
     totalEl.hidden = !state.packageId || !['packages', 'addons', 'details', 'ask', 'identity'].includes(showFrom ?? '');
     if (totalEl.hidden) return;
+
+    // The identity step has its own submit, so a "Continue" beside it is noise.
+    const nextBtn = q('[data-cfg-next]')!;
+    nextBtn.hidden = showFrom === 'identity';
 
     const pkg = pkgById.get(state.packageId!)!;
     const selections: Selection[] = Object.entries(state.addOns).map(([id, qty]) => ({ id, qty }));
@@ -290,6 +299,32 @@ export function initConfigurator(): void {
     if (box.checked) state.addOns[id] = 1; else delete state.addOns[id];
     render();
   });
+
+  // ─── the date picker ──────────────────────────────────────────────
+  // No altInput: that hides the real input and forces a real date, and this
+  // field has to keep accepting "not sure yet". allowInput lets them do either.
+  const dateInput = form.querySelector<HTMLInputElement>('[data-cfg-date]');
+  function initPicker(): void {
+    const fp = (window as unknown as { flatpickr?: (el: Element, o: unknown) => void }).flatpickr;
+    if (!fp || !dateInput || dateInput.dataset.fpBound) return;
+    dateInput.dataset.fpBound = 'true';
+    fp(dateInput, {
+      dateFormat: 'F j, Y',
+      minDate: 'today',
+      allowInput: true,
+      disableMobile: false,
+      monthSelectorType: 'static',
+    });
+  }
+  initPicker();
+  if (!dateInput?.dataset.fpBound) {
+    let tries = 0;
+    const timer = window.setInterval(() => {
+      tries += 1;
+      initPicker();
+      if (dateInput?.dataset.fpBound || tries > 30) window.clearInterval(timer);
+    }, 200);
+  }
 
   // permit hint from the typed location
   const locInput = form.querySelector<HTMLInputElement>('#cfg-location');

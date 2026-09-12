@@ -62,27 +62,75 @@ const offerCatalog = {
   description="Build your package and see the price as you go. Wedding, pre wedding, civil ceremony, proposal, celebration and headshot pricing for Toronto and the GTA, with every add on listed."
   canonicalUrl={`${site.url}/pricing/`}
   jsonLd={offerCatalog}
+  chrome={false}
   {/* HOLD: 34 of the 50 add-on prices are proposed, not approved. Keep this
       page out of search until Akash signs the prices off, then delete this
       line, drop the sitemap exclusion in astro.config.mjs, and add the nav
       entry in navigation.json. */}
   noIndex
 >
-  <section class="pricing-intro">
-    <div class="container-editorial">
-      <h1 class="text-display-lg measure-tight">What it costs.</h1>
-      <p class="text-body-lg pricing-intro__lead">
-        Answer a few questions and I will take you to the package that actually fits, with
-        everything you can add to it priced. No guessing, and no waiting on me to reply.
-      </p>
-    </div>
-  </section>
+  <!-- flatpickr · lazy-loaded off the critical path, copied from
+       free-engagement-session-toronto.astro. The date field stays a text input
+       on purpose: iOS Safari's native picker submitted today's date on "Done",
+       which is the bug the contact form's free-text date was written to avoid.
+       allowInput is on so "not sure yet" is still a valid answer. -->
+  <script is:inline>
+    (function () {
+      var FP_CSS = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css';
+      var FP_JS  = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13';
+      var loaded = false;
+      function load() {
+        if (loaded) return; loaded = true;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet'; l.href = FP_CSS;
+        document.head.appendChild(l);
+        var s = document.createElement('script');
+        s.src = FP_JS; s.async = true;
+        document.head.appendChild(s);
+      }
+      var onIdle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1200); };
+      onIdle(load);
+      document.addEventListener('focusin', function (e) {
+        var t = e.target;
+        if (t && t.matches && t.matches('[data-cfg-date]')) load();
+      }, { passive: true });
+    })();
+  </script>
+  <style is:global>
+    .flatpickr-calendar {
+      border-radius: 0 !important;
+      border: 1px solid var(--color-surface-container, #e4e2e1) !important;
+      box-shadow: 0 8px 32px rgba(26, 26, 24, 0.08) !important;
+      font-family: var(--font-sans, 'Inter', system-ui, sans-serif) !important;
+      background: #ffffff !important;
+    }
+    .flatpickr-day,
+    .flatpickr-day.today,
+    .flatpickr-day.selected { border-radius: 0 !important; }
+    .flatpickr-day.selected,
+    .flatpickr-day.selected:hover {
+      background: #1a1a18 !important;
+      border-color: #1a1a18 !important;
+      color: #faf9f6 !important;
+    }
+    .flatpickr-day.today { border-color: #5f5e5e !important; }
+    .flatpickr-day:hover { background: #f4f4f0 !important; }
+    .flatpickr-months .flatpickr-month,
+    .flatpickr-weekdays { background: #ffffff !important; color: #1a1a18 !important; }
+    .flatpickr-current-month .flatpickr-monthDropdown-months,
+    .flatpickr-current-month input.cur-year { color: #1a1a18 !important; font-weight: 500 !important; }
+    .flatpickr-weekday {
+      color: #5c605c !important; font-weight: 500 !important;
+      text-transform: uppercase !important; letter-spacing: 0.08em !important;
+      font-size: 0.6875rem !important;
+    }
+  </style>
 
-  <section class="pricing-body bg-surface-dim">
-    <div class="container-editorial">
-      <Configurator />
-    </div>
-  </section>
+  {/* The h1 stays for search and screen readers, but it is not on screen:
+      the flow is the page, and a headline above it is a distraction. Each
+      step's own question carries the visual hierarchy. */}
+  <h1 class="cfg-h1">Photography pricing in Toronto. Build your package.</h1>
+  <Configurator />
 
   <noscript>
     <section class="pricing-noscript">
@@ -97,17 +145,15 @@ const offerCatalog = {
 </BaseLayout>
 
 <style>
-  .pricing-intro { padding-block: var(--spacing-section) var(--spacing-block); }
-  .pricing-intro__lead {
-    margin-top: var(--spacing-element);
-    max-width: 46ch;
-    color: var(--color-on-surface-variant);
+  .cfg-h1 {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
-  .pricing-body { padding-block: var(--spacing-block) var(--spacing-section); }
   .pricing-noscript { padding-block: var(--spacing-block); }
-  /* mobile hard floor: nothing may push the page sideways */
   :global(html), :global(body) { overflow-x: clip; }
-  .pricing-intro h1 { overflow-wrap: anywhere; min-width: 0; }
+  /* The flow owns the viewport. Only the step body scrolls, never the page.
+     Relaxed when scripts are off, so the static price list stays readable. */
+  :global(body:has(.cfg--shell)) { overflow: hidden; }
 </style>
 
 <script>

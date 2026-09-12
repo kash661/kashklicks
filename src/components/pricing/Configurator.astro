@@ -76,7 +76,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
 }
 ---
 
-<form class="cfg" data-cfg action="/book/intake" method="POST" novalidate aria-label="Build your package">
+<form class="cfg cfg--shell" data-cfg action="/book/intake" method="POST" novalidate aria-label="Build your package">
   <div class="cfg-hp" aria-hidden="true">
     <label for="cfg-gotcha">Leave this empty</label>
     <input type="text" id="cfg-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
@@ -94,6 +94,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
   <input type="hidden" name="answers_readable" data-cfg-field="answers_readable" />
   <input type="hidden" name="source_page" data-cfg-field="source_page" />
 
+  <div class="cfg-top">
   <div class="cfg-head" data-cfg-nav hidden>
     <button type="button" class="cfg-back" data-cfg-back>
       <span class="cfg-back__arrow" aria-hidden="true">&larr;</span> Back
@@ -101,6 +102,10 @@ function priceParts(a: typeof ADD_ONS[number]) {
     <span class="cfg-count" data-cfg-count aria-live="polite"></span>
   </div>
   <div class="cfg-rule" data-cfg-rule aria-hidden="true"><span data-cfg-rule-fill></span></div>
+  </div>
+
+  <div class="cfg-body">
+  <div class="cfg-flow">
 
   {/* ── 1 · what are you planning ───────────────────────────────── */}
   <section class="cfg-step" data-step="category">
@@ -260,7 +265,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
         <p class="cfg-field">
           <label for="cfg-date">Your date</label>
           <input type="text" id="cfg-date" name="event_date" autocomplete="off"
-                 placeholder="June 2027, or not sure yet" />
+                 data-cfg-date placeholder="Pick a date, or type not sure yet" />
           <span class="cfg-err" data-cfg-err="event_date" hidden></span>
         </p>
         <p class="cfg-field">
@@ -322,25 +327,43 @@ function priceParts(a: typeof ADD_ONS[number]) {
     <p class="cfg-hint text-body-md">Or leave it with me and I will come back to you by email.</p>
   </section>
 
+  </div>
+
   <aside class="cfg-total" data-cfg-total hidden aria-label="Your running total">
     <p class="cfg-total__pkg" data-cfg-total-pkg></p>
     <p class="cfg-total__sum" data-cfg-total-sum aria-live="polite"></p>
     <p class="cfg-total__note" data-cfg-total-note></p>
     <button type="button" class="cfg-btn cfg-next" data-cfg-next>Continue</button>
   </aside>
+  </div>
 </form>
 
 <script type="application/json" id="cfg-data" set:html={JSON.stringify({ pkgIndex, addOnIndex, permitIndex, flow })} />
 
 <style>
-  .cfg { position: relative; }
+  /* The flow owns the viewport. The page never scrolls; the step body does.
+     With scripts off every step is stacked inside that same scroll area, so
+     the static price list still reads top to bottom. */
+  .cfg--shell {
+    position: fixed; inset: 0; z-index: 5;
+    display: flex; flex-direction: column;
+    background: var(--color-background);
+    padding-inline: clamp(1.125rem, 5vw, 4rem);
+  }
+  .cfg-top { flex: 0 0 auto; padding-top: clamp(1.125rem, 3vw, 2.25rem); }
+  .cfg-body {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto;
+    overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .cfg-flow { min-width: 0; }
   .cfg-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .cfg-sr {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
   .cfg-fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
-  .cfg-step { padding-block: var(--spacing-block); }
+  .cfg-step { padding-block: clamp(1.5rem, 4vw, 3rem); }
   .cfg-step[hidden] { display: none; }
 
   .cfg-ask { color: var(--color-on-surface); overflow-wrap: anywhere; min-width: 0; margin: 0 0 1rem; }
@@ -400,9 +423,12 @@ function priceParts(a: typeof ADD_ONS[number]) {
     color: var(--color-on-surface-variant);
   }
   .cfg-card:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 6px; }
-  .cfg-card[aria-pressed='true'] .cfg-card__img { filter: none; }
+  /* Selection reads by the others receding, not by a border round the winner. */
+  .cfg-cards[data-has-selection] .cfg-card { opacity: 0.4; }
+  .cfg-cards[data-has-selection] .cfg-card[aria-pressed='true'] { opacity: 1; }
+  .cfg-card { transition: opacity var(--duration-hover) var(--ease-gallery); }
+  .cfg-cards[data-has-selection] .cfg-card:hover { opacity: 0.75; }
   .cfg-card[aria-pressed='true'] .cfg-card__label { font-style: italic; }
-  .cfg-card[aria-pressed='true'] .cfg-card__frame { outline: 1px solid var(--color-on-surface); outline-offset: 6px; }
 
   /* ── 2 · options ───────────────────────────────────────────────── */
   .cfg-options { display: grid; gap: 0; }
@@ -629,12 +655,12 @@ function priceParts(a: typeof ADD_ONS[number]) {
 
   /* ══ MOBILE (below 768px) ════════════════════════════════════════ */
   @media (max-width: 767px) {
-    .cfg { padding-bottom: 8.5rem; }
     .cfg-total {
-      position: fixed; inset: auto 0 0 0; z-index: 20;
+      position: sticky; bottom: 0; z-index: 10;
       display: grid; grid-template-columns: minmax(0, 1fr) auto;
       align-items: center; column-gap: 1rem;
-      padding: 1rem clamp(1rem, 5vw, 1.5rem);
+      margin-inline: calc(clamp(1.125rem, 5vw, 4rem) * -1);
+      padding: 1rem clamp(1.125rem, 5vw, 4rem);
       background: var(--color-surface-dark); color: var(--color-on-dark);
     }
     .cfg-total__pkg { color: var(--color-on-dark-variant); }
@@ -647,21 +673,19 @@ function priceParts(a: typeof ADD_ONS[number]) {
 
   /* ══ DESKTOP (768px and up) ══════════════════════════════════════ */
   @media (min-width: 768px) {
-    .cfg { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 1.5rem; }
-    .cfg-head, .cfg-rule, .cfg-step { grid-column: 1 / -1; }
+    .cfg-body { display: grid; grid-template-columns: minmax(0, 1fr) 21rem; column-gap: clamp(2rem, 5vw, 4.5rem); }
     .cfg-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .cfg-cards .cfg-card:nth-child(3n + 2) { margin-top: 3rem; }
+    .cfg-cards .cfg-card:nth-child(3n + 2) { margin-top: 2.5rem; }
     .cfg-step[data-step='category'] .cfg-ask { max-width: 24ch; }
     .cfg-step[data-step='question'] .cfg-fieldset {
       display: grid; grid-template-columns: 5fr 7fr; column-gap: 3.5rem; align-items: start;
     }
     .cfg-step[data-step='question'] .cfg-ask, .cfg-step[data-step='question'] .cfg-hint { max-width: 22ch; }
     .cfg-packages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
-    .cfg-pkg { padding: 3rem 2rem; }
+    .cfg-pkg { padding: 2.5rem 2rem; }
     .cfg-pkg--recommended { grid-column: 1 / -1; }
-    .cfg-step[data-step='addons'] { grid-column: 1 / 9; }
     .cfg-total {
-      grid-column: 9 / -1; grid-row: 3; position: sticky; top: 6.5rem; align-self: start;
+      position: sticky; top: 0; align-self: start;
       padding: 1.75rem; background: var(--color-surface);
     }
     .cfg-total .cfg-next { width: 100%; margin-top: 1.25rem; }

@@ -89,7 +89,7 @@
   {
     "id": "drone",
     "label": "Drone and aerial frames",
-    "price": 251.25,
+    "price": 76.25,
     "unit": "flat",
     "categories": [
       "Wedding",
@@ -112,9 +112,9 @@
   },
   {
     "id": "extra-retouched",
-    "label": "An extra retouched image",
+    "label": "Five extra retouched images",
     "price": 26.25,
-    "unit": "per-image",
+    "unit": "per-item",
     "categories": [
       "Headshots",
       "Wedding",
@@ -125,7 +125,7 @@
     ],
     "max": 10,
     "status": "locked",
-    "note": "A fully retouched image on top of the ones already in your package."
+    "note": "Five fully retouched images on top of the ones already in your package. Bought five at a time."
   },
   {
     "id": "priority-delivery-wedding",
