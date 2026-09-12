@@ -36,16 +36,23 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 const headshotsImage = (await import('../../assets/images/homepage/headshots-service-detail.jpg')).default;
-const PORTFOLIO_CAT: Record<string, string> = {
-  wedding: 'wedding', prewedding: 'pre-wedding', civil: 'civil-ceremony',
-  proposal: 'proposals', celebration: 'celebrations',
+const celebrationsImage = (await import('../../assets/images/homepage/celebrations-cta.jpg')).default;
+
+// Akash picked these by hand. Keyed on the portfolio slug rather than the
+// category, because Josie + Nelson is filed under pre-wedding but is the image
+// he wants on the wedding card.
+const COVER_SLUG: Record<string, string> = {
+  wedding: 'josie-nelson',
+  prewedding: 'ayushi-parth',
+  civil: 'nidhi-derek',
+  proposal: 'ashley-donald',
 };
 function coverFor(catId: string): ImageMetadata | undefined {
   if (catId === 'headshots') return headshotsImage;
-  const pool = (portfolio as Array<Record<string, any>>)
-    .filter((p) => p.category === PORTFOLIO_CAT[catId] && p.coverImage);
-  const pick = pool.find((p) => p.featured) ?? pool[0];
-  return pick ? portfolioImages[`/src/assets/images/portfolio/${pick.coverImage}`]?.default : undefined;
+  if (catId === 'celebration') return celebrationsImage;
+  const slug = COVER_SLUG[catId];
+  const entry = (portfolio as Array<Record<string, any>>).find((p) => p.slug === slug);
+  return entry ? portfolioImages[`/src/assets/images/portfolio/${entry.coverImage}`]?.default : undefined;
 }
 
 const permitIndex = (locationsData as Array<Record<string, any>>)
@@ -308,7 +315,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
           <input type="text" id="cfg-name" name="name" autocomplete="name" />
           <span class="cfg-err" data-cfg-err="name" hidden></span>
         </p>
-        <p class="cfg-field">
+        <p class="cfg-field" data-cfg-partner>
           <label for="cfg-partner">Your partner's name</label>
           <input type="text" id="cfg-partner" name="partner_name" autocomplete="off" />
         </p>
@@ -322,7 +329,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
           {/* Values match ContactForm.astro exactly, so the Apps Script maps
               this straight into the sheet's Referral column. */}
           <span class="cfg-select">
-            <select id="cfg-referral" name="referral">
+            <select id="cfg-referral" name="referral" required aria-required="true">
               <option value="" selected>Select one</option>
               <option value="instagram">Instagram</option>
               <option value="google">Google search</option>
@@ -333,6 +340,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
               <option value="other">Somewhere else</option>
             </select>
           </span>
+          <span class="cfg-err" data-cfg-err="referral" hidden></span>
         </p>
       </div>
       <button type="submit" class="cfg-btn cfg-submit" data-cfg-submit>Send this to Kash</button>
@@ -376,8 +384,10 @@ function priceParts(a: typeof ADD_ONS[number]) {
   .cfg-body {
     flex: 1 1 auto; min-height: 0; overflow-y: auto;
     overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    /* Scrollbar hidden by request. It still scrolls; the bar is just not drawn. */
+    scrollbar-width: none; -ms-overflow-style: none;
   }
+  .cfg-body::-webkit-scrollbar { width: 0; height: 0; display: none; }
   .cfg-flow { min-width: 0; }
   .cfg-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .cfg-sr {
@@ -656,8 +666,9 @@ function priceParts(a: typeof ADD_ONS[number]) {
     border-bottom-color: var(--color-on-surface);
     padding-bottom: calc(0.75rem - 1px);
   }
-  .cfg-field[data-invalid] input, .cfg-field[data-invalid] textarea,
-  .cfg-field[data-invalid] input:focus, .cfg-field[data-invalid] textarea:focus {
+  .cfg-field[data-invalid] input, .cfg-field[data-invalid] textarea, .cfg-field[data-invalid] select,
+  .cfg-field[data-invalid] input:focus, .cfg-field[data-invalid] textarea:focus,
+  .cfg-field[data-invalid] select:focus {
     border-bottom-color: var(--color-error); border-bottom-width: 2px;
   }
   .cfg-select { position: relative; display: block; }
@@ -699,24 +710,34 @@ function priceParts(a: typeof ADD_ONS[number]) {
     color: var(--color-on-surface);
   }
   .cfg-summary__list { list-style: none; padding: 0; margin: 0; }
-  .cfg-summary__list li {
-    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem;
+  /* :global because these rows are built in JS and so never get the
+     data-astro-cid scope attribute that scoped selectors match on. */
+  .cfg-summary__list :global(li) {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 1rem;
     font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.5;
-    padding-block: 0.55rem;
+    padding-block: 0.6rem;
     border-bottom: 1px solid var(--color-surface-container);
   }
-  .cfg-summary__list li span:last-child {
+  .cfg-summary__list :global(li span:last-child) {
     font-variant-numeric: tabular-nums; color: var(--color-on-surface-variant);
-    white-space: nowrap;
+    white-space: nowrap; text-align: right;
   }
-  .cfg-summary__list li[data-answer] {
-    color: var(--color-on-surface-variant); font-size: 0.8125rem;
+  /* An answer row is a question and its answer, and questions are long, so
+     they stack rather than fighting for one line. */
+  .cfg-summary__list :global(li[data-answer]) { grid-template-columns: minmax(0, 1fr); }
+  .cfg-summary__list :global(li[data-answer] span:first-child) {
+    font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+  }
+  .cfg-summary__list :global(li[data-answer] span:last-child) {
+    text-align: left; white-space: normal; color: var(--color-on-surface);
   }
   .cfg-summary__total {
     display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
     font-family: var(--font-sans); font-weight: 500; font-size: 1.25rem;
     font-variant-numeric: tabular-nums; margin: 1rem 0 0;
   }
+  .cfg-summary__total :global(span) { white-space: nowrap; }
   .cfg-summary__note {
     font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.6;
     color: var(--color-on-surface-muted); margin: 0.5rem 0 0;
@@ -763,7 +784,19 @@ function priceParts(a: typeof ADD_ONS[number]) {
 
   /* ══ DESKTOP (768px and up) ══════════════════════════════════════ */
   @media (min-width: 768px) {
-    .cfg-body { display: grid; grid-template-columns: minmax(0, 1fr) 21rem; column-gap: clamp(2rem, 5vw, 4.5rem); }
+    .cfg-body {
+      display: grid; grid-template-columns: minmax(0, 1fr) 20rem;
+      column-gap: clamp(2rem, 5vw, 4rem);
+      max-width: 78rem; margin-inline: auto; width: 100%;
+    }
+    /* No rail on this step, so the flow takes the whole width and the narrow
+       steps centre themselves rather than leaving a gap to the right. */
+    .cfg-body:has(.cfg-total[hidden]) { grid-template-columns: minmax(0, 1fr); max-width: 64rem; }
+    /* The steps that are just fields read as a centred block, heading included. */
+    .cfg-step[data-step='details'] .cfg-fieldset,
+    .cfg-step[data-step='ask'] .cfg-fieldset,
+    .cfg-step[data-step='identity'] .cfg-fieldset { max-width: 38rem; margin-inline: auto; }
+    .cfg-step[data-step='done'] { max-width: 38rem; margin-inline: auto; }
     .cfg-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .cfg-step[data-step='category'] .cfg-ask { max-width: 24ch; }
     .cfg-step[data-step='question'] .cfg-fieldset {

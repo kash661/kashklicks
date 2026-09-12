@@ -15,7 +15,10 @@ const js = readFileSync('src/scripts/configurator.ts', 'utf8');
 const html = readFileSync('dist/pricing/index.html', 'utf8');
 
 // Selectors that only ever exist once the script has set them at runtime.
-const RUNTIME_ONLY = new Set(['[data-invalid] input']);
+const RUNTIME_ONLY = new Set([
+  '[data-invalid] input',
+  '[data-invalid] input, [data-invalid] select',
+]);
 
 const sels = new Set();
 const add = (re, g = 1) => { for (const m of js.matchAll(re)) sels.add(m[g]); };

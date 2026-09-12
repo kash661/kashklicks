@@ -187,6 +187,19 @@ export function initConfigurator(): void {
       }
     });
 
+    // A celebration is a party, not a couple, so there is no partner to name.
+    // Add 'headshots' here if a headshot should drop it too.
+    const NO_PARTNER = new Set(['celebration']);
+    const partner = q('[data-cfg-partner]');
+    if (partner) {
+      const hide = NO_PARTNER.has(state.categoryId ?? '');
+      partner.hidden = hide;
+      if (hide) {
+        const input = partner.querySelector<HTMLInputElement>('#cfg-partner');
+        if (input) input.value = '';   // never submit a stale value from a hidden field
+      }
+    }
+
     renderTotal(seq);
     renderSummary(active?.dataset.step);
     if (changed) { lastActive = active; animateIn(active); }
@@ -261,7 +274,9 @@ export function initConfigurator(): void {
   function renderTotal(seq: HTMLElement[]): void {
     const totalEl = q('[data-cfg-total]')!;
     const showFrom = seq[state.step]?.dataset.step;
-    totalEl.hidden = !state.packageId || !['packages', 'addons', 'details', 'ask', 'identity'].includes(showFrom ?? '');
+    // 'identity' is deliberately absent: that step shows the full recap, and a
+    // rail repeating the package and total beside it is pure duplication.
+    totalEl.hidden = !state.packageId || !['packages', 'addons', 'details', 'ask'].includes(showFrom ?? '');
     if (totalEl.hidden) return;
 
     // The identity step has its own submit, so a "Continue" beside it is noise.
@@ -415,10 +430,13 @@ export function initConfigurator(): void {
 
     const name = (form.querySelector<HTMLInputElement>('#cfg-name')!).value.trim();
     const email = (form.querySelector<HTMLInputElement>('#cfg-email')!).value.trim();
+    const referral = (form.querySelector<HTMLSelectElement>('#cfg-referral')!).value;
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     fieldErr('name', name ? null : 'I need a name to know who I am talking to.');
-    fieldErr('email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? null : 'That email does not look right.');
-    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      form.querySelector<HTMLElement>('[data-invalid] input')?.focus();
+    fieldErr('email', emailOk ? null : 'That email does not look right.');
+    fieldErr('referral', referral ? null : 'Let me know how you found me.');
+    if (!name || !emailOk || !referral) {
+      form.querySelector<HTMLElement>('[data-invalid] input, [data-invalid] select')?.focus();
       return;
     }
     if ((form.querySelector<HTMLInputElement>('#cfg-gotcha')!).value.trim()) return;
