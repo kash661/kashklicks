@@ -74,6 +74,14 @@ export function initConfigurator(): void {
     if (saved) state = { ...state, ...JSON.parse(saved) };
   } catch { /* private mode */ }
 
+  // Drop anything the saved state remembers that no longer exists. The add-on
+  // catalogue and the packages change, and a visitor's stored selection from an
+  // older version must not resurrect a deleted add-on or a deleted package.
+  if (state.packageId && !pkgById.has(state.packageId)) state.packageId = undefined;
+  for (const id of Object.keys(state.addOns)) {
+    if (!addOnById.has(id)) delete state.addOns[id];
+  }
+
   const save = () => {
     try { localStorage.setItem(STORE, JSON.stringify(state)); } catch { /* private mode */ }
   };
@@ -165,7 +173,7 @@ export function initConfigurator(): void {
     all('.cfg-addon').forEach((el) => {
       const id = el.dataset.addon!;
       el.hidden = !offered.has(id);
-      const box = el.querySelector<HTMLInputElement>('.cfg-addon__box')!;
+      const box = el.querySelector<HTMLInputElement>('.cfg-addon__input')!;
       const on = state.addOns[id] !== undefined;
       box.checked = on;
       const wrap = el.querySelector<HTMLElement>('[data-cfg-qty-wrap]');
@@ -276,7 +284,7 @@ export function initConfigurator(): void {
   });
 
   form.addEventListener('change', (e) => {
-    const box = (e.target as HTMLElement).closest<HTMLInputElement>('.cfg-addon__box');
+    const box = (e.target as HTMLElement).closest<HTMLInputElement>('.cfg-addon__input');
     if (!box) return;
     const id = box.closest<HTMLElement>('.cfg-addon')!.dataset.addon!;
     if (box.checked) state.addOns[id] = 1; else delete state.addOns[id];
