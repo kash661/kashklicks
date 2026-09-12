@@ -78,7 +78,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Two hours at the rehearsal dinner the night before, delivered in the same gallery as the day itself."
   },
   {
     "id": "additional-ceremony",
@@ -88,7 +89,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "A separate ceremony or event on its own day, with up to four hours of coverage."
   },
   {
     "id": "second-day",
@@ -98,7 +100,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "A second full day of coverage, for weddings that run across more than one."
   },
   {
     "id": "venue-walkthrough",
@@ -108,7 +111,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "I walk the venue with you before the day, so the timings and the light are worked out in advance rather than on the morning."
   },
   {
     "id": "additional-location",
@@ -213,7 +217,8 @@
       "Events",
       "Civil Ceremony"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "Instant prints handed to your guests during the day, up to fifty of them to take home."
   },
   {
     "id": "instax-100",
@@ -225,7 +230,8 @@
       "Events",
       "Civil Ceremony"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "The same instant prints for a bigger room, up to a hundred of them."
   },
   {
     "id": "handheld-compact",
@@ -279,7 +285,8 @@
       "Proposals"
     ],
     "max": 10,
-    "status": "locked"
+    "status": "locked",
+    "note": "A fully retouched image on top of the ones already in your package."
   },
   {
     "id": "object-removal",
@@ -305,7 +312,8 @@
       "Headshots"
     ],
     "max": 20,
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Your headshot placed on a different background, for when the room you were in does not suit where the photo is going."
   },
   {
     "id": "priority-delivery-wedding",
@@ -315,7 +323,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "Your full gallery in two to three weeks rather than the usual wait."
   },
   {
     "id": "one-week-gallery",
@@ -325,7 +334,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Your full gallery in one week. I only take a limited number of these, so it depends on the date."
   },
   {
     "id": "express-48h-headshots",
@@ -335,7 +345,8 @@
     "categories": [
       "Headshots"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "Your retouched headshots back within forty eight hours."
   },
   {
     "id": "same-day-sneak-peeks",
@@ -345,7 +356,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "A few edited frames sent the same night, so you have something to share before the gallery is ready."
   },
   {
     "id": "post-wedding-slideshow",
@@ -355,7 +367,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Your favourite frames set to music as a slideshow you can play at home or send to family."
   },
   {
     "id": "vertical-reel",
@@ -379,7 +392,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled. Most people do not want these, so ask me first."
   },
   {
     "id": "raw-video-wedding",
@@ -389,7 +403,8 @@
     "categories": [
       "Wedding"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "The unedited footage exactly as it was recorded, alongside your edited film."
   },
   {
     "id": "raw-photos-sessions",
@@ -402,7 +417,8 @@
       "Events",
       "Proposals"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
   },
   {
     "id": "raw-video-sessions",
@@ -412,7 +428,8 @@
     "categories": [
       "Pre-Wedding"
     ],
-    "status": "locked"
+    "status": "locked",
+    "note": "The unedited footage exactly as it was recorded, alongside your edited film."
   },
   {
     "id": "gallery-extension",
@@ -423,7 +440,8 @@
       "*"
     ],
     "max": 5,
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Your gallery stays open another year past the usual ninety days."
   },
   {
     "id": "parent-gallery",
@@ -447,7 +465,8 @@
       "Headshots"
     ],
     "max": 40,
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Another person photographed in the same session, with their own retouched images."
   },
   {
     "id": "headshots-onsite",
@@ -457,7 +476,8 @@
     "categories": [
       "Headshots"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "I come to your office rather than us meeting somewhere else."
   },
   {
     "id": "headshots-extra-30",
@@ -467,7 +487,8 @@
     "categories": [
       "Headshots"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Thirty more minutes in the session, for more looks or more people."
   },
   {
     "id": "headshots-team-licence",

@@ -2,54 +2,81 @@
 /**
  * Hallmark · macrostructure: Workbench · genre: editorial
  * theme: locked (Digital Curator, defers to .claude/CLAUDE.md)
- * enrichment: none (typography only) · motion: 2 primitives (reveal, total opacity)
+ * enrichment: client photography (real category covers from portfolio.json)
+ * motion: 2 primitives (step reveal + stagger, total opacity)
+ * pre-emit critique: P5 H5 E4 S5 R4 V4
  *
  * The guided pricing configurator. Progressive enhancement: every category,
- * package, question and add-on is server rendered into the DOM. With no JS the
- * page reads as a complete stacked price list. The script hides all but the
- * active step and totals the selection.
+ * package, question and add-on is server rendered. With no JS the page reads
+ * as a complete stacked price list. The script hides all but the active step.
  *
- * One DOM tree, not two. The project's mobile/desktop split rule is about
- * layout, and duplicating form controls would give every field two elements
- * with the same name, which Apps Script's e.parameter collapses to the first
- * value. Layout is split in the scoped CSS below instead.
+ * One DOM tree, not two. Duplicating form controls for a mobile tree would
+ * give every field two elements with the same name, which Apps Script's
+ * e.parameter collapses to the first value. Layout splits in the CSS.
+ *
+ * Visual language copied from the shipped .pricing-card system in global.css
+ * (generous padding, serif italic badge, hairline borders via color-mix,
+ * small caps eyebrow) so this page reads as part of the site.
  */
+import { Image } from 'astro:assets';
 import packagesData from '../../data/packages.json';
 import flow from '../../data/pricing-flow.json';
-import { ADD_ONS, formatAddOn, isCountable, basePrice, priceQualifier } from '../../lib/addons';
+import { ADD_ONS, isCountable, basePrice, priceQualifier } from '../../lib/addons';
 import BookingLink from '../ui/BookingLink.astro';
 import locationsData from '../../data/locations.json';
+import portfolio from '../../data/portfolio.json';
 
 const packages = packagesData as Array<Record<string, any>>;
 const money = (n: number) =>
   '$' + n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// Compact index for the client. Descriptions and highlights stay in the DOM.
+// Real client work, one cover per category. Featured gallery where there is one.
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/portfolio/*.jpg',
+  { eager: true }
+);
+const headshotsImage = (await import('../../assets/images/homepage/headshots-service-detail.jpg')).default;
+const PORTFOLIO_CAT: Record<string, string> = {
+  wedding: 'wedding', prewedding: 'pre-wedding', civil: 'civil-ceremony',
+  proposal: 'proposals', celebration: 'celebrations',
+};
+function coverFor(catId: string): ImageMetadata | undefined {
+  if (catId === 'headshots') return headshotsImage;
+  const pool = (portfolio as Array<Record<string, any>>)
+    .filter((p) => p.category === PORTFOLIO_CAT[catId] && p.coverImage);
+  const pick = pool.find((p) => p.featured) ?? pool[0];
+  return pick ? portfolioImages[`/src/assets/images/portfolio/${pick.coverImage}`]?.default : undefined;
+}
+
+const permitIndex = (locationsData as Array<Record<string, any>>)
+  .filter((l) => l.permitNeeded)
+  .map((l) => ({ name: l.name, fee: l.permitFee ?? null }));
+
 const pkgIndex = packages.map((p) => ({
   id: p.id, category: p.category, price: basePrice(p), qualifier: priceQualifier(p),
   film: !!p.film, regions: p.regions ?? null, addOnIds: p.addOnIds ?? [],
   hours: p.hours?.included ?? null, name: p.name,
 }));
-// Compact permit index. The full locations file is 58KB, so only what the
-// permit lookup needs is shipped: a name to match on and the fee to show.
-const permitIndex = (locationsData as Array<Record<string, any>>)
-  .filter((l) => l.permitNeeded)
-  .map((l) => ({ name: l.name, fee: l.permitFee ?? null }));
-
 const addOnIndex = ADD_ONS.map((a) => ({
-  id: a.id, price: a.price, unit: a.unit, max: a.max ?? null, countable: isCountable(a), label: a.label,
+  id: a.id, price: a.price, unit: a.unit, max: a.max ?? null,
+  countable: isCountable(a), label: a.label,
 }));
+
+/** Price as two parts, so the number can be styled apart from its qualifier. */
+function priceParts(a: typeof ADD_ONS[number]) {
+  if (a.unit === 'quote') return { num: null, suffix: 'Quoted for you' };
+  if (a.unit === 'at-cost') return { num: a.price != null ? money(a.price) : null, suffix: a.price != null ? 'at cost, from' : 'At cost' };
+  if (a.unit === 'included') return { num: null, suffix: 'Included' };
+  const num = money(a.price as number);
+  const suffix =
+    a.unit === 'per-hour' ? 'per hour' : a.unit === 'per-person' ? 'per person'
+    : a.unit === 'per-year' ? 'per year' : a.unit === 'deposit' ? 'refundable deposit'
+    : ['per-image', 'per-item', 'per-roll'].includes(a.unit) ? 'each' : '';
+  return { num, suffix };
+}
 ---
 
-<form
-  class="cfg"
-  data-cfg
-  action="/book/intake"
-  method="POST"
-  novalidate
-  aria-label="Build your package"
->
-  {/* honeypot, matching the existing forms */}
+<form class="cfg" data-cfg action="/book/intake" method="POST" novalidate aria-label="Build your package">
   <div class="cfg-hp" aria-hidden="true">
     <label for="cfg-gotcha">Leave this empty</label>
     <input type="text" id="cfg-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
@@ -67,30 +94,46 @@ const addOnIndex = ADD_ONS.map((a) => ({
   <input type="hidden" name="answers_readable" data-cfg-field="answers_readable" />
   <input type="hidden" name="source_page" data-cfg-field="source_page" />
 
-  <p class="cfg-nav" data-cfg-nav hidden>
-    <button type="button" class="cfg-back" data-cfg-back>Back</button>
+  <div class="cfg-head" data-cfg-nav hidden>
+    <button type="button" class="cfg-back" data-cfg-back>
+      <span class="cfg-back__arrow" aria-hidden="true">&larr;</span> Back
+    </button>
     <span class="cfg-count" data-cfg-count aria-live="polite"></span>
-  </p>
+  </div>
   <div class="cfg-rule" data-cfg-rule aria-hidden="true"><span data-cfg-rule-fill></span></div>
 
   {/* ── 1 · what are you planning ───────────────────────────────── */}
   <section class="cfg-step" data-step="category">
     <fieldset class="cfg-fieldset">
       <legend class="cfg-ask text-display-md measure-tight">What are you planning?</legend>
-      <div class="cfg-options cfg-options--cards">
-        {flow.categories.map((c) => (
-          <button
-            type="button" class="cfg-opt" data-cfg-category={c.id} data-category={c.category}
-          >
-            <span class="cfg-opt__label text-body-lg">{c.label}</span>
-            <span class="cfg-opt__hint">{c.blurb}</span>
-          </button>
-        ))}
+      <div class="cfg-cards">
+        {flow.categories.map((c, i) => {
+          const img = coverFor(c.id);
+          return (
+            <button
+              type="button"
+              class:list={['cfg-card', 'reveal', `stagger-${(i % 5) + 1}`]}
+              data-cfg-category={c.id}
+              data-category={c.category}
+            >
+              {img && (
+                <span class="cfg-card__frame">
+                  <Image src={img} alt="" class="cfg-card__img" widths={[400, 700]}
+                         sizes="(min-width: 768px) 32vw, 92vw" quality={78} loading={i < 2 ? 'eager' : 'lazy'} />
+                </span>
+              )}
+              <span class="cfg-card__body">
+                <span class="cfg-card__label text-heading-md">{c.label}</span>
+                <span class="cfg-card__blurb">{c.blurb}</span>
+              </span>
+            </button>
+          );
+        })}
       </div>
     </fieldset>
   </section>
 
-  {/* ── 2 · the narrowing questions, all categories rendered, JS reveals one ── */}
+  {/* ── 2 · the narrowing questions ─────────────────────────────── */}
   {Object.entries(flow.questions).map(([catId, qs]) => (qs as any[]).map((q, qi) => (
     <section class="cfg-step" data-step="question" data-q-category={catId} data-q-id={q.id} data-q-index={qi}>
       <fieldset class="cfg-fieldset">
@@ -99,12 +142,16 @@ const addOnIndex = ADD_ONS.map((a) => ({
         <div class="cfg-options">
           {(q.options as any[]).map((o, oi) => (
             <button
-              type="button" class="cfg-opt" data-cfg-answer={oi}
+              type="button" class:list={['cfg-opt', 'reveal', `stagger-${(oi % 5) + 1}`]}
+              data-cfg-answer={oi}
               data-package-id={o.packageId ?? null} data-add-on-id={o.addOnId ?? null}
               data-region={o.region ?? null} data-film={o.film === undefined ? null : String(o.film)}
             >
-              <span class="cfg-opt__label text-body-lg">{o.label}</span>
-              {o.hint && <span class="cfg-opt__hint">{o.hint}</span>}
+              <span class="cfg-opt__mark" aria-hidden="true"></span>
+              <span class="cfg-opt__text">
+                <span class="cfg-opt__label">{o.label}</span>
+                {o.hint && <span class="cfg-opt__hint">{o.hint}</span>}
+              </span>
             </button>
           ))}
         </div>
@@ -119,30 +166,40 @@ const addOnIndex = ADD_ONS.map((a) => ({
       For a wedding this is an estimate. I confirm it with you on the call, once I know the day properly.
     </p>
     <div class="cfg-packages">
-      {packages.map((p) => {
+      {packages.map((p, i) => {
         const base = basePrice(p);
-        const q = priceQualifier(p);
+        const qual = priceQualifier(p);
+        const onSale = p.salePrice != null && p.price != null;
         return (
           <article
-            class="cfg-pkg" data-package={p.id} data-category={p.category}
+            class:list={['cfg-pkg', 'reveal', `stagger-${(i % 5) + 1}`]}
+            data-package={p.id} data-category={p.category}
             data-film={String(!!p.film)} data-regions={p.regions ? p.regions.join(',') : ''}
-            data-price={base ?? ''} data-qualifier={q}
+            data-price={base ?? ''} data-qualifier={qual}
           >
-            <h3 class="cfg-pkg__name text-heading-lg">{p.name}</h3>
-            <p class="cfg-pkg__price">
-              {q === 'rate' && <span>from {money(p.price)} per hour</span>}
-              {q === 'from' && <span>from {money(base!)}</span>}
-              {q === 'firm' && <span>{money(base!)}</span>}
-              {q === 'none' && <span>Priced with you</span>}
-            </p>
-            <p class="cfg-pkg__duration">{p.duration}</p>
+            <span class="cfg-pkg__badge" data-cfg-badge hidden>Recommended</span>
+            <header class="cfg-pkg__head">
+              <p class="cfg-pkg__eyebrow">
+                <span>{p.category}</span>
+                <span class="cfg-pkg__coverage">{p.film ? 'Photo and film' : 'Photo only'}</span>
+              </p>
+              <h3 class="cfg-pkg__name text-heading-lg">{p.name}</h3>
+              <p class="cfg-pkg__price">
+                {qual === 'rate' && <><span class="cfg-pkg__qual">from</span> <span class="cfg-pkg__num">{money(p.price)}</span> <span class="cfg-pkg__qual">per hour</span></>}
+                {qual === 'from' && <><span class="cfg-pkg__qual">from</span> <span class="cfg-pkg__num">{money(base!)}</span></>}
+                {qual === 'firm' && <>
+                  <span class="cfg-pkg__num">{money(base!)}</span>
+                  {onSale && <span class="cfg-pkg__was">{money(p.price)}</span>}
+                </>}
+                {qual === 'none' && <span class="cfg-pkg__num">Priced with you</span>}
+              </p>
+              <p class="cfg-pkg__duration">{p.duration}</p>
+            </header>
             <p class="cfg-pkg__desc text-body-md">{p.description}</p>
             <ul class="cfg-pkg__list">
               {(p.highlights ?? []).map((h: string) => <li>{h}</li>)}
             </ul>
-            <button type="button" class="cfg-pkg__choose" data-cfg-choose={p.id}>
-              Choose this one
-            </button>
+            <button type="button" class="cfg-btn cfg-pkg__choose" data-cfg-choose={p.id}>Choose this one</button>
           </article>
         );
       })}
@@ -152,27 +209,39 @@ const addOnIndex = ADD_ONS.map((a) => ({
   {/* ── 4 · add-ons ──────────────────────────────────────────────── */}
   <section class="cfg-step" data-step="addons">
     <h2 class="cfg-ask text-display-md measure-tight">Anything to add?</h2>
-    <p class="cfg-hint text-body-md">All optional. Nothing here is assumed.</p>
+    <p class="cfg-hint text-body-md">All optional. Nothing here is assumed, and you can change it on the call.</p>
     <div class="cfg-addons">
-      {ADD_ONS.map((a) => (
-        <div
-          class="cfg-addon" data-addon={a.id} data-unit={a.unit}
-          data-price={a.price ?? ''} data-max={a.max ?? ''} data-countable={String(isCountable(a))}
-        >
-          <label class="cfg-addon__main">
-            <input type="checkbox" class="cfg-addon__box" data-cfg-addon-toggle={a.id} />
-            <span class="cfg-addon__label">{formatAddOn(a)}</span>
-          </label>
-          {isCountable(a) && (
-            <span class="cfg-addon__qty" data-cfg-qty-wrap hidden>
-              <button type="button" class="cfg-step-btn" data-cfg-qty-down aria-label={`Fewer ${a.label}`}>&minus;</button>
-              <output class="cfg-addon__n" data-cfg-qty aria-live="polite">1</output>
-              <button type="button" class="cfg-step-btn" data-cfg-qty-up aria-label={`More ${a.label}`}>+</button>
-            </span>
-          )}
-          {a.note && <p class="cfg-addon__note">{a.note}</p>}
-        </div>
-      ))}
+      {ADD_ONS.map((a, i) => {
+        const { num, suffix } = priceParts(a);
+        return (
+          <div
+            class:list={['cfg-addon', 'reveal', `stagger-${(i % 5) + 1}`]}
+            data-addon={a.id} data-unit={a.unit}
+            data-price={a.price ?? ''} data-max={a.max ?? ''} data-countable={String(isCountable(a))}
+          >
+            <label class="cfg-addon__row">
+              <input type="checkbox" class="cfg-addon__input" data-cfg-addon-toggle={a.id} />
+              <span class="cfg-addon__mark" aria-hidden="true"></span>
+              <span class="cfg-addon__text">
+                <span class="cfg-addon__label">{a.label}</span>
+                {a.note && <span class="cfg-addon__note">{a.note}</span>}
+              </span>
+              <span class="cfg-addon__price">
+                {num && <span class="cfg-addon__num">{num}</span>}
+                {suffix && <span class="cfg-addon__suffix">{suffix}</span>}
+              </span>
+            </label>
+            {isCountable(a) && (
+              <div class="cfg-addon__qty" data-cfg-qty-wrap hidden>
+                <span class="cfg-addon__qty-label">How many?</span>
+                <button type="button" class="cfg-step-btn" data-cfg-qty-down aria-label={`Fewer ${a.label}`}>&minus;</button>
+                <output class="cfg-addon__n" data-cfg-qty aria-live="polite">1</output>
+                <button type="button" class="cfg-step-btn" data-cfg-qty-up aria-label={`More ${a.label}`}>+</button>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   </section>
 
@@ -209,7 +278,7 @@ const addOnIndex = ADD_ONS.map((a) => ({
     </fieldset>
   </section>
 
-  {/* ── 7 · who you are, then the call ───────────────────────────── */}
+  {/* ── 7 · who you are ──────────────────────────────────────────── */}
   <section class="cfg-step" data-step="identity">
     <fieldset class="cfg-fieldset">
       <legend class="cfg-ask text-display-md measure-tight">Last thing. Who am I photographing?</legend>
@@ -229,7 +298,7 @@ const addOnIndex = ADD_ONS.map((a) => ({
           <span class="cfg-err" data-cfg-err="email" hidden></span>
         </p>
       </div>
-      <button type="submit" class="cfg-submit" data-cfg-submit>Send this to Kash</button>
+      <button type="submit" class="cfg-btn cfg-submit" data-cfg-submit>Send this to Kash</button>
       <p class="cfg-formerr" data-cfg-form-error hidden></p>
       <p class="cfg-privacy">
         I never use your faces to advertise. That is in the contract, and it costs nothing.
@@ -237,33 +306,26 @@ const addOnIndex = ADD_ONS.map((a) => ({
     </fieldset>
   </section>
 
-  {/* success */}
   <section class="cfg-step cfg-done" data-step="done" hidden>
     <h2 class="cfg-ask text-display-md measure-tight">Got it.</h2>
-    <p class="text-body-lg">
+    <p class="text-body-lg cfg-done__lead">
       Your package is with me. The quickest way forward is a short call, so pick a time that suits you.
     </p>
-    <div class="cfg-done__actions">
-      <BookingLink variant="dark" label="Pick a time" />
-    </div>
-    <p class="cfg-hint text-body-md">
-      Or leave it with me and I will come back to you by email.
-    </p>
+    <div class="cfg-done__actions"><BookingLink variant="dark" label="Pick a time" /></div>
+    <p class="cfg-hint text-body-md">Or leave it with me and I will come back to you by email.</p>
   </section>
 
-  {/* the running total, one element, repositioned per breakpoint in CSS */}
   <aside class="cfg-total" data-cfg-total hidden aria-label="Your running total">
     <p class="cfg-total__pkg" data-cfg-total-pkg></p>
     <p class="cfg-total__sum" data-cfg-total-sum aria-live="polite"></p>
     <p class="cfg-total__note" data-cfg-total-note></p>
-    <button type="button" class="cfg-next" data-cfg-next>Continue</button>
+    <button type="button" class="cfg-btn cfg-next" data-cfg-next>Continue</button>
   </aside>
 </form>
 
 <script type="application/json" id="cfg-data" set:html={JSON.stringify({ pkgIndex, addOnIndex, permitIndex, flow })} />
 
 <style>
-  /* ── shell ─────────────────────────────────────────────────────── */
   .cfg { position: relative; }
   .cfg-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .cfg-sr {
@@ -271,237 +333,339 @@ const addOnIndex = ADD_ONS.map((a) => ({
     overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
   .cfg-fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
-
-  /* Every step is visible with no JS. The script hides all but the active one. */
   .cfg-step { padding-block: var(--spacing-block); }
   .cfg-step[hidden] { display: none; }
 
-  .cfg-ask {
-    color: var(--color-on-surface);
-    overflow-wrap: anywhere;
-    min-width: 0;
-    margin: 0 0 var(--spacing-element);
-  }
+  .cfg-ask { color: var(--color-on-surface); overflow-wrap: anywhere; min-width: 0; margin: 0 0 1rem; }
   .cfg-hint {
-    color: var(--color-on-surface-variant);
-    max-width: 46ch;
-    margin: 0 0 var(--spacing-element);
+    color: var(--color-on-surface-variant); max-width: 48ch; margin: 0 0 var(--spacing-element);
   }
 
-  /* ── wayfinding: a plain count and a hairline, never an eyebrow ── */
-  .cfg-nav {
-    display: flex; align-items: baseline; gap: 1.25rem;
-    margin: 0 0 var(--spacing-tight); font-family: var(--font-sans);
+  /* ── wayfinding ─────────────────────────────────────────────────── */
+  .cfg-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1.25rem; margin-bottom: 0.75rem;
   }
   .cfg-back {
-    background: none; border: 0; padding: 0; cursor: pointer;
-    font-family: var(--font-sans); font-size: 0.8125rem; letter-spacing: 0.02em;
+    display: inline-flex; align-items: baseline; gap: 0.5rem;
+    background: none; border: 0; padding: 0.25rem 0; cursor: pointer;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--color-on-surface-variant);
     transition: color var(--duration-hover) var(--ease-gallery);
   }
   .cfg-back:hover { color: var(--color-on-surface); }
-  .cfg-back:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .cfg-back:hover .cfg-back__arrow { transform: translateX(-3px); }
+  .cfg-back__arrow { display: inline-block; transition: transform var(--duration-hover) var(--ease-gallery); }
+  .cfg-back:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
   .cfg-count {
-    font-size: 0.8125rem; color: var(--color-on-surface-muted);
+    font-family: var(--font-sans); font-size: 0.6875rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--color-on-surface-muted);
     font-variant-numeric: tabular-nums;
   }
-  .cfg-rule { height: 1px; background: var(--color-surface-container); margin-bottom: var(--spacing-element); }
+  .cfg-rule { height: 1px; background: var(--color-surface-container); }
   .cfg-rule span {
     display: block; height: 1px; width: 0; background: var(--color-on-surface);
     transition: width var(--duration-slow) var(--ease-gallery);
   }
 
-  /* ── options ───────────────────────────────────────────────────── */
-  .cfg-options { display: grid; gap: 1px; background: var(--color-surface-container); }
+  /* ── 1 · category cards, real client work ──────────────────────── */
+  .cfg-cards { display: grid; gap: 2.5rem 1.75rem; }
+  .cfg-card {
+    display: flex; flex-direction: column; gap: 1.125rem;
+    background: none; border: 0; padding: 0; margin: 0;
+    text-align: left; cursor: pointer; color: var(--color-on-surface);
+  }
+  .cfg-card__frame {
+    display: block; overflow: hidden; background: var(--color-surface-container);
+    aspect-ratio: 4 / 5; max-width: 100%;
+  }
+  .cfg-card__img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transition: transform var(--duration-deliberate) var(--ease-gallery),
+                filter var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-card:hover .cfg-card__img { transform: scale(1.04); }
+  .cfg-card__body { display: flex; flex-direction: column; gap: 0.3rem; }
+  .cfg-card__label { transition: color var(--duration-hover) var(--ease-gallery); }
+  .cfg-card__blurb {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.55;
+    color: var(--color-on-surface-variant);
+  }
+  .cfg-card:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 6px; }
+  .cfg-card[aria-pressed='true'] .cfg-card__img { filter: none; }
+  .cfg-card[aria-pressed='true'] .cfg-card__label { font-style: italic; }
+  .cfg-card[aria-pressed='true'] .cfg-card__frame { outline: 1px solid var(--color-on-surface); outline-offset: 6px; }
+
+  /* ── 2 · options ───────────────────────────────────────────────── */
+  .cfg-options { display: grid; gap: 0; }
   .cfg-opt {
-    display: flex; flex-direction: column; gap: 0.35rem;
-    min-height: 44px; padding: 1.25rem 1.25rem;
-    text-align: left; cursor: pointer; border: 0; border-radius: 0;
-    background: var(--color-surface); color: var(--color-on-surface);
-    font-family: var(--font-sans);
+    display: grid; grid-template-columns: auto minmax(0, 1fr);
+    align-items: start; gap: 1.125rem;
+    min-height: 76px; padding: 1.5rem 0.25rem;
+    text-align: left; cursor: pointer; border: 0; background: none;
+    border-bottom: 1px solid var(--color-surface-container);
+    font-family: var(--font-sans); color: var(--color-on-surface);
+    transition: padding-left var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-opt:hover { padding-left: 0.75rem; }
+  .cfg-opt:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .cfg-opt__mark {
+    width: 22px; height: 22px; margin-top: 0.15rem; flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 45%, transparent);
     transition: background-color var(--duration-hover) var(--ease-gallery);
   }
-  .cfg-opt:hover, .cfg-opt.is-hover { background: var(--color-surface-dim); }
-  .cfg-opt:focus-visible, .cfg-opt.is-focus { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
-  .cfg-opt:active, .cfg-opt.is-active { background: var(--color-surface-container); }
-  .cfg-opt[aria-pressed='true'], .cfg-opt.is-selected {
-    background: var(--color-surface-container);
+  .cfg-opt[aria-pressed='true'] .cfg-opt__mark {
+    background: var(--color-on-surface);
+    border-color: var(--color-on-surface);
+    box-shadow: inset 0 0 0 4px var(--color-surface-dim);
   }
+  .cfg-opt__text { display: flex; flex-direction: column; gap: 0.25rem; }
+  .cfg-opt__label { font-size: 1.0625rem; line-height: 1.4; }
   .cfg-opt[aria-pressed='true'] .cfg-opt__label { font-weight: 500; }
-  /* non-colour cue for the selected state */
-  .cfg-opt[aria-pressed='true']::before {
-    content: ''; width: 8px; height: 8px; background: var(--color-on-surface);
-  }
   .cfg-opt__hint { font-size: 0.8125rem; color: var(--color-on-surface-variant); }
-  .cfg-opt[aria-disabled='true'], .cfg-opt:disabled { opacity: 0.4; cursor: default; }
 
-  /* ── packages ──────────────────────────────────────────────────── */
-  .cfg-packages { display: grid; gap: var(--spacing-element); }
+  /* ── 3 · packages, matching the shipped .pricing-card voice ────── */
+  .cfg-packages { display: grid; gap: 2rem; }
   .cfg-pkg[hidden] { display: none; }
-  .cfg-pkg { background: var(--color-surface); padding: 1.75rem 1.5rem; }
-  .cfg-pkg--recommended { background: var(--color-surface-dim); }
-  .cfg-pkg__name { margin: 0 0 0.5rem; }
+  .cfg-pkg {
+    position: relative; display: flex; flex-direction: column; gap: 1.75rem;
+    padding: 2.5rem 1.5rem; background: var(--color-surface);
+    transition: box-shadow var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-pkg--recommended {
+    box-shadow: 0 24px 48px -28px rgba(26, 26, 24, 0.18),
+                0 8px 16px -10px rgba(26, 26, 24, 0.08);
+  }
+  .cfg-pkg__badge {
+    position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+    background: var(--color-background); padding: 0.5rem 1.25rem;
+    font-family: var(--font-serif); font-style: italic; font-size: 0.9375rem;
+    letter-spacing: 0.02em; color: var(--color-on-surface);
+    border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+    white-space: nowrap;
+  }
+  .cfg-pkg__badge[hidden] { display: none; }
+  .cfg-pkg__head { display: flex; flex-direction: column; gap: 0.75rem; }
+  .cfg-pkg__eyebrow {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.6rem 0.9rem;
+    font-family: var(--font-sans); font-size: 0.6875rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--color-on-surface-muted); margin: 0;
+  }
+  .cfg-pkg__coverage {
+    display: inline-block; padding: 0.3em 0.7em; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);
+    font-size: 0.625rem; letter-spacing: 0.18em; line-height: 1;
+    color: var(--color-on-surface-variant); white-space: nowrap;
+  }
+  .cfg-pkg__name { margin: 0; }
   .cfg-pkg__price {
-    font-family: var(--font-sans); font-variant-numeric: tabular-nums;
-    font-weight: 500; font-size: 1.125rem; margin: 0 0 0.25rem;
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin: 0;
+    font-family: var(--font-sans);
+  }
+  .cfg-pkg__num { font-variant-numeric: tabular-nums; font-weight: 500; font-size: 1.375rem; }
+  .cfg-pkg__qual { font-size: 0.8125rem; color: var(--color-on-surface-variant); }
+  .cfg-pkg__was {
+    font-variant-numeric: tabular-nums; font-size: 0.9375rem;
+    color: var(--color-on-surface-muted); text-decoration: line-through;
   }
   .cfg-pkg__duration {
     font-family: var(--font-sans); font-size: 0.8125rem;
-    color: var(--color-on-surface-muted); margin: 0 0 1rem;
+    color: var(--color-on-surface-muted); margin: 0;
   }
-  .cfg-pkg__desc { margin: 0 0 1rem; max-width: 52ch; }
-  .cfg-pkg__list { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+  .cfg-pkg__desc { margin: 0; max-width: 54ch; }
+  .cfg-pkg__list { list-style: none; padding: 0; margin: 0; }
   .cfg-pkg__list li {
-    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.5;
-    padding-block: 0.4rem; border-bottom: 1px solid var(--color-surface-container);
-  }
-  .cfg-pkg__choose, .cfg-submit, .cfg-next {
-    min-height: 44px; padding: 0.875rem 1.5rem; cursor: pointer;
-    border: 0; border-radius: 0;
-    background: var(--color-surface-dark); color: var(--color-on-dark);
-    font-family: var(--font-sans); font-size: 0.8125rem;
-    letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
-    transition: background-color var(--duration-hover) var(--ease-gallery);
-  }
-  .cfg-pkg__choose:hover, .cfg-submit:hover, .cfg-next:hover { background: var(--color-on-surface); }
-  .cfg-pkg__choose:focus-visible, .cfg-submit:focus-visible, .cfg-next:focus-visible {
-    outline: 2px solid var(--color-on-surface); outline-offset: 2px;
-  }
-  .cfg-pkg__choose:active, .cfg-submit:active, .cfg-next:active { transform: translateY(1px); }
-  .cfg-submit[aria-busy='true'], .cfg-submit:disabled, .cfg-next:disabled { opacity: 0.4; cursor: default; }
-
-  /* ── add-ons ───────────────────────────────────────────────────── */
-  .cfg-addons { display: grid; gap: 0; }
-  .cfg-addon[hidden] { display: none; }
-  .cfg-addon {
-    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
-    column-gap: 1rem; padding-block: 0.875rem;
+    display: flex; gap: 0.75rem; font-family: var(--font-sans);
+    font-size: 0.9375rem; line-height: 1.5; padding-block: 0.55rem;
     border-bottom: 1px solid var(--color-surface-container);
   }
-  .cfg-addon__main {
-    display: flex; align-items: baseline; gap: 0.75rem;
-    min-height: 44px; cursor: pointer; font-family: var(--font-sans);
+  .cfg-pkg__list li::before { content: '+'; color: var(--color-on-surface-muted); flex: 0 0 auto; }
+  .cfg-pkg__choose { align-self: start; margin-top: auto; }
+
+  /* ── shared button ─────────────────────────────────────────────── */
+  .cfg-btn {
+    min-height: 52px; padding: 1rem 2rem; cursor: pointer; border: 0;
+    background: var(--color-surface-dark); color: var(--color-on-dark);
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; white-space: nowrap;
+    transition: background-color var(--duration-hover) var(--ease-gallery);
   }
-  .cfg-addon__box { width: 1rem; height: 1rem; accent-color: var(--color-on-surface); flex: 0 0 auto; }
-  .cfg-addon__box:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
-  .cfg-addon__label { font-size: 0.9375rem; line-height: 1.5; }
+  .cfg-btn:hover { background: var(--color-primary-hover); }
+  .cfg-btn:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
+  .cfg-btn:active { transform: translateY(1px); }
+  .cfg-btn[aria-busy='true'], .cfg-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── 4 · add-ons, deliberately large ───────────────────────────── */
+  .cfg-addons { display: grid; }
+  .cfg-addon[hidden] { display: none; }
+  .cfg-addon { border-bottom: 1px solid var(--color-surface-container); }
+  .cfg-addon__row {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start; gap: 0.5rem 1.25rem;
+    padding: 1.5rem 0.5rem; min-height: 88px; cursor: pointer;
+    transition: background-color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-addon__row:hover { background: var(--color-surface); }
+  .cfg-addon__input {
+    position: absolute; width: 1px; height: 1px; opacity: 0;
+    margin: 0; pointer-events: none;
+  }
+  .cfg-addon__mark {
+    width: 26px; height: 26px; margin-top: 0.1rem; flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 45%, transparent);
+    transition: background-color var(--duration-hover) var(--ease-gallery),
+                border-color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-addon__row:hover .cfg-addon__mark {
+    border-color: color-mix(in srgb, var(--color-on-surface) 70%, transparent);
+  }
+  .cfg-addon__input:checked ~ .cfg-addon__mark {
+    background: var(--color-on-surface); border-color: var(--color-on-surface);
+    box-shadow: inset 0 0 0 5px var(--color-surface-dim);
+  }
+  .cfg-addon__input:focus-visible ~ .cfg-addon__mark {
+    outline: 2px solid var(--color-on-surface); outline-offset: 3px;
+  }
+  .cfg-addon__text { display: flex; flex-direction: column; gap: 0.4rem; }
+  .cfg-addon__label {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.4;
+    color: var(--color-on-surface);
+  }
+  .cfg-addon__input:checked ~ .cfg-addon__text .cfg-addon__label { font-weight: 500; }
   .cfg-addon__note {
-    grid-column: 1 / -1; margin: 0.25rem 0 0;
-    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.5;
-    color: var(--color-on-surface-muted); max-width: 56ch;
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.6;
+    color: var(--color-on-surface-variant); max-width: 58ch;
   }
-  .cfg-addon__qty { display: inline-flex; align-items: center; gap: 0.5rem; }
-  .cfg-addon__n {
-    font-family: var(--font-sans); font-variant-numeric: tabular-nums;
-    min-width: 1.5rem; text-align: center;
+  .cfg-addon__price {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.15rem;
+    font-family: var(--font-sans); text-align: right;
+  }
+  .cfg-addon__num { font-variant-numeric: tabular-nums; font-size: 1.0625rem; font-weight: 500; }
+  .cfg-addon__suffix { font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-on-surface-muted); }
+  .cfg-addon__qty {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0 0.5rem 1.5rem 3.25rem;
+  }
+  .cfg-addon__qty[hidden] { display: none; }
+  .cfg-addon__qty-label {
+    font-family: var(--font-sans); font-size: 0.6875rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--color-on-surface-muted); margin-right: 0.25rem;
   }
   .cfg-step-btn {
-    width: 44px; height: 44px; border: 0; border-radius: 0; cursor: pointer;
-    background: var(--color-surface-dim); color: var(--color-on-surface);
-    font-family: var(--font-sans); font-size: 1rem; line-height: 1;
-    transition: color var(--duration-hover) var(--ease-gallery);
+    width: 48px; height: 48px; border: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent);
+    background: var(--color-surface); color: var(--color-on-surface); cursor: pointer;
+    font-family: var(--font-sans); font-size: 1.125rem; line-height: 1;
+    transition: background-color var(--duration-hover) var(--ease-gallery);
   }
-  .cfg-step-btn:hover { color: var(--color-primary-hover); }
+  .cfg-step-btn:hover { background: var(--color-surface-container); }
   .cfg-step-btn:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
   .cfg-step-btn:disabled { opacity: 0.3; cursor: default; }
+  .cfg-addon__n {
+    font-family: var(--font-sans); font-variant-numeric: tabular-nums;
+    font-size: 1.0625rem; min-width: 2ch; text-align: center;
+  }
 
   /* ── fields ────────────────────────────────────────────────────── */
-  .cfg-fields { display: grid; gap: var(--spacing-element); max-width: 34rem; }
-  .cfg-field { margin: 0; display: grid; gap: 0.4rem; }
+  .cfg-fields { display: grid; gap: 1.75rem; max-width: 34rem; }
+  .cfg-field { margin: 0; display: grid; gap: 0.5rem; }
   .cfg-field label {
-    font-family: var(--font-sans); font-size: 0.8125rem;
-    color: var(--color-on-surface-variant);
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-on-surface-muted);
   }
   .cfg-field input, .cfg-field textarea {
-    width: 100%; min-height: 44px; padding: 0.625rem 0;
-    border: 0; border-bottom: 1px solid var(--color-surface-container);
-    border-radius: 0; background: transparent; color: var(--color-on-surface);
-    font-family: var(--font-sans); font-size: 1rem;
+    width: 100%; min-height: 52px; padding: 0.75rem 0;
+    border: 0; border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent);
+    background: transparent; color: var(--color-on-surface);
+    font-family: var(--font-sans); font-size: 1.0625rem;
     transition: border-color var(--duration-hover) var(--ease-gallery);
   }
-  .cfg-field textarea { min-height: 7rem; resize: vertical; }
-  .cfg-field input:hover, .cfg-field textarea:hover { border-bottom-color: var(--color-on-surface-muted); }
+  .cfg-field textarea { min-height: 8rem; resize: vertical; }
+  .cfg-field input::placeholder, .cfg-field textarea::placeholder { color: var(--color-on-surface-muted); }
+  .cfg-field input:hover, .cfg-field textarea:hover { border-bottom-color: var(--color-on-surface); }
   .cfg-field input:focus-visible, .cfg-field textarea:focus-visible {
-    outline: 2px solid var(--color-on-surface); outline-offset: 2px;
+    outline: 2px solid var(--color-on-surface); outline-offset: 4px;
   }
   .cfg-field[data-invalid] input, .cfg-field[data-invalid] textarea { border-bottom-color: var(--color-error); }
-  .cfg-err, .cfg-formerr {
-    font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-error);
-  }
+  .cfg-err, .cfg-formerr { font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-error); }
+  .cfg-formerr { margin-top: 1rem; }
   .cfg-permit {
-    font-family: var(--font-sans); font-size: 0.75rem;
-    color: var(--color-on-surface-muted); max-width: 48ch;
-  }
-  .cfg-privacy {
     font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.6;
-    color: var(--color-on-surface-variant); max-width: 44ch;
-    margin: var(--spacing-element) 0 0;
+    color: var(--color-on-surface-variant); max-width: 50ch;
   }
+  .cfg-submit { margin-top: var(--spacing-element); }
+  .cfg-privacy {
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.7;
+    color: var(--color-on-surface-variant); max-width: 46ch; margin: 1.25rem 0 0;
+  }
+  .cfg-done__lead { max-width: 46ch; margin: 0 0 var(--spacing-element); }
+  .cfg-done__actions { margin-bottom: var(--spacing-element); }
 
   /* ── the total ─────────────────────────────────────────────────── */
   .cfg-total[hidden] { display: none; }
-  .cfg-total__pkg, .cfg-total__note {
-    font-family: var(--font-sans); font-size: 0.75rem;
+  .cfg-total__pkg {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--color-on-surface-muted); margin: 0;
   }
   .cfg-total__sum {
     font-family: var(--font-sans); font-variant-numeric: tabular-nums;
-    font-weight: 500; font-size: 1.5rem; margin: 0.15rem 0;
+    font-weight: 500; font-size: 1.75rem; line-height: 1.1; margin: 0.35rem 0 0;
     color: var(--color-on-surface);
     transition: opacity var(--duration-fast) var(--ease-gallery);
   }
-  .cfg-total__sum.is-changing { opacity: 0.35; }
+  .cfg-total__sum.is-changing { opacity: 0.3; }
+  .cfg-total__note {
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.6;
+    color: var(--color-on-surface-variant); margin: 0.6rem 0 0;
+  }
 
-  .cfg-done__actions { margin-block: var(--spacing-element); }
-
-  /* ══ MOBILE layout (below 768px) ═════════════════════════════════
-     The total is a square edged bar fixed to the bottom. The form gets
-     bottom padding so the bar can never cover the last option. */
+  /* ══ MOBILE (below 768px) ════════════════════════════════════════ */
   @media (max-width: 767px) {
-    .cfg { padding-bottom: 7.5rem; }
-    .cfg-options--cards { gap: 1px; }
+    .cfg { padding-bottom: 8.5rem; }
     .cfg-total {
       position: fixed; inset: auto 0 0 0; z-index: 20;
       display: grid; grid-template-columns: minmax(0, 1fr) auto;
       align-items: center; column-gap: 1rem;
-      padding: 0.875rem clamp(1rem, 5vw, 1.5rem);
+      padding: 1rem clamp(1rem, 5vw, 1.5rem);
       background: var(--color-surface-dark); color: var(--color-on-dark);
     }
-    .cfg-total__pkg, .cfg-total__note { color: var(--color-on-dark-variant); }
-    .cfg-total__sum { color: var(--color-on-dark); font-size: 1.25rem; }
+    .cfg-total__pkg { color: var(--color-on-dark-variant); }
+    .cfg-total__sum { color: var(--color-on-dark); font-size: 1.375rem; }
     .cfg-total__note { display: none; }
-    .cfg-next { grid-row: 1 / span 2; grid-column: 2; }
+    .cfg-next { grid-row: 1 / span 2; grid-column: 2; padding-inline: 1.5rem; }
+    .cfg-addon__price { align-items: flex-start; text-align: left; grid-column: 2; }
+    .cfg-addon__row { grid-template-columns: auto minmax(0, 1fr); row-gap: 0.65rem; }
   }
 
-  /* ══ DESKTOP layout (768px and up) ═══════════════════════════════
-     Asymmetric. The question sits left, the options right, and the total
-     becomes a sticky rail so it stays in view while they choose. */
+  /* ══ DESKTOP (768px and up) ══════════════════════════════════════ */
   @media (min-width: 768px) {
     .cfg { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 1.5rem; }
-    .cfg-nav, .cfg-rule { grid-column: 1 / -1; }
-    .cfg-step { grid-column: 1 / -1; }
-    .cfg-step[data-step='category'] .cfg-ask,
-    .cfg-step[data-step='question'] .cfg-ask,
-    .cfg-step[data-step='question'] .cfg-hint { max-width: 22ch; }
-    .cfg-step[data-step='category'] .cfg-fieldset,
+    .cfg-head, .cfg-rule, .cfg-step { grid-column: 1 / -1; }
+    .cfg-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cfg-cards .cfg-card:nth-child(3n + 2) { margin-top: 3rem; }
+    .cfg-step[data-step='category'] .cfg-ask { max-width: 24ch; }
     .cfg-step[data-step='question'] .cfg-fieldset {
-      display: grid; grid-template-columns: 5fr 7fr; column-gap: 3rem; align-items: start;
+      display: grid; grid-template-columns: 5fr 7fr; column-gap: 3.5rem; align-items: start;
     }
-    .cfg-step[data-step='category'] .cfg-options,
-    .cfg-step[data-step='question'] .cfg-options { grid-template-columns: 7fr 5fr; }
-    .cfg-packages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    .cfg-step[data-step='question'] .cfg-ask, .cfg-step[data-step='question'] .cfg-hint { max-width: 22ch; }
+    .cfg-packages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .cfg-pkg { padding: 3rem 2rem; }
     .cfg-pkg--recommended { grid-column: 1 / -1; }
-    .cfg-step[data-step='addons'] { grid-column: 1 / 8; }
+    .cfg-step[data-step='addons'] { grid-column: 1 / 9; }
     .cfg-total {
-      grid-column: 9 / -1; position: sticky; top: 6rem; align-self: start;
-      padding: 1.25rem; background: var(--color-surface-dim);
+      grid-column: 9 / -1; grid-row: 3; position: sticky; top: 6.5rem; align-self: start;
+      padding: 1.75rem; background: var(--color-surface);
     }
-    .cfg-total .cfg-next { width: 100%; margin-top: 1rem; }
+    .cfg-total .cfg-next { width: 100%; margin-top: 1.25rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cfg-opt, .cfg-back, .cfg-step-btn, .cfg-pkg__choose, .cfg-submit, .cfg-next,
-    .cfg-field input, .cfg-field textarea, .cfg-rule span, .cfg-total__sum { transition: none; }
+    .cfg-card__img, .cfg-opt, .cfg-addon__row, .cfg-addon__mark, .cfg-opt__mark,
+    .cfg-btn, .cfg-step-btn, .cfg-back, .cfg-back__arrow, .cfg-field input,
+    .cfg-field textarea, .cfg-rule span, .cfg-total__sum { transition: none; }
+    .cfg-card:hover .cfg-card__img { transform: none; }
+    .cfg-opt:hover { padding-left: 0.25rem; }
     .cfg-total__sum.is-changing { opacity: 1; }
   }
 </style>

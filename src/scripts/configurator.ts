@@ -29,6 +29,26 @@ interface State {
 }
 
 const STORE = 'kk_pricing_state';
+const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/**
+ * Replay the site's own reveal animation on the step that just became visible.
+ * scroll-reveal.ts unobserves after firing once, and these steps start hidden,
+ * so the observer never sees them. Driving it here keeps the motion identical
+ * to the rest of the site rather than inventing a second animation language.
+ */
+function animateIn(step: HTMLElement): void {
+  const items = Array.from(step.querySelectorAll<HTMLElement>('.reveal:not([hidden])'));
+  const targets = items.length ? items : [];
+  if (reduced()) {
+    targets.forEach((el) => el.classList.add('revealed'));
+    return;
+  }
+  targets.forEach((el) => el.classList.remove('revealed'));
+  // force a reflow so removing and re-adding actually re-runs the transition
+  void step.offsetHeight;
+  requestAnimationFrame(() => targets.forEach((el) => el.classList.add('revealed')));
+}
 const money = (n: number) =>
   '$' + n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -47,6 +67,7 @@ export function initConfigurator(): void {
   const attribution = captureAttribution();
   const cancelDwell = watchDwell();
 
+  let lastActive: HTMLElement | null = null;
   let state: State = { answers: {}, addOns: {}, step: 0 };
   try {
     const saved = localStorage.getItem(STORE);
@@ -106,6 +127,7 @@ export function initConfigurator(): void {
     state.step = Math.max(0, Math.min(state.step, seq.length - 1));
     const active = seq[state.step];
 
+    const changed = active !== lastActive;
     stepEls.forEach((el) => { el.hidden = el !== active; });
     q('[data-step="done"]')!.hidden = true;
 
@@ -130,9 +152,11 @@ export function initConfigurator(): void {
     all('.cfg-pkg').forEach((el) => {
       const id = el.dataset.package!;
       el.hidden = !eligible.has(id);
-      el.classList.toggle('cfg-pkg--recommended', id === state.packageId);
-      el.querySelector('[data-cfg-choose]')?.setAttribute(
-        'aria-pressed', String(id === state.packageId));
+      const isPick = id === state.packageId;
+      el.classList.toggle('cfg-pkg--recommended', isPick);
+      const badge = el.querySelector<HTMLElement>('[data-cfg-badge]');
+      if (badge) badge.hidden = !isPick;
+      el.querySelector('[data-cfg-choose]')?.setAttribute('aria-pressed', String(isPick));
     });
     q('[data-cfg-estimate-note]')!.hidden = state.category !== 'Wedding';
 
@@ -156,6 +180,7 @@ export function initConfigurator(): void {
     });
 
     renderTotal(seq);
+    if (changed) { lastActive = active; animateIn(active); }
     save();
   }
 
