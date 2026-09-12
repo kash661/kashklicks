@@ -118,8 +118,15 @@ function priceParts(a: typeof ADD_ONS[number]) {
             >
               {img && (
                 <span class="cfg-card__frame">
-                  <Image src={img} alt="" class="cfg-card__img" widths={[400, 700]}
-                         sizes="(min-width: 768px) 32vw, 92vw" quality={78} loading={i < 2 ? 'eager' : 'lazy'} />
+                  {/* width/height pinned so the src fallback is not emitted at the
+                      full 2560px source, which blew past the cover weight target. */}
+                  <Image
+                    src={img} alt="" class="cfg-card__img"
+                    width={640} height={800} widths={[400, 640]}
+                    sizes="(min-width: 768px) 32vw, 92vw"
+                    format="avif" quality={62}
+                    loading={i < 2 ? 'eager' : 'lazy'}
+                  />
                 </span>
               )}
               <span class="cfg-card__body">
