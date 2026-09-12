@@ -455,12 +455,13 @@ function priceParts(a: typeof ADD_ONS[number]) {
      rows. No border round the card, and no dimming the other photographs:
      both read as something having gone wrong rather than as a choice. */
   .cfg-card__label { display: flex; align-items: baseline; gap: 0.6rem; }
+  /* display:none, not opacity:0. An invisible marker still occupies its box and
+     the flex gap, which indented every label whether it was selected or not. */
   .cfg-card__label::before {
-    content: ''; width: 9px; height: 9px; flex: 0 0 auto;
-    background: var(--color-on-surface); opacity: 0;
-    transition: opacity var(--duration-hover) var(--ease-gallery);
+    content: ''; display: none; width: 9px; height: 9px; flex: 0 0 auto;
+    background: var(--color-on-surface);
   }
-  .cfg-card[aria-pressed='true'] .cfg-card__label::before { opacity: 1; }
+  .cfg-card[aria-pressed='true'] .cfg-card__label::before { display: block; }
 
   /* ── 2 · options ───────────────────────────────────────────────── */
   .cfg-options { display: grid; gap: 0; }
