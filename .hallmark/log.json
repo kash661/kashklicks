@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-09-11",
+    "macrostructure": "Workbench (stepped configurator, question per screen + sticky total rail)",
+    "theme": "locked (Digital Curator)",
+    "enrichment": "none (typography only)",
+    "brief": "pricing configurator + guided onboarding questionnaire at /pricing/"
+  },
+  {
     "date": "2026-09-08",
     "macrostructure": "component: coming-soon teaser (dark band, image-left / text-right rail)",
     "theme": "locked (Digital Curator)",

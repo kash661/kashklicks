@@ -23,7 +23,11 @@ import site from '../../data/site.json';
 import heroImage from '../../assets/images/homepage/homepage-06.jpg';
 const preWeddingServiceImage = (await import('../../assets/images/homepage/prewedding-service-detail-02.jpg')).default;
 
-const preWeddingPackages = packages.filter((p) => p.category === 'Pre-Wedding').sort((a, b) => a.order - b.order);
+// Region gated packages (the destination weekend) stay hidden where we do not know
+// where the couple is. They surface in the /pricing/ configurator, which asks.
+const preWeddingPackages = packages
+  .filter((p) => p.category === 'Pre-Wedding' && !Array.isArray((p as { regions?: string[] }).regions))
+  .sort((a, b) => a.order - b.order);
 const proposalPackage = packages.find((p) => p.category === 'Proposals');
 const preWeddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('pre-wedding'));
 

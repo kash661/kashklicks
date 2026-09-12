@@ -92,8 +92,35 @@ export function totalAddOns(selections: Selection[]): Totals {
   return t;
 }
 
+export interface PricedPackage {
+  price: number | null;
+  salePrice?: number | null;
+  /** The number is an hourly rate, so it is never a package total. */
+  priceIsRate?: boolean;
+  /** The number is a floor they will spend at least, so it totals but reads "from". */
+  priceIsMinimum?: boolean;
+}
+
 /** Base price for a package, honouring the sale price and never treating a rate as a total. */
-export function basePrice(pkg: { price: number | null; salePrice?: number | null; priceIsRate?: boolean }): number | null {
+export function basePrice(pkg: PricedPackage): number | null {
   if (pkg.priceIsRate) return null;
   return pkg.salePrice ?? pkg.price ?? null;
 }
+
+/** How the number should read: a firm price, a floor, an hourly rate, or nothing at all. */
+export function priceQualifier(pkg: PricedPackage): 'firm' | 'from' | 'rate' | 'none' {
+  if (pkg.priceIsRate) return 'rate';
+  if (pkg.priceIsMinimum) return 'from';
+  return basePrice(pkg) === null ? 'none' : 'firm';
+}
+
+/**
+ * Some packages only make sense for certain regions, e.g. the destination weekend.
+ * They carry a `regions` list matching the contact form's event_region values
+ * (toronto-gta / ontario / canada / international). Anywhere the visitor's region
+ * is unknown, such as the standard service pages, they must stay hidden.
+ */
+export const isRegionGated = (pkg: { regions?: string[] }) => Array.isArray(pkg.regions);
+
+export const visibleInRegion = (pkg: { regions?: string[] }, region?: string) =>
+  !isRegionGated(pkg) || (!!region && pkg.regions!.includes(region));
