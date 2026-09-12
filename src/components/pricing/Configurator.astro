@@ -24,36 +24,27 @@ import flow from '../../data/pricing-flow.json';
 import { ADD_ONS, isCountable, basePrice, priceQualifier } from '../../lib/addons';
 import BookingLink from '../ui/BookingLink.astro';
 import locationsData from '../../data/locations.json';
-import portfolio from '../../data/portfolio.json';
 
 const packages = packagesData as Array<Record<string, any>>;
 const money = (n: number) =>
   '$' + n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// Real client work, one cover per category. Featured gallery where there is one.
-const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/images/portfolio/*.jpg',
-  { eager: true }
-);
-const headshotsImage = (await import('../../assets/images/homepage/headshots-service-detail.jpg')).default;
-const celebrationsImage = (await import('../../assets/images/homepage/celebrations-cta.jpg')).default;
-
-// Akash picked these by hand. Keyed on the portfolio slug rather than the
-// category, because Josie + Nelson is filed under pre-wedding but is the image
-// he wants on the wedding card.
-const COVER_SLUG: Record<string, string> = {
-  wedding: 'josie-nelson',
-  prewedding: 'ayushi-parth',
-  civil: 'nidhi-derek',
-  proposal: 'ashley-donald',
+// One image per category, each chosen by Akash. Explicit imports rather than a
+// glob: they are hand-picked, one is a homepage asset and one is a frame inside
+// a gallery subfolder, so the portfolio glob would not reach either.
+const CATEGORY_IMAGE: Record<string, ImageMetadata> = {
+  // Josie + Nelson under the veil at Guild Park. Deliberately not their
+  // pre-wedding cover, which is where they are filed in portfolio.json.
+  wedding: (await import('../../assets/images/homepage/homepage-10-josie-nelson-veil.jpg')).default,
+  prewedding: (await import('../../assets/images/portfolio/swati-saksham-cover.jpg')).default,
+  civil: (await import('../../assets/images/portfolio/nidhi-derek-cover.jpg')).default,
+  // A frame from Ashley + Donald's gallery rather than its cover. Portrait, so
+  // it crops cleanly into the 4:5 card. Swap the number to change the frame.
+  proposal: (await import('../../assets/images/portfolio/ashley-donald/07.jpg')).default,
+  celebration: (await import('../../assets/images/homepage/celebrations-cta.jpg')).default,
+  headshots: (await import('../../assets/images/homepage/headshots-service-detail.jpg')).default,
 };
-function coverFor(catId: string): ImageMetadata | undefined {
-  if (catId === 'headshots') return headshotsImage;
-  if (catId === 'celebration') return celebrationsImage;
-  const slug = COVER_SLUG[catId];
-  const entry = (portfolio as Array<Record<string, any>>).find((p) => p.slug === slug);
-  return entry ? portfolioImages[`/src/assets/images/portfolio/${entry.coverImage}`]?.default : undefined;
-}
+const coverFor = (catId: string): ImageMetadata | undefined => CATEGORY_IMAGE[catId];
 
 const permitIndex = (locationsData as Array<Record<string, any>>)
   .filter((l) => l.permitNeeded)
