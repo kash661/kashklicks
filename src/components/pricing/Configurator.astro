@@ -400,9 +400,11 @@ function priceParts(a: typeof ADD_ONS[number]) {
   }
 
   /* ── 1 · category cards, real client work ──────────────────────── */
-  .cfg-cards { display: grid; gap: 2.5rem 1.75rem; }
+  .cfg-cards { display: grid; gap: 2.5rem 1.75rem; align-items: start; }
+  /* Every frame is the same 4:5 aspect at equal column widths, so the labels
+     land on the same line across all three columns without any offset. */
   .cfg-card {
-    display: flex; flex-direction: column; gap: 1.125rem;
+    display: grid; grid-template-rows: auto auto; gap: 1.125rem;
     background: none; border: 0; padding: 0; margin: 0;
     text-align: left; cursor: pointer; color: var(--color-on-surface);
   }
@@ -423,12 +425,16 @@ function priceParts(a: typeof ADD_ONS[number]) {
     color: var(--color-on-surface-variant);
   }
   .cfg-card:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 6px; }
-  /* Selection reads by the others receding, not by a border round the winner. */
-  .cfg-cards[data-has-selection] .cfg-card { opacity: 0.4; }
-  .cfg-cards[data-has-selection] .cfg-card[aria-pressed='true'] { opacity: 1; }
-  .cfg-card { transition: opacity var(--duration-hover) var(--ease-gallery); }
-  .cfg-cards[data-has-selection] .cfg-card:hover { opacity: 0.75; }
-  .cfg-card[aria-pressed='true'] .cfg-card__label { font-style: italic; }
+  /* Selection is a small filled marker beside the label, matching the option
+     rows. No border round the card, and no dimming the other photographs:
+     both read as something having gone wrong rather than as a choice. */
+  .cfg-card__label { display: flex; align-items: baseline; gap: 0.6rem; }
+  .cfg-card__label::before {
+    content: ''; width: 9px; height: 9px; flex: 0 0 auto;
+    background: var(--color-on-surface); opacity: 0;
+    transition: opacity var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-card[aria-pressed='true'] .cfg-card__label::before { opacity: 1; }
 
   /* ── 2 · options ───────────────────────────────────────────────── */
   .cfg-options { display: grid; gap: 0; }
@@ -675,7 +681,6 @@ function priceParts(a: typeof ADD_ONS[number]) {
   @media (min-width: 768px) {
     .cfg-body { display: grid; grid-template-columns: minmax(0, 1fr) 21rem; column-gap: clamp(2rem, 5vw, 4.5rem); }
     .cfg-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .cfg-cards .cfg-card:nth-child(3n + 2) { margin-top: 2.5rem; }
     .cfg-step[data-step='category'] .cfg-ask { max-width: 24ch; }
     .cfg-step[data-step='question'] .cfg-fieldset {
       display: grid; grid-template-columns: 5fr 7fr; column-gap: 3.5rem; align-items: start;

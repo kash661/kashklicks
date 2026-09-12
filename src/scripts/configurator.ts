@@ -149,11 +149,6 @@ export function initConfigurator(): void {
     // selected states
     all('[data-cfg-category]').forEach((b) =>
       b.setAttribute('aria-pressed', String(b.dataset.cfgCategory === state.categoryId)));
-    const cards = form.querySelector<HTMLElement>('.cfg-cards');
-    if (cards) {
-      if (state.categoryId) cards.setAttribute('data-has-selection', '');
-      else cards.removeAttribute('data-has-selection');
-    }
     all('[data-step="question"]').forEach((sec) => {
       const qid = sec.dataset.qId!;
       sec.querySelectorAll<HTMLElement>('[data-cfg-answer]').forEach((b) =>
