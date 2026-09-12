@@ -1,16 +1,17 @@
 ---
 // src/components/ui/PackageAddOns.astro
 // Shared add-ons section rendered once below a set of pricing cards.
-// Consolidates the per-card add-on strings ("+$X", "available at $X/hr",
-// "Priority ... +$500") into a single list, deduplicated. Pass either
-// `items` directly, or `packages` + optional `filterByCategory` and the
-// component will extract shared add-ons automatically.
+// Add-ons are structured data in src/data/add-ons.json, resolved through each
+// package's addOnIds. Pass `packages` (+ optional `filterByCategory`) and the
+// component resolves and formats them, or pass `items` to supply strings directly.
+import { resolveAddOns, formatAddOn } from '../../lib/addons';
+
 interface Props {
   title?: string;
   eyebrow?: string;
   description?: string;
   items?: string[];
-  packages?: Array<{ highlights: string[]; category: string }>;
+  packages?: Array<{ addOnIds?: string[]; category?: string }>;
   filterByCategory?: string;
   extraItems?: string[];
 }
@@ -25,19 +26,12 @@ const {
   extraItems,
 } = Astro.props;
 
-const isAddOn = (item: string) => item.includes('+$') || item.includes('available');
-
 let items: string[];
 if (explicitItems) {
   items = extraItems ? [...explicitItems, ...extraItems] : explicitItems;
 } else if (packages) {
-  const filtered = filterByCategory
-    ? packages.filter((p) => p.category === filterByCategory)
-    : packages;
-  const extracted = Array.from(
-    new Set(filtered.flatMap((p) => p.highlights.filter(isAddOn)))
-  );
-  items = extraItems ? [...extracted, ...extraItems] : extracted;
+  const resolved = resolveAddOns(packages, filterByCategory).map(formatAddOn);
+  items = extraItems ? [...resolved, ...extraItems] : resolved;
 } else {
   items = extraItems ?? [];
 }

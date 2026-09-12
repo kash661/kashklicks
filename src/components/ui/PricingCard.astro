@@ -63,8 +63,9 @@ const isFeatured = !!(featured ?? popular);
 
 // Add-ons live in the shared PackageAddOns section. Cards stay focused on
 // "what you get" at this tier.
-const isAddOn = (item: string) => item.includes('+$') || item.includes('available');
-const includedItems = highlights.filter((item) => !isAddOn(item));
+// Add-ons are structured data now (src/data/add-ons.json) and render in the shared
+// PackageAddOns section, so every highlight here is genuinely part of the tier.
+const includedItems = highlights;
 
 const hasSale = !!salePrice;
 const displayPrice = hasSale ? salePrice : price;
