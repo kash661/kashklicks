@@ -33,21 +33,10 @@
     "hours": null,
     "addOnIds": [
       "additional-location",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
       "raw-photos-sessions",
-      "rain-date",
-      "raw-video-sessions",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension",
-      "flights"
+      "raw-video-sessions"
     ]
   },
   {
@@ -78,20 +67,10 @@
     },
     "addOnIds": [
       "additional-location",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
       "raw-photos-sessions",
-      "rain-date",
-      "raw-video-sessions",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-video-sessions"
     ]
   },
   {
@@ -122,21 +101,11 @@
     },
     "addOnIds": [
       "additional-location",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "rain-date",
-      "raw-video-sessions",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-video-sessions"
     ]
   },
   {
@@ -167,21 +136,11 @@
     },
     "addOnIds": [
       "additional-location",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
       "vertical-reel",
       "raw-photos-sessions",
-      "rain-date",
-      "raw-video-sessions",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-video-sessions"
     ]
   },
   {
@@ -209,20 +168,10 @@
     },
     "addOnIds": [
       "additional-location",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
       "vertical-reel",
-      "raw-photos-sessions",
-      "rain-date",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -250,20 +199,10 @@
     },
     "addOnIds": [
       "additional-location",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
       "vertical-reel",
-      "raw-photos-sessions",
-      "rain-date",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -315,17 +254,8 @@
     "addOnIds": [
       "additional-location",
       "extra-retouched",
-      "object-removal",
       "vertical-reel",
-      "raw-photos-sessions",
-      "rain-date",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -356,35 +286,14 @@
     },
     "addOnIds": [
       "extra-hours-wedding",
-      "wedding-overtime",
       "second-photographer",
-      "coverage-gap",
-      "rehearsal-dinner",
-      "additional-ceremony",
-      "second-day",
-      "venue-walkthrough",
       "instax-50",
-      "instax-100",
       "handheld-compact",
-      "film-35mm",
       "drone",
       "wedding-film",
       "priority-delivery-wedding",
-      "one-week-gallery",
-      "same-day-sneak-peeks",
-      "post-wedding-slideshow",
       "extra-retouched",
-      "object-removal",
-      "raw-photos-wedding",
-      "raw-video-wedding",
-      "parent-gallery",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-wedding"
     ]
   },
   {
@@ -416,35 +325,14 @@
     },
     "addOnIds": [
       "extra-hours-wedding",
-      "wedding-overtime",
       "second-photographer",
-      "coverage-gap",
-      "rehearsal-dinner",
-      "additional-ceremony",
-      "second-day",
-      "venue-walkthrough",
       "instax-50",
-      "instax-100",
       "handheld-compact",
-      "film-35mm",
       "drone",
       "wedding-film",
       "priority-delivery-wedding",
-      "one-week-gallery",
-      "same-day-sneak-peeks",
-      "post-wedding-slideshow",
       "extra-retouched",
-      "object-removal",
-      "raw-photos-wedding",
-      "raw-video-wedding",
-      "parent-gallery",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-wedding"
     ]
   },
   {
@@ -474,34 +362,13 @@
       "included": 14
     },
     "addOnIds": [
-      "wedding-overtime",
       "second-photographer",
-      "coverage-gap",
-      "rehearsal-dinner",
-      "additional-ceremony",
-      "second-day",
-      "venue-walkthrough",
       "instax-50",
-      "instax-100",
       "handheld-compact",
-      "film-35mm",
       "drone",
       "wedding-film",
-      "one-week-gallery",
-      "same-day-sneak-peeks",
-      "post-wedding-slideshow",
       "extra-retouched",
-      "object-removal",
-      "raw-photos-wedding",
-      "raw-video-wedding",
-      "parent-gallery",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-wedding"
     ]
   },
   {
@@ -529,21 +396,9 @@
     "addOnIds": [
       "extra-hours-events",
       "instax-50",
-      "instax-100",
       "handheld-compact",
       "extra-retouched",
-      "object-removal",
-      "vertical-reel",
-      "raw-photos-sessions",
-      "parent-gallery",
-      "rain-date",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -567,21 +422,9 @@
     "priceIsRate": true,
     "addOnIds": [
       "instax-50",
-      "instax-100",
       "handheld-compact",
       "extra-retouched",
-      "object-removal",
-      "vertical-reel",
-      "raw-photos-sessions",
-      "parent-gallery",
-      "rain-date",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -611,22 +454,10 @@
     "addOnIds": [
       "extra-hours-civil",
       "instax-50",
-      "instax-100",
       "handheld-compact",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
-      "vertical-reel",
-      "raw-photos-sessions",
-      "parent-gallery",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -656,22 +487,10 @@
     "addOnIds": [
       "extra-hours-civil",
       "instax-50",
-      "instax-100",
       "handheld-compact",
-      "film-35mm",
       "drone",
       "extra-retouched",
-      "object-removal",
-      "vertical-reel",
-      "raw-photos-sessions",
-      "parent-gallery",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "raw-photos-sessions"
     ]
   },
   {
@@ -700,19 +519,7 @@
     },
     "addOnIds": [
       "extra-retouched",
-      "background-replacement",
-      "express-48h-headshots",
-      "headshots-additional-person",
-      "headshots-onsite",
-      "headshots-extra-30",
-      "headshots-team-licence",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "express-48h-headshots"
     ]
   },
   {
@@ -742,15 +549,7 @@
     },
     "addOnIds": [
       "extra-retouched",
-      "express-48h-headshots",
-      "headshots-extra-30",
-      "travel-50-150",
-      "travel-150-300",
-      "travel-beyond",
-      "accommodation",
-      "parking-tolls",
-      "location-permit",
-      "gallery-extension"
+      "express-48h-headshots"
     ]
   }
 ]

@@ -12,18 +12,6 @@
     "note": "Your gallery is not capped, so more hours simply means more photographs."
   },
   {
-    "id": "wedding-overtime",
-    "label": "Overtime on the day",
-    "price": 401.25,
-    "unit": "per-hour",
-    "categories": [
-      "Wedding"
-    ],
-    "max": 4,
-    "status": "proposed",
-    "note": "For time added on the day itself, rather than booked in advance."
-  },
-  {
     "id": "extra-hours-civil",
     "label": "Additional hours",
     "price": 201.25,
@@ -60,61 +48,6 @@
     "note": "A small team I work with regularly."
   },
   {
-    "id": "coverage-gap",
-    "label": "Coverage through the gap",
-    "price": 201.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "For the quiet stretch between your ceremony and reception."
-  },
-  {
-    "id": "rehearsal-dinner",
-    "label": "Rehearsal dinner, up to 2 hours",
-    "price": 551.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "Two hours at the rehearsal dinner the night before, delivered in the same gallery as the day itself."
-  },
-  {
-    "id": "additional-ceremony",
-    "label": "An extra ceremony or event, up to 4 hours",
-    "price": 1101.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "A separate ceremony or event on its own day, with up to four hours of coverage."
-  },
-  {
-    "id": "second-day",
-    "label": "A second day of coverage",
-    "price": 1401.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "A second full day of coverage, for weddings that run across more than one."
-  },
-  {
-    "id": "venue-walkthrough",
-    "label": "Venue walkthrough beforehand",
-    "price": 151.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "I walk the venue with you before the day, so the timings and the light are worked out in advance rather than on the morning."
-  },
-  {
     "id": "additional-location",
     "label": "An additional location",
     "price": 151.25,
@@ -125,87 +58,6 @@
     ],
     "status": "proposed",
     "note": "Each extra location includes 2 more hours of coverage and 30 more photographs."
-  },
-  {
-    "id": "travel-50-150",
-    "label": "Travel, 50 to 150 km from Toronto",
-    "price": 101.25,
-    "unit": "flat",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "Measured from Toronto. Anywhere in the GTA is already included."
-  },
-  {
-    "id": "travel-150-300",
-    "label": "Travel, 150 to 300 km from Toronto",
-    "price": 201.25,
-    "unit": "flat",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "Measured from Toronto. Anywhere in the GTA is already included."
-  },
-  {
-    "id": "travel-beyond",
-    "label": "Travel beyond 300 km, or abroad",
-    "price": null,
-    "unit": "quote",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "I will quote this for you, including any flights and nights away."
-  },
-  {
-    "id": "accommodation",
-    "label": "Overnight stay",
-    "price": null,
-    "unit": "at-cost",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "Only when the drive is over about two and a half hours. Charged at cost."
-  },
-  {
-    "id": "parking-tolls",
-    "label": "Parking and tolls",
-    "price": null,
-    "unit": "at-cost",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "Charged at cost, never marked up."
-  },
-  {
-    "id": "location-permit",
-    "label": "Location permit",
-    "price": null,
-    "unit": "at-cost",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "Set by the venue or the city, not by me. Charged at cost.",
-    "source": "locations.json"
-  },
-  {
-    "id": "film-35mm",
-    "label": "A roll of 35mm film",
-    "price": 76.25,
-    "unit": "per-roll",
-    "categories": [
-      "Wedding",
-      "Pre-Wedding",
-      "Civil Ceremony"
-    ],
-    "max": 6,
-    "status": "proposed",
-    "note": "Film is film. I cannot promise every frame comes out."
   },
   {
     "id": "instax-50",
@@ -219,19 +71,6 @@
     ],
     "status": "locked",
     "note": "Instant prints handed to your guests during the day, up to fifty of them to take home."
-  },
-  {
-    "id": "instax-100",
-    "label": "Instax guest prints, up to 100",
-    "price": 101.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding",
-      "Events",
-      "Civil Ceremony"
-    ],
-    "status": "proposed",
-    "note": "The same instant prints for a bigger room, up to a hundred of them."
   },
   {
     "id": "handheld-compact",
@@ -289,33 +128,6 @@
     "note": "A fully retouched image on top of the ones already in your package."
   },
   {
-    "id": "object-removal",
-    "label": "Removing an object or a person",
-    "price": 101.25,
-    "unit": "per-image",
-    "categories": [
-      "Wedding",
-      "Pre-Wedding",
-      "Civil Ceremony",
-      "Events"
-    ],
-    "max": 10,
-    "status": "proposed",
-    "note": "Where the frame allows it. I will tell you honestly if it cannot be done well."
-  },
-  {
-    "id": "background-replacement",
-    "label": "Background replacement",
-    "price": 76.25,
-    "unit": "per-image",
-    "categories": [
-      "Headshots"
-    ],
-    "max": 20,
-    "status": "proposed",
-    "note": "Your headshot placed on a different background, for when the room you were in does not suit where the photo is going."
-  },
-  {
     "id": "priority-delivery-wedding",
     "label": "Priority delivery, 2 to 3 weeks",
     "price": 501.25,
@@ -325,17 +137,6 @@
     ],
     "status": "locked",
     "note": "Your full gallery in two to three weeks rather than the usual wait."
-  },
-  {
-    "id": "one-week-gallery",
-    "label": "Your gallery in one week",
-    "price": 801.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "Your full gallery in one week. I only take a limited number of these, so it depends on the date."
   },
   {
     "id": "express-48h-headshots",
@@ -349,36 +150,13 @@
     "note": "Your retouched headshots back within forty eight hours."
   },
   {
-    "id": "same-day-sneak-peeks",
-    "label": "Same day sneak peeks",
-    "price": 251.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "A few edited frames sent the same night, so you have something to share before the gallery is ready."
-  },
-  {
-    "id": "post-wedding-slideshow",
-    "label": "A slideshow of your day",
-    "price": 151.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "proposed",
-    "note": "Your favourite frames set to music as a slideshow you can play at home or send to family."
-  },
-  {
     "id": "vertical-reel",
     "label": "Save the date reel",
     "price": 101.25,
     "unit": "per-item",
     "categories": [
       "Pre-Wedding",
-      "Civil Ceremony",
-      "Events"
+      "Proposals"
     ],
     "max": 3,
     "status": "proposed",
@@ -394,17 +172,6 @@
     ],
     "status": "locked",
     "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled. Most people do not want these, so ask me first."
-  },
-  {
-    "id": "raw-video-wedding",
-    "label": "Unedited RAW video",
-    "price": 251.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding"
-    ],
-    "status": "locked",
-    "note": "The unedited footage exactly as it was recorded, alongside your edited film."
   },
   {
     "id": "raw-photos-sessions",
@@ -430,99 +197,5 @@
     ],
     "status": "locked",
     "note": "The unedited footage exactly as it was recorded, alongside your edited film."
-  },
-  {
-    "id": "gallery-extension",
-    "label": "Gallery kept open past 90 days",
-    "price": 51.25,
-    "unit": "per-year",
-    "categories": [
-      "*"
-    ],
-    "max": 5,
-    "status": "proposed",
-    "note": "Your gallery stays open another year past the usual ninety days."
-  },
-  {
-    "id": "parent-gallery",
-    "label": "A separate gallery for parents",
-    "price": 0,
-    "unit": "included",
-    "categories": [
-      "Wedding",
-      "Civil Ceremony",
-      "Events"
-    ],
-    "status": "proposed",
-    "note": "Included. Just ask."
-  },
-  {
-    "id": "headshots-additional-person",
-    "label": "An additional person",
-    "price": 151.25,
-    "unit": "per-person",
-    "categories": [
-      "Headshots"
-    ],
-    "max": 40,
-    "status": "proposed",
-    "note": "Another person photographed in the same session, with their own retouched images."
-  },
-  {
-    "id": "headshots-onsite",
-    "label": "At your office instead",
-    "price": 151.25,
-    "unit": "flat",
-    "categories": [
-      "Headshots"
-    ],
-    "status": "proposed",
-    "note": "I come to your office rather than us meeting somewhere else."
-  },
-  {
-    "id": "headshots-extra-30",
-    "label": "An extra 30 minutes",
-    "price": 101.25,
-    "unit": "flat",
-    "categories": [
-      "Headshots"
-    ],
-    "status": "proposed",
-    "note": "Thirty more minutes in the session, for more looks or more people."
-  },
-  {
-    "id": "headshots-team-licence",
-    "label": "Company usage licence",
-    "price": 251.25,
-    "unit": "flat",
-    "categories": [
-      "Headshots"
-    ],
-    "status": "proposed",
-    "note": "For team bookings. Covers your website, LinkedIn and recruiting, for everyone photographed, with no time limit. One person booking their own headshot already has business use included."
-  },
-  {
-    "id": "rain-date",
-    "label": "Rain date protection",
-    "price": 15.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding",
-      "Proposals",
-      "Events"
-    ],
-    "status": "proposed",
-    "note": "Move your session for weather, with no fee, up to 24 hours before."
-  },
-  {
-    "id": "flights",
-    "label": "Flights and getting there",
-    "price": null,
-    "unit": "at-cost",
-    "categories": [
-      "*"
-    ],
-    "status": "proposed",
-    "note": "Booked at cost and never marked up. I will show you the fare before anything is confirmed."
   }
 ]
