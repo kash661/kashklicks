@@ -374,14 +374,13 @@
     "price": 101.25,
     "unit": "per-item",
     "categories": [
-      "Wedding",
       "Pre-Wedding",
       "Civil Ceremony",
       "Events"
     ],
     "max": 3,
     "status": "proposed",
-    "note": "Filmed on the day. This is real video, not something made from your photographs."
+    "note": "Filmed on the day. This is real video, not something made from your photographs. Available on sessions, not on wedding days."
   },
   {
     "id": "raw-photos-wedding",
