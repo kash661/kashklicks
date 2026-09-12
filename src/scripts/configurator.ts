@@ -12,7 +12,7 @@ type PkgIndex = {
   id: string; category: string; price: number | null;
   qualifier: 'firm' | 'from' | 'rate' | 'none';
   film: boolean; regions: string[] | null; addOnIds: string[];
-  hours: number | null; name: string;
+  hours: number | null; name: string; rate: number | null;
 };
 type AddOnIndex = { id: string; price: number | null; unit: string; max: number | null; countable: boolean; label: string };
 type Flow = { categories: Array<Record<string, string>>; questions: Record<string, any[]> };
@@ -217,7 +217,7 @@ export function initConfigurator(): void {
     const pkg = pkgById.get(state.packageId!)!;
     const base = pkg.price ?? 0;
     q('[data-cfg-sum-pkg]')!.textContent =
-      pkg.qualifier === 'rate' ? `${pkg.name}, ${money(base)} per hour`
+      pkg.qualifier === 'rate' ? `${pkg.name}, ${money(pkg.rate ?? 0)} per hour`
       : pkg.qualifier === 'none' ? pkg.name
       : `${pkg.name}, ${pkg.qualifier === 'from' ? 'from ' : ''}${money(base)}`;
 
@@ -260,7 +260,8 @@ export function initConfigurator(): void {
     const l = document.createElement('span');
     l.textContent = state.category === 'Wedding' ? 'Your estimate' : 'Your total';
     const r = document.createElement('span');
-    r.textContent = pkg.qualifier === 'rate' ? `${money(base)} per hour plus ${money(extras)}`
+    r.textContent = pkg.qualifier === 'rate'
+        ? `${money(pkg.rate ?? 0)} per hour${extras ? ` plus ${money(extras)}` : ''}`
       : pkg.qualifier === 'none' ? 'Priced with you'
       : `${pkg.qualifier === 'from' ? 'From ' : ''}${money(base + extras)}`;
     totalEl.append(l, r);
@@ -295,11 +296,13 @@ export function initConfigurator(): void {
 
     q('[data-cfg-total-pkg]')!.textContent = pkg.name;
     sumEl.textContent =
-      pkg.qualifier === 'rate' ? `${money(base)} per hour, plus extras`
-      : pkg.qualifier === 'none' ? 'Priced with you'
-      : `${pkg.qualifier === 'from' ? 'From ' : ''}${money(sum)}`;
+      pkg.qualifier === 'rate'
+        ? `${money(pkg.rate ?? 0)} per hour${t.addOnsTotal ? `, plus ${money(t.addOnsTotal)}` : ''}`
+        : pkg.qualifier === 'none' ? 'Priced with you'
+        : `${pkg.qualifier === 'from' ? 'From ' : ''}${money(sum)}`;
 
     const notes: string[] = [];
+    if (pkg.qualifier === 'rate') notes.push('We settle the hours on the call, so there is no total yet.');
     if (state.category === 'Wedding') notes.push('An estimate. I confirm it on the call.');
     if (t.depositsHeld > 0) notes.push(`${money(t.depositsHeld)} refundable deposit, held separately.`);
     if (t.quoted.length) notes.push(`${t.quoted.map((a) => a.label).join(', ')}: quoted for you.`);

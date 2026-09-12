@@ -55,6 +55,9 @@ const permitIndex = (locationsData as Array<Record<string, any>>)
 
 const pkgIndex = packages.map((p) => ({
   id: p.id, category: p.category, price: basePrice(p), qualifier: priceQualifier(p),
+  // basePrice() returns null for a rate so it is never summed as a total. The
+  // rate itself still has to reach the client or it renders as $0.00.
+  rate: p.priceIsRate ? p.price : null,
   film: !!p.film, regions: p.regions ?? null, addOnIds: p.addOnIds ?? [],
   hours: p.hours?.included ?? null, name: p.name,
 }));
