@@ -188,8 +188,74 @@ export function initConfigurator(): void {
     });
 
     renderTotal(seq);
+    renderSummary(active?.dataset.step);
     if (changed) { lastActive = active; animateIn(active); }
     save();
+  }
+
+  /** The recap on the last step: the package, what they answered, every add-on
+   *  with its own line price, and the total. Deposits, quotes and pass-through
+   *  costs are listed but never folded into the number. */
+  function renderSummary(active: string | undefined): void {
+    const box = q('[data-cfg-summary]')!;
+    box.hidden = active !== 'identity' || !state.packageId;
+    if (box.hidden) return;
+
+    const pkg = pkgById.get(state.packageId!)!;
+    const base = pkg.price ?? 0;
+    q('[data-cfg-sum-pkg]')!.textContent =
+      pkg.qualifier === 'rate' ? `${pkg.name}, ${money(base)} per hour`
+      : pkg.qualifier === 'none' ? pkg.name
+      : `${pkg.name}, ${pkg.qualifier === 'from' ? 'from ' : ''}${money(base)}`;
+
+    const list = q('[data-cfg-sum-list]')!;
+    list.textContent = '';
+    const row = (label: string, value: string, isAnswer = false) => {
+      const li = document.createElement('li');
+      if (isAnswer) li.setAttribute('data-answer', '');
+      const a = document.createElement('span'); a.textContent = label;
+      const b = document.createElement('span'); b.textContent = value;
+      li.append(a, b);
+      list.append(li);
+    };
+
+    for (const [qid, oi] of Object.entries(state.answers)) {
+      const question = (flow.questions[state.categoryId!] ?? []).find((x: any) => x.id === qid);
+      const opt = question?.options?.[oi];
+      if (question && opt) row(question.ask, opt.label, true);
+    }
+
+    let extras = 0;
+    const notes: string[] = [];
+    for (const [id, qty] of Object.entries(state.addOns)) {
+      const a = addOnById.get(id);
+      if (!a) continue;
+      const n = a.countable ? Math.max(1, Math.min(qty, a.max ?? Infinity)) : 1;
+      const label = a.countable && n > 1 ? `${a.label} x${n}` : a.label;
+      if (a.unit === 'quote') { row(label, 'I will quote this'); notes.push(a.label); continue; }
+      if (a.unit === 'at-cost') { row(label, 'At cost'); continue; }
+      if (a.unit === 'deposit') { row(label, `${money((a.price ?? 0) * n)} refundable`); continue; }
+      if (a.unit === 'included') { row(label, 'Included'); continue; }
+      const line = (a.price ?? 0) * n;
+      extras += line;
+      row(label, money(line));
+    }
+    if (!Object.keys(state.addOns).length) row('No add ons', '');
+
+    const totalEl = q('[data-cfg-sum-total]')!;
+    totalEl.textContent = '';
+    const l = document.createElement('span');
+    l.textContent = state.category === 'Wedding' ? 'Your estimate' : 'Your total';
+    const r = document.createElement('span');
+    r.textContent = pkg.qualifier === 'rate' ? `${money(base)} per hour plus ${money(extras)}`
+      : pkg.qualifier === 'none' ? 'Priced with you'
+      : `${pkg.qualifier === 'from' ? 'From ' : ''}${money(base + extras)}`;
+    totalEl.append(l, r);
+
+    const noteBits: string[] = [];
+    if (state.category === 'Wedding') noteBits.push('An estimate. I confirm it with you on the call.');
+    if (notes.length) noteBits.push(`${notes.join(', ')} is quoted separately.`);
+    q('[data-cfg-sum-note]')!.textContent = noteBits.join(' ');
   }
 
   function renderTotal(seq: HTMLElement[]): void {

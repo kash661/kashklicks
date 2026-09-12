@@ -294,6 +294,14 @@ function priceParts(a: typeof ADD_ONS[number]) {
   <section class="cfg-step" data-step="identity">
     <fieldset class="cfg-fieldset">
       <legend class="cfg-ask text-display-md measure-tight">Last thing. Who am I photographing?</legend>
+
+      <div class="cfg-summary" data-cfg-summary hidden>
+        <p class="cfg-summary__head" data-cfg-sum-pkg></p>
+        <ul class="cfg-summary__list" data-cfg-sum-list></ul>
+        <p class="cfg-summary__total" data-cfg-sum-total></p>
+        <p class="cfg-summary__note" data-cfg-sum-note></p>
+      </div>
+
       <div class="cfg-fields">
         <p class="cfg-field">
           <label for="cfg-name">Your name</label>
@@ -309,12 +317,26 @@ function priceParts(a: typeof ADD_ONS[number]) {
           <input type="email" id="cfg-email" name="email" autocomplete="email" inputmode="email" />
           <span class="cfg-err" data-cfg-err="email" hidden></span>
         </p>
+        <p class="cfg-field">
+          <label for="cfg-referral">Where did you find me?</label>
+          {/* Values match ContactForm.astro exactly, so the Apps Script maps
+              this straight into the sheet's Referral column. */}
+          <span class="cfg-select">
+            <select id="cfg-referral" name="referral">
+              <option value="" selected>Select one</option>
+              <option value="instagram">Instagram</option>
+              <option value="google">Google search</option>
+              <option value="reddit">Reddit</option>
+              <option value="referral">A friend or family member</option>
+              <option value="planner">Wedding planner or vendor</option>
+              <option value="blog">Blog, article, or feature</option>
+              <option value="other">Somewhere else</option>
+            </select>
+          </span>
+        </p>
       </div>
       <button type="submit" class="cfg-btn cfg-submit" data-cfg-submit>Send this to Kash</button>
       <p class="cfg-formerr" data-cfg-form-error hidden></p>
-      <p class="cfg-privacy">
-        I never use your faces to advertise. That is in the contract, and it costs nothing.
-      </p>
     </fieldset>
   </section>
 
@@ -622,10 +644,44 @@ function priceParts(a: typeof ADD_ONS[number]) {
   .cfg-field textarea { min-height: 8rem; resize: vertical; }
   .cfg-field input::placeholder, .cfg-field textarea::placeholder { color: var(--color-on-surface-muted); }
   .cfg-field input:hover, .cfg-field textarea:hover { border-bottom-color: var(--color-on-surface); }
-  .cfg-field input:focus-visible, .cfg-field textarea:focus-visible {
-    outline: 2px solid var(--color-on-surface); outline-offset: 4px;
+  /* A focused field must show it, but an outline box is the wrong shape for a
+     field that is otherwise a single rule. Note text inputs match
+     :focus-visible on click as well as on keyboard, so a box appears on every
+     tap. The indicator is the underline instead: it doubles in weight and goes
+     to full ink, which is a large, high contrast change and satisfies the
+     visible-focus requirement without drawing a rectangle. */
+  .cfg-field input:focus, .cfg-field textarea:focus {
+    outline: none;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-on-surface);
+    padding-bottom: calc(0.75rem - 1px);
   }
-  .cfg-field[data-invalid] input, .cfg-field[data-invalid] textarea { border-bottom-color: var(--color-error); }
+  .cfg-field[data-invalid] input, .cfg-field[data-invalid] textarea,
+  .cfg-field[data-invalid] input:focus, .cfg-field[data-invalid] textarea:focus {
+    border-bottom-color: var(--color-error); border-bottom-width: 2px;
+  }
+  .cfg-select { position: relative; display: block; }
+  .cfg-select::after {
+    content: ''; position: absolute; right: 0.35rem; top: 50%;
+    width: 7px; height: 7px; margin-top: -5px; pointer-events: none;
+    border-right: 1px solid var(--color-on-surface-variant);
+    border-bottom: 1px solid var(--color-on-surface-variant);
+    transform: rotate(45deg);
+  }
+  .cfg-field select {
+    appearance: none; width: 100%; min-height: 52px;
+    padding: 0.75rem 1.75rem 0.75rem 0;
+    border: 0; border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent);
+    background: transparent; color: var(--color-on-surface);
+    font-family: var(--font-sans); font-size: 1.0625rem; cursor: pointer;
+    transition: border-color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-field select:hover { border-bottom-color: var(--color-on-surface); }
+  .cfg-field select:focus {
+    outline: none; border-bottom-width: 2px;
+    border-bottom-color: var(--color-on-surface);
+    padding-bottom: calc(0.75rem - 1px);
+  }
   .cfg-err, .cfg-formerr { font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-error); }
   .cfg-formerr { margin-top: 1rem; }
   .cfg-permit {
@@ -633,9 +689,37 @@ function priceParts(a: typeof ADD_ONS[number]) {
     color: var(--color-on-surface-variant); max-width: 50ch;
   }
   .cfg-submit { margin-top: var(--spacing-element); }
-  .cfg-privacy {
-    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.7;
-    color: var(--color-on-surface-variant); max-width: 46ch; margin: 1.25rem 0 0;
+  .cfg-summary {
+    background: var(--color-surface); padding: 1.5rem;
+    margin-bottom: var(--spacing-element); max-width: 34rem;
+  }
+  .cfg-summary[hidden] { display: none; }
+  .cfg-summary__head {
+    font-family: var(--font-serif); font-size: 1.25rem; margin: 0 0 1rem;
+    color: var(--color-on-surface);
+  }
+  .cfg-summary__list { list-style: none; padding: 0; margin: 0; }
+  .cfg-summary__list li {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.5;
+    padding-block: 0.55rem;
+    border-bottom: 1px solid var(--color-surface-container);
+  }
+  .cfg-summary__list li span:last-child {
+    font-variant-numeric: tabular-nums; color: var(--color-on-surface-variant);
+    white-space: nowrap;
+  }
+  .cfg-summary__list li[data-answer] {
+    color: var(--color-on-surface-variant); font-size: 0.8125rem;
+  }
+  .cfg-summary__total {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    font-family: var(--font-sans); font-weight: 500; font-size: 1.25rem;
+    font-variant-numeric: tabular-nums; margin: 1rem 0 0;
+  }
+  .cfg-summary__note {
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.6;
+    color: var(--color-on-surface-muted); margin: 0.5rem 0 0;
   }
   .cfg-done__lead { max-width: 46ch; margin: 0 0 var(--spacing-element); }
   .cfg-done__actions { margin-bottom: var(--spacing-element); }
