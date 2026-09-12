@@ -1,0 +1,117 @@
+---
+/**
+ * Pricing
+ * -------
+ * Hallmark · macrostructure: Workbench (stepped configurator, one question per
+ * screen with a sticky total rail) · genre: editorial
+ * theme: locked (Digital Curator) · enrichment: none (typography only)
+ * motion: 2 primitives (step reveal, total opacity)
+ * nav/footer: site chrome (BaseLayout)
+ * pre-emit critique: P5 H4 E4 S5 R5 V4
+ *
+ * A guided questionnaire that takes a couple from "what are you planning?" to a
+ * priced package and a booked call. It exists to answer the four questions every
+ * ad produces, in public, once: what are your packages, what does it cost, what
+ * about the locations, do you do video.
+ *
+ * Design brief: docs/design/pricing-configurator-brief.md (written and audited
+ * before any markup, per the roadmap gate).
+ *
+ * SOURCES OF TRUTH:
+ *   1. src/data/packages.json   packages, prices, hours, addOnIds
+ *   2. src/data/add-ons.json    the add-on catalogue, units and prices
+ *   3. src/data/pricing-flow.json  the branch questions, editable without code
+ *   4. src/data/locations.json  permit fees, shown at cost
+ *
+ * The editorial landing pages deliberately hide pricing. This page is the
+ * separate destination people arrive at when they are ready to configure.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Configurator from '../components/pricing/Configurator.astro';
+import packagesData from '../data/packages.json';
+import site from '../data/site.json';
+import { basePrice } from '../lib/addons';
+
+const packages = packagesData as Array<Record<string, any>>;
+const businessRef = { '@id': `${site.url}/#business` };
+
+const offerCatalog = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Photography Packages and Add Ons',
+  description:
+    'Wedding, pre wedding, civil ceremony, proposal, celebration and headshot photography packages by AD Photography in Toronto, with every add on priced.',
+  url: `${site.url}/pricing`,
+  offeredBy: businessRef,
+  itemListElement: packages
+    .filter((p) => basePrice(p) !== null && !p.priceIsRate)
+    .map((p) => ({
+      '@type': 'Offer',
+      name: p.name,
+      description: p.description,
+      price: basePrice(p),
+      priceCurrency: p.currency,
+      availability: 'https://schema.org/InStock',
+      seller: businessRef,
+    })),
+};
+---
+
+<BaseLayout
+  title="Photography Pricing, Toronto | AD Photography"
+  description="Build your package and see the price as you go. Wedding, pre wedding, civil ceremony, proposal, celebration and headshot pricing for Toronto and the GTA, with every add on listed."
+  canonicalUrl={`${site.url}/pricing/`}
+  jsonLd={offerCatalog}
+  {/* HOLD: 34 of the 50 add-on prices are proposed, not approved. Keep this
+      page out of search until Akash signs the prices off, then delete this
+      line, drop the sitemap exclusion in astro.config.mjs, and add the nav
+      entry in navigation.json. */}
+  noIndex
+>
+  <section class="pricing-intro">
+    <div class="container-editorial">
+      <h1 class="text-display-lg measure-tight">What it costs.</h1>
+      <p class="text-body-lg pricing-intro__lead">
+        Answer a few questions and I will take you to the package that actually fits, with
+        everything you can add to it priced. No guessing, and no waiting on me to reply.
+      </p>
+    </div>
+  </section>
+
+  <section class="pricing-body bg-surface-dim">
+    <div class="container-editorial">
+      <Configurator />
+    </div>
+  </section>
+
+  <noscript>
+    <section class="pricing-noscript">
+      <div class="container-editorial">
+        <p class="text-body-lg">
+          Everything above is listed in full without needing scripts. If you would rather just
+          talk it through, <a href="/contact/">send me a note</a> and I will come back to you.
+        </p>
+      </div>
+    </section>
+  </noscript>
+</BaseLayout>
+
+<style>
+  .pricing-intro { padding-block: var(--spacing-section) var(--spacing-block); }
+  .pricing-intro__lead {
+    margin-top: var(--spacing-element);
+    max-width: 46ch;
+    color: var(--color-on-surface-variant);
+  }
+  .pricing-body { padding-block: var(--spacing-block) var(--spacing-section); }
+  .pricing-noscript { padding-block: var(--spacing-block); }
+  /* mobile hard floor: nothing may push the page sideways */
+  :global(html), :global(body) { overflow-x: clip; }
+  .pricing-intro h1 { overflow-wrap: anywhere; min-width: 0; }
+</style>
+
+<script>
+  import { initConfigurator } from '../scripts/configurator';
+  initConfigurator();
+  document.addEventListener('astro:after-swap', () => initConfigurator());
+</script>

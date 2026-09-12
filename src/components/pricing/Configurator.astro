@@ -1,0 +1,507 @@
+---
+/**
+ * Hallmark · macrostructure: Workbench · genre: editorial
+ * theme: locked (Digital Curator, defers to .claude/CLAUDE.md)
+ * enrichment: none (typography only) · motion: 2 primitives (reveal, total opacity)
+ *
+ * The guided pricing configurator. Progressive enhancement: every category,
+ * package, question and add-on is server rendered into the DOM. With no JS the
+ * page reads as a complete stacked price list. The script hides all but the
+ * active step and totals the selection.
+ *
+ * One DOM tree, not two. The project's mobile/desktop split rule is about
+ * layout, and duplicating form controls would give every field two elements
+ * with the same name, which Apps Script's e.parameter collapses to the first
+ * value. Layout is split in the scoped CSS below instead.
+ */
+import packagesData from '../../data/packages.json';
+import flow from '../../data/pricing-flow.json';
+import { ADD_ONS, formatAddOn, isCountable, basePrice, priceQualifier } from '../../lib/addons';
+import BookingLink from '../ui/BookingLink.astro';
+import locationsData from '../../data/locations.json';
+
+const packages = packagesData as Array<Record<string, any>>;
+const money = (n: number) =>
+  '$' + n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Compact index for the client. Descriptions and highlights stay in the DOM.
+const pkgIndex = packages.map((p) => ({
+  id: p.id, category: p.category, price: basePrice(p), qualifier: priceQualifier(p),
+  film: !!p.film, regions: p.regions ?? null, addOnIds: p.addOnIds ?? [],
+  hours: p.hours?.included ?? null, name: p.name,
+}));
+// Compact permit index. The full locations file is 58KB, so only what the
+// permit lookup needs is shipped: a name to match on and the fee to show.
+const permitIndex = (locationsData as Array<Record<string, any>>)
+  .filter((l) => l.permitNeeded)
+  .map((l) => ({ name: l.name, fee: l.permitFee ?? null }));
+
+const addOnIndex = ADD_ONS.map((a) => ({
+  id: a.id, price: a.price, unit: a.unit, max: a.max ?? null, countable: isCountable(a), label: a.label,
+}));
+---
+
+<form
+  class="cfg"
+  data-cfg
+  action="/book/intake"
+  method="POST"
+  novalidate
+  aria-label="Build your package"
+>
+  {/* honeypot, matching the existing forms */}
+  <div class="cfg-hp" aria-hidden="true">
+    <label for="cfg-gotcha">Leave this empty</label>
+    <input type="text" id="cfg-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <input type="hidden" name="_subject" value="Pricing configurator" />
+  <input type="hidden" name="source" value="Pricing configurator" />
+  <input type="hidden" name="event_type" data-cfg-field="event_type" />
+  <input type="hidden" name="event_region" data-cfg-field="event_region" />
+  <input type="hidden" name="package_id" data-cfg-field="package_id" />
+  <input type="hidden" name="package_name" data-cfg-field="package_name" />
+  <input type="hidden" name="addons_json" data-cfg-field="addons_json" />
+  <input type="hidden" name="addons_readable" data-cfg-field="addons_readable" />
+  <input type="hidden" name="estimate_total" data-cfg-field="estimate_total" />
+  <input type="hidden" name="answers_readable" data-cfg-field="answers_readable" />
+  <input type="hidden" name="source_page" data-cfg-field="source_page" />
+
+  <p class="cfg-nav" data-cfg-nav hidden>
+    <button type="button" class="cfg-back" data-cfg-back>Back</button>
+    <span class="cfg-count" data-cfg-count aria-live="polite"></span>
+  </p>
+  <div class="cfg-rule" data-cfg-rule aria-hidden="true"><span data-cfg-rule-fill></span></div>
+
+  {/* ── 1 · what are you planning ───────────────────────────────── */}
+  <section class="cfg-step" data-step="category">
+    <fieldset class="cfg-fieldset">
+      <legend class="cfg-ask text-display-md measure-tight">What are you planning?</legend>
+      <div class="cfg-options cfg-options--cards">
+        {flow.categories.map((c) => (
+          <button
+            type="button" class="cfg-opt" data-cfg-category={c.id} data-category={c.category}
+          >
+            <span class="cfg-opt__label text-body-lg">{c.label}</span>
+            <span class="cfg-opt__hint">{c.blurb}</span>
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  </section>
+
+  {/* ── 2 · the narrowing questions, all categories rendered, JS reveals one ── */}
+  {Object.entries(flow.questions).map(([catId, qs]) => (qs as any[]).map((q, qi) => (
+    <section class="cfg-step" data-step="question" data-q-category={catId} data-q-id={q.id} data-q-index={qi}>
+      <fieldset class="cfg-fieldset">
+        <legend class="cfg-ask text-display-md measure-tight">{q.ask}</legend>
+        {q.hint && <p class="cfg-hint text-body-md">{q.hint}</p>}
+        <div class="cfg-options">
+          {(q.options as any[]).map((o, oi) => (
+            <button
+              type="button" class="cfg-opt" data-cfg-answer={oi}
+              data-package-id={o.packageId ?? null} data-add-on-id={o.addOnId ?? null}
+              data-region={o.region ?? null} data-film={o.film === undefined ? null : String(o.film)}
+            >
+              <span class="cfg-opt__label text-body-lg">{o.label}</span>
+              {o.hint && <span class="cfg-opt__hint">{o.hint}</span>}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+    </section>
+  )))}
+
+  {/* ── 3 · the packages ─────────────────────────────────────────── */}
+  <section class="cfg-step" data-step="packages">
+    <h2 class="cfg-ask text-display-md measure-tight">Here is what fits.</h2>
+    <p class="cfg-hint text-body-md" data-cfg-estimate-note hidden>
+      For a wedding this is an estimate. I confirm it with you on the call, once I know the day properly.
+    </p>
+    <div class="cfg-packages">
+      {packages.map((p) => {
+        const base = basePrice(p);
+        const q = priceQualifier(p);
+        return (
+          <article
+            class="cfg-pkg" data-package={p.id} data-category={p.category}
+            data-film={String(!!p.film)} data-regions={p.regions ? p.regions.join(',') : ''}
+            data-price={base ?? ''} data-qualifier={q}
+          >
+            <h3 class="cfg-pkg__name text-heading-lg">{p.name}</h3>
+            <p class="cfg-pkg__price">
+              {q === 'rate' && <span>from {money(p.price)} per hour</span>}
+              {q === 'from' && <span>from {money(base!)}</span>}
+              {q === 'firm' && <span>{money(base!)}</span>}
+              {q === 'none' && <span>Priced with you</span>}
+            </p>
+            <p class="cfg-pkg__duration">{p.duration}</p>
+            <p class="cfg-pkg__desc text-body-md">{p.description}</p>
+            <ul class="cfg-pkg__list">
+              {(p.highlights ?? []).map((h: string) => <li>{h}</li>)}
+            </ul>
+            <button type="button" class="cfg-pkg__choose" data-cfg-choose={p.id}>
+              Choose this one
+            </button>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+
+  {/* ── 4 · add-ons ──────────────────────────────────────────────── */}
+  <section class="cfg-step" data-step="addons">
+    <h2 class="cfg-ask text-display-md measure-tight">Anything to add?</h2>
+    <p class="cfg-hint text-body-md">All optional. Nothing here is assumed.</p>
+    <div class="cfg-addons">
+      {ADD_ONS.map((a) => (
+        <div
+          class="cfg-addon" data-addon={a.id} data-unit={a.unit}
+          data-price={a.price ?? ''} data-max={a.max ?? ''} data-countable={String(isCountable(a))}
+        >
+          <label class="cfg-addon__main">
+            <input type="checkbox" class="cfg-addon__box" data-cfg-addon-toggle={a.id} />
+            <span class="cfg-addon__label">{formatAddOn(a)}</span>
+          </label>
+          {isCountable(a) && (
+            <span class="cfg-addon__qty" data-cfg-qty-wrap hidden>
+              <button type="button" class="cfg-step-btn" data-cfg-qty-down aria-label={`Fewer ${a.label}`}>&minus;</button>
+              <output class="cfg-addon__n" data-cfg-qty aria-live="polite">1</output>
+              <button type="button" class="cfg-step-btn" data-cfg-qty-up aria-label={`More ${a.label}`}>+</button>
+            </span>
+          )}
+          {a.note && <p class="cfg-addon__note">{a.note}</p>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* ── 5 · date and location ────────────────────────────────────── */}
+  <section class="cfg-step" data-step="details">
+    <fieldset class="cfg-fieldset">
+      <legend class="cfg-ask text-display-md measure-tight">When and where?</legend>
+      <div class="cfg-fields">
+        <p class="cfg-field">
+          <label for="cfg-date">Your date</label>
+          <input type="text" id="cfg-date" name="event_date" autocomplete="off"
+                 placeholder="June 2027, or not sure yet" />
+          <span class="cfg-err" data-cfg-err="event_date" hidden></span>
+        </p>
+        <p class="cfg-field">
+          <label for="cfg-location">Where is it happening?</label>
+          <input type="text" id="cfg-location" name="location" autocomplete="off"
+                 placeholder="A venue, a city, or not sure yet" />
+          <span class="cfg-permit" data-cfg-permit hidden></span>
+        </p>
+      </div>
+    </fieldset>
+  </section>
+
+  {/* ── 6 · their own question ───────────────────────────────────── */}
+  <section class="cfg-step" data-step="ask">
+    <fieldset class="cfg-fieldset">
+      <legend class="cfg-ask text-display-md measure-tight">Anything you want to ask me?</legend>
+      <p class="cfg-hint text-body-md">Optional. If something above was not clear, this is the place.</p>
+      <p class="cfg-field">
+        <label class="cfg-sr" for="cfg-message">Your question</label>
+        <textarea id="cfg-message" name="message" rows="5"></textarea>
+      </p>
+    </fieldset>
+  </section>
+
+  {/* ── 7 · who you are, then the call ───────────────────────────── */}
+  <section class="cfg-step" data-step="identity">
+    <fieldset class="cfg-fieldset">
+      <legend class="cfg-ask text-display-md measure-tight">Last thing. Who am I photographing?</legend>
+      <div class="cfg-fields">
+        <p class="cfg-field">
+          <label for="cfg-name">Your name</label>
+          <input type="text" id="cfg-name" name="name" autocomplete="name" />
+          <span class="cfg-err" data-cfg-err="name" hidden></span>
+        </p>
+        <p class="cfg-field">
+          <label for="cfg-partner">Your partner's name</label>
+          <input type="text" id="cfg-partner" name="partner_name" autocomplete="off" />
+        </p>
+        <p class="cfg-field">
+          <label for="cfg-email">Email</label>
+          <input type="email" id="cfg-email" name="email" autocomplete="email" inputmode="email" />
+          <span class="cfg-err" data-cfg-err="email" hidden></span>
+        </p>
+      </div>
+      <button type="submit" class="cfg-submit" data-cfg-submit>Send this to Kash</button>
+      <p class="cfg-formerr" data-cfg-form-error hidden></p>
+      <p class="cfg-privacy">
+        I never use your faces to advertise. That is in the contract, and it costs nothing.
+      </p>
+    </fieldset>
+  </section>
+
+  {/* success */}
+  <section class="cfg-step cfg-done" data-step="done" hidden>
+    <h2 class="cfg-ask text-display-md measure-tight">Got it.</h2>
+    <p class="text-body-lg">
+      Your package is with me. The quickest way forward is a short call, so pick a time that suits you.
+    </p>
+    <div class="cfg-done__actions">
+      <BookingLink variant="dark" label="Pick a time" />
+    </div>
+    <p class="cfg-hint text-body-md">
+      Or leave it with me and I will come back to you by email.
+    </p>
+  </section>
+
+  {/* the running total, one element, repositioned per breakpoint in CSS */}
+  <aside class="cfg-total" data-cfg-total hidden aria-label="Your running total">
+    <p class="cfg-total__pkg" data-cfg-total-pkg></p>
+    <p class="cfg-total__sum" data-cfg-total-sum aria-live="polite"></p>
+    <p class="cfg-total__note" data-cfg-total-note></p>
+    <button type="button" class="cfg-next" data-cfg-next>Continue</button>
+  </aside>
+</form>
+
+<script type="application/json" id="cfg-data" set:html={JSON.stringify({ pkgIndex, addOnIndex, permitIndex, flow })} />
+
+<style>
+  /* ── shell ─────────────────────────────────────────────────────── */
+  .cfg { position: relative; }
+  .cfg-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .cfg-sr {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .cfg-fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+  /* Every step is visible with no JS. The script hides all but the active one. */
+  .cfg-step { padding-block: var(--spacing-block); }
+  .cfg-step[hidden] { display: none; }
+
+  .cfg-ask {
+    color: var(--color-on-surface);
+    overflow-wrap: anywhere;
+    min-width: 0;
+    margin: 0 0 var(--spacing-element);
+  }
+  .cfg-hint {
+    color: var(--color-on-surface-variant);
+    max-width: 46ch;
+    margin: 0 0 var(--spacing-element);
+  }
+
+  /* ── wayfinding: a plain count and a hairline, never an eyebrow ── */
+  .cfg-nav {
+    display: flex; align-items: baseline; gap: 1.25rem;
+    margin: 0 0 var(--spacing-tight); font-family: var(--font-sans);
+  }
+  .cfg-back {
+    background: none; border: 0; padding: 0; cursor: pointer;
+    font-family: var(--font-sans); font-size: 0.8125rem; letter-spacing: 0.02em;
+    color: var(--color-on-surface-variant);
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-back:hover { color: var(--color-on-surface); }
+  .cfg-back:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .cfg-count {
+    font-size: 0.8125rem; color: var(--color-on-surface-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .cfg-rule { height: 1px; background: var(--color-surface-container); margin-bottom: var(--spacing-element); }
+  .cfg-rule span {
+    display: block; height: 1px; width: 0; background: var(--color-on-surface);
+    transition: width var(--duration-slow) var(--ease-gallery);
+  }
+
+  /* ── options ───────────────────────────────────────────────────── */
+  .cfg-options { display: grid; gap: 1px; background: var(--color-surface-container); }
+  .cfg-opt {
+    display: flex; flex-direction: column; gap: 0.35rem;
+    min-height: 44px; padding: 1.25rem 1.25rem;
+    text-align: left; cursor: pointer; border: 0; border-radius: 0;
+    background: var(--color-surface); color: var(--color-on-surface);
+    font-family: var(--font-sans);
+    transition: background-color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-opt:hover, .cfg-opt.is-hover { background: var(--color-surface-dim); }
+  .cfg-opt:focus-visible, .cfg-opt.is-focus { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .cfg-opt:active, .cfg-opt.is-active { background: var(--color-surface-container); }
+  .cfg-opt[aria-pressed='true'], .cfg-opt.is-selected {
+    background: var(--color-surface-container);
+  }
+  .cfg-opt[aria-pressed='true'] .cfg-opt__label { font-weight: 500; }
+  /* non-colour cue for the selected state */
+  .cfg-opt[aria-pressed='true']::before {
+    content: ''; width: 8px; height: 8px; background: var(--color-on-surface);
+  }
+  .cfg-opt__hint { font-size: 0.8125rem; color: var(--color-on-surface-variant); }
+  .cfg-opt[aria-disabled='true'], .cfg-opt:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── packages ──────────────────────────────────────────────────── */
+  .cfg-packages { display: grid; gap: var(--spacing-element); }
+  .cfg-pkg[hidden] { display: none; }
+  .cfg-pkg { background: var(--color-surface); padding: 1.75rem 1.5rem; }
+  .cfg-pkg--recommended { background: var(--color-surface-dim); }
+  .cfg-pkg__name { margin: 0 0 0.5rem; }
+  .cfg-pkg__price {
+    font-family: var(--font-sans); font-variant-numeric: tabular-nums;
+    font-weight: 500; font-size: 1.125rem; margin: 0 0 0.25rem;
+  }
+  .cfg-pkg__duration {
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: var(--color-on-surface-muted); margin: 0 0 1rem;
+  }
+  .cfg-pkg__desc { margin: 0 0 1rem; max-width: 52ch; }
+  .cfg-pkg__list { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+  .cfg-pkg__list li {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.5;
+    padding-block: 0.4rem; border-bottom: 1px solid var(--color-surface-container);
+  }
+  .cfg-pkg__choose, .cfg-submit, .cfg-next {
+    min-height: 44px; padding: 0.875rem 1.5rem; cursor: pointer;
+    border: 0; border-radius: 0;
+    background: var(--color-surface-dark); color: var(--color-on-dark);
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+    transition: background-color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-pkg__choose:hover, .cfg-submit:hover, .cfg-next:hover { background: var(--color-on-surface); }
+  .cfg-pkg__choose:focus-visible, .cfg-submit:focus-visible, .cfg-next:focus-visible {
+    outline: 2px solid var(--color-on-surface); outline-offset: 2px;
+  }
+  .cfg-pkg__choose:active, .cfg-submit:active, .cfg-next:active { transform: translateY(1px); }
+  .cfg-submit[aria-busy='true'], .cfg-submit:disabled, .cfg-next:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── add-ons ───────────────────────────────────────────────────── */
+  .cfg-addons { display: grid; gap: 0; }
+  .cfg-addon[hidden] { display: none; }
+  .cfg-addon {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+    column-gap: 1rem; padding-block: 0.875rem;
+    border-bottom: 1px solid var(--color-surface-container);
+  }
+  .cfg-addon__main {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    min-height: 44px; cursor: pointer; font-family: var(--font-sans);
+  }
+  .cfg-addon__box { width: 1rem; height: 1rem; accent-color: var(--color-on-surface); flex: 0 0 auto; }
+  .cfg-addon__box:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .cfg-addon__label { font-size: 0.9375rem; line-height: 1.5; }
+  .cfg-addon__note {
+    grid-column: 1 / -1; margin: 0.25rem 0 0;
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.5;
+    color: var(--color-on-surface-muted); max-width: 56ch;
+  }
+  .cfg-addon__qty { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .cfg-addon__n {
+    font-family: var(--font-sans); font-variant-numeric: tabular-nums;
+    min-width: 1.5rem; text-align: center;
+  }
+  .cfg-step-btn {
+    width: 44px; height: 44px; border: 0; border-radius: 0; cursor: pointer;
+    background: var(--color-surface-dim); color: var(--color-on-surface);
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1;
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-step-btn:hover { color: var(--color-primary-hover); }
+  .cfg-step-btn:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .cfg-step-btn:disabled { opacity: 0.3; cursor: default; }
+
+  /* ── fields ────────────────────────────────────────────────────── */
+  .cfg-fields { display: grid; gap: var(--spacing-element); max-width: 34rem; }
+  .cfg-field { margin: 0; display: grid; gap: 0.4rem; }
+  .cfg-field label {
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: var(--color-on-surface-variant);
+  }
+  .cfg-field input, .cfg-field textarea {
+    width: 100%; min-height: 44px; padding: 0.625rem 0;
+    border: 0; border-bottom: 1px solid var(--color-surface-container);
+    border-radius: 0; background: transparent; color: var(--color-on-surface);
+    font-family: var(--font-sans); font-size: 1rem;
+    transition: border-color var(--duration-hover) var(--ease-gallery);
+  }
+  .cfg-field textarea { min-height: 7rem; resize: vertical; }
+  .cfg-field input:hover, .cfg-field textarea:hover { border-bottom-color: var(--color-on-surface-muted); }
+  .cfg-field input:focus-visible, .cfg-field textarea:focus-visible {
+    outline: 2px solid var(--color-on-surface); outline-offset: 2px;
+  }
+  .cfg-field[data-invalid] input, .cfg-field[data-invalid] textarea { border-bottom-color: var(--color-error); }
+  .cfg-err, .cfg-formerr {
+    font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-error);
+  }
+  .cfg-permit {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-on-surface-muted); max-width: 48ch;
+  }
+  .cfg-privacy {
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.6;
+    color: var(--color-on-surface-variant); max-width: 44ch;
+    margin: var(--spacing-element) 0 0;
+  }
+
+  /* ── the total ─────────────────────────────────────────────────── */
+  .cfg-total[hidden] { display: none; }
+  .cfg-total__pkg, .cfg-total__note {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-on-surface-muted); margin: 0;
+  }
+  .cfg-total__sum {
+    font-family: var(--font-sans); font-variant-numeric: tabular-nums;
+    font-weight: 500; font-size: 1.5rem; margin: 0.15rem 0;
+    color: var(--color-on-surface);
+    transition: opacity var(--duration-fast) var(--ease-gallery);
+  }
+  .cfg-total__sum.is-changing { opacity: 0.35; }
+
+  .cfg-done__actions { margin-block: var(--spacing-element); }
+
+  /* ══ MOBILE layout (below 768px) ═════════════════════════════════
+     The total is a square edged bar fixed to the bottom. The form gets
+     bottom padding so the bar can never cover the last option. */
+  @media (max-width: 767px) {
+    .cfg { padding-bottom: 7.5rem; }
+    .cfg-options--cards { gap: 1px; }
+    .cfg-total {
+      position: fixed; inset: auto 0 0 0; z-index: 20;
+      display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center; column-gap: 1rem;
+      padding: 0.875rem clamp(1rem, 5vw, 1.5rem);
+      background: var(--color-surface-dark); color: var(--color-on-dark);
+    }
+    .cfg-total__pkg, .cfg-total__note { color: var(--color-on-dark-variant); }
+    .cfg-total__sum { color: var(--color-on-dark); font-size: 1.25rem; }
+    .cfg-total__note { display: none; }
+    .cfg-next { grid-row: 1 / span 2; grid-column: 2; }
+  }
+
+  /* ══ DESKTOP layout (768px and up) ═══════════════════════════════
+     Asymmetric. The question sits left, the options right, and the total
+     becomes a sticky rail so it stays in view while they choose. */
+  @media (min-width: 768px) {
+    .cfg { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 1.5rem; }
+    .cfg-nav, .cfg-rule { grid-column: 1 / -1; }
+    .cfg-step { grid-column: 1 / -1; }
+    .cfg-step[data-step='category'] .cfg-ask,
+    .cfg-step[data-step='question'] .cfg-ask,
+    .cfg-step[data-step='question'] .cfg-hint { max-width: 22ch; }
+    .cfg-step[data-step='category'] .cfg-fieldset,
+    .cfg-step[data-step='question'] .cfg-fieldset {
+      display: grid; grid-template-columns: 5fr 7fr; column-gap: 3rem; align-items: start;
+    }
+    .cfg-step[data-step='category'] .cfg-options,
+    .cfg-step[data-step='question'] .cfg-options { grid-template-columns: 7fr 5fr; }
+    .cfg-packages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    .cfg-pkg--recommended { grid-column: 1 / -1; }
+    .cfg-step[data-step='addons'] { grid-column: 1 / 8; }
+    .cfg-total {
+      grid-column: 9 / -1; position: sticky; top: 6rem; align-self: start;
+      padding: 1.25rem; background: var(--color-surface-dim);
+    }
+    .cfg-total .cfg-next { width: 100%; margin-top: 1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cfg-opt, .cfg-back, .cfg-step-btn, .cfg-pkg__choose, .cfg-submit, .cfg-next,
+    .cfg-field input, .cfg-field textarea, .cfg-rule span, .cfg-total__sum { transition: none; }
+    .cfg-total__sum.is-changing { opacity: 1; }
+  }
+</style>
