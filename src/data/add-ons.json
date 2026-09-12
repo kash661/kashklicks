@@ -48,18 +48,6 @@
     "note": "Around 40 edited photographs for every hour of coverage."
   },
   {
-    "id": "extra-hour-prewedding",
-    "label": "Additional hours",
-    "price": 176.25,
-    "unit": "per-hour",
-    "categories": [
-      "Pre-Wedding",
-      "Proposals"
-    ],
-    "max": 6,
-    "status": "proposed"
-  },
-  {
     "id": "second-photographer",
     "label": "Second photographer",
     "price": 101.25,
@@ -125,13 +113,14 @@
   {
     "id": "additional-location",
     "label": "An additional location",
-    "price": 101.25,
+    "price": 151.25,
     "unit": "flat",
     "categories": [
       "Pre-Wedding",
       "Proposals"
     ],
-    "status": "proposed"
+    "status": "proposed",
+    "note": "Each extra location includes 2 more hours of coverage and 30 more photographs."
   },
   {
     "id": "travel-50-150",
@@ -370,7 +359,7 @@
   },
   {
     "id": "vertical-reel",
-    "label": "A vertical reel for social",
+    "label": "Save the date reel",
     "price": 101.25,
     "unit": "per-item",
     "categories": [
@@ -380,7 +369,7 @@
     ],
     "max": 3,
     "status": "proposed",
-    "note": "Filmed on the day. This is real video, not something made from your photographs. Available on sessions, not on wedding days."
+    "note": "A 30 to 40 second reel, filmed on the day. Real video, not made from your photographs. Available on sessions, not on wedding days."
   },
   {
     "id": "raw-photos-wedding",

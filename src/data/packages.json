@@ -32,7 +32,6 @@
     "order": 0,
     "hours": null,
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "film-35mm",
       "drone",
@@ -79,7 +78,6 @@
       "included": 10
     },
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "film-35mm",
       "drone",
@@ -125,7 +123,6 @@
       "included": 5
     },
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "film-35mm",
       "drone",
@@ -171,7 +168,6 @@
       "max": 4
     },
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "film-35mm",
       "drone",
@@ -214,7 +210,6 @@
       "included": 3
     },
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "film-35mm",
       "drone",
@@ -256,7 +251,6 @@
       "included": 2
     },
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "film-35mm",
       "drone",
@@ -321,7 +315,6 @@
       "included": 1
     },
     "addOnIds": [
-      "extra-hour-prewedding",
       "additional-location",
       "extra-retouched",
       "object-removal",
