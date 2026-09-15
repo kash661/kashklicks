@@ -4,37 +4,67 @@
       "id": "wedding",
       "label": "A wedding",
       "category": "Wedding",
-      "blurb": "The day itself"
+      "blurb": "The day itself",
+      "ask": {
+        "title": "How did you guys meet? Or tell me your story.",
+        "hint": "Optional. A line or two is plenty.",
+        "label": "Your story"
+      }
     },
     {
       "id": "prewedding",
       "label": "A pre wedding shoot",
       "category": "Pre-Wedding",
-      "blurb": "Engagement, save the date, or a shoot before the day"
+      "blurb": "Engagement, save the date, or a shoot before the day",
+      "ask": {
+        "title": "How did you guys meet? Or tell me your story.",
+        "hint": "Optional. A line or two is plenty.",
+        "label": "Your story"
+      }
     },
     {
       "id": "civil",
       "label": "A civil ceremony",
       "category": "Civil Ceremony",
-      "blurb": "City Hall, or somewhere small you have chosen"
+      "blurb": "City Hall, or somewhere small you have chosen",
+      "ask": {
+        "title": "How did you guys meet? Or tell me your story.",
+        "hint": "Optional. A line or two is plenty.",
+        "label": "Your story"
+      }
     },
     {
       "id": "proposal",
       "label": "A proposal",
       "category": "Proposals",
-      "blurb": "Captured without them knowing"
+      "blurb": "Captured without them knowing",
+      "ask": {
+        "title": "Anything you want to ask me?",
+        "hint": "Optional. If something above was not clear, this is the place.",
+        "label": "Your question"
+      }
     },
     {
       "id": "celebration",
       "label": "A celebration",
       "category": "Events",
-      "blurb": "An anniversary, a birthday, a party"
+      "blurb": "An anniversary, a birthday, a party",
+      "ask": {
+        "title": "Anything you want to ask me?",
+        "hint": "Optional. If something above was not clear, this is the place.",
+        "label": "Your question"
+      }
     },
     {
       "id": "headshots",
       "label": "Headshots",
       "category": "Headshots",
-      "blurb": "For you or for your team"
+      "blurb": "For you or for your team",
+      "ask": {
+        "title": "Anything you want to ask me?",
+        "hint": "Optional. If something above was not clear, this is the place.",
+        "label": "Your question"
+      }
     }
   ],
   "questions": {

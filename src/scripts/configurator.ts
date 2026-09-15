@@ -15,7 +15,7 @@ type PkgIndex = {
   hours: number | null; name: string; rate: number | null;
 };
 type AddOnIndex = { id: string; price: number | null; unit: string; max: number | null; countable: boolean; label: string };
-type Flow = { categories: Array<Record<string, string>>; questions: Record<string, any[]> };
+type Flow = { categories: Array<Record<string, any>>; questions: Record<string, any[]> };
 
 interface State {
   categoryId?: string;
@@ -245,6 +245,15 @@ export function initConfigurator(): void {
         const input = partner.querySelector<HTMLInputElement>('#cfg-partner');
         if (input) input.value = '';   // never submit a stale value from a hidden field
       }
+    }
+
+    // The free text step asks couples for their story and everyone else for
+    // their question. Copy lives on the category in pricing-flow.json.
+    const askCopy = flow.categories.find((c) => c.id === state.categoryId)?.ask;
+    if (askCopy) {
+      q('[data-step="ask"] .cfg-ask')!.textContent = askCopy.title;
+      q('[data-step="ask"] .cfg-hint')!.textContent = askCopy.hint;
+      q('[data-step="ask"] label')!.textContent = askCopy.label;
     }
 
     renderTotal(seq);
