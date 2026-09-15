@@ -60,21 +60,6 @@
             "packageId": "wedding-premium"
           }
         ]
-      },
-      {
-        "id": "film",
-        "ask": "Would you like a film as well as photographs?",
-        "hint": "Every price you will see is for photography. If you want a film I will quote that for you separately.",
-        "options": [
-          {
-            "label": "Photographs only",
-            "addOnId": null
-          },
-          {
-            "label": "Photographs and a film",
-            "addOnId": "wedding-film"
-          }
-        ]
       }
     ],
     "prewedding": [
