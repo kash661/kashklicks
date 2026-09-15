@@ -188,7 +188,7 @@
   {
     "id": "raw-photos-duo",
     "label": "Unedited RAW photographs",
-    "price": 49.99,
+    "price": 49.25,
     "unit": "flat",
     "categories": [
       "Pre-Wedding"
@@ -199,7 +199,7 @@
   {
     "id": "raw-photos-film",
     "label": "Unedited RAW photographs",
-    "price": 69.99,
+    "price": 69.25,
     "unit": "flat",
     "categories": [
       "Pre-Wedding"
@@ -210,7 +210,7 @@
   {
     "id": "raw-photos-prewedding",
     "label": "Unedited RAW photographs",
-    "price": 89.99,
+    "price": 89.25,
     "unit": "flat",
     "categories": [
       "Pre-Wedding"
