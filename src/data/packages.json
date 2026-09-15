@@ -163,6 +163,7 @@
       "included": 3
     },
     "addOnIds": [
+      "additional-location",
       "drone",
       "extra-retouched",
       "vertical-reel",
