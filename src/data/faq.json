@@ -15,9 +15,15 @@
   },
   {
     "question": "Can I get the raw files?",
+    "answer": "Yes. Raw photos are $69.25. Delivered digitally with your edited gallery.",
+    "services": [
+      "civil-ceremony"
+    ]
+  },
+  {
+    "question": "Can I get the raw files?",
     "answer": "Yes. Raw photos are $51.25. Delivered digitally with your edited gallery.",
     "services": [
-      "civil-ceremony",
       "celebrations"
     ]
   },

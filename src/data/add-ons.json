@@ -151,9 +151,19 @@
     "price": 51.25,
     "unit": "flat",
     "categories": [
-      "Civil Ceremony",
       "Events",
       "Proposals"
+    ],
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
+  },
+  {
+    "id": "raw-photos-civil",
+    "label": "Unedited RAW photographs",
+    "price": 69.25,
+    "unit": "flat",
+    "categories": [
+      "Civil Ceremony"
     ],
     "status": "locked",
     "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
