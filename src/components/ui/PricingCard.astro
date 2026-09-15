@@ -164,21 +164,18 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
   )}
 
   {/*
-    Native-link fallback: if the modal script fails to bind (JS error earlier
-    in the page, slow hydration, etc.) the CTA still navigates to /contact/
-    with the package context preserved. The inline form on /contact/ reads
-    these URL params and pre-fills event_type + hidden package fields. The
-    #inquiry hash scrolls to the form. Modal binding intercepts the click
-    via event.preventDefault() when JS is healthy on /services/* pages.
+    Since 2026-09-15 the card sends people into the guided configurator at
+    /pricing/ rather than the contact modal. The old form is retired: the
+    configurator is the intake, and /contact/ offers Instagram or WhatsApp
+    for anyone who would rather just message. data-package stays on the
+    link so analytics can still tell which card was tapped.
   */}
   <a
-    href={`/contact/?${service ? `service=${encodeURIComponent(service)}&` : ''}package=${encodeURIComponent(id)}&package_name=${encodeURIComponent(name)}#inquiry`}
+    href="/pricing/"
     class="pricing-card__cta"
-    data-open-modal="contact-modal"
     data-service={service}
     data-package={id}
     data-package-name={name}
-    role="button"
   >
     {ctaLabel}
     <span class="pricing-card__cta-arrow" aria-hidden="true">&rarr;</span>
