@@ -159,8 +159,7 @@
           },
           {
             "label": "A team at my company",
-            "packageId": "headshots-professional",
-            "addOnId": "headshots-team-licence"
+            "packageId": "headshots-professional"
           }
         ]
       },
