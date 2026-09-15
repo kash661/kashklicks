@@ -214,6 +214,8 @@ export function initConfigurator(): void {
       el.querySelector('[data-cfg-choose]')?.setAttribute('aria-pressed', String(isPick));
     });
     q('[data-cfg-estimate-note]')!.hidden = state.category !== 'Wedding';
+    // a wedding couple often has no date yet; say so rather than leave them guessing
+    q('[data-cfg-details-hint]')!.hidden = state.category !== 'Wedding';
 
     // add-ons for the chosen package
     const offered = new Set(state.packageId ? pkgById.get(state.packageId)?.addOnIds ?? [] : []);
