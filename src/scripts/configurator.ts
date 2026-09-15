@@ -187,9 +187,9 @@ export function initConfigurator(): void {
       }
     });
 
-    // A celebration is a party, not a couple, so there is no partner to name.
-    // Add 'headshots' here if a headshot should drop it too.
-    const NO_PARTNER = new Set(['celebration']);
+    // A celebration is a party and a headshot is one person, so neither has a
+    // partner to name.
+    const NO_PARTNER = new Set(['celebration', 'headshots']);
     const partner = q('[data-cfg-partner]');
     if (partner) {
       const hide = NO_PARTNER.has(state.categoryId ?? '');
