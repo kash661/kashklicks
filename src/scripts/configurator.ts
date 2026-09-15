@@ -107,6 +107,8 @@ export function initConfigurator(): void {
   const q = (el: string) => form.querySelector<HTMLElement>(el);
   const all = (el: string) => Array.from(form.querySelectorAll<HTMLElement>(el));
   const stepEls = all('.cfg-step');
+  // catalogue order, captured once; render() reorders the live DOM from this
+  const pkgEls = all('.cfg-pkg');
 
   function sequence(): HTMLElement[] {
     const out: HTMLElement[] = [q('[data-step="category"]')!];
@@ -174,7 +176,15 @@ export function initConfigurator(): void {
 
     // packages
     const eligible = new Set(eligiblePackages().map((p) => p.id));
-    all('.cfg-pkg').forEach((el) => {
+    // The recommended package, the one a question pointed at, goes first; the
+    // rest keep catalogue order. The nodes are moved rather than styled with
+    // CSS order so the tab order matches what is on screen. Nothing moves when
+    // the order is already right.
+    const packagesEl = q('.cfg-packages')!;
+    const ordered = pkgEls.filter((el) => el.dataset.package === state.packageId)
+      .concat(pkgEls.filter((el) => el.dataset.package !== state.packageId));
+    if (ordered.some((el, i) => packagesEl.children[i] !== el)) ordered.forEach((el) => packagesEl.append(el));
+    pkgEls.forEach((el) => {
       const id = el.dataset.package!;
       el.hidden = !eligible.has(id);
       const isPick = id === state.packageId;
