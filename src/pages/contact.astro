@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-import ContactForm from '../components/forms/ContactForm.astro';
 import ReviewStrip from '../components/global/ReviewStrip.astro';
 import InstagramChat from '../components/global/InstagramChat.astro';
 import WhatsAppChat from '../components/global/WhatsAppChat.astro';
@@ -14,6 +13,7 @@ import faq from '../data/faq.json';
 import site from '../data/site.json';
 import testimonials from '../data/testimonials.json';
 import heroImage from '../assets/images/homepage/homepage-02.jpg';
+import homepage10 from '../assets/images/homepage/homepage-10-josie-nelson-veil.jpg';
 import testimonialImage from '../assets/images/portfolio/shuba-rob-cover.jpg';
 
 const featuredTestimonial = testimonials.find((t) => t.id === 'shubha-kaushik') ?? testimonials[0];
@@ -143,7 +143,7 @@ const contactPageSchema = {
             The conversation <em>starts here.</em>
           </h2>
           <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 42ch;">
-            Share a little about your day, your vision, and the moments you want to remember. I'll take it from there.
+            Build your package and see the price as you go, or just message me. I take it from there.
           </p>
 
           <!-- What Happens Next — 3-step explainer, sits above Studio Notes -->
@@ -206,35 +206,61 @@ const contactPageSchema = {
           </div>
         </div>
 
-        <!-- Right: Inline form. Replaces the former dark "Open the Form"
-             modal-trigger card — eliminates the pre-hydration dead-click
-             failure mode on iOS Safari. -->
+        <!-- Right: the inline inquiry form was removed on 2026-09-15 at Akash's
+             request and replaced by two paths. The primary path is the guided
+             pricing configurator at /pricing/, surfaced here as one large image
+             card that is a single link. The secondary paths are the Instagram
+             and WhatsApp DM affordances, for couples who would rather send a
+             message than answer six questions. Nothing in this column collects
+             an email address any more. -->
         <div class="col-span-12 lg:col-span-6 lg:col-start-7 order-1 lg:order-none">
           <div class="inquiry-form-block reveal-right">
-            <p class="text-label-md text-on-surface-muted eyebrow-rule">Inquiry</p>
-            <h3 class="text-heading-lg mt-8" style="max-width: 14ch;">
-              Begin the <em class="font-serif italic">inquiry.</em>
-            </h3>
-            <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 42ch;">
-              Share a little about your day and your vision. I'll take it from there.
-            </p>
+            <p class="text-label-md text-on-surface-muted eyebrow-rule">Start here</p>
 
-            <!-- Trust proof adjacent to the form (CRO: social proof lifts form
-                 completion when it sits within the same visual frame). -->
+            <!-- Primary action. One link, one tap target, one focus ring. The
+                 action label is a <span>, not a <button>, because a link must
+                 never contain a button. -->
+            <a href="/pricing/" class="configurator-card block mt-8">
+              <div class="configurator-card__frame aspect-[4/5] lg:aspect-[3/2] overflow-hidden">
+                <Image
+                  src={homepage10}
+                  alt="Josie and Nelson under the veil at Guild Park, photographed by AD Photography"
+                  widths={[640, 960, 1280]}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={70}
+                  format="avif"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              <h3 class="text-heading-lg mt-8" style="max-width: 16ch;">
+                See your price in <em class="font-serif italic">two minutes.</em>
+              </h3>
+              <p class="text-body-lg text-on-surface-variant mt-6" style="max-width: 42ch;">
+                Six questions, your package, your total. No email asked until the end.
+              </p>
+
+              <span
+                class="magnetic inline-flex items-center justify-center whitespace-nowrap w-full px-12 py-5 mt-8 bg-surface-dark text-on-dark font-sans text-label-md hover:bg-primary-hover cubic-ease"
+                style="transition-duration: var(--duration-hover);"
+              >
+                Build your package
+              </span>
+            </a>
+
+            <!-- Trust proof sits directly under the primary action (CRO: social
+                 proof lifts click-through when it shares the visual frame). -->
             <ReviewStrip class="mt-8 reveal" />
 
-            <!-- Fast path: Akash answers Instagram DMs daily, rarely email.
-                 Prominent but on-brand; the form below is the full intake. -->
-            <div class="mt-8 reveal">
+            <!-- Secondary paths: Akash answers Instagram DMs daily and rarely
+                 checks email, so these are genuine fast lanes, not courtesy links. -->
+            <p class="text-label-sm text-on-surface-muted mt-10">
+              Rather talk first?
+            </p>
+            <div class="mt-6 reveal">
               <InstagramChat />
-              <WhatsAppChat class="mt-4" note="" />
-              <p class="text-label-sm text-on-surface-muted mt-6">
-                Or tell me about your day with the form below.
-              </p>
-            </div>
-
-            <div class="mt-8">
-              <ContactForm />
+              <WhatsAppChat class="mt-4" />
             </div>
 
             <!-- Featured testimonial — adjacent to form. Quote + portrait
@@ -367,6 +393,45 @@ const contactPageSchema = {
     }
   }
 
-  /* Form styles live in ContactForm.astro + global.css form tokens. */
+  /* ── Configurator card: the whole card is one link to /pricing/ ──
+     Square edges only. Hover scales the photograph, never the text.
+     :global() reaches the <img> that astro:assets renders inside the frame. */
+  .configurator-card {
+    text-decoration: none;
+    border-radius: 0;
+  }
+
+  .configurator-card__frame {
+    border-radius: 0;
+  }
+
+  .configurator-card :global(img) {
+    border-radius: 0;
+    transition: transform var(--duration-deliberate) var(--ease-gallery);
+    will-change: transform;
+  }
+
+  .configurator-card:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .configurator-card:focus {
+    outline: none;
+  }
+
+  .configurator-card:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .configurator-card :global(img) {
+      transition: none;
+      will-change: auto;
+    }
+    .configurator-card:hover :global(img) {
+      transform: none;
+    }
+  }
 </style>
 
