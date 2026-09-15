@@ -281,8 +281,6 @@
     "addOnIds": [
       "extra-hours-wedding",
       "second-photographer",
-      "instax-50",
-      "handheld-compact",
       "drone",
       "wedding-film",
       "priority-delivery-wedding",
@@ -319,8 +317,6 @@
     "addOnIds": [
       "extra-hours-wedding",
       "second-photographer",
-      "instax-50",
-      "handheld-compact",
       "drone",
       "wedding-film",
       "priority-delivery-wedding",
@@ -355,8 +351,6 @@
     },
     "addOnIds": [
       "second-photographer",
-      "instax-50",
-      "handheld-compact",
       "drone",
       "wedding-film",
       "raw-photos-wedding"
@@ -386,8 +380,6 @@
     },
     "addOnIds": [
       "extra-hours-events",
-      "instax-50",
-      "handheld-compact",
       "extra-retouched",
       "raw-photos-sessions"
     ]
@@ -412,8 +404,6 @@
     "order": 6,
     "priceIsRate": true,
     "addOnIds": [
-      "instax-50",
-      "handheld-compact",
       "extra-retouched",
       "raw-photos-sessions"
     ]
@@ -444,8 +434,6 @@
     },
     "addOnIds": [
       "extra-hours-civil",
-      "instax-50",
-      "handheld-compact",
       "drone",
       "extra-retouched",
       "raw-photos-sessions"
@@ -477,8 +465,6 @@
     },
     "addOnIds": [
       "extra-hours-civil",
-      "instax-50",
-      "handheld-compact",
       "drone",
       "extra-retouched",
       "raw-photos-sessions"

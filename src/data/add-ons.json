@@ -59,33 +59,6 @@
     "note": "Each extra location includes 2 more hours of coverage and 30 more photographs."
   },
   {
-    "id": "instax-50",
-    "label": "Instax guest prints, up to 50",
-    "price": 61.25,
-    "unit": "flat",
-    "categories": [
-      "Wedding",
-      "Events",
-      "Civil Ceremony"
-    ],
-    "status": "locked",
-    "note": "Instant prints handed to your guests during the day, up to fifty of them to take home."
-  },
-  {
-    "id": "handheld-compact",
-    "label": "Handheld compact for your crew",
-    "price": 101.25,
-    "unit": "deposit",
-    "categories": [
-      "Wedding",
-      "Events",
-      "Civil Ceremony"
-    ],
-    "status": "locked",
-    "refundable": true,
-    "note": "A deposit, returned to you afterwards. Not part of your total."
-  },
-  {
     "id": "drone",
     "label": "Drone and aerial frames",
     "price": 76.25,
