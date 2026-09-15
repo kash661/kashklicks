@@ -131,9 +131,12 @@ export function initConfigurator(): void {
         );
         if (el) out.push(el);
       });
+      // A package with no add-ons (Make It Yours) skips the add-ons step
+      // rather than showing "Anything to add?" over an empty list.
+      const offersAddOns = !state.packageId || (pkgById.get(state.packageId)?.addOnIds.length ?? 0) > 0;
+      out.push(q('[data-step="packages"]')!);
+      if (offersAddOns) out.push(q('[data-step="addons"]')!);
       out.push(
-        q('[data-step="packages"]')!,
-        q('[data-step="addons"]')!,
         q('[data-step="details"]')!,
         q('[data-step="ask"]')!,
         q('[data-step="identity"]')!,
@@ -188,6 +191,11 @@ export function initConfigurator(): void {
 
     // packages
     const eligible = new Set(eligiblePackages().map((p) => p.id));
+    // A package chosen earlier can stop being eligible when an answer changes,
+    // say a film session picked before "Photographs only", or before a move
+    // to "Outside Canada". It must not ride along hidden with its add-ons and
+    // total, so it is dropped and the visitor chooses again.
+    if (state.packageId && !eligible.has(state.packageId)) setPackage(undefined);
     // The recommended package, the one a question pointed at, goes first; the
     // rest keep catalogue order. The nodes are moved rather than styled with
     // CSS order so the tab order matches what is on screen. Nothing moves when
@@ -383,6 +391,10 @@ export function initConfigurator(): void {
       if (ans.dataset.region) state.region = ans.dataset.region;
       if (ans.dataset.film) state.film = ans.dataset.film === 'true';
       if (ans.dataset.addOnId) state.addOns[ans.dataset.addOnId] = 1;
+      // when the answers leave exactly one package, it is the pick, same as a
+      // proposal; the visitor still sees the card and can carry on from it
+      const only = eligiblePackages();
+      if (only.length === 1) setPackage(only[0].id);
       go(1);
       return;
     }
@@ -495,7 +507,7 @@ export function initConfigurator(): void {
 
     const answersReadable = Object.entries(state.answers).map(([qid, oi]) => {
       const question = (flow.questions[state.categoryId!] ?? []).find((x: any) => x.id === qid);
-      return question ? `${question.ask} ${question.options[oi]?.label}` : '';
+      return question && isAsked(question) ? `${question.ask} ${question.options[oi]?.label}` : '';
     }).filter(Boolean).join(' | ');
 
     const set = (n: string, v: string) => {
@@ -518,7 +530,7 @@ export function initConfigurator(): void {
       pkg ? `Package: ${pkg.name}` : '',
       answersReadable ? `Answers: ${answersReadable}` : '',
       readable ? `Add ons: ${readable}` : '',
-      pkg?.price != null ? `Estimate: ${money(pkg.price + t.addOnsTotal)}` : '',
+      pkg?.price != null ? `Estimate: ${pkg.qualifier === 'from' ? 'from ' : ''}${money(pkg.price + t.addOnsTotal)}` : '',
     ].filter(Boolean).join('\n');
     msgEl.value = [msgEl.value.trim(), summary].filter(Boolean).join('\n\n');
 
