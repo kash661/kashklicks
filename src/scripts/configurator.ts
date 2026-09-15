@@ -110,15 +110,22 @@ export function initConfigurator(): void {
   // catalogue order, captured once; render() reorders the live DOM from this
   const pkgEls = all('.cfg-pkg');
 
+  // A question with onlyWhen is asked only after a given answer to an earlier
+  // question. optionIndex is one index or a list of them.
+  function isAsked(question: any): boolean {
+    const gate = question.onlyWhen;
+    if (!gate) return true;
+    const given = state.answers[gate.question];
+    const want: number[] = Array.isArray(gate.optionIndex) ? gate.optionIndex : [gate.optionIndex];
+    return given !== undefined && want.includes(given);
+  }
+
   function sequence(): HTMLElement[] {
     const out: HTMLElement[] = [q('[data-step="category"]')!];
     if (state.categoryId) {
       const qs = (flow.questions[state.categoryId] ?? []) as any[];
       qs.forEach((question, i) => {
-        if (question.onlyWhen) {
-          const gate = question.onlyWhen;
-          if (state.answers[gate.question] !== gate.optionIndex) return;
-        }
+        if (!isAsked(question)) return;
         const el = form.querySelector<HTMLElement>(
           `[data-step="question"][data-q-category="${state.categoryId}"][data-q-index="${i}"]`
         );
@@ -137,10 +144,15 @@ export function initConfigurator(): void {
 
   // ─── what is relevant right now ───────────────────────────────────
   function eligiblePackages(): PkgIndex[] {
+    // A region that has its own package gets that package and nothing else.
+    // Outside Ontario that is The Weekend Away, on its own.
+    const away = !!state.region &&
+      pkgIndex.some((p) => p.category === state.category && !!p.regions?.includes(state.region!));
     return pkgIndex.filter((p) => {
       if (p.category !== state.category) return false;
       // region gated packages only appear once the visitor has said where they are
       if (p.regions) return !!state.region && p.regions.includes(state.region);
+      if (away) return false;
       // if they asked for film, hide the packages that do not include it, and vice versa
       if (state.film !== undefined && p.category === 'Pre-Wedding' && p.price !== null) {
         if (p.film !== state.film) return false;
@@ -262,7 +274,7 @@ export function initConfigurator(): void {
     for (const [qid, oi] of Object.entries(state.answers)) {
       const question = (flow.questions[state.categoryId!] ?? []).find((x: any) => x.id === qid);
       const opt = question?.options?.[oi];
-      if (question && opt) row(question.ask, opt.label, true);
+      if (question && opt && isAsked(question)) row(question.ask, opt.label, true);
     }
 
     let extras = 0;

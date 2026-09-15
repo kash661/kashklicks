@@ -1,11 +1,41 @@
 {
   "categories": [
-    { "id": "wedding",   "label": "A wedding",            "category": "Wedding",        "blurb": "The day itself" },
-    { "id": "prewedding","label": "A pre wedding shoot",   "category": "Pre-Wedding",    "blurb": "Engagement, save the date, or a shoot before the day" },
-    { "id": "civil",     "label": "A civil ceremony",      "category": "Civil Ceremony", "blurb": "City Hall, or somewhere small you have chosen" },
-    { "id": "proposal",  "label": "A proposal",            "category": "Proposals",      "blurb": "Captured without them knowing" },
-    { "id": "celebration","label": "A celebration",        "category": "Events",         "blurb": "An anniversary, a birthday, a party" },
-    { "id": "headshots", "label": "Headshots",             "category": "Headshots",      "blurb": "For you or for your team" }
+    {
+      "id": "wedding",
+      "label": "A wedding",
+      "category": "Wedding",
+      "blurb": "The day itself"
+    },
+    {
+      "id": "prewedding",
+      "label": "A pre wedding shoot",
+      "category": "Pre-Wedding",
+      "blurb": "Engagement, save the date, or a shoot before the day"
+    },
+    {
+      "id": "civil",
+      "label": "A civil ceremony",
+      "category": "Civil Ceremony",
+      "blurb": "City Hall, or somewhere small you have chosen"
+    },
+    {
+      "id": "proposal",
+      "label": "A proposal",
+      "category": "Proposals",
+      "blurb": "Captured without them knowing"
+    },
+    {
+      "id": "celebration",
+      "label": "A celebration",
+      "category": "Events",
+      "blurb": "An anniversary, a birthday, a party"
+    },
+    {
+      "id": "headshots",
+      "label": "Headshots",
+      "category": "Headshots",
+      "blurb": "For you or for your team"
+    }
   ],
   "questions": {
     "wedding": [
@@ -14,9 +44,21 @@
         "ask": "How much of the day would you like me there for?",
         "hint": "You can change this later. It just points me at the right starting place.",
         "options": [
-          { "label": "The ceremony and the portraits", "hint": "Around six hours", "packageId": "wedding-essential" },
-          { "label": "Most of the day",                "hint": "Around ten hours", "packageId": "wedding-full" },
-          { "label": "Start to finish",                "hint": "Up to fourteen hours", "packageId": "wedding-premium" }
+          {
+            "label": "The ceremony and the portraits",
+            "hint": "Around six hours",
+            "packageId": "wedding-essential"
+          },
+          {
+            "label": "Most of the day",
+            "hint": "Around ten hours",
+            "packageId": "wedding-full"
+          },
+          {
+            "label": "Start to finish",
+            "hint": "Up to fourteen hours",
+            "packageId": "wedding-premium"
+          }
         ]
       },
       {
@@ -24,8 +66,14 @@
         "ask": "Would you like a film as well as photographs?",
         "hint": "Every price you will see is for photography. If you want a film I will quote that for you separately.",
         "options": [
-          { "label": "Photographs only", "addOnId": null },
-          { "label": "Photographs and a film", "addOnId": "wedding-film" }
+          {
+            "label": "Photographs only",
+            "addOnId": null
+          },
+          {
+            "label": "Photographs and a film",
+            "addOnId": "wedding-film"
+          }
         ]
       }
     ],
@@ -35,10 +83,22 @@
         "ask": "Where are you?",
         "hint": "If you are outside Ontario I fly in for the weekend, which changes what makes sense.",
         "options": [
-          { "label": "In or around Toronto", "region": "toronto-gta" },
-          { "label": "Elsewhere in Ontario", "region": "ontario" },
-          { "label": "Elsewhere in Canada",  "region": "canada" },
-          { "label": "Outside Canada",       "region": "international" }
+          {
+            "label": "In or around Toronto",
+            "region": "toronto-gta"
+          },
+          {
+            "label": "Elsewhere in Ontario",
+            "region": "ontario"
+          },
+          {
+            "label": "Elsewhere in Canada",
+            "region": "canada"
+          },
+          {
+            "label": "Outside Canada",
+            "region": "international"
+          }
         ]
       },
       {
@@ -46,9 +106,22 @@
         "ask": "Photographs only, or photographs and a film?",
         "hint": "The film is a short cinematic piece, plus a trailer you can use as a save the date.",
         "options": [
-          { "label": "Photographs only",       "film": false },
-          { "label": "Photographs and a film", "film": true }
-        ]
+          {
+            "label": "Photographs only",
+            "film": false
+          },
+          {
+            "label": "Photographs and a film",
+            "film": true
+          }
+        ],
+        "onlyWhen": {
+          "question": "region",
+          "optionIndex": [
+            0,
+            1
+          ]
+        }
       }
     ],
     "civil": [
@@ -57,8 +130,16 @@
         "ask": "Where is the ceremony?",
         "hint": null,
         "options": [
-          { "label": "At City Hall", "hint": "Around two hours", "packageId": "civil-ceremony" },
-          { "label": "Somewhere we have chosen", "hint": "Up to four hours", "packageId": "elopement" }
+          {
+            "label": "At City Hall",
+            "hint": "Around two hours",
+            "packageId": "civil-ceremony"
+          },
+          {
+            "label": "Somewhere we have chosen",
+            "hint": "Up to four hours",
+            "packageId": "elopement"
+          }
         ]
       }
     ],
@@ -68,8 +149,15 @@
         "ask": "Do you know roughly how long you need me?",
         "hint": null,
         "options": [
-          { "label": "Two hours or more", "packageId": "celebrations" },
-          { "label": "I am not sure yet", "hint": "We can work by the hour", "packageId": "celebrations-hourly" }
+          {
+            "label": "Two hours or more",
+            "packageId": "celebrations"
+          },
+          {
+            "label": "I am not sure yet",
+            "hint": "We can work by the hour",
+            "packageId": "celebrations-hourly"
+          }
         ]
       }
     ],
@@ -79,18 +167,34 @@
         "ask": "Is this just for you, or for a team?",
         "hint": null,
         "options": [
-          { "label": "Just me", "packageId": "headshots-professional" },
-          { "label": "A team at my company", "packageId": "headshots-professional", "addOnId": "headshots-team-licence" }
+          {
+            "label": "Just me",
+            "packageId": "headshots-professional"
+          },
+          {
+            "label": "A team at my company",
+            "packageId": "headshots-professional",
+            "addOnId": "headshots-team-licence"
+          }
         ]
       },
       {
         "id": "student",
         "ask": "Are you a student?",
         "hint": "There is a student rate. You will need to bring your student ID on the day.",
-        "onlyWhen": { "question": "who", "optionIndex": 0 },
+        "onlyWhen": {
+          "question": "who",
+          "optionIndex": 0
+        },
         "options": [
-          { "label": "No", "packageId": "headshots-professional" },
-          { "label": "Yes, I have a student ID", "packageId": "headshots-student" }
+          {
+            "label": "No",
+            "packageId": "headshots-professional"
+          },
+          {
+            "label": "Yes, I have a student ID",
+            "packageId": "headshots-student"
+          }
         ]
       }
     ],
