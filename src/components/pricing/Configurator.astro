@@ -37,10 +37,11 @@ const CATEGORY_IMAGE: Record<string, ImageMetadata> = {
   // pre-wedding cover, which is where they are filed in portfolio.json.
   wedding: (await import('../../assets/images/homepage/homepage-10-josie-nelson-veil.jpg')).default,
   prewedding: (await import('../../assets/images/portfolio/swati-saksham-cover.jpg')).default,
-  // Harsh + Payal, frame 10, chosen off its caption: "Harsh and Payal in a
-  // close tender moment framed by white daisies on the Toronto Islands".
-  // Their gallery is a civil ceremony, so the image matches what is booked.
-  civil: (await import('../../assets/images/portfolio/harsh-payal/10.jpg')).default,
+  // Akash's own pick for civil: the couple kissing in front of a columned stone
+  // facade on cobblestones, shot with deliberate motion blur. Not a gallery
+  // frame. The original was not on this machine, so this is the copy he sent
+  // at 1333x2000, more than double the 640px the card ever renders at.
+  civil: (await import('../../assets/images/pricing/civil-motion-blur-kiss.jpg')).default,
   // Ashley + Donald, frame 03, chosen off its caption: "Donald down on one knee
   // by the rose beds at Château des Charmes as Ashley brings a hand to her
   // mouth". The only frame in the gallery that shows the proposal itself, and
