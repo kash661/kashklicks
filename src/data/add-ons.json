@@ -170,7 +170,7 @@
   },
   {
     "id": "raw-photos-mini",
-    "label": "Unedited RAW photographs",
+    "label": "Unedited RAW photographs, Love Story Mini",
     "price": 39.25,
     "unit": "flat",
     "categories": [
@@ -181,7 +181,7 @@
   },
   {
     "id": "raw-photos-duo",
-    "label": "Unedited RAW photographs",
+    "label": "Unedited RAW photographs, Love Story Duo",
     "price": 49.25,
     "unit": "flat",
     "categories": [
@@ -192,7 +192,7 @@
   },
   {
     "id": "raw-photos-film",
-    "label": "Unedited RAW photographs",
+    "label": "Unedited RAW photographs, photo and film sessions",
     "price": 69.25,
     "unit": "flat",
     "categories": [
@@ -203,7 +203,7 @@
   },
   {
     "id": "raw-photos-prewedding",
-    "label": "Unedited RAW photographs",
+    "label": "Unedited RAW photographs, The Pre Wedding",
     "price": 89.25,
     "unit": "flat",
     "categories": [
