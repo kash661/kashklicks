@@ -167,10 +167,53 @@
     "price": 51.25,
     "unit": "flat",
     "categories": [
-      "Pre-Wedding",
       "Civil Ceremony",
       "Events",
       "Proposals"
+    ],
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
+  },
+  {
+    "id": "raw-photos-mini",
+    "label": "Unedited RAW photographs",
+    "price": 39.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
+  },
+  {
+    "id": "raw-photos-duo",
+    "label": "Unedited RAW photographs",
+    "price": 49.99,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
+  },
+  {
+    "id": "raw-photos-film",
+    "label": "Unedited RAW photographs",
+    "price": 69.99,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
+  },
+  {
+    "id": "raw-photos-prewedding",
+    "label": "Unedited RAW photographs",
+    "price": 89.99,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
     ],
     "status": "locked",
     "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."

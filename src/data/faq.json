@@ -8,9 +8,15 @@
   },
   {
     "question": "Can I get the raw files?",
-    "answer": "Yes. Raw photos are $51.25, raw video is $101.25. Delivered digitally with your edited gallery.",
+    "answer": "Yes. Raw photos are $39.25 on Love Story Mini, $49.99 on Love Story Duo, $69.99 on the photo and film sessions, and $89.99 on The Pre Wedding. Raw video is $101.25. Delivered digitally with your edited gallery.",
     "services": [
-      "pre-wedding",
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "Can I get the raw files?",
+    "answer": "Yes. Raw photos are $51.25. Delivered digitally with your edited gallery.",
+    "services": [
       "civil-ceremony",
       "celebrations"
     ]

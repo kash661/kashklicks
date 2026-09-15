@@ -34,7 +34,7 @@
     "addOnIds": [
       "drone",
       "extra-retouched",
-      "raw-photos-sessions",
+      "raw-photos-prewedding",
       "raw-video-sessions"
     ]
   },
@@ -67,7 +67,7 @@
     "addOnIds": [
       "drone",
       "extra-retouched",
-      "raw-photos-sessions",
+      "raw-photos-prewedding",
       "raw-video-sessions"
     ]
   },
@@ -101,7 +101,7 @@
       "drone",
       "extra-retouched",
       "vertical-reel",
-      "raw-photos-sessions",
+      "raw-photos-film",
       "raw-video-sessions"
     ]
   },
@@ -135,7 +135,7 @@
       "drone",
       "extra-retouched",
       "vertical-reel",
-      "raw-photos-sessions",
+      "raw-photos-film",
       "raw-video-sessions"
     ]
   },
@@ -166,7 +166,7 @@
       "drone",
       "extra-retouched",
       "vertical-reel",
-      "raw-photos-sessions"
+      "raw-photos-duo"
     ]
   },
   {
@@ -196,7 +196,7 @@
       "drone",
       "extra-retouched",
       "vertical-reel",
-      "raw-photos-sessions"
+      "raw-photos-mini"
     ]
   },
   {
