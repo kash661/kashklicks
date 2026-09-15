@@ -381,11 +381,14 @@ function priceParts(a: typeof ADD_ONS[number]) {
     position: fixed; inset: 0; z-index: 5;
     display: flex; flex-direction: column;
     background: var(--color-background);
-    padding-inline: clamp(1.125rem, 5vw, 4rem);
+    --cfg-gutter: clamp(1.125rem, 5vw, 4rem);
+    padding-inline: var(--cfg-gutter);
   }
   .cfg-top { flex: 0 0 auto; padding-top: clamp(1.125rem, 3vw, 2.25rem); }
   .cfg-body {
-    flex: 1 1 auto; min-height: 0; overflow-y: auto;
+    /* Vertical scroll only. Anything wider than the screen is clipped, never
+       scrolled to, so a step can never slide sideways. */
+    flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
     overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
     /* Scrollbar hidden by request. It still scrolls; the bar is just not drawn. */
     scrollbar-width: none; -ms-overflow-style: none;
@@ -770,14 +773,20 @@ function priceParts(a: typeof ADD_ONS[number]) {
 
   /* ══ MOBILE (below 768px) ════════════════════════════════════════ */
   @media (max-width: 767px) {
+    /* What has been chosen so far, as a bar fixed to the bottom of the screen.
+       Fixed rather than sticky with negative margins: those made the bar one
+       gutter wider than the scroll area, so every step could scroll sideways
+       and cut off at the right edge. */
     .cfg-total {
-      position: sticky; bottom: 0; z-index: 10;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
       display: grid; grid-template-columns: minmax(0, 1fr) auto;
       align-items: center; column-gap: 1rem;
-      margin-inline: calc(clamp(1.125rem, 5vw, 4rem) * -1);
-      padding: 1rem clamp(1.125rem, 5vw, 4rem);
+      padding: 1rem var(--cfg-gutter) calc(1rem + env(safe-area-inset-bottom));
       background: var(--color-surface-dark); color: var(--color-on-dark);
     }
+    /* room under the last card so the bar never covers a Choose button */
+    .cfg-body:has(.cfg-total:not([hidden])) .cfg-flow { padding-bottom: 7rem; }
+    .cfg-total__pkg, .cfg-total__sum { min-width: 0; overflow-wrap: anywhere; }
     .cfg-total__pkg { color: var(--color-on-dark-variant); }
     .cfg-total__sum { color: var(--color-on-dark); font-size: 1.375rem; }
     .cfg-total__note { display: none; }
