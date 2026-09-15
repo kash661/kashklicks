@@ -48,18 +48,6 @@
     "note": "A small team I work with regularly."
   },
   {
-    "id": "additional-location",
-    "label": "An additional location",
-    "price": 151.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding",
-      "Proposals"
-    ],
-    "status": "proposed",
-    "note": "Each extra location includes 2 more hours of coverage and 30 more photographs."
-  },
-  {
     "id": "instax-50",
     "label": "Instax guest prints, up to 50",
     "price": 61.25,
