@@ -61,6 +61,10 @@
       ]
     },
     {
+      "label": "Pricing",
+      "href": "/pricing/"
+    },
+    {
       "label": "Resources",
       "href": "/blog/",
       "children": [

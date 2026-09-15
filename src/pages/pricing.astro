@@ -63,11 +63,6 @@ const offerCatalog = {
   canonicalUrl={`${site.url}/pricing/`}
   jsonLd={offerCatalog}
   chrome={false}
-  {/* HOLD: 34 of the 50 add-on prices are proposed, not approved. Keep this
-      page out of search until Akash signs the prices off, then delete this
-      line, drop the sitemap exclusion in astro.config.mjs, and add the nav
-      entry in navigation.json. */}
-  noIndex
 >
   <!-- flatpickr · lazy-loaded off the critical path, copied from
        free-engagement-session-toronto.astro. The date field stays a text input

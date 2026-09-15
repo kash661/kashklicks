@@ -34,9 +34,6 @@ export default defineConfig({
         !page.includes('/dev/') &&
         !page.includes('/font-lab') &&
         !page.includes('/free-engagement-session-toronto') &&
-        // HOLD: /pricing/ stays out of the sitemap while its add-on prices are
-        // still proposed. Remove this line when the prices are approved.
-        !page.includes('/pricing') &&
         !page.endsWith('/404/'),
       serialize(item) {
         const url = item.url.replace('https://kashklicks.ca', '').replace(/\/$/, '');
