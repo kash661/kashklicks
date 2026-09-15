@@ -82,6 +82,18 @@ export function initConfigurator(): void {
     if (!addOnById.has(id)) delete state.addOns[id];
   }
 
+  // An add-on only makes sense on a package that offers it. Whenever the
+  // package changes, anything the new package does not offer is dropped, so a
+  // location added on Love Story Duo never rides along to The Pre Wedding and
+  // never counts in its total. Runs on load too, for a stale saved state.
+  function pruneAddOns(): void {
+    const offered = new Set(state.packageId ? pkgById.get(state.packageId)?.addOnIds ?? [] : []);
+    for (const id of Object.keys(state.addOns)) {
+      if (!offered.has(id)) delete state.addOns[id];
+    }
+  }
+  pruneAddOns();
+
   const save = () => {
     try { localStorage.setItem(STORE, JSON.stringify(state)); } catch { /* private mode */ }
   };
@@ -343,6 +355,7 @@ export function initConfigurator(): void {
       if (ans.dataset.packageId) state.packageId = ans.dataset.packageId;
       if (ans.dataset.region) state.region = ans.dataset.region;
       if (ans.dataset.film) state.film = ans.dataset.film === 'true';
+      pruneAddOns();
       if (ans.dataset.addOnId) state.addOns[ans.dataset.addOnId] = 1;
       go(1);
       return;
@@ -351,6 +364,7 @@ export function initConfigurator(): void {
     const choose = t.closest<HTMLElement>('[data-cfg-choose]');
     if (choose) {
       state.packageId = choose.dataset.cfgChoose!;
+      pruneAddOns();
       qualify('step');
       go(1);
       return;
