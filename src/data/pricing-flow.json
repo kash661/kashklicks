@@ -74,7 +74,8 @@
           },
           {
             "label": "Elsewhere in Ontario",
-            "region": "ontario"
+            "region": "ontario",
+            "hint": "There is a travel fee outside the GTA"
           },
           {
             "label": "Elsewhere in Canada",
