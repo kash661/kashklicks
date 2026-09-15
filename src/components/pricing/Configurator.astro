@@ -41,9 +41,11 @@ const CATEGORY_IMAGE: Record<string, ImageMetadata> = {
   // close tender moment framed by white daisies on the Toronto Islands".
   // Their gallery is a civil ceremony, so the image matches what is booked.
   civil: (await import('../../assets/images/portfolio/harsh-payal/10.jpg')).default,
-  // A frame from Ashley + Donald's gallery rather than its cover. Portrait, so
-  // it crops cleanly into the 4:5 card. Swap the number to change the frame.
-  proposal: (await import('../../assets/images/portfolio/ashley-donald/07.jpg')).default,
+  // Ashley + Donald, frame 03, chosen off its caption: "Donald down on one knee
+  // by the rose beds at Château des Charmes as Ashley brings a hand to her
+  // mouth". The only frame in the gallery that shows the proposal itself, and
+  // the château behind them reads as the kind of place people book this for.
+  proposal: (await import('../../assets/images/portfolio/ashley-donald/03.jpg')).default,
   celebration: (await import('../../assets/images/homepage/celebrations-cta.jpg')).default,
   headshots: (await import('../../assets/images/homepage/headshots-service-detail.jpg')).default,
 };
