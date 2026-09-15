@@ -46,7 +46,10 @@ const CATEGORY_IMAGE: Record<string, ImageMetadata> = {
   // mouth". The only frame in the gallery that shows the proposal itself, and
   // the château behind them reads as the kind of place people book this for.
   proposal: (await import('../../assets/images/portfolio/ashley-donald/03.jpg')).default,
-  celebration: (await import('../../assets/images/homepage/celebrations-cta.jpg')).default,
+  // Akash's own pick for celebrations: a guest mid dance at Zoha + Moe's
+  // anniversary party in Maple, arms out, the room full behind him. A frame
+  // that never made the gallery, so it lives here rather than in portfolio/.
+  celebration: (await import('../../assets/images/pricing/celebration-zoha-moe.jpg')).default,
   headshots: (await import('../../assets/images/homepage/headshots-service-detail.jpg')).default,
 };
 const coverFor = (catId: string): ImageMetadata | undefined => CATEGORY_IMAGE[catId];
