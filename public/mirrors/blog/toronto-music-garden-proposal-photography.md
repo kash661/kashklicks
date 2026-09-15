@@ -53,6 +53,8 @@ This is the proposal spot. Curved granite steps drop down to a lawn, with a ston
 
 It also solves a practical problem. Your partner walks in along a path, so they arrive facing the stage. You are already standing there. There is a natural moment where they stop and understand what is happening, and that reaction is usually the best photograph of the entire day.
 
+![A man on one knee proposing under the iron pavilion at the Toronto Music Garden with the CN Tower rising behind them, by AD Photography](../../assets/images/portfolio/margarita-mike/05.jpg)
+
 ### 2. The stone steps themselves
 
 Once the proposal is over and everyone stops shaking, the granite steps become the easiest place in the garden to sit and just be with each other. Wide, clean, warm in colour, and they give a photographer height to work with.
