@@ -452,6 +452,7 @@ export function initConfigurator(): void {
     fp(dateInput, {
       dateFormat: 'F j, Y',
       minDate: 'today',
+      defaultDate: 'today',   // starts on today; they change it or type "not sure yet"
       allowInput: true,
       disableMobile: false,
       monthSelectorType: 'static',
