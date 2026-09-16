@@ -183,6 +183,6 @@ If you are planning to propose at Château des Charmes and you want someone who 
 
 We shoot proposals across Niagara and the GTA. The hour after the yes is the part we care about most.
 
-[**View the proposal package →**](/services/pre-wedding/#proposal-package)
+[**View the proposal package →**](/services/proposal/)
 
 Or [send a note about Château des Charmes](/contact?venue=chateau-des-charmes) with your date and we will help you pick the spot.
