@@ -1097,5 +1097,2798 @@
     },
     "vibeLine": "An 1877 stone Gothic Revival church with a painted starry-blue vault and a rose window that lights the centre aisle.",
     "story": "St. Patrick's is a stone Gothic Revival church on King Street East, built in 1877, and it photographs like it knows it. A painted starry-blue vault runs across the ceiling. The gilded reredos behind the altar is full of carved saints. A rose window sits over the front doors and pulls afternoon light down the entire centre aisle, which is exactly where you want it.\n\nI shoot the empty room first. Sun through the rose window onto the wood pews, the painted Latin inscription glowing across the apse. Then the day arrives. When Roxanne walked that aisle on her father's arm, the pipe organ tall in the loft behind her, the whole room shifted. I work the side aisles quietly with fast lenses and the window light. This is an active parish, so flash is a conversation with your celebrant, never an assumption. The restrained frames end up the strongest anyway. Roxanne kneeling at the altar, veil pooling on the tile, is one of my favourite photographs from that day.\n\nThe narthex doorway is the corner I keep going back to. It frames the recessional as a silhouette, two people walking out into the light. Then the front steps, where everything loosens. At Roxanne and Justin's wedding, a grandfather clapped with both hands over his head while the two of them hugged through the noise.\n\nPractical notes. Parking is on-street along King East and the side streets, and Sunday street parking is free citywide. A few steps lead up to the main doors and the floor inside is flat, easy for grandparents. Photography happens inside your ceremony booking, so confirm the photo terms with the parish office before the day."
+  },
+  {
+    "id": "union-station",
+    "name": "Union Station Great Hall",
+    "area": "Downtown Toronto, Front Street West",
+    "zone": "Downtown",
+    "vibe": "Grand, historic, cinematic, warm stone, indoor",
+    "vibeLine": "Warm Missouri stone, windows four storeys tall, and a herringbone marble floor the whole city walks across.",
+    "idealIf": "You want a cathedral sized indoor hall with warm stone, huge arched windows, and a real working train station moving around you.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Indoor",
+      "Historic",
+      "Urban",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat indoor floors on one level, with elevators and ramps through the station",
+    "permits": "City of Toronto property, with the train platforms behind it run by Metrolinx. Casual handheld photos are free. Professional photography, including weddings, needs a permit requested by email at least two weeks ahead. No fee is published, so the quote comes back by email.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "Union Station photography team, sandra@torontounion.ca or info@torontounion.ca",
+    "parking": "No parking at Union Station itself. Public garages sit close by, and the station is reachable by subway, GO train, UP Express and on foot.",
+    "travelTime": "Downtown",
+    "image": "union-station.jpg",
+    "lat": 43.6452,
+    "lng": -79.38062
+  },
+  {
+    "id": "kariya-park",
+    "name": "Kariya Park",
+    "area": "City Centre, Mississauga",
+    "zone": "Mississauga",
+    "vibe": "Japanese garden, cherry blossoms, calm, minimal, intimate",
+    "vibeLine": "A pocket of Japan behind the Mississauga towers, nearly eighty cherry trees and a still pond that goes quiet the moment you step through the gate.",
+    "idealIf": "You want cherry blossoms and a still pond in a quiet Japanese garden, and you would rather not drive two hours out of the city to find one.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Nature",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Compact garden with a short loop and a bridge over the pond, so nothing is more than a few minutes on foot.",
+    "permits": "The City of Mississauga requires a permit for commercial, group or wedding photography in its parks. Weddings and groups get a 90 minute block. Residents book up to 10 months ahead, others two months, with requests due more than 14 days out. Call 905 615 4100 to confirm fees and hours.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "905 615 4100",
+    "parking": "Very limited parking at the park itself. Paid street parking on Kariya Drive and Municipal Parking Lot 36 at Burnhamthorpe and Kariya Drive. The Living Arts Centre and Central Library garages are a short walk and cheap, but they open late on weekend mornings, so check hours for an early shoot.",
+    "travelTime": "35 to 45 min from downtown",
+    "lat": 43.58969,
+    "lng": -79.63631,
+    "image": "kariya-park.jpg"
+  },
+  {
+    "id": "cheltenham-badlands",
+    "name": "Cheltenham Badlands",
+    "area": "Caledon, Olde Base Line Road",
+    "zone": "Caledon",
+    "vibe": "Otherworldly, rust red, rolling, dramatic, quiet",
+    "vibeLine": "Rust red shale hills rolling away from a boardwalk in Caledon, a landscape that looks like it wandered in from another province.",
+    "idealIf": "You want a backdrop that looks nothing like the rest of the GTA and you are happy shooting from the boardwalk and the trail instead of walking into the hills.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Outdoor"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "About 250 metres of flat sidewalk from the parking lot to the boardwalk",
+    "permits": "No photography permit is issued here. The Ontario Heritage Trust runs the site and does not offer special use permits, so visits are booked through the paid parking reservation like any other. Shooting stays on the sidewalk, trail and boardwalk. Walking on the shale is prohibited and drones are not allowed.",
+    "permitNeeded": "No",
+    "permitFee": null,
+    "permitContact": "badlands@heritagetrust.on.ca",
+    "parking": "Paid parking reservation required through ParkPass, charged per vehicle: 10 dollars plus HST on weekdays or 20 dollars on weekends and holidays for a 90 minute visit, with limited three hour slots at higher rates. Online only, nothing paid on site. Open by reservation from spring to late fall, closed in winter.",
+    "travelTime": "60 to 75 min from downtown",
+    "lat": 43.77405,
+    "lng": -79.94419,
+    "image": "cheltenham-badlands.jpg"
+  },
+  {
+    "id": "nathan-phillips-square",
+    "name": "Nathan Phillips Square",
+    "area": "Downtown Toronto, Queen and Bay",
+    "zone": "Downtown",
+    "vibe": "Civic, modernist, graphic, urban, lit up at night",
+    "vibeLine": "Curved white towers, three concrete arches over the pool, and a sign that lights up after dark. Downtown Toronto at its most graphic.",
+    "idealIf": "You want bold civic architecture and the city's most recognizable sign, and you do not mind sharing an open public square with crowds, events and tourists.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Intimate Weddings",
+      "Portraits"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Urban",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat open square. A ramp on the east side climbs to the podium green roof. Events can fence off sections.",
+    "permits": "This is a municipal square, not a City park, so commercial shoots go through the Toronto Film Office, not Parks. A location permit applies; grid permits are not valid on municipal squares. Squares need extra lead time. The City publishes no casual photography rule, so confirm before a paid shoot.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Toronto Film, Television and Digital Media Office, filmtoronto@toronto.ca, 416-338-3456",
+    "parking": "Green P Carpark 36 runs underground beneath the square, listed as 110 Queen Street West. Rates are posted per vehicle and switch to a flat rate on event days, so check current rates close to the date. Clearance is low, so tall vans and roof boxes may not fit.",
+    "travelTime": "Downtown",
+    "image": "nathan-phillips-square.jpg",
+    "lat": 43.65264,
+    "lng": -79.38385
+  },
+  {
+    "id": "trinity-bellwoods",
+    "name": "Trinity Bellwoods Park",
+    "area": "West Toronto, Queen West",
+    "vibe": "Leafy, laid back, west end, historic gates, unpretentious",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "zone": "Downtown",
+    "setting": [
+      "Park",
+      "Urban",
+      "Historic"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved paths from the gates. The Dog Bowl sits a few minutes north, down a grass slope.",
+    "permits": "Casual photography is free. The City requires a booking when a shoot needs exclusive use of space. This park is not on the City wedding photography location list, so a booked session falls under commercial photography. All city parks are no drone zones.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$485.47 per two hour block, taxes included. That is the City rate for commercial photography at all outdoor park locations, and it requires $2 million liability insurance naming the City. No couples rate is published for this park.",
+    "permitContact": "City of Toronto Client Services Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "No visitor lot at the gates. The lot at Trinity Community Recreation Centre, 155 Crawford Street, is small and intended for facility users. Green P Carpark 53 at 803 Richmond Street West is paid and about a five minute walk. Most side streets are permit or metered parking.",
+    "travelTime": "15 min from downtown",
+    "idealIf": "You want an easy, unstyled downtown session on wide open lawns, with the Trinity College gates as your one strong piece of architecture.",
+    "image": "trinity-bellwoods.jpg",
+    "vibeLine": "Stone college gates on Queen West, then big open lawns, old shade trees, and the white squirrels this neighbourhood is quietly famous for.",
+    "lat": 43.64545,
+    "lng": -79.41323
+  },
+  {
+    "id": "sugar-beach",
+    "name": "Sugar Beach",
+    "area": "Downtown Toronto, East Bayfront",
+    "zone": "Downtown",
+    "vibe": "Playful, candy pink, urban beach, waterfront, industrial edge",
+    "vibeLine": "Candy pink umbrellas over white sand on a former parking lot, with the working Redpath sugar refinery right across the slip.",
+    "idealIf": "You want colour, not another grey skyline. I put couples under the pink umbrellas on white sand with a working sugar refinery across the water.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Proposals",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Waterfront",
+      "Urban",
+      "Industrial"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat two acre park. Beach and plaza are accessible and a boardwalk runs level with the sand. Loose sand underfoot.",
+    "permits": "City of Toronto park, so casual photos are free. Advance booking applies once a shoot needs exclusive use of space or blocks other visitors. Sugar Beach is not on the City's 14 site wedding photography list, so no couples rate is published for it. Outdoor permits run about May 15 to September 30.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "Green P Carpark 286, an underground garage at 51 Dockside Drive, is about 200 metres from the beach. City open data lists 307 spaces and roughly 2.05 m clearance, so no roof boxes or tall vans. Rates change, so check the pay station or the Green P app. Metered Queens Quay East spots fill fast.",
+    "travelTime": "Downtown",
+    "image": "sugar-beach.jpg",
+    "lat": 43.64304,
+    "lng": -79.36741
+  },
+  {
+    "id": "canoe-landing",
+    "name": "Canoe Landing Park",
+    "area": "Downtown Toronto, CityPlace",
+    "zone": "Downtown",
+    "vibe": "Urban, elevated, skyline, open, contemporary",
+    "vibeLine": "I still climb the berm for this one. The red canoe that crowned it burned in 2025, but the view it framed is intact, Gardiner below, CityPlace glass behind.",
+    "idealIf": "You want the city itself as the backdrop, glass towers and an elevated overlook, and you would rather stay downtown than drive out for greenery.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Park",
+      "Urban",
+      "Outdoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved paths across the park, then a short unpaved climb up the grass berm to the lookout",
+    "permits": "City of Toronto park. Casual handheld photos are free. A permit applies once a shoot needs exclusive use of space or blocks other visitors. Canoe Landing is not on the City's 14 site wedding photography list, so no couple rate is published. Call 416-396-7378 before booking.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto park permits, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "No lot in the park. Paid street parking is limited to signed sections on Fort York Blvd and Dan Leckie Way, and much of both is No Stopping at all times. Green P lot 302, 545 Lake Shore Blvd W, is a 5 minute walk south, $3.00 per half hour, $24 max. Off leash area closes October 2026 to July 2027.",
+    "travelTime": "Downtown",
+    "image": "canoe-landing.jpg",
+    "lat": 43.6388,
+    "lng": -79.39734
+  },
+  {
+    "id": "riverdale-park-east",
+    "name": "Riverdale Park East",
+    "area": "East Toronto, Riverdale",
+    "zone": "Downtown",
+    "vibe": "Panoramic skyline, hillside, sunset, open, cinematic",
+    "vibeLine": "A wide grass hill above the Don Valley, with the downtown towers stacked across the ravine and catching the last low light of the day.",
+    "idealIf": "You want the downtown skyline filling the background at golden hour and you do not mind sharing a busy hill with joggers, dogs and sports leagues.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Urban",
+      "Nature",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Skyline crest sits right off the Broadview sidewalk. The slope down to the flats and footbridge is steep open grass.",
+    "permits": "City park, not on the City's 14 site wedding photography list. Casual non commercial photos need no booking. A booking applies once set up, equipment or staging takes exclusive use of space. The City's commercial photography rate is $485.47 per two hours, taxes included, plus $2 million insurance.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Parks Client Services, 416-396-7378. Documents go to pfrcustomerservice@toronto.ca",
+    "parking": "No lot in the park. Streets east of Broadview such as Sparkhall and Langley are signed permit parking, with a no parking stretch closest to Broadview and rules that change block to block, so read the sign. Nearest Green P lots are on Gerrard Street East, about a 10 minute walk south.",
+    "travelTime": "15 to 20 min from downtown",
+    "image": "riverdale-park-east.jpg",
+    "lat": 43.6693,
+    "lng": -79.35325
+  },
+  {
+    "id": "trillium-park",
+    "name": "Trillium Park at Ontario Place",
+    "area": "Downtown Toronto, Ontario Place",
+    "zone": "Downtown",
+    "vibe": "Lakefront, skyline, stone ravine, native plantings, cinematic",
+    "vibeLine": "A stone ravine stamped with moccasin prints opens straight onto Lake Ontario, and the skyline sits at the end of the trail.",
+    "idealIf": "You want lake, skyline and a quiet stone ravine in one short walk, and you like a backdrop that carries real meaning.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Cinematic engagement",
+      "Proposals"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Waterfront",
+      "Urban",
+      "Nature"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Mostly level 1.3 km trail, part wood boardwalk, with a rise to the Bluff and Summit where the stone footing is uneven.",
+    "permits": "Provincial land, so City of Toronto photo permits do not apply. Ontario Place publishes a Trillium Park photo permit at $300 plus HST, up to 15 people, in two hour slots between 7:00 a.m. and 9:30 p.m. It is not valid for commercial photo, video or film, which routes to the booking application.",
+    "permitNeeded": "Yes",
+    "permitFee": "$300 plus HST is the published Trillium Park photo permit rate, verified September 2026. Whether a paid client session qualifies is unconfirmed. Commercial rates are not published.",
+    "permitContact": "Ontario Place booking team at opbooking@ontario.ca",
+    "parking": "No public parking on the Ontario Place site. Closest paid option is the Exhibition Place lots at $18.00 daily, $15.00 after 6:00 p.m., up to $45 on RBC Amphitheatre event nights, with rates posted as dynamic. Allow roughly 15 minutes on foot, and confirm which entrance is open before the date.",
+    "travelTime": "10 to 15 min from downtown",
+    "image": "trillium-park.jpg",
+    "lat": 43.63036,
+    "lng": -79.4098
+  },
+  {
+    "id": "fort-york",
+    "name": "Fort York National Historic Site",
+    "area": "Downtown Toronto, Fort York Boulevard",
+    "zone": "Downtown",
+    "vibe": "Historic, military, stone, rugged, urban contrast",
+    "vibeLine": "A War of 1812 garrison of earth ramparts, stone magazines and timber blockhouses, with the Gardiner overhead and glass towers right behind.",
+    "idealIf": "You want two centuries of stone and earthworks with condo glass rising right behind them, and the contrast is the whole point.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Editorial",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Historic",
+      "Urban"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat asphalt paths across seven acres, with grass rampart slopes and stairs into the historic buildings.",
+    "permits": "Free general admission does not cover photography. A permit is required for any professional shoot, including weddings or engagements, with a paid photographer, special equipment or costumes. Contact Fort York directly. Rentals carry a three hour minimum with rates quoted on request.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "fortyork@toronto.ca or 416-392-6907",
+    "parking": "Green P lot at 250 Fort York Blvd, metered, about $1 per half hour with a $12 cap in any six hour window. A second Green P lot is at 800 Fleet Street, about $1.50 per half hour. Both switch to flat, higher rates on Fort York and Exhibition Place event days, so confirm ahead.",
+    "travelTime": "Downtown",
+    "image": "fort-york.jpg",
+    "lat": 43.63885,
+    "lng": -79.40355
+  },
+  {
+    "id": "rom",
+    "name": "Royal Ontario Museum",
+    "area": "Downtown Toronto, Bloor Street and Queen's Park",
+    "zone": "Downtown",
+    "vibe": "Angular, crystalline, architectural, grand, hushed galleries, heritage stone",
+    "vibeLine": "Libeskind's aluminum and glass shards cut over Bloor Street, and right behind them the original museum keeps its quiet stone galleries.",
+    "idealIf": "You want angular crystal architecture outside and quiet gallery light inside, with everything a block from the subway.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Portraits",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Indoor",
+      "Architecture",
+      "Urban",
+      "Historic"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat sidewalks outside, elevators to every level inside, ramp and automatic doors at the Weston Entrance.",
+    "permits": "Handheld personal photography is allowed in most galleries with general admission. Tripods, monopods and selfie sticks need pre approval from media@rom.on.ca. No permit or fee is published for professional or wedding shoots. Those go through events@rom.on.ca and may require a paid venue booking.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "media@rom.on.ca for tripod or monopod pre approval, events@rom.on.ca for professional or wedding shoot inquiries",
+    "parking": "No visitor parking on site. Cumberland Parkade at 148 Cumberland Street is a five minute walk, Green P Carpark 58 at 9 Bedford Road about seven. Lots charge per vehicle. The Bloor Street entrance and its plaza are closed for OpenROM construction into 2027, so enter on Queen's Park.",
+    "travelTime": "Downtown",
+    "image": "rom.jpg",
+    "lat": 43.66819,
+    "lng": -79.39505
+  },
+  {
+    "id": "ago",
+    "name": "Art Gallery of Ontario",
+    "area": "Downtown Toronto, Grange Park",
+    "zone": "Downtown",
+    "vibe": "Architectural, sculptural, warm wood, blue titanium, downtown",
+    "vibeLine": "A spiral staircase in Douglas fir winding up through a glass ceiling, and a blue titanium wing looking out over Grange Park.",
+    "idealIf": "You want Frank Gehry architecture, warm Douglas fir against cool blue titanium, and you are booking the gallery itself outside public hours.",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Receptions",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Indoor",
+      "Urban",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat sidewalks outside, level galleries inside with elevators. The spiral staircase itself is stairs only.",
+    "permits": "The gallery sets the rules. Staged photography is not permitted during public hours, and the policy names engagement portraits, bridal portraits and weddings. Shoots are booked outside public hours through AGO Events, which lists no portrait only option. Handheld only inside, no flash or tripods.",
+    "permitNeeded": "Venue booking",
+    "permitFee": null,
+    "permitContact": "AGO Events at events@ago.ca",
+    "parking": "No visitor parking on site. Green P carpark 221 at 121 St Patrick Street is closest, an 81 space underground garage posted in 2026 at $4.00 per half hour and $18.00 weekday day maximum. Curb space on Dundas West is limited and rush hour bans apply. Expansion work runs on the McCaul side into 2027.",
+    "travelTime": "Downtown",
+    "image": "ago.jpg",
+    "lat": 43.65361,
+    "lng": -79.39278
+  },
+  {
+    "id": "ripleys-aquarium",
+    "name": "Ripley's Aquarium of Canada",
+    "area": "Downtown Toronto, next to the CN Tower",
+    "zone": "Downtown",
+    "vibe": "Otherworldly, blue, immersive, modern, indoor",
+    "vibeLine": "I love what the tunnel does to faces here, deep blue light washing over both of you while sharks and turtles drift past overhead.",
+    "idealIf": "You want a backdrop nobody else in your feed has, deep blue tunnel light with sharks overhead, and weather that cannot touch the day.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Proposals",
+      "Portraits"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Indoor",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat indoor route served by elevators and ramps. A moving glidepath carries visitors through the tunnel.",
+    "permits": "Private property, no City of Toronto permit applies. Personal photos are fine with paid admission, hand held cameras only, no flash or tripods. Hired photographers, including for engagements or weddings, likely need advance permission from Ripley's PR team. Closes early on some private event dates.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Ripley's PR team, pr@ripleysaquariumofcanada.com or 647-351-3474 ext 2650",
+    "parking": "The aquarium has no lot of its own. Paid underground garages serve the surrounding block, including the convention centre's garage at 222 Bremner Boulevard. This is downtown event district parking, so rates can run higher near Rogers Centre game days. Union Station is a short walk away.",
+    "travelTime": "Downtown",
+    "image": "ripleys-aquarium.jpg",
+    "lat": 43.64248,
+    "lng": -79.38613
+  },
+  {
+    "id": "fairmont-royal-york",
+    "name": "Fairmont Royal York",
+    "area": "Downtown Toronto, Financial District",
+    "zone": "Downtown",
+    "vibe": "Historic, grand, gilded, railway era, ballroom, cinematic",
+    "vibeLine": "A 1929 railway hotel facing Union Station, carved wood ceilings and crystal chandeliers in the lobby, and a Ballroom restored to its 1929 decor.",
+    "idealIf": "You want railway era grandeur, a restored 1929 ballroom under its original painted ceiling, and an indoor venue that holds up in any weather.",
+    "bestFor": [
+      "Weddings",
+      "Receptions",
+      "Couples",
+      "Portraits",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Indoor",
+      "Historic",
+      "Architecture",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Indoor hotel with elevators between the lobby, mezzanine ballrooms and guest floors. No outdoor venue space on site.",
+    "permits": "Private hotel, so no City of Toronto photography permit applies. Photography access is arranged through the hotel weddings team as part of a booking, and is not open to the public. Confirm with your Wedding Manager which spaces your booking includes.",
+    "permitNeeded": "Venue booking",
+    "permitFee": null,
+    "permitContact": "Fairmont Royal York weddings team, 416-368-2511",
+    "parking": "Valet at the hotel east entrance is the only parking on site. Fairmont lists $75 overnight and a $75 daytime maximum, plus a $15 oversized premium, and quotes weddings a separate event rate through the Wedding Manager. Self park garages on Wellington Street are nearby.",
+    "travelTime": "Downtown",
+    "image": "fairmont-royal-york.jpg",
+    "lat": 43.64591,
+    "lng": -79.38136
+  },
+  {
+    "id": "one-king-west",
+    "name": "One King West Hotel",
+    "area": "Downtown Toronto, Financial District",
+    "vibe": "Historic bank building, marble staircase, steel vault, opulent, cinematic, indoor",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Editorial",
+      "Weddings"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "zone": "Downtown",
+    "setting": [
+      "Indoor",
+      "Historic",
+      "Architecture",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Indoor throughout. Accessible entrance on Melinda Street. Marble stairs down to the Vault, elevator to the 12th floor.",
+    "permits": "One King West issues its own paid photo permit for professional equipment. Approved spaces are the Grand Staircase, the Chairman's Boardroom and the Vault at added cost. The Grand Banking Hall is not on that list. Lobby, bar and guest floors are off limits. Five people maximum per session.",
+    "permitNeeded": "Yes",
+    "permitFee": "$650 plus applicable taxes for the Grand Staircase and Chairman's Boardroom, $750 plus applicable taxes to include the Vault, up to two hours",
+    "permitContact": "One King West sales team at sales@onekingwest.com",
+    "parking": "Valet at the Melinda Street entrance, first come first served. Overnight valet is for registered hotel guests only. Oversized vehicles and pickup trucks are not accommodated. Permit rates exclude parking. Nearest public lot is Precise ParkLink at Commerce Court, no in and out.",
+    "travelTime": "Downtown",
+    "idealIf": "You want marble and a steel bank vault instead of a garden, and you do not mind paying for a permit and working inside a two hour window.",
+    "image": "one-king-west.jpg",
+    "vibeLine": "A 1914 Dominion Bank vault under the Financial District, forty tonnes of steel door standing open at the foot of a marble staircase.",
+    "lat": 43.64886,
+    "lng": -79.37803
+  },
+  {
+    "id": "pantages-hotel",
+    "name": "Pantages Hotel",
+    "area": "Downtown Toronto, Downtown Yonge",
+    "vibe": "Boutique, contemporary, warm, city views, all indoors, steps from Massey Hall",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Receptions",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "zone": "Downtown",
+    "setting": [
+      "Indoor",
+      "Urban",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Indoor hotel with elevator access to the third floor event space. No walking between settings.",
+    "permits": "Privately run hotel, so no city photography permit applies. The hotel publishes no photography or filming policy, so lobby and third floor access is not defined publicly and is arranged with your room or event booking. Confirm terms with the weddings team at weddings@silverhotelgroup.com.",
+    "permitNeeded": "Venue booking",
+    "permitFee": null,
+    "permitContact": "Weddings team at weddings@silverhotelgroup.com",
+    "parking": "The hotel lists no parking of its own and points guests to nearby lots, Green P at 20 Dundas Square, TargetPark at 237 Victoria Street and Impark at 209 Victoria Street. The hotel notes these are not affiliated with it and that spaces can be booked ahead on SpotHero. Rates are not published.",
+    "travelTime": "Downtown",
+    "idealIf": "You want getting ready, the ceremony, and dinner to all happen a short elevator ride apart, steps from the Eaton Centre and Massey Hall.",
+    "image": "pantages-hotel.jpg",
+    "vibeLine": "A third floor event space that overlooks Massey Hall and fills with natural light, so winter portraits stay warm without ever stepping outside.",
+    "lat": 43.65443,
+    "lng": -79.37916
+  },
+  {
+    "id": "sunnyside-pavilion",
+    "name": "Sunnyside Pavilion",
+    "area": "West Toronto, Sunnyside Beach",
+    "zone": "Downtown",
+    "vibe": "Beaux Arts, lakefront, columned, nostalgic, golden hour",
+    "vibeLine": "A 1922 Beaux Arts bathing pavilion where columns and a wide archway open straight onto the boardwalk, Lake Ontario filling the whole background.",
+    "idealIf": "You want columned arches and a lakefront terrace from 1922, with the sun going down over open water and downtown fifteen minutes behind you.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits",
+      "Ceremonies"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Historic",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat boardwalk and courtyard at ground level. Stairs lead up to the terrace above.",
+    "permits": "The pavilion is City of Toronto park property. Wedding photography books through Client Services, Park Bookings, in minimum two hour slots on the hour. Stand up ceremonies book separately, 40 people, 10 a.m. to 4 p.m. Outdoor season is typically May 15 to September 30. The cafe is a separate tenant.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$173.36 for a two hour wedding photography booking and $260.07 per hour for a ceremony, taxes included. Commercial sessions fall under the general outdoor park rate of $485.47 for two hours.",
+    "permitContact": "City of Toronto Client Services, Park Bookings",
+    "parking": "Paid Green P surface lots serve Sunnyside Beach at 1575 Lake Shore Boulevard West to the east and 2001 Lake Shore Boulevard West to the west, both entered from Lake Shore Boulevard West. Rates and seasonal hours are posted at the lots. Both lots are busy on summer weekends.",
+    "travelTime": "15 to 20 min from downtown",
+    "image": "sunnyside-pavilion.jpg",
+    "lat": 43.63774,
+    "lng": -79.4563
+  },
+  {
+    "id": "spadina-museum",
+    "name": "Spadina Museum",
+    "area": "Casa Loma",
+    "zone": "Downtown",
+    "vibe": "Early 1900s, estate gardens, heritage house, formal, quiet, period detail",
+    "vibeLine": "A 5.7 acre estate garden in Casa Loma's shadow, grounds restored to their early 1900s look, apple orchard and grape arbour behind the house.",
+    "idealIf": "You want a grand heritage estate, an orchard and restored flower beds, with a fraction of the crowd standing next door at Casa Loma.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Outdoor",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat lawns and a gravel carriage drive, a few steps to the terrace. The Baldwin Steps approach is a long staircase.",
+    "permits": "A City of Toronto permit is required for all professional photography on the grounds, including engagement and wedding sessions with a paid photographer. Free admission does not cover it. Groups cap at 25 outdoors, 15 interior and exterior. Grounds are posted 11 a.m. to 5 p.m. daily.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "Toronto History Museums rentals, thmrentals@toronto.ca or 416-338-0030. Site contact spadina@toronto.ca",
+    "parking": "No parking at the museum. The nearest is the shared Casa Loma lot at 1 Austin Terrace, posted by Casa Loma at a flat $20 per vehicle, card only. It fills during Casa Loma events, with overflow paid parking at George Brown College off Macpherson Avenue.",
+    "travelTime": "15 to 20 min from downtown",
+    "image": "spadina-museum.jpg",
+    "lat": 43.67902,
+    "lng": -79.40815
+  },
+  {
+    "id": "todmorden-mills",
+    "name": "Todmorden Mills Heritage Site",
+    "area": "East York, Don Valley",
+    "zone": "East York",
+    "vibe": "Historic, rustic, industrial, wooded, secluded",
+    "vibeLine": "An 1820s mill village hidden under the Don Valley walls, warm brick and a lone smokestack, with the city nowhere in the frame.",
+    "idealIf": "You want weathered brick, mill workers' houses, and valley forest inside one compact site that feels far from Toronto without the drive.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Industrial",
+      "Nature",
+      "Forest"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat gravel and lawn between the mill buildings, steps into the houses, dirt trails in the preserve",
+    "permits": "A Toronto History Museums permit is required for any paid photographer, even though general admission is free. Exterior and interior are permitted separately, billed hourly plus HST, with a security deposit. Caps are 25 people outdoors and 15 with interiors. Allow at least three weeks.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "thmrentals@toronto.ca or 416-338-0030",
+    "parking": "Free on site lot, reached by the driveway off Pottery Road beside the red brick smokestack. Pottery Road drops steeply into the valley and the valley roads here close at times for storms or construction, so check road status before driving. The lot is small and fills on weekend tour days.",
+    "travelTime": "15 to 25 min from downtown",
+    "image": "todmorden-mills.jpg",
+    "lat": 43.6857,
+    "lng": -79.35975
+  },
+  {
+    "id": "taylor-creek",
+    "name": "Taylor Creek Park",
+    "area": "East Toronto, East York",
+    "zone": "East York",
+    "vibe": "Ravine, wooded, creekside, quiet, natural",
+    "vibeLine": "A long green ravine under East York, where a paved trail crosses the creek on wooden and steel bridges while the city goes quiet above you.",
+    "idealIf": "You want a quiet ravine walk instead of a landmark, with creek bridges, tall trees, and the bright yellow painted bridge on Taylor Creek behind you.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Proposals"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Forest",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved creekside trail with gentle grades and wooden and steel bridges. Some street entrances descend into the ravine.",
+    "permits": "Personal photography needs no permit. The parks bylaw requires a permit for any photograph taken in a park for remuneration. Taylor Creek Park is not on the City's 14 site wedding photography list, so no couples rate is published for it. Drones need a permit in City parks.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378",
+    "parking": "Free lots at the Dawes Road entrance near 260 Dawes Road. A City sewer project closed the lot east of Dawes Road for construction staging, with work scheduled to end in April 2024. The City does not publish current lot status, so confirm with 311 before a dated shoot.",
+    "travelTime": "20 to 30 min from downtown",
+    "image": "taylor-creek.jpg",
+    "lat": 43.69745,
+    "lng": -79.29751
+  },
+  {
+    "id": "serena-gundy",
+    "name": "Serena Gundy Park",
+    "area": "North Leaside, West Don Valley",
+    "zone": "East York",
+    "vibe": "Ravine forest, quiet, green, dappled light, clearings",
+    "vibeLine": "A West Don ravine where the canopy closes over the trail and every clearing catches a different angle of afternoon light.",
+    "idealIf": "You want deep ravine forest and light filtering through a closed canopy, close to midtown, on trails that stay quiet on a weekday.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Forest",
+      "Nature",
+      "Outdoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved valley path from the parking lots and footbridge. Forest side trails are unpaved, muddy in shoulder seasons.",
+    "permits": "Casual photography needs no booking. The City requires an advance Parks booking for formal, wedding or commercial shoots that need exclusive use of space. Serena Gundy is not on the City list of 14 wedding photography sites, so confirm the stream and the price with Park Bookings at 416-396-7378.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$485.47 per two hours, taxes included, is the City commercial photography rate for all outdoor park locations, current for the 2026 season. The City publishes no wedding photography rate for this park.",
+    "permitContact": "Client Services Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "Free City parking in Sunnybrook Park, entered from Leslie Street just north of Eglinton Avenue East. Serena Gundy has no lot of its own. Park in a valley lot near the footbridge and walk in. A Wilket Creek Park bridge replacement is set to cut vehicle access from Leslie fall 2027 to summer 2028.",
+    "travelTime": "20 to 30 min from downtown",
+    "image": "serena-gundy.jpg",
+    "lat": 43.71804,
+    "lng": -79.35965
+  },
+  {
+    "id": "sunnybrook",
+    "name": "Sunnybrook Park",
+    "area": "Toronto, Don Valley north of Leaside",
+    "zone": "North York",
+    "vibe": "Pastoral, open, green, equestrian, unhurried",
+    "vibeLine": "Horses in the paddocks, wide meadows on the Don flats, and old trees along the river, with almost no city in view.",
+    "idealIf": "You want horses, open meadow, and big shade trees instead of city backdrops, and you can shoot on a quiet weekday evening.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Forest",
+      "Park"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Flat meadow and river paths, with stairs from the lower lots up to the sports field plateau.",
+    "permits": "The City publishes no photography fee for Sunnybrook. It is not on the 14 site wedding photography list, so Park Bookings quotes it under the all outdoor park locations rate. Commercial bookings need $2,000,000 liability insurance naming the City plus a location map. Drones need a permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Parks Client Services, Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "City lots along the park road off Leslie Street. The City does not post paid parking for them, though signage can change. They fill by mid morning on warm weekends when cricket, rugby and field hockey leagues use the fields. The paid lots at Sunnybrook hospital off Bayview are a separate property.",
+    "travelTime": "25 to 35 min from downtown",
+    "image": "sunnybrook.jpg",
+    "lat": 43.72304,
+    "lng": -79.36196
+  },
+  {
+    "id": "edwards-gardens",
+    "name": "Edwards Gardens",
+    "area": "North York, Lawrence and Leslie",
+    "zone": "North York",
+    "vibe": "Formal, manicured, floral, ravine, romantic",
+    "vibeLine": "Terraced flower beds stepping down into the Wilket Creek ravine, with a footbridge over the creek at the bottom.",
+    "idealIf": "You want formal, manicured garden frames and can shoot inside the City permit window, roughly May 15 to September 30, when the beds peak.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Nature",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved paths, a steady slope down into the ravine and the climb back up",
+    "permits": "Park entry is free. Formal or wedding photography in Edwards Gardens needs a City of Toronto park permit, $485.47 per two hours taxes included, 30 people maximum, typically May 15 to September 30. The adjoining Toronto Botanical Garden is separate property with its own permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$485.47 for a two hour session, taxes included, 2026 season",
+    "permitContact": "City of Toronto park bookings for Edwards Gardens, 416-392-8188; Toronto Botanical Garden, 416-397-1341",
+    "parking": "Paid on-site lot at the Lawrence and Leslie entrance. $4 per hour to a $16 daily maximum, enforced 24 hours as of June 1, 2026, no overnight parking. Pay by licence plate at the machine or the Tap2Park app, site code 6119. Toronto Botanical Garden members park free.",
+    "travelTime": "25 to 35 min from downtown",
+    "image": "edwards-gardens.jpg",
+    "lat": 43.73319,
+    "lng": -79.35982
+  },
+  {
+    "id": "aga-khan-museum",
+    "name": "Aga Khan Museum",
+    "area": "North York, Don Mills",
+    "vibe": "Modern, architectural, minimal, symmetrical, serene",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "zone": "North York",
+    "setting": [
+      "Architecture",
+      "Garden",
+      "Park"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved paths around the formal pools. The wider 1.6 km park trail is optional.",
+    "permits": "A paid photography permit is required for engagement and wedding shoots in the Aga Khan Park. Permits run in 90 minute blocks that include arrival and departure, starting 10 am to 6 pm, outdoors only. No interiors at the Museum or the Ismaili Centre. Pools are drained roughly October to April.",
+    "permitNeeded": "Yes",
+    "permitFee": "$375 weekdays, $475 weekends, per 90 minute permit, HST exempt (rates checked September 2026)",
+    "permitContact": "Aga Khan Museum private events team, private.events@agakhanmuseum.org",
+    "parking": "On site underground and surface parking, paid on arrival by QR code. Flat rate about $10 per vehicle for the day, or about $5 for 30 minutes or less. A third party service fee applies. Fees apply 7 am to 12 am, no overnight parking, nonrefundable. Space is limited and not guaranteed.",
+    "travelTime": "25 min from downtown",
+    "idealIf": "You want modern architecture over greenery and clean symmetry, and you are fine booking a paid outdoor window in a park that stays open to other visitors.",
+    "image": "aga-khan-museum.jpg",
+    "vibeLine": "Brazilian granite and still reflecting pools set out in perfect geometry. I shoot the reflections first, then work the formal garden as the light drops.",
+    "lat": 43.72464,
+    "lng": -79.33256
+  },
+  {
+    "id": "alexander-muir-gardens",
+    "name": "Alexander Muir Memorial Gardens",
+    "area": "North Toronto, Lawrence Park",
+    "zone": "North York",
+    "vibe": "Terraced, formal garden, rose beds, stone, sunken, heritage",
+    "vibeLine": "Rose beds stepping down a hillside in stone terraces, a maple leaf gate on Yonge, and a ravine waiting at the bottom of the stairs.",
+    "idealIf": "You want stone terraces, sunken beds and roses that read like an old estate, with a ravine a couple of minutes away when you want a second backdrop.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Historic",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Crushed brick and paved paths with stone steps between the terraces. Steeper if the session continues into the ravine.",
+    "permits": "Personal photos are free. A paid session needs City of Toronto authorization. The City lists this park for wedding photography, two hour minimum, up to 30 people, booked through Client Services Park Bookings. Outdoor season is typically May 15 to September 30. Not a listed ceremony site.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$173.36 for two hours, taxes included",
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378",
+    "parking": "No lot at the Yonge Street gate. Curb rules on the east side of Yonge vary by segment, from no parking and no standing to a one hour maximum between 8 a.m. and 4 p.m., so check posted signs. The City lists a parking lot at the adjoining Lawrence Park Ravine, off Alexander Muir Road.",
+    "travelTime": "20 to 30 min from downtown",
+    "image": "alexander-muir-gardens.jpg",
+    "lat": 43.72141,
+    "lng": -79.40112
+  },
+  {
+    "id": "earl-bales",
+    "name": "Earl Bales Park",
+    "area": "North York, Bathurst and Sheppard",
+    "zone": "North York",
+    "vibe": "Ravine, wooded, hilly, open-air, quiet",
+    "vibeLine": "An open amphitheatre on the plateau, and a few steps behind it the ground drops away into the wooded slopes of the West Don ravine.",
+    "idealIf": "You want two very different looks in one park, clean architectural lines at the amphitheatre and deep green ravine slopes, without leaving the city.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Park",
+      "Forest",
+      "Nature",
+      "Outdoor"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Upper plateau paths are flat and paved. Reaching the ravine floor is a steep unpaved descent.",
+    "permits": "Casual photos are free. A wedding or formal shoot needs a City of Toronto booking. Earl Bales is not on the City's named wedding photography list, so the rate is quoted by phone. Bookings cover the outdoor season only, roughly May 15 to September 30. The park holds a Holocaust memorial site.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "City lots inside the park, entered from Raoul Wallenberg Road off Bathurst Street just north of Sheppard Avenue West. The City publishes no parking fee and visitors report the lots are free. Lots fill on event nights and through the ski season, roughly January to mid March.",
+    "travelTime": "25 to 35 min from downtown",
+    "image": "earl-bales.jpg",
+    "lat": 43.75411,
+    "lng": -79.43275
+  },
+  {
+    "id": "g-ross-lord",
+    "name": "G. Ross Lord Park",
+    "area": "North York, Bathurst Manor",
+    "zone": "North York",
+    "vibe": "Open meadows, reservoir water, tall grass, big sky, quiet, unmanicured",
+    "vibeLine": "Wide meadow grass that goes gold by late summer, a reservoir holding the last of the light, and enough open sky to forget the city is right there.",
+    "idealIf": "You want open meadow and still water instead of skyline, and a park big enough that I can shoot wide without strangers walking through the frame.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Outdoor",
+      "Nature",
+      "Waterfront",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved trails near the reservoir, with unpaved meadow paths that stay soft for a day or two after rain.",
+    "permits": "A City of Toronto park. Casual photography is free. A session that needs exclusive use of space needs a Parks permit. G. Ross Lord is not on the City list of 14 named wedding photography locations, and the City commercial form states a bride or groom does not complete it. Call to confirm rate.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Client Services Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "City lots on site, with no parking rate published for this park. The lot off Dufferin Street on the west side is the closest to the water. A second lot sits at the south end near the dam. Lots fill on summer weekends when the cricket and sport fields are booked, so arrive early.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "g-ross-lord.jpg",
+    "lat": 43.77337,
+    "lng": -79.46402
+  },
+  {
+    "id": "glendon-campus",
+    "name": "Glendon Campus, York University",
+    "area": "North York, Bayview and Lawrence",
+    "zone": "North York",
+    "vibe": "Historic manor, rose garden, ravine, stately, quiet",
+    "vibeLine": "A 1920s Italian style villa on the brow of the Don ravine, with a rose garden and century old trees spread across the lawns.",
+    "idealIf": "You want country estate calm, a historic manor, and a rose garden over the Don ravine, and your date falls on a weekend or a holiday.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Nature"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat lawns and paved paths around the manor and rose garden, with terrace steps down the ravine side.",
+    "permits": "York University permit required for any wedding or engagement shoot. $300 including HST, $200 for York alumni, students and employees. Two hours, outdoor grounds only, weekends and holidays only, non refundable, no refund for rain. Two parties book at a time; over 25 guests must reserve both slots.",
+    "permitNeeded": "Yes",
+    "permitFee": "$300 including HST for a two hour session, $200 for York alumni, students and employees",
+    "permitContact": "Glendon Hospitality and Conference Services, reserve@glendon.yorku.ca, 437-595-6715",
+    "parking": "Paid campus lots, not included in the permit. Upper lots A, B and C plus Ring Road are HONK zone 7721 at $1.75 per half hour to a $15 daily maximum per vehicle; lower lots F and G are zone 7722 and cap at $10. Pay at the pay and display machine or the HonkMobile app. Rates updated May 1, 2026.",
+    "travelTime": "25 to 35 min from downtown",
+    "image": "glendon-campus.jpg",
+    "lat": 43.72768,
+    "lng": -79.37651
+  },
+  {
+    "id": "york-university",
+    "name": "York University, Keele Campus",
+    "area": "North York, York University Heights",
+    "zone": "North York",
+    "vibe": "Modern, architectural, symmetrical, rotunda, reflecting pool, open and airy",
+    "vibeLine": "A 1992 orange brick rotunda, a reflecting pool, and a colonnaded promenade that holds soft even light the whole way down the Common.",
+    "idealIf": "You want modern symmetry and architecture over one more garden, and you can give me a weekend block between 10 and 5, because York issues nothing else.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Outdoor",
+      "Architecture",
+      "Urban",
+      "Garden"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved plaza and promenade, largely step free. The approved stretch runs a few hundred metres end to end.",
+    "permits": "Paid York permit required, wedding photography only, so ask ACS about engagements. Outdoors only, no interiors. One two hour block between 10 am and 5 pm, weekends and statutory holidays only. Approved areas are the Harry W. Arthurs Common and Piazza Italia. Email askACS@yorku.ca 30 days ahead.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "askACS@yorku.ca, 416-736-2100 ext. 20325",
+    "parking": "Not included in the permit. The application names the York Lanes Parking Garage, HONK zone 7727, at $2.50 per half hour to a $20.00 daily maximum. York says rates can change without notice and posts no free weekend rate. Line 1 stops at York University station at the east end of the Common.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "york-university.jpg",
+    "lat": 43.77272,
+    "lng": -79.50292
+  },
+  {
+    "id": "black-creek-village",
+    "name": "Black Creek Pioneer Village",
+    "area": "North York, Jane and Steeles",
+    "zone": "North York",
+    "vibe": "Historic, rustic, 1860s, storybook, heritage",
+    "vibeLine": "Forty heritage buildings on a gravel main street, an 1860s Ontario town rebuilt whole, with very little modern creeping into the back of the frame.",
+    "idealIf": "You want a real 1860s village street, weathered clapboard and all, and you would rather not drive two hours to find one.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Architecture",
+      "Outdoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Hard-packed gravel roads and some boardwalk, muddy in spring or after heavy rain. Longest walk is about 420 m.",
+    "permits": "A TRCA photo permit is mandatory. The standard permit is $315 + HST for up to 20 people including the photographer, 11 a.m. to 4 p.m., with no site access after 4 p.m. TRCA also lists a $175 + HST couples permit. Booked at trca.checkfront.com. Non refundable, exterior only per the Village.",
+    "permitNeeded": "Yes",
+    "permitFee": "$315 + HST standard permit. TRCA also lists a $175 + HST couples package.",
+    "permitContact": "The Village at Black Creek, 416-736-1733 general and 416-667-6295 for photo permits, booking at trca.checkfront.com",
+    "parking": "Ticketed on-site lot at 1000 Murray Ross Parkway. Both permits include one vehicle. Drivers take a ticket from the machine, and extra cars are charged the $8.20 + HST visitor rate at the admissions kiosk. Open Wednesday to Sunday only, April 25 to December 23, 2026.",
+    "travelTime": "30 to 45 min from downtown",
+    "image": "black-creek-village.jpg",
+    "lat": 43.77492,
+    "lng": -79.51812
+  },
+  {
+    "id": "bluffers-park",
+    "name": "Bluffer's Park and Beach",
+    "area": "Scarborough, base of the Bluffs",
+    "zone": "Scarborough",
+    "vibe": "Nautical, sandy, breezy, cliffs behind, easygoing",
+    "vibeLine": "Masts in the marina basin, open sand past it, and the clay cliffs of the Bluffs standing over the whole park.",
+    "idealIf": "You want sand, boat masts and clay cliffs in one session, and you would rather park at the bottom than climb down. I book this one for sunrise.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Proposals",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Nature",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat park roads and lots, then soft sand. East washroom closed to fall 2027, west washroom open.",
+    "permits": "Casual handheld sessions are treated as everyday park use and are not booked. Bluffer's is not one of the City's 14 named wedding photography sites, so the City publishes no wedding rate for this park. Couples are asked to arrange any booking by phone with Park Bookings.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "Paid Green P lots at 1 Brimley Road South. Rates are seasonal and set by the Toronto Parking Authority, so check the posted board or pay machine on the day. Some spaces are fenced off for construction work, and the lots fill early on summer weekends.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "bluffers-park.jpg",
+    "lat": 43.7136,
+    "lng": -79.2266
+  },
+  {
+    "id": "rosetta-mcclain",
+    "name": "Rosetta McClain Gardens",
+    "area": "Scarborough, Bluffs Area",
+    "vibe": "Formal, manicured, romantic, bluff top, lake views",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "zone": "Scarborough",
+    "setting": [
+      "Garden",
+      "Nature",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Mostly flat paths through the formal beds, in mixed stone, brick and cobble. Short walk from the lot.",
+    "permits": "Casual personal photos need no permit. A booked wedding or engagement shoot is on the City of Toronto wedding photography list at $485.47 for two hours, taxes included, maximum 30 people, on the hour. Outdoor season is typically May 15 to September 30. Ceremonies are a separate permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$485.47 for two hours, taxes included",
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378, option 2, Monday to Friday 8 a.m. to 5 p.m.",
+    "parking": "On site lot at 5 Glen Everest Road, small and busy on summer weekends. The City publishes no fee, no gate hours and no winter clearing schedule, so confirm access before a sunrise booking. Street parking on Glen Everest is signed by side and by block. No dogs allowed, service animals excepted.",
+    "travelTime": "25 to 35 min from downtown",
+    "idealIf": "You want polished garden portraits with roses, a fountain and Lake Ontario wide behind you, all inside one compact formal core.",
+    "image": "rosetta-mcclain.jpg",
+    "vibeLine": "A formal garden on the edge of the Scarborough Bluffs. Raised beds, roses, a vine covered trellis, and Lake Ontario filling the horizon.",
+    "lat": 43.6964,
+    "lng": -79.255
+  },
+  {
+    "id": "colonel-danforth",
+    "name": "Colonel Danforth Park",
+    "area": "Scarborough, Highland Creek",
+    "zone": "Scarborough",
+    "vibe": "Wooded, ravine, secluded, creekside, unhurried",
+    "vibeLine": "Highland Creek cuts a wooded ravine through Scarborough, and I can walk a couple onto a forest path here with nothing else in the frame.",
+    "idealIf": "You want quiet forest and creek water instead of a skyline, and you do not mind the drive east to somewhere that actually feels away from the city.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Forest",
+      "Nature"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved creekside trail on the valley floor, with dirt and root sections closer to the water",
+    "permits": "The City publishes no permit requirement for casual photography. Colonel Danforth is not one of the City's 14 named wedding photography locations, and the City's commercial photography form tells couples to call 416-396-7378 rather than file it. Confirm the stream before booking.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378, pfrcustomerservice@toronto.ca",
+    "parking": "The City lists a parking lot here and publishes no fee for it. From Kingston Road eastbound take the Lawson Road exit, turn right onto Colonel Danforth Trail, then keep right. The washroom sits on the path west of the lot, listed at 9 a.m. to 10 p.m.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "colonel-danforth.jpg",
+    "lat": 43.77842,
+    "lng": -79.16878
+  },
+  {
+    "id": "miller-lash-house",
+    "name": "Miller Lash House",
+    "area": "Scarborough, Highland Creek Valley",
+    "zone": "Scarborough",
+    "vibe": "Arts and Crafts estate, fieldstone, English country manor, secluded, wooded valley",
+    "vibeLine": "A 1913 fieldstone summer estate on a knoll above Highland Creek, with wooded valley on three sides and the UTSC campus up the hill.",
+    "idealIf": "You want a stone manor, a wooden arbor, and a creek valley doing the work, and you can sort a UTSC permit in advance of the date.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Proposals",
+      "Weddings"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Outdoor",
+      "Historic",
+      "Garden",
+      "Architecture",
+      "Nature"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat lawns and garden paths. A stone staircase climbs from the parking lot to the house. Barrier free parking on site.",
+    "permits": "A UTSC Conference Services photography permit is required for a standalone shoot, via the Filming and Photography Request Form. No fee is published, only a non refundable deposit on confirmation. Site access is by appointment. Alcohol is not permitted on campus. Rentals include photo rights.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "conferences@utsc.utoronto.ca for permits, info@millerlashhouse.ca or 416-287-7000 for venue rentals",
+    "parking": "The lot sits at the bottom of the valley off Old Kingston Road, in through the stone gate posts. Venue rental packages include complimentary guest parking. UTSC states that university parking charges apply on a photography permit, so confirm the rate when the permit is issued.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "miller-lash-house.jpg",
+    "lat": 43.77994,
+    "lng": -79.18537
+  },
+  {
+    "id": "utsc",
+    "name": "University of Toronto Scarborough",
+    "area": "Scarborough, Highland Creek",
+    "zone": "Scarborough",
+    "vibe": "Brutalist, concrete, architectural, cinematic, ravine",
+    "vibeLine": "I love the contrast here. Poured concrete stepping along the ravine edge, then a forested creek valley a short walk below it.",
+    "idealIf": "You want concrete and hard geometry instead of flowers, with a forested ravine I can walk you down into ten minutes later.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Architecture",
+      "Nature",
+      "Forest"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat campus paths, then a 500 m accessible concrete valley trail, 20 m drop at 5 percent max grade, or H wing stairs.",
+    "permits": "Permit required. Requests go to UTSC Conference and Events Services through its Filming and Photography Request Form, which covers outdoor locations only. Approval depends on other campus activity. No fee is published and a non refundable deposit is due on confirmation. Alcohol is not permitted.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "UTSC Conference and Events Services, conferences@utsc.utoronto.ca",
+    "parking": "Paid campus lots only. Lots A and H are pay and display, $6.05 an hour weekdays 7:30am to 6pm with a four hour maximum, and $10.55 flat on Saturday and Sunday. Lot G and the parking garage are pay on exit, $7.50 on weekends, no in and out. Rates listed as of May 2026, confirm at the meter.",
+    "travelTime": "35 to 45 min from downtown",
+    "image": "utsc.jpg",
+    "lat": 43.78361,
+    "lng": -79.18778
+  },
+  {
+    "id": "rouge-park",
+    "name": "Rouge National Urban Park",
+    "area": "Scarborough, Rouge Valley",
+    "zone": "Scarborough",
+    "vibe": "Wild, forested, river valley, expansive, quiet",
+    "vibeLine": "Among the largest urban parks in North America, a forested river valley with a two level lookout, the one place near Toronto I can frame as nothing but wild.",
+    "idealIf": "You want a wild river valley instead of a skyline, and you do not mind a forest walk in shoes that can handle gravel and stairs.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Forest",
+      "Park"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Unpaved trails with slopes and stairs. Parks Canada calls the lookout a 1.2 km hike each way from Twyn Rivers.",
+    "permits": "The park is free and open 365 days a year. Parks Canada requires a permit for all commercial filming and photography and publishes no rule for paid couples sessions, so email rougefilm@pc.gc.ca first. Events need their own permit. Recreational drones are prohibited.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "Film permit schedule for 2026: $177.25 application plus $589.25 per day for a crew of 1 to 6. Parks Canada publishes no separate rate for portrait sessions.",
+    "permitContact": "rougefilm@pc.gc.ca for filming and photography permits, 416-264-2020 for events",
+    "parking": "Parking at Twyn Rivers Day Use Area, 55 Twyn Rivers Drive, is extremely limited with no published fee. Lots lock at 9 pm, reopen 7 to 7:30 am, and can close in bad weather. Street parking is ticketed or towed. Enter from Altona Road in Pickering. Zoo Road and Rouge Beach lots are closed.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "rouge-park.jpg",
+    "lat": 43.8142,
+    "lng": -79.15362
+  },
+  {
+    "id": "port-credit",
+    "name": "Port Credit Memorial Park",
+    "area": "Port Credit, Mississauga",
+    "zone": "Mississauga",
+    "vibe": "Harbour, lighthouse, riverfront, breezy, village, cinematic",
+    "vibeLine": "The Credit River bending down toward the harbour, boats moving out past the marina, and the white lighthouse a short walk over the bridge.",
+    "idealIf": "You want working harbour character and the river mouth close to the city, with the lighthouse and the village a few minutes on foot.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Proposals",
+      "Pre-wedding"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Park",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved walkways. Lighthouse is a two to three minute walk over the Lakeshore Road bridge. No washrooms in the park.",
+    "permits": "City of Mississauga permit required for commercial and wedding photography in parks. Book through Recreation Customer Service, not the Film Office, in 90 minute blocks. Form needs over 14 days notice. Commercial and non resident bookings open only two months ahead, residents ten months.",
+    "permitNeeded": "Yes",
+    "permitFee": "$142.72 resident, $157.00 non resident, $185.54 commercial, per 90 minute block plus HST, 2026 City of Mississauga rates. Confirm which class applies before quoting a couple",
+    "permitContact": "Mississauga Recreation Customer Service, 905-615-4100",
+    "parking": "Free municipal lots shared with the Port Credit Library and Memorial Arena; posted limits run three to fifteen hours by lot and block. Metered parking on Lakeshore Road is $1.50 per hour, three hour cap. Pavilion and plaza are under construction into 2027. Lots fill on festival weekends.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "port-credit.jpg",
+    "lat": 43.55115,
+    "lng": -79.58697
+  },
+  {
+    "id": "rattray-marsh",
+    "name": "Rattray Marsh Conservation Area",
+    "area": "Clarkson, Mississauga",
+    "zone": "Mississauga",
+    "vibe": "lakeside, wetland, boardwalk, wild, quiet, natural, shingle beach",
+    "vibeLine": "Boardwalk winding through open marsh, then a shingle beach where Lake Ontario opens up. The most untouched shoreline I shoot in the GTA.",
+    "idealIf": "You want wild water and wetland instead of a manicured garden, and you do not mind the walk in. I book it for slow, unhurried sessions.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Waterfront",
+      "Forest"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Flat boardwalk and level trail, but roughly 1 km each way from the Jack Darling lot.",
+    "permits": "Credit Valley Conservation requires a permit for professional photography and videography at its parks. No CVC page names Rattray Marsh in that rule, so confirm by phone before booking. Park admission here is free. Drones are not permitted on CVC property.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "CVC parks line 1-800-367-0890, or the permit form at cvc.ca/explore-activities/photography-filming/apply-for-a-photography-or-drone-permit/",
+    "parking": "No onsite parking. CVC directs visitors to Jack Darling Memorial Park, 1180 Lakeshore Rd West, then a walk of roughly 1 km to the boardwalk. Public listings show five free lots, though the City publishes no rates, so check posted signs. Parking is not permitted on surrounding streets.",
+    "travelTime": "35 to 45 min from downtown",
+    "image": "rattray-marsh.jpg",
+    "lat": 43.51788,
+    "lng": -79.60226
+  },
+  {
+    "id": "riverwood",
+    "name": "The Riverwood Conservancy",
+    "area": "Erindale, Mississauga",
+    "zone": "Mississauga",
+    "vibe": "Gardens, heritage, woodland, riverside, peaceful, Arts and Crafts",
+    "vibeLine": "A 1919 house with Arts and Crafts gardens set around a lily pond, and a walk downhill behind it where the Credit River woods close in.",
+    "idealIf": "You want two looks inside one permit block, manicured heritage gardens for the polished frames and river woodland for the quiet ones.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Forest",
+      "Nature",
+      "Historic",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved paths around the gardens, with unpaved trails and ravine slopes on the way down to the Credit River.",
+    "permits": "A City of Mississauga park permit is required for wedding, group and commercial photography, booked as a 90 minute block that covers arrival, photos and departure. The City issues it, not the Conservancy. No ceremonies or receptions on site, and drones are prohibited.",
+    "permitNeeded": "Yes",
+    "permitFee": "$142.72 resident, $157.00 non resident, or $185.54 commercial, per 1.5 hour block, each excluding 13 percent HST. City of Mississauga Schedule D, effective January 1, 2026.",
+    "permitContact": "City of Mississauga, 905-615-4100, or the online facility rental and park permit request form. Requests must be submitted more than 14 days ahead.",
+    "parking": "Free parking in the Main Lot off Riverwood Park Lane and a smaller Visitor Lot beside Chappell House, both with accessible spaces. Lots can fill at busy times. Parking on the grass is not allowed and overflow is directed to Erindale GO Station. Park open 7 a.m. to 11 p.m. daily.",
+    "travelTime": "35 to 50 min from downtown",
+    "image": "riverwood.jpg",
+    "lat": 43.56525,
+    "lng": -79.67142
+  },
+  {
+    "id": "brueckner-rhododendron",
+    "name": "Brueckner Rhododendron Gardens",
+    "area": "Port Credit, Mississauga",
+    "zone": "Mississauga",
+    "vibe": "lakefront, woodland, floral, colourful, quiet, romantic",
+    "vibeLine": "Eighteen acres of rhododendrons under tall white pines, sloping down to a quiet stretch of Lake Ontario shoreline at the foot of the garden.",
+    "idealIf": "You want rhododendrons at peak colour, usually mid May into early June, then a short walk through the pines to the water for the last light.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Waterfront",
+      "Nature",
+      "Outdoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved path from the lot to the shoreline, roughly 200 m, plus unpaved side trails and a gentle slope near the water.",
+    "permits": "A City of Mississauga permit is required for wedding and engagement photography in City parks. Casual personal photos need none. Booked through Recreation Customer Service, not the Film Office. Residents book up to 10 months ahead, non residents and commercial up to 2 months.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "Per 1.5 hour block, 2026 rates excluding HST: resident $142.72, non resident $157.00, commercial $185.54. Published in the City Schedule D fee schedule effective January 1, 2026. Confirm which rate class applies.",
+    "permitContact": "Recreation Customer Service Centre, City of Mississauga, 905.615.4100",
+    "parking": "Small City lot off Lakeshore Road West at the Shawnmarr Road lights, with accessible spaces. Capacity is not published and the City calls parking here limited, so arrive early in bloom season. From May 1 to September 30, parking and stopping violations south of Lakeshore Road carry a $100 fine.",
+    "travelTime": "30 to 45 min from downtown",
+    "image": "brueckner-rhododendron.jpg",
+    "lat": 43.5402,
+    "lng": -79.59547
+  },
+  {
+    "id": "lakefront-promenade",
+    "name": "Lakefront Promenade Park",
+    "area": "Lakeview, Mississauga",
+    "zone": "Mississauga",
+    "vibe": "waterfront, nautical, breezy, open horizon, marina, sunrise",
+    "vibeLine": "I shoot this one facing the water. Sailboat masts on one side, the small red and white beacon out on the breakwater, open lake behind you.",
+    "idealIf": "You want open water and boat masts instead of buildings, and a rocky breakwater with a red and white beacon and nothing but horizon behind it.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Park",
+      "Outdoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved waterfront pathway. The breakwater out to the beacon is loose rock with no maintained path.",
+    "permits": "City of Mississauga requires a permit to photograph for remuneration in any City park, which covers hired wedding and engagement shoots. Casual personal photos do not need one. Requests go to Recreation Customer Service more than 14 days ahead. Confirm this park can be booked.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$142.72 resident or $157.00 non resident, plus HST, per 1.5 hour block, 2026 City rate",
+    "permitContact": "Recreation Customer Service Centre, 905-615-4100 or active@mississauga.ca",
+    "parking": "City lots run the length of the park off Lakefront Promenade. The City lists the two launch ramps, 120 at the north end and 140 at the south, as first come first served with no overnight parking, and those lots fill with boat trailers on summer weekends. No parking fee is published.",
+    "travelTime": "25 to 35 min from downtown",
+    "image": "lakefront-promenade.jpg",
+    "lat": 43.56721,
+    "lng": -79.55892
+  },
+  {
+    "id": "chinguacousy-park",
+    "name": "Chinguacousy Park",
+    "area": "Bramalea, Brampton",
+    "zone": "Brampton",
+    "vibe": "Manicured, floral, tropical greenhouse, pond bridges, sprawling",
+    "vibeLine": "A hundred acres in Bramalea where formal flower beds meet a pond bridge, and a glass tropical house stays green through February.",
+    "idealIf": "You want manicured flower beds, a pond bridge and a warm glass greenhouse in one park, with frames that still work when the gardens go bare.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Garden",
+      "Nature",
+      "Indoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved paths through the gardens and around the pond. The ski hill sits at the far north end of the park.",
+    "permits": "A City of Brampton permit is required for professional and wedding photography. Book through Facility Rentals at least four weeks ahead, with proof of $5 million liability insurance naming the City. The Tropical Gardens greenhouse opens 12 p.m. to 8 p.m. daily and books separately at its own rate.",
+    "permitNeeded": "Yes",
+    "permitFee": "Outdoor Photo Permit: $85.60 per 60 minutes resident, $128.39 per 60 minutes non resident or commercial, plus HST. City of Brampton 2026 user fee schedule, effective January 1, 2026. Confirm which rate applies when you book.",
+    "permitContact": "City of Brampton Facility Rentals. Chinguacousy Park bookings 905.458.6555. General rentals 905.874.2665 or facilityrentals@brampton.ca",
+    "parking": "Free parking in the park lots on ordinary days. The lots off Central Park Drive sit closest to the gardens and greenhouse. The north end lot near the ski hill is about a 10 minute walk from the flower beds. Lots fill on summer weekends. A separate Canada Day parking fee is listed by the City.",
+    "travelTime": "40 to 60 min from downtown",
+    "image": "chinguacousy-park.jpg",
+    "lat": 43.72296,
+    "lng": -79.7214
+  },
+  {
+    "id": "gage-park-brampton",
+    "name": "Gage Park",
+    "area": "Downtown Brampton, Main Street South",
+    "zone": "Brampton",
+    "vibe": "heritage, downtown, bandstand, formal gardens, mature trees, nostalgic",
+    "vibeLine": "Brampton's oldest park, opened in 1903, with a bandstand near its centre and mature trees breaking the late light across the flower beds.",
+    "idealIf": "You want a small heritage park where a bandstand, a fountain and formal flower beds all sit within a two minute walk, plus a skating trail in winter.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Proposals"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Outdoor",
+      "Park",
+      "Garden",
+      "Historic",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved loops around the bandstand and gardens. A few steps where the ground rises toward Alderlea at the south end.",
+    "permits": "Brampton requires a permit for professional photography and wedding ceremonies in its parks, booked through Facility Rentals. Requests made less than four weeks ahead may not be considered. Every rental needs $5 million liability insurance naming the City as an additional insured.",
+    "permitNeeded": "Yes",
+    "permitFee": "$85.60 resident or $128.39 non resident and commercial, per 60 minutes, plus HST, per the 2026 City of Brampton user fee schedule effective January 1, 2026. Exclusive use of the gazebo is a separate $196.75 or $295.12 per 60 minutes. Insurance is quoted separately at booking.",
+    "permitContact": "City of Brampton Recreation Facility Rentals, 905.874.BOOK (2665) or facilityrentals@brampton.ca",
+    "parking": "Five municipal garages nearby, including City Hall at 2 Wellington Street West. Paid weekdays 9 am to 7 pm: first two hours free, then $1 per half hour to a $9 maximum. Free outside those hours, weekends and holidays. Nelson Square is free. Main Street closes Saturdays 6 am to 2 pm, June to October.",
+    "travelTime": "45 to 60 min from downtown",
+    "image": "gage-park-brampton.jpg",
+    "lat": 43.68394,
+    "lng": -79.75825
+  },
+  {
+    "id": "heart-lake",
+    "name": "Heart Lake Conservation Park",
+    "area": "North Brampton, Heart Lake Road",
+    "zone": "Brampton",
+    "vibe": "Quiet, forested, lakeside, glacial, unhurried",
+    "vibeLine": "A kettle lake the glaciers left behind, ringed by forest and planted pine rows, still enough most mornings to hold your reflection off the shore.",
+    "idealIf": "You want water, forest, and real quiet away from downtown parks, and don't mind driving to Brampton or timing around family day use traffic near the beach.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Forest",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat day use area by the lake, stairs down to the boathouse, natural surface trails beyond it",
+    "permits": "TRCA has no published photo permit fee for Heart Lake and asks photographers to email Visitor Services first. Gate admission is paid per vehicle. Weddings and organized gatherings need a booked permit. Drones require TRCA authorization and are not allowed without it.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "TRCA Visitor Services",
+    "parking": "Parking is included in the per vehicle gate fee, not billed separately, but a second car still pays full admission again. The 2026 passenger vehicle rate is $26.20 plus HST and the gate is cashless. Last admission is one hour before closing. Weekends only in fall, closed November through April.",
+    "travelTime": "45 to 60 min from downtown",
+    "image": "heart-lake.jpg",
+    "lat": 43.73985,
+    "lng": -79.79145
+  },
+  {
+    "id": "pama",
+    "name": "Peel Art Gallery Museum and Archives (PAMA)",
+    "area": "Downtown Brampton, Wellington Street East",
+    "zone": "Brampton",
+    "vibe": "Historic, 1867 courthouse, jail complex, stone, heritage, cinematic",
+    "vibeLine": "An 1867 county courthouse and jail in downtown Brampton, where the old courtroom and the heavy stone exterior sit a few steps apart.",
+    "idealIf": "You want an 1867 courtroom and heavy heritage stone instead of another park, all inside one guided two hour session in downtown Brampton.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Historic",
+      "Indoor",
+      "Architecture",
+      "Urban"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Accessible site. Ground level entrances, elevators to all floors, short flat walks between the buildings.",
+    "permits": "PAMA books its own photo sessions, so there is no city permit. The wedding photoshoot is $360 plus tax for two hours, staff guided through the courthouse and exterior grounds, in opening hours only. Closing is 4:30 p.m. most days, 9 p.m. Thursday. No photos in the permanent galleries, no drones.",
+    "permitNeeded": "Venue booking",
+    "permitFee": "$360 plus tax for a two hour wedding session",
+    "permitContact": "pamadevelopment@peelregion.ca or 905-791-4055",
+    "parking": "Limited onsite lot with three free accessible spaces, entered from the laneway between the buildings. The City Hall garage at 2 Wellington Street West is closest: first two hours free on weekdays, free on weekends and holidays. Street meters are $2 an hour, Monday to Saturday, 90 minute maximum.",
+    "travelTime": "45 to 60 min from downtown",
+    "image": "pama.jpg",
+    "lat": 43.68489,
+    "lng": -79.75759
+  },
+  {
+    "id": "belfountain",
+    "name": "Belfountain Conservation Area",
+    "area": "Caledon, Belfountain Hamlet",
+    "zone": "Caledon",
+    "vibe": "Misty, storybook, heritage, forested, escarpment",
+    "vibeLine": "The bridge sways a little when you cross it, the falls run right underneath, and the old stone fountain waits on the far bank.",
+    "idealIf": "You want a waterfall, a swaying bridge and a historic cave in one small park, and you can work inside a two hour entry slot booked two weeks out.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Forest",
+      "Waterfront",
+      "Historic"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Short accessible path to the bridge and fountain. Stairs and steeper grades on the gorge trails.",
+    "permits": "Credit Valley Conservation requires a photography permit for professional photography and videography. Apply through the CVC photography, film and drone permit form. A timed entry reservation and a per vehicle permit are also required, and park admission is charged per person.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$75 plus HST for a 2 hour permit, 2026 rate, plus park admission and the vehicle permit. One CVC page states the rate per hour, so confirm the duration when applying.",
+    "permitContact": "Credit Valley Conservation photography, film and drone permit form; parks line 1-800-367-0890",
+    "parking": "On site lot, vehicle permit $11.30 in 2026. Entry is by timed reservation only, bookable up to two weeks ahead with no same day slots. Walk in visitors are not permitted. The park opens for the season on Saturday April 25. Bookings are refundable only within 72 hours of booking.",
+    "travelTime": "70 to 85 min from downtown",
+    "image": "belfountain.jpg",
+    "lat": 43.79532,
+    "lng": -80.01025
+  },
+  {
+    "id": "forks-of-the-credit",
+    "name": "Forks of the Credit Provincial Park",
+    "area": "Caledon, Credit River Valley",
+    "zone": "Caledon",
+    "vibe": "Rolling, open, wild, escarpment, cinematic",
+    "vibeLine": "Rolling escarpment hills and a kettle lake minutes from the trailhead. The waterfall sits deeper in the gorge, and I think it's worth the walk.",
+    "idealIf": "You want wide open Caledon hills and quiet kettle lake water instead of a city backdrop, and you don't mind booking a vehicle permit days in advance.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Nature",
+      "Forest",
+      "Waterfront"
+    ],
+    "walkingLevel": "Medium-Hard",
+    "walkingNote": "Kettle Lake is near the lot. Falls leg is long, hilly, with steps. Stay on marked trails. Meadow link closed.",
+    "permits": "Ontario Parks publishes no photography permit here. Every vehicle needs a day use permit, bought in advance; booking opens at 7:00 a.m. five days ahead. Permits cover 8:00 a.m. to 10:00 p.m. only. The park map requires an application to the superintendent for filming, so clear paid shoots first.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Park phone (705) 435-2498. Mail c/o Earl Rowe Provincial Park, PO Box 872, Alliston ON L9R 1W1. Ontario Parks lists 705-435-0847 for Park Superintendent arrangements at this park. The park map directs filming and research requests to the Superintendent.",
+    "parking": "One designated gravel lot off McLaren Road with limited capacity, entered through an automatic gate that scans the permit barcode. The 2026 vehicle permit is $18.00 full day or $8.50 for four hours. Roadside parking, including Forks of the Credit Road, draws tickets and tows. Slots sell out.",
+    "travelTime": "60 to 80 min from downtown",
+    "image": "forks-of-the-credit.jpg",
+    "lat": 43.82489,
+    "lng": -80.00402
+  },
+  {
+    "id": "alton-mill",
+    "name": "Alton Mill Arts Centre",
+    "area": "Village of Alton, Caledon",
+    "zone": "Caledon",
+    "vibe": "Stone mill, heritage industrial, artful, rustic, creekside, mill pond, cinematic",
+    "vibeLine": "An 1881 stone knitting mill on Shaw's Creek, artist studios still working inside and the old mill pond lying quiet behind the walls.",
+    "idealIf": "You want an 1881 stone mill, working artist studios, and creekside quiet in one place, and you do not mind an hour or more of driving into Caledon for it.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Weddings",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Historic",
+      "Industrial",
+      "Architecture",
+      "Outdoor",
+      "Nature"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Level entrances and an interior lift. Courtyards are flat stone, creek and pond edges are uneven.",
+    "permits": "Privately run heritage site that issues its own photography permits. Visiting and casual photos are free during public hours, Wednesday to Sunday, 10am to 5pm. Professional sessions need a permit arranged in advance. Wedding bookings include grounds access and one photo permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "info@altonmill.ca or 519-941-9300",
+    "parking": "Free on-site lot with accessible spaces and four Level 2 EV chargers on the Flo network. The vehicle entrance is the driveway off Amelia Street, not Queen Street West. Street parking is available nearby. The site hosts festivals and open studio weekends that can affect parking.",
+    "travelTime": "60 to 75 min from downtown",
+    "image": "alton-mill.jpg",
+    "lat": 43.85846,
+    "lng": -80.07155
+  },
+  {
+    "id": "terra-cotta",
+    "name": "Terra Cotta Conservation Area",
+    "area": "Terra Cotta, Halton Hills near Caledon",
+    "zone": "Caledon",
+    "vibe": "Forested, escarpment, lake reflections, sugar maple, quiet",
+    "vibeLine": "Wolf Lake and the sugar bush on one easy loop, a boardwalk over restored wetland, and the main Bruce Trail route climbing the escarpment behind it.",
+    "idealIf": "You want quiet forest, a lake loop and a real escarpment climb in one session, and an hour of highway out of the city does not scare you.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Forest",
+      "Nature",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Crushed stone loop and wetland boardwalk near the lot. The Escarpment Trail is a short steep climb.",
+    "permits": "No permit is needed for personal photography. Credit Valley Conservation requires a professional photography permit for hired sessions, $75 plus HST. CVC pages disagree on whether that buys one hour or two and whether admission is included, so confirm the total. Drones are prohibited.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$75 plus HST for a professional photography permit",
+    "permitContact": "Credit Valley Conservation parks line 1-800-367-0890, permit form at cvc.ca/explore-activities/photography-filming/",
+    "parking": "Onsite lots at 14452 Winston Churchill Blvd. No separate parking fee, admission is per person. 2026 rates: adult $8.50, youth $3.75, senior $6.75, under six free. Two EV chargers. Hours 8 a.m. to 8 p.m. daily, dropping to 8 a.m. to 7 p.m. on September 21, 2026. No entry 30 minutes before close.",
+    "travelTime": "60 to 80 min from downtown",
+    "image": "terra-cotta.jpg",
+    "lat": 43.72301,
+    "lng": -79.95895
+  },
+  {
+    "id": "boyd-conservation",
+    "name": "Boyd Conservation Park",
+    "area": "Vaughan, Woodbridge",
+    "zone": "Vaughan",
+    "vibe": "Forested, river valley, green, classic, unhurried",
+    "vibeLine": "Old hemlocks, a steep valley, the East Humber running through it. I like that you park close and still shoot like you drove two hours north.",
+    "idealIf": "You want deep valley forest and a river close to the city, with a short walk from the car so a long dress never has to cross a whole trail.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Forest",
+      "Nature",
+      "Park",
+      "Waterfront"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Park roads reach the valley trailheads; forest paths are packed dirt with roots and some valley approaches are steep",
+    "permits": "No photography permit is published for Boyd. TRCA groups it with other conservation areas that require a direct email to Visitor Services at vservices@trca.ca for permit questions. Paid gate entry still applies, and TRCA requires a booked permit for an actual ceremony at the park.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "TRCA Visitor Services, vservices@trca.ca or 416-667-6295",
+    "parking": "Parking is bundled into gate admission, billed per vehicle at $26.20 plus HST in 2026; a second vehicle pays the fee again. Online prepayment is available. Roads run about 1.5 km to the valley lots. Weekends only from late September, closed November through April, last entry an hour before close.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "boyd-conservation.jpg",
+    "lat": 43.81443,
+    "lng": -79.58221
+  },
+  {
+    "id": "kleinburg-main-street",
+    "name": "Kleinburg Village Main Street",
+    "area": "Vaughan, Kleinburg Village Core",
+    "zone": "Vaughan",
+    "vibe": "Village charm, heritage buildings, small town, warm, walkable",
+    "vibeLine": "Old village houses turned into shops line the east side of Islington Avenue, set close enough that one slow walk gives you several backdrops.",
+    "idealIf": "You want small village warmth and heritage shopfronts about forty five minutes from downtown, instead of a long drive into the country.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Proposals"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Historic",
+      "Urban",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat village sidewalks. Sidewalk sections close during the Kleinburg Village Improvements work on Islington Avenue.",
+    "permits": "Commercial photography on City owned lands needs a permit under Vaughan By-law 169-2020, issued in one hour blocks that include setup. Vaughan publishes no rule for the Islington Avenue sidewalk, which is road allowance. Confirm with the City and apply at least 30 days ahead.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$128.33 commercial and non Vaughan, or $106.94 resident, per one hour block before HST. City of Vaughan outdoor rate effective Jan. 1 to Dec. 31, 2026.",
+    "permitContact": "City of Vaughan Recreation Services, rec@vaughan.ca. For sidewalk and road allowance questions, bylaw.licensing@vaughan.ca or 905-832-2281.",
+    "parking": "Free unmarked on street spaces on Islington Avenue and Nashville Road, three hour limit 6 a.m. to 6 p.m. and none 2 a.m. to 6 a.m. Public lots at the Kleinburg Public Library and Pierre Berton Heritage Centre. Most core lots are private and signed customer only. Construction moves parking in 2026.",
+    "travelTime": "40 to 45 min from downtown",
+    "image": "kleinburg-main-street.jpg",
+    "lat": 43.8435,
+    "lng": -79.6273
+  },
+  {
+    "id": "mcmichael",
+    "name": "McMichael Canadian Art Collection",
+    "area": "Vaughan, Kleinburg",
+    "zone": "Vaughan",
+    "vibe": "Group of Seven, woodland, hewn log and stone, sculpture garden, cinematic",
+    "vibeLine": "One hundred acres of Group of Seven woodland around a hewn log gallery, bronze sculptures hiding along the paths, and a ridgetop over the Humber.",
+    "idealIf": "You want the woods the Group of Seven painted, hewn log and fieldstone walls, and a quiet ridgetop, and you can shoot it before the gates close.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Forest",
+      "Nature",
+      "Historic",
+      "Garden",
+      "Architecture"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Woodland paths and a ridgetop hill. The paved entrance drive has no sidewalk.",
+    "permits": "Posed wedding and engagement sessions on the grounds need a McMichael photo permit, 10 am to 4 pm. Each permit is a two hour block with up to 30 minutes per location. No drones anywhere on the property. Grounds permits run only through September 20, 2026, then depend on the construction timeline.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "photopermits@mcmichael.com",
+    "parking": "Free on site lot via the security buzzer at the gate. Parking was $7 per vehicle before the gallery made it free until August 31, 2026. The rate since then is not published. En Plein Air Drive is a fire route. The city tickets parked cars there. Lot closes to vehicles once construction starts.",
+    "travelTime": "45 min from downtown",
+    "image": "mcmichael.jpg",
+    "lat": 43.84348,
+    "lng": -79.61662
+  },
+  {
+    "id": "eagles-nest",
+    "name": "Eagles Nest Golf Club",
+    "area": "Vaughan, Maple",
+    "zone": "Vaughan",
+    "vibe": "Links style, rolling fairways, fescue rough, elegant, sunset views",
+    "vibeLine": "A links style course of rolling fairways and fescue north of the city, with a lower patio built for outdoor ceremonies and sunset views.",
+    "idealIf": "You want a links style golf course with rolling fairways and sunset views, on one property that holds the ceremony, the photos and the reception.",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Receptions",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Outdoor",
+      "Garden",
+      "Indoor",
+      "Architecture"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Clubhouse, lower patio and terrace are the main spaces. The venue lists transportation provided for photo locations.",
+    "permits": "Eagles Nest is a public golf club on private property, so no city permit applies. Wedding and event photography is arranged inside the venue booking with the sales team. The club publishes no photography or drone policy for people who are not booked clients, so confirm access first.",
+    "permitNeeded": "Venue booking",
+    "permitFee": null,
+    "permitContact": "Eagles Nest sales team at sales@eaglesnestgolf.com or 905.417.2300",
+    "parking": "Free parking on site, a short walk from the clubhouse, with reserved accessible spaces. The main entrance is on the west side of Dufferin Street just north of Major Mackenzie Drive. The golf course closes for the winter season, so outdoor course backdrops read spring through fall.",
+    "travelTime": "35 to 45 min from downtown",
+    "image": "eagles-nest.jpg",
+    "lat": 43.86432,
+    "lng": -79.49118
+  },
+  {
+    "id": "copper-creek",
+    "name": "Copper Creek Golf Club",
+    "area": "Vaughan, Kleinburg",
+    "zone": "Vaughan",
+    "vibe": "Copper roofed clubhouse, valley views, manicured, grand, polished",
+    "vibeLine": "A copper roofed clubhouse above the Humber River Valley, with a stone gazebo and a terrace where the last hour of light runs long and gold.",
+    "idealIf": "You want a valley view wedding venue, a stone gazebo ceremony, and a terrace that holds golden hour without leaving Vaughan.",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Receptions",
+      "Pre-wedding"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ],
+    "setting": [
+      "Garden",
+      "Outdoor",
+      "Indoor"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Clubhouse, terrace, and gazebo sit close together, with stairs down to the lower terrace. Course views need a cart.",
+    "permits": "Copper Creek is a privately run club, so access runs through its events office, not a city or conservation permit desk. No photography policy is published. Photography is documented only inside booked weddings and events. The course closes for the season in November while event spaces stay open.",
+    "permitNeeded": "Venue booking",
+    "permitFee": null,
+    "permitContact": "Copper Creek events office, 905.893.3370 ext 202",
+    "parking": "On site surface parking sits beside the clubhouse, reached by the private drive from the Highway 27 gate. No fee, capacity, or public access statement is published, so treat it as parking for golf and event guests and confirm with the events office. No street parking is published on Highway 27.",
+    "travelTime": "30 to 40 min from downtown",
+    "image": "copper-creek.jpg",
+    "lat": 43.86064,
+    "lng": -79.63699
+  },
+  {
+    "id": "doctors-house",
+    "name": "The Doctor's House",
+    "area": "Vaughan, Kleinburg",
+    "vibe": "Historic, chapel, garden, village charm, intimate",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Intimate Weddings",
+      "Couples"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "zone": "Vaughan",
+    "setting": [
+      "Historic",
+      "Garden",
+      "Church",
+      "Indoor"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Chapel connects indoors to the event rooms and an accessibility elevator serves the levels. Gardens and patios on site.",
+    "permits": "Private property, so Vaughan's commercial photography by law for City owned lands does not apply here. Photography happens inside a booked event or ceremony. The preferred vendor list names only an officiant, audio and pianist, so no photographer is required. Confirm other sessions with sales.",
+    "permitNeeded": "Venue booking",
+    "permitFee": null,
+    "permitContact": "The Doctor's House sales team, TDHSales@thedoctorshouse.ca or 905-893-1615",
+    "parking": "On site surface lots front and back, roughly 208 spaces per city studies, shared with the XXI Chophouse restaurant and up to three events during restaurant hours. Both lots get busy from about 4:30pm and valet is sometimes offered. Village street parking is three hours, 6am to 6pm.",
+    "travelTime": "40 to 60 min from downtown",
+    "idealIf": "You want a chapel ceremony and garden portraits on one property, with the reception a short indoor walk away and nobody moving a car.",
+    "image": "doctors-house.jpg",
+    "vibeLine": "A wooden pew chapel with cathedral windows and its own bell, set in the gardens of a 19th century Kleinburg house that backs onto the Humber.",
+    "lat": 43.8434,
+    "lng": -79.62906
+  },
+  {
+    "id": "unionville-main-street",
+    "name": "Main Street Unionville",
+    "area": "Markham, Unionville Village",
+    "zone": "Markham",
+    "vibe": "Heritage, village, storybook, walkable, nostalgic",
+    "vibeLine": "Painted 1800s shopfronts, a bandstand on the corner, Toogood Pond just north. I walk this whole street slowly and it never runs out of frames.",
+    "idealIf": "You want a small village feel instead of a park, with heritage shopfronts along one street and Toogood Pond about ten minutes north on foot.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Proposals"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "setting": [
+      "Historic",
+      "Urban",
+      "Nature"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat sidewalks the length of the strip. Toogood Pond adds a short trail walk, but part of that trail is closed.",
+    "permits": "Main Street Unionville is one of seven photography permit locations the City of Markham lists, booked through the Clerk's Office or the City's PerfectMind portal to reserve the spot for exclusive use. The by-law wording covers wedding photography. There is no separate Unionville BIA permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$158.50 per permit plus HST under Markham's 2026 user fee by-law 2025-125. The City website separately lists $172.89 per hour, so confirm the basis with the Clerk before quoting.",
+    "permitContact": "City of Markham Clerk's Office, clerks@markham.ca, 905.475.4744",
+    "parking": "Free lots sit behind the Main Street businesses, entered off Carlton Road and Main Street Unionville, plus a free Toogood Pond lot at 218 Carlton Road. No maximum stay is published, so posted signs govern. Several event days close Main Street, so check the BIA events calendar.",
+    "travelTime": "40 to 50 min from downtown",
+    "image": "unionville-main-street.jpg",
+    "lat": 43.86599,
+    "lng": -79.3113
+  },
+  {
+    "id": "toogood-pond",
+    "name": "Toogood Pond Park",
+    "area": "Markham, Unionville",
+    "zone": "Markham",
+    "vibe": "Serene, pond, willows, boardwalk, village calm",
+    "vibeLine": "Willows along the shoreline, a boardwalk through the cattails, and Unionville's heritage Main Street a short walk from the north entrance.",
+    "idealIf": "You want a short, flat pond loop with willows and boardwalk in one frame, and a heritage village street nearby to finish the session on.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Park",
+      "Nature",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat loop, roughly 1.5 km, one bridge and a boardwalk. Pond mostly drained and paths closed for 2026 dam repairs.",
+    "permits": "Toogood Pond is one of seven Markham sites that sell a photography permit. By-law 167-92 requires one for wedding photography in any Markham park. Engagement and portrait sessions are not addressed in writing. The by-law also bars park entry between midnight and 6 a.m. Book via the Clerk's Office.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "By-law 2025-125 lists a Wedding Photography Permit at $158.50 per permit plus HST, about $179.11. The City website lists $172.89 per hour. Confirm the basis with the Clerk's Office before quoting a client.",
+    "permitContact": "City of Markham Clerk's Office, clerks@markham.ca, 905.475.4744",
+    "parking": "Two small lots. The north entrance off Main Street Unionville sits beside the gazebo and the Boathouse washrooms. A second lot is off Carlton Road at the south end near the dam. The City publishes no fee or hours for either. Confirm access first, as 2026 dam and boardwalk repairs close paths.",
+    "travelTime": "35 to 50 min from downtown",
+    "image": "toogood-pond.jpg",
+    "lat": 43.87287,
+    "lng": -79.31475
+  },
+  {
+    "id": "milne-dam",
+    "name": "Milne Dam Conservation Park",
+    "area": "Markham, Rouge River valley off McCowan Road",
+    "zone": "Markham",
+    "vibe": "Rural, riverside, wooded, meadow, quiet",
+    "vibeLine": "I come out here for the wide water and the meadow grass, thick woods on the far bank and an old dam at the end of the trail.",
+    "idealIf": "You want wide river light, meadow grass and deep woods in one quiet park, and you do not mind driving out to Markham for an afternoon with me.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Park",
+      "Nature",
+      "Forest",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat gravel and grass paths from the lots. The dam is about 1.5 km east, roughly 30 to 45 minutes on foot.",
+    "permits": "No photography permit is sold for Milne Dam. The 1992 Markham parks bylaw requires a Town permit for wedding photography in any park, but the City sells permits for only seven other locations. Vehicle admission is charged per vehicle on weekends and statutory holidays, and is free on weekdays.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "City of Markham, 905.477.7000 (ask for the Clerk's Office about the parks bylaw), or rentalpermits@markham.ca for the park itself",
+    "parking": "Free lots at 8251 McCowan Road, through a front gate. Open seasonally, roughly mid May to mid October, 9 AM to dusk on weekdays. Weekends and statutory holidays cost about $12 to $12.50 per vehicle, charged per vehicle so two cars pay twice. Weekdays are free. Credit or debit only, no cash.",
+    "travelTime": "40 to 60 min from downtown",
+    "image": "milne-dam.jpg",
+    "lat": 43.86485,
+    "lng": -79.27295
+  },
+  {
+    "id": "markham-museum",
+    "name": "Markham Museum",
+    "area": "Markham, Mount Joy",
+    "zone": "Markham",
+    "vibe": "Rustic, heritage, pastoral, nostalgic, quiet",
+    "vibeLine": "More than twenty heritage buildings spread over 25 acres, gravel lanes and open fields, and an 1848 church standing at the quiet end.",
+    "idealIf": "You want 19th century brick, a bandstand and open field light in one booking, and you would rather shoot somewhere nobody else in your feed has used.",
+    "bestFor": [
+      "Engagements",
+      "Pre-wedding",
+      "Couples",
+      "Intimate Weddings"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Outdoor",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat grass and gravel paths across 25 acres. Heritage building interiors open only on guided tours.",
+    "permits": "A photography permit is required for all photos taken on site except casual day out photos, so engagement and wedding sessions always need one. The permit covers two hours on the exterior grounds with a staff member guiding the session. Indoor venues are booked separately and are not guaranteed.",
+    "permitNeeded": "Yes",
+    "permitFee": "Listed in the City of Markham user fee schedule as Wedding Photos External Only, $156.00 for two hours or $110.00 per hour, taxes and insurance extra. No separate engagement session rate is published.",
+    "permitContact": "Markham Museum at museuminfo@markham.ca or 905.305.5970",
+    "parking": "On site lot at 9350 Markham Road. The museum directs visitors to the northern end of the lot, to the right of the Mount Joy Administrative Building. Accessible spaces sit in front of the John Lunau Centre doors. No parking charge is posted. The site closes on some dates for private events.",
+    "travelTime": "40 to 50 min from downtown",
+    "image": "markham-museum.jpg",
+    "lat": 43.89332,
+    "lng": -79.26633
+  },
+  {
+    "id": "cathedral-transfiguration",
+    "name": "Cathedral of the Transfiguration",
+    "area": "Cathedraltown, Markham",
+    "zone": "Markham",
+    "vibe": "Monumental, Byzantine, gold domes, symmetrical, cinematic",
+    "vibeLine": "Three gold onion domes over an open plaza in Markham. I shoot it wide, because the building is the whole point.",
+    "idealIf": "You want scale. A 210 foot gold tower, a stone Byzantine facade, and the two of you standing small and deliberate in the middle of it.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Outdoor",
+      "Architecture",
+      "Church"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved plaza wraps the building. A short flight of steps leads up to the main doors.",
+    "permits": "Private property, administered by the Slovak Greek Catholic Church Foundation. No photography policy is published. The open grounds are walkable, with no fee reported for casual photos, though this is not official. Organized sessions and ceremonies go through Jesus the King Melkite parish.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Jesus the King parish office, 905.886.0700",
+    "parking": "Free street parking on the Cathedraltown roads that ring the site. No official visitor lot is documented for the grounds. Three liturgies run on Sunday, so it is busiest then. The vacant land next door is a stalled development site, and the city bans street parking during winter snow clearing.",
+    "travelTime": "35 to 45 min from downtown",
+    "image": "cathedral-transfiguration.jpg",
+    "lat": 43.89364,
+    "lng": -79.37325
+  },
+  {
+    "id": "mill-pond",
+    "name": "Mill Pond Park",
+    "area": "Richmond Hill, corner of Mill Street and Trench Street",
+    "zone": "Richmond Hill",
+    "vibe": "Tranquil, pond, footbridges, boardwalk, gazebo, heritage village",
+    "vibeLine": "A quiet mill pond in old Richmond Hill, ringed by a trail and footbridges, with a boardwalk and a large gazebo on the south shore.",
+    "idealIf": "You want still water, a gazebo and a footbridge in frame, and you would rather drive north for a calm setting than shoot downtown.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Park",
+      "Nature",
+      "Waterfront"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved paths and a boardwalk by the gazebo. York Region rates the 2.4 km pond trail easy.",
+    "permits": "Park Use By-law 19-22 requires a City photo permit for wedding, engagement or any paid shoot. Two hour permits are sold May to October through the online Photo Permit Request form. Moving video and drones each need a separate permit. Parks close 11:30 p.m. to 7 a.m.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "$96.34 resident or $149.60 non resident, two hour permit, plus HST. The City publishes no effective date, so confirm the rate when booking.",
+    "permitContact": "City of Richmond Hill online Photo Permit Request form; access@richmondhill.ca or 905-771-8800",
+    "parking": "Two free City lots on the south side of Mill Street hold 50 spaces combined, two accessible in each. About 141 on street spaces sit nearby, capped at three hours by city by-law. The City parking study found both lots full during Concerts in the Park.",
+    "travelTime": "40 to 55 min from downtown",
+    "image": "mill-pond.jpg",
+    "lat": 43.87633,
+    "lng": -79.45197
+  },
+  {
+    "id": "richmond-green",
+    "name": "Richmond Green Park",
+    "area": "Richmond Hill, Elgin Mills and Leslie",
+    "zone": "Richmond Hill",
+    "vibe": "Manicured, garden, waterfall, heritage, unhurried",
+    "vibeLine": "A gazebo on the pond, a rose garden, and a waterfall under an arched bridge, all close enough to shoot in one unhurried loop.",
+    "idealIf": "You want a gazebo, a rose garden and a waterfall inside one easy walk, and you are fine buying the City permit the by-law requires.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Nature",
+      "Historic",
+      "Park"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Walkways link the gazebo, pond, waterfall and boardwalk, all within a few minutes on foot",
+    "permits": "By-law 19-22 requires a permit to photograph a wedding or event, and to practise a profession, in any City park. Richmond Green is one of six permit locations. The permit page says May to October, the park page says May to September, so confirm the month. Parks open at 7 a.m.",
+    "permitNeeded": "Yes",
+    "permitFee": "$96.34 resident or $149.60 non resident, per two hour permit, as published by the City",
+    "permitContact": "Photo Permit Request form at forms.richmondhill.ca, or access@richmondhill.ca and 905-771-8800. The City replies within five business days.",
+    "parking": "On site lots off Elgin Mills Road East, a short walk from the gardens. The City publishes no parking rate for this park, so confirm before counting on free parking. By-law 19-22 allows parking only in marked lots. Canada Day on July 1 and Ribfest both fill the park.",
+    "travelTime": "40 to 50 min from downtown",
+    "image": "richmond-green.jpg",
+    "lat": 43.89971,
+    "lng": -79.39747
+  },
+  {
+    "id": "phyllis-rawlinson",
+    "name": "Phyllis Rawlinson Park",
+    "area": "Richmond Hill, Oak Ridges Moraine",
+    "zone": "Richmond Hill",
+    "vibe": "Pastoral, heritage, rural, open, unhurried",
+    "vibeLine": "A farmhouse from about 1830 and its barn, York Region's oldest designated buildings, with moraine woodland behind them. I shoot the last light here.",
+    "idealIf": "You want heritage farm buildings and quiet moraine parkland instead of a downtown block, and you do not mind driving north with me for softer light.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Nature",
+      "Historic",
+      "Forest"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Short, flat walk from the parking area to the farmhouse and barn. York Region rates the 3.4 km trail network easy.",
+    "permits": "City of Richmond Hill photo permit required for photographs taken in association with a wedding or other event in its parks, under Park Use By-law 19-22. Phyllis Rawlinson is one of six parks listed. Permits are listed as available May to October. The City aims to reply within 5 business days.",
+    "permitNeeded": "Yes",
+    "permitFee": "$96.34 resident or $149.60 non resident for a two hour permit",
+    "permitContact": "City of Richmond Hill Photo Permit Request form, or Richmond Hill Municipal Offices at access@richmondhill.ca and 905-771-8800",
+    "parking": "Parking on site at the 11715 Leslie Street access point, listed by the City as a park amenity. No parking fee is posted here, and the City posts pay parking only at Lake Wilcox Park. Lot size is not published. York Region is rebuilding 19th Avenue into summer 2027.",
+    "travelTime": "35 to 45 min from downtown",
+    "image": "phyllis-rawlinson.jpg",
+    "lat": 43.92464,
+    "lng": -79.39739
+  },
+  {
+    "id": "rh-heritage-centre",
+    "name": "Richmond Hill Heritage Centre",
+    "area": "Richmond Hill, 19 Church Street North",
+    "zone": "Richmond Hill",
+    "vibe": "Historic, Regency cottage, landscaped gardens, white gazebo, intimate",
+    "vibeLine": "An 1840 Regency cottage with a white gazebo on landscaped grounds behind it, a small park that can be worked end to end inside one permit block.",
+    "idealIf": "You want an intimate heritage garden rather than a sprawling park, with a white gazebo and an 1840 Regency cottage in almost every frame.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Park"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Small flat park with short walking distances. The Heritage Centre building is fully wheelchair accessible.",
+    "permits": "City of Richmond Hill photography permit required. Amos Wright Park is one of six eligible parks. Two hour permit, available May to October, requested through the online Photo Permit Request form. The City responds within five business days. A ceremony is a separate booking.",
+    "permitNeeded": "Yes",
+    "permitFee": "$96.34 resident or $149.60 commercial and non resident, two hour permit, HST included, in effect until December 31, 2026",
+    "permitContact": "Photo Permit Request form at forms.richmondhill.ca, or access@richmondhill.ca, 905 771 8800",
+    "parking": "No parking is published on the Heritage Centre or Amos Wright Park pages. A City news item for a one day event pointed visitors to the Elgin Barrow Arena lot at 43 Church Street South, about 250 m away across Major Mackenzie Drive East. Cost and availability are unconfirmed.",
+    "travelTime": "35 to 50 min from downtown",
+    "image": "rh-heritage-centre.jpg",
+    "lat": 43.87695,
+    "lng": -79.43633
+  },
+  {
+    "id": "gairloch-gardens",
+    "name": "Gairloch Gardens",
+    "area": "East Oakville, Lakefront",
+    "zone": "Oakville",
+    "vibe": "lakefront estate, heritage, rose garden, manicured, serene, cinematic",
+    "vibeLine": "A Tudor stone house above Lake Ontario, with rose beds and a pond on the slope below it and open water at the foot of the lawn.",
+    "idealIf": "You want a lakefront estate look, roses and still water in one frame and open lake in the next, and you can book the permit weeks ahead.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Waterfront",
+      "Historic",
+      "Architecture"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved and gravel paths over rolling lawn that slopes to the lakeshore, with some steps and uneven ground.",
+    "permits": "A Town of Oakville photography permit is required. Sessions are 90 minutes, start on the hour between 8 a.m. and 8 p.m., and book 45 to 4 days ahead. Cancel in writing 14 days ahead for a refund. Sessions run rain or shine. No indoor or washroom access. Confirm the current fee when booking.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "Town of Oakville Facility Bookings, bookafacility@oakville.ca or 905-815-2000",
+    "parking": "Free town lot off Lakeshore Road East, about 35 spaces shared with gallery visitors. Parking cannot be guaranteed, so arrive early on summer weekends. Parks are open 6 a.m. to 10 p.m. Park in designated areas only, never on grass. Limousine parking is prohibited.",
+    "travelTime": "40 to 55 min from downtown",
+    "image": "gairloch-gardens.jpg",
+    "lat": 43.46043,
+    "lng": -79.64729
+  },
+  {
+    "id": "erchless-estate",
+    "name": "Erchless Estate",
+    "area": "Old Oakville, Harbourfront",
+    "zone": "Oakville",
+    "vibe": "Historic, harbourfront, stately, garden estate, intimate",
+    "vibeLine": "The founding family's 1858 house above Oakville Harbour, with broad lawns, stone walls, a 1920s rock garden and stairs down to Sixteen Mile Creek.",
+    "idealIf": "You want a historic house, stone walls and harbour views in one small walkable estate, and you are fine booking a fixed 90 minute window weeks ahead.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Waterfront",
+      "Architecture"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Level lawns and a gravel drive around the house, then stairs or a sloping lawn down the bank to Sixteen Mile Creek.",
+    "permits": "Advance online reservation required. No wedding ceremonies, and no access to indoor facilities or washrooms. Sessions are 90 minutes starting on the hour, 8 a.m. to 8 p.m., arrival and departure included. Book 4 to 45 days ahead. Rain or shine. Cancel in writing 14 days ahead for a refund.",
+    "permitNeeded": "Yes",
+    "permitFee": "$331.20 plus HST resident, $412.97 plus HST non resident, per 90 minute session in the Town's 2026 rates schedule. The Photography in Parks page still lists $320 plus HST, so confirm the rate when booking.",
+    "permitContact": "Facility Bookings, bookafacility@oakville.ca or 905-815-2000",
+    "parking": "Limited free visitor parking beside the museum, listed as 12 spaces, and the Town says it cannot be guaranteed. Vehicles must stay in designated areas and limousines are prohibited. Navy Street meters are $2.50 per hour, three hour limit, free after 6 p.m. and Sundays. Downtown lots are $2 per hour.",
+    "travelTime": "40 to 55 min from downtown",
+    "image": "erchless-estate.jpg",
+    "lat": 43.44192,
+    "lng": -79.66672
+  },
+  {
+    "id": "bronte-harbour",
+    "name": "Bronte Heritage Waterfront Park",
+    "area": "Oakville, Bronte Harbour",
+    "zone": "Oakville",
+    "vibe": "Harbour, nautical, breezy, lakefront, unhurried",
+    "vibeLine": "Masts and fishing boats along the harbour wall, a short pier out to the lighthouse, and the lake wide open behind it.",
+    "idealIf": "You want a working harbour, a lighthouse at the end of the pier, and late lake light coming in over the boats.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Proposals"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Park",
+      "Historic"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved promenade and lawn. The short pier out to the lighthouse can close in high wind or heavy waves.",
+    "permits": "Bronte is not on the Town of Oakville list of parks that require a photography permit, so open parkland shoots do not need one. A permit is required for a ceremony or booking at the Bronte Butterfly Gazebo. Commercial video may fall under a separate Town film permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": "Butterfly Gazebo wedding ceremony booking, a two hour slot: $115 plus HST for residents, $163 plus HST for non residents. This matches the current 2026 Town rate schedule. No published fee covers casual photography or video elsewhere in the open park.",
+    "permitContact": "Special Events, events@oakville.ca or 905-845-6601. Facility Bookings, bookafacility@oakville.ca or 905-815-2000",
+    "parking": "Town lot at the park, 212 spaces, off Ontario Street just west of Bronte Road, signed Green P. The Town's page says parking is free until September 15 with no year given. That date just passed with no posted rate after it, so budget for paid parking. Fills early on summer weekends.",
+    "travelTime": "40 to 65 min from downtown",
+    "image": "bronte-harbour.jpg",
+    "lat": 43.3939,
+    "lng": -79.70668
+  },
+  {
+    "id": "coronation-park-oakville",
+    "name": "Coronation Park",
+    "area": "Oakville, Lakefront",
+    "zone": "Oakville",
+    "vibe": "Lakefront, breezy, open lawns, mature shade trees, easygoing",
+    "vibeLine": "A wide pebble beach open to Lake Ontario, with mature shade trees and long lawns holding soft light just behind it.",
+    "idealIf": "You want open water and big shade trees in one session, with a flat easy walk between them so nobody is fighting a hem or a heel.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Families"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Nature",
+      "Park"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat paved lakefront path and level lawns. The beach itself is loose pebbles and uneven underfoot.",
+    "permits": "Coronation Park is not on Oakville's photography permit list, which names only Gairloch Gardens, Erchless Estate and the Butterfly Gazebo. Personal photos need no permit. The Destination Parks policy notes a permit may apply for ceremonies or paid photography. The five picnic areas book separately.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Town of Oakville Facility Bookings, bookafacility@oakville.ca or 905-815-2000. For filming inquiries, Town Hall at 905-845-6601.",
+    "parking": "Free town lot, 221 marked spaces across entrances at the east and west ends off Lakeshore Road West. No meters and no fee. Spaces fill fast on summer weekends and splash pad afternoons, so a weekday or an early golden hour is safer. Washrooms and the snack bar close for winter.",
+    "travelTime": "40 to 60 min from downtown",
+    "image": "coronation-park-oakville.jpg",
+    "lat": 43.40598,
+    "lng": -79.69281
+  },
+  {
+    "id": "graydon-hall",
+    "name": "Graydon Hall Manor",
+    "area": "North York, Don Valley",
+    "vibe": "Formal, historic, manicured, grand, estate",
+    "bestFor": [
+      "Weddings",
+      "Ceremonies",
+      "Receptions",
+      "Engagements"
+    ],
+    "season": [
+      "Year-round"
+    ],
+    "zone": "North York",
+    "setting": [
+      "Historic",
+      "Garden",
+      "Indoor"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Flat terrace and lawns. Garden steps run down the slope, and a grand staircase leads to the upper level.",
+    "permits": "Private venue on private grounds. Photography happens inside a booked event, or under a photo permit from the manor. The venue states it does not offer photo permits in peak season, May to October, and that photo bookings may be available November to April, subject to availability.",
+    "permitNeeded": "Yes",
+    "permitFee": null,
+    "permitContact": "Graydon Hall Manor at 416.449.5432",
+    "parking": "On site parking for 120 cars, per the venue. The entrance is at 185 Graydon Hall Drive. The venue states it is available only for special events, so the lot serves booked events and approved photo bookings. No public rate is published. Surrounding streets are residential, so check posted signs.",
+    "travelTime": "25 to 35 min from downtown",
+    "idealIf": "You want Georgian manor grandeur and formal gardens on your booked date, with a 160 foot terrace above the fountains to shoot end to end.",
+    "image": "graydon-hall.jpg",
+    "vibeLine": "A 1936 fieldstone manor on the brow of a hill, its 160 foot stone terrace looking down over fountains and formal gardens.",
+    "lat": 43.76408,
+    "lng": -79.3425
+  },
+  {
+    "id": "paletta",
+    "name": "Paletta Lakefront Park and Mansion",
+    "area": "Burlington, Shoreacres Lakefront",
+    "zone": "Burlington",
+    "vibe": "Heritage estate, wooded creek, lakefront lawns, quiet, cinematic",
+    "vibeLine": "An estate house on fourteen acres of Burlington lakefront, a wooded creek folded in behind it and Lake Ontario at the end of the lawn.",
+    "idealIf": "You want old estate grounds, a wooded creek and open lake in one short walk, and your date falls on a weekday when the park issues photo permits.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Waterfront",
+      "Garden",
+      "Nature"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat lawns and a paved path by the mansion. Creek trails add dirt paths, short valley slopes and bridge steps.",
+    "permits": "City of Burlington photography contract required, Monday to Thursday only, covering the north and south bridges. Booking season runs May 9 to Oct 4, in 90 minute blocks to a 3 hour maximum. Contracts do not guarantee exclusive use. Weekend terrace access is arranged through Edge Hospitality.",
+    "permitNeeded": "Yes",
+    "permitFee": "$106.50 standard or $149.00 commercial and non resident, per 90 minute block plus HST",
+    "permitContact": "City of Burlington rentals at rentals@burlington.ca or 905-335-7738; weekend terrace through Edge Hospitality at 905-632-7809",
+    "parking": "On site lot off Lakeshore Road beside the mansion. Visitor guides report free parking but no current city page confirms it. Spaces are limited and the lot fills with wedding and banquet guests on weekends and in summer. The park is closed between 11 p.m. and 7 a.m.",
+    "travelTime": "45 to 60 min from downtown",
+    "image": "paletta.jpg",
+    "lat": 43.3529,
+    "lng": -79.75312
+  },
+  {
+    "id": "lasalle-park",
+    "name": "LaSalle Park",
+    "area": "Burlington, Aldershot Waterfront",
+    "vibe": "Sheltered bay, heritage pavilion, marina masts, wooded shore, unhurried",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "zone": "Burlington",
+    "setting": [
+      "Waterfront",
+      "Park",
+      "Historic"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved paths near the pavilion. The marina and shoreline sit downhill and some shore trails are unpaved.",
+    "permits": "City of Burlington requires a booked group photography contract. LaSalle is one of five eligible parks. No photography season window is published, so check the Live and Play calendar. The pavilion cannot be booked, permits cover set spaces only, and the contract is not exclusive.",
+    "permitNeeded": "Yes",
+    "permitFee": "$106.50 standard or $149.00 on the combined commercial and non resident tier, per 90 minute block plus HST. 2026 rate effective Apr 1. Maximum 2 consecutive blocks.",
+    "permitContact": "rentals@burlington.ca or 905-335-7738, booked through the City of Burlington Live and Play system",
+    "parking": "On site lots off LaSalle Park Road, an upper lot and a lower lot at the marina. The City publishes no car parking fee here but does not state that car parking is free, so check posted signs. The $20 daily HONK fee at the boat launch applies to boat trailers only. Lots fill fast on summer weekends.",
+    "travelTime": "55 to 75 min from downtown",
+    "idealIf": "You want sheltered bay water instead of open lake chop, plus a 1917 pavilion, marina masts and a wooded shore inside one loop I can walk in an hour.",
+    "image": "lasalle-park.jpg",
+    "vibeLine": "A sheltered bay on Burlington's Aldershot side, a 1917 pavilion above the water, and masts clinking at the marina a short walk down the slope.",
+    "lat": 43.30092,
+    "lng": -79.84683
+  },
+  {
+    "id": "albion-falls",
+    "name": "Albion Falls",
+    "area": "Hamilton, Mountain Brow Boulevard",
+    "zone": "Hamilton",
+    "vibe": "Tiered, cascading, forested, escarpment, dramatic",
+    "vibeLine": "Red Hill Creek steps down the escarpment in wide shelves, loud in spring and gold in October, and you hear it before you clear the parking lot.",
+    "idealIf": "You want a wide tiered waterfall behind you with almost no walking, and you are fine working from the platforms instead of down at the water.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Portraits",
+      "Cinematic engagement"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Forest",
+      "Nature"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Paved path about 200 metres from the Mountain Brow lot to the north viewing platforms. Wheelchair accessible.",
+    "permits": "No standard City photo permit exists for ordinary shoots, so none can be bought here. Shooting is limited to the marked trails and north viewing platforms. Going past the fences or down to the base can draw a fine of $75 to $135 for entering a restricted area. Ten or more people need a City permit.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Hamilton Film Office at film@hamilton.ca",
+    "parking": "Three City lots with no posted parking fee. Closest lot is off Mountain Brow Boulevard beside the north platforms, plus Arbour Road and the Red Hill Valley trail lot on Mud Street. Lots fill early on weekends and during fall colour. Roadside parking is ticketed. Park hours are 6 a.m. to 11 p.m.",
+    "travelTime": "60 to 75 min from downtown",
+    "image": "albion-falls.jpg",
+    "lat": 43.20132,
+    "lng": -79.81871
+  },
+  {
+    "id": "princess-point",
+    "name": "Princess Point",
+    "area": "Hamilton, Westdale",
+    "zone": "Hamilton",
+    "vibe": "Marsh edge, wild, open water, prairie grass, quiet",
+    "vibeLine": "A low sand point where Cootes Paradise opens up to the west, tall prairie grass at your backs and the whole marsh holding the last of the light.",
+    "idealIf": "You want wild marsh and prairie grass instead of manicured garden beds, and a sunset that lands straight across open water.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Nature"
+    ],
+    "walkingLevel": "Low",
+    "walkingNote": "Short flat walk from the lot to the shoreline loop. The wider trail network is hilly.",
+    "permits": "Royal Botanical Gardens land, not a City of Hamilton park. RBG requires a permit for any professional session but sells permits only for Hendrie Park, the Rock Garden and the Arboretum. Princess Point is not a bookable permit location, so call RBG before booking a paid shoot there.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Royal Botanical Gardens, 905-527-1158 ext. 285",
+    "parking": "Paid RBG lot at 335 Longwood Road N, $3 per hour per vehicle to a $15 daily maximum in 2026. Overflow at the Westdale lot, 85 Oak Knoll Dr, same rate. RBG members park free. Trailheads open 8 a.m. to dusk. Winter skating days bring a staffed flat rate and a lot that fills early.",
+    "travelTime": "60 to 90 min from downtown",
+    "image": "princess-point.jpg",
+    "lat": 43.2738,
+    "lng": -79.8957
+  },
+  {
+    "id": "sam-lawrence",
+    "name": "Sam Lawrence Park",
+    "area": "Hamilton Mountain, Concession Street",
+    "zone": "Hamilton",
+    "vibe": "Panoramic, elevated, skyline, breezy, display gardens",
+    "vibeLine": "A stone lookout on the escarpment brow where the lower city, the harbour and Lake Ontario all open up behind you at golden hour.",
+    "idealIf": "You want Hamilton's skyline and harbour behind you at sunset, with the display gardens and a flagpole lookout inside one short walk.",
+    "bestFor": [
+      "Engagements",
+      "Couples",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Outdoor",
+      "Nature",
+      "Garden",
+      "Urban"
+    ],
+    "walkingLevel": "Medium",
+    "walkingNote": "Paved paths with a moderate slope and a few stairs between levels. The lookout is flat from the west lot.",
+    "permits": "City by-law bans running a business in a park without a permit, which can include paid photo shoots, backed by a $75 penalty. A 2026 fee schedule lists a wedding or photo booking fee at some parks, amount unconfirmed here. Call before booking. Default hours are 6 a.m. to 11 p.m.",
+    "permitNeeded": "Sometimes",
+    "permitFee": null,
+    "permitContact": "Hamilton Recreation (park permits), 905-546-3747 option 2. Hamilton Film Office (filming events), film@hamilton.ca, 905-546-4233.",
+    "parking": "Two small free lots off Concession Street, a west lot near the main lookout and an east lot near the display gardens and pavilion. Both fill fast at sunset and on summer weekends, so arrive early. Free street parking along Concession Street is the usual overflow. No paid municipal lot on site.",
+    "travelTime": "65 to 75 min from downtown",
+    "image": "sam-lawrence.jpg",
+    "lat": 43.2453,
+    "lng": -79.86506
+  },
+  {
+    "id": "parkwood-estate",
+    "name": "Parkwood National Historic Site",
+    "area": "Oshawa, Simcoe Street North",
+    "zone": "Oshawa",
+    "vibe": "Grand estate, formal gardens, heritage, stately, cinematic",
+    "vibeLine": "A 1917 auto baron's mansion in Oshawa, eleven acres of heritage gardens around it, fountains and mature evergreens that hold light late in the day.",
+    "idealIf": "You want auto baron grandeur and formal gardens, and you do not mind booking a paid photo pass and sharing the grounds with whoever else is booked.",
+    "bestFor": [
+      "Pre-wedding",
+      "Engagements",
+      "Couples",
+      "Proposals",
+      "Editorial"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Historic",
+      "Garden",
+      "Outdoor",
+      "Architecture",
+      "Indoor"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved, flagstone, gravel and grass with surface changes. The far fountain end is a five minute walk from the lot.",
+    "permits": "Casual phone or small camera photos are free. A photo pass is required for a professional camera, a hired photographer or an outfit change, and must be booked in advance. Outdoor is $300 plus HST for two hours, up to 20 people. Indoor is $400 plus HST, max 10. No drones. Grounds close in winter.",
+    "permitNeeded": "Yes",
+    "permitFee": "$300 plus HST outdoor and $400 plus HST indoor, base rates published for 2026",
+    "permitContact": "photos.weddings@parkwoodestate.com or 905-433-4311 ext. 32872",
+    "parking": "Free on site parking for Parkwood guests, very limited and not guaranteed, designated areas only. Posted hours are 9am to 5pm Monday to Friday and 1pm to 5pm Saturday and Sunday, the same as the garden hours, with exceptions posted on the site banner. A paid garage sits west of the estate.",
+    "travelTime": "50 to 75 min from downtown",
+    "image": "parkwood-estate.jpg",
+    "lat": 43.90422,
+    "lng": -78.8679
+  },
+  {
+    "id": "lakeview-park-oshawa",
+    "name": "Lakeview Park",
+    "area": "Oshawa, Lakeview Waterfront",
+    "zone": "Oshawa",
+    "vibe": "Lakefront, sandy, heritage, breezy, unhurried",
+    "vibeLine": "A sand beach, a pier running out into Lake Ontario, and three nineteenth century heritage houses a short walk back from the water.",
+    "idealIf": "You want open lake light and a long pier, then a short walk inland to three heritage houses for a completely different second look.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Waterfront",
+      "Park",
+      "Historic"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Flat paved paths link the heritage houses, beach and pier. Soft sand on the beach and a boardwalk at the beach access.",
+    "permits": "City of Oshawa requires a Facility Booking Office permit for weddings or formal photos in any City park. The Photos in all City Parks line is $65 plus H.S.T. The City page lists rates per hour, the fees by law groups it under flat rate, so confirm basis. A permit grants access, not exclusive use.",
+    "permitNeeded": "Yes",
+    "permitFee": "$65 plus H.S.T. for photos in all City Parks, 2026 rate. Per hour or flat rate basis not confirmed",
+    "permitContact": "City of Oshawa Facility Booking Office, fbo@oshawa.ca",
+    "parking": "Paid parking runs May 15 to October 15 on weekends, public holidays and City event days at $20 per vehicle per day for non residents, paid at on site meters or by HonkMobile. Free at other times. Resident permits need an Oshawa address. On Canada Day only M.T.O. accessible permit holders may park.",
+    "travelTime": "60 to 80 min from downtown",
+    "image": "lakeview-park-oshawa.jpg",
+    "lat": 43.86447,
+    "lng": -78.82539
+  },
+  {
+    "id": "oshawa-botanical",
+    "name": "Oshawa Valley Botanical Gardens",
+    "area": "Oshawa, Oshawa Creek Valley",
+    "zone": "Oshawa",
+    "vibe": "Floral, peaceful, valley, creekside, unhurried",
+    "vibeLine": "In June this creek valley fills with more than three hundred varieties of peonies, and the Memory Garden walkways lead to a pergola given by the Rotary Clubs.",
+    "idealIf": "You want peonies in June, lilacs in late May, or a quiet fall valley, and you like that most Toronto couples never think to drive this far east.",
+    "bestFor": [
+      "Couples",
+      "Engagements",
+      "Pre-wedding",
+      "Portraits"
+    ],
+    "season": [
+      "Spring",
+      "Summer",
+      "Fall"
+    ],
+    "setting": [
+      "Garden",
+      "Nature",
+      "Park"
+    ],
+    "walkingLevel": "Low-Medium",
+    "walkingNote": "Paved walkways, gentle slopes, one creek footbridge. No public washrooms. Closes 10 p.m. Apr to Oct, 6 p.m. Nov to Mar.",
+    "permits": "City of Oshawa requires a permit for a wedding or formal photos on special occasions in its parks. Apply to the Facility Booking Office. A permit grants approval, not exclusive rights, so other permitted groups may share the area. A firefighters memorial is planned in the Memory Garden in 2026.",
+    "permitNeeded": "Yes",
+    "permitFee": "$65 for photos in a City park and $131 when the ceremony is held on site, plus H.S.T. Fees do not include insurance. City pages call these hourly, while Fees and Charges By-law 109-2024 Schedule B lists them under a flat rate heading, so confirm the basis with the Facility Booking Office.",
+    "permitContact": "City of Oshawa Facility Booking Office, fbo@oshawa.ca, 905-436-3311",
+    "parking": "Lot at the Children's Arena, 155 Arena St. The City publishes no space count, fee or time limit for it, so check posted signs. On Peony Festival weekend that lot is Accessible Parking Permit only, nearby streets go local traffic only, and free off site lots run a shuttle.",
+    "travelTime": "55 to 75 min from downtown",
+    "image": "oshawa-botanical.jpg",
+    "lat": 43.90144,
+    "lng": -78.87166
   }
 ]
