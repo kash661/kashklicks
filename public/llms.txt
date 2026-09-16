@@ -28,6 +28,7 @@ Solo photographer operation, not a large studio. Intentionally focused on intima
 - [Services](https://kashklicks.ca/services/): Photography and videography service offerings and package pricing
 - [Services > Wedding](https://kashklicks.ca/services/wedding/): Wedding day coverage
 - [Services > Pre-Wedding](https://kashklicks.ca/services/pre-wedding/): Pre-wedding and engagement sessions
+- [Services > Proposals](https://kashklicks.ca/services/proposal/): Surprise proposal coverage, $325 for one hour photographed from a distance plus a mini shoot after the yes
 - [Services > Civil Ceremony](https://kashklicks.ca/services/civil-ceremony/): Civil ceremony coverage
 - [Services > Celebrations](https://kashklicks.ca/services/celebrations/): Birthdays, showers, private events
 - [Location Guide](https://kashklicks.ca/location-guide/): 109 curated Toronto, Hamilton, Niagara and GTA photography locations with parking, permits, and session guidance
@@ -305,6 +306,7 @@ Full markdown representations of each page are available at:
 - [About](https://kashklicks.ca/mirrors/about.md)
 - [Services · Wedding](https://kashklicks.ca/mirrors/services-wedding.md)
 - [Services · Pre-Wedding](https://kashklicks.ca/mirrors/services-pre-wedding.md)
+- [Services · Proposals](https://kashklicks.ca/mirrors/services-proposal.md)
 - [Services · Civil Ceremony](https://kashklicks.ca/mirrors/services-civil-ceremony.md)
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)

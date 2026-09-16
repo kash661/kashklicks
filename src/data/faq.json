@@ -187,5 +187,40 @@
     "services": [
       "headshots"
     ]
+  },
+  {
+    "question": "How does a surprise proposal shoot work?",
+    "answer": "I arrive before you do and set up well back with a long lens, so your partner never sees a photographer. The whole question is photographed from a distance while it happens. Once it lands I walk over and introduce myself, and the rest of the hour is a mini shoot with the two of you.",
+    "services": [
+      "proposal"
+    ]
+  },
+  {
+    "question": "When do we get the proposal photos?",
+    "answer": "Your Fujifilm film simulation photos arrive the next day, so you have something to send your family right away. The remaining photos follow fully edited, delivered in a private online gallery. You get around 80 photos in total.",
+    "services": [
+      "proposal"
+    ]
+  },
+  {
+    "question": "Can you help us choose the spot?",
+    "answer": "Yes, that is part of the package. Tell me the places you are considering and the time of day you have in mind, and I will tell you which one photographs best and where I can stand without being seen. If you have no spot yet, the location guide is a good place to start.",
+    "services": [
+      "proposal"
+    ]
+  },
+  {
+    "question": "What happens right after the yes?",
+    "answer": "We use the rest of the hour on the two of you while it is still sinking in. A short walk, a few quiet frames, whatever the spot gives us. It is all covered by the same hour and counts toward the same set of around 80 photos.",
+    "services": [
+      "proposal"
+    ]
+  },
+  {
+    "question": "Do we need a permit to propose there?",
+    "answer": "It depends on the spot. Many Toronto parks and public paths are fine for a short handheld session, while some locations need a City of Toronto commercial photography permit and others sit on private property that books shoots in advance for a fee. Indoor spaces are stricter than outdoor ones, and the Allan Gardens conservatory is a good example: free outside, permit required for an indoor shoot. I check the requirement for your spot when we plan it, and the Toronto photo permit page lists what is known for each location.",
+    "services": [
+      "proposal"
+    ]
   }
 ]

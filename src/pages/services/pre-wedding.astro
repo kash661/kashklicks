@@ -57,8 +57,10 @@ const preWeddingFastFacts = [
 
 const businessRef = { '@id': `${site.url}/#business` };
 
-// The proposal package is sold from this page, so it belongs in the same offer catalog.
-const offerPackages = proposalPackage ? [...preWeddingPackages, proposalPackage] : preWeddingPackages;
+// The proposal package is sold from /services/proposal/ and sits in that page's
+// own OfferCatalog. This catalog stays pre-wedding only so the same Offer is not
+// published twice under two different catalogs.
+const offerPackages = preWeddingPackages;
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -347,8 +349,8 @@ const preWeddingJourneySteps = [
       <script>
         function initPackageFilter() {
           const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
-          // Scoped to the grid: package cards rendered elsewhere on the page
-          // (the proposal section below) must never be dimmed by these pills.
+          // Scoped to the grid: any package card rendered elsewhere on the page
+          // must never be dimmed by these pills.
           const cards = document.querySelectorAll<HTMLElement>('#package-grid .package-card');
           if (!pills.length || !cards.length) return;
 
@@ -435,44 +437,27 @@ const preWeddingJourneySteps = [
   </section>
 
   <!--
-    ═══ PROPOSAL PACKAGE ═══
-    Anchor is "proposal-package", not "proposal": PricingCard uses its id prop
-    for both the card's DOM id and the package= inquiry param, so "proposal"
-    has to stay on the card.
+    ═══ PROPOSAL CROSS-LINK ═══
+    Proposals moved to their own service page (/services/proposal/). The
+    "proposal-package" id stays on this section so the older inbound links
+    that still point at /services/pre-wedding/#proposal-package land on the
+    hand-off rather than at the top of the page.
   -->
   {proposalPackage && (
     <section id="proposal-package" class="section-frame bg-background" style="padding: var(--spacing-section) 0;">
       <div class="container-editorial">
-        <div class="grid-editorial items-center">
-          <div class="col-span-12 lg:col-span-6">
+        <div class="grid-editorial items-end">
+          <div class="col-span-12 lg:col-span-7">
             <p class="text-label-md text-on-surface-muted reveal eyebrow-rule mb-6">The Question</p>
-            <h2 class="section-title reveal stagger-1">Planning to <em>propose?</em></h2>
-            <p class="section-deck text-on-surface-variant mt-8 measure-wide reveal stagger-2">
-              You stay in the moment. We stay out of sight and catch the yes as it happens.
-              One hour of coverage, around 80 photos, and your film look photos in your inbox the next day.
-            </p>
+            <h2 class="section-title reveal stagger-1">Not engaged <em>yet?</em></h2>
           </div>
-          <div class="col-span-12 lg:col-span-5 lg:col-start-8 mt-10 lg:mt-0 reveal stagger-3">
-            {/*
-              Wrapped in .pricing-grid so the single card picks up the same
-              flex fallback the other one-package pages use. It has no
-              #package-grid id, so the mobile accordion controller skips it
-              and the card stays fully open.
-            */}
-            <div class="pricing-grid">
-              <PricingCard
-                id={proposalPackage.id}
-                name={proposalPackage.name}
-                price={proposalPackage.price}
-                description={proposalPackage.description}
-                highlights={proposalPackage.highlights}
-                service="proposal"
-                ctaLabel="Enquire"
-                coverage="photo"
-                accordion={true}
-                ordinal={0}
-              />
-            </div>
+          <div class="col-span-12 lg:col-span-5 mt-6 lg:mt-0 reveal stagger-2">
+            <p class="section-deck text-on-surface-variant measure-wide">
+              Proposals have their own page now. One hour of coverage from a distance, around 80 photos, and your first photos the next day.
+            </p>
+            <p class="mt-8">
+              <a href="/services/proposal/" class="text-label-md border-b border-on-surface-muted hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">See the proposal package &rarr;</a>
+            </p>
           </div>
         </div>
       </div>

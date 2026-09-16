@@ -55,6 +55,7 @@ Sneak peek within days. Full wedding gallery in 2 to 3 months. Pre-wedding, civi
 For package-specific answers, visit the services pages:
 - https://kashklicks.ca/services/wedding/
 - https://kashklicks.ca/services/pre-wedding/
+- https://kashklicks.ca/services/proposal/
 - https://kashklicks.ca/services/civil-ceremony/
 - https://kashklicks.ca/services/celebrations/
 

@@ -168,7 +168,7 @@ I arrive early, set up at a distance with a long lens, and photograph the whole 
 
 If you are planning to propose at the Music Garden and you want someone who already knows where to hide, which step to stand on, and where the CN Tower lines up, we would love to hear the plan.
 
-[**View pre-wedding and engagement packages →**](/services/pre-wedding/)
+[**View the proposal package →**](/services/proposal/)
 
 Or [send a note about the Music Garden](/contact?venue=music-garden) and tell us the date you are thinking about. We will help you pick the exact spot.
 

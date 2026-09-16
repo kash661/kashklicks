@@ -22,6 +22,12 @@ Cinematic photography and filmmaking sessions at Toronto's most stunning locatio
 - Starting at $351.25
 - Details: https://kashklicks.ca/services/pre-wedding/
 
+### Surprise Proposal Photography
+One hour photographed from a distance so the question stays a surprise, then a mini shoot with the two of you after the yes.
+
+- $325 (single package, 1 hour coverage, around 80 photos)
+- Details: https://kashklicks.ca/services/proposal/
+
 ### Civil Ceremony Photography
 Intimate doesn't mean less important. City hall, courthouse, or any small venue, captured with the same care as a full wedding.
 

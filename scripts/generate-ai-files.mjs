@@ -298,6 +298,7 @@ function pagesList() {
     [`${SITE_URL}/services/`, 'Services', 'Photography and videography service offerings and package pricing'],
     [`${SITE_URL}/services/wedding/`, 'Services > Wedding', 'Wedding day coverage'],
     [`${SITE_URL}/services/pre-wedding/`, 'Services > Pre-Wedding', 'Pre-wedding and engagement sessions'],
+    [`${SITE_URL}/services/proposal/`, 'Services > Proposals', `Surprise proposal coverage, ${money(pkg('proposal').price)} for one hour photographed from a distance plus a mini shoot after the yes`],
     [`${SITE_URL}/services/civil-ceremony/`, 'Services > Civil Ceremony', 'Civil ceremony coverage'],
     [`${SITE_URL}/services/celebrations/`, 'Services > Celebrations', 'Birthdays, showers, private events'],
     [`${SITE_URL}/location-guide/`, 'Location Guide', `${locations.length} curated Toronto, Hamilton, Niagara and GTA photography locations with parking, permits, and session guidance`],
@@ -360,6 +361,7 @@ const PAGE_MIRRORS = [
   ['about.md', 'About'],
   ['services-wedding.md', 'Services · Wedding'],
   ['services-pre-wedding.md', 'Services · Pre-Wedding'],
+  ['services-proposal.md', 'Services · Proposals'],
   ['services-civil-ceremony.md', 'Services · Civil Ceremony'],
   ['services-celebrations.md', 'Services · Celebrations'],
   ['blog.md', 'Blog'],
@@ -729,6 +731,7 @@ function buildServicesMirror() {
   const minWed = money(MIN_WEDDING);
   const civil = money(pkg('civil-ceremony').price);
   const celeb = money(pkg('celebrations').price);
+  const proposal = money(pkg('proposal').price);
   const out = [];
   const p = (line = '') => out.push(line);
 
@@ -755,6 +758,12 @@ function buildServicesMirror() {
   p();
   p(`- Starting at ${minPre}`);
   p(`- Details: ${SITE_URL}/services/pre-wedding/`);
+  p();
+  p('### Surprise Proposal Photography');
+  p('One hour photographed from a distance so the question stays a surprise, then a mini shoot with the two of you after the yes.');
+  p();
+  p(`- ${proposal} (single package, 1 hour coverage, around 80 photos)`);
+  p(`- Details: ${SITE_URL}/services/proposal/`);
   p();
   p('### Civil Ceremony Photography');
   p("Intimate doesn't mean less important. City hall, courthouse, or any small venue, captured with the same care as a full wedding.");
@@ -976,6 +985,115 @@ function buildServicePreWeddingMirror() {
   p(`- OfferCatalog (${list.length} Offer items plus custom)`);
   p('- FAQPage');
   p('- BreadcrumbList');
+  p('- LocalBusiness (site-wide from BaseLayout)');
+
+  return out.join('\n');
+}
+
+function buildServiceProposalMirror() {
+  const list = packagesInCategory('Proposals');
+  const proposal = pkg('proposal');
+  const price = money(proposal.price);
+  const out = [];
+  const p = (line = '') => out.push(line);
+
+  p('# Toronto Proposal Photography, AD Photography');
+  p();
+  p(`**URL:** ${SITE_URL}/services/proposal/`);
+  p('**Title:** Toronto Proposal Photographer | AD Photography');
+  p(`**Description:** Surprise proposal photography in Toronto and the GTA from ${price}. One hour of hidden coverage, around 80 photos, and your Fujifilm photos the next day.`);
+  p();
+  p('---');
+  p();
+  p('## Hero');
+  p();
+  p('**Statement:** The ten seconds after you ask only happen once.');
+  p('No review is quoted on this page. There are no proposal reviews on file yet, and the Google reviews are from wedding, pre-wedding and event clients.');
+  p();
+  p('---');
+  p();
+  p('## What I Offer');
+  p();
+  p('**H1:** Toronto Proposal Photography');
+  p();
+  p(proposal.description);
+  p();
+  p("### What's Included");
+  for (const h of proposal.highlights) p(`- ${h}`);
+  p();
+  p('### At a glance');
+  p(`- **Price:** ${price} for The Proposal. One hour of coverage at one spot.`);
+  p('- **How the hour splits:** Hidden while you ask, then a mini shoot with the two of you once you hear yes.');
+  p(`- **Photos:** ${proposal.photos} from the hour.`);
+  p('- **Delivery:** Fujifilm film simulation photos the next day. The rest follow fully edited.');
+  p('- **Planning:** Help choosing the spot and the time of day before the date.');
+  p('- **Where:** Toronto and the GTA.');
+  p();
+  p('---');
+  p();
+  p('## The Proposal Package');
+  p();
+  for (const line of servicePackageLines(list)) p(line);
+  p();
+  p('---');
+  p();
+  p('## How It Works');
+  p();
+  p('1. **Tell Me The Plan.** Send the date you are thinking about and whatever you have worked out so far.');
+  p('2. **Pick The Spot.** Location and time of day chosen together, looking for good light and somewhere to stand unseen.');
+  p('3. **I Disappear.** I arrive early and set up well back with a long lens.');
+  p('4. **The Question.** You ask, and the whole thing is photographed from a distance.');
+  p('5. **The Mini Shoot.** After the yes, the rest of the hour is the two of you. Around 80 photos in total.');
+  p('6. **Next Day, Then The Rest.** Fujifilm film simulation photos the next day, remaining photos fully edited after.');
+  p();
+  p('---');
+  p();
+  p('## Where People Propose');
+  p();
+  p('Spot recommendations link to the full location guide entries, with parking, light and permit notes:');
+  for (const id of [
+    'music-garden',
+    'humber-bay-arch-bridge',
+    'distillery-district',
+    'high-park',
+    'toronto-islands',
+    'scarborough-bluffs',
+    'guild-park',
+    'evergreen-brick-works',
+  ]) {
+    const loc = locations.find((l) => l.id === id);
+    if (!loc) continue;
+    p(`- **${loc.name}** (${loc.area}): ${loc.vibeLine} Permit needed: ${loc.permitNeeded}.`);
+  }
+  p();
+  p(`Full permit table: ${SITE_URL}/toronto-photo-permits/`);
+  p();
+  p('---');
+  p();
+  p('## Good to Know');
+  p();
+  p('- Only the person proposing is contacted on the day. Friends and family hiding nearby get placed out of frame.');
+  p('- The Fujifilm film simulation set lands the next day. The rest follow fully edited.');
+  p('- Help choosing the spot is included. Light first, location second.');
+  p('- GTA travel is typically included. Anything beyond is discussed upfront.');
+  p();
+  p('---');
+  p();
+  p('## Contact CTA');
+  p();
+  p("**Heading:** Let's plan where I stand.");
+  p(`**CTA:** [Begin Your Journey](${SITE_URL}/contact/?service=proposal)`);
+  p();
+  p(`**Galleries:** ${SITE_URL}/portfolio/proposals/`);
+  p();
+  p('---');
+  p();
+  p('## Schema.org Structured Data');
+  p();
+  p('- Service (Toronto Surprise Proposal Photography, provider @id LocalBusiness)');
+  p(`- OfferCatalog (${list.length} Offer item)`);
+  p('- FAQPage');
+  p('- BreadcrumbList (Home, Services, Proposals)');
   p('- LocalBusiness (site-wide from BaseLayout)');
 
   return out.join('\n');
@@ -1397,6 +1515,7 @@ function buildContactMirror() {
   p('For package-specific answers, visit the services pages:');
   p(`- ${SITE_URL}/services/wedding/`);
   p(`- ${SITE_URL}/services/pre-wedding/`);
+  p(`- ${SITE_URL}/services/proposal/`);
   p(`- ${SITE_URL}/services/civil-ceremony/`);
   p(`- ${SITE_URL}/services/celebrations/`);
   p();
@@ -1436,6 +1555,7 @@ function main() {
   writes.push([join(MIRRORS_DIR, 'services.md'), buildServicesMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-wedding.md'), buildServiceWeddingMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-pre-wedding.md'), buildServicePreWeddingMirror()]);
+  writes.push([join(MIRRORS_DIR, 'services-proposal.md'), buildServiceProposalMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-civil-ceremony.md'), buildServiceCivilCeremonyMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-celebrations.md'), buildServiceCelebrationsMirror()]);
   writes.push([join(MIRRORS_DIR, 'location-guide.md'), buildLocationGuideMirror()]);

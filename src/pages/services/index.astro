@@ -85,6 +85,7 @@ const marqueeImages = shuffle([
 const slugToPackageCategory: Record<string, string> = {
   wedding: 'Wedding',
   'pre-wedding': 'Pre-Wedding',
+  proposal: 'Proposals',
   'civil-ceremony': 'Civil Ceremony',
   celebrations: 'Events',
 };
@@ -117,6 +118,16 @@ const baseServices = [
     description: 'Cinematic photography and filmmaking sessions at Toronto\'s most stunning locations. Your love story, before the big day.',
     startingAt: 351.25,
     image: 'pre-wedding',
+  },
+  {
+    title: 'Proposals',
+    altTitle: 'Surprise Proposal',
+    eyebrow: 'Proposals',
+    caption: 'Hidden Until The Yes',
+    slug: 'proposal',
+    description: 'One hour photographed from a distance, so the question stays a surprise. A mini shoot after the yes, and your first photos the next day.',
+    startingAt: 325,
+    image: 'proposal',
   },
   {
     title: 'Civil Ceremony',
@@ -170,7 +181,7 @@ const offerCatalogSchema = {
   '@type': 'OfferCatalog',
   '@id': offersId,
   name: 'AD Photography Services',
-  description: 'Photography and videography services in Toronto by AD Photography, from $351.25.',
+  description: 'Photography and videography services in Toronto by AD Photography, from $325.',
   url: `${site.url}/services`,
   offeredBy: businessRef,
   itemListElement: services.map((s) => ({
@@ -186,7 +197,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
 <BaseLayout
   title="Toronto Wedding Photography Services"
-  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $351.25. View packages, pricing, and book a free consultation."
+  description="Toronto wedding, pre-wedding, and event photography services by AD Photography. Cinematic coverage from $325. View packages, pricing, and book a free consultation."
   ogImage={new URL('/og-services.jpg', site.url).href}
   jsonLd={jsonLd}
 >
@@ -202,7 +213,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
   <section class="pt-[var(--spacing-section)] pb-[var(--spacing-block)]">
     <div class="container-editorial">
       <p class="text-label-md text-on-surface-muted eyebrow-rule reveal mb-8">Toronto Wedding Photography Services</p>
-      <h1 class="section-title char-reveal">Four ways to be <em>photographed.</em></h1>
+      <h1 class="section-title char-reveal">Five ways to be <em>photographed.</em></h1>
       <p class="section-deck text-on-surface-variant mt-8 measure-wide reveal stagger-2">
         Photography and videography for every chapter of your love story.
       </p>
@@ -213,7 +224,10 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
   <section class="pb-[var(--spacing-block)]">
     <div class="container-editorial">
       <ReviewStrip class="reveal mb-12" />
-      <div class="services-scroller flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16" data-services-scroller>
+      <!-- Five cards on a 3-column desktop grid: the second row runs two wide
+           and leaves the third column open, which keeps the row asymmetric
+           rather than squeezing five cards into five narrow columns. -->
+      <div class="services-scroller flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16" data-services-scroller>
         {services.map((service, i) => (
           <article class:list={['service-card group flex flex-col h-full pt-8 reveal', `stagger-${i + 1}`]} style="border-top: 1px solid color-mix(in srgb, var(--color-on-surface-variant) 42%, transparent);">
             <!-- Header: number + meta row. Sale cards swap the meta label
@@ -369,6 +383,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
     .service-card:nth-child(2) .service-num { animation-delay: -1.2s; }
     .service-card:nth-child(3) .service-num { animation-delay: -2.4s; }
     .service-card:nth-child(4) .service-num { animation-delay: -3.6s; }
+    .service-card:nth-child(5) .service-num { animation-delay: -4.8s; }
 
     @keyframes service-num-breathe {
       0%, 100% { transform: translateY(0); }
