@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-import Button from '../components/ui/Button.astro';
-import BookingLink from '../components/ui/BookingLink.astro';
 import FinalCTA from '../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 
@@ -40,18 +38,24 @@ const shotHereFor = (slug: string, name: string): boolean => {
   return portfolioLocStrings.some((loc) => loc.includes(slugWords) || loc.includes(lname));
 };
 
+const isPortrait = (img: ImageMetadata): boolean => img.height > img.width;
+
 // For "shot here" tiles, prefer a real session frame over the stock location
 // image. Priority: locations-gallery/<slug>/ first frame → matching portfolio
-// entry first frame → stock image fallback.
+// entry first frame → stock image fallback. Within each source the first
+// PORTRAIT frame wins, so the 4:5 card crop never zooms into a landscape.
 const previewForShotLocation = (
   slug: string,
   name: string,
   fallback: ImageMetadata
 ): ImageMetadata => {
-  const galleryKey = Object.keys(galleryImages)
+  const galleryKeys = Object.keys(galleryImages)
     .filter((p) => p.includes(`/locations-gallery/${slug}/`))
-    .sort()[0];
-  if (galleryKey) return galleryImages[galleryKey].default;
+    .sort();
+  if (galleryKeys.length > 0) {
+    const portraitKey = galleryKeys.find((k) => isPortrait(galleryImages[k].default));
+    return galleryImages[portraitKey ?? galleryKeys[0]].default;
+  }
 
   const slugWords = slug.replace(/-/g, ' ');
   const lname = name.toLowerCase();
@@ -60,12 +64,22 @@ const previewForShotLocation = (
     return loc.includes(slugWords) || loc.includes(lname);
   });
   if (match && Array.isArray(match.images) && match.images.length > 0) {
-    const portfolioKey = `/src/assets/images/portfolio/${match.slug}/${match.images[0]}`;
-    const img = portfolioImages[portfolioKey]?.default;
-    if (img) return img;
+    const frames = match.images
+      .map((file) => portfolioImages[`/src/assets/images/portfolio/${match.slug}/${file}`]?.default)
+      .filter((img): img is ImageMetadata => Boolean(img));
+    if (frames.length > 0) return frames.find(isPortrait) ?? frames[0];
   }
 
   return fallback;
+};
+
+// One quiet at-a-glance permit read per card. Any value outside these four
+// renders no line at all rather than a guess.
+const permitLines: Record<string, string> = {
+  No: 'No permit needed',
+  Sometimes: 'Permit sometimes needed',
+  Yes: 'Permit required',
+  'Venue booking': 'Book the venue first',
 };
 
 const sorted = [...locationsData].sort((a, b) => a.name.localeCompare(b.name));
@@ -77,12 +91,36 @@ const tiles = sorted
     if (!stockImg) return null;
     const shotHere = shotHereFor(loc.id, loc.name);
     const img = shotHere ? previewForShotLocation(loc.id, loc.name, stockImg) : stockImg;
-    return { ...loc, img, shotHere };
+    const permitLine = permitLines[loc.permitNeeded ?? ''] ?? null;
+    return { ...loc, img, shotHere, permitLine };
   })
   .filter((t): t is NonNullable<typeof t> => t !== null);
 
-const shotTiles = tiles.filter((t) => t.shotHere);
-const recommendedTiles = tiles.filter((t) => !t.shotHere);
+// Six area groups built off the `zone` field. Every location lands in exactly
+// one group; sessions I have actually shot lead each group, then the rest,
+// both alphabetical (the `sorted` order carries through the filter).
+const areaGroups = [
+  { id: 'downtown-toronto', title: 'Downtown Toronto', zones: ['Downtown'] },
+  { id: 'toronto-east', title: 'Toronto East', zones: ['Bluffs', 'Scarborough'] },
+  { id: 'toronto-west', title: 'Toronto West', zones: ['Etobicoke'] },
+  {
+    id: 'mississauga-burlington-vaughan',
+    title: 'Mississauga, Burlington & Vaughan',
+    zones: ['Mississauga', 'Burlington', 'Vaughan'],
+  },
+  { id: 'hamilton-dundas', title: 'Hamilton & Dundas', zones: ['Hamilton'] },
+  { id: 'niagara', title: 'Niagara', zones: ['Niagara'] },
+];
+
+const groups = areaGroups
+  .map((group) => {
+    const inGroup = tiles.filter((t) => group.zones.includes(t.zone));
+    return {
+      ...group,
+      tiles: [...inGroup.filter((t) => t.shotHere), ...inGroup.filter((t) => !t.shotHere)],
+    };
+  })
+  .filter((group) => group.tiles.length > 0);
 
 const locationListSchema = [
   {
@@ -141,11 +179,20 @@ const locationListSchema = [
         </div>
         <div class="md:col-span-6 md:col-start-7 mt-6 md:mt-0 reveal stagger-2">
           <p class="text-body-lg text-on-surface-variant measure-wide">
-            A gallery of places I've shot across Toronto and the GTA. Hover any image for a quick read, or tap through for the full rundown: parking, permits, walking, best seasons.
+            Every place I shoot across Toronto and the GTA, grouped by area. Each card shows the place, the feel of it, and what it works best for. Tap any location for the full rundown: parking, permits, walking, best seasons.
           </p>
         </div>
       </div>
     </header>
+
+    <nav class="lg-jump reveal" aria-label="Browse by area">
+      {groups.map((group) => (
+        <a class="lg-jump-link text-label-md" href={`#${group.id}`}>
+          {group.title}
+          <span class="lg-jump-count">{group.tiles.length}</span>
+        </a>
+      ))}
+    </nav>
 
     <form class="mosaic-search reveal" role="search" autocomplete="off" onsubmit="return false;">
       <label for="location-search" class="sr-only">Search locations</label>
@@ -171,105 +218,56 @@ const locationListSchema = [
       Showing <span data-search-count>{tiles.length}</span> of {tiles.length} locations
     </p>
 
-    {shotTiles.length > 0 && (
-      <section class="mosaic-section reveal" data-section="shot-here">
-        <header class="mosaic-section-header">
-          <p class="text-label-md text-on-surface-muted eyebrow-rule mb-3">Where I have shot</p>
-          <h2 class="mosaic-section-title">Sessions I have actually photographed.</h2>
+    {groups.map((group, groupIndex) => (
+      <section id={group.id} class="lg-section reveal">
+        <header class="lg-section-header">
+          <h2 class="lg-section-title">{group.title}</h2>
+          <p class="lg-section-count text-label-sm text-on-surface-muted">
+            {group.tiles.length} {group.tiles.length === 1 ? 'location' : 'locations'}
+          </p>
         </header>
-        <div class="location-mosaic">
-          {shotTiles.map((loc, i) => (
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
+          {group.tiles.map((loc, i) => (
             <a
               href={`/location-guide/${loc.id}/`}
-              class="mosaic-tile reveal"
+              class="lg-card group block reveal"
               aria-label={`View details for ${loc.name}`}
-              data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')}`.toLowerCase()}
+              data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')} ${loc.permitLine ?? ''}`.toLowerCase()}
               style={`transition-delay: ${(i % 6) * 80 + 100}ms;`}
             >
-              <div class="mosaic-img-wrap">
+              <div class="lg-card-media aspect-[4/5] overflow-hidden bg-surface-container">
                 <Image
                   src={loc.img}
-                  alt={`${loc.name}, Toronto pre-wedding and engagement photography location in ${loc.area}`}
+                  alt={`${loc.name}, pre-wedding and engagement photography location in ${loc.area}`}
                   widths={[400, 640, 960]}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  class="mosaic-img"
-                  loading={i < 3 ? 'eager' : 'lazy'}
-                  fetchpriority={i === 0 ? 'high' : 'auto'}
+                  class="w-full h-full object-cover cubic-ease group-hover:scale-[1.03]"
+                  style="transition-duration: var(--duration-slow);"
+                  loading={groupIndex === 0 && i < 3 ? 'eager' : 'lazy'}
+                  fetchpriority={groupIndex === 0 && i === 0 ? 'high' : 'auto'}
                 />
+                {loc.shotHere && (
+                  <span class="lg-session-label text-label-sm">From a session here</span>
+                )}
               </div>
 
-              <div class="mosaic-caption">
-                <p class="mosaic-caption-name">{loc.name}</p>
-                <p class="mosaic-caption-area">{loc.area}</p>
-              </div>
-
-              <div class="mosaic-overlay">
-                <div class="mosaic-overlay-inner">
-                  <p class="mosaic-eyebrow">{loc.area}</p>
-                  <h2 class="mosaic-name">{loc.name}</h2>
-                  <p class="mosaic-vibe">"{loc.vibe}"</p>
-                  <div class="mosaic-pills">
-                    {loc.bestFor.slice(0, 4).map((tag) => (
-                      <span class="mosaic-pill">{tag}</span>
-                    ))}
-                  </div>
-                  <p class="mosaic-more">Read the full guide &rarr;</p>
-                </div>
+              <div class="mt-4">
+                <h3 class="text-heading-md font-serif">{loc.name}</h3>
+                <p class="text-label-sm text-on-surface-muted mt-1">{loc.area}</p>
+                <p class="lg-vibe text-body-md text-on-surface-variant mt-3">{loc.vibeLine ?? loc.vibe}</p>
+                {loc.bestFor.length > 0 && (
+                  <p class="text-label-sm text-on-surface-muted mt-3">{loc.bestFor.slice(0, 3).join(' · ')}</p>
+                )}
+                {loc.permitLine && (
+                  <p class="lg-permit text-label-sm mt-2">{loc.permitLine}</p>
+                )}
               </div>
             </a>
           ))}
         </div>
       </section>
-    )}
-
-    <section class="mosaic-section reveal" data-section="recommended">
-      <header class="mosaic-section-header">
-        <p class="text-label-md text-on-surface-muted eyebrow-rule mb-3">Locations I recommend</p>
-        <h2 class="mosaic-section-title">Places I love to scout and shoot.</h2>
-      </header>
-      <div class="location-mosaic" data-search-target>
-      {recommendedTiles.map((loc, i) => (
-        <a
-          href={`/location-guide/${loc.id}/`}
-          class="mosaic-tile reveal"
-          aria-label={`View details for ${loc.name}`}
-          data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')}`.toLowerCase()}
-          style={`transition-delay: ${(i % 6) * 80 + 100}ms;`}
-        >
-          <div class="mosaic-img-wrap">
-            <Image
-              src={loc.img}
-              alt={`${loc.name}, Toronto pre-wedding and engagement photography location in ${loc.area}`}
-              widths={[400, 640, 960]}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              class="mosaic-img"
-              loading="lazy"
-              fetchpriority="auto"
-            />
-          </div>
-
-          <div class="mosaic-caption">
-            <p class="mosaic-caption-name">{loc.name}</p>
-            <p class="mosaic-caption-area">{loc.area}</p>
-          </div>
-
-          <div class="mosaic-overlay">
-            <div class="mosaic-overlay-inner">
-              <p class="mosaic-eyebrow">{loc.area}</p>
-              <h2 class="mosaic-name">{loc.name}</h2>
-              <p class="mosaic-vibe">"{loc.vibe}"</p>
-              <div class="mosaic-pills">
-                {loc.bestFor.slice(0, 4).map((tag) => (
-                  <span class="mosaic-pill">{tag}</span>
-                ))}
-              </div>
-              <p class="mosaic-more">Read the full guide &rarr;</p>
-            </div>
-          </div>
-        </a>
-      ))}
-      </div>
-    </section>
+    ))}
 
     <p class="mosaic-no-results" data-search-empty hidden>
       No locations match that search. Try a city, a vibe, or a season.
@@ -288,7 +286,7 @@ const locationListSchema = [
 </BaseLayout>
 
 <script>
-  // Client-side filter for the location guide mosaic. Matches against
+  // Client-side filter for the location guide cards. Matches against
   // name, area, vibe, tags, setting, zone, and season (all lowercased
   // into data-search-haystack server-side).
   const input = document.querySelector<HTMLInputElement>('[data-search-input]');
@@ -296,7 +294,7 @@ const locationListSchema = [
   const tiles = document.querySelectorAll<HTMLElement>('[data-search-haystack]');
   const countEl = document.querySelector<HTMLElement>('[data-search-count]');
   const emptyEl = document.querySelector<HTMLElement>('[data-search-empty]');
-  const sections = document.querySelectorAll<HTMLElement>('.mosaic-section');
+  const sections = document.querySelectorAll<HTMLElement>('.lg-section');
 
   function applyFilter() {
     if (!input) return;
@@ -308,7 +306,7 @@ const locationListSchema = [
       tile.hidden = !show;
       if (show) matches++;
     });
-    // Hide section header when none of its tiles match
+    // Hide an area section (heading included) when none of its cards match
     sections.forEach((sec) => {
       const visible = Array.from(
         sec.querySelectorAll<HTMLElement>('[data-search-haystack]')
@@ -330,6 +328,35 @@ const locationListSchema = [
 </script>
 
 <style>
+  /* ── Jump nav ── */
+  .lg-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .lg-jump-link {
+    color: var(--color-on-surface-muted);
+    text-decoration: none;
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .lg-jump-link:hover {
+    color: var(--color-on-surface);
+  }
+
+  .lg-jump-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+
+  .lg-jump-count {
+    color: var(--color-on-surface-muted);
+    opacity: 0.65;
+    margin-left: 0.4rem;
+  }
+
   /* ── Search bar ── */
   .mosaic-search {
     position: relative;
@@ -410,51 +437,17 @@ const locationListSchema = [
     color: var(--color-on-surface-variant);
   }
 
-  .location-mosaic {
-    column-count: 1;
-    column-gap: 0.75rem;
-  }
-
-  @media (min-width: 640px) {
-    .location-mosaic {
-      column-count: 2;
-      column-gap: 1rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .location-mosaic {
-      column-count: 3;
-      column-gap: 1rem;
-    }
-  }
-
-  .mosaic-tile {
-    display: block;
-    position: relative;
-    width: 100%;
-    margin: 0 0 1rem 0;
-    background: var(--color-surface-container);
-    overflow: hidden;
-    break-inside: avoid;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  /* ── Section headings for "Where I have shot" / "Locations I recommend" ── */
-  .mosaic-section {
+  /* ── Area sections ── */
+  .lg-section {
+    scroll-margin-top: 96px;
     margin-bottom: clamp(3rem, 7vw, 5rem);
   }
 
-  .mosaic-section + .mosaic-section {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .mosaic-section-header {
+  .lg-section-header {
     margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  .mosaic-section-title {
+  .lg-section-title {
     font-family: var(--font-serif);
     font-size: clamp(1.5rem, 3.2vw, 2.25rem);
     line-height: 1.15;
@@ -463,169 +456,45 @@ const locationListSchema = [
     max-width: 26ch;
   }
 
-  .mosaic-img-wrap {
-    overflow: hidden;
-    line-height: 0;
-    position: relative;
-  }
-
-  /* Permanent bottom-up gradient so the always-visible name + area caption
-     stays legible on any photo. Fades out under the full hover overlay. */
-  .mosaic-img-wrap::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 45%;
-    background: linear-gradient(to top, rgba(20, 20, 18, 0.78) 0%, rgba(20, 20, 18, 0.45) 50%, rgba(20, 20, 18, 0) 100%);
-    pointer-events: none;
-    transition: opacity var(--duration-hover) var(--ease-gallery);
-  }
-
-  .mosaic-tile:hover .mosaic-img-wrap::after,
-  .mosaic-tile:focus-visible .mosaic-img-wrap::after {
-    opacity: 0;
-  }
-
-  .mosaic-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 2.5s var(--ease-gallery);
-  }
-
-  .mosaic-tile:hover .mosaic-img,
-  .mosaic-tile:focus-visible .mosaic-img {
-    transform: scale(1.04);
-  }
-
-  .mosaic-caption {
-    position: absolute;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    color: var(--color-on-dark);
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
-    pointer-events: none;
-    transition: opacity var(--duration-hover) var(--ease-gallery);
-  }
-
-  .mosaic-caption-name {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    line-height: 1.3;
-    font-weight: 500;
-  }
-
-  .mosaic-caption-area {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    opacity: 0.85;
-    margin-top: 0.25rem;
-  }
-
-  .mosaic-tile:hover .mosaic-caption,
-  .mosaic-tile:focus-visible .mosaic-caption {
-    opacity: 0;
-  }
-
-  .mosaic-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: 1.75rem;
-    background: linear-gradient(to top, rgba(20, 20, 18, 0.92) 0%, rgba(20, 20, 18, 0.75) 55%, rgba(20, 20, 18, 0.2) 100%);
-    opacity: 0;
-    transition: opacity var(--duration-hover) var(--ease-gallery);
-    pointer-events: none;
-  }
-
-  .mosaic-tile:hover .mosaic-overlay,
-  .mosaic-tile:focus-visible .mosaic-overlay {
-    opacity: 1;
-  }
-
-  .mosaic-overlay-inner {
-    color: var(--color-on-dark);
-    transform: translateY(12px);
-    transition: transform var(--duration-hover) var(--ease-gallery);
-  }
-
-  .mosaic-tile:hover .mosaic-overlay-inner,
-  .mosaic-tile:focus-visible .mosaic-overlay-inner {
-    transform: translateY(0);
-  }
-
-  .mosaic-eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-on-dark-variant);
-    margin-bottom: 0.5rem;
-  }
-
-  .mosaic-name {
-    font-family: var(--font-serif);
-    font-size: clamp(1.25rem, 2vw, 1.5rem);
-    line-height: 1.2;
-    margin: 0 0 0.75rem 0;
-  }
-
-  .mosaic-vibe {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 0.95rem;
-    line-height: 1.45;
-    opacity: 0.9;
-    margin-bottom: 1rem;
-    max-width: 30ch;
-  }
-
-  .mosaic-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .mosaic-pill {
-    font-family: var(--font-sans);
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.625rem;
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--color-on-dark);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-  }
-
-  .mosaic-more {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-on-dark-variant);
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    padding-top: 0.75rem;
+  .lg-section-count {
     margin-top: 0.5rem;
   }
 
-  .mosaic-tile:focus-visible {
+  /* ── Location card ── */
+  .lg-card {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .lg-card:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 4px;
   }
 
-  @media (hover: none) {
-    .mosaic-tile:hover .mosaic-overlay {
-      opacity: 0;
-    }
-    .mosaic-tile:hover .mosaic-caption {
-      opacity: 1;
-    }
+  .lg-card-media {
+    position: relative;
+  }
+
+  /* Scrim sits behind the label only, so it reads on any photo without
+     darkening the frame. */
+  .lg-session-label {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.4rem 0.625rem;
+    background: rgba(20, 20, 18, 0.55);
+    color: var(--color-on-dark);
+    pointer-events: none;
+  }
+
+  .lg-permit {
+    color: var(--color-on-surface-variant);
+  }
+
+  .lg-vibe {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>
