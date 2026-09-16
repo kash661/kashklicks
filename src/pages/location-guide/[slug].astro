@@ -43,22 +43,38 @@ const img = landscapeFromGallery ?? coverImg;
 // venues with a phrase nobody searches.
 const zoneCity: Record<string, string> = {
   Downtown: 'Toronto',
-  Bluffs: 'Toronto',
   Etobicoke: 'Toronto',
   Scarborough: 'Toronto',
+  'North York': 'Toronto',
+  'East York': 'Toronto',
+  Mississauga: 'Mississauga',
+  Brampton: 'Brampton',
+  Caledon: 'Caledon',
+  Vaughan: 'Vaughan',
+  Markham: 'Markham',
+  'Richmond Hill': 'Richmond Hill',
+  Oakville: 'Oakville',
+  Halton: 'Halton Hills',
+  Burlington: 'Burlington',
   Hamilton: 'Hamilton',
   Niagara: 'Niagara',
-  Vaughan: 'Vaughan',
-  Mississauga: 'Mississauga',
-  Burlington: 'Burlington',
+  Oshawa: 'Oshawa',
+  Durham: 'Durham Region',
 };
 const city = zoneCity[loc.zone] || 'Toronto';
 
 // Siblings: 6 max, same zone first, then alphabetical fill. The old grid
 // listed all 31 other venues on every page (link-equity smear, scroll bloat).
+// Only locations with a cover photo on disk can fill a card, so filter before
+// slicing: otherwise an imageless sibling burns one of the six slots and the
+// grid renders a hole.
+const hasCover = (l: (typeof locationsData)[number]): boolean =>
+  Boolean(locationImages[`/src/assets/images/locations/${l.image}`]);
 const sameZone = locationsData.filter((l) => l.id !== loc.id && l.zone === loc.zone);
 const otherZone = locationsData.filter((l) => l.id !== loc.id && l.zone !== loc.zone);
-const others = [...sameZone, ...otherZone.sort((a, b) => a.name.localeCompare(b.name))].slice(0, 6);
+const others = [...sameZone, ...otherZone.sort((a, b) => a.name.localeCompare(b.name))]
+  .filter(hasCover)
+  .slice(0, 6);
 
 const canonicalUrl = `${site.url}/location-guide/${loc.id}/`;
 

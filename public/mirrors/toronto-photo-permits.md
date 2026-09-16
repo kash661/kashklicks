@@ -33,7 +33,7 @@ Fees change. Last verified September 2026. Confirm with the venue before you boo
 | [Dundurn Castle](https://kashklicks.ca/location-guide/dundurn-castle/) | Hamilton | Sometimes | $218 for groups of ten or more | museums@hamilton.ca | Free on-site parking at 610 York Blvd |
 | [Evergreen Brick Works](https://kashklicks.ca/location-guide/evergreen-brick-works/) | Downtown | Yes | Confirm with the venue | Evergreen | Free on-site lot and shuttle from Broadview Station |
 | [Graffiti Alley](https://kashklicks.ca/location-guide/graffiti-alley/) | Downtown | Sometimes | Confirm with the venue | Confirm with the venue | Metered street parking on Queen West, nearby paid lots |
-| [Guild Park & Gardens](https://kashklicks.ca/location-guide/guild-park/) | Bluffs | No | No permit fee | No booking needed | Free on-site |
+| [Guild Park & Gardens](https://kashklicks.ca/location-guide/guild-park/) | Scarborough | No | No permit fee | No booking needed | Free on-site |
 | [High Park](https://kashklicks.ca/location-guide/high-park/) | Downtown | Sometimes | Confirm with the venue | Confirm with the venue | Street parking on perimeter, small paid lots inside |
 | [Humber Arboretum](https://kashklicks.ca/location-guide/humber-arboretum/) | Etobicoke | Sometimes | Confirm with the venue | Humber Arboretum | Free parking on weekends at Humber College lots |
 | [Humber Bay Arch Bridge](https://kashklicks.ca/location-guide/humber-bay-arch-bridge/) | Etobicoke | Sometimes | Confirm with the venue | Confirm with the venue | Free lots at Humber Bay Park East and West |
@@ -46,7 +46,7 @@ Fees change. Last verified September 2026. Confirm with the venue before you boo
 | [Queen Victoria Park](https://kashklicks.ca/location-guide/queen-victoria-park/) | Niagara | No | No permit fee | No booking needed | Multiple paid lots along the parkway |
 | [RC Harris Water Treatment Center](https://kashklicks.ca/location-guide/rc-harris/) | Scarborough | No | No permit fee | No booking needed | Free street parking until 4pm |
 | [Royal Botanical Gardens](https://kashklicks.ca/location-guide/royal-botanical-gardens/) | Hamilton | Yes | Confirm with the venue | Royal Botanical Gardens website | On-site paid lots at each garden entrance |
-| [Scarborough Bluffs](https://kashklicks.ca/location-guide/scarborough-bluffs/) | Bluffs | No | No permit fee | No booking needed | Paid parking |
+| [Scarborough Bluffs](https://kashklicks.ca/location-guide/scarborough-bluffs/) | Scarborough | No | No permit fee | No booking needed | Paid parking |
 | [Spencer Smith Park and Burlington Village](https://kashklicks.ca/location-guide/burlington-village/) | Burlington | Yes | $103.40 resident or $144.70 commercial and non resident, per 90 minute block | City of Burlington Live and Play booking system | Municipal paid lots and metered street parking on Lakeshore Road and Brant Street; arrive early on summer weekends as lots fill quickly during events |
 | [St. Patrick's Catholic Parish](https://kashklicks.ca/location-guide/st-patricks-parish-hamilton/) | Hamilton | Venue booking | No separate permit fee | Parish office at stpatrickshamilton.ca | On-street parking along King Street East and side streets. Free Sunday street parking citywide; check signage on a weekday. |
 | [TD Dominion Centre / King St](https://kashklicks.ca/location-guide/td-centre/) | Downtown | No | No permit fee | No booking needed | Paid parking |

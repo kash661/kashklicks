@@ -8,6 +8,11 @@ import locationsData from '../data/locations.json';
 import portfolioData from '../data/portfolio.json';
 import site from '../data/site.json';
 
+// `lat` / `lng` are optional and not present on any location yet. Declaring
+// them here keeps the map plumbing typed before the coordinates land.
+type LocationRecord = (typeof locationsData)[number] & { lat?: number; lng?: number };
+const allLocations = locationsData as LocationRecord[];
+
 const locationImages = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/images/locations/*.jpg',
   { eager: true }
@@ -40,15 +45,17 @@ const shotHereFor = (slug: string, name: string): boolean => {
 
 const isPortrait = (img: ImageMetadata): boolean => img.height > img.width;
 
-// For "shot here" tiles, prefer a real session frame over the stock location
+// For "shot here" entries, prefer a real session frame over the stock location
 // image. Priority: locations-gallery/<slug>/ first frame → matching portfolio
 // entry first frame → stock image fallback. Within each source the first
 // PORTRAIT frame wins, so the 4:5 card crop never zooms into a landscape.
+// The fallback may be null (no stock file on disk), in which case a location
+// with session frames still earns a card and one without becomes a text row.
 const previewForShotLocation = (
   slug: string,
   name: string,
-  fallback: ImageMetadata
-): ImageMetadata => {
+  fallback: ImageMetadata | null
+): ImageMetadata | null => {
   const galleryKeys = Object.keys(galleryImages)
     .filter((p) => p.includes(`/locations-gallery/${slug}/`))
     .sort();
@@ -73,7 +80,7 @@ const previewForShotLocation = (
   return fallback;
 };
 
-// One quiet at-a-glance permit read per card. Any value outside these four
+// One quiet at-a-glance permit read per entry. Any value outside these four
 // renders no line at all rather than a guess.
 const permitLines: Record<string, string> = {
   No: 'No permit needed',
@@ -82,45 +89,60 @@ const permitLines: Record<string, string> = {
   'Venue booking': 'Book the venue first',
 };
 
-const sorted = [...locationsData].sort((a, b) => a.name.localeCompare(b.name));
+// Text rows get one short clause, cut at the first period or comma.
+const shortDescriptor = (value: string): string => (value.split(/[.,]/)[0] ?? '').trim();
 
-const tiles = sorted
-  .map((loc) => {
-    const imgPath = `/src/assets/images/locations/${loc.image}`;
-    const stockImg = locationImages[imgPath]?.default;
-    if (!stockImg) return null;
-    const shotHere = shotHereFor(loc.id, loc.name);
-    const img = shotHere ? previewForShotLocation(loc.id, loc.name, stockImg) : stockImg;
-    const permitLine = permitLines[loc.permitNeeded ?? ''] ?? null;
-    return { ...loc, img, shotHere, permitLine };
-  })
-  .filter((t): t is NonNullable<typeof t> => t !== null);
+const sorted = [...allLocations].sort((a, b) => a.name.localeCompare(b.name));
 
-// Six area groups built off the `zone` field. Every location lands in exactly
-// one group; sessions I have actually shot lead each group, then the rest,
-// both alphabetical (the `sorted` order carries through the filter).
+// Every location renders. Ones with a resolvable photo become cards; the rest
+// become compact text rows rather than being dropped from the guide.
+const entries = sorted.map((loc) => {
+  const stockImg = locationImages[`/src/assets/images/locations/${loc.image}`]?.default ?? null;
+  const shotHere = shotHereFor(loc.id, loc.name);
+  const img = shotHere ? previewForShotLocation(loc.id, loc.name, stockImg) : stockImg;
+  const permitLine = permitLines[loc.permitNeeded ?? ''] ?? null;
+  const haystack = `${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')} ${permitLine ?? ''}`.toLowerCase();
+  const hasCoords = typeof loc.lat === 'number' && typeof loc.lng === 'number';
+  return { ...loc, img, shotHere, permitLine, haystack, hasCoords };
+});
+
+// Sixteen city regions. Zone values are city names; a region with no
+// locations renders no section and no jump link.
 const areaGroups = [
   { id: 'downtown-toronto', title: 'Downtown Toronto', zones: ['Downtown'] },
-  { id: 'toronto-east', title: 'Toronto East', zones: ['Bluffs', 'Scarborough'] },
-  { id: 'toronto-west', title: 'Toronto West', zones: ['Etobicoke'] },
-  {
-    id: 'mississauga-burlington-vaughan',
-    title: 'Mississauga, Burlington & Vaughan',
-    zones: ['Mississauga', 'Burlington', 'Vaughan'],
-  },
+  { id: 'north-york', title: 'North York', zones: ['North York'] },
+  { id: 'east-york', title: 'East York', zones: ['East York'] },
+  { id: 'scarborough', title: 'Scarborough', zones: ['Scarborough'] },
+  { id: 'etobicoke', title: 'Etobicoke', zones: ['Etobicoke'] },
+  { id: 'mississauga', title: 'Mississauga', zones: ['Mississauga'] },
+  { id: 'brampton', title: 'Brampton', zones: ['Brampton'] },
+  { id: 'caledon', title: 'Caledon', zones: ['Caledon'] },
+  { id: 'vaughan', title: 'Vaughan', zones: ['Vaughan'] },
+  { id: 'markham', title: 'Markham', zones: ['Markham'] },
+  { id: 'richmond-hill', title: 'Richmond Hill', zones: ['Richmond Hill'] },
+  { id: 'oakville-halton', title: 'Oakville & Halton', zones: ['Oakville', 'Halton'] },
+  { id: 'burlington', title: 'Burlington', zones: ['Burlington'] },
   { id: 'hamilton-dundas', title: 'Hamilton & Dundas', zones: ['Hamilton'] },
   { id: 'niagara', title: 'Niagara', zones: ['Niagara'] },
+  { id: 'oshawa-durham', title: 'Oshawa & Durham', zones: ['Oshawa', 'Durham'] },
 ];
 
 const groups = areaGroups
   .map((group) => {
-    const inGroup = tiles.filter((t) => group.zones.includes(t.zone));
+    const inGroup = entries.filter((e) => group.zones.includes(e.zone));
+    const withPhoto = inGroup.filter((e) => e.img);
+    const pins = inGroup
+      .filter((e) => e.hasCoords)
+      .map((e) => ({ name: e.name, href: `/location-guide/${e.id}/`, lat: e.lat, lng: e.lng }));
     return {
       ...group,
-      tiles: [...inGroup.filter((t) => t.shotHere), ...inGroup.filter((t) => !t.shotHere)],
+      cards: [...withPhoto.filter((e) => e.shotHere), ...withPhoto.filter((e) => !e.shotHere)],
+      rows: inGroup.filter((e) => !e.img),
+      count: inGroup.length,
+      pins,
     };
   })
-  .filter((group) => group.tiles.length > 0);
+  .filter((group) => group.count > 0);
 
 const locationListSchema = [
   {
@@ -136,8 +158,8 @@ const locationListSchema = [
     name: 'Best Photography Locations in Toronto',
     description: 'Curated photography locations in Toronto and the GTA by AD Photography',
     url: `${site.url}/location-guide`,
-    numberOfItems: tiles.length,
-    itemListElement: tiles.map((loc, index) => ({
+    numberOfItems: entries.length,
+    itemListElement: entries.map((loc, index) => ({
       '@type': 'ListItem',
       position: index + 1,
       url: `${site.url}/location-guide/${loc.id}`,
@@ -189,7 +211,7 @@ const locationListSchema = [
       {groups.map((group) => (
         <a class="lg-jump-link text-label-md" href={`#${group.id}`}>
           {group.title}
-          <span class="lg-jump-count">{group.tiles.length}</span>
+          <span class="lg-jump-count">{group.count}</span>
         </a>
       ))}
     </nav>
@@ -215,7 +237,7 @@ const locationListSchema = [
     </form>
 
     <p class="mosaic-search-count" aria-live="polite">
-      Showing <span data-search-count>{tiles.length}</span> of {tiles.length} locations
+      Showing <span data-search-count>{entries.length}</span> of {entries.length} locations
     </p>
 
     {groups.map((group, groupIndex) => (
@@ -223,49 +245,96 @@ const locationListSchema = [
         <header class="lg-section-header">
           <h2 class="lg-section-title">{group.title}</h2>
           <p class="lg-section-count text-label-sm text-on-surface-muted">
-            {group.tiles.length} {group.tiles.length === 1 ? 'location' : 'locations'}
+            {group.count} {group.count === 1 ? 'location' : 'locations'}
           </p>
+          {group.pins.length > 0 && (
+            <button
+              type="button"
+              class="lg-map-toggle text-label-md"
+              aria-expanded="false"
+              aria-controls={`${group.id}-map`}
+              data-map-toggle
+              data-map-target={`${group.id}-map`}
+              data-map-pins={JSON.stringify(group.pins)}
+            >View map</button>
+          )}
         </header>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
-          {group.tiles.map((loc, i) => (
-            <a
-              href={`/location-guide/${loc.id}/`}
-              class="lg-card group block reveal"
-              aria-label={`View details for ${loc.name}`}
-              data-search-haystack={`${loc.name} ${loc.area} ${loc.vibe} ${loc.bestFor.join(' ')} ${loc.setting.join(' ')} ${loc.zone} ${loc.season.join(' ')} ${loc.permitLine ?? ''}`.toLowerCase()}
-              style={`transition-delay: ${(i % 6) * 80 + 100}ms;`}
-            >
-              <div class="lg-card-media aspect-[4/5] overflow-hidden bg-surface-container">
-                <Image
-                  src={loc.img}
-                  alt={`${loc.name}, pre-wedding and engagement photography location in ${loc.area}`}
-                  widths={[400, 640, 960]}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  class="w-full h-full object-cover cubic-ease group-hover:scale-[1.03]"
-                  style="transition-duration: var(--duration-slow);"
-                  loading={groupIndex === 0 && i < 3 ? 'eager' : 'lazy'}
-                  fetchpriority={groupIndex === 0 && i === 0 ? 'high' : 'auto'}
-                />
-                {loc.shotHere && (
-                  <span class="lg-session-label text-label-sm">From a session here</span>
-                )}
-              </div>
+        {group.pins.length > 0 && (
+          <div class="lg-map" id={`${group.id}-map`} role="application" aria-label={`Map of ${group.title} locations`} hidden></div>
+        )}
 
-              <div class="mt-4">
-                <h3 class="text-heading-md font-serif">{loc.name}</h3>
-                <p class="text-label-sm text-on-surface-muted mt-1">{loc.area}</p>
-                <p class="lg-vibe text-body-md text-on-surface-variant mt-3">{loc.vibeLine ?? loc.vibe}</p>
-                {loc.bestFor.length > 0 && (
-                  <p class="text-label-sm text-on-surface-muted mt-3">{loc.bestFor.slice(0, 3).join(' · ')}</p>
-                )}
-                {loc.permitLine && (
-                  <p class="lg-permit text-label-sm mt-2">{loc.permitLine}</p>
-                )}
-              </div>
-            </a>
-          ))}
-        </div>
+        {group.cards.length > 0 && (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
+            {group.cards.map((loc, i) => (
+              <a
+                href={`/location-guide/${loc.id}/`}
+                class="lg-card group block reveal"
+                aria-label={`View details for ${loc.name}`}
+                data-search-haystack={loc.haystack}
+                style={`transition-delay: ${(i % 6) * 80 + 100}ms;`}
+              >
+                <div class="lg-card-media aspect-[4/5] overflow-hidden bg-surface-container">
+                  <Image
+                    src={loc.img!}
+                    alt={`${loc.name}, pre-wedding and engagement photography location in ${loc.area}`}
+                    widths={[400, 640, 960]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    class="w-full h-full object-cover cubic-ease group-hover:scale-[1.03]"
+                    style="transition-duration: var(--duration-slow);"
+                    loading={groupIndex === 0 && i < 3 ? 'eager' : 'lazy'}
+                    fetchpriority={groupIndex === 0 && i === 0 ? 'high' : 'auto'}
+                  />
+                  {loc.shotHere && (
+                    <span class="lg-session-label text-label-sm">From a session here</span>
+                  )}
+                </div>
+
+                <div class="mt-4">
+                  <h3 class="text-heading-md font-serif">{loc.name}</h3>
+                  <p class="text-label-sm text-on-surface-muted mt-1">{loc.area}</p>
+                  <p class="lg-vibe text-body-md text-on-surface-variant mt-3">{loc.vibeLine ?? loc.vibe}</p>
+                  {loc.bestFor.length > 0 && (
+                    <p class="text-label-sm text-on-surface-muted mt-3">{loc.bestFor.slice(0, 3).join(' · ')}</p>
+                  )}
+                  {loc.permitLine && (
+                    <p class="lg-permit text-label-sm mt-2">{loc.permitLine}</p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {group.rows.length > 0 && (
+          <div class="lg-rows" data-row-block>
+            <p class="lg-rows-heading text-label-sm text-on-surface-muted">More spots in {group.title}</p>
+            <ul class="lg-row-list">
+              {group.rows.map((loc) => {
+                const descriptor = shortDescriptor(loc.vibeLine ?? loc.vibe);
+                return (
+                  <li class="lg-row" data-search-haystack={loc.haystack}>
+                    <a class="lg-row-link" href={`/location-guide/${loc.id}/`}>
+                      <span class="lg-row-name">{loc.name}</span>
+                      {descriptor && (
+                        <>
+                          <span class="lg-row-sep" aria-hidden="true">·</span>
+                          <span class="lg-row-note">{descriptor}</span>
+                        </>
+                      )}
+                      {loc.permitLine && (
+                        <>
+                          <span class="lg-row-sep" aria-hidden="true">·</span>
+                          <span class="lg-row-note">{loc.permitLine}</span>
+                        </>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </section>
     ))}
 
@@ -286,32 +355,37 @@ const locationListSchema = [
 </BaseLayout>
 
 <script>
-  // Client-side filter for the location guide cards. Matches against
-  // name, area, vibe, tags, setting, zone, and season (all lowercased
-  // into data-search-haystack server-side).
+  // ── Client-side filter ──
+  // Matches against name, area, vibe, tags, setting, zone, season and the
+  // permit phrase (all lowercased into data-search-haystack server-side).
+  // Cards and text rows are filtered by the same rule.
   const input = document.querySelector<HTMLInputElement>('[data-search-input]');
   const clearBtn = document.querySelector<HTMLButtonElement>('[data-search-clear]');
-  const tiles = document.querySelectorAll<HTMLElement>('[data-search-haystack]');
+  const items = document.querySelectorAll<HTMLElement>('[data-search-haystack]');
   const countEl = document.querySelector<HTMLElement>('[data-search-count]');
   const emptyEl = document.querySelector<HTMLElement>('[data-search-empty]');
   const sections = document.querySelectorAll<HTMLElement>('.lg-section');
+
+  const anyVisible = (scope: HTMLElement): boolean =>
+    Array.from(scope.querySelectorAll<HTMLElement>('[data-search-haystack]')).some((el) => !el.hidden);
 
   function applyFilter() {
     if (!input) return;
     const q = input.value.trim().toLowerCase();
     let matches = 0;
-    tiles.forEach((tile) => {
-      const haystack = tile.dataset.searchHaystack || '';
+    items.forEach((item) => {
+      const haystack = item.dataset.searchHaystack || '';
       const show = !q || haystack.includes(q);
-      tile.hidden = !show;
+      item.hidden = !show;
       if (show) matches++;
     });
-    // Hide an area section (heading included) when none of its cards match
     sections.forEach((sec) => {
-      const visible = Array.from(
-        sec.querySelectorAll<HTMLElement>('[data-search-haystack]')
-      ).some((t) => !t.hidden);
-      sec.hidden = !visible;
+      // Drop the "More spots in X" sub-block when none of its rows survive,
+      // then the whole region when neither cards nor rows survive.
+      sec.querySelectorAll<HTMLElement>('[data-row-block]').forEach((block) => {
+        block.hidden = !anyVisible(block);
+      });
+      sec.hidden = !anyVisible(sec);
     });
     if (countEl) countEl.textContent = String(matches);
     if (clearBtn) clearBtn.hidden = q.length === 0;
@@ -324,6 +398,113 @@ const locationListSchema = [
     input.value = '';
     input.focus();
     applyFilter();
+  });
+
+  // ── Per-region maps ──
+  // Leaflet and its stylesheet are pulled in on the first map open only, so a
+  // visitor who never taps "View map" downloads none of it. The CSS comes in
+  // via ?inline and is injected at runtime: a plain dynamic CSS import would
+  // be hoisted into the page stylesheet at build time and ship to everyone.
+  type Pin = { name: string; href: string; lat: number; lng: number };
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let leafletPromise: Promise<any> | null = null;
+
+  const escapeHtml = (value: string): string =>
+    value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+  async function loadLeaflet(): Promise<any> {
+    if (!leafletPromise) {
+      leafletPromise = (async () => {
+        const [mod, css] = await Promise.all([
+          import('leaflet'),
+          import('leaflet/dist/leaflet.css?inline'),
+        ]);
+        const style = document.createElement('style');
+        style.textContent = `${css.default}
+          .lg-pin{display:flex;align-items:center;justify-content:center;width:26px;height:26px;
+            background:var(--color-on-surface,#1a1a18);color:var(--color-on-dark,#faf9f6);
+            font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:0.04em;border-radius:0;}
+          .leaflet-container{background:var(--color-surface-container,#eceae4);font-family:var(--font-sans);}
+          .leaflet-popup-content-wrapper,.leaflet-popup-tip{border-radius:0;}
+          .leaflet-popup-content a{font-family:var(--font-serif);color:var(--color-on-surface,#1a1a18);}`;
+        document.head.appendChild(style);
+        return (mod as any).default ?? mod;
+      })();
+    }
+    return leafletPromise;
+  }
+
+  const initialized = new WeakSet<HTMLElement>();
+  const mapInstances = new WeakMap<HTMLElement, any>();
+
+  async function buildMap(container: HTMLElement, pins: Pin[]) {
+    const L = await loadLeaflet();
+    const map = L.map(container, {
+      scrollWheelZoom: false,
+      zoomAnimation: !reducedMotion,
+      fadeAnimation: !reducedMotion,
+      markerZoomAnimation: !reducedMotion,
+    });
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    pins.forEach((pin, i) => {
+      L.marker([pin.lat, pin.lng], {
+        icon: L.divIcon({
+          className: '',
+          html: `<span class="lg-pin">${i + 1}</span>`,
+          iconSize: [26, 26],
+          iconAnchor: [13, 13],
+        }),
+        title: pin.name,
+        alt: pin.name,
+        keyboard: true,
+      })
+        .addTo(map)
+        .bindPopup(`<a href="${escapeHtml(pin.href)}">${escapeHtml(pin.name)}</a>`);
+    });
+
+    map.fitBounds(L.latLngBounds(pins.map((p) => [p.lat, p.lng])), {
+      padding: [32, 32],
+      maxZoom: 15,
+    });
+    mapInstances.set(container, map);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-map-toggle]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const container = document.getElementById(btn.dataset.mapTarget || '');
+      if (!container) return;
+
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        container.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.textContent = 'View map';
+        return;
+      }
+
+      container.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      btn.textContent = 'Hide map';
+
+      let pins: Pin[] = [];
+      try {
+        pins = JSON.parse(btn.dataset.mapPins || '[]');
+      } catch {
+        pins = [];
+      }
+      if (pins.length === 0) return;
+
+      if (!initialized.has(container)) {
+        initialized.add(container);
+        await buildMap(container, pins);
+      } else {
+        mapInstances.get(container)?.invalidateSize();
+      }
+    });
   });
 </script>
 
@@ -437,7 +618,7 @@ const locationListSchema = [
     color: var(--color-on-surface-variant);
   }
 
-  /* ── Area sections ── */
+  /* ── Region sections ── */
   .lg-section {
     scroll-margin-top: 96px;
     margin-bottom: clamp(3rem, 7vw, 5rem);
@@ -458,6 +639,39 @@ const locationListSchema = [
 
   .lg-section-count {
     margin-top: 0.5rem;
+  }
+
+  /* ── Region map ── */
+  .lg-map-toggle {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: var(--color-on-surface-muted);
+    text-decoration: none;
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .lg-map-toggle:hover {
+    color: var(--color-on-surface);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .lg-map-toggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+
+  .lg-map {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 420px;
+    border-radius: 0;
+    background: var(--color-surface-container);
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   /* ── Location card ── */
@@ -496,5 +710,59 @@ const locationListSchema = [
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* ── Text rows (locations with no photo yet) ── */
+  .lg-rows {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .lg-rows-heading {
+    margin-bottom: 1rem;
+  }
+
+  .lg-row-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lg-row + .lg-row {
+    margin-top: 0.625rem;
+  }
+
+  .lg-row-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    line-height: 1.8;
+  }
+
+  .lg-row-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+
+  .lg-row-name {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    color: var(--color-on-surface-variant);
+    transition: color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .lg-row-link:hover .lg-row-name,
+  .lg-row-link:focus-visible .lg-row-name {
+    color: var(--color-on-surface);
+  }
+
+  .lg-row-sep {
+    color: var(--color-on-surface-muted);
+    margin: 0 0.5rem;
+  }
+
+  .lg-row-note {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-on-surface-muted);
   }
 </style>
