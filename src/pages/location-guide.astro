@@ -241,8 +241,8 @@ const locationListSchema = [
     </p>
 
     {groups.map((group, groupIndex) => (
-      <section id={group.id} class="lg-section reveal">
-        <header class="lg-section-header">
+      <section id={group.id} class="lg-section">
+        <header class="lg-section-header reveal">
           <h2 class="lg-section-title">{group.title}</h2>
           <p class="lg-section-count text-label-sm text-on-surface-muted">
             {group.count} {group.count === 1 ? 'location' : 'locations'}
@@ -307,7 +307,7 @@ const locationListSchema = [
         )}
 
         {group.rows.length > 0 && (
-          <div class="lg-rows" data-row-block>
+          <div class="lg-rows reveal" data-row-block>
             <p class="lg-rows-heading text-label-sm text-on-surface-muted">More spots in {group.title}</p>
             <ul class="lg-row-list">
               {group.rows.map((loc) => {
