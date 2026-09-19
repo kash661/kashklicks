@@ -3,8 +3,8 @@ title: "Toronto Music Garden Proposal Photography: A Skyline Spot Downtown"
 description: "Planning a proposal at the Toronto Music Garden? A photographer's guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot actually works."
 publishDate: 2026-08-05
 author: "Akash Desai"
-coverImage: "../../assets/images/portfolio/margarita-mike/05.jpg"
-coverImageAlt: "A man on one knee proposing under the iron pavilion at the Toronto Music Garden with the CN Tower rising behind them, by AD Photography"
+coverImage: "../../assets/images/portfolio/margarita-mike/06.jpg"
+coverImageAlt: "A woman covering her face with both hands moments after saying yes to a proposal at the Toronto Music Garden in Toronto, by AD Photography"
 tags: ["Photo Location", "Toronto Music Garden", "Proposal", "Engagement", "Harbourfront", "Downtown Toronto"]
 draft: false
 faq:
@@ -67,6 +67,8 @@ That single sightline is the reason we keep bringing couples here. You get the p
 This is the proposal spot. Curved granite steps drop down to a lawn, with a stone stage at the top and an ornamental steel pavilion wrapped in climbing vines right behind it. It is theatrical without being fussy, and the CN Tower sits directly over it.
 
 It also solves a practical problem. Your partner walks in along a path, so they arrive facing the stage. You are already standing there. There is a natural moment where they stop and understand what is happening, and that reaction is usually the best photograph of the entire day.
+
+![A man on one knee proposing under the iron pavilion at the Toronto Music Garden with the CN Tower rising behind them, by AD Photography](../../assets/images/portfolio/margarita-mike/05.jpg)
 
 ### 2. The stone steps themselves
 
