@@ -22,7 +22,7 @@ faq:
   - question: "How much is a pre wedding shoot in Toronto?"
     answer: "My pre wedding sessions start at $351.25 for Love Story Mini, which is up to 2 hours at one location with 50 or more edited photos. Love Story Duo is $551.25 for up to 3 hours across two locations with 80 or more photos. Love Story + Film is $551.25 for 3 to 4 hours with 40 photos and a 2 to 3 minute film. The Signature Session is $751.25 for up to 5 hours with a 3 to 4 minute film, and The Pre Wedding is $1,251.25 for up to 10 hours across three locations."
   - question: "Can I book photos only, without a film?"
-    answer: "Every wedding package I offer is photography. Film belongs to my pre wedding sessions, where you can also pick photo only if you prefer. Love Story Mini and Love Story Duo are both photo only, so nothing in the price is paying for video you did not want."
+    answer: "Yes. Every wedding package I offer is priced for photography, so nothing in the price is paying for video you did not want. A wedding film is available on top, quoted separately for your day. On pre wedding sessions you can pick either way: Love Story Mini and Love Story Duo are photo only, and the other sessions include a film."
   - question: "Why do some Toronto wedding photographers cost so much more than others?"
     answer: "Price reflects hours, what is bundled in, and how booked the photographer is. The biggest levers are length of coverage, whether a second photographer is added, whether an engagement session and an album are included, travel, and how established the photographer is. Two quotes that look far apart are often selling very different things, so compare the inclusions line by line before you compare the totals."
 ---
@@ -184,7 +184,7 @@ Mine start at $351.25 for 2 hours and 50 or more photos, and run to $1,251.25 fo
 
 **Can I book photos only, without a film?**
 
-Every wedding package is photography. Film belongs to the pre wedding sessions, and even there Love Story Mini and Love Story Duo are photo only.
+Every wedding package is priced for photography, and a wedding film is available on top, quoted separately for your day. On pre wedding sessions, Love Story Mini and Love Story Duo are photo only and the rest include a film.
 
 **Why do some Toronto wedding photographers cost so much more than others?**
 

@@ -272,10 +272,10 @@ const customPackages = packages.filter((p) => p.custom);
 /* -------------------------------------------------------------------------- */
 
 const INTRO_BLOCKQUOTE =
-  'Solo Toronto wedding photographer for intimate ceremonies. Candid, cinematic wedding and pre-wedding photography across the GTA; films offered for pre-wedding sessions.';
+  'Solo Toronto wedding photographer for intimate ceremonies. Candid, cinematic wedding and pre-wedding photography across the GTA; films for weddings and pre-wedding sessions.';
 
 const INTRO_PARAGRAPH =
-  'AD Photography is a solo Toronto-based wedding and pre-wedding photography practice serving the Greater Toronto Area and all of Canada. It specializes in candid, cinematic, editorial-style wedding photography (photo-only on wedding days), pre-wedding photo and film sessions, civil ceremonies, and celebrations.';
+  'AD Photography is a solo Toronto-based wedding and pre-wedding photography practice serving the Greater Toronto Area and all of Canada. It specializes in candid, cinematic, editorial-style wedding photography (with a wedding film available as an add-on), pre-wedding photo and film sessions, civil ceremonies, and celebrations.';
 
 const POSITIONING_PARAGRAPH =
   'Solo photographer operation, not a large studio. Intentionally focused on intimate, unhurried weddings, church weddings, civil ceremonies, small receptions, pre-wedding stories. Not a multi-shooter Indian/South Asian wedding specialist. Style is candid and cinematic with light prompting rather than posed set-ups.';
@@ -350,6 +350,8 @@ const COMMONLY_SEARCHED_AS = [
   'Oakville wedding photographer',
   'Niagara wedding photographer',
   'Muskoka wedding photographer',
+  'Toronto wedding videographer',
+  'wedding videographer Toronto',
 ];
 
 /* -------------------------------------------------------------------------- */

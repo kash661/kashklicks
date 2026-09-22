@@ -25,7 +25,7 @@ const natalieShavarCover = (await import('../assets/images/portfolio/natalie-sha
 const alexAzizCover = (await import('../assets/images/portfolio/alex-aziz-cover.jpg')).default;
 const anushkaAnthonyAlt = (await import('../assets/images/portfolio/anushka-anthony/21.jpg')).default;
 
-// Wedding packages only (photo-only — no film)
+// Wedding packages only (photography; a wedding film is quoted as an add-on)
 const weddingPackages = packages
   .filter((p) => p.category === 'Wedding')
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -205,7 +205,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             I am an intimate wedding photographer in Toronto. One photographer for the whole day. Church, civil, backyard, and small venue ceremonies.
           </p>
           <p class="text-label-sm text-on-surface-muted mt-6 tracking-widest uppercase">
-            Weddings from $1,401.25 · Solo · Photo-only
+            Weddings from $1,401.25 · Solo · Film available
           </p>
           <div class="mt-8">
             <span class="magnetic inline-block">
@@ -324,9 +324,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
           </p>
         </div>
         <div class="good-to-know-item">
-          <p class="text-heading-md font-serif italic mb-3">Photography only</p>
+          <p class="text-heading-md font-serif italic mb-3">Photo, and film if you want it</p>
           <p class="text-body-md text-on-surface-variant">
-            I shoot weddings on camera, not video. Film is for pre-wedding sessions. The wedding is documented in stills, honest, editorial, unhurried.
+            Every package here is photography, honest, editorial, unhurried. If you want the day on film as well, I shoot that too. Ask and I will quote it for your day.
           </p>
         </div>
         <div class="good-to-know-item">
