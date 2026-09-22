@@ -107,6 +107,15 @@ const films: string[] = (entry as any).youtubeUrls?.length
     ? [entry.youtubeUrl]
     : [];
 
+// Single-film name is category-aware; the multi-film branch below stays generic.
+const filmNameByCategory: Record<string, string> = {
+  'wedding': 'Wedding Film',
+  'civil-ceremony': 'Civil Ceremony Film',
+  'pre-wedding': 'Pre-Wedding Film',
+  'events': 'Celebration Film',
+  'portraits': 'Portrait Film',
+};
+
 films.forEach((film, i) => {
   const videoId = film.includes('youtu.be/')
     ? film.split('youtu.be/')[1]?.split('?')[0]
@@ -116,7 +125,7 @@ films.forEach((film, i) => {
     '@type': 'VideoObject',
     name: films.length > 1
       ? `${entry.couple}, Film ${i + 1}`
-      : `${entry.couple}, Pre-Wedding Film`,
+      : `${entry.couple}, ${filmNameByCategory[entry.category] || 'Film'}`,
     description: `Film of ${entry.couple} at ${entry.location} by AD Photography.`,
     thumbnailUrl: galleryImages[0]?.src?.src ? `${site.url}${galleryImages[0].src.src}` : undefined,
     embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}`,
