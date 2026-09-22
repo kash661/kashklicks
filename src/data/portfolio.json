@@ -3378,6 +3378,17 @@
       "48.jpg": "Silhouette of Josie and Nelson facing each other against the glowing chandelier and tent lights",
       "49.jpg": "Black and white wedding send off, guests raising candles in a tunnel along the path",
       "50.jpg": "Night kiss beneath raised candles as guests cheer outside the glowing Guild Park tent"
+    },
+    "vendors": [
+      {
+        "role": "Planning",
+        "name": "Tsunki Event Planning",
+        "url": "https://www.instagram.com/tsunkiep/"
+      }
+    ],
+    "blogGuide": {
+      "url": "/blog/guild-park-wedding-josie-nelson/",
+      "title": "A Guild Park & Gardens Wedding in Scarborough: Josie + Nelson"
     }
   }
 ]

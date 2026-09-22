@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### A Guild Park & Gardens Wedding in Scarborough: Josie + Nelson
+
+- **URL:** https://kashklicks.ca/blog/guild-park-wedding-josie-nelson/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/guild-park-wedding-josie-nelson.md
+- **Published:** 2026-09-22
+- **Tags:** Real Wedding, Guild Park & Gardens, Venues, Scarborough, Wedding, Wedding Film
+- **Summary:** Josie and Nelson married at Guild Park & Gardens in Scarborough, among rescued stone columns and candlelight. A real Toronto wedding in photo and film.
+
 ### Château des Charmes Proposal Photography: A Surprise Winery Proposal in Niagara on the Lake
 
 - **URL:** https://kashklicks.ca/blog/chateau-des-charmes-proposal-photography/
