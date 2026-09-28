@@ -17,7 +17,7 @@ faq:
   - question: "Can you bring your own photographer into the Wedding Chamber?"
     answer: "Yes. Photography during your booked ceremony is part of the booking and does not need a separate permit. Check in with the officiant when you arrive, ask about flash, and expect to shoot from the side or back of the room so you are not blocking the aisle. This is exactly how we work a City Hall ceremony: close, quiet, and out of the way."
   - question: "Do you need a permit to take wedding photos on Nathan Phillips Square?"
-    answer: "For a small wedding party walking around and taking portraits with a handheld camera, no permit is usually required. You only need a City of Toronto photography permit if you are setting up tripods, lighting stands, or staging a larger production. Osgoode Hall is a different story: it belongs to the Law Society of Ontario, not the City, so confirm their current photography rules directly before planning portraits on those grounds."
+    answer: "For a small wedding party walking around and taking portraits with a handheld camera, no permit is usually required. You only need a City of Toronto photography permit if you are setting up tripods, lighting stands, or staging a larger production. Osgoode Hall next door does not need a permit either, even though it belongs to the Law Society of Ontario rather than the City."
   - question: "Where do you take photos after a City Hall wedding?"
     answer: "There is a tight portrait loop within a five to ten minute walk. Start on Nathan Phillips Square with the curved towers and the TORONTO sign, cross to the sandstone facade and steps of Old City Hall, walk west on Queen to the gardens and iron gates of Osgoode Hall, and finish in the Financial District for clean glass and stone. You can cover all of it on foot in under an hour."
   - question: "How do you book a Toronto City Hall civil ceremony?"
@@ -54,7 +54,7 @@ If you are thinking about getting married at Toronto City Hall, this is everythi
 
 **Best light for portraits:** Late morning through mid afternoon on Nathan Phillips Square and at Old City Hall, when the sandstone glows and the plaza is not yet in deep shadow.
 
-**Photo permit:** Not needed for a small walking portrait session on Nathan Phillips Square. Osgoode Hall is separate property with its own rules.
+**Photo permit:** Not needed for a small walking portrait session on Nathan Phillips Square. Not needed at Osgoode Hall either.
 
 ## The one thing couples get wrong: Old City Hall vs New City Hall
 
@@ -124,7 +124,7 @@ A five minute walk west on Queen Street brings you to Osgoode Hall, and this is 
 
 ![A couple framed by the iron gates and brick corridor at Osgoode Hall, Toronto, by AD Photography](../../assets/images/portfolio/sonia-achyut/30.jpg)
 
-One important note: Osgoode Hall belongs to the Law Society of Ontario, not the City. The grounds have their own photography rules, and access is sometimes limited during construction or court events. Confirm current access with the Law Society before you build it into your plan, because a City permit does not cover it. We photographed Sonia and Achyut on this exact two-building arc, from Old City Hall to Osgoode, in a single relaxed afternoon. The full set is here: [Sonia + Achyut, Old City Hall and Osgoode Hall](/portfolio/sonia-achyut/).
+One important note: Osgoode Hall belongs to the Law Society of Ontario, not the City. No permit is needed for portraits on the grounds, but access is sometimes limited during construction or court events, so I plan the stop around that. We photographed Sonia and Achyut on this exact two-building arc, from Old City Hall to Osgoode, in a single relaxed afternoon. The full set is here: [Sonia + Achyut, Old City Hall and Osgoode Hall](/portfolio/sonia-achyut/).
 
 ### 4. The Financial District
 
@@ -186,7 +186,7 @@ Yes. Photography during your booked ceremony is part of the booking and needs no
 
 **Do you need a permit to take wedding photos on Nathan Phillips Square?**
 
-For a small wedding party walking around with a handheld camera, no. You only need a City permit for tripods, lighting, or a larger staged shoot. Osgoode Hall is separate property owned by the Law Society of Ontario, so confirm their rules directly.
+For a small wedding party walking around with a handheld camera, no. You only need a City permit for tripods, lighting, or a larger staged shoot. Osgoode Hall does not need a permit either.
 
 **Where do you take photos after a City Hall wedding?**
 

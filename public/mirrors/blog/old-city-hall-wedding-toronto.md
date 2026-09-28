@@ -87,7 +87,7 @@ Across Bay Street is Nathan Phillips Square, the open plaza in front of New City
 
 ## The rules on photography
 
-Outside is simple. For a small wedding party walking around with a handheld camera, no permit is needed on the public sidewalks or on Nathan Phillips Square. You only need a City photography permit if you bring tripods, lighting stands, or stage a larger production. Osgoode Hall is the exception, since it belongs to the Law Society of Ontario rather than the City, so confirm their rules before you plan portraits on those grounds.
+Outside is simple. For a small wedding party walking around with a handheld camera, no permit is needed on the public sidewalks or on Nathan Phillips Square. You only need a City photography permit if you bring tripods, lighting stands, or stage a larger production. Osgoode Hall next door does not need a permit either, even though it belongs to the Law Society of Ontario rather than the City.
 
 Inside the new Old City Hall chamber, I would ask the City directly when you book. Photography during a booked ceremony is normal at the City's other chambers, but this program is new enough that I would rather you get the current answer than assume.
 

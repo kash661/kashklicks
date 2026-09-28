@@ -6,11 +6,12 @@ Every value below comes from the location guides on this site or from a fact con
 
 Fees change. Last verified September 2026. Confirm with the venue before you book.
 
-## Locations that need no photography permit (9 of 110)
+## Locations that need no photography permit (10 of 110)
 
 - Cheltenham Badlands: No photography permit is issued here. The Ontario Heritage Trust runs the site and does not offer special use permits, so visits are booked through the paid parking reservation like any other. Shooting stays on the sidewalk, trail and boardwalk. Walking on the shale is prohibited and drones are not allowed.
 - Guild Park & Gardens: Not required for engagement shoots or general photography
 - Niagara Parks Botanical Gardens: No permit needed for wedding or engagement photos outdoors, first come first served; holding a ceremony is a separate Niagara Parks booking
+- Osgoode Hall: Not needed for a small portrait session on the grounds
 - Polson Pier: Private property used for events, small shoots typically fine when no event is active
 - Queen Victoria Park: First-come first-served for outdoor photography, restricted when Niagara Parks ceremonies are running
 - RC Harris Water Treatment Center: Not needed for photography; required for vehicle access to curved road
@@ -86,7 +87,7 @@ Fees change. Last verified September 2026. Confirm with the venue before you boo
 | [Niagara-on-the-Lake](https://kashklicks.ca/location-guide/niagara-on-the-lake/) | Niagara | Sometimes | Confirm with the venue | Niagara Parks | Street and lot parking in town |
 | [Old City Hall](https://kashklicks.ca/blog/old-city-hall-wedding-toronto/) | Downtown | Sometimes | Confirm with the venue | Confirm with the venue | Confirm with the venue |
 | [One King West Hotel](https://kashklicks.ca/location-guide/one-king-west/) | Downtown | Yes | $650 plus applicable taxes for the Grand Staircase and Chairman's Boardroom, $750 plus applicable taxes to include the Vault, up to two hours | One King West sales team at sales@onekingwest.com | Valet at the Melinda Street entrance, first come first served. Overnight valet is for registered hotel guests only. Oversized vehicles and pickup trucks are not accommodated. Permit rates exclude parking. Nearest public lot is Precise ParkLink at Commerce Court, no in and out. |
-| [Osgoode Hall](https://kashklicks.ca/location-guide/osgoode-hall/) | Downtown | Yes | Confirm with the venue | Law Society of Ontario | Paid lots nearby on Queen Street, limited street parking |
+| [Osgoode Hall](https://kashklicks.ca/location-guide/osgoode-hall/) | Downtown | No | No permit fee | No booking needed | Paid lots nearby on Queen Street, limited street parking |
 | [Oshawa Valley Botanical Gardens](https://kashklicks.ca/location-guide/oshawa-botanical/) | Oshawa | Yes | $65 for photos in a City park and $131 when the ceremony is held on site, plus H.S.T. Fees do not include insurance. City pages call these hourly, while Fees and Charges By-law 109-2024 Schedule B lists them under a flat rate heading, so confirm the basis with the Facility Booking Office. | City of Oshawa Facility Booking Office, fbo@oshawa.ca, 905-436-3311 | Lot at the Children's Arena, 155 Arena St. The City publishes no space count, fee or time limit for it, so check posted signs. On Peony Festival weekend that lot is Accessible Parking Permit only, nearby streets go local traffic only, and free off site lots run a shuttle. |
 | [Paletta Lakefront Park and Mansion](https://kashklicks.ca/location-guide/paletta/) | Burlington | Yes | $106.50 standard or $149.00 commercial and non resident, per 90 minute block plus HST | City of Burlington rentals at rentals@burlington.ca or 905-335-7738; weekend terrace through Edge Hospitality at 905-632-7809 | On site lot off Lakeshore Road beside the mansion. Visitor guides report free parking but no current city page confirms it. Spaces are limited and the lot fills with wedding and banquet guests on weekends and in summer. The park is closed between 11 p.m. and 7 a.m. |
 | [Pantages Hotel](https://kashklicks.ca/location-guide/pantages-hotel/) | Downtown | Venue booking | Confirm with the venue | Weddings team at weddings@silverhotelgroup.com | The hotel lists no parking of its own and points guests to nearby lots, Green P at 20 Dundas Square, TargetPark at 237 Victoria Street and Impark at 209 Victoria Street. The hotel notes these are not affiliated with it and that spaces can be booked ahead on SpotHero. Rates are not published. |
