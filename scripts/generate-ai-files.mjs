@@ -1380,7 +1380,7 @@ function buildServiceMarqueeLettersMirror() {
   p();
   p('## What We Rent Right Now');
   p();
-  p('Two sets of letters and the numbers 0 to 9. Every piece stands 4 ft tall, glows warm white and plugs into a regular wall outlet. We bring the extension cords.');
+  p('Two sets of letters and one of each number from 0 to 9. Every piece stands 4 ft tall, glows warm white and plugs into a regular wall outlet. We bring the extension cords.');
   p();
   p('- LOVE: 4 letters');
   p('- OH BABY: 6 letters');
@@ -1423,7 +1423,7 @@ function buildServiceMarqueeLettersMirror() {
   p('- **Near a wall outlet.** The letters plug into a regular wall outlet, and we bring extension cords.');
   p('- **Made for indoors.** Planning something outside? Ask us first.');
   p('- **Room to stand.** Send a photo of the spot and we confirm the set fits before you book.');
-  p('- **Numbers with a repeated digit.** A number like 22 or 100 needs two of the same piece, so ask before you book.');
+  p('- **One of each number.** We have one of each number from 0 to 9, so a number that repeats a digit, like 11, 22 or 100, is not possible. Any number with different digits works.');
   p('- **Book as early as you can.** Message us your date early.');
   p('- **Leave them where they stand.** Once the letters are lit, keep them in place and keep drinks away from them.');
   p();

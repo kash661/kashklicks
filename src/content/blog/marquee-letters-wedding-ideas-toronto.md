@@ -93,7 +93,7 @@ MARRY ME is the classic proposal sign, and we do not carry it. LOVE works for an
 
 LOVE with numbers is made for milestone anniversaries and vow renewals. Our LOVE + Numbers package is LOVE plus two numbers for $551.25: LOVE 25 for a silver anniversary, LOVE 40, or LOVE 50 for a golden one. It works as well for your parents' 25th as it does for your own.
 
-One rule on numbers. We rent the digits 0 to 9, and any number that repeats a digit needs a second copy of it. So for LOVE 22, LOVE 55 or a year like 2027, which has two 2s, ask us first before you plan around it. If you only want the number, The Numbers package is one or two numbers for $251.25.
+One rule on numbers. We have one of each digit from 0 to 9, so a number that repeats a digit is not possible. LOVE 22, LOVE 55 or a year like 2027, which has two 2s, will not work. LOVE 25 or LOVE 40 will. If you only want the number, The Numbers package is one or two numbers for $251.25.
 
 ## What size marquee letters work for a wedding
 

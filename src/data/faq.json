@@ -288,7 +288,7 @@
   },
   {
     "question": "Can I get a number with a repeated digit, like 11, 22 or 100?",
-    "answer": "Ask us first. A number that repeats a digit needs two of the same piece, so we check before we promise it.",
+    "answer": "No, sorry. We have one of each number from 0 to 9, so a number that repeats a digit, like 11, 22 or 100, is not possible. Any number with different digits works, like 1, 18, 30 or 45.",
     "services": [
       "marquee-letters"
     ]

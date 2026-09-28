@@ -32,7 +32,7 @@ All in means the letters, delivery to your door, setup, extension cords and pick
 ### Extra numbers and late pickup
 Extra numbers add on to The Numbers or LOVE + Numbers. A later pickup works with any package, and delivery outside the free zone is quoted before you book.
 
-- Extra number: $76.25 each. Only with The Numbers or LOVE + Numbers. Another 4 ft number from 0 to 9. For a digit already in your set, ask us first.
+- Extra number: $76.25 each. Only with The Numbers or LOVE + Numbers. Another 4 ft number from 0 to 9, any digit not already in your set.
 - Pickup after 11 pm: $76.25. Every package is picked up the same night by 11 pm. Later than that is one flat fee, agreed before you book.
 - Delivery outside the free zone: quoted from your address before you book.
 
@@ -57,7 +57,7 @@ Market figures are published GTA rental prices, checked in September 2026.
 
 ## What We Rent Right Now
 
-Two sets of letters and the numbers 0 to 9. Every piece stands 4 ft tall, glows warm white and plugs into a regular wall outlet. We bring the extension cords.
+Two sets of letters and one of each number from 0 to 9. Every piece stands 4 ft tall, glows warm white and plugs into a regular wall outlet. We bring the extension cords.
 
 - LOVE: 4 letters
 - OH BABY: 6 letters
@@ -100,7 +100,7 @@ Planning in Oakville, Burlington, Milton, Pickering, Ajax, Whitby, Oshawa, Newma
 - **Near a wall outlet.** The letters plug into a regular wall outlet, and we bring extension cords.
 - **Made for indoors.** Planning something outside? Ask us first.
 - **Room to stand.** Send a photo of the spot and we confirm the set fits before you book.
-- **Numbers with a repeated digit.** A number like 22 or 100 needs two of the same piece, so ask before you book.
+- **One of each number.** We have one of each number from 0 to 9, so a number that repeats a digit, like 11, 22 or 100, is not possible. Any number with different digits works.
 - **Book as early as you can.** Message us your date early.
 - **Leave them where they stand.** Once the letters are lit, keep them in place and keep drinks away from them.
 
@@ -142,7 +142,7 @@ They are made for indoor use. If your event is outdoors, ask us first.
 Yes. The Numbers covers one or two numbers for $251.25, all in. That is our smallest order, so we do not rent single letters on their own. You can add an extra number to The Numbers or LOVE + Numbers for $76.25.
 
 ### Can I get a number with a repeated digit, like 11, 22 or 100?
-Ask us first. A number that repeats a digit needs two of the same piece, so we check before we promise it.
+No, sorry. We have one of each number from 0 to 9, so a number that repeats a digit, like 11, 22 or 100, is not possible. Any number with different digits works, like 1, 18, 30 or 45.
 
 ### What time do you pick up the letters?
 The same night, by 11 pm. If you need them later, pickup after 11 pm is $76.25, agreed before you book.

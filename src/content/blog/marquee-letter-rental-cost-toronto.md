@@ -119,7 +119,7 @@ Further out, in places like Oakville, Burlington, Milton, Pickering, Ajax, Whitb
 
 Our numbers run 0 to 9, and each one is 4 ft tall. That covers most birthdays and anniversaries: a 1 for a first birthday, or a 16, 18, 21, 25, 30, 40, 50 or 65.
 
-Numbers that repeat a digit, like 11, 22, 33 or 100, need two of the same number, so ask us before you plan around one.
+We have one of each number from 0 to 9, so numbers that repeat a digit, like 11, 22, 33 or 100, are not possible.
 
 Elsewhere, two numbers list at about $175 to $190 before delivery. With the published $130 Toronto curbside rate that is about $305 to $320, and the setup is still left to you. The Numbers is $251.25 with delivery, setup and pickup included inside the free zone.
 
