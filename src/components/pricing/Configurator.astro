@@ -25,7 +25,13 @@ import { ADD_ONS, isCountable, basePrice, priceQualifier } from '../../lib/addon
 import BookingLink from '../ui/BookingLink.astro';
 import locationsData from '../../data/locations.json';
 
-const packages = packagesData as Array<Record<string, any>>;
+// Only what the flow can reach. packages.json and add-ons.json also hold the
+// marquee letter rental, which is not photography and has no step here, so it
+// must not surface in this page's HTML, its no-JS price list or the cfg-data
+// JSON the script reads.
+const flowCategories = new Set(flow.categories.map((c) => c.category));
+const packages = (packagesData as Array<Record<string, any>>).filter((p) => flowCategories.has(p.category));
+const addOns = ADD_ONS.filter((a) => a.categories.some((c) => flowCategories.has(c)));
 const money = (n: number) =>
   '$' + n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -67,7 +73,7 @@ const pkgIndex = packages.map((p) => ({
   film: !!p.film, regions: p.regions ?? null, addOnIds: p.addOnIds ?? [],
   hours: p.hours?.included ?? null, name: p.name,
 }));
-const addOnIndex = ADD_ONS.map((a) => ({
+const addOnIndex = addOns.map((a) => ({
   id: a.id, price: a.price, unit: a.unit, max: a.max ?? null,
   countable: isCountable(a), label: a.label,
 }));
@@ -233,7 +239,7 @@ function priceParts(a: typeof ADD_ONS[number]) {
     <h2 class="cfg-ask text-display-md measure-tight">Anything to add?</h2>
     <p class="cfg-hint text-body-md">All optional. Nothing here is assumed, and you can change it on the call.</p>
     <div class="cfg-addons">
-      {ADD_ONS.map((a, i) => {
+      {addOns.map((a, i) => {
         const { num, suffix } = priceParts(a);
         return (
           <div

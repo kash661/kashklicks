@@ -17,9 +17,15 @@ interface Props {
   eyebrow?: string;
   title?: string;
   intro?: string;
+  /* Heading block alignment. 'center' is what every page had before, so
+     pages that omit it render the same. 'start' sets the heading and intro
+     flush left, for pages that keep every section off centre. */
+  align?: 'center' | 'start';
 }
 
-const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intro } = Astro.props;
+// Pass eyebrow="" to drop the kicker line and let the heading stand alone.
+const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intro, align = 'center' } = Astro.props;
+const centered = align === 'center';
 ---
 
 <section
@@ -28,11 +34,11 @@ const { steps, eyebrow = 'Your Journey', title = 'From Inquiry to Gallery', intr
   data-journey-timeline
 >
   <div class="container-editorial">
-    <div class="text-center mb-12 md:mb-16 reveal">
-      <p class="text-label-md text-on-surface-muted mb-4 eyebrow-rule eyebrow-rule-center">{eyebrow}</p>
+    <div class:list={[centered && 'text-center', 'mb-12 md:mb-16 reveal']}>
+      {eyebrow && <p class:list={['text-label-md text-on-surface-muted mb-4 eyebrow-rule', centered && 'eyebrow-rule-center']}>{eyebrow}</p>}
       <h2 class="text-display-md">{title}</h2>
       {intro && (
-        <p class="text-body-lg text-on-surface-variant mx-auto mt-6" style="max-width: 48ch;">{intro}</p>
+        <p class:list={['text-body-lg text-on-surface-variant', centered && 'mx-auto', 'mt-6']} style="max-width: 48ch;">{intro}</p>
       )}
     </div>
 

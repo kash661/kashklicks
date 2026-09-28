@@ -1,0 +1,1384 @@
+---
+/*
+ * Hallmark · macrostructure: digital-curator-service-page (split studio rows) · genre: editorial
+ * theme: locked (Digital Curator) · design-system: .claude/CLAUDE.md · anchor: stone, zero gold
+ * tone: warm, plain, honest · enrichment: Tier B hand-built SVG plates (marquee bulbs) in the photo slots
+ * nav + footer: site chrome (Header, Footer) · motion: site reveal only, no new primitives
+ * pre-emit critique: P5 H4 E4 S5 R4 V4
+ *
+ * page: marquee letter RENTAL at /services/marquee-letters/. Rental copy says
+ *   "we"; the photography cross-sell is Akash in the first person.
+ * honest copy: no ReviewStrip (those Google reviews are photography clients),
+ *   no invented specs (material, bulb type, wattage, widths, weight), no
+ *   deposit, cancellation, arrival time or insurance claims, no stand in photos.
+ *   Market figures come from the 2026-09-28 GTA research, are never lucky-fied,
+ *   and never name a competitor.
+ * one source: packages.json, add-ons.json, marquee.json and faq.json, resolved
+ *   through src/lib/marquee.mjs, feed the cards, the schema, the FAQ and llms.txt.
+ * no eyebrows · no em or en dashes · tokens only
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import PricingCard from '../../components/ui/PricingCard.astro';
+import PackageAddOns from '../../components/ui/PackageAddOns.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
+import JourneyTimeline from '../../components/services/JourneyTimeline.astro';
+import MarqueePlate from '../../components/services/MarqueePlate.astro';
+import FloatingPackagesLink from '../../components/global/FloatingPackagesLink.astro';
+
+import packagesData from '../../data/packages.json';
+import addOnsData from '../../data/add-ons.json';
+import faqData from '../../data/faq.json';
+import zone from '../../data/marquee.json';
+import site from '../../data/site.json';
+import { marqueeContext, marqueeFaq, money, listJoin, MARQUEE_SERVICE } from '../../lib/marquee.mjs';
+
+/*
+ * TODO(marquee-photos): the photo slots. Each is null until Akash sends real
+ * photos of our letters (src/assets/images/marquee/README.md says what each
+ * slot needs). To swap one in, import the file and use it in place of null:
+ *   import heroPhoto from '../../assets/images/marquee/hero-love.jpg';
+ * The slot then renders it through astro:assets <Image> at the same ratio,
+ * so nothing on the page moves.
+ */
+const heroPhoto: ImageMetadata | null = null; // TODO(marquee-photos): hero, LOVE lit at an evening party, 4:5
+const ohBabyPhoto: ImageMetadata | null = null; // TODO(marquee-photos): OH BABY at a baby shower, 3:2
+const numbersPhoto: ImageMetadata | null = null; // TODO(marquee-photos): a birthday number lit, 4:5
+
+const ctx = marqueeContext({ packages: packagesData, addOns: addOnsData, zone });
+const marqueePackages = ctx.packages;
+const extras = ctx.extras;
+const faq = marqueeFaq(faqData, ctx);
+
+const pkg = (id: string) => {
+  const found = marqueePackages.find((p) => p.id === id);
+  if (!found) throw new Error(`marquee-letters: no package ${id} in packages.json`);
+  return found;
+};
+const extra = (id: string) => {
+  const found = extras.find((a) => a.id === id);
+  if (!found) throw new Error(`marquee-letters: no add-on ${id} in add-ons.json`);
+  return found;
+};
+
+const fromPrice = money(ctx.minPrice);
+const lateFee = money(extra('marquee-late-pickup').price);
+const freeZoneText = listJoin(zone.freeZone);
+
+// WhatsApp is the booking path: the chat opens with a message already started.
+// Cards name their package, so every lead says which set it is about.
+const waNumber = String(site.whatsapp ?? '').replace(/\D/g, '');
+const waLink = (message: string) => `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+const dateLink = waLink("Hi, I'd like to check a date for marquee letters. My date is ");
+const zoneLink = waLink('Hi, is this address in your free delivery zone for marquee letters? ');
+const questionLink = waLink('Hi, I have a question about renting marquee letters. ');
+const packageLink = (p: { name: string; price: number | null }) =>
+  waLink(`Hi, I'd like to check a date for ${p.name} (${money(p.price)} all in). My date is `);
+const instagramDm = `https://ig.me/m/${site.social.instagramHandle.replace(/^@/, '')}`;
+
+const heroFacts = [
+  { label: 'Sets', value: 'LOVE, OH BABY and numbers 0 to 9' },
+  { label: 'Size', value: 'Every piece is 4 ft tall, with warm white bulbs' },
+  { label: 'Price', value: `From ${fromPrice}, all in` },
+  { label: 'Free delivery', value: freeZoneText },
+];
+
+// Market column: published GTA prices from the 2026-09-28 research. Factual,
+// not lucky-fied, and no company named.
+const compareRows = [
+  {
+    label: 'The letters',
+    them: 'About $89 a letter. LOVE sets are listed around $300 to $356.',
+    us: `LOVE is ${money(pkg('marquee-love').price)}, with everything below included.`,
+  },
+  {
+    label: 'Delivery',
+    them: 'Rarely published. Quoted by address and venue access, after you ask.',
+    us: 'Free inside our delivery zone. Further out, quoted before you book.',
+  },
+  {
+    label: 'Setup and pickup',
+    them: 'Varies from company to company.',
+    us: 'Included. We set up, then pick up the same night.',
+  },
+  {
+    label: 'Late pickup',
+    them: 'Where published, $75 to $150.',
+    us: `${lateFee} after ${zone.pickupBy}, agreed before you book.`,
+  },
+];
+
+const occasions = [
+  {
+    specimen: '1 · 30 · 50',
+    title: 'Birthday marquee numbers',
+    body: `A 1 for a first birthday, a 30 or a 50 for the big ones. The Numbers covers one or two numbers for ${money(pkg('marquee-numbers').price)}, all in. For a number that repeats a digit, like 11 or 22, ask us first.`,
+    packageId: 'marquee-numbers',
+  },
+  {
+    specimen: 'LOVE 25',
+    title: 'Anniversaries: LOVE and the years',
+    body: `LOVE with two numbers beside it, like LOVE 25 or LOVE 40. LOVE + Numbers is ${money(pkg('marquee-love-numbers').price)}, all in.`,
+    packageId: 'marquee-love-numbers',
+  },
+  {
+    specimen: 'OH BABY',
+    title: 'Baby showers and gender reveals: OH BABY',
+    body: `Six letters that say it before anyone opens a gift, behind the cake table or the gift wall. OH BABY is ${money(pkg('marquee-oh-baby').price)}, all in.`,
+    packageId: 'marquee-oh-baby',
+  },
+  {
+    specimen: 'LOVE',
+    title: 'Proposals, engagement parties and weddings: LOVE',
+    body: `Four letters that frame the moment, at home, at a venue or behind the head table. LOVE is ${money(pkg('marquee-love').price)}, all in. The letters are made for indoor use, so for an outdoor proposal, ask us first.`,
+    packageId: 'marquee-love',
+  },
+];
+
+const journeySteps = [
+  {
+    label: 'Step 01',
+    title: 'Pick your letters',
+    body: 'LOVE, OH BABY, one or two numbers, or LOVE with numbers. Every package is one price, all in.',
+  },
+  {
+    label: 'Step 02',
+    title: 'Check your date',
+    body: 'Message us on WhatsApp with your date, the address and the set you want. We confirm the date and the price before you book.',
+  },
+  {
+    label: 'Step 03',
+    title: 'We deliver and set up',
+    body: 'We bring the letters to your home or venue, stand them where you want them and plug them in with our extension cords.',
+  },
+  {
+    label: 'Step 04',
+    title: 'We pick up the same night',
+    body: `We come back for the letters the same night, by ${zone.pickupBy}. Nothing to pack and nothing to return.`,
+  },
+];
+
+const beforeTheParty = [
+  {
+    title: 'Near a wall outlet',
+    body: 'The letters plug into a regular wall outlet, and we bring extension cords. Pick a spot within reach of an outlet and we handle the rest.',
+  },
+  {
+    title: 'Made for indoors',
+    body: 'Our letters are made for indoor use. Planning a backyard, a patio or anything else outside? Ask us first.',
+  },
+  {
+    title: 'Room to stand',
+    body: 'Tell us where the letters will go, or send a photo of the spot, and we confirm the set fits before you book.',
+  },
+  {
+    title: 'Numbers with a repeated digit',
+    body: 'A number like 22 or 100 needs two of the same piece. Ask us before you book and we will check.',
+  },
+  {
+    title: 'Book as early as you can',
+    body: 'Message us your date early and we will check it for you.',
+  },
+  {
+    title: 'Leave them where they stand',
+    body: 'Once the letters are set up and lit, keep them in place, keep drinks away from them and keep little ones a step back.',
+  },
+];
+
+/* ── Structured data ─────────────────────────────────────────────────────
+   The sitewide LocalBusiness (#business) is the provider. No second business
+   entity, no Product markup (a rental service), no reviews, no tax fields,
+   and no image until real photos exist. */
+const pageUrl = `${site.url}/services/marquee-letters/`;
+const businessRef = { '@id': `${site.url}/#business` };
+const ontario = { '@type': 'AdministrativeArea', name: 'Ontario' };
+// The free zone lives on the Service node only, not repeated on every Offer.
+const areaServed = zone.freeZone.map((name: string) => ({ '@type': 'City', name, containedInPlace: ontario }));
+
+// A priced extra is an Offer.addOn of each package it goes with (an offer only
+// available with that package), never a catalogue item of its own, so $76.25
+// can never read as the lowest marquee price. The outside the zone delivery
+// quote has no price, so it is left out.
+const addOnOffers = (ids: string[] = []) =>
+  extras
+    .filter((a) => ids.includes(a.id) && typeof a.price === 'number')
+    .map((a) => ({
+      '@type': 'Offer',
+      name: a.label,
+      description: a.note ?? a.label,
+      price: a.price as number,
+      priceCurrency: 'CAD',
+    }));
+
+const offer = (p: { id: string; name: string; description: string; price: number; addOnIds?: string[] }) => {
+  const addOn = addOnOffers(p.addOnIds);
+  return {
+    '@type': 'Offer',
+    name: p.name,
+    category: 'Marquee letter rental',
+    description: `${p.description} Delivery, setup and same night pickup are included in the free delivery zone.`,
+    price: p.price,
+    priceCurrency: 'CAD',
+    availability: 'https://schema.org/InStock',
+    url: `${pageUrl}#${p.id}`,
+    seller: businessRef,
+    itemOffered: { '@type': 'Service', name: p.name },
+    ...(addOn.length ? { addOn } : {}),
+  };
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${pageUrl}#service`,
+  name: 'Marquee Letter Rental',
+  alternateName: ['Light up letter rental', 'Marquee number rental'],
+  serviceType: 'Marquee letter rental',
+  description:
+    '4 ft light up LOVE, OH BABY and number marquee letters with warm white bulbs. Delivery, setup and same night pickup included in the free delivery zone.',
+  provider: businessRef,
+  areaServed,
+  url: pageUrl,
+  hasOfferCatalog: { '@id': `${pageUrl}#offers` },
+};
+
+const offerCatalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  '@id': `${pageUrl}#offers`,
+  name: 'Marquee Letter Rental Packages',
+  url: pageUrl,
+  offeredBy: businessRef,
+  // Packages only. The extras ride on each package as addOn (see offer()).
+  itemListElement: marqueePackages
+    .filter((p) => typeof p.price === 'number')
+    .map((p) =>
+      offer({
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        price: p.price as number,
+        addOnIds: p.addOnIds,
+      })
+    ),
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((q) => ({
+    '@type': 'Question',
+    name: q.question,
+    acceptedAnswer: { '@type': 'Answer', text: q.answer },
+  })),
+};
+
+const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
+
+const metaDescription = `Rent 4 ft light up marquee letters: LOVE, OH BABY and numbers, from ${fromPrice} all in. Free delivery, setup and pickup in Toronto, Mississauga and Brampton.`;
+---
+
+<BaseLayout
+  title="Marquee Letters Rental Toronto, Free Delivery"
+  description={metaDescription}
+  ogImage={`${site.url}/og-marquee-letters.jpg`}
+  jsonLd={jsonLd}
+  whatsapp={{ message: 'Hi, I have a question about renting marquee letters.', label: 'Message us' }}
+>
+  <div class="mq-page">
+    {/* Breadcrumbs (visually hidden, still crawled for search snippets) */}
+    <div class="sr-only">
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Services', href: '/services/' },
+        { label: 'Marquee Letters', href: '/services/marquee-letters/' },
+      ]} />
+    </div>
+
+    {/* ═══ HERO: the answer first. What we rent, how big, what it costs, where
+         delivery is free, then one way to check a date. No review: the Google
+         reviews on file are from photography clients. ═══ */}
+    <section class="mq-hero">
+      <div class="container-editorial">
+        <div class="grid-editorial items-center mq-hero__grid">
+          <div class="col-span-12 lg:col-span-6">
+            <h1 class="text-display-md mq-title">Marquee letter rentals <em>in Toronto.</em></h1>
+            <p class="section-deck text-on-surface-variant mq-hero__deck">
+              Light up marquee letters for rent, 4 ft tall. The corner of the party everyone ends up photographing. We bring them, set them up and pick them up the same night, all for one price.
+            </p>
+
+            <div class="mq-actions">
+              <a
+                href={dateLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mq-btn mq-btn--primary"
+                data-service={MARQUEE_SERVICE}
+                data-cta="whatsapp-hero"
+              >
+                Check your date<span class="sr-only">, opens WhatsApp</span>
+                <span class="mq-btn__arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="#packages" class="mq-btn mq-btn--line">See packages</a>
+            </div>
+
+            {/* At a glance: the plain facts a search result or an AI summary can
+                 quote, under the buttons so a phone shows the buttons first. */}
+            <dl class="mq-facts">
+              {heroFacts.map((fact) => (
+                <div class="mq-facts__item">
+                  <dt class="mq-facts__label">{fact.label}</dt>
+                  <dd class="mq-facts__value">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <figure class="col-span-12 lg:col-span-5 lg:col-start-8 mq-hero__figure reveal-right stagger-1">
+            {/* TODO(marquee-photos): hero slot. LOVE lit at an evening party, 4:5 portrait. */}
+            <MarqueePlate
+              word="LOVE"
+              photo={heroPhoto}
+              ratio="4 / 5"
+              span={0.78}
+              priority
+              alt="LOVE marquee letters, 4 ft tall and lit warm white, at an evening party"
+              sizes="(max-width: 479px) 100vw, (max-width: 1023px) 480px, 34vw"
+            />
+            <figcaption class="gallery-plaque">
+              <div class="gallery-plaque__line">
+                <span class="gallery-plaque__plate">LOVE</span>
+                <span class="gallery-plaque__rule" aria-hidden="true"></span>
+                <span class="gallery-plaque__meta">Four letters, each 4 ft tall</span>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ PACKAGES: four sets, one price each ═══ */}
+    <section id="packages" class="section-frame bg-surface-dim mq-section">
+      <div class="container-editorial">
+        {/* The heading carries "all in" here; the note under the cards says
+             exactly what it covers, so no deck repeats it in between. */}
+        <div class="grid-editorial items-end mq-section-head">
+          <div class="col-span-12 md:col-span-7">
+            <h2 class="section-title mq-title reveal">Marquee letter rental prices, <em>all in.</em></h2>
+          </div>
+        </div>
+
+        {/* LOVE gets the raised card (and opens first on phones) through
+             featured, with no "Most Popular" badge: this rental has no
+             bookings under this brand yet to back that claim. */}
+        <div class="pricing-grid mq-pricing reveal stagger-2" id="package-grid">
+          {marqueePackages.map((p, i) => (
+            <PricingCard
+              id={p.id}
+              name={p.name}
+              price={p.price}
+              description={p.description}
+              highlights={p.highlights}
+              popular={p.popular}
+              featured={p.id === 'marquee-love'}
+              ordinal={i}
+              service={MARQUEE_SERVICE}
+              ctaLabel="Check your date"
+              ctaHref={packageLink(p)}
+              ctaNewTab
+              ctaSrText={` for ${p.name}, opens WhatsApp`}
+              priceKicker="All in"
+              summaryPricePrefix=""
+              summaryPriceSuffix="all in"
+              accordion={true}
+              accordionTag={p.pieces}
+            />
+          ))}
+        </div>
+
+        <script>
+          import { initPackageAccordion } from '../../scripts/package-accordion';
+          initPackageAccordion();
+          document.addEventListener('astro:after-swap', initPackageAccordion);
+
+          // Below 1024px only the featured row starts open, so a "See OH BABY"
+          // link would land on a collapsed row. Open the target row before the
+          // browser jumps. Rows above stay as they are, so the jump lands on
+          // the right spot. A no-op on desktop, where role=button is never set.
+          document.addEventListener('click', (e) => {
+            const link = (e.target as Element | null)?.closest<HTMLAnchorElement>('.mq-link[href^="#marquee-"]');
+            const card = link ? document.getElementById(link.hash.slice(1)) : null;
+            const head = card?.querySelector<HTMLElement>('.pricing-card__head');
+            if (!card || !head || head.getAttribute('role') !== 'button' || card.classList.contains('is-open')) return;
+            card.classList.add('is-open');
+            head.setAttribute('aria-expanded', 'true');
+          });
+        </script>
+
+        <p class="mq-allin-note reveal">
+          All in means the letters, delivery to your door, setup, extension cords and pickup the same night by {zone.pickupBy}, anywhere in the free delivery zone. No delivery fee is added at the end.
+        </p>
+
+        <div class="mt-12">
+          <PackageAddOns
+            title="Extra numbers and late pickup"
+            eyebrow=""
+            description="Extra numbers add on to The Numbers or LOVE + Numbers. A later pickup works with any package, and delivery outside the free zone is quoted before you book."
+            packages={marqueePackages}
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ ALL IN: the honest comparison. Market facts on one side, our one
+         number on the other. ═══ */}
+    <section class="mq-section bg-background">
+      <div class="container-editorial">
+        <div class="grid-editorial mq-split">
+          <div class="col-span-12 lg:col-span-5">
+            <h2 class="text-display-md mq-title reveal">Free delivery, setup and pickup, <em>one price.</em></h2>
+            <p class="text-body-lg text-on-surface-variant mq-lede reveal stagger-1">
+              Most GTA rental companies list 4 ft letters at $89 each, plus delivery. The delivery price is rarely published. It is quoted once they know your address and your venue. We put the whole thing in one number, before you book.
+            </p>
+          </div>
+
+          <div class="col-span-12 lg:col-span-6 lg:col-start-7 reveal stagger-2">
+            <h3 id="mq-compare-title" class="text-heading-md mq-compare__title">How our all in price compares</h3>
+            <table class="mq-compare" role="table" aria-labelledby="mq-compare-title">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" scope="col"><span class="sr-only">What you pay for</span></th>
+                  <th role="columnheader" scope="col">Most GTA rental companies</th>
+                  <th role="columnheader" scope="col">With us</th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                {compareRows.map((row) => (
+                  <tr role="row">
+                    <th role="rowheader" scope="row">{row.label}</th>
+                    <td role="cell" data-label="Most GTA rental companies">{row.them}</td>
+                    <td role="cell" data-label="With us">{row.us}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mq-compare__source">Market figures are published GTA rental prices, checked in September 2026.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ WHAT WE RENT: the inventory and its limits, beside two photo slots ═══ */}
+    <section class="section-frame bg-surface-dim mq-section">
+      <div class="container-editorial">
+        <div class="grid-editorial mq-split">
+          <div class="col-span-12 lg:col-span-5">
+            <h2 class="text-display-md mq-title reveal">What we rent <em>right now.</em></h2>
+            <p class="text-body-lg text-on-surface-variant mq-lede reveal stagger-1">
+              Two sets of letters and the numbers 0 to 9. Every piece stands 4 ft tall, glows warm white and plugs into a regular wall outlet. We bring the extension cords.
+            </p>
+            <dl class="mq-inventory reveal stagger-2">
+              <div class="mq-inventory__item">
+                <dt class="mq-inventory__set">LOVE</dt>
+                <dd class="mq-inventory__count">4 letters</dd>
+              </div>
+              <div class="mq-inventory__item">
+                <dt class="mq-inventory__set">OH BABY</dt>
+                <dd class="mq-inventory__count">6 letters</dd>
+              </div>
+              <div class="mq-inventory__item">
+                <dt class="mq-inventory__set">Numbers</dt>
+                <dd class="mq-inventory__count">0 to 9</dd>
+              </div>
+            </dl>
+            <p class="text-body-md text-on-surface-variant mq-note">
+              Names, initials and other words are not part of the set right now.
+            </p>
+          </div>
+
+          <div class="col-span-12 lg:col-span-6 lg:col-start-7 mq-plates">
+            <figure class="mq-plates__wide reveal-right">
+              {/* TODO(marquee-photos): OH BABY slot. OH BABY lit at a baby shower, 3:2 landscape. */}
+              <MarqueePlate
+                word="OH BABY"
+                photo={ohBabyPhoto}
+                ratio="3 / 2"
+                span={0.84}
+                floor={66}
+                alt="OH BABY marquee letters, 4 ft tall and lit warm white, at a baby shower"
+                sizes="(max-width: 1024px) 100vw, 45vw"
+              />
+              <figcaption class="gallery-plaque">
+                <div class="gallery-plaque__line">
+                  <span class="gallery-plaque__plate">OH BABY</span>
+                  <span class="gallery-plaque__rule" aria-hidden="true"></span>
+                  <span class="gallery-plaque__meta">Six letters, each 4 ft tall</span>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="mq-plates__tall reveal-right stagger-2">
+              {/* TODO(marquee-photos): numbers slot. A birthday number lit, 4:5 portrait. */}
+              <MarqueePlate
+                word="30"
+                photo={numbersPhoto}
+                ratio="4 / 5"
+                span={0.5}
+                alt="Marquee numbers, 4 ft tall and lit warm white, at a birthday party"
+                sizes="(max-width: 439px) 80vw, (max-width: 1023px) 352px, 25vw"
+              />
+              <figcaption class="gallery-plaque">
+                <div class="gallery-plaque__line">
+                  <span class="gallery-plaque__plate">Numbers</span>
+                  <span class="gallery-plaque__rule" aria-hidden="true"></span>
+                  <span class="gallery-plaque__meta">0 to 9, each 4 ft tall</span>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ OCCASIONS: which set fits which day. The letters themselves are
+         the typography on the left. ═══ */}
+    <section class="mq-section bg-background">
+      <div class="container-editorial">
+        <div class="grid-editorial items-end mq-section-head">
+          <div class="col-span-12 lg:col-span-7">
+            <h2 class="section-title mq-title reveal">Light up letters and numbers <em>for your event.</em></h2>
+          </div>
+          <div class="col-span-12 lg:col-span-5 lg:col-start-8">
+            <p class="text-body-lg text-on-surface-variant measure-wide reveal stagger-1">
+              Pick the set that fits the day. At 4 ft tall, the letters read from across the room and fill the frame behind you.
+            </p>
+          </div>
+        </div>
+
+        <ul class="mq-occasions" role="list">
+          {occasions.map((o) => (
+            <li class="mq-occasion reveal">
+              <p class="mq-occasion__specimen" aria-hidden="true">{o.specimen}</p>
+              <div class="mq-occasion__copy">
+                <h3 class="text-heading-md">{o.title}</h3>
+                <p class="text-body-md text-on-surface-variant mq-occasion__body">{o.body}</p>
+                <a href={`#${o.packageId}`} class="mq-link">
+                  See {pkg(o.packageId).name}<span class="mq-link__arrow" aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* ═══ DELIVERY ZONE: the regional section. Named once, plainly, with no
+         per city filler and no doorway pages. ═══ */}
+    <section id="delivery" class="section-frame bg-surface-dim mq-section">
+      <div class="container-editorial">
+        <div class="grid-editorial mq-split">
+          <div class="col-span-12 lg:col-span-5">
+            <h2 class="text-display-md mq-title reveal">Where we deliver <em>free.</em></h2>
+            <p class="text-body-lg text-on-surface-variant mq-lede reveal stagger-1">
+              Every package price includes delivery, setup and pickup inside the free delivery zone. Not sure where you fall?
+              <a href={zoneLink} target="_blank" rel="noopener noreferrer" class="mq-inline-link" data-service={MARQUEE_SERVICE} data-cta="whatsapp-zone">Send us the address<span class="sr-only"> on WhatsApp</span></a>.
+            </p>
+          </div>
+
+          <div class="col-span-12 lg:col-span-6 lg:col-start-7 mq-zone">
+            <div class="mq-zone__block reveal">
+              <h3 class="mq-zone__free">Free delivery in {freeZoneText}</h3>
+              <p class="text-body-md text-on-surface-variant mq-zone__note">Toronto includes {listJoin(zone.torontoAreas)}.</p>
+            </div>
+            <div class="mq-zone__block reveal stagger-1">
+              <h3 class="text-heading-md">Further out? Ask us first</h3>
+              <p class="text-body-md text-on-surface-variant mq-zone__note">
+                Planning in {zone.askFirst.join(', ')} or anywhere else past the zone? Send us the address and we quote delivery before you book.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <JourneyTimeline
+      steps={journeySteps}
+      eyebrow=""
+      title="How marquee letter rental works"
+      intro="Four steps. You only do the first two."
+      align="start"
+    />
+
+    {/* ═══ BEFORE THE PARTY: only what we know. No wattage, widths or outdoor
+         ratings, because those are not confirmed. ═══ */}
+    <section class="section-frame bg-surface-dim mq-section">
+      <div class="container-editorial">
+        <div class="grid-editorial mq-section-head">
+          <div class="col-span-12 md:col-span-8">
+            <h2 class="text-display-md mq-title reveal">Before the party: <em>space, power and indoor use.</em></h2>
+          </div>
+        </div>
+
+        <div class="good-to-know-grid">
+          {beforeTheParty.map((item, i) => (
+            <div class:list={['good-to-know-item', 'reveal', i > 0 && `stagger-${i}`]}>
+              <h3 class="text-heading-md font-serif italic mb-3">{item.title}</h3>
+              <p class="text-body-md text-on-surface-variant">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ PHOTOGRAPHY: the cross-sell, in Akash's own voice ═══ */}
+    <section class="mq-section mq-section--tight bg-background">
+      <div class="container-editorial">
+        <div class="grid-editorial items-end">
+          <div class="col-span-12 md:col-span-6">
+            <h2 class="text-display-md mq-title reveal">Want the party <em>photographed too?</em></h2>
+          </div>
+          <div class="col-span-12 md:col-span-5 md:col-start-8">
+            <p class="text-body-lg text-on-surface-variant reveal stagger-1">
+              I'm Akash, the photographer behind AD Photography. If you want the night photographed as well as lit, I cover birthdays, showers and anniversaries through my <a href="/services/celebrations/" class="mq-inline-link">event photography</a>, and I photograph surprise proposals from a distance through <a href="/services/proposal/" class="mq-inline-link">proposal photography</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ FAQ: the same text as the FAQPage schema, from faq.json ═══ */}
+    <section id="faq" class="section-frame bg-surface-dim mq-section">
+      <div class="container-editorial">
+        <div class="grid-editorial mq-split">
+          <div class="col-span-12 lg:col-span-4">
+            <h2 class="text-display-md mq-title reveal">Marquee letter rental <em>questions.</em></h2>
+            <p class="text-body-md text-on-surface-variant mq-lede reveal stagger-1">
+              Something we missed?
+              <a href={questionLink} target="_blank" rel="noopener noreferrer" class="mq-inline-link" data-service={MARQUEE_SERVICE} data-cta="whatsapp-faq">Ask us on WhatsApp</a>.
+            </p>
+          </div>
+          <div class="col-span-12 lg:col-span-7 lg:col-start-6 reveal stagger-1">
+            <FAQAccordion items={faq} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ CHECK YOUR DATE. No section-frame: the FAQ's bottom hairline and
+         the colour shift already mark the seam. ═══ */}
+    <section class="bg-background mq-section">
+      <div class="container-editorial">
+        <div class="grid-editorial items-end mq-split">
+          <div class="col-span-12 md:col-span-6 lg:col-span-7">
+            <h2 class="section-title mq-title reveal">Check your <em>date.</em></h2>
+            <p class="text-body-lg text-on-surface-variant measure-wide mq-lede reveal stagger-1">
+              Send us your date, the address and the set you want. We confirm the date and the full price before you book.
+            </p>
+          </div>
+          <div class="col-span-12 md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8 mq-final reveal stagger-2">
+            <a
+              href={dateLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mq-btn mq-btn--primary"
+              data-service={MARQUEE_SERVICE}
+              data-cta="whatsapp-final"
+            >
+              Check your date<span class="sr-only">, opens WhatsApp</span>
+              <span class="mq-btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <a
+              href={instagramDm}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mq-btn mq-btn--line"
+              data-service={MARQUEE_SERVICE}
+              data-cta="instagram-final"
+            >
+              DM us on Instagram
+            </a>
+            <p class="mq-final__note">WhatsApp opens with a message already started for you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <FloatingPackagesLink />
+
+    <script>
+      // Count marquee inquiries. Every booking path here opens WhatsApp or
+      // Instagram, so no form fires the site's lead events. One delegated
+      // listener tags each tap with the button it came from: data-cta, else
+      // the package card, else the floating WhatsApp button. trackCustom only,
+      // never Lead or Contact, so the photography ad optimisation is untouched.
+      // Read the marquee_* events in Clarity. The site has no ClientRouter, so
+      // this runs on this page only.
+      document.addEventListener('click', (e) => {
+        const a = (e.target as Element | null)?.closest<HTMLAnchorElement>(
+          'a[href^="https://wa.me/"], a[href^="https://ig.me/"]'
+        );
+        if (!a) return;
+        const pkg = a.dataset.package?.replace(/^marquee-/, 'package-');
+        const cta = a.dataset.cta ?? pkg ?? (a.classList.contains('wa-fab') ? 'wa-fab' : 'inline');
+        const w = window as unknown as {
+          clarity?: (...args: unknown[]) => void;
+          fbq?: (...args: unknown[]) => void;
+        };
+        // Analytics must never get in the way of the chat opening.
+        try { w.clarity?.('event', `marquee_${cta}`); } catch { /* noop */ }
+        try { w.fbq?.('trackCustom', 'MarqueeMessageClick', { cta }); } catch { /* noop */ }
+      });
+    </script>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Hallmark · macrostructure: digital-curator-service-page (split studio rows) · design-system: .claude/CLAUDE.md
+   * contrast: pass (46 to 50) · honest: pass (56) · chrome: pass (57) · tokens: pass (58) · responsive: pass (59, 61 to 66) · icons: none
+   */
+
+  /* Page tokens. Every value below resolves to the locked Digital Curator
+     tokens in global.css; the only new names are this page's hairline. */
+  .mq-page {
+    --mq-rule: color-mix(in srgb, var(--color-on-surface-variant) 22%, transparent);
+  }
+
+  /* scroll-margin keeps an anchored heading (#packages, #delivery) clear of
+     the 64px fixed header on phones, where the section padding is smaller. */
+  .mq-section {
+    padding-block: var(--spacing-section);
+    scroll-margin-top: 4rem;
+  }
+
+  /* A short band between two long sections breathes on less padding, so the
+     page rhythm is not one even beat. */
+  .mq-section--tight {
+    padding-block: var(--spacing-block);
+  }
+
+  .mq-section-head {
+    margin-bottom: var(--spacing-block);
+  }
+
+  /* Headings wrap between words, never out of the column. */
+  .mq-title {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .mq-title em {
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    color: var(--color-on-surface-variant);
+  }
+
+  .mq-lede {
+    margin-top: 1.5rem;
+    max-width: 38rem;
+  }
+
+  .mq-note {
+    margin-top: 1rem;
+    max-width: 36rem;
+  }
+
+  /* Asymmetric two column sections: a rail on the left, the proof on the
+     right. Stacked below 1024px, so the gap becomes the vertical rhythm. */
+  .mq-split {
+    row-gap: 2.5rem;
+  }
+
+  /* ── Hero ─────────────────────────────────────────────────────────── */
+  .mq-hero {
+    padding-block: var(--spacing-block) var(--spacing-section);
+  }
+
+  .mq-hero__grid {
+    row-gap: var(--spacing-block);
+  }
+
+  .mq-hero__deck {
+    margin-top: 1.5rem;
+    max-width: 34rem;
+  }
+
+  /* Label and value rows separated by space alone, no hairlines. */
+  .mq-facts {
+    margin: 2.5rem 0 0;
+    max-width: 38rem;
+  }
+
+  .mq-facts__item {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    column-gap: 1.25rem;
+    padding-block: 0.75rem;
+  }
+
+  .mq-facts__label {
+    padding-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+
+  .mq-facts__value {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-on-surface);
+  }
+
+  /* The smallest phones: the value column would be under 100px beside the
+     label, so the label sits above its value instead. */
+  @media (max-width: 379px) {
+    .mq-facts__item {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.25rem;
+    }
+  }
+
+  .mq-hero__figure {
+    margin: 0;
+  }
+
+  /* Below the desktop split the plate steps to the right edge at a sane
+     size, so a tablet never gets a 900px tall block of dark stone. */
+  @media (max-width: 1023px) {
+    .mq-hero__figure {
+      width: min(100%, 30rem);
+      margin-inline-start: auto;
+    }
+  }
+
+  /* ── Buttons: default, hover, focus-visible, active. They are links out
+     (WhatsApp, Instagram) or anchors, so there is no loading, error or
+     disabled state to design. ─────────────────────────────────────────── */
+  .mq-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .mq-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3.25rem;
+    padding: 1rem 1.75rem;
+    border: 1px solid transparent;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    transition:
+      background-color var(--duration-hover) var(--ease-gallery),
+      color var(--duration-hover) var(--ease-gallery),
+      border-color var(--duration-hover) var(--ease-gallery),
+      transform 150ms var(--ease-gallery);
+  }
+
+  .mq-btn--primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-dark);
+  }
+
+  .mq-btn--primary:hover {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+
+  .mq-btn--line {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--color-on-surface) 35%, transparent);
+    color: var(--color-on-surface);
+  }
+
+  .mq-btn--line:hover {
+    background: var(--color-on-surface);
+    border-color: var(--color-on-surface);
+    color: var(--color-on-dark);
+  }
+
+  .mq-btn:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 3px;
+  }
+
+  .mq-btn:active {
+    transform: translateY(1px);
+  }
+
+  .mq-btn__arrow {
+    display: inline-block;
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mq-btn:hover .mq-btn__arrow {
+    transform: translateX(3px);
+  }
+
+  /* Phones: the two hero buttons stack full width, easy to hit with a thumb,
+     and every button trims its side padding. This block must come after the
+     base .mq-btn rule: both have the same specificity, so the later one wins.
+     The longest label ("Check your date", about 209px) then fits the 224px
+     column at 320px. */
+  @media (max-width: 479px) {
+    .mq-actions .mq-btn {
+      flex: 1 1 100%;
+    }
+
+    .mq-btn {
+      padding-inline: 1.25rem;
+    }
+  }
+
+  /* Text links: an underline that firms up on hover, a ring on focus, and a
+     44px tall hit area for the standalone ones. */
+  .mq-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    margin-top: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-on-surface);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--color-on-surface) 35%, transparent);
+    transition: text-decoration-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mq-link:hover {
+    text-decoration-color: var(--color-on-surface);
+  }
+
+  .mq-link__arrow {
+    display: inline-block;
+    transition: transform var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mq-link:hover .mq-link__arrow {
+    transform: translateX(3px);
+  }
+
+  .mq-inline-link {
+    color: var(--color-on-surface);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--color-on-surface) 35%, transparent);
+    transition: text-decoration-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .mq-inline-link:hover {
+    text-decoration-color: var(--color-on-surface);
+  }
+
+  .mq-link:focus-visible,
+  .mq-inline-link:focus-visible {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 4px;
+  }
+
+  /* Press: the underline goes solid and the text dips a shade, at once. */
+  .mq-link:active,
+  .mq-inline-link:active {
+    color: var(--color-on-surface-variant);
+    text-decoration-color: var(--color-on-surface-variant);
+  }
+
+  /* ── Packages: four cards. Two by two from 1024px, one row of four from
+     1280px, where the card padding and name size step down to fit. Below
+     1024px the cards are the tap to open accordion rows. ─────────────── */
+  @media (min-width: 1024px) {
+    .mq-pricing {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .mq-pricing {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .mq-pricing :global(.pricing-card) {
+      padding: 2.75rem 1.5rem;
+    }
+
+    .mq-pricing :global(.pricing-card[data-featured='true']) {
+      padding: 3rem 1.75rem;
+    }
+
+    .mq-pricing :global(.pricing-card__name) {
+      font-size: clamp(1.75rem, 2.2vw, 2.25rem);
+    }
+  }
+
+  /* "All in" is the claim this page is built on, so its kicker reads at full
+     body contrast here. The shared card greys it out as "Starting at". The
+     phone row tag carries the set size ("4 letters") and the included label
+     heads the list, so they get the same lift off the muted grey. */
+  .mq-pricing :global(.pricing-card__price-kicker),
+  .mq-pricing :global(.pricing-card__summary-tag),
+  .mq-pricing :global(.pricing-card__included-label) {
+    color: var(--color-on-surface-variant);
+  }
+
+  /* The card links are this page's main booking buttons, so they get a full
+     44px tap area (the underline stays 8px under the text), the solid focus
+     ring every other CTA here has, and a pressed state. Page scoped, so the
+     photography cards elsewhere are unchanged. */
+  .mq-pricing :global(.pricing-card__cta) {
+    padding-top: 1rem;
+  }
+
+  .mq-pricing :global(.pricing-card__cta:focus-visible) {
+    outline: 2px solid var(--color-on-surface);
+    outline-offset: 4px;
+  }
+
+  .mq-pricing :global(.pricing-card__cta:active) {
+    color: var(--color-on-surface-variant);
+    transform: translateY(1px);
+  }
+
+  .mq-allin-note {
+    margin-top: 2.5rem;
+    max-width: 40rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+  }
+
+  /* ── Comparison table. A real table from 640px; below that each row
+     becomes a small block with its own labels. The explicit roles keep the
+     table semantics when the display changes. ───────────────────────── */
+  .mq-compare__title {
+    margin: 0;
+  }
+
+  .mq-compare {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mq-compare th,
+  .mq-compare td {
+    padding: 1rem 1.25rem 1rem 0;
+    border-top: 1px solid var(--mq-rule);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .mq-compare thead th {
+    padding-top: 0;
+    padding-bottom: 0.75rem;
+    border-top: 0;
+    font-size: 0.6875rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+
+  .mq-compare tbody th {
+    width: 24%;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    line-height: 1.4;
+    color: var(--color-on-surface);
+  }
+
+  .mq-compare td {
+    width: 38%;
+    color: var(--color-on-surface-variant);
+  }
+
+  .mq-compare td:last-child {
+    color: var(--color-on-surface);
+  }
+
+  .mq-compare tbody tr:last-child > * {
+    border-bottom: 1px solid var(--mq-rule);
+  }
+
+  .mq-compare__source {
+    margin-top: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+  }
+
+  @media (max-width: 639px) {
+    .mq-compare thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .mq-compare,
+    .mq-compare tbody,
+    .mq-compare tr,
+    .mq-compare th,
+    .mq-compare td {
+      display: block;
+      width: auto;
+    }
+
+    .mq-compare tr {
+      padding-block: 1.25rem;
+      border-top: 1px solid var(--mq-rule);
+    }
+
+    .mq-compare tbody tr:last-child {
+      border-bottom: 1px solid var(--mq-rule);
+    }
+
+    .mq-compare th,
+    .mq-compare td,
+    .mq-compare tbody tr:last-child > * {
+      padding: 0;
+      border: 0;
+    }
+
+    .mq-compare td {
+      margin-top: 0.75rem;
+    }
+
+    .mq-compare td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.6875rem;
+      font-weight: var(--fw-medium);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-on-surface-variant);
+    }
+  }
+
+  /* ── Inventory ─────────────────────────────────────────────────────── */
+  /* Three sets side by side, each column as wide as its name, so OH BABY
+     never breaks across two lines. One row per set on small phones. */
+  .mq-inventory {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    column-gap: 2.5rem;
+    margin: 2rem 0 0;
+    border-top: 1px solid var(--mq-rule);
+  }
+
+  .mq-inventory__item {
+    padding-top: 1.25rem;
+  }
+
+  .mq-inventory__set {
+    font-family: var(--font-serif);
+    font-size: clamp(1.375rem, 2vw, 1.875rem);
+    font-weight: var(--fw-regular);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    white-space: nowrap;
+    color: var(--color-on-surface);
+  }
+
+  .mq-inventory__count {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+
+  @media (max-width: 479px) {
+    .mq-inventory {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mq-inventory__item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--mq-rule);
+    }
+
+    .mq-inventory__count {
+      margin: 0;
+    }
+  }
+
+  /* Two plates as an offset pair: the wide one fills the column, the tall
+     one steps in from the right beneath it. */
+  .mq-plates {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .mq-plates__wide,
+  .mq-plates__tall {
+    margin: 0;
+  }
+
+  .mq-plates__tall {
+    width: min(62%, 22rem);
+    justify-self: end;
+  }
+
+  /* Phones: a wider tall plate, so its caption keeps a readable column
+     (about 105px at 360) instead of stacking into five lines. */
+  @media (max-width: 639px) {
+    .mq-plates__tall {
+      width: min(80%, 22rem);
+    }
+  }
+
+  /* ── Occasions ─────────────────────────────────────────────────────── */
+  /* Rows are separated by their own padding, no hairlines: the rules stay
+     only where they carry structure (the comparison table). */
+  .mq-occasions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mq-occasion {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 2rem;
+  }
+
+  .mq-occasion__specimen {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(2.25rem, 4.4vw, 4rem);
+    font-weight: var(--fw-regular);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-on-surface);
+  }
+
+  .mq-occasion__body {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+  }
+
+  @media (min-width: 768px) {
+    .mq-occasion {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 2rem;
+      align-items: start;
+      padding-block: 2.75rem;
+    }
+  }
+
+  /* ── Delivery zone ─────────────────────────────────────────────────── */
+  .mq-zone__block {
+    padding-block: 2rem;
+    border-top: 1px solid var(--mq-rule);
+  }
+
+  .mq-zone__block:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .mq-zone__free {
+    margin: 0;
+    max-width: 24ch;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    font-weight: var(--fw-regular);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-on-surface);
+  }
+
+  .mq-zone__note {
+    margin-top: 0.75rem;
+    max-width: 38rem;
+  }
+
+  /* ── Check your date ───────────────────────────────────────────────── */
+  .mq-final {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mq-final .mq-btn {
+    width: 100%;
+  }
+
+  .mq-final__note {
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+  }
+
+  @media (min-width: 768px) {
+    .mq-final {
+      max-width: 22rem;
+      margin-inline-start: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mq-btn,
+    .mq-btn__arrow,
+    .mq-link,
+    .mq-link__arrow,
+    .mq-inline-link {
+      transition: none;
+    }
+
+    .mq-btn:active,
+    .mq-btn:hover .mq-btn__arrow,
+    .mq-link:hover .mq-link__arrow,
+    .mq-pricing :global(.pricing-card__cta:active) {
+      transform: none;
+    }
+  }
+</style>

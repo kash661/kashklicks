@@ -22,6 +22,9 @@ const featuredTestimonial = testimonials.find((t) => t.id === 'shubha-kaushik') 
 // variants live on the individual service pages.
 const seen = new Set<string>();
 const contactFaq = faq.filter((item) => {
+  // Marquee letter rental questions belong to /services/marquee-letters/ only
+  // (their answers carry price tokens that page fills from packages.json).
+  if (item.services?.includes('marquee-letters')) return false;
   if (seen.has(item.question)) return false;
   seen.add(item.question);
   return true;

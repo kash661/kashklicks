@@ -47,6 +47,13 @@ Birthdays, bridal showers, baby showers, and every gathering worth remembering. 
 - Private online gallery
 - High-resolution downloads
 
+## Also From Us
+
+### Marquee Letter Rentals
+4 ft light up LOVE, OH BABY and number marquee letters to rent, from $251.25 all in, with delivery, setup and same night pickup included in Toronto, Mississauga, Brampton, Vaughan, Markham and Richmond Hill. A rental, not a photography package.
+
+- Details: https://kashklicks.ca/services/marquee-letters/
+
 ## Areas Served
 
 Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.

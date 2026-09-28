@@ -1,0 +1,40 @@
+{
+  "_note": "Marquee letter rental facts shared by the page, its schema, the FAQ tokens and llms.txt. The zone and pickup time are DRAFT until Akash confirms them (2026-09-28). askFirstExamples is the short list one FAQ answer names, and every town in it must also be in askFirst (the build checks). Prices live in packages.json and add-ons.json.",
+  "freeZone": [
+    "Toronto",
+    "Mississauga",
+    "Brampton",
+    "Vaughan",
+    "Markham",
+    "Richmond Hill"
+  ],
+  "torontoAreas": [
+    "downtown",
+    "Scarborough",
+    "North York",
+    "Etobicoke",
+    "East York"
+  ],
+  "askFirst": [
+    "Oakville",
+    "Burlington",
+    "Milton",
+    "Pickering",
+    "Ajax",
+    "Whitby",
+    "Oshawa",
+    "Newmarket",
+    "Aurora",
+    "Stouffville",
+    "Caledon",
+    "Hamilton",
+    "Barrie"
+  ],
+  "askFirstExamples": [
+    "Oakville",
+    "Pickering",
+    "Newmarket",
+    "Hamilton"
+  ],
+  "pickupBy": "11 pm"
+}

@@ -1,0 +1,158 @@
+---
+/*
+ * Hallmark · component: photo slot (marquee plate) · genre: editorial
+ * theme: locked (Digital Curator, .claude/CLAUDE.md) · enrichment: Tier B hand-built SVG
+ * states: static, not interactive (no hover or focus states to design)
+ * contrast: on-dark bulbs on surface-dark, decorative only (aria-hidden)
+ *
+ * A photo slot for the marquee letter rental page. With `photo` it renders the
+ * photograph through astro:assets <Image>. Until the photos arrive it renders a
+ * drawn plate instead: the word built like a marquee letter, bulbs along every
+ * stroke, standing on a faint floor line in a dark room. The frame keeps the
+ * same aspect ratio either way, so swapping a photo in never shifts the layout.
+ *
+ * The drawing is an illustration, never a stand in photo. It makes no claim
+ * about our letters' bulb count or build (see src/lib/marquee-bulbs.mjs).
+ */
+import { Image } from 'astro:assets';
+import { bulbLayout } from '../../lib/marquee-bulbs.mjs';
+
+interface Props {
+  /** What the drawn plate spells until the photo arrives, e.g. "LOVE". */
+  word: string;
+  /** The real photograph. null renders the drawn plate. */
+  photo?: ImageMetadata | null;
+  /** Alt text for the photograph, written for the photo Akash will send. */
+  alt: string;
+  /** CSS aspect ratio of the frame, e.g. "4 / 5". Fixed so nothing shifts. */
+  ratio?: string;
+  /** Share of the plate width the drawn word spans, 0 to 1. */
+  span?: number;
+  /** Height of the floor line the letters stand on, as a % from the top. */
+  floor?: number;
+  widths?: number[];
+  sizes?: string;
+  /** Above the fold: load the photo eagerly with high fetch priority. */
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  word,
+  photo = null,
+  alt,
+  ratio = '4 / 5',
+  span = 0.72,
+  floor = 64,
+  widths = [480, 720, 960, 1280],
+  sizes = '(max-width: 1024px) 100vw, 45vw',
+  priority = false,
+  class: className,
+} = Astro.props;
+
+const art = photo ? null : bulbLayout(word);
+---
+
+<div
+  class:list={['mq-plate', !photo && 'mq-plate--drawn', className]}
+  style={`--plate-ratio: ${ratio}; --plate-span: ${span * 100}%; --plate-floor: ${floor}%;`}
+>
+  {photo ? (
+    <Image
+      src={photo}
+      alt={alt}
+      widths={widths}
+      sizes={sizes}
+      quality={75}
+      class="mq-plate__photo"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : undefined}
+    />
+  ) : (
+    art && (
+      <svg
+        class="mq-plate__art"
+        viewBox={art.viewBox}
+        style={`aspect-ratio: ${art.width} / ${art.height};`}
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path class="mq-plate__body" d={art.bodyPath} />
+        <path class="mq-plate__glow" d={art.bulbPath} />
+        <path class="mq-plate__bulbs" d={art.bulbPath} />
+      </svg>
+    )
+  )}
+</div>
+
+<style>
+  .mq-plate {
+    position: relative;
+    aspect-ratio: var(--plate-ratio);
+    overflow: hidden;
+    background: var(--color-surface-dark);
+  }
+
+  /* With a real photo, the slot shows the site's light load placeholder
+     while the image arrives, not a dark block. */
+  .mq-plate:not(.mq-plate--drawn) {
+    background: var(--color-surface-container);
+  }
+
+  /* :global so the rule reaches the <img> that astro:assets renders. */
+  .mq-plate :global(.mq-plate__photo) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* The drawn plate: letters stand on a faint floor line, the dark stone
+     above them reads as the room. */
+  .mq-plate--drawn::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: var(--plate-floor);
+    height: 1px;
+    background: color-mix(in srgb, var(--color-on-dark) 10%, transparent);
+  }
+
+  .mq-plate__art {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - var(--plate-floor));
+    width: var(--plate-span);
+    height: auto;
+    transform: translateX(-50%);
+    overflow: visible;
+  }
+
+  /* Letter body: a shade lighter than the room, like a painted channel. */
+  .mq-plate__body {
+    fill: none;
+    stroke: color-mix(in srgb, var(--color-on-dark) 7%, var(--color-surface-dark));
+    stroke-width: 22;
+    stroke-linejoin: miter;
+    stroke-miterlimit: 2;
+    stroke-linecap: square;
+  }
+
+  /* Each bulb is a zero length subpath drawn with a round cap, so the stroke
+     width is the bulb's diameter. The glow is the same path, wider and faint. */
+  .mq-plate__glow {
+    fill: none;
+    stroke: var(--color-on-dark);
+    stroke-opacity: 0.12;
+    stroke-width: 15;
+    stroke-linecap: round;
+  }
+
+  .mq-plate__bulbs {
+    fill: none;
+    stroke: var(--color-on-dark);
+    stroke-width: 8.4;
+    stroke-linecap: round;
+  }
+</style>

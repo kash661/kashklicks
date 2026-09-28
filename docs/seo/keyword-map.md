@@ -25,6 +25,7 @@ Solo photographer/filmmaker. Toronto-based. Focus on intimate weddings, civil ce
 | `/blog` | Toronto wedding photography blog | photography tips, engagement shoot advice | informational | implemented |
 | `/about` | about AD Photography | Akash photographer Toronto, wedding photographer story | informational | implemented |
 | `/contact` | book wedding photographer Toronto | photography inquiry Toronto, schedule photoshoot GTA | transactional | implemented |
+| `/services/marquee-letters` | marquee letters rental toronto | marquee letters toronto, marquee letter rental toronto, light up letters rental toronto, marquee numbers rental, birthday marquee numbers, love marquee letters for rent, oh baby marquee letters rental, 4 foot marquee letters rental, marquee letters free delivery toronto | commercial/transactional | built 2026-09-28, not deployed (prices + free zone await Akash) |
 
 ## Blog Post Keywords
 
@@ -33,6 +34,9 @@ Solo photographer/filmmaker. Toronto-based. Focus on intimate weddings, civil ce
 | best-toronto-pre-wedding-locations | best pre-wedding locations Toronto | published |
 | what-to-wear-pre-wedding-shoot | what to wear pre-wedding shoot | published |
 | scarborough-bluffs-pre-wedding-photos-toronto | Scarborough Bluffs photography | published |
+| marquee-letter-rental-cost-toronto | how much does it cost to rent marquee letters in toronto | draft, links to /services/marquee-letters |
+| marquee-letters-wedding-ideas-toronto | marquee letters for a wedding (LOVE placement ideas) | draft, links to /services/marquee-letters |
+| how-marquee-letters-work | how marquee letters work (bulbs, power, setup, photos) | draft, links to /services/marquee-letters |
 
 ## Keyword Gaps (target with future content)
 

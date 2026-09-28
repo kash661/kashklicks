@@ -28,6 +28,15 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+// Shared with src/pages/services/marquee-letters.astro, so the page, its FAQ
+// and these files read the same prices, towns and answers.
+import {
+  marqueeContext,
+  marqueeFaq,
+  money as moneyExact,
+  listJoin as plainList,
+  MARQUEE_CATEGORY,
+} from '../src/lib/marquee.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -137,6 +146,10 @@ const packages = readJSON('packages.json');
 const portfolio = readJSON('portfolio.json');
 const locations = readJSON('locations.json');
 const testimonials = readJSON('testimonials.json');
+const addOns = readJSON('add-ons.json');
+const faq = readJSON('faq.json');
+const marqueeZone = readJSON('marquee.json');
+const MARQUEE = marqueeContext({ packages, addOns, zone: marqueeZone });
 
 const SITE_URL = site.url.replace(/\/$/, '');
 const EMAIL = site.email;
@@ -155,7 +168,9 @@ function minPriceWhere(pred) {
   return prices.length ? Math.min(...prices) : null;
 }
 
-const MIN_ALL = minPriceWhere((p) => p.price != null);
+// Photography packages only: "Packages from" on the home mirror must never
+// quote a marquee letter rental price.
+const MIN_ALL = minPriceWhere((p) => p.price != null && p.category !== MARQUEE_CATEGORY);
 const MIN_PREWEDDING = minPriceWhere((p) => p.category === 'Pre-Wedding' && p.price != null);
 const MIN_WEDDING = minPriceWhere((p) => p.category === 'Wedding');
 
@@ -301,6 +316,15 @@ function pagesList() {
     [`${SITE_URL}/services/proposal/`, 'Services > Proposals', `Surprise proposal coverage, ${money(pkg('proposal').price)} for one hour photographed from a distance plus a mini shoot after the yes`],
     [`${SITE_URL}/services/civil-ceremony/`, 'Services > Civil Ceremony', 'Civil ceremony coverage'],
     [`${SITE_URL}/services/celebrations/`, 'Services > Celebrations', 'Birthdays, showers, private events'],
+    [
+      `${SITE_URL}/services/marquee-letters/`,
+      'Services > Marquee Letters',
+      `4 ft light up LOVE, OH BABY and number marquee letters for rent, all in: ${MARQUEE.packages
+        .map((pk) => `${pk.name} ${moneyExact(pk.price)}`)
+        .join(', ')}. Every price includes delivery, setup and same night pickup in ${plainList(
+        marqueeZone.freeZone
+      )}. Further out, delivery is quoted before booking`,
+    ],
     [`${SITE_URL}/location-guide/`, 'Location Guide', `${locations.length} curated Toronto, Hamilton, Niagara and GTA photography locations with parking, permits, and session guidance`],
     [`${SITE_URL}/toronto-photo-permits/`, 'Toronto Photo Permits', `Permit requirement, published fee, booking contact and parking for ${locations.length + 1} Toronto and GTA photography locations in one table, with the unknown facts marked rather than guessed`],
     [`${SITE_URL}/blog/`, 'Blog', 'Photography tips, location guides, and session features'],
@@ -366,6 +390,7 @@ const PAGE_MIRRORS = [
   ['services-proposal.md', 'Services · Proposals'],
   ['services-civil-ceremony.md', 'Services · Civil Ceremony'],
   ['services-celebrations.md', 'Services · Celebrations'],
+  ['services-marquee-letters.md', 'Services · Marquee Letters'],
   ['blog.md', 'Blog'],
   ['contact.md', 'Contact'],
   ['location-guide.md', 'Location Guide'],
@@ -785,6 +810,15 @@ function buildServicesMirror() {
   p('- Professional editing and colour grading');
   p('- Private online gallery');
   p('- High-resolution downloads');
+  p();
+  p('## Also From Us');
+  p();
+  p('### Marquee Letter Rentals');
+  p(
+    `4 ft light up LOVE, OH BABY and number marquee letters to rent, from ${moneyExact(MARQUEE.minPrice)} all in, with delivery, setup and same night pickup included in ${plainList(marqueeZone.freeZone)}. A rental, not a photography package.`
+  );
+  p();
+  p(`- Details: ${SITE_URL}/services/marquee-letters/`);
   p();
   p('## Areas Served');
   p();
@@ -1264,6 +1298,174 @@ function buildServiceCelebrationsMirror() {
   return out.join('\n');
 }
 
+/**
+ * Marquee letter rental. The copy says "we". Prices, towns and FAQ answers come from
+ * packages.json, add-ons.json, marquee.json and faq.json through
+ * src/lib/marquee.mjs, the same path the page uses.
+ */
+function buildServiceMarqueeLettersMirror() {
+  const m = MARQUEE;
+  const from = moneyExact(m.minPrice);
+  const zoneText = plainList(marqueeZone.freeZone);
+  const price = (id) => moneyExact(m.priceOf.get(id));
+  const faqItems = marqueeFaq(faq, m);
+  const pricedExtras = m.extras.filter((a) => typeof a.price === 'number');
+  const out = [];
+  const p = (line = '') => out.push(line);
+
+  p('# Marquee Letter Rentals in Toronto, AD Photography');
+  p();
+  p(`**URL:** ${SITE_URL}/services/marquee-letters/`);
+  p('**Title:** Marquee Letters Rental Toronto, Free Delivery | AD Photography');
+  p(
+    `**Description:** Rent 4 ft light up marquee letters: LOVE, OH BABY and numbers, from ${from} all in. Free delivery, setup and pickup in Toronto, Mississauga and Brampton.`
+  );
+  p();
+  p('---');
+  p();
+  p('## Hero');
+  p();
+  p('**H1:** Marquee letter rentals in Toronto.');
+  p();
+  p('Light up marquee letters for rent, 4 ft tall. The corner of the party everyone ends up photographing. We bring them, set them up and pick them up the same night, all for one price.');
+  p();
+  p('### At a glance');
+  p('- **Sets:** LOVE, OH BABY and numbers 0 to 9');
+  p('- **Size:** Every piece is 4 ft tall, with warm white bulbs');
+  p(`- **Price:** From ${from}, all in`);
+  p(`- **Free delivery:** ${zoneText}`);
+  p();
+  p('---');
+  p();
+  p('## Marquee Letter Rental Prices, All In');
+  p();
+  for (const pk of m.packages) {
+    p(`- **${pk.name}: ${moneyExact(pk.price)} all in.** ${stripDashes(pk.description)}`);
+  }
+  p();
+  p(
+    `All in means the letters, delivery to your door, setup, extension cords and pickup the same night by ${marqueeZone.pickupBy}, anywhere in the free delivery zone. No delivery fee is added at the end.`
+  );
+  p();
+  p('### Extra numbers and late pickup');
+  p('Extra numbers add on to The Numbers or LOVE + Numbers. A later pickup works with any package, and delivery outside the free zone is quoted before you book.');
+  p();
+  for (const a of m.extras) {
+    if (typeof a.price !== 'number') {
+      p(`- ${a.label}: quoted from your address before you book.`);
+      continue;
+    }
+    const cost = `${moneyExact(a.price)}${a.unit === 'per-item' ? ' each' : ''}`;
+    p(`- ${a.label}: ${cost}. ${stripDashes(a.note || '')}`.trim());
+  }
+  p();
+  p('---');
+  p();
+  p('## Free Delivery, Setup and Pickup, One Price');
+  p();
+  p('Most GTA rental companies list 4 ft letters at $89 each, plus delivery. The delivery price is rarely published. It is quoted once they know your address and your venue. We put the whole thing in one number, before you book.');
+  p();
+  p('### How our all in price compares');
+  p();
+  p('| | Most GTA rental companies | With us |');
+  p('|---|---|---|');
+  p(`| The letters | About $89 a letter. LOVE sets are listed around $300 to $356. | LOVE is ${price('marquee-love')}, with everything below included. |`);
+  p('| Delivery | Rarely published. Quoted by address and venue access, after you ask. | Free inside our delivery zone. Further out, quoted before you book. |');
+  p('| Setup and pickup | Varies from company to company. | Included. We set up, then pick up the same night. |');
+  p(`| Late pickup | Where published, $75 to $150. | ${price('marquee-late-pickup')} after ${marqueeZone.pickupBy}, agreed before you book. |`);
+  p();
+  p('Market figures are published GTA rental prices, checked in September 2026.');
+  p();
+  p('---');
+  p();
+  p('## What We Rent Right Now');
+  p();
+  p('Two sets of letters and the numbers 0 to 9. Every piece stands 4 ft tall, glows warm white and plugs into a regular wall outlet. We bring the extension cords.');
+  p();
+  p('- LOVE: 4 letters');
+  p('- OH BABY: 6 letters');
+  p('- Numbers: 0 to 9');
+  p();
+  p('Names, initials and other words are not part of the set right now.');
+  p();
+  p('---');
+  p();
+  p('## Light Up Letters and Numbers for Your Event');
+  p();
+  p(`- **Birthday marquee numbers.** A 1 for a first birthday, a 30 or a 50 for the big ones. The Numbers covers one or two numbers for ${price('marquee-numbers')}, all in.`);
+  p(`- **Anniversaries: LOVE and the years.** LOVE with two numbers beside it, like LOVE 25 or LOVE 40. LOVE + Numbers is ${price('marquee-love-numbers')}, all in.`);
+  p(`- **Baby showers and gender reveals: OH BABY.** Six letters behind the cake table or the gift wall. OH BABY is ${price('marquee-oh-baby')}, all in.`);
+  p(`- **Proposals, engagement parties and weddings: LOVE.** At home, at a venue or behind the head table. LOVE is ${price('marquee-love')}, all in. The letters are made for indoor use, so for an outdoor proposal, ask first.`);
+  p();
+  p('---');
+  p();
+  p('## Where We Deliver Free');
+  p();
+  p(`### Free delivery in ${zoneText}`);
+  p(`Toronto includes ${plainList(marqueeZone.torontoAreas)}.`);
+  p();
+  p('### Further out? Ask us first');
+  p(`Planning in ${marqueeZone.askFirst.join(', ')} or anywhere else past the zone? Send the address and delivery is quoted before you book.`);
+  p();
+  p('---');
+  p();
+  p('## How Marquee Letter Rental Works');
+  p();
+  p('1. **Pick your letters.** LOVE, OH BABY, one or two numbers, or LOVE with numbers. Every package is one price, all in.');
+  p('2. **Check your date.** Message us on WhatsApp with your date, the address and the set you want. We confirm the date and the price before you book.');
+  p('3. **We deliver and set up.** We bring the letters to your home or venue, stand them where you want them and plug them in with our extension cords.');
+  p(`4. **We pick up the same night.** We come back for the letters the same night, by ${marqueeZone.pickupBy}. Nothing to pack and nothing to return.`);
+  p();
+  p('---');
+  p();
+  p('## Before the Party: Space, Power and Indoor Use');
+  p();
+  p('- **Near a wall outlet.** The letters plug into a regular wall outlet, and we bring extension cords.');
+  p('- **Made for indoors.** Planning something outside? Ask us first.');
+  p('- **Room to stand.** Send a photo of the spot and we confirm the set fits before you book.');
+  p('- **Numbers with a repeated digit.** A number like 22 or 100 needs two of the same piece, so ask before you book.');
+  p('- **Book as early as you can.** Message us your date early.');
+  p('- **Leave them where they stand.** Once the letters are lit, keep them in place and keep drinks away from them.');
+  p();
+  p('---');
+  p();
+  p('## Want the Party Photographed Too?');
+  p();
+  p(`Akash, the photographer behind AD Photography, covers birthdays, showers and anniversaries (${SITE_URL}/services/celebrations/) and photographs surprise proposals from a distance (${SITE_URL}/services/proposal/).`);
+  p();
+  p('---');
+  p();
+  p('## Marquee Letter Rental Questions');
+  p();
+  for (const q of faqItems) {
+    p(`### ${stripDashes(q.question)}`);
+    p(stripDashes(q.answer));
+    p();
+  }
+  p('---');
+  p();
+  p('## Check Your Date');
+  p();
+  p('Send your date, the address and the set you want. The date and the full price are confirmed before you book.');
+  p();
+  if (site.whatsapp) p(`- WhatsApp: https://wa.me/${String(site.whatsapp).replace(/\D/g, '')}`);
+  p(`- Instagram: ${IG_HANDLE}`);
+  p();
+  p('---');
+  p();
+  p('## Schema.org Structured Data');
+  p();
+  p(`- Service (Marquee Letter Rental, provider @id LocalBusiness, areaServed ${zoneText})`);
+  p(
+    `- OfferCatalog (${m.packages.length} package Offers from packages.json. The ${pricedExtras.length} priced extras from add-ons.json ride on the packages they go with as addOn, never as Offers of their own)`
+  );
+  p(`- FAQPage (${faqItems.length} questions, the same text as the visible FAQ)`);
+  p('- BreadcrumbList (Home, Services, Marquee Letters)');
+  p('- LocalBusiness (site-wide from BaseLayout)');
+
+  return out.join('\n');
+}
+
 /* -------------------------------------------------------------------------- */
 /* Home mirror                                                                 */
 /* -------------------------------------------------------------------------- */
@@ -1560,6 +1762,7 @@ function main() {
   writes.push([join(MIRRORS_DIR, 'services-proposal.md'), buildServiceProposalMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-civil-ceremony.md'), buildServiceCivilCeremonyMirror()]);
   writes.push([join(MIRRORS_DIR, 'services-celebrations.md'), buildServiceCelebrationsMirror()]);
+  writes.push([join(MIRRORS_DIR, 'services-marquee-letters.md'), buildServiceMarqueeLettersMirror()]);
   writes.push([join(MIRRORS_DIR, 'location-guide.md'), buildLocationGuideMirror()]);
   writes.push([join(MIRRORS_DIR, 'toronto-photo-permits.md'), buildPhotoPermitsMirror()]);
   writes.push([join(MIRRORS_DIR, 'blog.md'), buildBlogIndexMirror()]);

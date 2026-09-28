@@ -25,6 +25,9 @@ interface Props {
    *  full viewport flows like /pricing/ where chrome is a distraction. */
   chrome?: boolean;
   showSplash?: boolean;
+  /** Optional opening message + label for the floating WhatsApp button.
+   *  Omitted everywhere except pages that are not about photography. */
+  whatsapp?: { message?: string; label?: string };
   article?: {
     publishedTime: string;
     modifiedTime?: string;
@@ -46,6 +49,7 @@ const {
   transparentHeader = false,
   chrome = true,
   showSplash = false,
+  whatsapp,
   article,
 } = Astro.props;
 
@@ -226,7 +230,7 @@ if (businessExtras) {
       <slot />
     </main>
     {chrome && <Footer />}
-    {chrome && <WhatsAppButton />}
+    {chrome && <WhatsAppButton {...whatsapp} />}
 
 
     <script>

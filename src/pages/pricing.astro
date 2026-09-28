@@ -43,8 +43,10 @@ const offerCatalog = {
     'Wedding, pre wedding, civil ceremony, proposal, celebration and headshot photography packages by AD Photography in Toronto, with every add on priced.',
   url: `${site.url}/pricing`,
   offeredBy: businessRef,
+  // Photography only: the marquee letter rental shares packages.json but has
+  // its own OfferCatalog on /services/marquee-letters/.
   itemListElement: packages
-    .filter((p) => basePrice(p) !== null && !p.priceIsRate)
+    .filter((p) => p.category !== 'Marquee Letters' && basePrice(p) !== null && !p.priceIsRate)
     .map((p) => ({
       '@type': 'Offer',
       name: p.name,

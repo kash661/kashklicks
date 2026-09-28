@@ -151,6 +151,15 @@ const baseServices = [
   },
 ];
 
+// Marquee letter rentals get a slim band under the cards, not a sixth card:
+// the heading promises five ways to be photographed, and the schema below
+// describes photography only. The "from" price is read from packages.json.
+const marqueeFrom = Math.min(
+  ...(packages as Array<{ category: string; price: number | null }>)
+    .filter((p) => p.category === 'Marquee Letters' && typeof p.price === 'number')
+    .map((p) => p.price as number)
+);
+
 const services = baseServices.map((s) => {
   const saleId = firstSalePackageId(s.slug);
   return {
@@ -298,6 +307,22 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
         ))}
         <span class="services-indicator-label" data-services-count>1 / {services.length}</span>
       </div>
+
+      {/* "Also from us": a quiet hairline band under the photography cards,
+           built from shared classes so this page's own CSS stays small enough
+           to inline. Hover, press and a solid focus ring on the link. */}
+      <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-3 mt-[var(--spacing-block)] py-6 border-y border-on-surface-muted/25 reveal">
+        <p class="section-deck text-on-surface-variant max-w-[44rem]">
+          Also from us: LOVE, OH BABY and number marquee letters to rent, from ${marqueeFrom.toFixed(2)} all in.
+        </p>
+        <a
+          href="/services/marquee-letters/"
+          class="services-also-link inline-flex items-center gap-2 min-h-11 text-label-md text-on-surface whitespace-nowrap underline underline-offset-4 hover:text-primary active:text-on-surface-variant cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          Marquee letter rentals <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -415,6 +440,13 @@ const jsonLd = [serviceSchema, offerCatalogSchema];
 
     @media (prefers-reduced-motion: reduce) {
       .service-num { animation: none; }
+    }
+
+    /* "Also from us" link: the one rule utilities cannot set here, because the
+       global a:focus-visible ring (unlayered) outranks Tailwind's layer. */
+    .services-also-link:focus-visible {
+      outline: 2px solid var(--color-on-surface);
+      outline-offset: 4px;
     }
 
     /* Marquee */

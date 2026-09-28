@@ -222,5 +222,38 @@
     ],
     "status": "locked",
     "note": "The unedited footage exactly as it was recorded, alongside your edited film."
+  },
+  {
+    "id": "marquee-extra-number",
+    "label": "Extra number",
+    "price": 76.25,
+    "unit": "per-item",
+    "categories": [
+      "Marquee Letters"
+    ],
+    "status": "proposed",
+    "note": "Only with The Numbers or LOVE + Numbers. Another 4 ft number from 0 to 9. For a digit already in your set, ask us first."
+  },
+  {
+    "id": "marquee-late-pickup",
+    "label": "Pickup after 11 pm",
+    "price": 76.25,
+    "unit": "flat",
+    "categories": [
+      "Marquee Letters"
+    ],
+    "status": "proposed",
+    "note": "Every package is picked up the same night by 11 pm. Later than that is one flat fee, agreed before you book."
+  },
+  {
+    "id": "marquee-delivery-quote",
+    "label": "Delivery outside the free zone",
+    "price": null,
+    "unit": "quote",
+    "categories": [
+      "Marquee Letters"
+    ],
+    "status": "proposed",
+    "note": "Quoted from your address before you book."
   }
 ]

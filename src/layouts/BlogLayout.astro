@@ -38,6 +38,11 @@ const {
   slug,
 } = Astro.props;
 
+// Marquee letter rental posts close on the rental's own booking path. The
+// default CTA opens the photography configurator at /pricing/, which has no
+// marquee option. Every other post renders exactly as before.
+const isMarquee = tags.includes('Marquee Letters');
+
 // dateModified precedence: frontmatter updatedDate, else the post's last git
 // commit date (from the prebuilt src/data/git-dates.json snapshot), else the
 // publish date. The git-dates entry already folds in updatedDate/publishDate,
@@ -181,9 +186,11 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
 
   <FinalCTA
     eyebrow="Planning your own?"
-    title="Let's talk about your date."
-    body="I reply within 24 hours, every time. Tell me your date and venue and I'll take it from there."
-    ctaLabel="Check my date"
-    ctaHref="/pricing/"
+    title={isMarquee ? 'Check your date for the letters.' : "Let's talk about your date."}
+    body={isMarquee
+      ? 'Send us your date, the address and the set you want. We confirm the date and the full price before you book.'
+      : "I reply within 24 hours, every time. Tell me your date and venue and I'll take it from there."}
+    ctaLabel={isMarquee ? 'See marquee packages' : 'Check my date'}
+    ctaHref={isMarquee ? '/services/marquee-letters/#packages' : '/pricing/'}
   />
 </BaseLayout>

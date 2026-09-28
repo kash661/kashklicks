@@ -31,6 +31,21 @@ interface Props {
   accordionTag?: string;
   /* Coverage badge shown on every card: photo only, or photo with film. */
   coverage?: 'photo' | 'photo-video';
+  /* Everything below is opt-in and defaults to today's output, so pages that
+     do not pass them render byte-identical. Added for the marquee letter
+     rental, where a price is fixed ("all in") and the card opens WhatsApp. */
+  /* Small caps line above the price. */
+  priceKicker?: string;
+  /* Words around the price on the collapsed mobile row: "from $X" by default. */
+  summaryPricePrefix?: string;
+  summaryPriceSuffix?: string;
+  /* Where the CTA goes. Defaults to the /pricing/ configurator. */
+  ctaHref?: string;
+  /* Open the CTA in a new tab, e.g. a WhatsApp chat. Adds rel="noopener noreferrer". */
+  ctaNewTab?: boolean;
+  /* Screen reader text appended to the CTA label, so four identical visible
+     labels still read as four different links. */
+  ctaSrText?: string;
 }
 
 const {
@@ -51,7 +66,17 @@ const {
   accordion = false,
   accordionTag,
   coverage,
+  priceKicker = 'Starting at',
+  summaryPricePrefix = 'from',
+  summaryPriceSuffix = '',
+  ctaHref = '/pricing/',
+  ctaNewTab = false,
+  ctaSrText,
 } = Astro.props;
+
+// "from $1,401.25" by default; a fixed price can read "$381.25 all in".
+const summaryBefore = summaryPricePrefix ? `${summaryPricePrefix} ` : '';
+const summaryAfter = summaryPriceSuffix ? ` ${summaryPriceSuffix}` : '';
 
 const coverageLabel = coverage === 'photo-video' ? 'Photo + video' : coverage === 'photo' ? 'Photo only' : undefined;
 
@@ -123,7 +148,7 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
               {hasSale ? (
                 <Fragment>${displayPrice?.toLocaleString()} <s>${price?.toLocaleString()}</s></Fragment>
               ) : (
-                <Fragment>from ${displayPrice?.toLocaleString()}</Fragment>
+                <Fragment>{summaryBefore}${displayPrice?.toLocaleString()}{summaryAfter}</Fragment>
               )}
             </span>
             {badge && <span class="pricing-card__summary-note">{badge}</span>}
@@ -142,7 +167,7 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
     </div>
   ) : (
     <div class="pricing-card__price-block">
-      <span class="pricing-card__price-kicker">Starting at</span>
+      <span class="pricing-card__price-kicker">{priceKicker}</span>
       <span class="pricing-card__price">
         <span>${displayPrice?.toLocaleString()}</span>
         {hasSale && price && (
@@ -168,16 +193,19 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
     /pricing/ rather than the contact modal. The old form is retired: the
     configurator is the intake, and /contact/ offers Instagram or WhatsApp
     for anyone who would rather just message. data-package stays on the
-    link so analytics can still tell which card was tapped.
+    link so analytics can still tell which card was tapped. A page can point
+    the CTA elsewhere with ctaHref: the marquee letter rental opens WhatsApp.
   */}
   <a
-    href="/pricing/"
+    href={ctaHref}
     class="pricing-card__cta"
+    target={ctaNewTab ? '_blank' : undefined}
+    rel={ctaNewTab ? 'noopener noreferrer' : undefined}
     data-service={service}
     data-package={id}
     data-package-name={name}
   >
-    {ctaLabel}
+    {ctaLabel}{ctaSrText && <span class="sr-only">{ctaSrText}</span>}
     <span class="pricing-card__cta-arrow" aria-hidden="true">&rarr;</span>
   </a>
   </div></div>

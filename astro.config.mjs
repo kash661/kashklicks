@@ -67,9 +67,11 @@ export default defineConfig({
         ) {
           return { ...base, priority: 0.9, changefreq: 'weekly' };
         }
-        // Tier 2 (0.8): secondary hubs + portfolio detail
+        // Tier 2 (0.8): secondary hubs + portfolio detail, plus the marquee
+        // letter rental (a money page, but a side line next to photography)
         if (
           url === '/services' ||
+          url === '/services/marquee-letters' ||
           url === '/about' ||
           url === '/contact' ||
           url === '/location-guide' ||

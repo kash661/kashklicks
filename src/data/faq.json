@@ -222,5 +222,89 @@
     "services": [
       "proposal"
     ]
+  },
+  {
+    "question": "What do your marquee letter rentals cost?",
+    "answer": "Every price is all in. The Numbers is {price:marquee-numbers}, LOVE is {price:marquee-love}, OH BABY is {price:marquee-oh-baby} and LOVE + Numbers is {price:marquee-love-numbers}. Each one includes delivery, setup and pickup the same night inside the free delivery zone. Most GTA rental companies list letters at $89 each, with delivery quoted on top by address.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Is delivery included when you rent marquee letters?",
+    "answer": "Yes, inside the free delivery zone. Delivery, setup and pickup the same night are part of every package price, so no delivery fee is added at the end.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Which areas get free delivery?",
+    "answer": "Delivery, setup and pickup are free in {freeZone}. Toronto includes {torontoAreas}.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Can you deliver outside the free zone?",
+    "answer": "Ask us first. For places past the zone, like {askFirstExamples}, send us the address and we quote delivery before you book, so you know the full price up front.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "How tall are your marquee letters?",
+    "answer": "Four feet. Every letter and number is 4 ft tall, lit with warm white bulbs.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "How much space do the letters need?",
+    "answer": "It depends on the set and the room. Send us a photo of the spot and we will confirm it fits before you book.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Do your letters need an outlet?",
+    "answer": "Yes. They plug into a regular wall outlet, and we bring the extension cords. Pick a spot with an outlet within reach of the cords.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Can the letters be used outside?",
+    "answer": "They are made for indoor use. If your event is outdoors, ask us first.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Can I rent just one number?",
+    "answer": "Yes. The Numbers covers one or two numbers for {price:marquee-numbers}, all in. That is our smallest order, so we do not rent single letters on their own. You can add an extra number to The Numbers or LOVE + Numbers for {price:marquee-extra-number}.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Can I get a number with a repeated digit, like 11, 22 or 100?",
+    "answer": "Ask us first. A number that repeats a digit needs two of the same piece, so we check before we promise it.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "What time do you pick up the letters?",
+    "answer": "The same night, by {pickupBy}. If you need them later, pickup after {pickupBy} is {price:marquee-late-pickup}, agreed before you book.",
+    "services": [
+      "marquee-letters"
+    ]
+  },
+  {
+    "question": "Can you spell a name, initials or other words?",
+    "answer": "Not right now. Right now we rent LOVE, OH BABY and numbers 0 to 9.",
+    "services": [
+      "marquee-letters"
+    ]
   }
 ]
