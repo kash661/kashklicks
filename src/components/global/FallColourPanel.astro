@@ -67,7 +67,9 @@ const {
   </div>
 </section>
 
-<style>
+<!-- is:global: the rows are built by the script below at runtime, so Astro's
+     scoped attributes never reach them. Every class is fall-colour__ prefixed. -->
+<style is:global>
   .fall-colour-anchor {
     height: 0;
   }
