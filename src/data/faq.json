@@ -39,6 +39,13 @@
     ]
   },
   {
+    "question": "Do you provide the outfits?",
+    "answer": "No. You bring your own outfits, and the outfit counts in the packages are how many outfit changes we plan into your session. I help you decide what to wear during your free consultation, and the what to wear guide on my blog is a good starting point.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
     "question": "When is the best time to shoot?",
     "answer": "Golden hour, always. Early morning or late afternoon light is unmatched. Overcast days work beautifully too. I will guide you on timing.",
     "services": [
@@ -132,6 +139,62 @@
     "answer": "Walk away. Your wedding retainer is fully refundable, and the engagement session is on me. The photos stay with me, and we part ways with no charge. The whole point of the tasting is to find out whether we're right for each other before the wedding day.",
     "pages": [
       "free-engagement-session-toronto"
+    ]
+  },
+  {
+    "question": "How much does soft play rental cost in Toronto?",
+    "answer": "Soft play rental starts at $301.25 for the ball pit and goes to $551.25 for the full set, with four hours of play time. Delivery and setup across the GTA are included. Monday to Thursday bookings are 20% off.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "What is included in a soft play rental?",
+    "answer": "Every rental includes the equipment, foam play mats, soft fencing, and delivery and setup at your home or venue. The full set adds a soft slide, rockers, foam blocks, a balance beam and extra soft shapes.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "How is the equipment cleaned between rentals?",
+    "answer": "Every piece is wiped down and sanitized before each booking, and the balls are washed and dried between rentals. Outdoor setups need extra cleaning, so there is a $51.25 surcharge for those.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "Can I add a photographer to my soft play rental?",
+    "answer": "Yes, and it is the reason this exists. Play + Photography is $951.25 and includes the full set for four hours plus two hours of party coverage. Booked separately those are $1,202.50.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "How much does a first birthday photographer cost in Toronto?",
+    "answer": "A cake smash session is $451.25 for one hour and 25 edited photos. Party coverage at your home or venue is $651.25 for two hours with every edited photo delivered.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "What is a cake smash session?",
+    "answer": "A short studio-style session where your one year old gets a cake to destroy. We shoot clean portraits first, then let them go. It runs one to one and a half hours depending on the package.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "How far in advance should I book?",
+    "answer": "Most GTA weekends book four to six weeks ahead in this category, so earlier is safer. Weekdays are usually easier and cost 20% less on rentals.",
+    "services": [
+      "kids"
+    ]
+  },
+  {
+    "question": "Do you cover naming ceremonies and annaprashan?",
+    "answer": "Yes. Naming ceremonies, annaprashan, baby showers and first birthdays are all covered under the same party coverage package.",
+    "services": [
+      "kids"
     ]
   },
   {
