@@ -9,7 +9,7 @@ tags: ["Photo Location", "Toronto Music Garden", "Proposal", "Engagement", "Harb
 draft: false
 faq:
   - question: "Do you need a permit to propose or take photos at the Toronto Music Garden?"
-    answer: "For a proposal with one photographer and no gear beyond a camera, most couples do not run into a permit issue, since the garden is a public City of Toronto park. The City does require a permit for formal photography and for wedding ceremonies in its parks, and how that gets interpreted can vary. If you are bringing a large group, chairs, an arch, a big lighting setup, or you are holding an actual ceremony, contact City of Toronto Parks or call 311 before your date. For two people and a hidden photographer, you are on very normal ground."
+    answer: "For a proposal with one photographer and no gear beyond a camera, most couples do not run into a permit issue, since the garden is a public City of Toronto park. The City does require a permit for formal photography and for wedding ceremonies in its parks, and how that gets interpreted can vary. If you are bringing a large group, chairs, an arch, a big lighting setup, or you are holding an actual ceremony, call Park Bookings at 416-396-7378 and press 2 before your date. You will need a City of Toronto booking account with both your names on it first. For two people and a hidden photographer, you are on very normal ground."
   - question: "Where is the Toronto Music Garden and how do you get there?"
     answer: "It is at 479 Queens Quay West, on the downtown Harbourfront between Spadina Avenue and Bathurst Street. The 509 Harbourfront and 510 Spadina streetcars both stop on Queens Quay West within a short walk. If you are driving, there are paid lots and garages along Queens Quay a couple of minutes away. Rates change often, so check before you go."
   - question: "Can you actually see the CN Tower from the Toronto Music Garden?"
@@ -42,7 +42,7 @@ Margarita and Mike proposed here on a June evening, with a violinist hidden unde
 
 **Getting there:** The 509 Harbourfront and 510 Spadina streetcars stop on Queens Quay West within a short walk. Paid lots and garages sit along Queens Quay a couple of minutes away.
 
-**Permits:** It is a public park and a proposal with one photographer is normal use. The City does require permits for formal photography and for wedding ceremonies in its parks, so anything bigger than a couple and a camera is worth a call to 311 first.
+**Permits:** It is a public park and a proposal with one photographer is normal use. The City does require permits for formal photography and for wedding ceremonies in its parks, so anything bigger than a couple and a camera is worth a call to Park Bookings at 416-396-7378 (press 2) first.
 
 **Best light:** Golden hour, the ninety minutes before sunset.
 
@@ -146,7 +146,7 @@ If you are still choosing between spots, our guide to the [best Toronto pre-wedd
 
 **Do you need a permit to propose at the Toronto Music Garden?**
 
-For a proposal with one photographer and a camera, most couples never run into a permit issue in this public park. The City does require permits for formal photography and for wedding ceremonies in its parks, so if you are bringing a group, an arch, chairs, or a lighting setup, call 311 first.
+For a proposal with one photographer and a camera, most couples never run into a permit issue in this public park. The City does require permits for formal photography and for wedding ceremonies in its parks, so if you are bringing a group, an arch, chairs, or a lighting setup, call Park Bookings at 416-396-7378 and press 2 first. You will need a City of Toronto booking account with both your names on it before you call. My [step by step guide to booking a Toronto park photo permit](/blog/toronto-park-photo-permit-how-to-book/) covers every step.
 
 **Where exactly is it?**
 

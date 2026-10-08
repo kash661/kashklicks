@@ -105,4 +105,4 @@ Every package includes location guidance. I'll help you find the spot that match
 
 [Ready to book? Get in touch →](/contact/#inquiry)
 
-Every one of these spots works with my [pre-wedding packages from $351.25](/services/pre-wedding/), and each linked guide has the parking and permit details.
+Every one of these spots works with my [pre-wedding packages from $351.25](/services/pre-wedding/), and each linked guide has the parking and permit details. If a City of Toronto park needs a permit, the [step by step guide to booking a Toronto park photo permit](/blog/toronto-park-photo-permit-how-to-book/) covers the account, the phone number and the call.

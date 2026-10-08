@@ -36,6 +36,10 @@
  * Nothing on this page is inferred, rounded, or filled in from the web. Where
  * a venue does not publish a fact, the cell reads "Confirm with the venue"
  * and the row is marked as not fully confirmed.
+ *
+ * Booking section ("Booking a City of Toronto park permit."): phone, account
+ * link and steps come from src/data/toronto-parks-booking.json (Akash-verified
+ * October 2026); the park count reads locations.json permitAuthority.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
@@ -44,6 +48,7 @@ import FinalCTA from '../components/global/FinalCTA.astro';
 
 import locationsData from '../data/locations.json';
 import site from '../data/site.json';
+import parksBooking from '../data/toronto-parks-booking.json';
 
 type Row = {
   name: string;
@@ -132,13 +137,47 @@ const feeRangeLine =
     ? `${publishedFees.length} of them publish a permit fee. The published fees run from ${money(feeAmounts[0])} to ${money(feeAmounts[feeAmounts.length - 1])}.`
     : `${publishedFees.length} of them publish a permit fee.`;
 
-const LAST_VERIFIED = 'September 2026';
+const LAST_VERIFIED = 'October 2026';
+
+// City of Toronto Parks booking steps. Each step string is split so the phone
+// number becomes a tel: link and "City booking account" becomes the external
+// account sign up link. Same helper as the location guide Permits row.
+const parkCount = locationsData.filter(
+  (loc: any) => loc.permitAuthority === 'toronto-parks'
+).length;
+type StepPart = { text: string; href?: string; external?: boolean };
+const linkTargets: { match: string; href: string; external: boolean }[] = [
+  { match: parksBooking.phone, href: parksBooking.phoneHref, external: false },
+  { match: 'City booking account', href: parksBooking.accountUrl, external: true },
+];
+const stepParts = (step: string): StepPart[] => {
+  let parts: StepPart[] = [{ text: step }];
+  for (const t of linkTargets) {
+    parts = parts.flatMap((p) => {
+      if (p.href) return [p];
+      const at = p.text.indexOf(t.match);
+      if (at === -1) return [p];
+      return [
+        { text: p.text.slice(0, at) },
+        { text: t.match, href: t.href, external: t.external },
+        { text: p.text.slice(at + t.match.length) },
+      ].filter((x) => x.text);
+    });
+  }
+  return parts;
+};
+const bookingSteps = parksBooking.steps.map(stepParts);
 
 const faq = [
   {
     question: 'Do I need a permit for engagement photos in Toronto parks?',
     answer:
-      'For most of the parks on this table, a small handheld session is fine. Guild Park and Gardens, Scarborough Bluffs, RC Harris and the Toronto Music Garden need nothing at all for photos. High Park, Cherry Beach, the Toronto Islands and the Humber Bay Arch Bridge are the ones where the City of Toronto asks for a commercial photography permit on a professional shoot. The table above says which is which, park by park.',
+      'For most of the parks on this table, a small handheld session is fine. Scarborough Bluffs, RC Harris and the Toronto Music Garden need nothing at all for photos, and Guild Park and Gardens needs nothing for an engagement session, only for a wedding day shoot. High Park, Cherry Beach, the Toronto Islands and the Humber Bay Arch Bridge are the ones where the City of Toronto asks for a commercial photography permit on a professional shoot. The table above says which is which, park by park.',
+  },
+  {
+    question: 'How do I book a photo permit in a City of Toronto park?',
+    answer:
+      'First, create a City of Toronto booking account with both your names on it, yours and your partner\'s. Then call Client Services, Park Bookings at 416-396-7378 and press 2, and pay by card on the call. You make that call yourselves, because the account is in your names. I tell you exactly what to ask for: the park, the date, the two hour window and the headcount.',
   },
   {
     question: 'How much is a photo permit at Casa Loma?',
@@ -163,7 +202,7 @@ const faq = [
   {
     question: 'Who books the photo permit, me or the photographer?',
     answer:
-      'It depends on the venue, which is why the table has a column for it. Casa Loma runs through its events team. Burlington issues a contract through the City of Burlington Live and Play booking system. Hamilton takes the Dundurn Castle request by email at museums@hamilton.ca. Tell me your venue and I will tell you which of us fills the form.',
+      'For City of Toronto parks, you do, because the booking account has to be in your names, yours and your partner\'s. I tell you exactly what to ask for and you make the call to 416-396-7378, option 2. It depends on the venue, which is why the table has a column for it. Casa Loma runs through its events team. Burlington issues a contract through the City of Burlington Live and Play booking system. Hamilton takes the Dundurn Castle request by email at museums@hamilton.ca. Tell me your venue and I will tell you which of us fills the form.',
   },
   {
     question: 'Where do we park at Aera Toronto?',
@@ -258,6 +297,47 @@ const jsonLd = [itemListSchema, faqSchema];
       <p class="text-label-sm text-on-surface-variant fact-note">
         Fees change. Last verified {LAST_VERIFIED}. Confirm with the venue before you book.
       </p>
+    </div>
+  </section>
+
+  <!-- Booking a City of Toronto park permit: asymmetric, typography only -->
+  <section style="padding: var(--spacing-section) 0 var(--spacing-block);">
+    <div class="container-editorial">
+      <div class="grid-editorial">
+        <div class="col-span-12 md:col-span-5 reveal">
+          <h2 class="text-display-md font-serif" style="max-width: 14ch;">
+            Booking a City of Toronto park permit.
+          </h2>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7 reveal stagger-2 mt-8 md:mt-0">
+          <p class="text-body-lg text-on-surface-variant" style="max-width: 52ch;">
+            The {parkCount} City of Toronto parks on this table all book through one line,
+            Client Services, Park Bookings. You make the call, because the booking account has
+            to be in your names. I tell you exactly what to ask for.
+          </p>
+          <ol class="booking-steps">
+            {bookingSteps.map((parts) => (
+              <li class="text-body-md text-on-surface-variant">
+                {parts.map((p) =>
+                  p.href ? (
+                    <a
+                      href={p.href}
+                      class="booking-link"
+                      {...(p.external ? { target: '_blank', rel: 'noopener' } : {})}
+                    >{p.text}</a>
+                  ) : p.text
+                )}
+              </li>
+            ))}
+          </ol>
+          <p class="text-label-sm text-on-surface-variant booking-hours">
+            The City line is open {parksBooking.hours}
+          </p>
+          <p class="text-body-md mt-5">
+            <a href={parksBooking.walkthroughUrl} class="booking-link">Read the full walkthrough</a>
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -531,9 +611,62 @@ const jsonLd = [itemListSchema, faqSchema];
 
   @media (prefers-reduced-motion: reduce) {
     .chip,
-    .location-link {
+    .location-link,
+    .booking-link {
       transition-duration: 0.01ms;
     }
+  }
+
+  /* ── City parks booking steps: numbered by counter, no cards ── */
+  .booking-steps {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    counter-reset: booking-step;
+    display: grid;
+    gap: 16px;
+    max-width: 52ch;
+  }
+
+  .booking-steps li {
+    counter-increment: booking-step;
+    position: relative;
+    padding-left: 2.25em;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .booking-steps li::before {
+    content: counter(booking-step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--color-on-surface-variant);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .booking-hours {
+    margin-top: 16px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .booking-link {
+    color: var(--color-on-surface);
+    border-bottom: 1px solid var(--color-on-surface-muted);
+    transition: border-color var(--duration-hover) var(--ease-gallery);
+  }
+
+  .booking-link:hover {
+    border-bottom-color: var(--color-on-surface);
+  }
+
+  .booking-link:focus-visible {
+    outline: 2px solid var(--color-on-surface-variant);
+    outline-offset: 3px;
   }
 
   /* ── Headings: long compound names must never push past the viewport ── */

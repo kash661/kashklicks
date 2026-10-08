@@ -17,7 +17,7 @@ faq:
   - question: "What makes a wedding film look Wes Anderson?"
     answer: "It is a grammar, not a filter. Centred symmetry, planimetric or frontal staging so the frame reads flat like a stage set, whip pans and snap zooms as transitions, overhead god's-eye inserts, tableau staging where people are arranged like figures in a picture, chapter title cards, and a tightly controlled pastel palette. The colour discipline matters most, and it starts with what the couple and their guests are wearing."
   - question: "Do you need a permit to film on the Toronto Islands?"
-    answer: "The Toronto Islands are City of Toronto parkland and formal wedding photography and ceremonies are permitted uses there, with published fees. If you are planning a shoot or a ceremony on the islands, book through Parks, Forestry and Recreation, Client Services, Park Bookings, and confirm current pricing before your date."
+    answer: "The Toronto Islands are City of Toronto parkland and formal wedding photography and ceremonies are permitted uses there, with published fees. If you are planning a shoot or a ceremony on the islands, book through Parks, Forestry and Recreation, Client Services, Park Bookings at 416-396-7378, option 2, after creating a City of Toronto booking account with both your names on it, and confirm current pricing before your date."
 ---
 
 Harsh and Payal's wedding film is the most stylised thing we have made, and it started with a decision the couple made months before we pressed record: everybody would be dressed in coral and cream.

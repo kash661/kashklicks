@@ -103,7 +103,7 @@ Two things get mixed up here constantly.
 
 **A ceremony in the public park comes with rules.** The City permits ceremonies in the park itself for up to 100 people, standing only. No chairs, no decorations, no confetti, no food and no drink. That covers a short outdoor ceremony and nothing more.
 
-**Wedding photography in the park is its own booking.** The City lists it at $485.47 for two hours including tax, for up to 30 people, through Client Services Park Bookings at 416-396-7378. Engagement sessions and general photography need no permit, which is the part most couples do not expect.
+**Wedding photography in the park is its own booking.** The City lists it at $485.47 for two hours including tax, for up to 30 people, through Client Services Park Bookings at 416-396-7378 (press 2). You need a City of Toronto booking account first, with both your names on it, and then you make the call yourselves. My [step by step guide to booking a Toronto park photo permit](/blog/toronto-park-photo-permit-how-to-book/) covers every step. Engagement sessions and general photography need no permit, which is the part most couples do not expect.
 
 **Timing.** In late summer, save the last hour of sun for the open lawn and the allée. Everything before it can live near the ruins and the hydrangeas, where the trees hold the light soft all afternoon.
 

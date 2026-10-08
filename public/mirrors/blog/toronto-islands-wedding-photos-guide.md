@@ -31,7 +31,13 @@ Here is what the City actually lists:
 
 Outdoor ceremony sites are weather and availability dependent and typically run **May 15 to September 30**.
 
-Booking goes through Parks, Forestry and Recreation, Client Services, Park Bookings. Confirm the current numbers before you budget, because City fees move.
+**How to book it.** Booking goes through Parks, Forestry and Recreation, Client Services, Park Bookings. Confirm the current numbers before you budget, because City fees move. Here is the order that works:
+
+1. First, [create your City of Toronto booking account](https://anc.ca.apm.activecommunities.com/toronto/createaccount?onlineSiteId=0&params=aHR0cHM6Ly9jYS5hcG0uYWN0aXZlY29tbXVuaXRpZXMuY29tL3Rvcm9udG8vQWN0aXZlTmV0X0hvbWU%2FRmlsZU5hbWU9YWNjb3VudG9wdGlvbnMuc2RpJmZyb21Mb2dpblBhZ2U9dHJ1ZQ%3D%3D) with both your names on it, yours and your partner's.
+2. Call 416-396-7378 and press 2 for Park Bookings, Monday to Friday, 8 a.m. to 5 p.m. Give them the park, the date, the two hour window and the headcount, and pay by card on the call.
+3. Sign and return the emailed confirmation the same day, and bring it with you on the day.
+
+For the full walkthrough, see my [step by step guide to booking a Toronto park photo permit](/blog/toronto-park-photo-permit-how-to-book/).
 
 Worth knowing how different this is from the alternative: [Niagara Parks charges nothing at all for outdoor wedding photography](/blog/niagara-parks-botanical-gardens-wedding-photographer-guide/) and requires no permit. Toronto charges and permits. Two hours on the islands costs less than the ferry tickets for a big guest list, so this is not a reason to avoid the location, but it is a line item you should know about rather than discover.
 

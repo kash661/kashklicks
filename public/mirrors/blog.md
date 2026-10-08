@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Toronto Park Photo Permit: How to Book It, Step by Step
+
+- **URL:** https://kashklicks.ca/blog/toronto-park-photo-permit-how-to-book/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-park-photo-permit-how-to-book.md
+- **Published:** 2026-10-08
+- **Tags:** Permits, Toronto Parks, Toronto, Wedding, Pre-Wedding, Planning
+- **Summary:** How to book a Toronto park photo permit: make a City account with both your names, call 416-396-7378, press 2, and pay by card. The full walkthrough.
+
 ### A Guild Park & Gardens Wedding in Scarborough: Josie + Nelson
 
 - **URL:** https://kashklicks.ca/blog/guild-park-wedding-josie-nelson/

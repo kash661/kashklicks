@@ -9,7 +9,7 @@ tags: ["Photo Location", "Scarborough Bluffs", "Scarborough", "Pre-Wedding", "Be
 draft: false
 faq:
   - question: "Do you need a permit for photos at the Scarborough Bluffs?"
-    answer: "For a small pre-wedding or engagement session with one photographer and minimal gear, no permit is needed. Bluffer's Park is public city parkland. Larger productions with crews, lighting rigs, or staged setups fall under City of Toronto film permits, so confirm with 311 if your shoot is bigger than two people and a camera."
+    answer: "For a small pre-wedding or engagement session with one photographer and minimal gear, no permit is needed. Bluffer's Park is public city parkland. Larger productions with crews, lighting rigs, or staged setups fall under City of Toronto film permits, so if your shoot is bigger than two people and a camera, call City Park Bookings at 416-396-7378, press 2, and have a City of Toronto booking account ready with both your names on it."
   - question: "Where do you park for a Scarborough Bluffs beach session?"
     answer: "Drive all the way down Brimley Road to the paid lot at Bluffer's Park, right at lake level. At sunrise the lot is nearly empty. On summer weekends it can fill by mid morning, so an early start solves both the crowds and the parking."
   - question: "How hard is the walk to the beach?"
@@ -36,7 +36,7 @@ I photographed Swati and Saksham here in late September, the first stop of a thr
 
 **Parking:** Paid lot at lake level. Nearly empty at sunrise, can fill by mid morning on summer weekends.
 
-**Photo permit:** Not needed for a small session. It is public parkland.
+**Photo permit:** Not needed for a small session. It is public parkland. A formal or wedding day booking goes through City Park Bookings at 416-396-7378, option 2.
 
 **Walking level:** Flat sand from the lot, but the best frames are at the waterline, so plan for soft, damp sand and bring a towel for shoes.
 

@@ -9,6 +9,10 @@ import FinalCTA from '../../components/global/FinalCTA.astro';
 import { Image } from 'astro:assets';
 import locationsData from '../../data/locations.json';
 import site from '../../data/site.json';
+// Booking block on the Permits row: src/data/toronto-parks-booking.json is the
+// single source of truth for the City of Toronto Parks phone line, account link
+// and steps. Shown only where locations.json sets permitAuthority "toronto-parks".
+import parksBooking from '../../data/toronto-parks-booking.json';
 
 export const getStaticPaths = (() => {
   return locationsData.map((loc) => ({
@@ -114,17 +118,48 @@ const travel = split(loc.travelTime);
 // The Permits row is the natural doorway to the consolidated permit table,
 // which carries the fee, contact and parking facts for every location on the
 // site in one place. One link, on the row that already raises the question.
+// City of Toronto Parks locations get a "How to book it" block on that same
+// row. Each step string is split so the phone number becomes a tel: link and
+// "City booking account" becomes the external account sign up link.
+const isTorontoPark = (loc as { permitAuthority?: string }).permitAuthority === 'toronto-parks';
+type StepPart = { text: string; href?: string; external?: boolean };
+const linkTargets: { match: string; href: string; external: boolean }[] = [
+  { match: parksBooking.phone, href: parksBooking.phoneHref, external: false },
+  { match: 'City booking account', href: parksBooking.accountUrl, external: true },
+];
+const stepParts = (step: string): StepPart[] => {
+  let parts: StepPart[] = [{ text: step }];
+  for (const t of linkTargets) {
+    parts = parts.flatMap((p) => {
+      if (p.href) return [p];
+      const at = p.text.indexOf(t.match);
+      if (at === -1) return [p];
+      return [
+        { text: p.text.slice(0, at) },
+        { text: t.match, href: t.href, external: t.external },
+        { text: p.text.slice(at + t.match.length) },
+      ].filter((x) => x.text);
+    });
+  }
+  return parts;
+};
+const bookingSteps = parksBooking.steps.map((s) => ({
+  parts: stepParts(s),
+  hasPhone: s.includes(parksBooking.phone),
+}));
+
 const essentials = [
-  { num: '01', label: 'Walking', ...walking, link: null },
+  { num: '01', label: 'Walking', ...walking, link: null, booking: false },
   {
     num: '02',
     label: 'Permits',
     ...permits,
     link: { href: '/toronto-photo-permits/', label: 'all Toronto photo permits in one table' },
+    booking: isTorontoPark,
   },
-  { num: '03', label: 'Parking', ...parking, link: null },
-  { num: '04', label: 'Travel', ...travel, link: null },
-  { num: '05', label: 'Season', head: loc.season.join(', '), rest: '', link: null },
+  { num: '03', label: 'Parking', ...parking, link: null, booking: false },
+  { num: '04', label: 'Travel', ...travel, link: null, booking: false },
+  { num: '05', label: 'Season', head: loc.season.join(', '), rest: '', link: null, booking: false },
 ];
 
 // Location-specific FAQ, built from the same structured fields shown in
@@ -154,8 +189,17 @@ const walkAnswer = [
   loc.walkingNote ?? '',
 ].filter(Boolean).join(' ');
 
+// Toronto Parks locations add one booking sentence to the permit answer, so it
+// reaches both the accordion and the FAQPage JSON-LD below.
+const sentence = (s: string): string => (/[.!?]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
+const permitAnswer = loc.permits
+  ? isTorontoPark
+    ? `${sentence(loc.permits)} To book it, create a City of Toronto booking account with both your names on it, then call Client Services, Park Bookings at ${parksBooking.phone} and press ${parksBooking.option}.`
+    : loc.permits
+  : '';
+
 const locationFaq = [
-  loc.permits && { question: `Do I need a permit to photograph at ${loc.name}?`, answer: loc.permits },
+  permitAnswer && { question: `Do I need a permit to photograph at ${loc.name}?`, answer: permitAnswer },
   loc.parking && { question: `Where do we park at ${loc.name}?`, answer: loc.parking },
   walkAnswer && { question: `How much walking is involved at ${loc.name}?`, answer: walkAnswer },
   seasonAnswer && { question: `When is the best time of year for photos at ${loc.name}?`, answer: seasonAnswer },
@@ -321,6 +365,38 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
               <div class="essentials-value">
                 <p class="text-heading-md font-serif">{e.head}</p>
                 {e.rest && <p class="text-body-md text-on-surface-variant mt-2">{e.rest}</p>}
+                {e.booking && (
+                  <div class="permit-booking">
+                    {loc.permitNeeded === 'No' && (
+                      <p class="text-body-md text-on-surface-variant" style="max-width: 52ch;">
+                        A couple and a camera need nothing here. If your plans grow into a formal or wedding day booking, this is the same City line.
+                      </p>
+                    )}
+                    <p class="text-label-sm text-on-surface-muted tracking-wider permit-booking-label">How to book it</p>
+                    <ol class="permit-steps">
+                      {bookingSteps.map((step) => (
+                        <li class="text-body-md text-on-surface-variant">
+                          {step.parts.map((p) =>
+                            p.href ? (
+                              <a
+                                href={p.href}
+                                class="text-on-surface border-b border-on-surface-muted hover:border-on-surface cubic-ease"
+                                style="transition-duration: var(--duration-hover);"
+                                {...(p.external ? { target: '_blank', rel: 'noopener' } : {})}
+                              >{p.text}</a>
+                            ) : p.text
+                          )}
+                          {step.hasPhone && (
+                            <span class="permit-steps-hours text-label-sm text-on-surface-muted">The City line is open {parksBooking.hours}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                    <p class="text-body-md mt-3">
+                      <a href={parksBooking.walkthroughUrl} class="text-on-surface-variant border-b border-on-surface-muted hover:text-on-surface hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">Read the full walkthrough</a>
+                    </p>
+                  </div>
+                )}
                 {e.link && (
                   <p class="text-body-md mt-3">
                     <a href={e.link.href} class="text-on-surface-variant border-b border-on-surface-muted hover:text-on-surface hover:border-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">{e.link.label}</a>
@@ -450,6 +526,57 @@ const jsonLdBlocks = faqSchema ? [placeSchema, faqSchema] : [placeSchema];
 
   .essentials-num {
     opacity: 0.6;
+  }
+
+  /* City of Toronto Parks booking block (Permits row). Typography only,
+     no hairlines, numbered by a counter in the label style. */
+  .permit-booking {
+    margin-top: 24px;
+  }
+
+  .permit-booking-label {
+    margin-top: 16px;
+  }
+
+  .permit-booking > .permit-booking-label:first-child {
+    margin-top: 0;
+  }
+
+  .permit-steps {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    counter-reset: permit-step;
+    display: grid;
+    gap: 12px;
+    max-width: 52ch;
+  }
+
+  .permit-steps li {
+    counter-increment: permit-step;
+    position: relative;
+    padding-left: 2em;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .permit-steps li::before {
+    content: counter(permit-step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--color-on-surface-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .permit-steps-hours {
+    display: block;
+    margin-top: 4px;
+    text-transform: none;
+    letter-spacing: 0.02em;
   }
 
   @media (max-width: 768px) {

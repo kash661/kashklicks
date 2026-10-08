@@ -63,7 +63,7 @@ Spot recommendations link to the full location guide entries, with parking, ligh
 - **High Park** (West Toronto, Roncesvalles): A sprawling park that turns pink with cherry blossoms each spring and burns red along the lake every fall. Permit needed: Sometimes.
 - **Toronto Islands** (Downtown Toronto, Harbourfront): A short ferry ride to quiet beaches and cottage lanes, with the full Toronto skyline across the water. Permit needed: Sometimes.
 - **Scarborough Bluffs** (Scarborough, Bluffs Area): White clay cliffs over a sandy beach, the closest thing Toronto has to a destination coastline. Permit needed: No.
-- **Guild Park & Gardens** (Scarborough, Bluffs Area): Stone columns rescued from demolished Toronto buildings, standing in a garden that feels like old Europe. Permit needed: No.
+- **Guild Park & Gardens** (Scarborough, Bluffs Area): Stone columns rescued from demolished Toronto buildings, standing in a garden that feels like old Europe. Permit needed: Sometimes.
 - **Evergreen Brick Works** (Toronto, Don Valley): An old brickworks in the Don Valley where reclaimed industrial brick and green quarry trails share one frame. Permit needed: Yes.
 
 Full permit table: https://kashklicks.ca/toronto-photo-permits/
