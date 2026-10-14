@@ -84,7 +84,7 @@ This confuses almost everyone, so let me settle it.
 
 There are two city halls facing each other across Bay Street, and they look nothing alike.
 
-**New City Hall** is the modern one at 100 Queen Street West, the two curved concrete towers with the saucer shaped council chamber between them, opened in 1965. Its Wedding Chamber has been marrying couples for years. It is a shorter ceremony, holds about twenty two people, and the fee runs around $325. I wrote a full guide to it, so if that is the building you mean, start with my [Toronto City Hall wedding guide](/blog/toronto-city-hall-wedding-photographer-guide/).
+**New City Hall** is the modern one at 100 Queen Street West, the two curved concrete towers with the saucer shaped council chamber between them, opened in 1965. Its Wedding Chamber has been marrying couples for years. It is a shorter ceremony, holds about twenty two people, and the private operator lists $325 plus HST with the officiant included. I wrote a full guide to it, so if that is the building you mean, start with my [Toronto City Hall wedding guide](/blog/toronto-city-hall-wedding-photographer-guide/).
 
 **Old City Hall** is the sandstone one at 60 Queen Street West, the clock tower across the street. This is the new option, the thirty minute ceremony in the former Council Chamber.
 

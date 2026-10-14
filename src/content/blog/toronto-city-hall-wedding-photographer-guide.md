@@ -1,6 +1,6 @@
 ---
-title: "Toronto City Hall Wedding: Cost, How to Book, Photos"
-description: "How to get married at Toronto City Hall. The licence and ceremony fees, the 22 seat Wedding Chamber, and where to take portraits right after."
+title: "Toronto City Hall Wedding: Cost, Chambers, Booking, Photos"
+description: "How to get married at Toronto City Hall: the $180 licence, every Toronto wedding chamber compared, how to book, and where to take portraits right after."
 publishDate: 2026-05-28
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/anushka-anthony/03.jpg"
@@ -9,30 +9,34 @@ tags: ["Venue Guide", "Toronto City Hall", "Civil Ceremony", "Downtown Toronto",
 draft: false
 faq:
   - question: "How much does it cost to get married at Toronto City Hall?"
-    answer: "Budget for two separate fees. An Ontario marriage licence from the City is around $180 and is valid for 90 days. The civil ceremony in the City Hall Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on toronto.ca before you book. AD Photography's Civil Ceremony coverage is a separate fixed package that covers the ceremony and the portraits afterward."
+    answer: "Budget for two separate fees. The Ontario marriage licence is $180 from the City, with no HST, and you apply within 90 days of the wedding. The downtown Wedding Chamber at 100 Queen Street West is run by a private company, Ministerial Associates, and lists $325 plus HST with the officiant included. Its FAQ also shows $350 plus HST, so confirm the fee when you call. To spend less, the City's own chambers at the North York, Scarborough and York civic centres are $136.85 including HST for 30 minutes, room only, and you bring your own officiant. My Civil Ceremony photography package is a separate $501.25."
   - question: "Is the ceremony at Old City Hall or New City Hall?"
     answer: "The classic City Hall Wedding Chamber is inside New City Hall at 100 Queen Street West, the modern building with the two curved towers on Nathan Phillips Square. Old City Hall, the sandstone clock tower building across Bay Street, was a courthouse for decades and has recently reopened a separate chamber for civil ceremonies too. Most couples mean New City Hall when they picture a City Hall wedding, then use Old City Hall's facade as a photo backdrop."
   - question: "How many guests can you bring to a City Hall ceremony?"
-    answer: "The Wedding Chamber holds about 22 people total, including the two of you and your two required witnesses. There is seating for roughly 15 and standing room for a few more. If your guest list is larger than 20, the chamber is not the right room and you will want a different venue."
+    answer: "The downtown Wedding Chamber holds about 22 people total, including the two of you and your two required witnesses. There is seating for roughly 15 and standing room for a few more. The City's civic centre chambers hold 22 at Scarborough, 25 at York and 40 at North York, so a guest list of 25 to 40 fits North York."
   - question: "Can you bring your own photographer into the Wedding Chamber?"
-    answer: "Yes. Photography during your booked ceremony is part of the booking and does not need a separate permit. Check in with the officiant when you arrive, ask about flash, and expect to shoot from the side or back of the room so you are not blocking the aisle. This is exactly how we work a City Hall ceremony: close, quiet, and out of the way."
+    answer: "Yes. Photography during your booked ceremony is part of the booking and does not need a separate permit. Check in with the officiant when you arrive, ask about flash, and expect to shoot from the side or back of the room so you are not blocking the aisle. This is exactly how I work a City Hall ceremony: close, quiet, and out of the way."
   - question: "Do you need a permit to take wedding photos on Nathan Phillips Square?"
     answer: "For a small wedding party walking around and taking portraits with a handheld camera, no permit is usually required. You only need a City of Toronto photography permit if you are setting up tripods, lighting stands, or staging a larger production. Osgoode Hall next door does not need a permit either, even though it belongs to the Law Society of Ontario rather than the City."
   - question: "Where do you take photos after a City Hall wedding?"
     answer: "There is a tight portrait loop within a five to ten minute walk. Start on Nathan Phillips Square with the curved towers and the TORONTO sign, cross to the sandstone facade and steps of Old City Hall, walk west on Queen to the gardens and iron gates of Osgoode Hall, and finish in the Financial District for clean glass and stone. You can cover all of it on foot in under an hour."
   - question: "How do you book a Toronto City Hall civil ceremony?"
-    answer: "First get an Ontario marriage licence from the City, which needs valid photo ID for both of you and proof of divorce or a death certificate if either of you was married before. Then book a ceremony time slot with the City's wedding chambers, usually online or by phone, and pay the ceremony fee at booking. Weekday slots fill quickly, so reserve your date early. On the day, bring your licence and two witnesses."
+    answer: "For the downtown chamber, call Ministerial Associates at 416-363-0316 on a weekday between 9 and 5, or email info@marryus.org, and pay the non refundable booking fee. You do not need your licence to book, only on the day. For the licence, fill in the City's online application, then go to an in person appointment at City Hall or the North York Civic Centre. Each of you brings two pieces of original government ID, plus official proof of divorce if either of you was married before. On the day, bring the licence and two witnesses aged 18 or older."
+  - question: "What days can you get married at Toronto City Hall?"
+    answer: "The downtown Wedding Chamber runs Monday to Saturday: 11 AM to 3 PM on most weekdays, until 8 PM on Fridays, and 9 AM to 8 PM on Saturdays, with a few Sunday dates a year. The City's civic centre chambers are open every day, including weekends and holidays. Hours change, so check when you book."
+  - question: "Is there a cheaper way to get married at a Toronto city hall?"
+    answer: "Yes. The City of Toronto rents its own wedding chambers at the North York, Scarborough and York civic centres for $136.85 including HST per 30 minutes. That is the room only, so you arrange your own officiant. You book online through toronto.ca or in person at a City office. The downtown chamber costs more because the officiant is included."
 ---
 
 Anushka and Anthony did not want a production. They wanted to get married. A Tuesday at Toronto City Hall, an officiant with a red scarf, white orchids on either side of the aisle, and the two of them saying the words that mattered. The ceremony ran about fifteen minutes. Then we stepped outside onto Nathan Phillips Square, the curved towers rising overhead, Old City Hall sitting in the background like a postcard, and for forty-five minutes the whole plaza belonged to them.
 
 That is the quiet appeal of a City Hall wedding. No twelve-hour timeline, no hall to fill, no second mortgage. Just the legal ceremony, the people who matter, and a downtown core full of architecture that photographs beautifully.
 
-If you are thinking about getting married at Toronto City Hall, this is everything we wish someone had laid out plainly before the day. How the ceremony actually works. The one thing almost everyone gets wrong about which building you are in. Where to take portraits the moment you walk out. And what it really costs, from a photographer who has shot these mornings and knows the loop by heart.
+If you are thinking about getting married at Toronto City Hall, this is everything I wish someone had laid out plainly before the day. How the ceremony actually works. The one thing almost everyone gets wrong about which building you are in. Where to take portraits the moment you walk out. And what it really costs, from a photographer who has shot these mornings and knows the loop by heart.
 
 ## Toronto City Hall at a glance
 
-**Where the ceremony happens:** The Wedding Chamber inside New City Hall, 100 Queen Street West, on Nathan Phillips Square. It sits in the East Tower on the third floor.
+**Where the ceremony happens:** The Wedding Chamber inside New City Hall, 100 Queen Street West, on Nathan Phillips Square. It sits in the East Tower on the third floor. A private company, Ministerial Associates, runs it and supplies the officiant.
 
 **The building:** New City Hall is the modern landmark with the two curved towers and the saucer-shaped council chamber between them, designed by Viljo Revell and opened in 1965.
 
@@ -42,9 +46,13 @@ If you are thinking about getting married at Toronto City Hall, this is everythi
 
 **What you need:** An Ontario marriage licence issued within the last 90 days, two witnesses who are 18 or older, and government photo ID.
 
-**How to book:** Get the marriage licence first, then book a ceremony slot with the City's wedding chambers online or by phone and pay the fee at booking. Weekday slots fill quickly.
+**How to book:** Call 416-363-0316 or email info@marryus.org and pay the booking fee. You need the licence on the day, not to book. Weekday slots fill quickly.
 
-**Cost:** Roughly $180 for the marriage licence and around $325 including tax for the City Hall ceremony. Confirm current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/), since the City updates them.
+**Days:** Monday to Saturday. Most weekdays 11 AM to 3 PM, Fridays until 8 PM, Saturdays 9 AM to 8 PM.
+
+**Cost:** $180 for the marriage licence, plus $325 plus HST for the downtown ceremony with the officiant, about $367 with tax. The operator's FAQ also lists $350 plus HST, so confirm when you book.
+
+**The cheaper option:** The City's own chambers at the North York, Scarborough and York civic centres, $136.85 including HST for 30 minutes, room only. The full comparison is below.
 
 **The other chamber:** Old City Hall across Bay Street now runs its own civil ceremonies in the former Council Chamber, listed by the City at $337.95 including tax for a thirty minute slot. My [Old City Hall wedding guide](/blog/old-city-hall-wedding-toronto/) covers that one.
 
@@ -66,17 +74,42 @@ There are two City Halls facing each other across Bay Street, and they look noth
 
 **Old City Hall** is the Romanesque Revival building beside it: heavy sandstone, a tall clock tower, arched windows, the kind of stone that looks like it was carved for a movie. For decades it served as a courthouse. The City has recently reopened a separate chamber inside it for civil ceremonies as well (booking, cost and the room are all in my [Old City Hall wedding guide](/blog/old-city-hall-wedding-toronto/)), but when most couples picture a City Hall wedding, they are picturing the ceremony in New City Hall and the photos against Old City Hall.
 
-Here is why this matters for your day: the modern towers of New City Hall and the carved sandstone of Old City Hall are two completely different looks, and they are forty steps apart. You get clean modern architecture and old-world heritage stone in the same set of portraits, without moving the car. We use both in nearly every City Hall session.
+Here is why this matters for your day: the modern towers of New City Hall and the carved sandstone of Old City Hall are two completely different looks, and they are forty steps apart. You get clean modern architecture and old-world heritage stone in the same set of portraits, without moving the car. I use both in nearly every City Hall session.
+
+## Every Toronto wedding chamber, compared
+
+Toronto has five places to hold a civil ceremony in a city building, and they work differently. The downtown chamber includes the officiant. The three civic centre chambers are the room only. Old City Hall is run by the City itself.
+
+| Chamber | Where | Fee | Officiant | Guests | How to book |
+| --- | --- | --- | --- | --- | --- |
+| Toronto City Hall Wedding Chamber | 100 Queen St W, East Tower, 3rd floor | $325 plus HST | Included | About 22 | 416-363-0316 or info@marryus.org |
+| Old City Hall | 60 Queen St W, former Council Chamber | $337.95 incl. HST, 30 min | City staff | Not published | marriage@toronto.ca |
+| North York Civic Centre | 5100 Yonge St, lower level | $136.85 incl. HST, 30 min | Bring your own | 40 | toronto.ca or in person |
+| Scarborough Civic Centre | 150 Borough Dr | $136.85 incl. HST, 30 min | Bring your own | 22 | toronto.ca or in person |
+| York Civic Centre | 2700 Eglinton Ave W | $136.85 incl. HST, 30 min | Bring your own | 25 | toronto.ca or in person |
+
+Sources: the City's [wedding chambers page](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/wedding-chambers/) and the [Ministerial Associates site](https://www.marryus.org/), checked October 14, 2026. Old City Hall details are in my [Old City Hall wedding guide](/blog/old-city-hall-wedding-toronto/).
+
+## What a City Hall wedding costs, all in
+
+| Item | Cost |
+| --- | --- |
+| Ontario marriage licence | $180 |
+| Downtown ceremony with officiant | $325 plus HST, about $367.25 |
+| My Civil Ceremony photography, up to 2 hours | $501.25 |
+| **Total** | **about $1,048.50** |
+
+Choose a civic centre chamber and the ceremony line drops to $136.85, plus whatever your own officiant charges. Lunch, flowers and a dress are up to you. The full picture of photography prices is in my [Toronto wedding photographer cost guide](/blog/intimate-toronto-wedding-photography-cost/).
 
 ## A real City Hall wedding
 
 ![A couple exchanging vows in the Toronto City Hall Wedding Chamber, white orchids beside the aisle, soft natural light, by AD Photography](../../assets/images/portfolio/anushka-anthony/06.jpg)
 
-Anushka held a bouquet of pink roses and white daisies. Anthony wore a burgundy blazer and could not stop smiling, tugging at the lapels between moments. The Wedding Chamber is a small, calm room with white orchids flanking the aisle and soft daylight coming in, and it does not ask for much. We stayed close and shot quiet, because a fifteen-minute ceremony with just the two of them does not need direction. It needs a witness.
+Anushka held a bouquet of pink roses and white daisies. Anthony wore a burgundy blazer and could not stop smiling, tugging at the lapels between moments. The Wedding Chamber is a small, calm room with white orchids flanking the aisle and soft daylight coming in, and it does not ask for much. I stayed close and shot quiet, because a fifteen-minute ceremony with just the two of them does not need direction. It needs a witness.
 
 ![Close frame of the ring exchange during a Toronto City Hall civil ceremony by AD Photography](../../assets/images/portfolio/anushka-anthony/09.jpg)
 
-The whole thing is over fast. The vows, the ring exchange, the first kiss. When it is this intimate, there is nowhere to hide, and that is exactly what makes the frames land. Anushka closing her eyes as Anthony slid the ring on. The bouquet pressed between them during the kiss. You do not get those twice, so we shoot the small weddings the same way we shoot the big ones, watching everything.
+The whole thing is over fast. The vows, the ring exchange, the first kiss. When it is this intimate, there is nowhere to hide, and that is exactly what makes the frames land. Anushka closing her eyes as Anthony slid the ring on. The bouquet pressed between them during the kiss. You do not get those twice, so I shoot the small weddings the same way I shoot the big ones, watching everything.
 
 ![A couple walking across Nathan Phillips Square after their City Hall wedding, curved towers above and Old City Hall behind, by AD Photography](../../assets/images/portfolio/anushka-anthony/16.jpg)
 
@@ -90,17 +123,17 @@ The full gallery from their morning is here: [Anushka + Anthony at Toronto City 
 
 The part most guides skip. Here is the real sequence.
 
-**1. Get your marriage licence first.** This is separate from the ceremony. Apply for an Ontario marriage licence from the City with valid photo ID for both of you. If either of you was married before, bring proof of divorce or a death certificate for the former spouse. The licence costs around $180 and is valid for 90 days, so do not get it too early.
+**1. Book the ceremony.** For the downtown chamber, call Ministerial Associates at 416-363-0316 or email info@marryus.org and pay the non refundable booking fee. You do not need the licence yet. Weekday late mornings and Fridays fill up first, so reserve your date as early as you can. For a civic centre chamber, book online through toronto.ca and line up your own officiant.
 
-**2. Book the ceremony.** Once you have the licence sorted, reserve a time slot with the City's wedding chambers, usually online or by phone, and pay the ceremony fee at booking. Weekday slots are the ones couples want and they fill up, especially late morning and Fridays. Reserve your date as early as you can.
+**2. Get your marriage licence.** This is separate from the ceremony. Fill in the City's online application, then go to an in person appointment at City Hall or the North York Civic Centre to have it certified and pay. Each of you brings two pieces of original government ID, and official proof of divorce if either of you was married before. The licence is $180, and you apply within 90 days of the wedding, so do not get it too early.
 
 **3. Bring two witnesses.** Ontario law requires two witnesses, age 18 or older, present at the ceremony to sign the register. They can be family, friends, or anyone you trust. They do not need to be Canadian residents.
 
-**4. Show up a little early.** The chamber runs on a schedule because there are other couples that day. Arrive fifteen minutes ahead, find the room in the East Tower, and let the officiant know your photographer is with you.
+**4. Show up a little early.** The chamber runs on a schedule because there are other couples that day. Arrive fifteen minutes ahead, find the room in the East Tower, third floor, and let the officiant know your photographer is with you.
 
 **5. The ceremony itself.** Ten to fifteen minutes. Vows, rings, the kiss, signatures. Quick, warm, and real.
 
-On the photographer question: you are absolutely allowed to bring your own. Photography during your booked slot is part of the booking, with no separate permit required. We check in with the officiant on arrival, ask about flash, and work from the side and back so we never block the aisle. It is the same way we shoot any intimate ceremony, just in a smaller room.
+On the photographer question: you are absolutely allowed to bring your own. Photography during your booked slot is part of the booking, with no separate permit required. I check in with the officiant on arrival, ask about flash, and work from the side and back so I never block the aisle. It is the same way I shoot any intimate ceremony, just in a smaller room.
 
 ## Where to shoot after: the downtown portrait loop
 
@@ -108,7 +141,7 @@ This is where a City Hall wedding earns its reputation. Within a five to ten min
 
 ### 1. Nathan Phillips Square
 
-Step out the front doors and you are already there. The curved towers of New City Hall make a clean modern frame from below. The 3D TORONTO sign by the reflecting pool is the obvious shot, and worth one or two frames, though it draws a crowd. We prefer the concrete arches over the pool and the open plaza, where there is room to walk and laugh without an audience. For a small wedding party just taking portraits, no permit is needed. You only need a City permit if you are bringing tripods, lights, or a full production.
+Step out the front doors and you are already there. The curved towers of New City Hall make a clean modern frame from below. The 3D TORONTO sign by the reflecting pool is the obvious shot, and worth one or two frames, though it draws a crowd. I prefer the concrete arches over the pool and the open plaza, where there is room to walk and laugh without an audience. For a small wedding party just taking portraits, no permit is needed. You only need a City permit if you are bringing tripods, lights, or a full production.
 
 ### 2. Old City Hall
 
@@ -120,11 +153,11 @@ Cross Bay Street to the sandstone. Old City Hall gives you carved stone, arched 
 
 ![A couple in the gardens of Osgoode Hall, Toronto, neoclassical facade and manicured lawn, by AD Photography](../../assets/images/portfolio/sonia-achyut/22.jpg)
 
-A five minute walk west on Queen Street brings you to Osgoode Hall, and this is our favourite stop on the loop. Neoclassical columns, a grand facade, manicured gardens, and the famous wrought-iron gates along Queen that were built to keep cattle out. It is the quiet, green chapter after the busy plaza.
+A five minute walk west on Queen Street brings you to Osgoode Hall, and this is my favourite stop on the loop. Neoclassical columns, a grand facade, manicured gardens, and the famous wrought-iron gates along Queen that were built to keep cattle out. It is the quiet, green chapter after the busy plaza.
 
 ![A couple framed by the iron gates and brick corridor at Osgoode Hall, Toronto, by AD Photography](../../assets/images/portfolio/sonia-achyut/30.jpg)
 
-One important note: Osgoode Hall belongs to the Law Society of Ontario, not the City. No permit is needed for portraits on the grounds, but access is sometimes limited during construction or court events, so I plan the stop around that. We photographed Sonia and Achyut on this exact two-building arc, from Old City Hall to Osgoode, in a single relaxed afternoon. The full set is here: [Sonia + Achyut, Old City Hall and Osgoode Hall](/portfolio/sonia-achyut/).
+One important note: Osgoode Hall belongs to the Law Society of Ontario, not the City. No permit is needed for portraits on the grounds, but access is sometimes limited during construction or court events, so I plan the stop around that. I photographed Sonia and Achyut on this exact two-building arc, from Old City Hall to Osgoode, in a single relaxed afternoon. The full set is here: [Sonia + Achyut, Old City Hall and Osgoode Hall](/portfolio/sonia-achyut/).
 
 ### 4. The Financial District
 
@@ -132,7 +165,7 @@ If you want one more look, walk south a few minutes toward King and Bay. Bronze 
 
 ## When to time your City Hall wedding
 
-**Late morning (10 AM to noon):** Our recommended window. The chamber light is soft, Nathan Phillips Square is not yet crowded, and Old City Hall's sandstone is catching warm light. You finish portraits before the lunch rush fills the plaza.
+**Late morning (11 AM to noon):** My recommended window, and the chamber's first slots. The chamber light is soft, Nathan Phillips Square is not yet crowded, and Old City Hall's sandstone is catching warm light. You finish portraits before the lunch rush fills the plaza.
 
 **Early afternoon (1 PM to 3 PM):** Still good. The square gets busier, but Osgoode Hall and the Financial District stay calm, and the heritage stone holds its glow.
 
@@ -150,7 +183,7 @@ If you want one more look, walk south a few minutes toward King and Bay. Bronze 
 
 **Weather and backup.** Most of the portrait loop is outdoors. If it rains, the covered podium areas of Nathan Phillips Square, the arches, and the building entrances give us dry frames. A City Hall day is rarely rained out, it just moves under cover.
 
-**Crowds.** Nathan Phillips Square is a busy public space. We work around it by favouring the quieter corners and timing the loop for late morning. It is never a problem, just something to expect.
+**Crowds.** Nathan Phillips Square is a busy public space. I work around it by favouring the quieter corners and timing the loop for late morning. It is never a problem, just something to expect.
 
 **Accessibility.** The whole loop is flat and walkable, with elevator access in the building. If anyone in your group has mobility needs, the route works.
 
@@ -164,13 +197,13 @@ If you want one more look, walk south a few minutes toward King and Bay. Bronze 
 
 **You might do more later.** Plenty of couples marry at City Hall now and host a larger celebration down the road. A City Hall wedding does not close any doors. It just gets the important part done, beautifully.
 
-If a church or a heritage estate is more your speed, that is a different day. You can see how that looks in our [Hamilton church and Dundurn Castle wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/), or pair a downtown ceremony with the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations/) for a separate portrait session.
+If a church or a heritage estate is more your speed, that is a different day. You can see how that looks in my [Hamilton church and Dundurn Castle wedding](/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin/), or pair a downtown ceremony with the [best Toronto pre-wedding locations](/blog/best-toronto-pre-wedding-locations/) for a separate portrait session.
 
 ## Frequently asked questions
 
 **How much does it cost to get married at Toronto City Hall?**
 
-Budget for two separate fees. An Ontario marriage licence is around $180 and is valid for 90 days. The civil ceremony in the Wedding Chamber is roughly $325 including tax for a short ten to fifteen minute ceremony. Fees are set by the City and change, so confirm current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/) before you book. Our Civil Ceremony coverage is a separate fixed package that includes the ceremony and the portraits afterward. See our [services page](/services/civil-ceremony/) for current options.
+Budget for two separate fees. The Ontario marriage licence is $180, with no HST. The downtown Wedding Chamber lists $325 plus HST with the officiant included, about $367 with tax; its FAQ also shows $350 plus HST, so confirm when you call. The City's civic centre chambers are $136.85 including HST for 30 minutes, room only. My Civil Ceremony photography is a separate $501.25 for up to 2 hours. See the [Civil Ceremony page](/services/civil-ceremony/) for what it includes.
 
 **Is the ceremony at Old City Hall or New City Hall?**
 
@@ -178,11 +211,11 @@ The classic Wedding Chamber is inside New City Hall at 100 Queen Street West, th
 
 **How many guests can you bring to a City Hall ceremony?**
 
-The Wedding Chamber holds about 22 people total, including the two of you and your two witnesses. If your guest list is larger than 20, the chamber is not the right room.
+The downtown Wedding Chamber holds about 22 people total, including the two of you and your two witnesses. For 25 to 40, the North York Civic Centre chamber holds 40.
 
 **Can you bring your own photographer into the Wedding Chamber?**
 
-Yes. Photography during your booked ceremony is part of the booking and needs no separate permit. We check in with the officiant, ask about flash, and shoot from the side so we never block the aisle.
+Yes. Photography during your booked ceremony is part of the booking and needs no separate permit. I check in with the officiant, ask about flash, and shoot from the side so I never block the aisle.
 
 **Do you need a permit to take wedding photos on Nathan Phillips Square?**
 
@@ -192,12 +225,20 @@ For a small wedding party walking around with a handheld camera, no. You only ne
 
 A tight loop: Nathan Phillips Square, then Old City Hall's sandstone facade, then the gardens and iron gates of Osgoode Hall, then the Financial District. All within a ten minute walk.
 
+**What days can you get married at Toronto City Hall?**
+
+The downtown chamber runs Monday to Saturday: 11 AM to 3 PM on most weekdays, until 8 PM on Fridays, and 9 AM to 8 PM on Saturdays, with a few Sunday dates a year. The civic centre chambers are open every day. Hours change, so check when you book.
+
+**Is there a cheaper way to get married at a Toronto city hall?**
+
+Yes. The City rents its own chambers at the North York, Scarborough and York civic centres for $136.85 including HST per 30 minutes. That is the room only, so you bring your own officiant.
+
 ## Photograph your City Hall wedding
 
-A City Hall wedding is small, fast, and completely real, and the downtown core gives it more beautiful backdrops than almost any venue in the city. If you are planning a ceremony here and want a photographer who already knows the chamber, the loop, and the light, we would love to talk.
+A City Hall wedding is small, fast, and completely real, and the downtown core gives it more beautiful backdrops than almost any venue in the city. If you are planning a ceremony here and want a photographer who already knows the chamber, the loop, and the light, I would love to talk.
 
 [**View wedding photography packages →**](/services/civil-ceremony/)
 
-Or [send a note about your City Hall wedding](/contact/?venue=toronto-city-hall) and tell us your date and what you are planning. We always start with a conversation about the day, the people, and the moments that matter most.
+Or [send a note about your City Hall wedding](/contact/?venue=toronto-city-hall) and tell me your date and what you are planning. I always start with a conversation about the day, the people, and the moments that matter most.
 
 Planning a small ceremony beyond City Hall? I photograph [intimate Toronto weddings](/intimate-wedding-toronto/) year round, and [Toronto elopements from $501.25](/elopement-photographer-toronto/).
