@@ -1,5 +1,5 @@
 ---
-title: "Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue"
+title: "Getting Married at Old City Hall Toronto: Booking and Cost"
 description: "Toronto's Old City Hall, the 1899 sandstone courthouse, now hosts civil wedding ceremonies. How booking, cost, and photos work, from a downtown photographer."
 publishDate: 2026-07-06
 author: "Akash Desai"

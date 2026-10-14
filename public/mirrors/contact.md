@@ -61,7 +61,7 @@ For package-specific answers, visit the services pages:
 
 ## Areas Served
 
-Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
+Toronto, Mississauga, Hamilton, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
 
 ## Canonical URL
 

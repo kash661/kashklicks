@@ -1,6 +1,6 @@
 ---
 title: "Toronto Islands Wedding Photos: Permits, Ferries and the Best Spots"
-description: "Planning a wedding ceremony or photo shoot on the Toronto Islands? A photographer's guide to the permit you actually need, the ferry timing that ruins days, and where to shoot."
+description: "A wedding or photo shoot on the Toronto Islands? My guide to the permit you actually need, the ferry timing that ruins days, and where to shoot."
 publishDate: 2026-08-05
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/harsh-payal/05.jpg"

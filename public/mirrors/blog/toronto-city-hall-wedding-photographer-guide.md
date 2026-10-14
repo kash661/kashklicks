@@ -47,7 +47,7 @@ There are two City Halls facing each other across Bay Street, and they look noth
 
 **New City Hall** is the modern one with the two curved towers. This is where the Wedding Chamber is. This is where your civil ceremony actually takes place. The address is 100 Queen Street West, and the doors open onto Nathan Phillips Square.
 
-**Old City Hall** is the Romanesque Revival building beside it: heavy sandstone, a tall clock tower, arched windows, the kind of stone that looks like it was carved for a movie. For decades it served as a courthouse. The City has recently [reopened a separate chamber inside it for civil ceremonies](/blog/old-city-hall-wedding-toronto/) as well, but when most couples picture a City Hall wedding, they are picturing the ceremony in New City Hall and the photos against Old City Hall.
+**Old City Hall** is the Romanesque Revival building beside it: heavy sandstone, a tall clock tower, arched windows, the kind of stone that looks like it was carved for a movie. For decades it served as a courthouse. The City has recently reopened a separate chamber inside it for civil ceremonies as well (booking, cost and the room are all in my [Old City Hall wedding guide](/blog/old-city-hall-wedding-toronto/)), but when most couples picture a City Hall wedding, they are picturing the ceremony in New City Hall and the photos against Old City Hall.
 
 Here is why this matters for your day: the modern towers of New City Hall and the carved sandstone of Old City Hall are two completely different looks, and they are forty steps apart. You get clean modern architecture and old-world heritage stone in the same set of portraits, without moving the car. We use both in nearly every City Hall session.
 

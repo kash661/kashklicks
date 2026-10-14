@@ -28,6 +28,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Configurator from '../components/pricing/Configurator.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import packagesData from '../data/packages.json';
 import site from '../data/site.json';
 import { basePrice } from '../lib/addons';
@@ -60,12 +61,15 @@ const offerCatalog = {
 ---
 
 <BaseLayout
-  title="Photography Pricing, Toronto | AD Photography"
-  description="Build your package and see the price as you go. Wedding, pre wedding, civil ceremony, proposal, celebration and headshot pricing for Toronto and the GTA, with every add on listed."
+  title="Photography Pricing, Toronto"
+  description="Build your package and see the price as you go. Wedding, pre wedding, civil ceremony, proposal, celebration and headshot pricing for Toronto and the GTA."
   canonicalUrl={`${site.url}/pricing/`}
   jsonLd={offerCatalog}
   chrome={false}
 >
+  <div class="sr-only">
+    <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Pricing', href: '/pricing/' }]} />
+  </div>
   <!-- flatpickr · lazy-loaded off the critical path, copied from
        free-engagement-session-toronto.astro. The date field stays a text input
        on purpose: iOS Safari's native picker submitted today's date on "Done",

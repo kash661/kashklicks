@@ -24,7 +24,7 @@ faq:
 
 Some weddings hit you the moment you walk in. With Natalie and Shavar, it was the ceremony deck. White florals climbing a gold arch, tall maples filtering the September light, and the feeling that you had stepped into someone's private garden. Shavar was already up there with his groomsmen and his son, adjusting his bow tie, looking calm but counting the seconds. When Natalie came down the aisle on her dad's arm, the whole deck went quiet.
 
-The Glenerin Inn is one of the GTA's best-kept secrets for couples who want an estate wedding without the two-hour drive to cottage country. A historic stone manor tucked into a wooded ravine in Mississauga, with a ceremony deck under old-growth maples and a domed reception room that turns cinematic once the candles come on.
+The Glenerin Inn is one of the GTA's best-kept secrets for couples who want an estate wedding without the two-hour drive to cottage country. A historic stone manor tucked into a wooded ravine in Mississauga, with a ceremony deck under old-growth maples and a domed reception room that turns cinematic once the candles come on. It anchors my [Mississauga wedding photographer](/wedding-photographer-mississauga/) page, along with Adamson Estate.
 
 If you are considering The Glenerin Inn for your wedding, this is a photographer's look inside. The best spots, the light, and what to know before you book.
 

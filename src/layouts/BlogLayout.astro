@@ -111,6 +111,17 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
   month: 'long',
   day: 'numeric',
 });
+
+// Visible "Updated" line: shown only when the post changed at least a week
+// after it was published, so search engines and AI answers see a fresh date
+// that matches dateModified in the schema.
+const modifiedDate = new Date(dateModified);
+const showUpdated =
+  !Number.isNaN(modifiedDate.getTime()) &&
+  modifiedDate.getTime() - publishDate.getTime() > 7 * 24 * 60 * 60 * 1000;
+const formattedUpdated = showUpdated
+  ? modifiedDate.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })
+  : '';
 ---
 
 <BaseLayout
@@ -140,6 +151,12 @@ const formattedDate = publishDate.toLocaleDateString('en-CA', {
         <p class="text-body-lg text-on-surface-variant mt-4" style="max-width: 55ch;">{description}</p>
         <div class="flex items-center gap-3 text-label-sm text-on-surface-muted mt-8">
           <time datetime={publishDate.toISOString()}>{formattedDate}</time>
+          {showUpdated && (
+            <>
+              <span aria-hidden="true">/</span>
+              <span>Updated <time datetime={dateModified}>{formattedUpdated}</time></span>
+            </>
+          )}
           {tags.length > 1 && (
             <>
               <span aria-hidden="true">/</span>

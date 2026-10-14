@@ -1,6 +1,6 @@
 ---
 title: "Shooting a Wes Anderson Style Wedding Film on the SIRUI 40mm Anamorphic"
-description: "A Toronto Islands wedding film shot on the SIRUI 40mm T1.8 1.33x autofocus anamorphic. Why anamorphic for a wedding, what the lens actually does, and the Wes Anderson techniques behind the edit."
+description: "A Toronto Islands wedding film shot on the SIRUI 40mm 1.33x anamorphic. Why anamorphic for a wedding, and the Wes Anderson techniques behind the edit."
 publishDate: 2026-08-05
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/harsh-payal/03.jpg"

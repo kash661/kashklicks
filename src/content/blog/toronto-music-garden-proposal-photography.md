@@ -1,6 +1,6 @@
 ---
 title: "Toronto Music Garden Proposal Photography: A Skyline Spot Downtown"
-description: "Planning a proposal at the Toronto Music Garden? A photographer's guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot actually works."
+description: "A proposal at the Toronto Music Garden? My guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot works."
 publishDate: 2026-08-05
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/margarita-mike/05.jpg"

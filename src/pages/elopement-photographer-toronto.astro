@@ -45,7 +45,7 @@ const faqs = [
   },
   {
     q: 'What do we need to legally marry in Toronto?',
-    a: 'A marriage licence (about $160, valid 90 days) and two witnesses aged 18 or older. If you want the City Hall wedding chambers, book them online or by phone. The practical guide above covers the rest.',
+    a: 'A marriage licence ($180, valid 90 days) and two witnesses aged 18 or older. If you want the City Hall wedding chambers, book them online or by phone. The practical guide above covers the rest.',
   },
   {
     q: 'Can we get the raw files?',
@@ -58,7 +58,7 @@ const faqs = [
 ];
 
 const steps = [
-  { n: 'i.', title: 'The marriage licence', body: 'About $160, issued by the city, and valid for 90 days. Bring it with you on the day.' },
+  { n: 'i.', title: 'The marriage licence', body: '$180, issued by the city, and valid for 90 days. Bring it with you on the day.' },
   { n: 'ii.', title: 'The ceremony', body: 'A City Hall wedding chamber ceremony runs about $325 including tax. Short, real, and lovelier than its reputation.' },
   { n: 'iii.', title: 'Two witnesses', body: 'Anyone 18 or older. Two friends, two parents, or two people who love you enough to show up on a weekday.' },
   { n: 'iv.', title: 'Booking the chamber', body: 'Wedding chambers are booked online or by phone through the city. Pick the slot, then send me the date.' },
@@ -75,8 +75,15 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${site.url}/elopement-photographer-toronto/#service`,
+    name: 'Toronto Elopement Photography',
     serviceType: 'Elopement photography',
-    areaServed: 'Toronto, Ontario',
+    url: `${site.url}/elopement-photographer-toronto/`,
+    image: `${site.url}/og-default.jpg`,
+    areaServed: {
+      '@type': 'City',
+      name: 'Toronto',
+      address: { '@type': 'PostalAddress', addressRegion: 'ON', addressCountry: 'CA' },
+    },
     provider: { '@id': `${site.url}/#business` },
     offers: [
       { '@type': 'Offer', name: 'The Civil Ceremony', price: '501.25', priceCurrency: 'CAD', url: `${site.url}/elopement-photographer-toronto/` },
@@ -97,7 +104,7 @@ const jsonLd = [
 
 <BaseLayout
   title="Toronto Elopement Photographer | Packages from $501.25"
-  description="Elopement photography in Toronto from $501.25. City Hall ceremonies, backyard vows and intimate weddings with 2 to 20 guests, photographed by one calm photographer. Flat, public pricing."
+  description="Elopement photography in Toronto from $501.25. City Hall ceremonies, backyard vows and weddings of 2 to 20 guests, with one calm photographer and public prices."
   jsonLd={jsonLd}
   ogImage={ogImageUrl}
 >
@@ -282,6 +289,9 @@ const jsonLd = [
           <p class="text-body-md text-on-surface-variant">The short version: licence, chamber, two witnesses, done.</p>
           <p style="margin-top: 1rem;">
             <a href="/blog/toronto-city-hall-wedding-photographer-guide/" class="el-link text-label-md">Read my full City Hall guide <span aria-hidden="true">&rarr;</span></a>
+          </p>
+          <p style="margin-top: 0.75rem;">
+            <a href="/blog/old-city-hall-wedding-toronto/" class="el-link text-label-md">Or marry inside Old City Hall <span aria-hidden="true">&rarr;</span></a>
           </p>
         </div>
       </div>

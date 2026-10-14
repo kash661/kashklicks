@@ -24,7 +24,7 @@ faq:
 
 Vikrant and Sahib drove in from out of town for a single afternoon, both of them in head-to-toe black, his suit clean and quiet, her gown long and architectural. We started at Dundurn Castle, and the castle did most of the heavy lifting. The tall columned facade, the parkland dotted with old bare-limbed trees, the whole estate reading like somewhere in Europe rather than an hour down the highway from Toronto.
 
-Dundurn Castle is one of the strongest under-the-radar locations for wedding and engagement photography just outside the city. An 1830s Italianate villa on a rise above Hamilton Harbour, with a columned portico, a tree-lined drive, and wide grounds that turn every portrait into something architectural.
+Dundurn Castle is one of the strongest under-the-radar locations for wedding and engagement photography just outside the city. An 1830s Italianate villa on a rise above Hamilton Harbour, with a columned portico, a tree-lined drive, and wide grounds that turn every portrait into something architectural. It anchors my [Hamilton wedding photographer](/wedding-photographer-hamilton/) page, along with St. Patrick's Parish.
 
 If you are planning wedding or engagement photos at Dundurn Castle, this is a photographer's guide to the estate. The best spots, the light, and the one thing to sort out before you arrive.
 

@@ -105,6 +105,6 @@ Let's talk about your day. No obligations, just a conversation.
 
 ## Schema.org Structured Data
 
-- LocalBusiness: name, address (Toronto, ON, CA), geo, areaServed (Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, GTA), priceRange $351.25 - $3801.25, email info@kashklicks.ca, sameAs (Instagram, Pinterest, YouTube, Google Business)
+- LocalBusiness: name, address (Toronto, ON, CA), geo, areaServed (Toronto, Mississauga, Hamilton, Brampton, Markham, Vaughan, Oakville, Burlington, GTA), priceRange $351.25 - $3801.25, email info@kashklicks.ca, sameAs (Instagram, Pinterest, YouTube, Google Business)
 - WebSite: name, url, description
 - FAQPage: top homepage questions
