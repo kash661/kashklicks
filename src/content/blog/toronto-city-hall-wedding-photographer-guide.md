@@ -241,4 +241,4 @@ A City Hall wedding is small, fast, and completely real, and the downtown core g
 
 Or [send a note about your City Hall wedding](/contact/?venue=toronto-city-hall) and tell me your date and what you are planning. I always start with a conversation about the day, the people, and the moments that matter most.
 
-Planning a small ceremony beyond City Hall? I photograph [intimate Toronto weddings](/intimate-wedding-toronto/) year round, and [Toronto elopements from $501.25](/elopement-photographer-toronto/).
+Planning a small ceremony beyond City Hall? I photograph [intimate Toronto weddings](/intimate-wedding-toronto/) year round, and [Toronto elopements from $501.25](/elopement-photographer-toronto/). Every legal step is in my guide on [how to elope in Toronto](/blog/how-to-elope-in-toronto/).
