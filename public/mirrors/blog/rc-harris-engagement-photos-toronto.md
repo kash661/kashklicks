@@ -29,7 +29,7 @@ If you are thinking about engagement or pre-wedding photos at RC Harris, this is
 
 **Best light:** Golden hour and early morning. The limestone glows warm in low side light.
 
-**Best seasons:** All of them. This is one of the few Toronto locations that delivers in deep winter as well as summer.
+**Best seasons:** All of them. This is one of the few Toronto locations that delivers in deep winter as well as summer. My [winter engagement photos guide](/blog/winter-engagement-photos-toronto/) walks through a full January session here.
 
 ## What makes RC Harris feel cinematic
 

@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### How to Elope in Toronto: Licence, Officiant, Where, and Cost
+
+- **URL:** https://kashklicks.ca/blog/how-to-elope-in-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/how-to-elope-in-toronto.md
+- **Published:** 2026-10-14
+- **Tags:** Elopement, Civil Ceremony, Toronto City Hall, Planning, Toronto, Wedding
+- **Summary:** How to elope in Toronto, step by step: the $180 licence, finding an officiant, every place you can legally marry, what it costs, and real Toronto elopements.
+
 ### University of Toronto Headshots for Students
 
 - **URL:** https://kashklicks.ca/blog/university-of-toronto-headshots/
@@ -19,6 +27,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Published:** 2026-10-14
 - **Tags:** Headshots, University of Toronto, Students, Toronto, Behind the Scenes
 - **Summary:** University of Toronto headshots from $151.25, shown at Convocation Hall and University College. A short headshot session on campus needs no permit.
+
+### Winter Engagement Photos in Toronto: Where to Shoot and What to Wear
+
+- **URL:** https://kashklicks.ca/blog/winter-engagement-photos-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/winter-engagement-photos-toronto.md
+- **Published:** 2026-10-14
+- **Tags:** Pre-Wedding, Winter, Engagement, RC Harris, University of Toronto, Toronto
+- **Summary:** Winter engagement photos in Toronto, from a January session in the snow at RC Harris to U of T's stone arches. Where I shoot, the light, and staying warm.
 
 ### Toronto Park Photo Permit: How to Book It, Step by Step
 
@@ -181,13 +197,13 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Tags:** Photo Location, RC Harris, Scarborough, Engagement, Pre-Wedding
 - **Summary:** Planning engagement or pre-wedding photos at RC Harris? A photographer's guide to Toronto's Art Deco waterworks: best spots, light, seasons, and access.
 
-### Toronto City Hall Wedding: Cost, How to Book, Photos
+### Toronto City Hall Wedding: Cost, Chambers, Booking, Photos
 
 - **URL:** https://kashklicks.ca/blog/toronto-city-hall-wedding-photographer-guide/
 - **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-city-hall-wedding-photographer-guide.md
 - **Published:** 2026-05-28
 - **Tags:** Venue Guide, Toronto City Hall, Civil Ceremony, Downtown Toronto, Wedding
-- **Summary:** How to get married at Toronto City Hall. The licence and ceremony fees, the 22 seat Wedding Chamber, and where to take portraits right after.
+- **Summary:** How to get married at Toronto City Hall: the $180 licence, every Toronto wedding chamber compared, how to book, and where to take portraits right after.
 
 ### University of Toronto Engagement Photos: A Location Guide
 

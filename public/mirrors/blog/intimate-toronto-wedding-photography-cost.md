@@ -121,7 +121,7 @@ If your day genuinely runs ten hours with two locations and 150 guests, be hones
 
 Yes, and mostly because the day is shorter.
 
-Two sets of fees apply. The City charges you directly: roughly $180 for an Ontario marriage licence, and around $325 including tax for the ceremony in the Toronto City Hall Wedding Chamber. The City sets those and updates them, so confirm the current rates on [toronto.ca](https://www.toronto.ca/services-payments/venues-facilities-bookings/getting-married/) before you budget. My [City Hall wedding guide](/blog/toronto-city-hall-wedding-photographer-guide/) walks through booking them, the 22 seat chamber, and the portrait loop right outside the doors.
+Two sets of fees apply. The City charges $180 for an Ontario marriage licence. The ceremony in the downtown Toronto City Hall Wedding Chamber is run by a private operator and lists $325 plus HST with the officiant included, or $136.85 including HST for a room only chamber at a City civic centre. Confirm current rates before you budget. My [City Hall wedding guide](/blog/toronto-city-hall-wedding-photographer-guide/) walks through booking them, the 22 seat chamber, and the portrait loop right outside the doors.
 
 Photography sits on top of that. My Civil Ceremony package is $501.25 for up to 2 hours, which covers the ceremony and a portrait walk around Nathan Phillips Square, Old City Hall and Osgoode Hall. If you want the dinner after included, The Elopement is $901.25 for up to 4 hours. If your plans grow into a fuller intimate celebration, [how I shoot intimate Toronto weddings](/intimate-wedding-toronto/) shows what that looks like.
 
@@ -149,7 +149,7 @@ All three include an engagement session, unlimited edited high resolution photos
 
 **Are rates different for a City Hall or civil ceremony wedding?**
 
-Yes. A civil ceremony is $501.25 for up to 2 hours because the day is short. City fees are separate, roughly $180 for the licence and $325 for the ceremony itself.
+Yes. A civil ceremony is $501.25 for up to 2 hours because the day is short. Ceremony fees are separate: $180 for the licence and $325 plus HST for the downtown chamber with its officiant.
 
 **Do you charge travel for weddings outside Toronto?**
 
