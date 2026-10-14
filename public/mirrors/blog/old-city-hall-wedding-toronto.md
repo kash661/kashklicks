@@ -1,4 +1,4 @@
-# Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue
+# Getting Married at Old City Hall Toronto: Booking and Cost
 
 **URL:** https://kashklicks.ca/blog/old-city-hall-wedding-toronto/
 **Author:** Akash (AD Photography)

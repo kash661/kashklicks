@@ -26,6 +26,13 @@ const resources = navigation.items.find((i) => i.label === 'Resources');
         >
           {site.email}
         </a>
+        <a
+          href={`tel:${site.phone}`}
+          class="block w-fit text-body-md text-on-dark-variant hover:text-on-dark mt-2 cubic-ease"
+          style="transition-duration: var(--duration-hover);"
+        >
+          {site.phone.replace(/^\+1(\d{3})(\d{3})(\d{4})$/, '($1) $2 $3')}
+        </a>
       </div>
 
       <!-- Portfolio -->

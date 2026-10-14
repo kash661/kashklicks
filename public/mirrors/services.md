@@ -56,7 +56,7 @@ Birthdays, bridal showers, baby showers, and every gathering worth remembering. 
 
 ## Areas Served
 
-Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
+Toronto, Mississauga, Hamilton, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
 
 ## Booking
 

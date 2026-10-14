@@ -1,6 +1,6 @@
 ---
 title: "A Botanical Gardens Wedding in Niagara Falls: Karen + Micheal"
-description: "Karen and Micheal married on a garden path at the Niagara Parks Botanical Gardens, signed the register with a feather quill, and finished the day above the gorge. A real Niagara wedding."
+description: "Karen and Micheal married on a garden path at the Niagara Parks Botanical Gardens, signed with a feather quill, and ended the day above the gorge."
 publishDate: 2026-08-03
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/karen-micheal/36.jpg"

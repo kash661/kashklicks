@@ -7,7 +7,7 @@
 
 ---
 
-Adamson Estate sits on a quiet stretch of the Lake Ontario shoreline in Mississauga, ten minutes from the highway and somehow a hundred years away from it.
+Adamson Estate sits on a quiet stretch of the Lake Ontario shoreline in Mississauga, ten minutes from the highway and somehow a hundred years away from it. Along with the Glenerin Inn, it anchors my [Mississauga wedding photographer](/wedding-photographer-mississauga/) page.
 
 We photographed Ayushi and Parth's pre-wedding session here on a clear afternoon a few weeks ago. Stone, ivy, lake light, and almost no one else on the grounds for two full hours. It felt like we'd been let into someone's private country house and asked to take our time with it.
 

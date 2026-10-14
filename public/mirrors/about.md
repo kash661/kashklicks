@@ -45,7 +45,7 @@ When I am not shooting someone else's story, I am chasing my own. Light, archite
 
 ## Areas Served
 
-Toronto, Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
+Toronto, Mississauga, Hamilton, Brampton, Markham, Vaughan, Oakville, Burlington, and the Greater Toronto Area. Available for destination weddings across Canada and internationally.
 
 ## Contact
 

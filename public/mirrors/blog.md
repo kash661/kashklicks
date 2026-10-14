@@ -74,7 +74,7 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-islands-wedding-photos-guide.md
 - **Published:** 2026-08-05
 - **Tags:** Venue Guide, Toronto Islands, Toronto, Wedding, Civil Ceremony, Pre-Wedding
-- **Summary:** Planning a wedding ceremony or photo shoot on the Toronto Islands? A photographer's guide to the permit you actually need, the ferry timing that ruins days, and where to shoot.
+- **Summary:** A wedding or photo shoot on the Toronto Islands? My guide to the permit you actually need, the ferry timing that ruins days, and where to shoot.
 
 ### Toronto Music Garden Proposal Photography: A Skyline Spot Downtown
 
@@ -82,7 +82,7 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-music-garden-proposal-photography.md
 - **Published:** 2026-08-05
 - **Tags:** Photo Location, Toronto Music Garden, Proposal, Engagement, Harbourfront, Downtown Toronto
-- **Summary:** Planning a proposal at the Toronto Music Garden? A photographer's guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot actually works.
+- **Summary:** A proposal at the Toronto Music Garden? My guide to the skyline views, the best corners, timing, permits, and how a hidden proposal shoot works.
 
 ### Shooting a Wes Anderson Style Wedding Film on the SIRUI 40mm Anamorphic
 
@@ -90,7 +90,7 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/wes-anderson-wedding-film-sirui-40mm-anamorphic.md
 - **Published:** 2026-08-05
 - **Tags:** Wedding Film, Anamorphic, SIRUI, Gear, Toronto Islands, Behind the Scenes
-- **Summary:** A Toronto Islands wedding film shot on the SIRUI 40mm T1.8 1.33x autofocus anamorphic. Why anamorphic for a wedding, what the lens actually does, and the Wes Anderson techniques behind the edit.
+- **Summary:** A Toronto Islands wedding film shot on the SIRUI 40mm 1.33x anamorphic. Why anamorphic for a wedding, and the Wes Anderson techniques behind the edit.
 
 ### A Botanical Gardens Wedding in Niagara Falls: Karen + Micheal
 
@@ -98,7 +98,7 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/niagara-botanical-gardens-wedding-karen-micheal.md
 - **Published:** 2026-08-03
 - **Tags:** Real Wedding, Niagara Parks Botanical Gardens, Venues, Niagara Falls, Wedding
-- **Summary:** Karen and Micheal married on a garden path at the Niagara Parks Botanical Gardens, signed the register with a feather quill, and finished the day above the gorge. A real Niagara wedding.
+- **Summary:** Karen and Micheal married on a garden path at the Niagara Parks Botanical Gardens, signed with a feather quill, and ended the day above the gorge.
 
 ### Niagara Parks Botanical Gardens Wedding Photos: A Niagara Falls Location Guide
 
@@ -106,9 +106,9 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/niagara-parks-botanical-gardens-wedding-photographer-guide.md
 - **Published:** 2026-08-03
 - **Tags:** Venue Guide, Niagara Parks Botanical Gardens, Niagara Falls, Wedding, Pre-Wedding
-- **Summary:** Planning wedding or engagement photos at the Niagara Parks Botanical Gardens? A photographer's guide to the permit rules, the parking, the best gardens, and the best months to come.
+- **Summary:** Wedding or engagement photos at the Niagara Parks Botanical Gardens? My guide to the permit rules, parking, the best gardens, and the best months to come.
 
-### Getting Married at Old City Hall: Toronto's New (Old) Wedding Venue
+### Getting Married at Old City Hall Toronto: Booking and Cost
 
 - **URL:** https://kashklicks.ca/blog/old-city-hall-wedding-toronto/
 - **Mirror:** https://kashklicks.ca/mirrors/blog/old-city-hall-wedding-toronto.md
@@ -227,7 +227,7 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/hamilton-wedding-st-patricks-dundurn-roxanne-justin.md
 - **Published:** 2026-05-25
 - **Tags:** Real Wedding, St. Patrick's Parish, Dundurn Castle, Venues, Hamilton, Wedding
-- **Summary:** Roxanne and Justin's Hamilton wedding moved from a Gothic Revival cathedral on King Street East to the Italianate grounds of Dundurn Castle. Inside the venues, the light, and the day.
+- **Summary:** Roxanne and Justin's Hamilton wedding, from St. Patrick's on King Street East to the grounds of Dundurn Castle. The venues, the light, and the day.
 
 ### 6 Best Pre-Wedding Photography Locations in Toronto
 
@@ -235,7 +235,7 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Mirror:** https://kashklicks.ca/mirrors/blog/best-toronto-pre-wedding-locations.md
 - **Published:** 2025-03-15
 - **Tags:** Locations, Pre-Wedding, Toronto
-- **Summary:** Planning a pre-wedding or engagement shoot in Toronto? Here are our top 6 tried-and-tested locations for stunning photos, with tips on timing, parking, and what to expect.
+- **Summary:** Planning a pre wedding or engagement shoot in Toronto? My 6 tried and tested locations, with tips on timing, parking, and what to expect.
 
 ### What to Wear to Your Pre-Wedding Photo Shoot
 

@@ -1,6 +1,6 @@
 ---
 title: "Niagara Parks Botanical Gardens Wedding Photos: A Niagara Falls Location Guide"
-description: "Planning wedding or engagement photos at the Niagara Parks Botanical Gardens? A photographer's guide to the permit rules, the parking, the best gardens, and the best months to come."
+description: "Wedding or engagement photos at the Niagara Parks Botanical Gardens? My guide to the permit rules, parking, the best gardens, and the best months to come."
 publishDate: 2026-08-03
 author: "Akash Desai"
 coverImage: "../../assets/images/portfolio/karen-micheal/44.jpg"

@@ -34,5 +34,9 @@
 /travel/                                              /services/                   301
 /category/studio/                                     /services/headshots/         301
 
+# Sitemap: Search Console held the old Webflow /sitemap.xml (404 since the
+# rebuild). Forward it to the Astro sitemap index (2026-10-14).
+/sitemap.xml                                          /sitemap-index.xml           301
+
 # Webflow placeholder/stub pages (never built out, no SEO equity)
 /new-page-*                                           /                            301
