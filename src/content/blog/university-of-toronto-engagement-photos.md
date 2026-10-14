@@ -114,7 +114,7 @@ The quiet option. Elegant quadrangles, chapel-like architecture, and enclosed co
 
 **Do you need a permit for engagement photos at U of T?**
 
-Yes, for a professional shoot. Campus Events requires a wedding and lifestyle photography permit, around $500 per location, booked in advance. We handle the coordination.
+No, not for an engagement or pre wedding session. A permit is required only for wedding day photography, booked through U of T Campus Events.
 
 **What are the best spots?**
 
@@ -137,3 +137,5 @@ The U of T campus is one of Toronto's most timeless backdrops, and we know the r
 Or [send a note about a U of T session](/contact?venue=university-of-toronto) and tell us what you are planning. We always start with a conversation about the shoot, the looks, and the frames you are hoping for.
 
 Quick-reference version: the [U of T location guide](/location-guide/uoft/) has the parking, permit, and walking notes on one page.
+
+If you are a student rather than a couple, there is a separate guide to [headshots on the St. George campus](/blog/university-of-toronto-headshots/), photographed under the columns of Convocation Hall.

@@ -5,6 +5,7 @@
  * honest-copy: hero is a statement, NOT a review. The Google reviews are from
  *   wedding and event clients, and there are no headshot reviews to quote yet.
  * no fabricated metrics/testimonials · no em/en dashes · tokens + components reused
+ * interlude frames: a student session on the University of Toronto campus (Convocation Hall, University College), 2026-10-14
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
@@ -25,8 +26,8 @@ import faqData from '../../data/faq.json';
 import site from '../../data/site.json';
 
 import heroImage from '../../assets/images/homepage/headshots-hero.jpg';
-import momentImage from '../../assets/images/homepage/headshots-moment.jpg';
-import momentImageTwo from '../../assets/images/homepage/headshots-moment-2.jpg';
+import campusImage from '../../assets/images/homepage/headshots-uoft-01.jpg';
+import campusImageTwo from '../../assets/images/homepage/headshots-uoft-02.jpg';
 import ctaImage from '../../assets/images/homepage/headshots-cta.jpg';
 
 const headshotsJourneySteps = [
@@ -298,8 +299,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <figure class="col-span-12 md:col-span-4 md:col-start-5 mt-10 md:mt-0 reveal-left stagger-2">
           <div class="aspect-[3/4] overflow-hidden hover-zoom">
             <Image
-              src={momentImage}
-              alt="Full length business portrait of a man in a black suit seated on a bench outside a Toronto office building, by AD Photography"
+              src={campusImage}
+              alt="Headshot of a smiling woman in a black blazer with her arms crossed under the stone columns of Convocation Hall at the University of Toronto, by AD Photography"
               widths={[400, 600, 800]}
               sizes="(max-width: 768px) 100vw, 33vw"
               quality={75}
@@ -311,12 +312,12 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         <figure class="col-span-12 md:col-span-3 md:col-start-10 mt-3 md:mt-24 reveal-right stagger-3">
           <div class="aspect-[3/4] overflow-hidden hover-zoom">
             <Image
-              src={momentImageTwo}
-              alt="Full length professional portrait of a man in a black suit standing on the sidewalk beside a glass Toronto office building, by AD Photography"
+              src={campusImageTwo}
+              alt="Headshot of a smiling woman in a black blazer standing on a path outside University College at the University of Toronto, by AD Photography"
               widths={[320, 480, 640]}
               sizes="(max-width: 768px) 100vw, 25vw"
               quality={75}
-              class="w-full h-full object-cover parallax-img"
+              class="w-full h-full object-cover object-bottom parallax-img"
               loading="lazy"
             />
           </div>
@@ -340,7 +341,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
         </div>
         <div class="good-to-know-item reveal stagger-1">
           <p class="text-heading-md font-serif italic mb-3">Location guidance</p>
-          <p class="text-body-md text-on-surface-variant">Light first, location second. Your office, your campus, or a spot in the city. One good wall and an hour of soft light is usually all it takes.</p>
+          <p class="text-body-md text-on-surface-variant">Light first, location second. Your office, your campus, or a spot in the city. One good wall and an hour of soft light is usually all it takes. One example: <a href="/blog/university-of-toronto-headshots/" class="underline hover:text-on-surface cubic-ease" style="transition-duration: var(--duration-hover);">University of Toronto headshots</a> under the columns of Convocation Hall.</p>
         </div>
         <div class="good-to-know-item reveal stagger-2">
           <p class="text-heading-md font-serif italic mb-3">GTA travel included</p>

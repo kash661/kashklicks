@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### University of Toronto Headshots for Students
+
+- **URL:** https://kashklicks.ca/blog/university-of-toronto-headshots/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/university-of-toronto-headshots.md
+- **Published:** 2026-10-14
+- **Tags:** Headshots, University of Toronto, Students, Toronto, Behind the Scenes
+- **Summary:** University of Toronto headshots from $151.25, shown at Convocation Hall and University College. A short headshot session on campus needs no permit.
+
 ### Toronto Park Photo Permit: How to Book It, Step by Step
 
 - **URL:** https://kashklicks.ca/blog/toronto-park-photo-permit-how-to-book/

@@ -54,7 +54,7 @@ Sessions are on location anyway, so distance is a convenience question rather th
 
 **Toronto Metropolitan University**, formerly Ryerson University, is about 30 minutes from Albion, straight downtown.
 
-**University of Toronto** runs about 30 minutes to the St. George campus downtown, and about 25 minutes to U of T Mississauga.
+**University of Toronto** runs about 30 minutes to the St. George campus downtown, and about 25 minutes to U of T Mississauga. If you would rather stay on campus, my post on [University of Toronto headshots](/blog/university-of-toronto-headshots/) shows a session under the columns of Convocation Hall and outside University College.
 
 If you are at OCAD University, George Brown College, Centennial College, U of T Scarborough, Humber Lakeshore, or Sheridan College Davis Campus in Brampton, the same thing applies. I photograph on location across the GTA, so we find a good building near you instead of making you cross the city for a thirty minute session. Almost every campus in this region has one decent wall and one patch of even light, and that is really all a headshot needs.
 
