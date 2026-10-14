@@ -3809,7 +3809,7 @@
     "area": "Oshawa, Simcoe Street North",
     "zone": "Oshawa",
     "vibe": "Grand estate, formal gardens, heritage, stately, cinematic",
-    "vibeLine": "A 1917 auto baron's mansion in Oshawa, eleven acres of heritage gardens around it, fountains and mature evergreens that hold light late in the day.",
+    "vibeLine": "A 1917 auto baron's mansion in Oshawa, eleven acres of heritage gardens around it, a long pool with fountains and mature evergreens.",
     "idealIf": "You want auto baron grandeur and formal gardens, and you do not mind booking a paid photo pass and sharing the grounds with whoever else is booked.",
     "bestFor": [
       "Pre-wedding",
@@ -3836,11 +3836,16 @@
     "permitNeeded": "Yes",
     "permitFee": "$300 plus HST outdoor and $400 plus HST indoor, base rates published for 2026",
     "permitContact": "photos.weddings@parkwoodestate.com or 905-433-4311 ext. 32872",
-    "parking": "Free on site parking for Parkwood guests, very limited and not guaranteed, designated areas only. Posted hours are 9am to 5pm Monday to Friday and 1pm to 5pm Saturday and Sunday, the same as the garden hours, with exceptions posted on the site banner. A paid garage sits west of the estate.",
+    "parking": "Free on site parking for Parkwood guests, very limited and not guaranteed, designated areas only. The gardens keep seasonal daytime hours, 9am to 5pm on weekdays and 10am to 5pm on weekends in summer, 1pm to 5pm daily in October, with changes posted on the site banner, and the grounds close for winter. A paid garage sits on the west side of the estate.",
     "travelTime": "50 to 75 min from downtown",
     "image": "parkwood-estate.jpg",
     "lat": 43.90422,
-    "lng": -78.8679
+    "lng": -78.8679,
+    "story": "In 1917 R.S. McLaughlin, the founder of General Motors of Canada, moved his family into Parkwood. Its 11 acres of grounds and gardens give me a different backdrop at every stop: the Formal Garden's long pool, the colonnade, the terrace and the mansion's curved wing of tall arched windows.\n\nI start at the colonnade and walk past the rose beds into the Formal Garden. Then come the lawn under the big trees, the mansion with its curved bay of tall arched windows, the terrace, and the hedged garden last. The photo pass gives us two hours, and the loop fits if we keep moving.\n\nThe gardens close at 5 pm. This is a daylight location, not a golden hour one. Midday sun is hard on the open Formal Garden. I use it anyway, for wide frames and spins, and soften it with motion blur and grain. The colonnade and the big trees on the lawn hold the only real shade. I would pick late summer into early fall. On 12 September the roses and dahlias were still out and one tree had already turned orange.\n\nManinder and Parneet came that Saturday, her in a white dress with a long sheer cape, him in a camel suede jacket. He twirled her beside the pool, and under the big trees the cape opened like wings. On the terrace she looked back over her shoulder, her hand still in his. None of it needed golden hour.\n\nPractical notes: a professional photographer needs a photo pass, booked in advance. The outdoor pass is $300 plus HST for two hours. The grounds are free to walk and close for winter. Parking on site is free but very limited. Paths are gravel and flagstone, so wear shoes you can walk in. It is 50 to 75 minutes from downtown Toronto by car.",
+    "blogGuide": {
+      "url": "/blog/parkwood-estate-engagement-photos-oshawa/",
+      "title": "Parkwood Estate Engagement Photos: An Oshawa Location Guide"
+    }
   },
   {
     "id": "lakeview-park-oshawa",

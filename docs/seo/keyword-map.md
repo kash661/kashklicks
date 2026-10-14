@@ -37,6 +37,8 @@ Solo photographer/filmmaker. Toronto-based. Focus on intimate weddings, civil ce
 | marquee-letter-rental-cost-toronto | how much does it cost to rent marquee letters in toronto | draft, links to /services/marquee-letters |
 | marquee-letters-wedding-ideas-toronto | marquee letters for a wedding (LOVE placement ideas) | draft, links to /services/marquee-letters |
 | how-marquee-letters-work | how marquee letters work (bulbs, power, setup, photos) | draft, links to /services/marquee-letters |
+| parkwood-estate-engagement-photos-oshawa | parkwood estate engagement photos (secondary: parkwood estate photo pass, engagement photos oshawa) | published 2026-10-14, venue guide paired with the maninder-parneet gallery (S12) |
+| sunrise-engagement-photos-toronto | sunrise engagement photos toronto (secondary: best time of day for engagement photos, best time for outdoor photography toronto) | published 2026-10-14, owns WHY and HOW; best-toronto-sunrise-photo-locations-lake-ontario keeps WHERE |
 
 ## Keyword Gaps (target with future content)
 
@@ -46,7 +48,7 @@ Solo photographer/filmmaker. Toronto-based. Focus on intimate weddings, civil ce
 - "Aga Khan Museum engagement photos"
 - "winter engagement photos Toronto"
 - "how much does a wedding photographer cost Toronto"
-- "best time for outdoor photography Toronto"
+- "best time for outdoor photography Toronto" (targeted 2026-10-14 by sunrise-engagement-photos-toronto)
 - "small church wedding photographer Toronto"
 - "city hall wedding photographer Toronto"
 - "intimate wedding photographer GTA"

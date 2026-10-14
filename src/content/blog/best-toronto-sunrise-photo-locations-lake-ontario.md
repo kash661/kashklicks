@@ -9,7 +9,7 @@ tags: ["Locations", "Sunrise", "Toronto", "GTA", "Lake Ontario"]
 draft: false
 ---
 
-There is a window of about thirty minutes after sunrise when Lake Ontario does something we can't replicate any other time of day. The light comes in low across the water, the lake usually holds a touch of mist, and the whole shoreline turns warm gold. We've shot a lot of pre-wedding and engagement sessions at this hour, and the truth is the location matters more here than at any other time of day. You need a spot that faces the right direction, that we can actually get to before the sun comes up, and that gives us something to do with our hands while we wait for the light.
+There is a window of about forty minutes after sunrise when Lake Ontario does something we can't replicate any other time of day. The light comes in low across the water, the lake usually holds a touch of mist, and the whole shoreline turns warm gold. We've shot a lot of pre-wedding and engagement sessions at this hour, and the truth is the location matters more here than at any other time of day. You need a spot that faces the right direction, that we can actually get to before the sun comes up, and that gives us something to do with our hands while we wait for the light.
 
 Here are our five favourite sunrise photo shoot locations along the Lake Ontario shoreline, ordered from east to west.
 
@@ -80,5 +80,7 @@ The drive to Burlington is worth it. Paletta Lakefront Park is a fourteen-acre h
 **Pro tip:** The little stone bridge over the creek inside the park is one of our favourite intimate frames. It is tucked enough that you forget you are inside a busy public park.
 
 ## Before You Book a Sunrise Session
+
+For what first light does to a photo and how a sunrise morning runs, read my guide to [sunrise engagement photos in Toronto](/blog/sunrise-engagement-photos-toronto/), built around [Maninder and Parneet's beach session](/portfolio/maninder-parneet/).
 
 Sunrise sessions are the best-kept secret in wedding photography. The light is unreal, the locations are empty, and your photos look like nothing else in your album. If you want us to plan one with you, [reach out here](/contact/#inquiry) and tell us which of these spots speaks to you. We'll handle the rest.

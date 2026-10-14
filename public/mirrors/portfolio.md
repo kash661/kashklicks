@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (35)
+## Sessions (36)
+
+### Maninder + Parneet
+
+- **Gallery:** https://kashklicks.ca/portfolio/maninder-parneet/
+- **Type:** Pre-Wedding (photo and film)
+- **Location:** Parkwood Estate, Oshawa and a Lake Ontario sunrise
+- **Date:** 2026-09-12
 
 ### Josie + Nelson
 

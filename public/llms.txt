@@ -119,6 +119,7 @@ Couples, planners, and search engines find this studio via a wide range of query
 
 Recent real sessions and galleries, newest first. Each links to the full online gallery.
 
+- [Maninder + Parneet at Parkwood Estate, Oshawa and a Lake Ontario sunrise](https://kashklicks.ca/portfolio/maninder-parneet/): Pre-Wedding session, with cinematic film. 2026-09-12.
 - [Josie + Nelson at Guild Park & Gardens, Scarborough](https://kashklicks.ca/portfolio/josie-nelson-wedding/): Wedding session, with cinematic film. 2026-08-30.
 - [Lavina + Raeed at Guild Park and Gardens, Scarborough](https://kashklicks.ca/portfolio/lavina-raeed/): Proposal session. 2026-08-23.
 - [Ashley + Donald at Château des Charmes, Niagara on the Lake](https://kashklicks.ca/portfolio/ashley-donald/): Proposal session. 2026-08-21.
@@ -158,6 +159,8 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 ## Blog
 
 - [How to Elope in Toronto: Licence, Officiant, Where, and Cost](https://kashklicks.ca/blog/how-to-elope-in-toronto/): How to elope in Toronto, step by step: the $180 licence, finding an officiant, every place you can legally marry, what it costs, and real Toronto elopements.
+- [Parkwood Estate Engagement Photos: An Oshawa Location Guide](https://kashklicks.ca/blog/parkwood-estate-engagement-photos-oshawa/): Parkwood Estate engagement photos in Oshawa: the photo pass, prices, hours, parking and the garden spots, from a real pre-wedding session I shot in September.
+- [Sunrise Engagement Photos in Toronto: Why I Shoot at First Light](https://kashklicks.ca/blog/sunrise-engagement-photos-toronto/): Sunrise engagement photos in Toronto, built around a real Lake Ontario beach session: what first light does to a photo and what the early start asks of you.
 - [University of Toronto Headshots for Students](https://kashklicks.ca/blog/university-of-toronto-headshots/): University of Toronto headshots from $151.25, shown at Convocation Hall and University College. A short headshot session on campus needs no permit.
 - [Winter Engagement Photos in Toronto: Where to Shoot and What to Wear](https://kashklicks.ca/blog/winter-engagement-photos-toronto/): Winter engagement photos in Toronto, from a January session in the snow at RC Harris to U of T's stone arches. Where I shoot, the light, and staying warm.
 - [Toronto Park Photo Permit: How to Book It, Step by Step](https://kashklicks.ca/blog/toronto-park-photo-permit-how-to-book/): How to book a Toronto park photo permit: make a City account with both your names, call 416-396-7378, press 2, and pay by card. The full walkthrough.
@@ -297,7 +300,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 - [Albion Falls](https://kashklicks.ca/location-guide/albion-falls/): Red Hill Creek steps down the escarpment in wide shelves, loud in spring and gold in October, and you hear it before you clear the parking lot.
 - [Princess Point](https://kashklicks.ca/location-guide/princess-point/): A low sand point where Cootes Paradise opens up to the west, tall prairie grass at your backs and the whole marsh holding the last of the light.
 - [Sam Lawrence Park](https://kashklicks.ca/location-guide/sam-lawrence/): A stone lookout on the escarpment brow where the lower city, the harbour and Lake Ontario all open up behind you at golden hour.
-- [Parkwood National Historic Site](https://kashklicks.ca/location-guide/parkwood-estate/): A 1917 auto baron's mansion in Oshawa, eleven acres of heritage gardens around it, fountains and mature evergreens that hold light late in the day.
+- [Parkwood National Historic Site](https://kashklicks.ca/location-guide/parkwood-estate/): A 1917 auto baron's mansion in Oshawa, eleven acres of heritage gardens around it, a long pool with fountains and mature evergreens.
 - [Lakeview Park](https://kashklicks.ca/location-guide/lakeview-park-oshawa/): A sand beach, a pier running out into Lake Ontario, and three nineteenth century heritage houses a short walk back from the water.
 - [Oshawa Valley Botanical Gardens](https://kashklicks.ca/location-guide/oshawa-botanical/): In June this creek valley fills with more than three hundred varieties of peonies, and the Memory Garden walkways lead to a pergola given by the Rotary Clubs.
 
@@ -321,6 +324,8 @@ Full markdown representations of each page are available at:
 - [Services · Marquee Letters](https://kashklicks.ca/mirrors/services-marquee-letters.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
 - [Blog · How to Elope in Toronto: Licence, Officiant, Where, and Cost](https://kashklicks.ca/mirrors/blog/how-to-elope-in-toronto.md)
+- [Blog · Parkwood Estate Engagement Photos: An Oshawa Location Guide](https://kashklicks.ca/mirrors/blog/parkwood-estate-engagement-photos-oshawa.md)
+- [Blog · Sunrise Engagement Photos in Toronto: Why I Shoot at First Light](https://kashklicks.ca/mirrors/blog/sunrise-engagement-photos-toronto.md)
 - [Blog · University of Toronto Headshots for Students](https://kashklicks.ca/mirrors/blog/university-of-toronto-headshots.md)
 - [Blog · Winter Engagement Photos in Toronto: Where to Shoot and What to Wear](https://kashklicks.ca/mirrors/blog/winter-engagement-photos-toronto.md)
 - [Blog · Toronto Park Photo Permit: How to Book It, Step by Step](https://kashklicks.ca/mirrors/blog/toronto-park-photo-permit-how-to-book.md)

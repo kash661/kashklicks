@@ -20,6 +20,22 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Tags:** Elopement, Civil Ceremony, Toronto City Hall, Planning, Toronto, Wedding
 - **Summary:** How to elope in Toronto, step by step: the $180 licence, finding an officiant, every place you can legally marry, what it costs, and real Toronto elopements.
 
+### Parkwood Estate Engagement Photos: An Oshawa Location Guide
+
+- **URL:** https://kashklicks.ca/blog/parkwood-estate-engagement-photos-oshawa/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/parkwood-estate-engagement-photos-oshawa.md
+- **Published:** 2026-10-14
+- **Tags:** Photo Location, Parkwood Estate, Oshawa, Pre-Wedding, Engagement
+- **Summary:** Parkwood Estate engagement photos in Oshawa: the photo pass, prices, hours, parking and the garden spots, from a real pre-wedding session I shot in September.
+
+### Sunrise Engagement Photos in Toronto: Why I Shoot at First Light
+
+- **URL:** https://kashklicks.ca/blog/sunrise-engagement-photos-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/sunrise-engagement-photos-toronto.md
+- **Published:** 2026-10-14
+- **Tags:** Pre-Wedding, Sunrise, Engagement, Lake Ontario, Behind the Scenes
+- **Summary:** Sunrise engagement photos in Toronto, built around a real Lake Ontario beach session: what first light does to a photo and what the early start asks of you.
+
 ### University of Toronto Headshots for Students
 
 - **URL:** https://kashklicks.ca/blog/university-of-toronto-headshots/
