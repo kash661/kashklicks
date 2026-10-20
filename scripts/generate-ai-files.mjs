@@ -789,7 +789,7 @@ function buildServicesMirror() {
   p('### Surprise Proposal Photography');
   p('One hour photographed from a distance so the question stays a surprise, then a mini shoot with the two of you after the yes.');
   p();
-  p(`- ${proposal} (single package, 1 hour coverage, around 80 photos)`);
+  p(`- ${proposal} (single package, 1 hour coverage, around 40 photos)`);
   p(`- Details: ${SITE_URL}/services/proposal/`);
   p();
   p('### Civil Ceremony Photography');
@@ -1037,7 +1037,7 @@ function buildServiceProposalMirror() {
   p();
   p(`**URL:** ${SITE_URL}/services/proposal/`);
   p('**Title:** Toronto Proposal Photographer | AD Photography');
-  p(`**Description:** Surprise proposal photography in Toronto and the GTA from ${price}. One hour of hidden coverage, around 80 photos, and your Fujifilm photos the next day.`);
+  p(`**Description:** Surprise proposal photography in Toronto and the GTA from ${price}. One hour of hidden coverage, around 40 photos, and your Fujifilm photos the next day.`);
   p();
   p('---');
   p();
@@ -1079,7 +1079,7 @@ function buildServiceProposalMirror() {
   p('2. **Pick The Spot.** Location and time of day chosen together, looking for good light and somewhere to stand unseen.');
   p('3. **I Disappear.** I arrive early and set up well back with a long lens.');
   p('4. **The Question.** You ask, and the whole thing is photographed from a distance.');
-  p('5. **The Mini Shoot.** After the yes, the rest of the hour is the two of you. Around 80 photos in total.');
+  p('5. **The Mini Shoot.** After the yes, the rest of the hour is the two of you. Around 40 photos in total.');
   p('6. **Next Day, Then The Rest.** Fujifilm film simulation photos the next day, remaining photos fully edited after.');
   p();
   p('---');

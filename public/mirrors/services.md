@@ -25,7 +25,7 @@ Cinematic photography and filmmaking sessions at Toronto's most stunning locatio
 ### Surprise Proposal Photography
 One hour photographed from a distance so the question stays a surprise, then a mini shoot with the two of you after the yes.
 
-- $325 (single package, 1 hour coverage, around 80 photos)
+- $325 (single package, 1 hour coverage, around 40 photos)
 - Details: https://kashklicks.ca/services/proposal/
 
 ### Civil Ceremony Photography

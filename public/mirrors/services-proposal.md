@@ -2,7 +2,7 @@
 
 **URL:** https://kashklicks.ca/services/proposal/
 **Title:** Toronto Proposal Photographer | AD Photography
-**Description:** Surprise proposal photography in Toronto and the GTA from $325. One hour of hidden coverage, around 80 photos, and your Fujifilm photos the next day.
+**Description:** Surprise proposal photography in Toronto and the GTA from $325. One hour of hidden coverage, around 40 photos, and your Fujifilm photos the next day.
 
 ---
 
@@ -17,11 +17,11 @@ No review is quoted on this page. There are no proposal reviews on file yet, and
 
 **H1:** Toronto Proposal Photography
 
-A surprise proposal captured from a distance, then a mini shoot to celebrate the yes. One hour of discreet coverage with around 80 photos. Your Fujifilm film simulation photos arrive the next day, and the rest follow fully edited.
+A surprise proposal captured from a distance, then a mini shoot to celebrate the yes. One hour of discreet coverage with around 40 photos. Your Fujifilm film simulation photos arrive the next day, and the rest follow fully edited.
 
 ### What's Included
 - 1 hour of discreet coverage
-- Around 80 photos
+- Around 40 photos
 - Fujifilm film simulation photos delivered next day
 - Remaining photos fully edited after
 - Help planning the spot and timing
@@ -30,7 +30,7 @@ A surprise proposal captured from a distance, then a mini shoot to celebrate the
 ### At a glance
 - **Price:** $325 for The Proposal. One hour of coverage at one spot.
 - **How the hour splits:** Hidden while you ask, then a mini shoot with the two of you once you hear yes.
-- **Photos:** Around 80 from the hour.
+- **Photos:** Around 40 from the hour.
 - **Delivery:** Fujifilm film simulation photos the next day. The rest follow fully edited.
 - **Planning:** Help choosing the spot and the time of day before the date.
 - **Where:** Toronto and the GTA.
@@ -39,7 +39,7 @@ A surprise proposal captured from a distance, then a mini shoot to celebrate the
 
 ## The Proposal Package
 
-- **The Proposal: $325** (1 hour, 1 location, Around 80 edited photos)
+- **The Proposal: $325** (1 hour, 1 location, Around 40 edited photos)
 
 ---
 
@@ -49,7 +49,7 @@ A surprise proposal captured from a distance, then a mini shoot to celebrate the
 2. **Pick The Spot.** Location and time of day chosen together, looking for good light and somewhere to stand unseen.
 3. **I Disappear.** I arrive early and set up well back with a long lens.
 4. **The Question.** You ask, and the whole thing is photographed from a distance.
-5. **The Mini Shoot.** After the yes, the rest of the hour is the two of you. Around 80 photos in total.
+5. **The Mini Shoot.** After the yes, the rest of the hour is the two of you. Around 40 photos in total.
 6. **Next Day, Then The Rest.** Fujifilm film simulation photos the next day, remaining photos fully edited after.
 
 ---
