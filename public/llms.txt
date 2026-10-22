@@ -120,6 +120,7 @@ Couples, planners, and search engines find this studio via a wide range of query
 Recent real sessions and galleries, newest first. Each links to the full online gallery.
 
 - [Richie + Aimee at Alexander Muir Memorial Gardens, Toronto](https://kashklicks.ca/portfolio/richie-aimee/): Proposal session. 2026-10-14.
+- [A Styled Sunset Wedding at Guild Park & Gardens, Scarborough](https://kashklicks.ca/portfolio/guild-park-sunset-styled-wedding/): Wedding session. 2026-09-24.
 - [Maninder + Parneet at Parkwood Estate, Oshawa and a Lake Ontario sunrise](https://kashklicks.ca/portfolio/maninder-parneet/): Pre-Wedding session, with cinematic film. 2026-09-12.
 - [Josie + Nelson at Guild Park & Gardens, Scarborough](https://kashklicks.ca/portfolio/josie-nelson-wedding/): Wedding session, with cinematic film. 2026-08-30.
 - [Lavina + Raeed at Guild Park and Gardens, Scarborough](https://kashklicks.ca/portfolio/lavina-raeed/): Proposal session. 2026-08-23.
@@ -160,6 +161,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 ## Blog
 
 - [Alexander Muir Memorial Gardens: A Toronto Proposal Photo Guide](https://kashklicks.ca/blog/alexander-muir-memorial-gardens-proposal-photos/): Planning a proposal at Alexander Muir Memorial Gardens in North Toronto? The terrace, the best corners, permits, parking and timing, from a real October proposal.
+- [Sunset Wedding Photos at Guild Park & Gardens, Scarborough](https://kashklicks.ca/blog/guild-park-sunset-wedding-photos/): Sunset wedding photos at Guild Park & Gardens: what the last hour of light does to the ruins, when to start, sunset times by month, and estate gardens with the same feel.
 - [How to Elope in Toronto: Licence, Officiant, Where, and Cost](https://kashklicks.ca/blog/how-to-elope-in-toronto/): How to elope in Toronto, step by step: the $180 licence, finding an officiant, every place you can legally marry, what it costs, and real Toronto elopements.
 - [Parkwood Estate Engagement Photos: An Oshawa Location Guide](https://kashklicks.ca/blog/parkwood-estate-engagement-photos-oshawa/): Parkwood Estate engagement photos in Oshawa: the photo pass, prices, hours, parking and the garden spots, from a real pre-wedding session I shot in September.
 - [Sunrise Engagement Photos in Toronto: Why I Shoot at First Light](https://kashklicks.ca/blog/sunrise-engagement-photos-toronto/): Sunrise engagement photos in Toronto, built around a real Lake Ontario beach session: what first light does to a photo and what the early start asks of you.
@@ -326,6 +328,7 @@ Full markdown representations of each page are available at:
 - [Services · Marquee Letters](https://kashklicks.ca/mirrors/services-marquee-letters.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
 - [Blog · Alexander Muir Memorial Gardens: A Toronto Proposal Photo Guide](https://kashklicks.ca/mirrors/blog/alexander-muir-memorial-gardens-proposal-photos.md)
+- [Blog · Sunset Wedding Photos at Guild Park & Gardens, Scarborough](https://kashklicks.ca/mirrors/blog/guild-park-sunset-wedding-photos.md)
 - [Blog · How to Elope in Toronto: Licence, Officiant, Where, and Cost](https://kashklicks.ca/mirrors/blog/how-to-elope-in-toronto.md)
 - [Blog · Parkwood Estate Engagement Photos: An Oshawa Location Guide](https://kashklicks.ca/mirrors/blog/parkwood-estate-engagement-photos-oshawa.md)
 - [Blog · Sunrise Engagement Photos in Toronto: Why I Shoot at First Light](https://kashklicks.ca/mirrors/blog/sunrise-engagement-photos-toronto.md)

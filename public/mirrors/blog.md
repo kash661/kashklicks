@@ -20,6 +20,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 - **Tags:** Photo Location, Alexander Muir Memorial Gardens, Proposal, Engagement, North Toronto
 - **Summary:** Planning a proposal at Alexander Muir Memorial Gardens in North Toronto? The terrace, the best corners, permits, parking and timing, from a real October proposal.
 
+### Sunset Wedding Photos at Guild Park & Gardens, Scarborough
+
+- **URL:** https://kashklicks.ca/blog/guild-park-sunset-wedding-photos/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/guild-park-sunset-wedding-photos.md
+- **Published:** 2026-10-22
+- **Tags:** Photo Location, Guild Park & Gardens, Scarborough, Wedding, Styled Shoot, Sunset
+- **Summary:** Sunset wedding photos at Guild Park & Gardens: what the last hour of light does to the ruins, when to start, sunset times by month, and estate gardens with the same feel.
+
 ### How to Elope in Toronto: Licence, Officiant, Where, and Cost
 
 - **URL:** https://kashklicks.ca/blog/how-to-elope-in-toronto/

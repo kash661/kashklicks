@@ -10,7 +10,7 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (37)
+## Sessions (38)
 
 ### Richie + Aimee
 
@@ -18,6 +18,13 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 - **Type:** Proposal
 - **Location:** Alexander Muir Memorial Gardens, Toronto
 - **Date:** 2026-10-14
+
+### A Styled Sunset Wedding
+
+- **Gallery:** https://kashklicks.ca/portfolio/guild-park-sunset-styled-wedding/
+- **Type:** Wedding
+- **Location:** Guild Park & Gardens, Scarborough
+- **Date:** 2026-09-24
 
 ### Maninder + Parneet
 
