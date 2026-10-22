@@ -120,7 +120,7 @@ Two things get mixed up here constantly.
 
 **Wedding photography in the park is its own booking.** The City lists it at $485.47 for two hours including tax, for up to 30 people, through Client Services Park Bookings at 416-396-7378 (press 2). You need a City of Toronto booking account first, with both your names on it, and then you make the call yourselves. My [step by step guide to booking a Toronto park photo permit](/blog/toronto-park-photo-permit-how-to-book/) covers every step. Engagement sessions and general photography need no permit, which is the part most couples do not expect.
 
-**Timing.** In late summer, save the last hour of sun for the open lawn and the allée. Everything before it can live near the ruins and the hydrangeas, where the trees hold the light soft all afternoon.
+**Timing.** In late summer, save the last hour of sun for the open lawn and the allée. Everything before it can live near the ruins and the hydrangeas, where the trees hold the light soft all afternoon. I wrote up what that last hour looks like, minute by minute, in my post on [sunset wedding photos at Guild Park](/blog/guild-park-sunset-wedding-photos/).
 
 ## See the full gallery
 
