@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Alexander Muir Memorial Gardens: A Toronto Proposal Photo Guide
+
+- **URL:** https://kashklicks.ca/blog/alexander-muir-memorial-gardens-proposal-photos/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/alexander-muir-memorial-gardens-proposal-photos.md
+- **Published:** 2026-10-22
+- **Tags:** Photo Location, Alexander Muir Memorial Gardens, Proposal, Engagement, North Toronto
+- **Summary:** Planning a proposal at Alexander Muir Memorial Gardens in North Toronto? The terrace, the best corners, permits, parking and timing, from a real October proposal.
+
 ### How to Elope in Toronto: Licence, Officiant, Where, and Cost
 
 - **URL:** https://kashklicks.ca/blog/how-to-elope-in-toronto/

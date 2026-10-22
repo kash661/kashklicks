@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (36)
+## Sessions (37)
+
+### Richie + Aimee
+
+- **Gallery:** https://kashklicks.ca/portfolio/richie-aimee/
+- **Type:** Proposal
+- **Location:** Alexander Muir Memorial Gardens, Toronto
+- **Date:** 2026-10-14
 
 ### Maninder + Parneet
 

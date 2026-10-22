@@ -1983,6 +1983,7 @@
     "vibeLine": "Rose beds stepping down a hillside in stone terraces, a maple leaf gate on Yonge, and a ravine waiting at the bottom of the stairs.",
     "idealIf": "You want stone terraces, sunken beds and roses that read like an old estate, with a ravine a couple of minutes away when you want a second backdrop.",
     "bestFor": [
+      "Proposals",
       "Engagements",
       "Pre-wedding",
       "Couples",
@@ -2000,16 +2001,21 @@
     ],
     "walkingLevel": "Low-Medium",
     "walkingNote": "Crushed brick and paved paths with stone steps between the terraces. Steeper if the session continues into the ravine.",
-    "permits": "Personal photos are free. A paid session needs City of Toronto authorization. The City lists this park for wedding photography, two hour minimum, up to 30 people, booked through Client Services Park Bookings. Outdoor season is typically May 15 to September 30. Not a listed ceremony site.",
+    "permits": "Small sessions like a proposal or an engagement shoot need no permit. A wedding day shoot with a bigger group may need one: the City of Toronto lists this park for wedding photography, two hour minimum, up to 30 people, booked through Client Services Park Bookings, with an outdoor season of roughly May 15 to September 30. Not a listed ceremony site.",
     "permitNeeded": "Sometimes",
-    "permitFee": "$173.36 for two hours, taxes included",
+    "permitFee": "$173.36 for two hours, taxes included, wedding day photography only",
     "permitContact": "City of Toronto Client Services, Park Bookings, 416-396-7378",
     "permitAuthority": "toronto-parks",
     "parking": "No lot at the Yonge Street gate. Curb rules on the east side of Yonge vary by segment, from no parking and no standing to a one hour maximum between 8 a.m. and 4 p.m., so check posted signs. The City lists a parking lot at the adjoining Lawrence Park Ravine, off Alexander Muir Road.",
     "travelTime": "20 to 30 min from downtown",
     "image": "alexander-muir-gardens.jpg",
     "lat": 43.72141,
-    "lng": -79.40112
+    "lng": -79.40112,
+    "story": "Alexander Muir wrote The Maple Leaf Forever, and this garden was laid out for him in 1933, first on a site across from Mount Pleasant Cemetery. In 1951 the Yonge subway needed that land, so the walls and plantings were moved up Yonge Street to Lawrence Park and the garden was dedicated again in 1952. It still keeps its formal symmetry: terraced lawns, a stone terrace with an arched niche and twin iron stair railings, clipped hedges, and long beds that are full of mums and marigolds in October.\n\nThe terrace steps are the stage. That is where Richie proposed to Aimee on a grey Wednesday afternoon in October, with white lilies in gold vases, framed photos lining the steps and family watching from the terrace above. I stood far back on the lawn with a long lens. The lawn gives you the distance to hide and a clean, symmetrical view straight up the steps.\n\nAfter the yes, the garden keeps giving. Short flagstone stairs between rounded hedges make a quiet corner for close portraits. An old ivy covered wall with worn stone steps sits lower down, and in mid October the leaves were already on the ground there. The open lawn is wide enough to run across, and I shot it with a slow shutter so the flower beds streaked behind them. A huge blue spruce at the edge of the lawn closed out the session.\n\nPractical notes: a small proposal or engagement session needs no permit. A wedding day shoot with a bigger group may need a City of Toronto booking, so call Park Bookings first. There is no lot at the Yonge Street gate, so read the curb signs or use the lot at the Lawrence Park Ravine off Alexander Muir Road. Lawrence subway station is a short walk north. Expect stone steps between the terraces.",
+    "blogGuide": {
+      "url": "/blog/alexander-muir-memorial-gardens-proposal-photos/",
+      "title": "Alexander Muir Memorial Gardens: A Toronto Proposal Photo Guide"
+    }
   },
   {
     "id": "earl-bales",
