@@ -390,13 +390,13 @@
     "category": "Events",
     "price": 100,
     "currency": "CAD",
-    "description": "Pay as you go coverage for smaller parties and shorter events. $100 per hour, with 40 edited photos for every hour of coverage.",
+    "description": "Pay as you go coverage for smaller parties and shorter events. $100 per hour, with 25 edited photos for every hour of coverage.",
     "duration": "Book by the hour",
-    "photos": "40 edited per hour",
+    "photos": "25 edited per hour",
     "film": false,
     "highlights": [
       "$100 per hour of coverage",
-      "40 edited photos per hour",
+      "25 edited photos per hour",
       "Private online gallery",
       "2-week delivery"
     ],
