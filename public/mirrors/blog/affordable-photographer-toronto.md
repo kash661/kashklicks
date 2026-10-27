@@ -9,7 +9,7 @@
 
 You typed something like "affordable photographer Toronto" into Google because you have a real event coming up, a real budget, and no interest in paying wedding money for a two hour birthday party.
 
-Earlier this year I added an hourly rate to my celebration packages: **$100 per hour, with 40 edited photos for every hour I shoot.** Book only the hours you need, travel within the GTA included. This post covers what the rate includes, what it does not, and how to decide if it fits your event.
+Earlier this year I added an hourly rate to my celebration packages: **$100 per hour, with 25 edited photos for every hour I shoot.** Book only the hours you need, travel within the GTA included. This post covers what the rate includes, what it does not, and how to decide if it fits your event.
 
 For context, published Toronto pricing guides put typical event coverage between $200 and $500 per hour, and two or three hour minimums are common. I am not claiming those photographers are overpriced. Many of them are shooting six hour corporate galas with two shooters. I am saying a two hour birthday party is a different job, and it deserves a price built for it.
 
@@ -24,7 +24,7 @@ So the hourly rate exists for exactly those events.
 ## What $100 per hour includes
 
 - One photographer, me, for the hours you book. I am the same person who shoots my weddings, with the same cameras.
-- **40 edited photos per hour of coverage.** Not 40 files dumped from a memory card. Chosen frames, edited one by one, the same way I finish wedding galleries.
+- **25 edited photos per hour of coverage.** Not 25 files dumped from a memory card. Chosen frames, edited one by one, the same way I finish wedding galleries.
 - A private online gallery you can share with family and guests.
 - Delivery within two weeks.
 - Travel within the Greater Toronto Area at no extra charge. Outside the GTA I quote it upfront before you book.
@@ -39,7 +39,7 @@ When a photographer is cheap, something was cut. That is true everywhere, so the
 
 Here is my list, in full:
 
-- **The photo count is capped.** 40 edited photos per hour instead of every good frame. At a lively party I shoot far more than that, so I pick the best of each moment rather than editing them all.
+- **The photo count is capped.** 25 edited photos per hour instead of every good frame. At a lively party I shoot far more than that, so I pick the best of each moment rather than editing them all.
 - **There is no film.** The hourly rate is photography only. Video is a different production.
 - **There is no second shooter.** One angle, one photographer. For most parties under about 60 guests, that is genuinely all you need.
 
@@ -57,15 +57,15 @@ That is what you are actually buying at any price point: someone who notices tho
 
 I would rather talk you out of the wrong booking than take it. Skip the hourly rate if:
 
-- **You want every moment edited.** The [Celebrations package](/services/celebrations/) is $551.25 for the first two hours and $151.25 for each hour after, and it costs more than the hourly rate at every length. You are not paying for the hours. You are paying to lift the 40 photo cap so I edit every good frame of the night. A four hour party is $400 and about 160 photos on the hourly rate, or $853.75 and unlimited on Celebrations. Pick based on how much of the night you want back.
+- **You want every moment edited.** The [Celebrations package](/services/celebrations/) is $551.25 for the first two hours and $151.25 for each hour after, and it costs more than the hourly rate at every length. You are not paying for the hours. You are paying to lift the 25 photo cap so I edit every good frame of the night. A four hour party is $400 and about 100 photos on the hourly rate, or $853.75 and unlimited on Celebrations. Pick based on how much of the night you want back.
 - **It is a wedding.** Weddings are not hourly work, they are planned productions with scouting, timelines, and backups. I wrote a full honest breakdown of [what wedding photography costs in Toronto](/blog/intimate-toronto-wedding-photography-cost/) if that is the budget you are working on.
 - **You need video too.** That is a different conversation, and I am happy to have it, but not at $100 per hour.
 
 ## Affordable photographer in Toronto: the fast facts
 
-**How much does an event photographer cost in Toronto?** Published local guides put typical event coverage between $200 and $500 per hour, often with minimums. My hourly rate is $100 per hour with 40 edited photos per hour, a private gallery, and two week delivery.
+**How much does an event photographer cost in Toronto?** Published local guides put typical event coverage between $200 and $500 per hour, often with minimums. My hourly rate is $100 per hour with 25 edited photos per hour, a private gallery, and two week delivery.
 
-**Is a $100 per hour photographer actually good?** A low rate always means something was cut, so ask what. Here the cap is the photo count, 40 per hour instead of unlimited. Same camera, same editing, same person who shoots my weddings.
+**Is a $100 per hour photographer actually good?** A low rate always means something was cut, so ask what. Here the cap is the photo count, 25 per hour instead of unlimited. Same camera, same editing, same person who shoots my weddings.
 
 **Do you photograph weddings at $100 per hour?** No. Weddings are priced as packages and start at $1,401.25. If that is your budget question, read [what wedding photography costs in Toronto](/blog/intimate-toronto-wedding-photography-cost/).
 

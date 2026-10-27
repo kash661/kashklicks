@@ -40,7 +40,7 @@ Birthdays, bridal showers, baby showers, corporate events. Every gathering has m
 
 ## Event Packages
 
-- **The Hourly: $100** (book by the hour, 40 edited per hour photos)
+- **The Hourly: $100** (book by the hour, 25 edited per hour photos)
 - **Celebrations: $551.25** (minimum 2 hours, Unlimited edited photos)
 
 ---
