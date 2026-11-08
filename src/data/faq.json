@@ -8,7 +8,7 @@
   },
   {
     "question": "Can I get the raw files?",
-    "answer": "Yes. Raw photos are $39.25 on Love Story Mini, $49.25 on Love Story Duo, $69.25 on the photo and film sessions, and $89.25 on The Pre Wedding. Raw video is $101.25. Delivered digitally with your edited gallery.",
+    "answer": "RAW files are not included in any package, but you can add them. Raw photos are $39.25 on Love Story Mini, $49.25 on Love Story Duo, $69.25 on the photo and film sessions, and $89.25 on The Pre Wedding. Raw video is $101.25. Delivered digitally with your edited gallery.",
     "services": [
       "pre-wedding"
     ]
@@ -29,7 +29,7 @@
   },
   {
     "question": "Are there travel fees?",
-    "answer": "GTA travel is included. From 50 to 150 km outside Toronto it is $101.25, and from 150 to 300 km it is $201.25. Further than that, or anywhere abroad, I quote it for you with any flights and nights away charged at cost. No surprises.",
+    "answer": "Inside the GTA there is no travel fee, only parking at cost with the receipt. Outside the GTA it is $0.75 per km round trip, counted from the GTA boundary, plus parking. Further away or abroad, I quote it, with flights and nights away at cost.",
     "services": [
       "wedding"
     ]
@@ -43,7 +43,7 @@
   },
   {
     "question": "Are there travel fees?",
-    "answer": "GTA travel is included. From 50 to 150 km outside Toronto it is $101.25, and from 150 to 300 km it is $201.25. Further than that, or anywhere abroad, I quote it for you with any flights and nights away charged at cost. No surprises.",
+    "answer": "Inside the GTA there is no travel fee, only parking at cost with the receipt. Outside the GTA it is $0.75 per km round trip, counted from the GTA boundary, plus parking. Further away or abroad, I quote it, with flights and nights away at cost.",
     "services": [
       "pre-wedding",
       "civil-ceremony",
@@ -112,6 +112,55 @@
     ]
   },
   {
+    "question": "What if the session runs over time?",
+    "answer": "Overtime is $151.25 per hour, billed in 30 minute blocks. It only applies to delays on your side, like a late start, hair and makeup running over, or an outfit or location added on the day. I give you a 15 minute heads up before your time is up, so nothing runs over by surprise. Time lost on my side is never charged.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "How many changes can we ask for on the film?",
+    "answer": "One round of revisions is included with every film. Each extra round is $76.25.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "When do we get our film?",
+    "answer": "On the photo and film sessions, your film and your full gallery arrive within 4 weeks. Need it sooner? Rush film delivery gets your film to you in 2 weeks for $251.25.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "How does payment work?",
+    "answer": "A 50% retainer holds your date at booking. The remaining balance is due on or before the shoot day. Any overtime or extras added on the day are settled on the day.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "Do we pay for parking?",
+    "answer": "Yes, parking at every location is charged at cost, and I send you the receipt. There is no markup and no travel fee inside the GTA.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "Do weekend dates cost more?",
+    "answer": "Saturdays and Sundays from July to October are peak weekends and carry a small surcharge: $51.25 on Love Story + Film, $76.25 on The Signature Session and $101.25 on The Pre Wedding. Weekdays and the off season do not.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
+    "question": "Is a save the date reel included?",
+    "answer": "The Signature Session includes one vertical save the date reel of 30 to 40 seconds, and The Pre Wedding includes a trailer you can use the same way. On the other sessions you can add one for $101.25.",
+    "services": [
+      "pre-wedding"
+    ]
+  },
+  {
     "question": "How long until I get my photos?",
     "answer": "Sneak peek within days. Full gallery in 2 to 4 weeks.",
     "services": [
@@ -141,7 +190,7 @@
   },
   {
     "question": "Can the engagement session happen outside Toronto?",
-    "answer": "Inside the GTA, yes, at no extra cost. Outside the GTA, I charge travel at cost. Destination engagements we can talk through.",
+    "answer": "Yes. Inside the GTA there is no travel fee, only parking at cost with the receipt. Outside the GTA it is $0.75 per km round trip, counted from the GTA boundary, plus parking. Further away or abroad, I quote it, with flights and nights away at cost.",
     "pages": [
       "free-engagement-session-toronto"
     ]

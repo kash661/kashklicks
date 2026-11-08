@@ -20,7 +20,7 @@ faq:
   - question: "Is a second photographer worth it?"
     answer: "Not for most of the weddings I shoot. One photographer keeps an intimate day calm and keeps the price down, and it means one consistent eye on the whole gallery. A second photographer earns its keep when the guest count is large, when both partners are getting ready in different places at the same time, or when the ceremony and the cocktail hour overlap. On The Essentials a second photographer is $101.25 per hour. The Full Day includes one for the ceremony or the reception, and The Complete Story includes one outright."
   - question: "How much is a pre wedding shoot in Toronto?"
-    answer: "My pre wedding sessions start at $351.25 for Love Story Mini, which is up to 2 hours at one location with 50 or more edited photos. Love Story Duo is $551.25 for up to 3 hours across two locations with 80 or more photos. Love Story + Film is $551.25 for 3 to 4 hours with 40 photos and a 2 to 3 minute film. The Signature Session is $751.25 for up to 5 hours with a 3 to 4 minute film, and The Pre Wedding is $1,251.25 for up to 10 hours across three locations."
+    answer: "My pre wedding sessions start at $351.25 for Love Story Mini, which is up to 2 hours at one location with 50 or more edited photos. Love Story Duo is $551.25 for up to 3 hours across two locations with 80 or more photos. Love Story + Film is $551.25 for 3 hours with 40 photos and a 2 minute film. The Signature Session is $851.25 for 5 hours with 80 photos, a 3 to 4 minute film and a save the date reel, and The Pre Wedding is $1,251.25 for 10 hours across three locations, which can be split across 2 days."
   - question: "Can I book photos only, without a film?"
     answer: "Yes. Every wedding package I offer is priced for photography, so nothing in the price is paying for video you did not want. A wedding film is available on top, quoted separately for your day. On pre wedding sessions you can pick either way: Love Story Mini and Love Story Duo are photo only, and the other sessions include a film."
   - question: "Why do some Toronto wedding photographers cost so much more than others?"
@@ -80,9 +80,9 @@ Both sit on the [civil ceremony page](/services/civil-ceremony/), and my flat [T
 |---|---|---|---|---|
 | Love Story Mini | $351.25 | Up to 2 | 50+ | One location, one outfit, gallery in about a week. |
 | Love Story Duo | $551.25 | Up to 3 | 80+ | Two locations, two outfit changes, photo only. |
-| Love Story + Film | $551.25 | 3 to 4 | 40 | One location, plus a 2 to 3 minute cinematic 4K film. |
-| The Signature Session | $751.25 | Up to 5 | 70+ | Two locations, two outfits, and a 3 to 4 minute 4K film. |
-| The Pre Wedding | $1,251.25 | Up to 10 | 150+ | Three locations, three outfit changes, a 5 to 7 minute film and a save the date trailer. |
+| Love Story + Film | $551.25 | 3 | 40 | One location, plus a 2 minute cinematic 4K film. |
+| The Signature Session | $851.25 | 5 | 80 | Two locations, two outfits, a 3 to 4 minute 4K film and a save the date reel. |
+| The Pre Wedding | $1,251.25 | 10, over 1 or 2 days | 150+ | Three locations, three outfit changes, a 5 to 7 minute film and a save the date trailer. |
 
 Full session details are on the [pre wedding page](/services/pre-wedding/).
 

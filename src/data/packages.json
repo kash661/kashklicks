@@ -44,19 +44,21 @@
     "category": "Pre-Wedding",
     "price": 1451.25,
     "currency": "CAD",
-    "description": "My signature pre-wedding experience. Up to 10 hours of coverage across 3 locations with 3 outfit changes, 150+ high-resolution photos, and a custom 5-7 minute cinematic 4K film.",
-    "duration": "Up to 10 hours",
+    "description": "My signature pre-wedding experience. 10 hours of coverage, which can be split across 2 days. 3 locations, 3 outfit changes, 150+ high-resolution photos, and a custom 5-7 minute cinematic 4K film.",
+    "duration": "10 hours, can be split across 2 days",
     "locations": 3,
     "outfits": 3,
     "photos": "150+",
     "film": true,
     "filmDetails": "5-7 minute custom 4K film + 30-40 second trailer/save-the-date",
     "highlights": [
+      "10 hours of coverage, which can be split across 2 days",
       "3 locations, 3 outfit changes",
       "150+ high-resolution edited photos",
       "5-7 minute custom cinematic 4K film",
       "30-40 second trailer / save-the-date",
-      "Private online gallery"
+      "Private online gallery",
+      "RAW files not included, available as an add-on"
     ],
     "popular": false,
     "order": 1,
@@ -67,8 +69,16 @@
     "addOnIds": [
       "drone",
       "extra-retouched",
+      "vertical-reel",
       "raw-photos-prewedding",
-      "raw-video-sessions"
+      "raw-video-sessions",
+      "overtime-prewedding",
+      "extra-film-minute",
+      "rush-film-delivery",
+      "extra-revision-round",
+      "peak-weekend-pre-wedding",
+      "parking-at-cost",
+      "travel-outside-gta"
     ]
   },
   {
@@ -77,22 +87,24 @@
     "category": "Pre-Wedding",
     "price": 851.25,
     "currency": "CAD",
-    "description": "The perfect balance of photography and film. Up to 5 hours across 2 locations with 70+ edited photos and a 3-4 minute cinematic 4K film.",
-    "duration": "Up to 5 hours",
+    "description": "The perfect balance of photography and film. 5 hours of coverage across 2 locations with 80 edited photos, a 3 to 4 minute cinematic 4K film and a save the date reel.",
+    "duration": "5 hours",
     "locations": 2,
     "outfits": 2,
-    "photos": "70+",
+    "photos": "80",
     "film": true,
-    "filmDetails": "3-4 minute 4K film",
+    "filmDetails": "3 to 4 minute 4K film + a save the date reel",
     "highlights": [
+      "5 hours of coverage",
       "2 locations, 2 outfit changes",
-      "70+ high-resolution edited photos",
-      "3-4 minute cinematic 4K film",
-      "Private online gallery"
+      "80 high-resolution edited photos",
+      "3 to 4 minute cinematic 4K film",
+      "1 save the date reel (vertical, 30 to 40 seconds)",
+      "Private online gallery",
+      "RAW files not included, available as an add-on"
     ],
     "popular": true,
     "order": 3,
-    "salePrice": 751.25,
     "badge": "Most Popular",
     "hours": {
       "included": 5
@@ -102,7 +114,16 @@
       "extra-retouched",
       "vertical-reel",
       "raw-photos-film",
-      "raw-video-sessions"
+      "raw-video-sessions",
+      "overtime-prewedding",
+      "extra-film-minute",
+      "rush-film-delivery",
+      "extra-revision-round",
+      "split-day",
+      "third-location-signature",
+      "peak-weekend-signature",
+      "parking-at-cost",
+      "travel-outside-gta"
     ]
   },
   {
@@ -111,32 +132,39 @@
     "category": "Pre-Wedding",
     "price": 551.25,
     "currency": "CAD",
-    "description": "A compact session with both photo and video. Around 3-4 hours at 1 location with 40 edited photos and a 2-3 minute 4K film.",
-    "duration": "3-4 hours",
+    "description": "A compact session with both photo and video. 3 hours at 1 location with 40 edited photos and a 2 minute 4K film.",
+    "duration": "3 hours",
     "locations": 1,
-    "outfits": "1-2",
+    "outfits": 2,
     "photos": "40",
     "film": true,
-    "filmDetails": "2-3 minute 4K film",
+    "filmDetails": "2 minute 4K film",
     "highlights": [
-      "3-4 hours of coverage",
-      "1 location, 1-2 outfit changes",
+      "3 hours of coverage",
+      "1 location, 2 outfit changes",
       "40 edited photos",
-      "2-3 minute cinematic 4K film",
-      "Private online gallery"
+      "2 minute cinematic 4K film",
+      "Private online gallery",
+      "RAW files not included, available as an add-on"
     ],
     "popular": false,
     "order": 2,
     "hours": {
-      "included": 3,
-      "max": 4
+      "included": 3
     },
     "addOnIds": [
       "drone",
       "extra-retouched",
       "vertical-reel",
       "raw-photos-film",
-      "raw-video-sessions"
+      "raw-video-sessions",
+      "overtime-prewedding",
+      "extra-film-minute",
+      "rush-film-delivery",
+      "extra-revision-round",
+      "peak-weekend-love-story-film",
+      "parking-at-cost",
+      "travel-outside-gta"
     ]
   },
   {

@@ -17,6 +17,7 @@ import ctaImage from '../../assets/images/homepage/homepage-05.jpg';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
+import { resolveAddOns, formatAddOn, getAddOn } from '../../lib/addons';
 import faqData from '../../data/faq.json';
 import site from '../../data/site.json';
 
@@ -30,6 +31,24 @@ const preWeddingPackages = packages
   .sort((a, b) => a.order - b.order);
 const proposalPackage = packages.find((p) => p.category === 'Proposals');
 const preWeddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('pre-wedding'));
+
+// The three peak weekend surcharges share one label, so the shared add-ons list
+// folds them into a single line with each session's price instead of three
+// identical looking rows.
+const PEAK = [
+  ['love-story-mini-film', 'peak-weekend-love-story-film'],
+  ['love-story-film', 'peak-weekend-signature'],
+  ['pre-wedding-full', 'peak-weekend-pre-wedding'],
+];
+const PEAK_IDS = PEAK.map(([, addOnId]) => addOnId);
+const pkgName = (id: string) => packages.find((p) => p.id === id)?.name ?? id;
+const peakLine = `${getAddOn(PEAK_IDS[0])?.label}: ` + PEAK
+  .map(([pkgId, addOnId]) => `$${getAddOn(addOnId)?.price?.toFixed(2)} on ${pkgName(pkgId)}`)
+  .join(', ');
+const preWeddingAddOnItems = [
+  ...resolveAddOns(preWeddingPackages).filter((a) => !PEAK_IDS.includes(a.id)).map(formatAddOn),
+  peakLine,
+];
 
 const preWeddingService = {
   title: 'Pre-Weddings & E-Shoots',
@@ -52,7 +71,7 @@ const preWeddingFastFacts = [
   { label: 'Session length', value: '2 to 10 hours depending on the package, across 1 to 3 locations.' },
   { label: 'Photo or film', value: 'Photo only sessions, or photo with a custom cinematic 4K film on select packages.' },
   { label: 'Where I shoot', value: 'Toronto and the GTA. I help you choose the spot, and light comes first.' },
-  { label: 'Delivery', value: 'Your full gallery and final film within 1 to 3 weeks, in a private online gallery.' },
+  { label: 'Delivery', value: 'Photo only galleries within 3 weeks. On photo and film sessions, your film and full gallery arrive within 4 weeks.' },
 ];
 
 const businessRef = { '@id': `${site.url}/#business` };
@@ -341,8 +360,8 @@ const preWeddingJourneySteps = [
       <div class="mt-12">
         <PackageAddOns
           title="Add-Ons & Extras"
-          description="Optional upgrades that apply across any of the sessions above."
-          packages={preWeddingPackages}
+          description="Optional upgrades for the sessions above. The film extras apply to the three photo and film sessions. Split across two days and Third location are for The Signature Session only."
+          items={preWeddingAddOnItems}
         />
       </div>
 

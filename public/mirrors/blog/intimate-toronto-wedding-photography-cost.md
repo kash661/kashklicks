@@ -61,9 +61,9 @@ Both sit on the [civil ceremony page](/services/civil-ceremony/), and my flat [T
 |---|---|---|---|---|
 | Love Story Mini | $351.25 | Up to 2 | 50+ | One location, one outfit, gallery in about a week. |
 | Love Story Duo | $551.25 | Up to 3 | 80+ | Two locations, two outfit changes, photo only. |
-| Love Story + Film | $551.25 | 3 to 4 | 40 | One location, plus a 2 to 3 minute cinematic 4K film. |
-| The Signature Session | $751.25 | Up to 5 | 70+ | Two locations, two outfits, and a 3 to 4 minute 4K film. |
-| The Pre Wedding | $1,251.25 | Up to 10 | 150+ | Three locations, three outfit changes, a 5 to 7 minute film and a save the date trailer. |
+| Love Story + Film | $551.25 | 3 | 40 | One location, plus a 2 minute cinematic 4K film. |
+| The Signature Session | $851.25 | 5 | 80 | Two locations, two outfits, a 3 to 4 minute 4K film and a save the date reel. |
+| The Pre Wedding | $1,251.25 | 10, over 1 or 2 days | 150+ | Three locations, three outfit changes, a 5 to 7 minute film and a save the date trailer. |
 
 Full session details are on the [pre wedding page](/services/pre-wedding/).
 

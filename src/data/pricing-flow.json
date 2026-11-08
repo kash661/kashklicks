@@ -105,7 +105,7 @@
           {
             "label": "Elsewhere in Ontario",
             "region": "ontario",
-            "hint": "There is a travel fee outside the GTA"
+            "hint": "Outside the GTA, travel is $0.75 per km round trip"
           },
           {
             "label": "Elsewhere in Canada",
@@ -120,7 +120,7 @@
       {
         "id": "film",
         "ask": "Photographs only, or photographs and a film?",
-        "hint": "The film is a short cinematic piece, plus a trailer you can use as a save the date.",
+        "hint": "The film is a short cinematic 4K piece. The Signature Session and The Pre Wedding also include a save the date reel.",
         "options": [
           {
             "label": "Photographs only",

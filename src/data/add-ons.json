@@ -132,7 +132,7 @@
     ],
     "max": 3,
     "status": "proposed",
-    "note": "A 30 to 40 second reel, filmed on the day. Real video, not made from your photographs. Available on sessions, not on wedding days."
+    "note": "A 30 to 40 second reel, filmed on the day. Real video, not made from your photographs. The Signature Session and The Pre Wedding already include one, so this adds more. Available on sessions, not on wedding days."
   },
   {
     "id": "raw-photos-wedding",
@@ -222,6 +222,129 @@
     ],
     "status": "locked",
     "note": "The unedited footage exactly as it was recorded, alongside your edited film."
+  },
+  {
+    "id": "overtime-prewedding",
+    "label": "Overtime",
+    "price": 151.25,
+    "unit": "per-hour",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Billed in 30 minute blocks ($75.75 per block). Only for delays on the couple's side: late arrival, hair and makeup running over, or extra outfits or locations added on the day. Time lost on my side is never charged."
+  },
+  {
+    "id": "extra-film-minute",
+    "label": "Extra film minute",
+    "price": 151.25,
+    "unit": "per-item",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "max": 3,
+    "status": "locked",
+    "note": "Add a minute to your film. A 2 minute film becomes 3 minutes, and so on."
+  },
+  {
+    "id": "rush-film-delivery",
+    "label": "Rush film delivery (2 weeks)",
+    "price": 251.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Your film in 2 weeks instead of 4. Good for a reception screening or travel."
+  },
+  {
+    "id": "extra-revision-round",
+    "label": "Extra revision round",
+    "price": 76.25,
+    "unit": "per-item",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "max": 3,
+    "status": "locked",
+    "note": "One round of changes is included with every film. Each further round is charged."
+  },
+  {
+    "id": "split-day",
+    "label": "Split across two days",
+    "price": 151.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Your 5 hours over two separate days. Covers the second day's setup, travel and time. Overtime still starts after 5 hours in total."
+  },
+  {
+    "id": "third-location-signature",
+    "label": "Third location",
+    "price": 201.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Adds a third location and one extra hour (6 hours in total), same deliverables. Parking at the extra location is charged at cost."
+  },
+  {
+    "id": "peak-weekend-love-story-film",
+    "label": "Peak weekend (July to October, Saturday or Sunday)",
+    "price": 51.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Weekend dates in peak season carry a small surcharge. Weekdays and the off season do not."
+  },
+  {
+    "id": "peak-weekend-signature",
+    "label": "Peak weekend (July to October, Saturday or Sunday)",
+    "price": 76.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Weekend dates in peak season carry a small surcharge. Weekdays and the off season do not."
+  },
+  {
+    "id": "peak-weekend-pre-wedding",
+    "label": "Peak weekend (July to October, Saturday or Sunday)",
+    "price": 101.25,
+    "unit": "flat",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Weekend dates in peak season carry a small surcharge. Weekdays and the off season do not."
+  },
+  {
+    "id": "parking-at-cost",
+    "label": "Parking",
+    "price": null,
+    "unit": "at-cost",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "Parking at every location is charged at cost, with the receipt."
+  },
+  {
+    "id": "travel-outside-gta",
+    "label": "Travel outside the GTA",
+    "price": null,
+    "unit": "quote",
+    "categories": [
+      "Pre-Wedding"
+    ],
+    "status": "locked",
+    "note": "No travel fee inside the GTA. Outside it, $0.75 per km round trip, counted from the GTA boundary, plus parking."
   },
   {
     "id": "marquee-extra-number",
