@@ -1,0 +1,330 @@
+{
+  "meta": {
+    "version": 1,
+    "path": "/welcome/brief-s7vhr67r7keg/",
+    "endpoint": "/r/onboarding",
+    "storagePrefix": "kk_onboarding_draft:",
+    "textareaMax": 1000,
+    "shortMax": 200,
+    "requiredOneOf": [
+      {
+        "fields": ["locations", "locations_own"],
+        "message": "Pick at least one place from the list, or tell me your own."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "basics",
+      "numeral": "I",
+      "title": "The basics",
+      "fields": [
+        { "name": "p1_name", "label": "Your name", "kind": "text", "required": true, "width": "half", "autocomplete": "name" },
+        { "name": "p1_nickname", "label": "What should I call you?", "kind": "text", "width": "half", "placeholder": "A nickname, or the same" },
+        { "name": "p2_name", "label": "Your partner's name", "kind": "text", "required": true, "width": "half" },
+        { "name": "p2_nickname", "label": "What should I call them?", "kind": "text", "width": "half", "placeholder": "A nickname, or the same" },
+        { "name": "email", "label": "Email", "kind": "email", "required": true, "width": "half", "autocomplete": "email" },
+        { "name": "phone", "label": "Phone", "kind": "tel", "required": true, "width": "half", "autocomplete": "tel", "help": "Only used to reach you around the shoot." },
+        {
+          "name": "package_id",
+          "label": "Your package",
+          "kind": "select",
+          "required": true,
+          "optionsSource": "packages",
+          "options": [
+            { "value": "love-story-mini-film" },
+            { "value": "love-story-film" },
+            { "value": "pre-wedding-full" }
+          ]
+        },
+        { "name": "shoot_date", "label": "Shoot date", "kind": "date", "required": true, "width": "half" },
+        { "name": "shoot_date_backup", "label": "Backup date", "kind": "date", "width": "half", "help": "In case of rain or a heat wave." },
+        { "name": "wedding_date", "label": "Wedding date", "kind": "date", "width": "half" },
+        { "name": "wedding_venue", "label": "Wedding venue", "kind": "text", "width": "half", "placeholder": "Venue and city" }
+      ]
+    },
+    {
+      "id": "story",
+      "numeral": "II",
+      "title": "Your story",
+      "fields": [
+        {
+          "name": "story_how_met",
+          "label": "How did you two meet?",
+          "kind": "textarea",
+          "required": true,
+          "rows": 5,
+          "help": "The real version. Funny, awkward, sweet, all of it. This often becomes the spine of your film."
+        },
+        { "name": "story_three_words", "label": "Three words for the two of you", "kind": "text", "placeholder": "e.g. loud, loyal, always late" },
+        { "name": "story_about", "label": "What is it like being together?", "kind": "textarea", "rows": 4, "help": "A normal Tuesday, the way you talk to each other, who makes the plans." },
+        { "name": "story_love_doing", "label": "What do you love doing together?", "kind": "textarea", "rows": 3 },
+        { "name": "story_inside_jokes", "label": "Inside jokes, pet names or little rituals", "kind": "textarea", "rows": 3, "extra": true },
+        { "name": "story_shyer", "label": "Who is shyer in front of a camera?", "kind": "text", "extra": true, "placeholder": "e.g. Arjun, but he warms up fast" },
+        { "name": "story_meaningful", "label": "A place, date or object that means a lot to you", "kind": "textarea", "rows": 3, "extra": true, "help": "A ring box, a first date spot, a song from a road trip. I love building a moment around these." }
+      ],
+      "extraLabel": "A little more, if you like",
+      "extraHint": "(optional, these give the film its small moments)"
+    },
+    {
+      "id": "vibe",
+      "numeral": "III",
+      "title": "Vibe and look",
+      "fields": [
+        {
+          "name": "vibe_select",
+          "label": "Which feeling fits you best?",
+          "kind": "radio",
+          "required": true,
+          "options": [
+            { "value": "romantic", "label": "Romantic and dreamy" },
+            { "value": "fun", "label": "Fun and playful" },
+            { "value": "moody", "label": "Moody and cinematic" },
+            { "value": "editorial", "label": "Editorial and bold" },
+            { "value": "mix", "label": "A mix" }
+          ]
+        },
+        { "name": "vibe_text", "label": "Describe it in your own words", "kind": "textarea", "rows": 3, "placeholder": "Like an old Bollywood song, but in downtown Toronto" },
+        {
+          "name": "colour_pref",
+          "label": "Colour and light",
+          "kind": "radio",
+          "options": [
+            { "value": "warm", "label": "Warm and golden" },
+            { "value": "bright", "label": "Bright and airy" },
+            { "value": "moody", "label": "Moody and rich" },
+            { "value": "unsure", "label": "Not sure" }
+          ]
+        },
+        {
+          "name": "films",
+          "label": "Films of mine you like",
+          "kind": "films",
+          "maxItems": 12,
+          "help": "Tick any that feel like you. Add timestamps and what you liked, for example 0:45 the slow walk."
+        },
+        {
+          "name": "ref_photos",
+          "label": "Reference photos",
+          "kind": "repeat",
+          "rows": 5,
+          "extra": true,
+          "help": "Instagram or Pinterest links to photos you love. Links only, no uploads.",
+          "columns": [
+            { "name": "url", "label": "Link", "kind": "url", "placeholder": "https://www.instagram.com/p/..." }
+          ]
+        },
+        {
+          "name": "ref_videos",
+          "label": "Reference videos",
+          "kind": "repeat",
+          "rows": 3,
+          "extra": true,
+          "help": "Reels, TikToks or YouTube films by anyone. Tell me the moment and what you liked about it.",
+          "columns": [
+            { "name": "url", "label": "Link", "kind": "url", "placeholder": "https://www.instagram.com/reel/..." },
+            { "name": "timestamp", "label": "Timestamp", "kind": "text", "max": 20, "placeholder": "0:45" },
+            { "name": "note", "label": "What you liked", "kind": "text", "placeholder": "The spin under the umbrella" }
+          ]
+        }
+      ],
+      "extraLabel": "Add your own references",
+      "extraHint": "(optional, links only)"
+    },
+    {
+      "id": "music",
+      "numeral": "IV",
+      "title": "Music",
+      "fields": [
+        {
+          "name": "songs",
+          "label": "Songs you would love",
+          "kind": "repeat",
+          "rows": 3,
+          "help": "Your film is cut to one song. Give me up to three, your favourite first.",
+          "columns": [
+            { "name": "title", "label": "Song", "kind": "text" },
+            { "name": "artist", "label": "Artist", "kind": "text" },
+            { "name": "url", "label": "Link", "kind": "url", "placeholder": "Spotify, Apple Music or YouTube" }
+          ]
+        },
+        {
+          "name": "music_lang_genre",
+          "label": "Language or style",
+          "kind": "checkboxes",
+          "options": [
+            { "value": "punjabi", "label": "Punjabi" },
+            { "value": "hindi", "label": "Hindi" },
+            { "value": "gujarati", "label": "Gujarati" },
+            { "value": "tamil", "label": "Tamil" },
+            { "value": "english", "label": "English" },
+            { "value": "instrumental", "label": "Instrumental" },
+            { "value": "mix", "label": "A mix" }
+          ]
+        },
+        { "name": "music_avoid", "label": "Anything to avoid?", "kind": "text", "placeholder": "A song, a language, anything too slow" },
+        {
+          "name": "music_structure",
+          "label": "How should the film move?",
+          "kind": "radio",
+          "options": [
+            { "value": "build", "label": "Slow build into a beat drop" },
+            { "value": "consistent", "label": "One consistent mood" },
+            { "value": "kash", "label": "Let Kash decide" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "location",
+      "numeral": "V",
+      "title": "Location and timing",
+      "fields": [
+        {
+          "name": "locations",
+          "label": "Where would you like to shoot?",
+          "kind": "locations",
+          "maxItems": 8,
+          "help": "Tap places in the order you love them. Your first tap is your number one. Up to eight."
+        },
+        { "name": "locations_own", "label": "Somewhere not on the list?", "kind": "text", "placeholder": "A park near home, your first date spot, a family house" },
+        { "name": "locations_meaningful", "label": "Why do these places matter to you?", "kind": "textarea", "rows": 3 },
+        {
+          "name": "time_of_day",
+          "label": "Time of day",
+          "kind": "radio",
+          "options": [
+            { "value": "sunrise", "label": "Sunrise" },
+            { "value": "golden", "label": "Golden hour" },
+            { "value": "night", "label": "Night" },
+            { "value": "flexible", "label": "Flexible" }
+          ]
+        },
+        {
+          "name": "locations_count",
+          "label": "How many locations?",
+          "kind": "radio",
+          "help": "The Pre Wedding allows a third location.",
+          "options": [
+            { "value": "one", "label": "One" },
+            { "value": "two", "label": "Two" },
+            { "value": "three", "label": "Three", "onlyWith": { "package_id": ["pre-wedding-full"] } }
+          ]
+        },
+        { "name": "permits_known", "label": "Any permits or bookings already made?", "kind": "text", "help": "If a place needs a permit I will tell you. Note anything you have already booked." },
+        { "name": "pinterest_url", "label": "Pinterest board", "kind": "url", "extra": true, "placeholder": "https://pin.it/..." },
+        { "name": "must_have_shots", "label": "Your top three must have shots", "kind": "textarea", "rows": 3, "extra": true },
+        { "name": "dayof_contact", "label": "Someone I can call on the day", "kind": "text", "extra": true, "placeholder": "Name and phone number" },
+        { "name": "arrival_plan", "label": "How are you getting to the first location?", "kind": "text", "extra": true },
+        { "name": "hmu_ready_time", "label": "When will hair and makeup be done?", "kind": "text", "extra": true, "width": "half", "placeholder": "e.g. 3:30 pm" },
+        { "name": "who_drives", "label": "Who drives between locations?", "kind": "text", "extra": true, "width": "half" },
+        { "name": "weather_backup", "label": "If it rains, what is plan B?", "kind": "textarea", "rows": 3, "extra": true, "help": "Move to the backup date, shoot indoors, or bring umbrellas and lean into it." },
+        { "name": "voiceover_opt_in", "label": "We would like to record a short voiceover for the film", "kind": "checkbox", "extra": true },
+        { "name": "voiceover_note", "label": "Voiceover thoughts", "kind": "text", "extra": true, "help": "A few lines read to each other, or a letter. I will guide you either way." }
+      ],
+      "extraLabel": "On the day",
+      "extraHint": "(optional, helps me write your run of show)"
+    },
+    {
+      "id": "outfits",
+      "numeral": "VI",
+      "title": "Outfits and props",
+      "fields": [
+        {
+          "name": "outfits_count",
+          "label": "How many outfits?",
+          "kind": "radio",
+          "options": [
+            { "value": "one", "label": "One" },
+            { "value": "two", "label": "Two" },
+            { "value": "three", "label": "Three" },
+            { "value": "unsure", "label": "Not sure yet" }
+          ]
+        },
+        { "name": "outfits_desc", "label": "Tell me about your outfits", "kind": "textarea", "rows": 3, "help": "Colours, traditional or western, and which outfit goes with which place." },
+        {
+          "name": "props",
+          "label": "Props you would like to bring",
+          "kind": "checkboxes",
+          "options": [
+            { "value": "dupatta", "label": "Dupatta" },
+            { "value": "flowers", "label": "Flowers" },
+            { "value": "sparklers", "label": "Sparklers" },
+            { "value": "umbrella", "label": "Umbrella" },
+            { "value": "signage", "label": "Sign or banner" },
+            { "value": "car", "label": "A car" },
+            { "value": "pet", "label": "A pet" },
+            { "value": "other", "label": "Something else" }
+          ]
+        },
+        { "name": "props_note", "label": "Anything about the props", "kind": "text", "placeholder": "e.g. our dog Mango, his dad's old Mustang" }
+      ]
+    },
+    {
+      "id": "comfort",
+      "numeral": "VII",
+      "title": "Comfort and boundaries",
+      "fields": [
+        {
+          "name": "comfort_level",
+          "label": "The most affection you are comfortable showing",
+          "kind": "radio",
+          "help": "There is no wrong answer. I direct the shoot around this.",
+          "options": [
+            { "value": "kissing", "label": "Kissing is fine" },
+            { "value": "cuddling", "label": "Close cuddling" },
+            { "value": "forehead", "label": "Forehead touches" },
+            { "value": "subtle", "label": "Subtle only" }
+          ]
+        },
+        { "name": "comfort_cultural", "label": "Anything cultural or family related I should know?", "kind": "textarea", "rows": 3, "help": "For example, no kissing shots if grandparents will see the film at the sangeet." },
+        { "name": "comfort_private", "label": "Anything you would rather I did not photograph or share?", "kind": "textarea", "rows": 3, "help": "Only I read this." }
+      ]
+    },
+    {
+      "id": "delivery",
+      "numeral": "VIII",
+      "title": "Delivery",
+      "fields": [
+        {
+          "name": "delivery_where_shown",
+          "label": "Where will the film be shown?",
+          "kind": "checkboxes",
+          "options": [
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "reception", "label": "Reception screen" },
+            { "value": "sangeet", "label": "Sangeet" },
+            { "value": "private", "label": "Just for us" }
+          ]
+        },
+        {
+          "name": "delivery_format",
+          "label": "Film format",
+          "kind": "radio",
+          "required": true,
+          "options": [
+            { "value": "vertical", "label": "Vertical, for phones" },
+            { "value": "horizontal", "label": "Horizontal, for screens" },
+            { "value": "both", "label": "Both" }
+          ]
+        },
+        { "name": "delivery_deadline", "label": "Do you need it by a certain date?", "kind": "text", "placeholder": "e.g. by 12 December, for the sangeet" }
+      ]
+    },
+    {
+      "id": "else",
+      "numeral": "IX",
+      "title": "Anything else",
+      "fields": [
+        { "name": "anything_else", "label": "Anything I have not asked?", "kind": "textarea", "rows": 4 },
+        {
+          "name": "consent",
+          "label": "We are happy for Kash to use these answers to plan our shoot and brief the video editor.",
+          "kind": "checkbox",
+          "required": true,
+          "privacyNote": true
+        }
+      ]
+    }
+  ]
+}

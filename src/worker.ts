@@ -3,6 +3,20 @@
 // posts here instead and the worker forwards to Apps Script server-side.
 // Returns a tiny same-origin HTML body so the form's hidden iframe `load`
 // event fires reliably across all browsers.
+import onboardingSchemaJson from './data/onboarding-fields.json';
+import packagesJson from './data/packages.json';
+import {
+  cleanBookingId,
+  coupleName,
+  isUuid,
+  renderSummary,
+  stripControl,
+  validate,
+  withPackageLabels,
+  type Payload,
+  type Schema,
+} from './lib/onboarding';
+
 const APPS_SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec';
 
@@ -19,64 +33,133 @@ const HTML_HEADERS = {
   'referrer-policy': 'strict-origin-when-cross-origin',
 };
 
+const JSON_HEADERS = {
+  'content-type': 'application/json; charset=utf-8',
+  'cache-control': 'no-store',
+  'x-content-type-options': 'nosniff',
+  'x-robots-tag': 'noindex, nofollow',
+};
+
+interface Env {
+  ASSETS: Fetcher;
+  FALL_COLOUR_ENABLED?: string;
+  /** Durable copy of every onboarding brief. Optional so a missing binding
+   *  degrades to "forward only" instead of failing the submission. */
+  ONBOARDING_KV?: KVNamespace;
+}
+
+// Preview hosts (wrangler versions upload --preview-alias) and local
+// `wrangler dev` serve the site on their own origin. Accept a POST whose
+// Origin equals the request's own origin on those hosts only, so previews can
+// submit without opening the live endpoint to other sites.
+function isPreviewHost(hostname: string): boolean {
+  return hostname.endsWith('.workers.dev') || hostname === 'localhost' || hostname === '127.0.0.1';
+}
+
 // Accept lead POSTs only from our own site. Real submissions (including from
 // IG/FB in-app webviews, which render same-origin) send an Origin header; we
 // fall back to Referer when Origin is absent. This closes the open-proxy abuse
 // vector — without it, anyone can script POSTs to /r/intake to flood the
 // Inquiries sheet + inbox and bury genuine leads.
 function isSameOrigin(request: Request): boolean {
+  const self = new URL(request.url);
+  const allowed = isPreviewHost(self.hostname) ? [...ALLOWED_ORIGINS, self.origin] : ALLOWED_ORIGINS;
   const origin = request.headers.get('origin');
-  if (origin) return ALLOWED_ORIGINS.includes(origin);
+  if (origin) return allowed.includes(origin);
   const referer = request.headers.get('referer');
-  if (referer) return ALLOWED_ORIGINS.some((o) => referer === o || referer.startsWith(o + '/'));
+  if (referer) return allowed.some((o) => referer === o || referer.startsWith(o + '/'));
   return false;
 }
 
-async function handleEngagementLead(request: Request): Promise<Response> {
+type GuardResult = { response: Response } | { formData: FormData };
+
+// Shared front door for every lead POST: method, origin, body parse, honeypot.
+// `style` picks the response flavour so the legacy routes keep their tiny HTML
+// bodies and the onboarding route gets JSON.
+async function guardLeadPost(request: Request, style: 'html' | 'json' = 'html'): Promise<GuardResult> {
+  const json = (status: number, body: Record<string, unknown>) =>
+    new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
+
   if (request.method !== 'POST') {
-    return new Response('Method Not Allowed', { status: 405, headers: { 'cache-control': 'no-store' } });
+    return {
+      response: new Response('Method Not Allowed', { status: 405, headers: { 'cache-control': 'no-store' } }),
+    };
   }
 
   // Reject cross-origin / origin-less POSTs before touching the upstream.
   if (!isSameOrigin(request)) {
-    return new Response('<!doctype html>err', { status: 403, headers: HTML_HEADERS });
+    return {
+      response:
+        style === 'json'
+          ? json(403, { ok: false, error: 'forbidden' })
+          : new Response('<!doctype html>err', { status: 403, headers: HTML_HEADERS }),
+    };
   }
 
+  let formData: FormData;
   try {
-    const formData = await request.formData();
+    formData = await request.formData();
+  } catch {
+    return {
+      response:
+        style === 'json'
+          ? json(400, { ok: false, error: 'bad_body' })
+          : new Response('<!doctype html>err', { status: 500, headers: HTML_HEADERS }),
+    };
+  }
 
-    // Honeypot: real users never fill the hidden `_gotcha` field. Silently
-    // accept (200 'ok') so bots don't retry, but never forward to Apps Script.
-    const honeypot = formData.get('_gotcha');
-    if (typeof honeypot === 'string' && honeypot.trim() !== '') {
-      return new Response('<!doctype html><meta charset="utf-8"><title>OK</title>ok', {
-        status: 200,
-        headers: HTML_HEADERS,
-      });
-    }
+  // Honeypot: real users never fill the hidden `_gotcha` field. Silently
+  // accept (200 'ok') so bots don't retry, but never forward to Apps Script.
+  const honeypot = formData.get('_gotcha');
+  if (typeof honeypot === 'string' && honeypot.trim() !== '') {
+    return {
+      response:
+        style === 'json'
+          ? json(200, { ok: true })
+          : new Response('<!doctype html><meta charset="utf-8"><title>OK</title>ok', {
+              status: 200,
+              headers: HTML_HEADERS,
+            }),
+    };
+  }
 
-    // Bound the upstream wait — Apps Script cold-starts can hang for many
-    // seconds, which would otherwise stall the worker until the platform limit.
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    let upstream: Response;
-    try {
-      upstream = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        body: formData,
-        redirect: 'manual',
-        signal: controller.signal,
-      });
-    } finally {
-      clearTimeout(timeout);
-    }
+  return { formData };
+}
 
-    // Apps Script answers a successful doPost with a 302 redirect to its
-    // one-time echo URL; the sheet write has already happened by then. The
-    // echo endpoint now rejects followed requests (405), which made every
-    // successful submission render the error state, so never follow the
-    // redirect and treat any 2xx/3xx as success.
-    const ok = upstream.status >= 200 && upstream.status < 400;
+// Forward a FormData body to Apps Script. Resolves true on any 2xx/3xx, false
+// on any other status. Throws on network failure or timeout so callers can
+// tell "upstream said no" (502) from "upstream unreachable" (500).
+async function forwardToAppsScript(body: FormData): Promise<boolean> {
+  // Bound the upstream wait — Apps Script cold-starts can hang for many
+  // seconds, which would otherwise stall the worker until the platform limit.
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  let upstream: Response;
+  try {
+    upstream = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body,
+      redirect: 'manual',
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  // Apps Script answers a successful doPost with a 302 redirect to its
+  // one-time echo URL; the sheet write has already happened by then. The
+  // echo endpoint now rejects followed requests (405), which made every
+  // successful submission render the error state, so never follow the
+  // redirect and treat any 2xx/3xx as success.
+  return upstream.status >= 200 && upstream.status < 400;
+}
+
+async function handleEngagementLead(request: Request): Promise<Response> {
+  const guard = await guardLeadPost(request, 'html');
+  if ('response' in guard) return guard.response;
+
+  try {
+    const ok = await forwardToAppsScript(guard.formData);
     return new Response(
       `<!doctype html><meta charset="utf-8"><title>${ok ? 'OK' : 'ERR'}</title>${ok ? 'ok' : 'err'}`,
       { status: ok ? 200 : 502, headers: HTML_HEADERS },
@@ -84,6 +167,121 @@ async function handleEngagementLead(request: Request): Promise<Response> {
   } catch {
     return new Response('<!doctype html>err', { status: 500, headers: HTML_HEADERS });
   }
+}
+
+// ── Client onboarding brief ───────────────────────────────────────────────
+// /welcome/brief-.../ posts here. The shared schema validates the answers
+// (same rules the page used), the record goes to KV first so nothing is lost
+// if Apps Script is down, then a summary is forwarded for the sheet + email.
+const ONBOARDING_SCHEMA = withPackageLabels(onboardingSchemaJson as unknown as Schema, packagesJson as any[]);
+const ONBOARDING_MAX_BODY = 262144; // 256 KB
+const ONBOARDING_MAX_PAYLOAD = 65536; // 64 KB of JSON
+const ONBOARDING_TTL = 63072000; // 2 years
+const ONBOARDING_IDEM_TTL = 86400; // 1 day
+
+async function handleOnboarding(request: Request, env: Env): Promise<Response> {
+  const json = (status: number, body: Record<string, unknown>) =>
+    new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
+
+  const declared = Number(request.headers.get('content-length') ?? '0');
+  if (Number.isFinite(declared) && declared > ONBOARDING_MAX_BODY) {
+    return json(413, { ok: false, error: 'too_large' });
+  }
+  // A chunked body has no content-length, so measure it before parsing.
+  let req = request;
+  if (request.method === 'POST' && !request.headers.has('content-length') && request.body) {
+    const buf = await request.arrayBuffer();
+    if (buf.byteLength > ONBOARDING_MAX_BODY) return json(413, { ok: false, error: 'too_large' });
+    req = new Request(request.url, { method: request.method, headers: request.headers, body: buf });
+  }
+
+  const guard = await guardLeadPost(req, 'json');
+  if ('response' in guard) return guard.response;
+  const form = guard.formData;
+
+  const raw = form.get('payload_json');
+  if (typeof raw !== 'string' || raw.length === 0 || raw.length > ONBOARDING_MAX_PAYLOAD) {
+    return json(400, { ok: false, error: 'bad_payload' });
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return json(400, { ok: false, error: 'bad_payload' });
+  }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    return json(400, { ok: false, error: 'bad_payload' });
+  }
+
+  const result = validate(stripControl(parsed as Payload), ONBOARDING_SCHEMA);
+  if (!result.ok) return json(400, { ok: false, errors: result.errors });
+
+  const data = result.data;
+  const clientKey = form.get('idempotency_key');
+  const submissionId = isUuid(clientKey) ? clientKey.toLowerCase() : crypto.randomUUID();
+  const bookingId = cleanBookingId(form.get('booking_id'));
+  const submittedAt = new Date().toISOString();
+  const couple = coupleName(data);
+  const email = typeof data.email === 'string' ? data.email : '';
+  const country = (request as unknown as { cf?: { country?: string } }).cf?.country ?? null;
+
+  const kv = env.ONBOARDING_KV;
+  const idemKey = `onb:idem:${submissionId}`;
+  const recordKey = `onb:v1:${bookingId || 'anon'}:${submissionId}`;
+  const record = {
+    schema_version: 1,
+    submission_id: submissionId,
+    booking_id: bookingId || null,
+    submitted_at: submittedAt,
+    country,
+    data,
+  };
+  const kvMeta = { couple, email, submitted_at: submittedAt };
+
+  if (kv) {
+    try {
+      if (await kv.get(idemKey)) return json(200, { ok: true, duplicate: true, submission_id: submissionId });
+      await kv.put(recordKey, JSON.stringify(record), { expirationTtl: ONBOARDING_TTL, metadata: kvMeta });
+      await kv.put(idemKey, recordKey, { expirationTtl: ONBOARDING_IDEM_TTL });
+    } catch {
+      // KV trouble must not lose the brief: carry on and forward it.
+    }
+  }
+
+  const summary = renderSummary(data, ONBOARDING_SCHEMA);
+  const out = new FormData();
+  out.set('form', 'onboarding');
+  out.set('source', 'Shoot brief');
+  out.set('booking_id', bookingId);
+  out.set('submission_id', submissionId);
+  out.set('couple', couple);
+  out.set('email', email);
+  out.set('summary', summary);
+  out.set('payload_json', JSON.stringify(data));
+
+  let notified = false;
+  try {
+    notified = await forwardToAppsScript(out);
+  } catch {
+    notified = false;
+  }
+
+  if (!notified) {
+    if (kv) {
+      try {
+        await kv.put(recordKey, JSON.stringify({ ...record, notified: false }), {
+          expirationTtl: ONBOARDING_TTL,
+          metadata: { ...kvMeta, notified: false },
+        });
+      } catch {
+        /* nothing more to do */
+      }
+    }
+    // Saved (or at least validated); Akash can recover it from KV.
+    return json(200, { ok: true, notified: false, stored: !!kv, submission_id: submissionId });
+  }
+
+  return json(200, { ok: true, submission_id: submissionId });
 }
 
 // ── Ontario Parks fall colour report ──────────────────────────────────────
@@ -275,11 +473,7 @@ async function handleFallColour(request: Request, ctx: ExecutionContext): Promis
 }
 
 export default {
-  async fetch(
-    request: Request,
-    env: { ASSETS: Fetcher; FALL_COLOUR_ENABLED?: string },
-    ctx: ExecutionContext,
-  ): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
 
@@ -369,6 +563,12 @@ export default {
       return handleEngagementLead(request);
     }
 
+    // Client onboarding brief (JSON in, JSON out). Same if chain as the lead
+    // routes, above the trailing-slash 301, which would turn a POST into a GET.
+    if (path === ONBOARDING_SCHEMA.meta.endpoint) {
+      return handleOnboarding(request, env);
+    }
+
     // Ontario Parks fall colour JSON for the on-site panel. Sits ABOVE the
     // trailing-slash canonicalization (which already exempts paths with a file
     // extension) so the `.json` path is never touched, and behind the
@@ -397,6 +597,23 @@ export default {
     if (path.length > 1 && !path.endsWith('/') && !/\.[^/]+$/.test(path)) {
       url.pathname = path + '/';
       return Response.redirect(url.toString(), 301);
+    }
+
+    // Hidden client pages (the onboarding brief). The page already carries a
+    // noindex meta; the header covers crawlers that skip HTML and anything
+    // else served under /welcome/. Same shape as the /_astro/ block above.
+    if (path.startsWith('/welcome/')) {
+      const assetRes = await env.ASSETS.fetch(request);
+      const headers = new Headers(assetRes.headers);
+      headers.set('x-robots-tag', 'noindex, nofollow');
+      // The personal link carries names in the query string; never leak it.
+      headers.set('referrer-policy', 'no-referrer');
+      headers.set('cache-control', 'no-store');
+      return new Response(assetRes.body, {
+        status: assetRes.status,
+        statusText: assetRes.statusText,
+        headers,
+      });
     }
 
     return env.ASSETS.fetch(request);

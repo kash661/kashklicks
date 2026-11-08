@@ -15,6 +15,13 @@
   "vars": {
     "FALL_COLOUR_ENABLED": "true"
   },
+  // Durable copy of every client onboarding brief (/r/onboarding). Keys:
+  // onb:v1:<booking_id or anon>:<submission_id> (2 year TTL) and
+  // onb:idem:<submission_id> (1 day, duplicate guard). The worker tolerates
+  // a missing binding and still forwards to Apps Script.
+  "kv_namespaces": [
+    { "binding": "ONBOARDING_KV", "id": "06e0a2e6955a416c927903083101a1cc" }
+  ],
   "observability": {
     "enabled": true
   }

@@ -1,0 +1,97 @@
+---
+// Every film in the portfolio (same filter as /portfolio/films/), one row
+// each: cover, couple, watch link(s), a "this one" tick and an always visible
+// note for timestamps. Typing a note ticks the film for you (page script).
+import { Image } from 'astro:assets';
+import type { FieldDef } from '../../lib/onboarding';
+import portfolio from '../../data/portfolio.json';
+
+interface Props {
+  field: FieldDef;
+  helpId: string;
+  errId: string;
+}
+
+const { field, helpId, errId } = Astro.props;
+
+const covers = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/portfolio/*.jpg', { eager: true });
+
+const films = (portfolio as any[])
+  .filter(
+    (p) =>
+      p.hasFilm === true ||
+      (p.youtubeUrl && p.youtubeUrl !== null) ||
+      (Array.isArray(p.youtubeUrls) && p.youtubeUrls.length > 0),
+  )
+  .map((p) => {
+    const urls: string[] = Array.isArray(p.youtubeUrls) && p.youtubeUrls.length > 0 ? p.youtubeUrls : p.youtubeUrl ? [p.youtubeUrl] : [];
+    return {
+      id: String(p.id),
+      couple: String(p.couple),
+      location: String(p.location ?? ''),
+      urls,
+      img: covers[`/src/assets/images/portfolio/${p.coverImage}`]?.default ?? null,
+    };
+  })
+  .filter((f) => f.urls.length > 0);
+---
+
+<fieldset class="onb-films" aria-describedby={`${helpId} ${errId}`}>
+  <legend class="form-field__label">
+    {field.label} <span class="form-field__optional">(optional)</span>
+  </legend>
+  {field.help && <p id={helpId} class="form-field__help onb-films__help">{field.help}</p>}
+
+  <ul class="onb-films__list">
+    {films.map((film) => (
+      <li class="onb-film" data-film-id={film.id} data-film-title={film.couple}>
+        <div class="onb-film__media">
+          {film.img ? (
+            <Image
+              src={film.img}
+              alt=""
+              widths={[160, 320]}
+              sizes="6rem"
+              quality={70}
+              format="avif"
+              loading="lazy"
+              class="onb-film__img"
+            />
+          ) : (
+            <span class="onb-film__img onb-film__img--empty" aria-hidden="true"></span>
+          )}
+        </div>
+        <div class="onb-film__body">
+          <p class="onb-film__couple">{film.couple}</p>
+          <p class="onb-film__where">{film.location}</p>
+          <p class="onb-film__links">
+            {film.urls.map((u, i) => (
+              <a href={u} target="_blank" rel="noopener noreferrer" class="onb-film__watch">
+                {film.urls.length > 1 ? `Watch part ${i + 1}` : 'Watch'}
+                <span class="sr-only">{film.couple} film, opens YouTube</span>
+              </a>
+            ))}
+          </p>
+          <label class="onb-chip onb-chip--small">
+            <input type="checkbox" name="films" value={film.id} data-film-pick />
+            <span>I like this one</span>
+          </label>
+        </div>
+        <div class="onb-film__note">
+          <label class="sr-only" for={`onb-film-note-${film.id}`}>Notes on the {film.couple} film</label>
+          <input
+            type="text"
+            id={`onb-film-note-${film.id}`}
+            name={`films_note.${film.id}`}
+            maxlength="200"
+            placeholder="Timestamps and what you liked"
+            class="form-field__input onb-film__note-input"
+            data-film-note
+            autocomplete="off"
+          />
+        </div>
+      </li>
+    ))}
+  </ul>
+  <p id={errId} class="form-error-msg form-field__error" role="alert" hidden></p>
+</fieldset>

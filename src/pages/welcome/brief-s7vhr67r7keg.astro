@@ -1,0 +1,100 @@
+---
+// Hidden client shoot brief. Booked couples get a personal link
+// (?b=<booking>&p=<package>&n1=&n2=&d=, see scripts/README-form-intake.md).
+// Kept out of search three ways: noindex meta here, an x-robots-tag header
+// from the worker, and a robots.txt Disallow. Not in the sitemap, the nav,
+// or llms.txt. The path is also stored in src/data/onboarding-fields.json
+// (meta.path) for the worker and the tests; keep the two in sync.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import OnboardingForm from '../../components/onboarding/OnboardingForm.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../../assets/images/homepage/prewedding-service-detail.jpg';
+---
+
+<BaseLayout
+  title="Your shoot brief"
+  description="A private brief for booked couples, so the shoot day feels relaxed and the film tells your story."
+  noIndex={true}
+>
+  <section class="onb-hero">
+    <div class="container-editorial">
+      <div class="grid-editorial onb-hero__grid">
+        <div class="onb-hero__text">
+          <p class="onb-hero__greeting" data-onb-greeting hidden></p>
+          <h1 class="text-display-md">Your shoot <em>brief.</em></h1>
+          <p class="onb-hero__intro">
+            Congratulations! This helps me plan your shoot so the day feels relaxed and your film tells your story. About 10 minutes. Links only, no uploads.
+          </p>
+          <ul class="onb-hero__notes">
+            <li>Your answers save on this device as you type, so you can stop and come back.</li>
+            <li>Fill it in together if you can. Only the starred questions are required.</li>
+          </ul>
+        </div>
+        <figure class="onb-hero__figure">
+          <div class="onb-hero__frame">
+            <Image
+              src={heroImage}
+              alt="A couple during a pre wedding shoot by AD Photography"
+              widths={[480, 720, 960]}
+              sizes="(max-width: 1024px) 40vw, 30vw"
+              quality={72}
+              format="avif"
+              loading="lazy"
+              class="onb-hero__img"
+            />
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <OnboardingForm />
+</BaseLayout>
+
+<style>
+  .onb-hero { padding: var(--spacing-block) 0 var(--spacing-block); }
+  .onb-hero__grid { align-items: end; }
+  .onb-hero__text { grid-column: 1 / -1; }
+  .onb-hero__figure { display: none; }
+  @media (min-width: 768px) {
+    .onb-hero__text { grid-column: 1 / span 7; }
+    .onb-hero__figure { display: block; grid-column: 9 / span 4; }
+  }
+  .onb-hero__greeting {
+    margin-bottom: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+  .onb-hero__greeting[hidden] { display: none; }
+  .onb-hero__intro {
+    margin-top: 1.5rem;
+    max-width: 34ch;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    line-height: 1.45;
+    color: var(--color-on-surface-variant);
+  }
+  .onb-hero__notes {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 46ch;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+  }
+  .onb-hero__frame { aspect-ratio: 4 / 5; overflow: hidden; background: var(--color-surface-container); }
+  .onb-hero__img { width: 100%; height: 100%; object-fit: cover; }
+</style>
+
+<script>
+  import { initOnboarding } from '../../scripts/onboarding';
+  initOnboarding();
+</script>

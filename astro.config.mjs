@@ -32,6 +32,7 @@ export default defineConfig({
       priority: 0.7,
       filter: (page) =>
         !page.includes('/dev/') &&
+        !page.includes('/welcome/') &&
         !page.includes('/font-lab') &&
         !page.includes('/free-engagement-session-toronto') &&
         !page.endsWith('/404/'),

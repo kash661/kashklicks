@@ -94,3 +94,57 @@ curl -X POST 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec' \
 ```
 
 Expect a JSON `{"ok":true}` response and a new row in the sheet + an email in your inbox.
+
+## Client shoot brief (onboarding form)
+
+A hidden page for booked couples, filled in before their pre wedding shoot:
+
+`https://kashklicks.ca/welcome/brief-s7vhr67r7keg/`
+
+It is not linked anywhere, has a `noindex` meta and header, and is blocked in
+`robots.txt`. The path lives in `src/data/onboarding-fields.json` (`meta.path`).
+
+### Personal link template
+
+Send each couple their own link so the basics are filled in for them:
+
+```
+https://kashklicks.ca/welcome/brief-s7vhr67r7keg/?b=<BOOKING_ID>&p=<PACKAGE_ID>&n1=<NAME_1>&n2=<NAME_2>&d=<YYYY-MM-DD>
+```
+
+| Param | Fills | Notes |
+|---|---|---|
+| `b` | hidden booking id | Letters, digits, `-` and `_` only. Becomes part of the storage key. |
+| `p` | Your package | Must be one of `love-story-mini-film`, `love-story-film`, `pre-wedding-full`, otherwise ignored. |
+| `n1` | Your name | |
+| `n2` | Your partner's name | |
+| `d` | Shoot date | Only `YYYY-MM-DD`, otherwise ignored. |
+
+Every value is capped at 80 characters and URL encoded (a space is `%20`).
+Pre-fill only fills empty fields, so a couple's own answers are never
+overwritten. The page removes these params from the address bar right after
+reading them, so names do not end up in analytics.
+
+Example:
+
+```
+https://kashklicks.ca/welcome/brief-s7vhr67r7keg/?b=KK-2027-014&p=love-story-film&n1=Priya&n2=Arjun&d=2027-05-16
+```
+
+### Where submissions go
+
+1. The page posts JSON to `/r/onboarding` (worker).
+2. The worker validates with the same schema as the page, saves the record to
+   the `ONBOARDING_KV` namespace (`onb:v1:<booking>:<submission>`, kept two
+   years), then forwards `form=onboarding` + a plain text summary to Apps Script.
+3. Apps Script appends a row to the `Onboarding` tab and emails the brief.
+
+If Apps Script is down, the couple still sees the thank you screen and the
+record stays in KV marked `notified:false`. To list stored briefs:
+
+```bash
+npx wrangler kv key list --binding ONBOARDING_KV --remote --prefix onb:v1: > /tmp/kv.log 2>&1; cat /tmp/kv.log
+```
+
+The Apps Script side needs a one time update, see
+`scripts/APPS-SCRIPT-PATCH-onboarding.md`.

@@ -5,6 +5,7 @@ export const GET: APIRoute = () => {
     'User-agent: *',
     'Allow: /',
     'Disallow: /dev/',
+    'Disallow: /welcome/',
     '',
     '# AI search and citation bots (real-time answers)',
     'User-agent: OAI-SearchBot',

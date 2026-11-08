@@ -17,6 +17,13 @@
  *   2. Save the same token to:
  *      ~/.claude/projects/-Users-akashdesai-projects-kashklicks/forms-admin-token
  *   3. Deploy → Manage deployments → edit existing → New version → Deploy.
+ *
+ * Client onboarding brief (form=onboarding, posted by the worker's
+ * /r/onboarding route): appends a row to the "Onboarding" tab, emails the
+ * plain-text brief, and optionally copies a run-of-show Google Doc template.
+ * Doc creation needs two extra OAuth scopes (documents + drive) that are NOT
+ * in scripts/appsscript.json, so it stays off until you opt in. See
+ * scripts/APPS-SCRIPT-PATCH-onboarding.md.
  */
 
 const NOTIFY_EMAIL = 'info@kashklicks.ca';
@@ -44,6 +51,15 @@ const BOOKED_COLUMNS = [
 
 const VALID_STATUSES = ['new', 'contacted', 'call-booked', 'quoted', 'booked', 'lost', 'ghosted'];
 
+const ONBOARDING_TAB = 'Onboarding';
+const ONBOARDING_COLUMNS = [
+  'Received', 'Booking ID', 'Submission ID', 'Couple', 'Email', 'Phone', 'Package',
+  'Wedding Date', 'Shoot Date', 'Backup Date', 'Locations', 'Songs', 'Format',
+  'Deadline', 'Summary', 'Doc Link', 'Status', 'Raw JSON',
+];
+// Google Sheets caps a cell at 50,000 characters.
+const ONBOARDING_RAW_CAP = 49000;
+
 function doPost(e) {
   try {
     const params = parseParams_(e);
@@ -60,6 +76,7 @@ function doPost(e) {
       case 'list_inbox':    return handleListInbox_();
       case 'list_pipeline': return handleListPipeline_();
       case 'list_booked':   return handleListBooked_();
+      case 'list_onboarding': return handleListOnboarding_();
       case 'promote':       return handlePromote_(params);
       case 'ignore':        return handleIgnore_(params);
       case 'update':        return handleUpdate_(params);
@@ -92,6 +109,7 @@ function verifyToken_(token) {
 /* ---------- form intake (anonymous) ---------- */
 
 function handleFormSubmission_(params) {
+  if (params.form === 'onboarding') return handleOnboarding_(params);
   const now = new Date();
   const sheet = getOrCreateSheet_(INBOX_TAB, INBOX_COLUMNS);
   const pick = (...keys) => {
@@ -152,6 +170,117 @@ function notify_(params, when) {
     body,
     replyTo: params.email || NOTIFY_EMAIL,
   });
+}
+
+/* ---------- client onboarding brief (anonymous, via the worker) ---------- */
+
+function handleOnboarding_(params) {
+  const now = new Date();
+  const sheet = getOrCreateSheet_(ONBOARDING_TAB, ONBOARDING_COLUMNS);
+  let d = {};
+  try {
+    d = JSON.parse(params.payload_json || '{}') || {};
+  } catch (_) {
+    d = {};
+  }
+  const couple = params.couple || [d.p1_name, d.p2_name].filter(String).join(' and ') || 'Unnamed couple';
+  const bookingId = params.booking_id || '';
+  const locations = (d.locations || []).map((l, i) => `${i + 1}. ${l.name || l.id}`).join('\n');
+  const songs = (d.songs || [])
+    .map((s, i) => `${i + 1}. ${[s.title, s.artist].filter(String).join(' by ')}${s.url ? ' ' + s.url : ''}`)
+    .join('\n');
+
+  let docLink = '';
+  try {
+    docLink = createBriefDoc_(Object.assign({}, params, { couple }), d);
+  } catch (err) {
+    console.error('createBriefDoc_ failed', err);
+    docLink = '';
+  }
+
+  const raw = String(params.payload_json || '');
+  sheet.appendRow([
+    now,
+    bookingId,
+    params.submission_id || '',
+    couple,
+    params.email || d.email || '',
+    d.phone || '',
+    d.package_id || '',
+    d.wedding_date || '',
+    d.shoot_date || '',
+    d.shoot_date_backup || '',
+    locations,
+    songs,
+    d.delivery_format || '',
+    d.delivery_deadline || '',
+    params.summary || '',
+    docLink,
+    'new',
+    raw.length > ONBOARDING_RAW_CAP ? raw.slice(0, ONBOARDING_RAW_CAP) + ' [truncated]' : raw,
+  ]);
+
+  const subject = `[AD Photography] Shoot brief: ${couple} (${bookingId || 'no booking id'})`;
+  const body = [
+    params.summary || '(no summary)',
+    '',
+    `Doc: ${docLink || 'not created (set ONBOARDING_DOC_TEMPLATE_ID to enable)'}`,
+    `Submission: ${params.submission_id || ''}`,
+    '',
+    'Raw JSON:',
+    raw,
+  ].join('\n');
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject,
+    body,
+    replyTo: params.email || d.email || NOTIFY_EMAIL,
+  });
+  return jsonOut_({ ok: true });
+}
+
+// Copies the run-of-show template Doc for this couple and fills its
+// placeholders. Returns '' (does nothing) unless the script property
+// ONBOARDING_DOC_TEMPLATE_ID holds a Google Doc id.
+// SCOPES: DocumentApp and DriveApp need
+//   https://www.googleapis.com/auth/documents
+//   https://www.googleapis.com/auth/drive
+// added to appsscript.json (see scripts/appsscript.onboarding-docs.json) and
+// a fresh authorization. Without them the call throws, which the caller
+// catches, so the sheet row and email still go out.
+function createBriefDoc_(p, d) {
+  const templateId = PropertiesService.getScriptProperties().getProperty('ONBOARDING_DOC_TEMPLATE_ID');
+  if (!templateId) return '';
+
+  const couple = p.couple || 'Couple';
+  const copy = DriveApp.getFileById(templateId).makeCopy(`Storyline and run-of-show, ${couple}`);
+  const doc = DocumentApp.openById(copy.getId());
+  const docBody = doc.getBody();
+
+  const list = (arr, fmt) => (arr || []).map((x, i) => `${i + 1}. ${fmt(x)}`).join('\n');
+  const values = {
+    COUPLE: couple,
+    BOOKING_ID: p.booking_id || '',
+    PACKAGE: d.package_id || '',
+    SHOOT_DATE: d.shoot_date || '',
+    BACKUP_DATE: d.shoot_date_backup || '',
+    LOCATIONS: list(d.locations, (l) => l.name || l.id),
+    SONGS: list(d.songs, (s) => [s.title, s.artist].filter(String).join(' by ') + (s.url ? ` ${s.url}` : '')),
+    MUST_HAVES: d.must_have_shots || '',
+    SUMMARY: p.summary || '',
+  };
+  Object.keys(values).forEach((key) => {
+    // replaceText takes a regex pattern, so the braces are escaped.
+    const pattern = '\\{\\{' + key + '\\}\\}';
+    docBody.replaceText(pattern, String(values[key]));
+  });
+  doc.saveAndClose();
+  return doc.getUrl();
+}
+
+function handleListOnboarding_() {
+  const sheet = getOrCreateSheet_(ONBOARDING_TAB, ONBOARDING_COLUMNS);
+  return jsonOut_({ ok: true, rows: readSheet_(sheet) });
 }
 
 /* ---------- pipeline (authenticated) ---------- */
