@@ -110,7 +110,7 @@ The cost of a wedding photographer is not really about talent. It is about time,
 
 **How established the photographer is.** A deep portfolio, dual card backups, insurance, and a record of delivering on time cost money to maintain, and the dates are finite. You are paying for the day going right.
 
-**Season and day of week.** Peak Saturdays from May through October are the most in demand and the most expensive. An off season date or a weekday can often book shorter, less expensive coverage.
+**Season and day of week.** Saturdays from May through October are the most in demand, so they book up first. An off season date or a weekday is easier to get, and can often work with shorter coverage.
 
 ## How much does a wedding photographer cost in Toronto? What I see quoted
 

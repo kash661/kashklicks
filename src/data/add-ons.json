@@ -292,39 +292,6 @@
     "note": "Adds a third location and one extra hour (6 hours in total), same deliverables. Parking at the extra location is charged at cost."
   },
   {
-    "id": "peak-weekend-love-story-film",
-    "label": "Peak weekend (July to October, Saturday or Sunday)",
-    "price": 51.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding"
-    ],
-    "status": "locked",
-    "note": "Weekend dates in peak season carry a small surcharge. Weekdays and the off season do not."
-  },
-  {
-    "id": "peak-weekend-signature",
-    "label": "Peak weekend (July to October, Saturday or Sunday)",
-    "price": 76.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding"
-    ],
-    "status": "locked",
-    "note": "Weekend dates in peak season carry a small surcharge. Weekdays and the off season do not."
-  },
-  {
-    "id": "peak-weekend-pre-wedding",
-    "label": "Peak weekend (July to October, Saturday or Sunday)",
-    "price": 101.25,
-    "unit": "flat",
-    "categories": [
-      "Pre-Wedding"
-    ],
-    "status": "locked",
-    "note": "Weekend dates in peak season carry a small surcharge. Weekdays and the off season do not."
-  },
-  {
     "id": "parking-at-cost",
     "label": "Parking",
     "price": null,
