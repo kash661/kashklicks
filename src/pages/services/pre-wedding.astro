@@ -32,10 +32,19 @@ const preWeddingPackages = packages
 const proposalPackage = packages.find((p) => p.category === 'Proposals');
 const preWeddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('pre-wedding'));
 
-// Add-ons every package takes go in the shared list under the cards; the
-// rest (film extras, peak weekends, split day, extra locations) sit inside
-// the card of the package that takes them.
-const { general: preWeddingGeneralAddOns, specific: preWeddingCardAddOns } = splitAddOns(preWeddingPackages);
+// Add-ons every package takes go in the shared list under the cards, the
+// ones every film (or every photo only) session takes go in a sub block of
+// it, and the rest (peak weekends, split day, extra locations, each RAW
+// price) sit inside the card of the package that takes them.
+const {
+  general: preWeddingGeneralAddOns,
+  groupShared: preWeddingGroupAddOns,
+  specific: preWeddingCardAddOns,
+} = splitAddOns(preWeddingPackages, { groupBy: (p) => (p.film ? 'film' : 'photo') });
+const preWeddingAddOnGroups = [
+  { title: 'For the photo and film sessions', items: (preWeddingGroupAddOns.get('film') ?? []).map(formatAddOn) },
+  { title: 'For the photo only sessions', items: (preWeddingGroupAddOns.get('photo') ?? []).map(formatAddOn) },
+];
 
 const preWeddingService = {
   title: 'Pre-Weddings & E-Shoots',
@@ -350,6 +359,7 @@ const preWeddingJourneySteps = [
           title="Add-ons for every session"
           description="These fit any session. Extras that belong to one session are listed inside that package."
           items={preWeddingGeneralAddOns.map(formatAddOn)}
+          groups={preWeddingAddOnGroups}
         />
       </div>
 

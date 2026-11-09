@@ -145,24 +145,53 @@ export function addOnPriceText(a: AddOn): string {
 }
 
 /**
- * Split a page's add-ons into the ones every package takes (the shared list
- * under the cards) and the ones only some packages take (inside each card).
- * Packages with no addOnIds, such as "Make It Yours", are ignored. Both lists
- * keep add-ons.json order, so packages.json addOnIds stays the only source.
+ * Split a page's add-ons into three tiers, all in add-ons.json order, so
+ * packages.json addOnIds stays the only source:
+ *   general      in every package on the page (the shared list under the cards)
+ *   groupShared  per group of 2+ packages (groupBy), in every package of that
+ *                group but not general (a sub block of the shared list)
+ *   specific     the rest, per package (inside that package's card)
+ * Packages with no addOnIds, such as "Make It Yours", are ignored. Without
+ * groupBy there is one group, so groupShared is empty.
  */
-export function splitAddOns(
-  packages: Array<{ id: string; addOnIds?: string[] }>
-): { general: AddOn[]; specific: Map<string, AddOn[]> } {
+export function splitAddOns<P extends { id: string; addOnIds?: string[] }>(
+  packages: P[],
+  opts: { groupBy?: (p: P) => string } = {}
+): { general: AddOn[]; groupShared: Map<string, AddOn[]>; specific: Map<string, AddOn[]> } {
   const pool = packages.filter((p) => (p.addOnIds?.length ?? 0) > 0);
-  const sets = pool.map((p) => new Set(p.addOnIds));
-  const isGeneral = (id: string) => sets.length > 0 && sets.every((s) => s.has(id));
+  const inAll = (list: P[]) => {
+    const sets = list.map((p) => new Set(p.addOnIds));
+    return (id: string) => sets.length > 0 && sets.every((s) => s.has(id));
+  };
+  const isGeneral = inAll(pool);
   const general = ADD_ONS.filter((a) => isGeneral(a.id));
+
+  const groups = new Map<string, P[]>();
+  if (opts.groupBy) {
+    for (const p of pool) {
+      const k = opts.groupBy(p);
+      groups.set(k, [...(groups.get(k) ?? []), p]);
+    }
+  }
+  const groupShared = new Map<string, AddOn[]>();
+  const groupTest = new Map<string, (id: string) => boolean>();
+  for (const [k, members] of groups) {
+    if (members.length < 2) continue;
+    const test = inAll(members);
+    const shared = ADD_ONS.filter((a) => test(a.id) && !isGeneral(a.id));
+    if (shared.length) {
+      groupShared.set(k, shared);
+      groupTest.set(k, test);
+    }
+  }
+
   const specific = new Map<string, AddOn[]>();
   for (const p of pool) {
     const ids = new Set(p.addOnIds);
-    specific.set(p.id, ADD_ONS.filter((a) => ids.has(a.id) && !isGeneral(a.id)));
+    const inGroup = opts.groupBy ? groupTest.get(opts.groupBy(p)) : undefined;
+    specific.set(p.id, ADD_ONS.filter((a) => ids.has(a.id) && !isGeneral(a.id) && !(inGroup && inGroup(a.id))));
   }
-  return { general, specific };
+  return { general, groupShared, specific };
 }
 
 export interface CardAddOn { id: string; label: string; priceText: string; note?: string }

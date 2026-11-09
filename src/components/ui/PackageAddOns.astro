@@ -14,6 +14,9 @@ interface Props {
   packages?: Array<{ addOnIds?: string[]; category?: string }>;
   filterByCategory?: string;
   extraItems?: string[];
+  /* Optional sub blocks under the main list, each with a small heading,
+     e.g. the add-ons every photo and film session shares. */
+  groups?: { title: string; items: string[] }[];
 }
 
 const {
@@ -24,7 +27,10 @@ const {
   packages,
   filterByCategory,
   extraItems,
+  groups = [],
 } = Astro.props;
+
+const subGroups = groups.filter((g) => g.items.length > 0);
 
 let items: string[];
 if (explicitItems) {
@@ -58,6 +64,19 @@ if (explicitItems) {
           </li>
         ))}
       </ul>
+      {subGroups.map((g) => (
+        <div class="package-addons__group reveal stagger-3">
+          <h4 class="package-addons__group-title">{g.title}</h4>
+          <ul class="package-addons__list">
+            {g.items.map((item) => (
+              <li class="package-addons__item">
+                <span class="package-addons__bullet" aria-hidden="true">+</span>
+                <span class="package-addons__text">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   </section>
 )}
@@ -123,6 +142,21 @@ if (explicitItems) {
 
   .package-addons__text {
     flex: 1 1 auto;
+  }
+
+  .package-addons__group {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .package-addons__group-title {
+    margin: 0 0 1rem;
+    padding-inline: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
   }
 
   @media (min-width: 768px) {
