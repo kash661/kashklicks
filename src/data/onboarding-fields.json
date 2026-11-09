@@ -377,8 +377,8 @@
               "label": "One consistent mood"
             },
             {
-              "value": "kash",
-              "label": "Let Kash decide"
+              "value": "mixed",
+              "label": "A few songs, different moods"
             }
           ]
         }
@@ -395,7 +395,7 @@
           "kind": "checkboxes",
           "summaryGroup": "Location wishes",
           "summaryLabel": "Features",
-          "help": "Tick as many as you like. I will pick real places that fit and send you a few options.",
+          "help": "Tick everything you would love to see in your photos.",
           "options": [
             {
               "value": "water",
@@ -735,7 +735,7 @@
             },
             {
               "value": "flexible",
-              "label": "Flexible"
+              "label": "No strong preference, go with the best light"
             }
           ]
         },
@@ -768,7 +768,8 @@
           "name": "locations_own",
           "label": "Places you already have in mind",
           "kind": "text",
-          "placeholder": "Or leave blank and we suggest"
+          "placeholder": "e.g. Trinity Bellwoods, where we had our first date",
+          "help": "Any spot that matters to you, or somewhere you have seen and loved."
         },
         {
           "name": "locations_meaningful",

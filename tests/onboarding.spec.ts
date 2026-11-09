@@ -99,6 +99,17 @@ test.describe('Client shoot brief (onboarding)', () => {
     await expect(page.locator('#onb-delivery_deadline')).toBeVisible();
   });
 
+  test('every question asks the couple, with no hand-off options', async ({ page }) => {
+    await page.goto(PATH);
+    const text = (await page.locator('#onb-form').innerText()).toLowerCase();
+    for (const phrase of ['let kash decide', 'kash decides', 'we suggest', 'suggest for us', 'let us pick', 'leave blank']) {
+      expect(text, phrase).not.toContain(phrase);
+    }
+    await expect(page.locator('input[name="music_structure"][value="kash"]')).toHaveCount(0);
+    await expect(page.locator('label.onb-chip', { hasText: 'A few songs, different moods' })).toBeVisible();
+    await expect(page.locator('label.onb-chip', { hasText: 'No strong preference, go with the best light' })).toBeVisible();
+  });
+
   test('own places alone satisfy the location rule', async ({ page }) => {
     await page.goto(PATH);
     await page.fill('#onb-locations_own', 'Trinity Bellwoods');
