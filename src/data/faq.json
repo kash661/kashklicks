@@ -1,28 +1,28 @@
 [
   {
     "question": "Can I get the raw files?",
-    "answer": "Yes. Raw photos are $121.25, raw video is $251.25. Delivered digitally with your edited gallery.",
+    "answer": "RAW files are not included in any package. You can add them: raw photos are $121.25, and raw video is $251.25 when a wedding film is booked. Delivered digitally with your edited gallery.",
     "services": [
       "wedding"
     ]
   },
   {
     "question": "Can I get the raw files?",
-    "answer": "RAW files are not included in any package, but you can add them. Raw photos are $39.25 on Love Story Mini, $49.25 on Love Story Duo, $69.25 on the photo and film sessions, and $89.25 on The Pre Wedding. Raw video is $101.25. Delivered digitally with your edited gallery.",
+    "answer": "RAW files are not included in any package. You can add them: raw photos are $39.25 on Love Story Mini, $49.25 on Love Story Duo, $69.25 on the photo and film sessions, and $89.25 on The Pre Wedding. Raw video is $101.25. Delivered digitally with your edited gallery.",
     "services": [
       "pre-wedding"
     ]
   },
   {
     "question": "Can I get the raw files?",
-    "answer": "Yes. Raw photos are $69.25. Delivered digitally with your edited gallery.",
+    "answer": "RAW files are not included in any package. You can add them: raw photos are $69.25. Delivered digitally with your edited gallery.",
     "services": [
       "civil-ceremony"
     ]
   },
   {
     "question": "Can I get the raw files?",
-    "answer": "Yes. Raw photos are $51.25. Delivered digitally with your edited gallery.",
+    "answer": "RAW files are not included in any package. You can add them: raw photos are $51.25. Delivered digitally with your edited gallery.",
     "services": [
       "celebrations"
     ]
@@ -105,6 +105,13 @@
     ]
   },
   {
+    "question": "What happens if the day runs long?",
+    "answer": "Extra hours you book in advance are $301.25 per hour. On the day, if the timeline slips, the time past your booked hours is overtime at the same rate, billed in 30 minute blocks of $150.75. It only applies when the delay is on your side, like a late start or extra events or locations added on the day. I give you a 15 minute heads up before time is up and ask before I keep going, and overtime is settled on the day. Time lost on my side is never charged.",
+    "services": [
+      "wedding"
+    ]
+  },
+  {
     "question": "How long until I get my photos?",
     "answer": "Sneak peek within days. Full gallery in 1 to 3 weeks.",
     "services": [
@@ -161,8 +168,22 @@
     ]
   },
   {
+    "question": "What happens if the day runs long?",
+    "answer": "Extra hours you book in advance are $201.25 per hour. On the day, if things run behind, the time past your booked hours is overtime at the same rate, billed in 30 minute blocks of $100.75. It only applies when the delay is on your side, like a late start or extra events or locations added on the day. I give you a 15 minute heads up before time is up and ask before I keep going, and overtime is settled on the day. Time lost on my side is never charged.",
+    "services": [
+      "civil-ceremony"
+    ]
+  },
+  {
     "question": "How long until I get my photos?",
     "answer": "Sneak peek within days. Full gallery within 2 weeks.",
+    "services": [
+      "celebrations"
+    ]
+  },
+  {
+    "question": "What happens if the day runs long?",
+    "answer": "Extra hours you book in advance are $151.25 per hour. On the day, if the party runs late, the time past your booked hours is overtime at the same rate, billed in 30 minute blocks of $75.75. It only applies when the delay is on your side, like a late start or extra events or locations added on the day. I give you a 15 minute heads up before time is up and ask before I keep going, and overtime is settled on the day. Time lost on my side is never charged.",
     "services": [
       "celebrations"
     ]
@@ -231,6 +252,13 @@
     ]
   },
   {
+    "question": "Can I get the raw files?",
+    "answer": "RAW files are not included in any package. You can add them: raw photos are $39.25. Delivered digitally with your gallery.",
+    "services": [
+      "headshots"
+    ]
+  },
+  {
     "question": "How does a surprise proposal shoot work?",
     "answer": "I arrive before you do and set up well back with a long lens, so your partner never sees a photographer. The whole question is photographed from a distance while it happens. Once it lands I walk over and introduce myself, and the rest of the hour is a mini shoot with the two of you.",
     "services": [
@@ -261,6 +289,13 @@
   {
     "question": "Do we need a permit to propose there?",
     "answer": "It depends on the spot. Many Toronto parks and public paths are fine for a short handheld session, while some locations need a City of Toronto commercial photography permit and others sit on private property that books shoots in advance for a fee. Indoor spaces are stricter than outdoor ones, and the Allan Gardens conservatory is a good example: free outside, permit required for an indoor shoot. I check the requirement for your spot when we plan it, and the Toronto photo permit page lists what is known for each location.",
+    "services": [
+      "proposal"
+    ]
+  },
+  {
+    "question": "Can I get the raw files?",
+    "answer": "RAW files are not included in any package. You can add them: raw photos are $51.25. Delivered digitally with your edited gallery.",
     "services": [
       "proposal"
     ]

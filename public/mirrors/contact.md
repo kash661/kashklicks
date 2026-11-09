@@ -44,10 +44,10 @@ I prompt, not pose. Natural movements, real reactions. The photos end up looking
 I still shoot. Covered spots, indoor spaces, or your home. Rain photos can be stunning. If you need to reschedule, 48 hours notice is all I ask.
 
 ### Can I get the raw files?
-Yes. Raw photos are $121.25 for weddings, $51.25 for pre-wedding, civil ceremony, and celebrations. Raw video is $251.25 for weddings, $101.25 for other sessions. Delivered digitally with your edited gallery.
+RAW files are not included in any package. You can add them: raw photos are $121.25 for weddings, $69.25 for civil ceremonies, $51.25 for celebrations and proposals, and $39.25 for headshots. On pre wedding sessions the price depends on the package, starting at $39.25. Raw video is $251.25 for weddings, when a wedding film is booked, and $101.25 for pre wedding sessions. Delivered digitally with your edited gallery.
 
 ### Are there travel fees?
-GTA is typically included. Anything beyond, I discuss upfront. No surprises.
+Inside the GTA there is no travel fee, only parking at cost with the receipt. Outside the GTA it is $0.75 per km round trip, counted from the GTA boundary, plus parking. Further away or abroad, I quote it, with flights and nights away at cost.
 
 ### How long until I get my photos?
 Sneak peek within days. Full wedding gallery in 2 to 3 months. Pre-wedding, civil, and celebration galleries in 1 to 3 weeks depending on the package.

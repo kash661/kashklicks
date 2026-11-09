@@ -26,6 +26,7 @@ A surprise proposal captured from a distance, then a mini shoot to celebrate the
 - Remaining photos fully edited after
 - Help planning the spot and timing
 - Private online gallery
+- RAW files not included, available as an add-on
 
 ### At a glance
 - **Price:** $325 for The Proposal. One hour of coverage at one spot.

@@ -55,15 +55,15 @@ Every package includes a free pre-wedding consultation. Priority 2 to 3 week del
 
 - **Free consultation** included with every booking.
 - **Location guidance**, light first, location second.
-- **GTA travel included** in every package. Beyond, I discuss upfront.
+- **No travel fee inside the GTA**, only parking at cost. Outside it, $0.75 per km round trip from the GTA boundary, plus parking.
 - **Canada-wide** and destination weddings welcome.
 
 ---
 
 ## FAQ
 
-- Can I get the raw files? Yes, $121.25 for raw photos, $251.25 for raw video.
-- Are there travel fees? GTA is typically included. Anything beyond, I discuss upfront.
+- Can I get the raw files? RAW files are not included in any package. You can add them: $121.25 for raw photos, and $251.25 for raw video when a wedding film is booked.
+- Are there travel fees? Inside the GTA there is no travel fee, only parking at cost. Outside the GTA it is $0.75 per km round trip from the GTA boundary, plus parking.
 - When is the best time to shoot? Golden hour. Overcast days work beautifully too.
 - Do you help pick a location? Yes. Light first, location second.
 - Will you help us with posing? I prompt, not pose.

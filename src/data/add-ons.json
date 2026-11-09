@@ -9,7 +9,7 @@
     ],
     "max": 6,
     "status": "locked",
-    "note": "Your gallery is not capped, so more hours simply means more photographs."
+    "note": "Book extra hours in advance at this rate. On the day, time past the booked hours is overtime at the same rate, billed in 30 minute blocks ($150.75 per block), only when the delay is on your side: a late start, a timeline that slips, or extra events or locations added on the day. I give a 15 minute heads up before time is up and ask before continuing, and overtime is settled on the day."
   },
   {
     "id": "extra-hours-civil",
@@ -21,7 +21,7 @@
     ],
     "max": 6,
     "status": "locked",
-    "note": "Your gallery is not capped, so more hours simply means more photographs."
+    "note": "Book extra hours in advance at this rate. On the day, time past the booked hours is overtime at the same rate, billed in 30 minute blocks ($100.75 per block), only when the delay is on your side: a late start, a timeline that slips, or extra events or locations added on the day. I give a 15 minute heads up before time is up and ask before continuing, and overtime is settled on the day."
   },
   {
     "id": "extra-hours-events",
@@ -33,7 +33,7 @@
     ],
     "max": 8,
     "status": "locked",
-    "note": "Around 40 edited photographs for every hour of coverage."
+    "note": "Book extra hours in advance at this rate. On the day, time past the booked hours is overtime at the same rate, billed in 30 minute blocks ($75.75 per block), only when the delay is on your side: a late start, a timeline that slips, or extra events or locations added on the day. I give a 15 minute heads up before time is up and ask before continuing, and overtime is settled on the day."
   },
   {
     "id": "second-photographer",
@@ -146,6 +146,17 @@
     "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled. Most people do not want these, so ask me first."
   },
   {
+    "id": "raw-video-wedding",
+    "label": "Unedited RAW video",
+    "price": 251.25,
+    "unit": "flat",
+    "categories": [
+      "Wedding"
+    ],
+    "status": "locked",
+    "note": "The unedited footage exactly as it was recorded, when a wedding film is booked."
+  },
+  {
     "id": "raw-photos-sessions",
     "label": "Unedited RAW photographs",
     "price": 51.25,
@@ -166,6 +177,17 @@
       "Civil Ceremony"
     ],
     "status": "locked",
+    "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
+  },
+  {
+    "id": "raw-photos-headshots",
+    "label": "Unedited RAW photographs",
+    "price": 39.25,
+    "unit": "flat",
+    "categories": [
+      "Headshots"
+    ],
+    "status": "proposed",
     "note": "Every frame I shot, straight off the card. Not retouched, not colour corrected, and not culled."
   },
   {
