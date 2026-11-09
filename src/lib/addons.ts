@@ -124,3 +124,49 @@ export const isRegionGated = (pkg: { regions?: string[] }) => Array.isArray(pkg.
 
 export const visibleInRegion = (pkg: { regions?: string[] }, region?: string) =>
   !isRegionGated(pkg) || (!!region && pkg.regions!.includes(region));
+
+/** Only the price part of an add-on, for a two column row: label left, price right. */
+export function addOnPriceText(a: AddOn): string {
+  const p = typeof a.price === 'number' ? money(a.price) : null;
+  switch (a.unit) {
+    case 'quote':       return 'quoted';
+    case 'at-cost':     return p ? `at cost, from ${p}` : 'at cost';
+    case 'included':    return 'included';
+    case 'deposit':     return `${p} refundable deposit`;
+    case 'per-hour':    return `${p} per hour`;
+    case 'per-person':  return `${p} per person`;
+    case 'per-year':    return `${p} per year`;
+    case 'per-image':
+    case 'per-item':
+    case 'per-roll':    return `${p} each`;
+    case 'percent':     return `${a.price}% off`;
+    default:            return p ?? '';
+  }
+}
+
+/**
+ * Split a page's add-ons into the ones every package takes (the shared list
+ * under the cards) and the ones only some packages take (inside each card).
+ * Packages with no addOnIds, such as "Make It Yours", are ignored. Both lists
+ * keep add-ons.json order, so packages.json addOnIds stays the only source.
+ */
+export function splitAddOns(
+  packages: Array<{ id: string; addOnIds?: string[] }>
+): { general: AddOn[]; specific: Map<string, AddOn[]> } {
+  const pool = packages.filter((p) => (p.addOnIds?.length ?? 0) > 0);
+  const sets = pool.map((p) => new Set(p.addOnIds));
+  const isGeneral = (id: string) => sets.length > 0 && sets.every((s) => s.has(id));
+  const general = ADD_ONS.filter((a) => isGeneral(a.id));
+  const specific = new Map<string, AddOn[]>();
+  for (const p of pool) {
+    const ids = new Set(p.addOnIds);
+    specific.set(p.id, ADD_ONS.filter((a) => ids.has(a.id) && !isGeneral(a.id)));
+  }
+  return { general, specific };
+}
+
+export interface CardAddOn { id: string; label: string; priceText: string; note?: string }
+
+/** The shape PricingCard's addOns prop takes. */
+export const toCardAddOns = (list: AddOn[] = []): CardAddOn[] =>
+  list.map((a) => ({ id: a.id, label: a.label, priceText: addOnPriceText(a), note: a.note }));

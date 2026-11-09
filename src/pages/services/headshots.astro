@@ -12,6 +12,7 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
 import ReviewStrip from '../../components/global/ReviewStrip.astro';
 import PackageAddOns from '../../components/ui/PackageAddOns.astro';
+import { formatAddOn, splitAddOns, toCardAddOns } from '../../lib/addons';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
@@ -54,6 +55,7 @@ const headshotsJourneySteps = [
 ];
 
 const headshotPackages = packages.filter((p) => p.category === 'Headshots').sort((a, b) => a.order - b.order);
+const { general: headshotGeneralAddOns, specific: headshotCardAddOns } = splitAddOns(headshotPackages);
 const headshotFaq = faqData.filter((q: any) => q.services && q.services.includes('headshots'));
 
 const headshotsService = {
@@ -245,6 +247,7 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             ordinal={i}
             service="headshots"
             ctaLabel="Enquire"
+            addOns={toCardAddOns(headshotCardAddOns.get(pkg.id))}
             accordion={true}
             accordionTag={pkg.duration}
           />
@@ -254,9 +257,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
       <!-- Shared add-ons section (pulled from both headshot packages above) -->
       <div class="mt-12">
         <PackageAddOns
-          title="Add-Ons & Extras"
+          title="Add-ons for every session"
           description="Optional upgrades you can add to either headshot session."
-          packages={headshotPackages}
+          items={headshotGeneralAddOns.map(formatAddOn)}
         />
       </div>
 

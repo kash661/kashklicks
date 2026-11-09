@@ -14,6 +14,7 @@ import { Image } from 'astro:assets';
 
 import packages from '../data/packages.json';
 import faqData from '../data/faq.json';
+import { formatAddOn, splitAddOns, toCardAddOns } from '../lib/addons';
 import site from '../data/site.json';
 
 // Hero: editorial portrait (DSCF4845)
@@ -29,6 +30,7 @@ const anushkaAnthonyAlt = (await import('../assets/images/portfolio/anushka-anth
 const weddingPackages = packages
   .filter((p) => p.category === 'Wedding')
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const { general: weddingGeneralAddOns, specific: weddingCardAddOns } = splitAddOns(weddingPackages);
 const civilPackage = packages.find((p) => p.category === 'Civil Ceremony');
 
 const weddingFaq = faqData.filter(
@@ -371,6 +373,8 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
             ordinal={i}
             service="wedding"
             ctaLabel="Enquire"
+            addOns={toCardAddOns(weddingCardAddOns.get(pkg.id))}
+            addOnsLabel="Add-ons for this collection"
           />
         ))}
       </div>
@@ -378,9 +382,9 @@ const jsonLd = [serviceSchema, offerCatalogSchema, faqPageSchema];
       <!-- Shared add-ons section (pulled from all wedding packages above) -->
       <div class="mt-12">
         <PackageAddOns
-          title="Add-Ons & Extras"
-          description="Optional upgrades that apply across the collections above. Add any combination to your booking."
-          packages={weddingPackages}
+          title="Add-ons for every collection"
+          description="These fit any collection. Extras that belong to one collection are listed inside it."
+          items={weddingGeneralAddOns.map(formatAddOn)}
         />
       </div>
 

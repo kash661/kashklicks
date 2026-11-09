@@ -1359,6 +1359,110 @@ input.flatpickr-input + input.form-field__input {
   background: color-mix(in srgb, var(--color-on-surface-variant) 55%, transparent);
 }
 
+/* ── Per package add-ons dropdown (PricingCard addOns prop) ───────────────
+   A native <details>, so it opens with Enter or Space and needs no script.
+   Depth comes from a faint tint, never a border; 0px radius like everything
+   else. margin-top:auto drops it to the foot of the included row, so the
+   dropdowns line up across a row of cards on desktop. Informational copy,
+   so it is all sans. */
+.pricing-card__addons {
+  margin-top: auto;
+  background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
+  transition: background-color 600ms var(--ease-gallery);
+}
+.pricing-card__addons[open] {
+  background: color-mix(in srgb, var(--color-on-surface) 6%, transparent);
+}
+.pricing-card__addons-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.9375rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  transition: color 600ms var(--ease-gallery), background-color 600ms var(--ease-gallery);
+  -webkit-tap-highlight-color: transparent;
+}
+.pricing-card__addons-summary::-webkit-details-marker { display: none; }
+.pricing-card__addons-summary::marker { content: ''; }
+.pricing-card__addons-summary:hover {
+  color: var(--color-on-surface);
+  background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
+}
+.pricing-card__addons-summary:active {
+  background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+}
+.pricing-card__addons-summary:focus-visible {
+  outline: 2px solid var(--color-on-surface);
+  outline-offset: 2px;
+  color: var(--color-on-surface);
+}
+.pricing-card__addons[open] > .pricing-card__addons-summary { color: var(--color-on-surface); }
+.pricing-card__addons-count {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--color-on-surface-variant);
+}
+.pricing-card__addons-chev {
+  margin-left: auto;
+  font-size: 1.25rem;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--color-on-surface-muted);
+  transform: rotate(0deg);
+  transition: transform 600ms var(--ease-gallery), color 600ms var(--ease-gallery);
+}
+.pricing-card__addons-summary:hover .pricing-card__addons-chev { color: var(--color-on-surface); }
+.pricing-card__addons[open] .pricing-card__addons-chev {
+  transform: rotate(90deg);
+  color: var(--color-on-surface);
+}
+.pricing-card__addons-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 1rem 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.pricing-card__addon {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  align-items: baseline;
+  font-family: var(--font-sans);
+}
+.pricing-card__addon-label {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--color-on-surface);
+}
+.pricing-card__addon-price {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--color-on-surface);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.pricing-card__addon-note {
+  grid-column: 1 / -1;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-on-surface-variant);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pricing-card__addons,
+  .pricing-card__addons-summary,
+  .pricing-card__addons-chev { transition: none; }
+}
+
 .pricing-card__cta {
   font-family: var(--font-sans);
   font-size: 0.8125rem;

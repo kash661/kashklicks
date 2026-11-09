@@ -14,6 +14,7 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import PricingCard from '../../components/ui/PricingCard.astro';
 import ReviewStrip from '../../components/global/ReviewStrip.astro';
 import PackageAddOns from '../../components/ui/PackageAddOns.astro';
+import { formatAddOn, splitAddOns, toCardAddOns } from '../../lib/addons';
 import FAQAccordion from '../../components/ui/FAQAccordion.astro';
 import BookingLink from '../../components/ui/BookingLink.astro';
 import ShareButton from '../../components/ui/ShareButton.astro';
@@ -37,6 +38,7 @@ import ctaImage from '../../assets/images/portfolio/ashley-donald/10.jpg';
 const proposalPackages = packages
   .filter((p) => p.category === 'Proposals')
   .sort((a, b) => a.order - b.order);
+const { general: proposalGeneralAddOns, specific: proposalCardAddOns } = splitAddOns(proposalPackages);
 const proposalFaq = faqData.filter((q: any) => q.services && q.services.includes('proposal'));
 
 const proposalService = {
@@ -336,6 +338,7 @@ const proposalJourneySteps = [
             service="proposal"
             ctaLabel="Enquire"
             coverage="photo"
+            addOns={toCardAddOns(proposalCardAddOns.get(pkg.id))}
             accordion={true}
             accordionTag={pkg.duration}
           />
@@ -345,9 +348,9 @@ const proposalJourneySteps = [
       <!-- Shared add-ons section (pulled from the proposal package above) -->
       <div class="mt-12">
         <PackageAddOns
-          title="Add-Ons & Extras"
+          title="Add-ons for your proposal"
           description="Optional upgrades you can add to the proposal session."
-          packages={proposalPackages}
+          items={proposalGeneralAddOns.map(formatAddOn)}
         />
       </div>
 

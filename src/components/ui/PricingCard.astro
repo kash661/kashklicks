@@ -46,6 +46,11 @@ interface Props {
   /* Screen reader text appended to the CTA label, so four identical visible
      labels still read as four different links. */
   ctaSrText?: string;
+  /* Add-ons only this package takes, shown in a native dropdown under the
+     highlights. Pages that do not pass it render byte-identical. */
+  addOns?: { id: string; label: string; priceText: string; note?: string }[];
+  /* Summary text of that dropdown. "Add-ons for this package" on weddings. */
+  addOnsLabel?: string;
 }
 
 const {
@@ -72,7 +77,15 @@ const {
   ctaHref = '/pricing/',
   ctaNewTab = false,
   ctaSrText,
+  addOns = [],
+  addOnsLabel = 'Add-ons for this session',
 } = Astro.props;
+
+// With addOns, the included block also holds a native dropdown of the add-ons
+// only this package takes. It lives inside __included so the desktop card keeps
+// its four row subgrid. One expression for both branches, so cards without
+// add-ons emit byte-identical markup.
+const hasAddOns = addOns.length > 0;
 
 // "from $1,401.25" by default; a fixed price can read "$381.25 all in".
 const summaryBefore = summaryPricePrefix ? `${summaryPricePrefix} ` : '';
@@ -86,7 +99,7 @@ const plateLabel = ordinal != null ? `Package ${romans[ordinal] ?? ordinal + 1}`
 // Lift this tier visually — user-flagged popular, on-sale, or explicitly featured.
 const isFeatured = !!(featured ?? popular);
 
-// Add-ons live in the shared PackageAddOns section. Cards stay focused on
+// Add-ons every package takes live in the shared PackageAddOns section; ones only this package takes arrive via the addOns prop. Cards stay focused on
 // "what you get" at this tier.
 // Add-ons are structured data now (src/data/add-ons.json) and render in the shared
 // PackageAddOns section, so every highlight here is genuinely part of the tier.
@@ -177,7 +190,36 @@ const accordionTagLabel = accordionTag ?? (filterMeta?.film ? 'Film' : 'Photos')
     </div>
   )}
 
-  {includedItems.length > 0 && (
+  {hasAddOns ? (
+    <div class="pricing-card__included">
+      {includedItems.length > 0 && (
+        <Fragment>
+          <p class="pricing-card__included-label">What's Included</p>
+          <ul class="pricing-card__list">
+            {includedItems.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </Fragment>
+      )}
+      <details class="pricing-card__addons" data-package-addons={id}>
+        <summary class="pricing-card__addons-summary">
+          <span class="pricing-card__addons-title">{addOnsLabel}</span>
+          <span class="pricing-card__addons-count">{addOns.length}</span>
+          <span class="pricing-card__addons-chev" aria-hidden="true">&rsaquo;</span>
+        </summary>
+        <ul class="pricing-card__addons-list">
+          {addOns.map((a) => (
+            <li class="pricing-card__addon" data-addon={a.id}>
+              <span class="pricing-card__addon-label">{a.label}</span>
+              <span class="pricing-card__addon-price">{a.priceText}</span>
+              {a.note && <span class="pricing-card__addon-note">{a.note}</span>}
+            </li>
+          ))}
+        </ul>
+      </details>
+    </div>
+  ) : includedItems.length > 0 && (
     <div class="pricing-card__included">
       <p class="pricing-card__included-label">What's Included</p>
       <ul class="pricing-card__list">

@@ -17,7 +17,7 @@ import ctaImage from '../../assets/images/homepage/homepage-05.jpg';
 import { Image } from 'astro:assets';
 
 import packages from '../../data/packages.json';
-import { resolveAddOns, formatAddOn, getAddOn } from '../../lib/addons';
+import { formatAddOn, splitAddOns, toCardAddOns } from '../../lib/addons';
 import faqData from '../../data/faq.json';
 import site from '../../data/site.json';
 
@@ -32,23 +32,10 @@ const preWeddingPackages = packages
 const proposalPackage = packages.find((p) => p.category === 'Proposals');
 const preWeddingFaq = faqData.filter((q: any) => !q.services || q.services.includes('pre-wedding'));
 
-// The three peak weekend surcharges share one label, so the shared add-ons list
-// folds them into a single line with each session's price instead of three
-// identical looking rows.
-const PEAK = [
-  ['love-story-mini-film', 'peak-weekend-love-story-film'],
-  ['love-story-film', 'peak-weekend-signature'],
-  ['pre-wedding-full', 'peak-weekend-pre-wedding'],
-];
-const PEAK_IDS = PEAK.map(([, addOnId]) => addOnId);
-const pkgName = (id: string) => packages.find((p) => p.id === id)?.name ?? id;
-const peakLine = `${getAddOn(PEAK_IDS[0])?.label}: ` + PEAK
-  .map(([pkgId, addOnId]) => `$${getAddOn(addOnId)?.price?.toFixed(2)} on ${pkgName(pkgId)}`)
-  .join(', ');
-const preWeddingAddOnItems = [
-  ...resolveAddOns(preWeddingPackages).filter((a) => !PEAK_IDS.includes(a.id)).map(formatAddOn),
-  peakLine,
-];
+// Add-ons every package takes go in the shared list under the cards; the
+// rest (film extras, peak weekends, split day, extra locations) sit inside
+// the card of the package that takes them.
+const { general: preWeddingGeneralAddOns, specific: preWeddingCardAddOns } = splitAddOns(preWeddingPackages);
 
 const preWeddingService = {
   title: 'Pre-Weddings & E-Shoots',
@@ -345,6 +332,7 @@ const preWeddingJourneySteps = [
             ctaLabel="Enquire"
             badge={pkg.badge}
             coverage={pkg.custom ? undefined : pkg.film ? 'photo-video' : 'photo'}
+            addOns={toCardAddOns(preWeddingCardAddOns.get(pkg.id))}
             accordion={true}
             filterMeta={{
               film: pkg.film,
@@ -356,12 +344,12 @@ const preWeddingJourneySteps = [
         ))}
       </div>
 
-      <!-- Shared add-ons section (pulled from all pre-wedding packages above) -->
+      <!-- Shared add-ons section: only the add-ons every pre-wedding package takes -->
       <div class="mt-12">
         <PackageAddOns
-          title="Add-Ons & Extras"
-          description="Optional upgrades for the sessions above. The film extras apply to the three photo and film sessions. Split across two days and Third location are for The Signature Session only."
-          items={preWeddingAddOnItems}
+          title="Add-ons for every session"
+          description="These fit any session. Extras that belong to one session are listed inside that package."
+          items={preWeddingGeneralAddOns.map(formatAddOn)}
         />
       </div>
 
