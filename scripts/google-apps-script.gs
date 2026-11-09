@@ -54,7 +54,7 @@ const VALID_STATUSES = ['new', 'contacted', 'call-booked', 'quoted', 'booked', '
 const ONBOARDING_TAB = 'Onboarding';
 const ONBOARDING_COLUMNS = [
   'Received', 'Booking ID', 'Submission ID', 'Couple', 'Email', 'Phone', 'Package',
-  'Wedding Date', 'Shoot Date', 'Backup Date', 'Location wishes', 'Songs', 'Format',
+  'Wedding Date', 'Shoot Date', 'Backup Date', 'Location wishes', 'Songs',
   'Deadline', 'Summary', 'Doc Link', 'Status', 'Raw JSON',
 ];
 // Google Sheets caps a cell at 50,000 characters.
@@ -224,7 +224,6 @@ function handleOnboarding_(params) {
     d.shoot_date_backup || '',
     locationWishes,
     songs,
-    d.delivery_format || '',
     d.delivery_deadline || '',
     params.summary || '',
     docLink,

@@ -67,6 +67,8 @@ export interface SectionDef {
   fields: FieldDef[];
   extraLabel?: string;
   extraHint?: string;
+  /** One plain line under the section heading. */
+  lede?: string;
 }
 
 export interface Schema {

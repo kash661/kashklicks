@@ -38,7 +38,7 @@ test.describe('Client shoot brief (onboarding)', () => {
     await page.locator('[data-onb-submit]').click();
 
     await expect(page.locator('[data-onb-problem]')).toBeVisible();
-    for (const name of ['p1_name', 'email', 'package_id', 'story_how_met', 'vibe_select', 'location_features', 'delivery_format', 'consent']) {
+    for (const name of ['p1_name', 'email', 'package_id', 'story_how_met', 'vibe_select', 'location_features', 'consent']) {
       await expect(page.locator(`#onb-${name}-error`), name).toBeVisible();
     }
     await expect(page.locator('#onb-p1_name')).toBeFocused();
@@ -66,11 +66,11 @@ test.describe('Client shoot brief (onboarding)', () => {
     await page.locator('label.onb-chip', { hasText: 'Downtown Toronto' }).click();
     await page.check('input[name="walking_level"][value="easy"]');
 
-    await page.check('input[name="delivery_format"][value="both"]');
     await page.check('#onb-consent');
     await page.locator('[data-onb-submit]').click();
 
     await expect(page.locator('[data-onb-done]')).toBeVisible();
+    expect(body).not.toContain('delivery_format');
     await expect(page.locator('[data-onb-done-names]')).toHaveText('Priya and Arjun.');
     await expect(page.locator('#onb-form')).toBeHidden();
     expect(body).toContain('TEST-2');
@@ -91,6 +91,14 @@ test.describe('Client shoot brief (onboarding)', () => {
     await expect(page.getByText('Outside the GTA adds $0.75 per km round trip plus parking.')).toBeVisible();
   });
 
+  test('the film format question is gone and delivery explains the formats', async ({ page }) => {
+    await page.goto(PATH);
+    await expect(page.locator('input[name="delivery_format"]')).toHaveCount(0);
+    await expect(page.getByText('Films are delivered in landscape 4K. Save the date reels are vertical for Instagram.')).toBeVisible();
+    await expect(page.locator('input[name="delivery_where_shown"]')).toHaveCount(4);
+    await expect(page.locator('#onb-delivery_deadline')).toBeVisible();
+  });
+
   test('own places alone satisfy the location rule', async ({ page }) => {
     await page.goto(PATH);
     await page.fill('#onb-locations_own', 'Trinity Bellwoods');
@@ -109,7 +117,6 @@ test.describe('Client shoot brief (onboarding)', () => {
     await page.fill('#onb-story_how_met', 'At work.');
     await page.check('input[name="vibe_select"][value="fun"]');
     await page.fill('#onb-locations_own', 'Our backyard');
-    await page.check('input[name="delivery_format"][value="vertical"]');
     await page.check('#onb-consent');
     await page.locator('[data-onb-submit]').click();
 

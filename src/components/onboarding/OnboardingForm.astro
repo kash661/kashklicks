@@ -63,6 +63,7 @@ const steps = [
                   <span class="form-section__number">{section.numeral}</span>
                   <span class="form-section__title">{section.title}</span>
                 </legend>
+                {section.lede && <p class="onb-lede">{section.lede}</p>}
                 <div class="onb-grid">
                   {main.map((field) => <OnboardingField field={field} schema={schema} />)}
                 </div>
@@ -202,13 +203,31 @@ const steps = [
   .onb-section { scroll-margin-top: 6.5rem; }
   .onb-section + .onb-section { margin-top: clamp(4rem, 8vw, 6rem); }
 
+  .onb-lede {
+    margin: -1rem 0 2rem;
+    max-width: 52ch;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+  }
+
   .onb-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 2rem 1.5rem;
   }
   @media (min-width: 640px) {
-    .onb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .onb-lede {
+    margin: -1rem 0 2rem;
+    max-width: 52ch;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+  }
+
+  .onb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .onb-full { grid-column: 1 / -1; }
     .onb-half { grid-column: span 1; }
   }

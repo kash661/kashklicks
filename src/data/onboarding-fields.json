@@ -1005,32 +1005,13 @@
           ]
         },
         {
-          "name": "delivery_format",
-          "label": "Film format",
-          "kind": "radio",
-          "required": true,
-          "options": [
-            {
-              "value": "vertical",
-              "label": "Vertical, for phones"
-            },
-            {
-              "value": "horizontal",
-              "label": "Horizontal, for screens"
-            },
-            {
-              "value": "both",
-              "label": "Both"
-            }
-          ]
-        },
-        {
           "name": "delivery_deadline",
           "label": "Do you need it by a certain date?",
           "kind": "text",
           "placeholder": "e.g. by 12 December, for the sangeet"
         }
-      ]
+      ],
+      "lede": "Films are delivered in landscape 4K. Save the date reels are vertical for Instagram."
     },
     {
       "id": "else",
