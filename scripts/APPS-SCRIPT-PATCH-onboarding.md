@@ -63,6 +63,28 @@ id `TEST`. Within a minute you should see:
 
 You can delete the test row afterwards.
 
+## Step 6. Add the A/B tracking columns (one time)
+
+The new code also adds two columns at the end of the **Pipeline** and
+**Booked** tabs, so you can track the pricing test per client:
+
+- **Price variant**: `A portfolio discount` or `B privacy fee`
+- **Sharing allowed**: `yes` or `no`
+
+Both get a dropdown. No existing column moves. The columns appear when you
+run the setup action once, after Step 3. In Terminal, from the project folder:
+
+```bash
+TOKEN=$(cat ~/.claude/projects/-Users-akashdesai-projects-kashklicks/forms-admin-token)
+curl -sX POST 'https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec' \
+  -d "action=setup" -d "token=$TOKEN"
+```
+
+Expect `"ok":true` and `"added_columns"` listing the two names for each tab.
+Running it again is safe: it adds nothing the second time. Or ask Claude to
+run it for you. When a client moves from Pipeline to Booked, both values are
+copied across.
+
 ## Optional. Auto create a storyline doc for each couple
 
 The script can copy a Google Doc template for every brief and fill in the

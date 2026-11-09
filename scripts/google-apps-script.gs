@@ -37,17 +37,26 @@ const INBOX_COLUMNS = [
   'Location', 'Guest Count', 'Message', 'Referral', 'List', 'Status', 'Raw',
 ];
 
+// A/B pricing test, tracked per client. Always the LAST columns: existing
+// sheets get them appended by the setup action (ensureColumns_), never
+// reordered. Variant A = portfolio discount, B = privacy fee.
+const AB_COLUMNS = ['Price variant', 'Sharing allowed'];
+const AB_CHOICES = {
+  'Price variant': ['A portfolio discount', 'B privacy fee'],
+  'Sharing allowed': ['yes', 'no'],
+};
+
 const PIPELINE_COLUMNS = [
   'Inbox Row', 'Promoted', 'Source', 'Name', 'Email', 'Phone', 'Event Type', 'Event Date',
   'Location', 'Guest Count', 'Original Message', 'Referral',
   'Status', 'Last Contact', 'Next Action', 'Notes',
-];
+].concat(AB_COLUMNS);
 
 const BOOKED_COLUMNS = [
   'Booked Date', 'Inbox Row', 'Source', 'Name', 'Email', 'Phone', 'Event Type', 'Event Date',
   'Location', 'Guest Count', 'Original Message', 'Referral',
   'Quoted Amount', 'Contract Link', 'Notes',
-];
+].concat(AB_COLUMNS);
 
 const VALID_STATUSES = ['new', 'contacted', 'call-booked', 'quoted', 'booked', 'lost', 'ghosted'];
 
@@ -301,9 +310,41 @@ function handleListOnboarding_() {
 
 function handleSetup_() {
   getOrCreateSheet_(INBOX_TAB, INBOX_COLUMNS);
-  getOrCreateSheet_(PIPELINE_TAB, PIPELINE_COLUMNS);
-  getOrCreateSheet_(BOOKED_TAB, BOOKED_COLUMNS);
-  return jsonOut_({ ok: true, tabs: [INBOX_TAB, PIPELINE_TAB, BOOKED_TAB] });
+  const pipeline = getOrCreateSheet_(PIPELINE_TAB, PIPELINE_COLUMNS);
+  const booked = getOrCreateSheet_(BOOKED_TAB, BOOKED_COLUMNS);
+  // Tabs made before the A/B test lack the two tracking columns.
+  const added = {
+    [PIPELINE_TAB]: ensureColumns_(pipeline, AB_COLUMNS, AB_CHOICES),
+    [BOOKED_TAB]: ensureColumns_(booked, AB_COLUMNS, AB_CHOICES),
+  };
+  return jsonOut_({ ok: true, tabs: [INBOX_TAB, PIPELINE_TAB, BOOKED_TAB], added_columns: added });
+}
+
+// Appends any missing header at the end of row 1. Never moves or renames an
+// existing column. Optional `choices` adds a dropdown below each header.
+// Returns the headers it added.
+function ensureColumns_(sheet, columns, choices) {
+  const lastCol = Math.max(sheet.getLastColumn(), 1);
+  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String);
+  const added = [];
+  columns.forEach((name) => {
+    let idx = headers.indexOf(name);
+    if (idx === -1) {
+      idx = headers.length;
+      if (headers.length === 1 && headers[0] === '') idx = 0;
+      sheet.getRange(1, idx + 1).setValue(name).setFontWeight('bold');
+      headers[idx] = name;
+      added.push(name);
+    }
+    if (choices && choices[name]) {
+      const rule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(choices[name], true)
+        .setAllowInvalid(false)
+        .build();
+      sheet.getRange(2, idx + 1, Math.max(sheet.getMaxRows() - 1, 1), 1).setDataValidation(rule);
+    }
+  });
+  return added;
 }
 
 function handleListInbox_() {
@@ -412,8 +453,15 @@ function handleBook_(params) {
     params.contract_link || '',
     record.Notes,
   ]);
+  // Carry the A/B tracking over when both tabs have the columns.
+  const bookedRow = booked.getLastRow();
+  AB_COLUMNS.forEach((name) => {
+    const value = record[name];
+    if (value === undefined || value === '') return;
+    try { setCellByHeader_(booked, bookedRow, name, value); } catch (_) { /* run setup first */ }
+  });
   setCellByHeader_(pipeline, pipelineRow, 'Status', 'booked');
-  return jsonOut_({ ok: true, booked_row: booked.getLastRow() });
+  return jsonOut_({ ok: true, booked_row: bookedRow });
 }
 
 /* ---------- sheet helpers ---------- */

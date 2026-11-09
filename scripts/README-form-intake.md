@@ -168,5 +168,17 @@ The worker also sends Apps Script readable labels as `location_wishes`,
 `node scripts/match-locations.mjs brief.json` ranks `src/data/locations.json` against a saved brief (the payload or the KV record).
 Or pass the answers directly: `node scripts/match-locations.mjs --features water,fall --areas downtown,east --walking easy --limit 8`.
 
+### Reading briefs from KV
+
+`node scripts/list-briefs.mjs` lists every stored brief (couple, email, booking id, date), newest first, straight from Cloudflare KV.
+`--get <key>` (or `--get latest`) prints one brief as the same plain text summary the email carries, `--json` prints raw data.
+This works before the Apps Script update is deployed, because the worker saves to KV first.
+
+### A/B pricing columns
+
+The setup action (`action=setup`, see "Pipeline setup" above) also appends **Price variant** (`A portfolio discount` / `B privacy fee`)
+and **Sharing allowed** (`yes` / `no`) to the end of the Pipeline and Booked tabs, with dropdowns. Existing columns never move,
+re-running is safe, and booking a client copies both values from Pipeline to Booked.
+
 The Apps Script side needs a one time update, see
 `scripts/APPS-SCRIPT-PATCH-onboarding.md`.
