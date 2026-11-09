@@ -18,7 +18,7 @@ I publish prices because hiding them felt backwards to me. When I went looking a
 
 **Wedding day coverage:** From $1,401.25 for up to 6 hours. Full day coverage is $2,501.25 for up to 10 hours. The longest package is $3,801.25 for up to 14 hours.
 
-**Civil ceremony:** $501.25 for up to 2 hours. The whole small day, ceremony through the dinner after, is $901.25.
+**Civil ceremony:** $551.25 for up to 2 hours. The whole small day, ceremony through the dinner after, is $901.25.
 
 **Pre wedding session:** From $351.25 for up to 2 hours at one location.
 
@@ -50,7 +50,7 @@ The Full Day is running at $2,301.25 right now, below its listed $2,501.25, so c
 
 | Package | Price | Hours | Photos | What is included |
 |---|---|---|---|---|
-| The Civil Ceremony | $501.25 | Up to 2 | 150+ | The ceremony itself and a couple portrait session near the venue. |
+| The Civil Ceremony | $551.25 | Up to 2 | 150+ | The ceremony itself and a couple portrait session near the venue. |
 | The Elopement | $901.25 | Up to 4 | 250+ | Ceremony, portraits, and the dinner or small reception after. |
 
 Both sit on the [civil ceremony page](/services/civil-ceremony/), and my flat [Toronto elopement packages](/elopement-photographer-toronto/) explain which of the two fits a small day better.
@@ -123,7 +123,7 @@ Yes, and mostly because the day is shorter.
 
 Two sets of fees apply. The City charges $180 for an Ontario marriage licence. The ceremony in the downtown Toronto City Hall Wedding Chamber is run by a private operator and lists $325 plus HST with the officiant included, or $136.85 including HST for a room only chamber at a City civic centre. Confirm current rates before you budget. My [City Hall wedding guide](/blog/toronto-city-hall-wedding-photographer-guide/) walks through booking them, the 22 seat chamber, and the portrait loop right outside the doors.
 
-Photography sits on top of that. My Civil Ceremony package is $501.25 for up to 2 hours, which covers the ceremony and a portrait walk around Nathan Phillips Square, Old City Hall and Osgoode Hall. If you want the dinner after included, The Elopement is $901.25 for up to 4 hours. If your plans grow into a fuller intimate celebration, [how I shoot intimate Toronto weddings](/intimate-wedding-toronto/) shows what that looks like.
+Photography sits on top of that. My Civil Ceremony package is $551.25 for up to 2 hours, which covers the ceremony and a portrait walk around Nathan Phillips Square, Old City Hall and Osgoode Hall. If you want the dinner after included, The Elopement is $901.25 for up to 4 hours. If your plans grow into a fuller intimate celebration, [how I shoot intimate Toronto weddings](/intimate-wedding-toronto/) shows what that looks like.
 
 ## How to compare packages without getting fooled
 
@@ -141,7 +141,7 @@ Three things I would check, even if you never hire me.
 
 **How much does a wedding photographer cost in Toronto?**
 
-Around the GTA I see about $450 to $1,200 for a short civil ceremony, $1,200 to $3,000 for an intimate half day, and $2,800 to $5,500 for a full day with established professionals. My own rates start at $1,401.25 for wedding day coverage and $501.25 for a civil ceremony.
+Around the GTA I see about $450 to $1,200 for a short civil ceremony, $1,200 to $3,000 for an intimate half day, and $2,800 to $5,500 for a full day with established professionals. My own rates start at $1,401.25 for wedding day coverage and $551.25 for a civil ceremony.
 
 **What do your wedding photography packages include?**
 
@@ -149,7 +149,7 @@ All three include an engagement session, unlimited edited high resolution photos
 
 **Are rates different for a City Hall or civil ceremony wedding?**
 
-Yes. A civil ceremony is $501.25 for up to 2 hours because the day is short. Ceremony fees are separate: $180 for the licence and $325 plus HST for the downtown chamber with its officiant.
+Yes. A civil ceremony is $551.25 for up to 2 hours because the day is short. Ceremony fees are separate: $180 for the licence and $325 plus HST for the downtown chamber with its officiant.
 
 **Do you charge travel for weddings outside Toronto?**
 

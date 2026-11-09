@@ -75,8 +75,8 @@ Sources: the City's [wedding chambers page](https://www.toronto.ca/services-paym
 | --- | --- |
 | Ontario marriage licence | $180 |
 | Downtown ceremony with officiant | $325 plus HST, about $367.25 |
-| My Civil Ceremony photography, up to 2 hours | $501.25 |
-| **Total** | **about $1,048.50** |
+| My Civil Ceremony photography, up to 2 hours | $551.25 |
+| **Total** | **about $1,098.50** |
 
 Choose a civic centre chamber and the ceremony line drops to $136.85, plus whatever your own officiant charges. Lunch, flowers and a dress are up to you. The full picture of photography prices is in my [Toronto wedding photographer cost guide](/blog/intimate-toronto-wedding-photography-cost/).
 
@@ -182,7 +182,7 @@ If a church or a heritage estate is more your speed, that is a different day. Yo
 
 **How much does it cost to get married at Toronto City Hall?**
 
-Budget for two separate fees. The Ontario marriage licence is $180, with no HST. The downtown Wedding Chamber lists $325 plus HST with the officiant included, about $367 with tax; its FAQ also shows $350 plus HST, so confirm when you call. The City's civic centre chambers are $136.85 including HST for 30 minutes, room only. My Civil Ceremony photography is a separate $501.25 for up to 2 hours. See the [Civil Ceremony page](/services/civil-ceremony/) for what it includes.
+Budget for two separate fees. The Ontario marriage licence is $180, with no HST. The downtown Wedding Chamber lists $325 plus HST with the officiant included, about $367 with tax; its FAQ also shows $350 plus HST, so confirm when you call. The City's civic centre chambers are $136.85 including HST for 30 minutes, room only. My Civil Ceremony photography is a separate $551.25 for up to 2 hours. See the [Civil Ceremony page](/services/civil-ceremony/) for what it includes.
 
 **Is the ceremony at Old City Hall or New City Hall?**
 
@@ -220,4 +220,4 @@ A City Hall wedding is small, fast, and completely real, and the downtown core g
 
 Or [send a note about your City Hall wedding](/contact/?venue=toronto-city-hall) and tell me your date and what you are planning. I always start with a conversation about the day, the people, and the moments that matter most.
 
-Planning a small ceremony beyond City Hall? I photograph [intimate Toronto weddings](/intimate-wedding-toronto/) year round, and [Toronto elopements from $501.25](/elopement-photographer-toronto/). Every legal step is in my guide on [how to elope in Toronto](/blog/how-to-elope-in-toronto/).
+Planning a small ceremony beyond City Hall? I photograph [intimate Toronto weddings](/intimate-wedding-toronto/) year round, and [Toronto elopements from $551.25](/elopement-photographer-toronto/). Every legal step is in my guide on [how to elope in Toronto](/blog/how-to-elope-in-toronto/).

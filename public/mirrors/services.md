@@ -31,7 +31,7 @@ One hour photographed from a distance so the question stays a surprise, then a m
 ### Civil Ceremony Photography
 Intimate doesn't mean less important. City hall, courthouse, or any small venue, captured with the same care as a full wedding.
 
-- $501.25 (single package, 2 hours coverage)
+- $551.25 (single package, 2 hours coverage)
 - Details: https://kashklicks.ca/services/civil-ceremony/
 
 ### Celebrations and Private Events

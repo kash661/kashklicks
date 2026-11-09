@@ -25,7 +25,7 @@ This is the guide I give couples who ask me how to do it. If you already know ho
 
 **Legal minimum cost:** About $547 at the downtown City Hall chamber: the $180 licence plus $325 plus HST, officiant included.
 
-**Photography:** My Civil Ceremony package is $501.25 for up to 2 hours. The Elopement is $901.25 for up to 4 hours.
+**Photography:** My Civil Ceremony package is $551.25 for up to 2 hours. The Elopement is $901.25 for up to 4 hours.
 
 ## Step 1: Choose where you will marry
 
@@ -61,7 +61,7 @@ Ontario needs two witnesses aged 18 or older to sign the register. A sibling and
 
 Book the ceremony first. Weekday late mornings at City Hall and summer weekends in the parks are the first to go. Then book the rest of the day around it.
 
-I keep my elopement packages simple. The Civil Ceremony is $501.25 for up to 2 hours: the ceremony and a portrait walk nearby. The Elopement is $901.25 for up to 4 hours, for couples who want the dinner or a second location included. Both are on my [elopement page](/elopement-photographer-toronto/).
+I keep my elopement packages simple. The Civil Ceremony is $551.25 for up to 2 hours: the ceremony and a portrait walk nearby. The Elopement is $901.25 for up to 4 hours, for couples who want the dinner or a second location included. Both are on my [elopement page](/elopement-photographer-toronto/).
 
 ## What to do after the ceremony
 
