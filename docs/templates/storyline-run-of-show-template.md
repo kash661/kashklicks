@@ -12,8 +12,18 @@ Shoot day or days:
 
 | Day | Date | Window | Location |
 | --- | --- | --- | --- |
-| Day 1 | {{SHOOT_DATE}} | <start time> to <end time> | {{LOCATIONS}} |
+| Day 1 | {{SHOOT_DATE}} | <start time> to <end time> | <chosen location> |
 | Day 2 (if booked) | <date> | <start time> to <end time> | <location> |
+
+Location wishes: {{LOCATIONS}}
+
+Proposed locations (mark one per slot in the Chosen column):
+
+| Option | Why it fits | Best light | Permit | Parking | Travel time | Chosen |
+| --- | --- | --- | --- | --- | --- | --- |
+| <slot 1, option A (recommended)> | <why it fits their wishes> | <best time of day> | <yes / sometimes / no, and who to call> | <parking> | <travel time> | [ ] |
+| <slot 1, option B> | <why> | <light> | <permit> | <parking> | <travel> | [ ] |
+| <slot 1, option C> | <why> | <light> | <permit> | <parking> | <travel> | [ ] |
 
 Backup date if the weather call goes the wrong way: {{BACKUP_DATE}}
 
