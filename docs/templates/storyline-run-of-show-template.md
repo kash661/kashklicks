@@ -200,7 +200,7 @@ Film length by package: Love Story + Film is 2 minutes. The Signature Session is
 | Package | {{PACKAGE}} |
 | Film length | <2 minutes / 3 to 4 minutes / 5 to 7 minutes + trailer> |
 | Reel count | <number of reels, and what each one is> |
-| Format | <vertical / horizontal / both> |
+| Format | Film in landscape 4K; save the date reel vertical 9:16 for Instagram |
 | Colour and mood words | <three to five words> |
 | Opening beat | <beat number and what we see first> |
 | Closing beat | <beat number and what we see last> |
