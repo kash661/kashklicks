@@ -5,7 +5,7 @@
 //   2. Apply the personal link (?b=&p=&n1=&n2=&d=), filling only empty fields,
 //      then strip those params from the address bar so names never reach
 //      analytics (the pixels boot after window load, this runs before).
-//   3. Wire the pickers: location rank badges, film notes, "Add another".
+//   3. Wire the pickers: film notes, "Add another" rows, gated options.
 //   4. Autosave on every change, validate with the shared schema on submit,
 //      post JSON to /r/onboarding, and swap in the done state.
 //
@@ -34,7 +34,6 @@ const PREFILL_KEYS = ['b', 'p', 'n1', 'n2', 'd'];
 interface Draft {
   v: 1;
   data: Payload;
-  locOrder: string[];
   key: string;
   bookingId: string;
   at: number;
@@ -62,7 +61,6 @@ function readDraft(): Draft | null {
     return {
       v: 1,
       data: d.data,
-      locOrder: Array.isArray(d.locOrder) ? d.locOrder.filter((x: unknown) => typeof x === 'string') : [],
       key: isUuid(d.key) ? d.key : uuid(),
       bookingId: cleanBookingId(d.bookingId),
       at: typeof d.at === 'number' ? d.at : Date.now(),
@@ -122,7 +120,6 @@ export function initOnboarding(): void {
   const draft = readDraft();
   let idemKey = draft?.key ?? uuid();
   let bookingId = draft?.bookingId ?? '';
-  let locOrder: string[] = [];
   let sending = false;
 
   const named = (name: string): Control | null => {
@@ -132,92 +129,6 @@ export function initOnboarding(): void {
   const inputsNamed = (name: string): HTMLInputElement[] =>
     Array.from(form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`));
   const wrapOf = (name: string): HTMLElement | null => form.querySelector<HTMLElement>(`[data-onb-field="${name}"]`);
-
-  // ── Locations ─────────────────────────────────────────────────────────
-  const locRoot = form.querySelector<HTMLElement>('[data-onb-locs]');
-  const locMax = Number(locRoot?.dataset.max ?? 8) || 8;
-  const locInputs = new Map<string, HTMLInputElement>();
-  form.querySelectorAll<HTMLInputElement>('.onb-loc-input').forEach((el) => locInputs.set(el.value, el));
-  const locSlots = Array.from(form.querySelectorAll<HTMLElement>('[data-loc-slot]'));
-  const locEmpty = form.querySelector<HTMLElement>('[data-loc-empty]');
-  const locCap = form.querySelector<HTMLElement>('[data-loc-cap]');
-  const locGroups = Array.from(form.querySelectorAll<HTMLDetailsElement>('[data-loc-group]'));
-  const locItems = Array.from(form.querySelectorAll<HTMLElement>('[data-loc-item]'));
-  const locSearch = form.querySelector<HTMLInputElement>('[data-loc-search]');
-  const locNone = form.querySelector<HTMLElement>('[data-loc-none]');
-
-  function renderLocs(): void {
-    locInputs.forEach((input, id) => {
-      const rank = locOrder.indexOf(id) + 1;
-      input.checked = rank > 0;
-      const badge = input.closest('label')?.querySelector<HTMLElement>('[data-loc-badge]');
-      if (badge) badge.textContent = rank > 0 ? String(rank) : '';
-    });
-    locSlots.forEach((slot, i) => {
-      const id = locOrder[i];
-      slot.hidden = !id;
-      const name = id ? locInputs.get(id)?.dataset.locName ?? id : '';
-      const nameEl = slot.querySelector<HTMLElement>('[data-loc-slot-name]');
-      const srEl = slot.querySelector<HTMLElement>('[data-loc-slot-sr]');
-      if (nameEl) nameEl.textContent = name;
-      if (srEl) srEl.textContent = name ? ` ${name}` : '';
-    });
-    if (locEmpty) locEmpty.hidden = locOrder.length > 0;
-    if (locCap && locOrder.length < locMax) locCap.hidden = true;
-    locGroups.forEach((group) => {
-      const count = Array.from(group.querySelectorAll<HTMLInputElement>('.onb-loc-input')).filter((i) => i.checked).length;
-      const countEl = group.querySelector<HTMLElement>('[data-loc-group-count]');
-      if (countEl) {
-        countEl.hidden = count === 0;
-        countEl.textContent = `${count} picked`;
-      }
-    });
-  }
-
-  locInputs.forEach((input, id) => {
-    input.addEventListener('change', () => {
-      if (input.checked) {
-        if (locOrder.length >= locMax) {
-          input.checked = false;
-          if (locCap) locCap.hidden = false;
-          return;
-        }
-        if (!locOrder.includes(id)) locOrder.push(id);
-      } else {
-        locOrder = locOrder.filter((x) => x !== id);
-      }
-      renderLocs();
-    });
-  });
-
-  locSlots.forEach((slot, i) => {
-    slot.querySelector<HTMLButtonElement>('[data-loc-remove]')?.addEventListener('click', () => {
-      const id = locOrder[i];
-      if (!id) return;
-      locOrder = locOrder.filter((x) => x !== id);
-      renderLocs();
-      scheduleSave();
-      const next = locSlots[Math.min(i, locOrder.length - 1)];
-      (next && !next.hidden ? next.querySelector<HTMLElement>('[data-loc-remove]') : locSearch)?.focus();
-    });
-  });
-
-  locSearch?.addEventListener('input', () => {
-    const q = locSearch.value.trim().toLowerCase();
-    let any = false;
-    locItems.forEach((item) => {
-      const match = !q || (item.dataset.haystack ?? '').includes(q);
-      item.hidden = !match;
-      if (match) any = true;
-    });
-    locGroups.forEach((group, gi) => {
-      const has = Array.from(group.querySelectorAll<HTMLElement>('[data-loc-item]')).some((i) => !i.hidden);
-      group.hidden = !has;
-      if (q) group.open = has;
-      else group.open = gi === 0 || group.querySelector('.onb-loc-input:checked') !== null;
-    });
-    if (locNone) locNone.hidden = any;
-  });
 
   // ── Films ─────────────────────────────────────────────────────────────
   const filmRows = Array.from(form.querySelectorAll<HTMLElement>('.onb-film'));
@@ -307,9 +218,6 @@ export function initOnboarding(): void {
             .filter((x) => x.picked || x.note)
             .map(({ id, title, note }) => ({ id, title, note }));
           break;
-        case 'locations':
-          out[f.name] = locOrder.map((id) => ({ id, name: locInputs.get(id)?.dataset.locName ?? id }));
-          break;
         case 'repeat': {
           const rows: Record<string, string>[] = [];
           for (let i = 0; i < (f.rows ?? 3); i++) {
@@ -357,9 +265,6 @@ export function initOnboarding(): void {
           });
           break;
         }
-        case 'locations':
-          // Restored from draft.locOrder, which keeps the rank order.
-          break;
         case 'repeat': {
           const rows = (Array.isArray(v) ? v : []) as Record<string, string>[];
           for (let i = 0; i < (f.rows ?? 3); i++) {
@@ -380,7 +285,6 @@ export function initOnboarding(): void {
 
   function refreshAll(): void {
     syncGated();
-    renderLocs();
     repeats.forEach(syncRepeat);
     // Open any optional block that already holds an answer.
     form.querySelectorAll<HTMLDetailsElement>('[data-onb-extras]').forEach((d) => {
@@ -388,9 +292,6 @@ export function initOnboarding(): void {
         c instanceof HTMLInputElement && (c.type === 'checkbox' || c.type === 'radio') ? c.checked : c.value.trim() !== '',
       );
       if (hasValue) d.open = true;
-    });
-    locGroups.forEach((g) => {
-      if (g.querySelector('.onb-loc-input:checked')) g.open = true;
     });
     const p1 = named('p1_name')?.value.trim();
     const p2 = named('p2_name')?.value.trim();
@@ -407,7 +308,7 @@ export function initOnboarding(): void {
   }
   function save(): void {
     clearTimeout(saveTimer);
-    const ok = writeDraft({ v: 1, data: collect(), locOrder, key: idemKey, bookingId, at: Date.now() });
+    const ok = writeDraft({ v: 1, data: collect(), key: idemKey, bookingId, at: Date.now() });
     setSaved(ok ? `Saved on this device at ${clock(Date.now())}` : 'This browser is not saving drafts, so please finish in one sitting.');
   }
   function scheduleSave(): void {
@@ -437,7 +338,7 @@ export function initOnboarding(): void {
       msg.hidden = false;
     }
     const kind = FIELD_BY_NAME.get(name)?.kind;
-    if (kind !== 'locations' && kind !== 'films') {
+    if (kind !== 'films') {
       w.querySelectorAll<Control>('input, select, textarea').forEach((c) => c.setAttribute('aria-invalid', 'true'));
     }
   }
@@ -459,10 +360,7 @@ export function initOnboarding(): void {
     if (!first) return;
     const details = first.closest('details');
     if (details) details.open = true;
-    const target =
-      FIELD_BY_NAME.get(first.dataset.onbField ?? '')?.kind === 'locations'
-        ? locSearch
-        : first.querySelector<HTMLElement>('input:not([type="hidden"]):not([disabled]), select, textarea');
+    const target = first.querySelector<HTMLElement>('input:not([type="hidden"]):not([disabled]), select, textarea');
     target?.focus();
     if (target) target.scrollIntoView({ block: 'center' });
   }
@@ -485,16 +383,17 @@ export function initOnboarding(): void {
   form.addEventListener('input', (e) => {
     const name = (e.target as HTMLElement).closest<HTMLElement>('[data-onb-field]')?.dataset.onbField;
     if (name) clearError(name);
-    if (name === 'locations_own' || name === 'locations') clearError('locations');
+    // Editing any field of an "at least one of" rule clears the rule's error.
+    for (const rule of schema.meta.requiredOneOf ?? []) {
+      if (name && rule.fields.includes(name)) clearError(rule.fields[0]);
+    }
     if (problemEl) problemEl.hidden = true;
     if (name === 'p1_name' || name === 'p2_name') refreshAll();
     scheduleSave();
   });
-  locInputs.forEach((input) => input.addEventListener('change', () => clearError('locations')));
 
   // ── Restore, then pre-fill from the personal link ─────────────────────
   if (draft) {
-    locOrder = draft.locOrder.filter((id) => locInputs.has(id)).slice(0, locMax);
     apply(draft.data);
   }
 

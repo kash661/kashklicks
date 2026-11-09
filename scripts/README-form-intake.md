@@ -146,5 +146,27 @@ record stays in KV marked `notified:false`. To list stored briefs:
 npx wrangler kv key list --binding ONBOARDING_KV --remote --prefix onb:v1: > /tmp/kv.log 2>&1; cat /tmp/kv.log
 ```
 
+### Location keys in the payload
+
+The form no longer shows a list of places. Couples describe what they want,
+and the brief carries these keys (values are option ids from
+`src/data/onboarding-fields.json`):
+
+| Key | Type | Example |
+|---|---|---|
+| `location_features` | array, at least one OR `locations_own` | `["water", "fall"]` |
+| `location_areas` | array | `["downtown", "east"]` |
+| `walking_level` | `easy`, `some` or `hike` | `"easy"` |
+| `locations_own` | text | `"Our first date spot, Trinity Bellwoods"` |
+| `time_of_day`, `locations_count`, `locations_meaningful`, `permits_known` | unchanged | |
+
+The worker also sends Apps Script readable labels as `location_wishes`,
+`wish_features`, `wish_areas`, `wish_walking` and `wish_own`.
+
+### Turning wishes into three proposed places
+
+`node scripts/match-locations.mjs brief.json` ranks `src/data/locations.json` against a saved brief (the payload or the KV record).
+Or pass the answers directly: `node scripts/match-locations.mjs --features water,fall --areas downtown,east --walking easy --limit 8`.
+
 The Apps Script side needs a one time update, see
 `scripts/APPS-SCRIPT-PATCH-onboarding.md`.

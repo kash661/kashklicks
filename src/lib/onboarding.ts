@@ -18,7 +18,6 @@ export type FieldKind =
   | 'checkboxes'
   | 'checkbox'
   | 'films'
-  | 'locations'
   | 'repeat';
 
 export interface FieldOption {
@@ -26,6 +25,9 @@ export interface FieldOption {
   label?: string;
   /** Option is only valid when another field holds one of these values. */
   onlyWith?: Record<string, string[]>;
+  /** Hints for scripts/match-locations.mjs: settings, keywords, zones or
+   *  walking levels in src/data/locations.json that this answer points to. */
+  match?: Record<string, string[]>;
 }
 
 export interface ColumnDef {
@@ -53,6 +55,9 @@ export interface FieldDef {
   width?: 'half';
   autocomplete?: string;
   privacyNote?: boolean;
+  /** Fields sharing a group print together under one heading in the summary. */
+  summaryGroup?: string;
+  summaryLabel?: string;
 }
 
 export interface SectionDef {
@@ -268,8 +273,7 @@ export function validateField(field: FieldDef, raw: unknown, payload: Payload, s
       return { value: v };
     }
 
-    case 'films':
-    case 'locations': {
+    case 'films': {
       if (raw !== undefined && raw !== null && !Array.isArray(raw)) return { value: [], error: 'Something went wrong with this list.' };
       const items = (Array.isArray(raw) ? raw : []) as unknown[];
       const out: Record<string, string>[] = [];
@@ -280,14 +284,10 @@ export function validateField(field: FieldDef, raw: unknown, payload: Payload, s
         const id = str(rec.id);
         if (!SLUG_RE.test(id) || seen.has(id)) continue;
         seen.add(id);
-        const name = str(rec.name ?? rec.title).slice(0, schema.meta.shortMax);
-        if (field.kind === 'films') {
-          const note = str(rec.note);
-          if (note.length > schema.meta.shortMax) return { value: out, error: `Film notes: ${tooLong(schema.meta.shortMax)}` };
-          out.push({ id, title: name, note });
-        } else {
-          out.push({ id, name });
-        }
+        const title = str(rec.title).slice(0, schema.meta.shortMax);
+        const note = str(rec.note);
+        if (note.length > schema.meta.shortMax) return { value: out, error: `Film notes: ${tooLong(schema.meta.shortMax)}` };
+        out.push({ id, title, note });
       }
       const cap = field.maxItems ?? 20;
       if (out.length > cap) return { value: out.slice(0, cap), error: `Please pick up to ${cap}.` };
@@ -380,8 +380,6 @@ function formatValue(field: FieldDef, value: unknown): string[] {
       return (value as Record<string, string>[]).map(
         (f, i) => `  ${i + 1}. ${f.title || f.id}${f.note ? `, ${f.note}` : ''}`,
       );
-    case 'locations':
-      return (value as Record<string, string>[]).map((l, i) => `  ${i + 1}. ${l.name || l.id}`);
     case 'repeat': {
       const cols = field.columns ?? [];
       return (value as Record<string, string>[]).map((row, i) => {
@@ -405,19 +403,63 @@ export function renderSummary(payload: Payload, schema: Schema): string {
   for (const section of schema.sections) {
     lines.push(`${section.numeral}. ${section.title.toUpperCase()}`);
     const skipped: string[] = [];
+    const groupsDone = new Set<string>();
     for (const field of section.fields) {
-      const out = formatValue(field, payload[field.name]);
-      if (out.length === 0) {
-        skipped.push(field.label.replace(/[?.]$/, ''));
+      const label = field.label.replace(/[?.]$/, '');
+      if (field.summaryGroup) {
+        // Print the whole group once, at its first field, as indented lines.
+        if (groupsDone.has(field.summaryGroup)) continue;
+        groupsDone.add(field.summaryGroup);
+        const members = section.fields.filter((f) => f.summaryGroup === field.summaryGroup);
+        const rows: string[] = [];
+        for (const m of members) {
+          const out = formatValue(m, payload[m.name]);
+          if (out.length === 0) skipped.push(m.label.replace(/[?.]$/, ''));
+          else rows.push(`  ${m.summaryLabel ?? m.label}: ${out.join(', ')}`);
+        }
+        if (rows.length) lines.push(`${field.summaryGroup}:`, ...rows);
         continue;
       }
-      if (out.length === 1 && !out[0].startsWith('  ')) lines.push(`${field.label.replace(/[?.]$/, '')}: ${out[0]}`);
-      else lines.push(`${field.label.replace(/[?.]$/, '')}:`, ...out);
+      const out = formatValue(field, payload[field.name]);
+      if (out.length === 0) {
+        skipped.push(label);
+        continue;
+      }
+      if (out.length === 1 && !out[0].startsWith('  ')) lines.push(`${label}: ${out[0]}`);
+      else lines.push(`${label}:`, ...out);
     }
     if (skipped.length) lines.push(`Skipped: ${skipped.join('; ')}`);
     lines.push('');
   }
   return lines.join('\n').trim() + '\n';
+}
+
+/** Location wishes as readable labels, for the sheet, the email and the doc. */
+export function locationWishes(
+  payload: Payload,
+  schema: Schema,
+): { features: string; areas: string; walking: string; own: string; line: string } {
+  const byName = new Map(allFields(schema).map((f) => [f.name, f]));
+  const labels = (name: string): string => {
+    const f = byName.get(name);
+    const v = payload[name];
+    if (!f || isEmpty(v)) return '';
+    const list = Array.isArray(v) ? (v as string[]) : [String(v)];
+    return list.map((x) => optionLabel(f, x)).join(', ');
+  };
+  const features = labels('location_features');
+  const areas = labels('location_areas');
+  const walking = labels('walking_level');
+  const own = str(payload.locations_own);
+  const line = [
+    features && `Wishes: ${features}`,
+    areas && `areas: ${areas}`,
+    walking && `walking: ${walking}`,
+    own && `their own ideas: ${own}`,
+  ]
+    .filter(Boolean)
+    .join('; ');
+  return { features, areas, walking, own, line };
 }
 
 interface PackageLike {

@@ -50,16 +50,31 @@ const missing = [...sels].filter((s) => !RUNTIME_ONLY.has(s) && !present(s)).sor
 const fieldNames = schema.sections.flatMap((s) => s.fields.map((f) => f.name));
 const missingFields = fieldNames.filter((n) => !html.includes(`data-onb-field="${n}"`));
 
+// Every chip option (radio and checkbox fields, e.g. location wishes) must
+// render an input with that name and value, or the answer can never be given.
+const allFields = schema.sections.flatMap((s) => s.fields);
+const chipInputs = new Set([...html.matchAll(/<input[^>]*>/g)].map(([tag]) => {
+  const name = tag.match(/name="([^"]+)"/)?.[1];
+  const value = tag.match(/value="([^"]*)"/)?.[1];
+  return `${name}=${value}`;
+}));
+const missingOptions = allFields
+  .filter((f) => f.kind === 'radio' || f.kind === 'checkboxes')
+  .flatMap((f) => f.options.map((o) => `${f.name}=${o.value}`))
+  .filter((key) => !chipInputs.has(key));
+missingFields.push(...missingOptions.map((k) => `option ${k}`));
+
 if (missing.length || missingFields.length) {
   if (missing.length) {
     console.error(`\n  ${missing.length} onboarding selector(s) match nothing in the rendered page:`);
     for (const s of missing) console.error(`     ${s}`);
   }
   if (missingFields.length) {
-    console.error(`\n  ${missingFields.length} schema field(s) have no data-onb-field wrapper:`);
+    console.error(`\n  ${missingFields.length} schema field(s) or option(s) are missing from the page:`);
     for (const n of missingFields) console.error(`     ${n}`);
   }
   console.error('\n  The script will fail at runtime. Fix the name in one place or the other.\n');
   process.exit(1);
 }
-console.log(`  onboarding selectors: ${sels.size} checked, ${fieldNames.length} field wrappers, all resolve`);
+const optionCount = allFields.filter((f) => f.kind === 'radio' || f.kind === 'checkboxes').reduce((n, f) => n + f.options.length, 0);
+console.log(`  onboarding selectors: ${sels.size} checked, ${fieldNames.length} field wrappers, ${optionCount} chip options, all resolve`);

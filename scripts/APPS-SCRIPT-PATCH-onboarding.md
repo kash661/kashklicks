@@ -57,7 +57,8 @@ mistake, briefs go to a sheet nobody checks.
 Ask Claude to send a test brief, or fill in the page yourself with the booking
 id `TEST`. Within a minute you should see:
 
-- a new **Onboarding** tab in the sheet with one row, and
+- a new **Onboarding** tab in the sheet with one row (the **Location wishes**
+  column shows what they want around them, the areas and the walking level), and
 - an email titled `[AD Photography] Shoot brief: <names> (<booking id>)`.
 
 You can delete the test row afterwards.
@@ -85,6 +86,12 @@ grant two extra permissions (edit Docs, and make copies in Drive).
 7. Save, then do Step 3 again (New version, Deploy).
 8. Google will ask you to authorize again. Click **Advanced**, then
    **Go to (project name)**, then **Allow**.
+
+Couples no longer pick places from a list. They tell you what they want
+around them, how far they will travel, and how much walking is okay. So
+`{{LOCATIONS}}` is filled with their wishes, for example
+`Wishes: Beach and water, Fall colours; areas: Downtown Toronto; walking: Easy, short walks; their own ideas: none`.
+Replace it with the places you choose once you have matched them.
 
 Each new brief now gets a Doc called `Storyline and run-of-show, <names>`,
 and its link appears in the **Doc Link** column and in the email.

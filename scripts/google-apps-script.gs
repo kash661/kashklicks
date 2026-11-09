@@ -54,7 +54,7 @@ const VALID_STATUSES = ['new', 'contacted', 'call-booked', 'quoted', 'booked', '
 const ONBOARDING_TAB = 'Onboarding';
 const ONBOARDING_COLUMNS = [
   'Received', 'Booking ID', 'Submission ID', 'Couple', 'Email', 'Phone', 'Package',
-  'Wedding Date', 'Shoot Date', 'Backup Date', 'Locations', 'Songs', 'Format',
+  'Wedding Date', 'Shoot Date', 'Backup Date', 'Location wishes', 'Songs', 'Format',
   'Deadline', 'Summary', 'Doc Link', 'Status', 'Raw JSON',
 ];
 // Google Sheets caps a cell at 50,000 characters.
@@ -185,14 +185,26 @@ function handleOnboarding_(params) {
   }
   const couple = params.couple || [d.p1_name, d.p2_name].filter(String).join(' and ') || 'Unnamed couple';
   const bookingId = params.booking_id || '';
-  const locations = (d.locations || []).map((l, i) => `${i + 1}. ${l.name || l.id}`).join('\n');
+  // The worker sends readable labels (wish_*); fall back to raw option ids.
+  const join = (v) => (Array.isArray(v) ? v.join(', ') : v || '');
+  const wishFeatures = params.wish_features || join(d.location_features);
+  const wishAreas = params.wish_areas || join(d.location_areas);
+  const wishWalking = params.wish_walking || d.walking_level || '';
+  const locationWishes = [
+    wishFeatures && `Features: ${wishFeatures}`,
+    wishAreas && `Areas: ${wishAreas}`,
+    wishWalking && `Walking: ${wishWalking}`,
+  ].filter(String).join(' | ');
   const songs = (d.songs || [])
     .map((s, i) => `${i + 1}. ${[s.title, s.artist].filter(String).join(' by ')}${s.url ? ' ' + s.url : ''}`)
     .join('\n');
 
   let docLink = '';
   try {
-    docLink = createBriefDoc_(Object.assign({}, params, { couple }), d);
+    docLink = createBriefDoc_(
+      Object.assign({}, params, { couple, wish_features: wishFeatures, wish_areas: wishAreas, wish_walking: wishWalking }),
+      d,
+    );
   } catch (err) {
     console.error('createBriefDoc_ failed', err);
     docLink = '';
@@ -210,7 +222,7 @@ function handleOnboarding_(params) {
     d.wedding_date || '',
     d.shoot_date || '',
     d.shoot_date_backup || '',
-    locations,
+    locationWishes,
     songs,
     d.delivery_format || '',
     d.delivery_deadline || '',
@@ -264,7 +276,10 @@ function createBriefDoc_(p, d) {
     PACKAGE: d.package_id || '',
     SHOOT_DATE: d.shoot_date || '',
     BACKUP_DATE: d.shoot_date_backup || '',
-    LOCATIONS: list(d.locations, (l) => l.name || l.id),
+    // Akash filters the location guide from these wishes (scripts/match-locations.mjs).
+    LOCATIONS:
+      `Wishes: ${p.wish_features || 'none given'}; areas: ${p.wish_areas || 'none given'}; ` +
+      `walking: ${p.wish_walking || 'not given'}; their own ideas: ${p.wish_own || d.locations_own || 'none'}`,
     SONGS: list(d.songs, (s) => [s.title, s.artist].filter(String).join(' by ') + (s.url ? ` ${s.url}` : '')),
     MUST_HAVES: d.must_have_shots || '',
     SUMMARY: p.summary || '',

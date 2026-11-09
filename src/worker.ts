@@ -9,6 +9,7 @@ import {
   cleanBookingId,
   coupleName,
   isUuid,
+  locationWishes,
   renderSummary,
   stripControl,
   validate,
@@ -257,6 +258,13 @@ async function handleOnboarding(request: Request, env: Env): Promise<Response> {
   out.set('couple', couple);
   out.set('email', email);
   out.set('summary', summary);
+  // Readable location wishes (labels, not option ids) for the sheet and doc.
+  const wishes = locationWishes(data, ONBOARDING_SCHEMA);
+  out.set('location_wishes', wishes.line);
+  out.set('wish_features', wishes.features);
+  out.set('wish_areas', wishes.areas);
+  out.set('wish_walking', wishes.walking);
+  out.set('wish_own', wishes.own);
   out.set('payload_json', JSON.stringify(data));
 
   let notified = false;

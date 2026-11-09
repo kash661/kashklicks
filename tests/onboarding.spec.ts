@@ -38,7 +38,7 @@ test.describe('Client shoot brief (onboarding)', () => {
     await page.locator('[data-onb-submit]').click();
 
     await expect(page.locator('[data-onb-problem]')).toBeVisible();
-    for (const name of ['p1_name', 'email', 'package_id', 'story_how_met', 'vibe_select', 'locations', 'delivery_format', 'consent']) {
+    for (const name of ['p1_name', 'email', 'package_id', 'story_how_met', 'vibe_select', 'location_features', 'delivery_format', 'consent']) {
       await expect(page.locator(`#onb-${name}-error`), name).toBeVisible();
     }
     await expect(page.locator('#onb-p1_name')).toBeFocused();
@@ -60,10 +60,11 @@ test.describe('Client shoot brief (onboarding)', () => {
     await page.fill('#onb-story_how_met', 'We met at a friend\'s Diwali party and argued about chai.');
     await page.check('input[name="vibe_select"][value="romantic"]');
 
-    // Location rank: first tap is number one.
-    await page.locator('label.onb-loc-card', { hasText: 'Allan Gardens' }).click();
-    await expect(page.locator('label.onb-loc-card', { hasText: 'Allan Gardens' }).locator('[data-loc-badge]')).toHaveText('1');
-    await expect(page.locator('[data-loc-slot-name]').first()).toHaveText('Allan Gardens Conservatory');
+    // Location wishes: chips toggle on tap, no list of places is shown.
+    await page.locator('label.onb-chip', { hasText: 'Beach and water' }).click();
+    await page.locator('label.onb-chip', { hasText: 'Fall colours' }).click();
+    await page.locator('label.onb-chip', { hasText: 'Downtown Toronto' }).click();
+    await page.check('input[name="walking_level"][value="easy"]');
 
     await page.check('input[name="delivery_format"][value="both"]');
     await page.check('#onb-consent');
@@ -73,8 +74,29 @@ test.describe('Client shoot brief (onboarding)', () => {
     await expect(page.locator('[data-onb-done-names]')).toHaveText('Priya and Arjun.');
     await expect(page.locator('#onb-form')).toBeHidden();
     expect(body).toContain('TEST-2');
-    expect(body).toContain('allan-gardens');
+    expect(body).toContain('"location_features":["water","fall"]');
+    expect(body).toContain('"walking_level":"easy"');
     expect(body).toContain('Priya');
+  });
+
+  test('location wishes replace the place list', async ({ page }) => {
+    await page.goto(PATH);
+    await expect(page.locator('.onb-loc-card, [data-onb-locs]')).toHaveCount(0);
+    const chip = page.locator('input[name="location_features"][value="forest"]');
+    await expect(page.locator('input[name="location_features"]')).toHaveCount(12);
+    await page.locator('label.onb-chip', { hasText: 'Forest and trees' }).click();
+    await expect(chip).toBeChecked();
+    await page.locator('label.onb-chip', { hasText: 'Forest and trees' }).click();
+    await expect(chip).not.toBeChecked();
+    await expect(page.getByText('Outside the GTA adds $0.75 per km round trip plus parking.')).toBeVisible();
+  });
+
+  test('own places alone satisfy the location rule', async ({ page }) => {
+    await page.goto(PATH);
+    await page.fill('#onb-locations_own', 'Trinity Bellwoods');
+    await page.locator('[data-onb-submit]').click();
+    await expect(page.locator('#onb-location_features-error')).toBeHidden();
+    await expect(page.locator('#onb-p1_name-error')).toBeVisible();
   });
 
   test('a failed post keeps the form and shows the error', async ({ page }) => {

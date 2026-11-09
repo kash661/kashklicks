@@ -352,8 +352,7 @@ const steps = [
     color: var(--color-on-surface-variant);
     transition: transform var(--duration-slow) var(--ease-gallery);
   }
-  .onb details[open] > summary .form-extras__icon,
-  .onb details[open] > summary .onb-locs__icon { transform: rotate(45deg); }
+  .onb details[open] > summary .form-extras__icon { transform: rotate(45deg); }
   .onb .form-extras__body { padding-top: 2rem; }
 
   /* Repeat rows (references, songs). */
@@ -421,132 +420,6 @@ const steps = [
   .onb-film__watch:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
   .onb-film__note { grid-column: 1 / -1; }
   .onb-film__note-input { font-size: 1rem; padding: 0.75rem 0.875rem; }
-
-  /* Location picker. */
-  .onb-locs { border: 0; padding: 0; margin: 0; min-width: 0; }
-  .onb-locs > legend { padding: 0; }
-  .onb-locs__picks { margin: 1.5rem 0; padding: 1.25rem 1.25rem 1rem; background: var(--color-surface); }
-  .onb-locs__picks-title {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--color-on-surface-variant);
-    margin-bottom: 0.75rem;
-  }
-  .onb-locs__empty { font-family: var(--font-serif); font-style: italic; color: var(--color-on-surface-muted); padding-bottom: 0.5rem; }
-  .onb-locs__picklist { display: flex; flex-direction: column; }
-  .onb-locs__slot { display: flex; align-items: center; gap: 1rem; min-height: 2.75rem; }
-  .onb-locs__slot-rank {
-    flex: 0 0 1.75rem;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.25rem;
-    color: var(--color-on-surface);
-  }
-  .onb-locs__slot-name { flex: 1; min-width: 0; font-family: var(--font-sans); font-size: 1rem; color: var(--color-on-surface); }
-  .onb-locs__remove { font-size: 0.6875rem; color: var(--color-on-surface-variant); }
-  .onb-locs__cap { margin-top: 0.5rem; font-family: var(--font-sans); font-size: 0.875rem; color: var(--color-error); }
-  .onb-locs__search { margin-bottom: 1.5rem; }
-  .onb-locs__none { margin-top: 0.75rem; font-family: var(--font-sans); font-size: 0.875rem; color: var(--color-on-surface-variant); }
-
-  .onb-locs__group + .onb-locs__group { margin-top: 0.25rem; }
-  .onb-locs__summary {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    min-height: 3.25rem;
-    padding: 0.5rem 1rem;
-    background: var(--color-surface);
-    cursor: pointer;
-    list-style: none;
-  }
-  .onb-locs__summary::-webkit-details-marker { display: none; }
-  .onb-locs__summary::marker { content: ''; }
-  .onb-locs__summary:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
-  .onb-locs__zone { font-family: var(--font-serif); font-size: 1.25rem; color: var(--color-on-surface); }
-  .onb-locs__meta {
-    display: flex;
-    gap: 0.75rem;
-    margin-left: auto;
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    color: var(--color-on-surface-muted);
-  }
-  .onb-locs__meta [data-loc-group-count] { color: var(--color-on-surface); }
-  .onb-locs__icon {
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--color-on-surface-variant);
-    transition: transform var(--duration-slow) var(--ease-gallery);
-  }
-  .onb-locs__body { padding: 1rem 0 1.5rem; }
-
-  .onb-locs__cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 0.875rem; }
-  @media (min-width: 768px) { .onb-locs__cards { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  .onb-loc-card { position: relative; display: flex; flex-direction: column; cursor: pointer; }
-  .onb-loc-input { position: absolute; top: 0.5rem; left: 0.5rem; width: 1.5rem; height: 1.5rem; margin: 0; opacity: 0; }
-  .onb-loc-card__media {
-    position: relative;
-    display: block;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    background: var(--color-surface-container);
-    transition: box-shadow var(--duration-slow) var(--ease-gallery);
-  }
-  .onb-loc-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 2.5s var(--ease-gallery), opacity var(--duration-slow) var(--ease-gallery);
-  }
-  @media (hover: hover) { .onb-loc-card:hover .onb-loc-card__img { transform: scale(1.04); } }
-  .onb-loc-input:checked + .onb-loc-card__media { box-shadow: 0 0 0 3px var(--color-on-surface); }
-  .onb-loc-input:checked + .onb-loc-card__media .onb-loc-card__img { opacity: 0.82; }
-  .onb-loc-input:focus-visible + .onb-loc-card__media { outline: 2px solid var(--color-on-surface); outline-offset: 5px; }
-  .onb-loc-card__name { margin-top: 0.75rem; font-family: var(--font-serif); font-size: 1.0625rem; line-height: 1.25; color: var(--color-on-surface); }
-  .onb-loc-card__area { margin-top: 0.2rem; font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.4; color: var(--color-on-surface-variant); }
-
-  .onb-loc-badge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: grid;
-    place-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    background: var(--color-on-surface);
-    color: var(--color-on-dark);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.125rem;
-    opacity: 0;
-    transition: opacity var(--duration-slow) var(--ease-gallery);
-  }
-  .onb-loc-input:checked + .onb-loc-card__media .onb-loc-badge,
-  .onb-loc-input:checked + .onb-loc-badge { opacity: 1; }
-
-  .onb-locs__rows { margin-top: 1.25rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.25rem 1.5rem; }
-  @media (min-width: 640px) { .onb-locs__rows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .onb-loc-row { position: relative; display: flex; align-items: center; gap: 0.875rem; min-height: 3.25rem; padding: 0.5rem 0; cursor: pointer; }
-  .onb-loc-row .onb-loc-input { top: 50%; left: 0; transform: translateY(-50%); width: 2.25rem; height: 2.25rem; }
-  .onb-loc-badge--row {
-    position: relative;
-    flex: none;
-    opacity: 1;
-    background: var(--color-surface);
-    color: transparent;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-on-surface-variant) 45%, transparent);
-    transition: background-color var(--duration-slow) var(--ease-gallery), color var(--duration-slow) var(--ease-gallery);
-  }
-  .onb-loc-input:checked + .onb-loc-badge--row { background: var(--color-on-surface); color: var(--color-on-dark); box-shadow: none; }
-  .onb-loc-input:focus-visible + .onb-loc-badge--row { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
-  .onb-loc-row__text { display: flex; flex-direction: column; min-width: 0; }
-  .onb-loc-row__name { font-family: var(--font-sans); font-size: 1rem; color: var(--color-on-surface); }
-  .onb-loc-row__area { font-family: var(--font-sans); font-size: 0.75rem; color: var(--color-on-surface-variant); }
-  [data-invalid] > .onb-locs .onb-locs__picks { box-shadow: inset 0 0 0 1px var(--color-error); }
 
   /* Submit, error, done. */
   .onb-submit { margin-top: clamp(4rem, 8vw, 6rem); }

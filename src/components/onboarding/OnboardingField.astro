@@ -7,7 +7,6 @@ import type { FieldDef, Schema } from '../../lib/onboarding';
 import { fieldMax, formatPrice } from '../../lib/onboarding';
 import packages from '../../data/packages.json';
 import FilmPicker from './FilmPicker.astro';
-import LocationPicker from './LocationPicker.astro';
 import RepeatRows from './RepeatRows.astro';
 
 interface Props {
@@ -36,17 +35,16 @@ const selectOptions = (field.options ?? []).map((o) => {
 });
 
 const widthClass = field.width === 'half' ? 'onb-half' : 'onb-full';
+
+// The first field of an "at least one of these" rule gets the required star,
+// the others stay marked optional (e.g. location wishes OR your own places).
+const leadsOneOf = (schema.meta.requiredOneOf ?? []).some((r) => r.fields[0] === field.name);
+const showRequired = !!field.required || leadsOneOf;
 ---
 
 {(field.kind === 'films') && (
   <div class:list={['onb-field', widthClass]} data-onb-field={field.name}>
     <FilmPicker field={field} helpId={helpId} errId={errId} />
-  </div>
-)}
-
-{(field.kind === 'locations') && (
-  <div class:list={['onb-field', widthClass]} data-onb-field={field.name}>
-    <LocationPicker field={field} helpId={helpId} errId={errId} />
   </div>
 )}
 
@@ -65,7 +63,7 @@ const widthClass = field.width === 'half' ? 'onb-half' : 'onb-full';
   >
     <legend class="form-field__label">
       {field.label}
-      {field.required
+      {showRequired
         ? <span class="form-field__required" aria-hidden="true"> *</span>
         : <span class="form-field__optional"> (optional)</span>}
     </legend>
