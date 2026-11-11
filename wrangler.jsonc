@@ -19,8 +19,22 @@
   // onb:v1:<booking_id or anon>:<submission_id> (2 year TTL) and
   // onb:idem:<submission_id> (1 day, duplicate guard). The worker tolerates
   // a missing binding and still forwards to Apps Script.
+  // AGREEMENTS_KV: signed agreements and their booking records (/r/agreement/*).
+  // Keys agr:<live|test>:… (bk, num, seq, signed backup). No expiry on live
+  // records; test records expire 30 days after the booking was made.
   "kv_namespaces": [
-    { "binding": "ONBOARDING_KV", "id": "06e0a2e6955a416c927903083101a1cc" }
+    { "binding": "ONBOARDING_KV", "id": "06e0a2e6955a416c927903083101a1cc" },
+    { "binding": "AGREEMENTS_KV", "id": "33ec341a6795467a8adec199fff99083" }
+  ],
+  // Signed agreements, one row per booking and mode, written once
+  // (INSERT … ON CONFLICT DO NOTHING). D1 because KV cannot refuse a second
+  // write. Schema: migrations/0001_signed_agreements.sql.
+  "d1_databases": [
+    {
+      "binding": "AGREEMENTS_DB",
+      "database_name": "kashklicks-agreements",
+      "database_id": "bb4cf012-01d2-452e-8f4a-7d87604c77a6"
+    }
   ],
   "observability": {
     "enabled": true

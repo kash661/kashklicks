@@ -90,6 +90,9 @@ function doPost(e) {
       case 'ignore':        return handleIgnore_(params);
       case 'update':        return handleUpdate_(params);
       case 'book':          return handleBook_(params);
+      case 'agreement_ping':   return jsonOut_({ ok: true, agreements: AGREEMENT_API_VERSION });
+      case 'agreement_signed': return handleAgreementSigned_(params);
+      case 'agreement_notice': return handleAgreementNotice_(params);
       default:              return jsonOut_({ ok: false, error: 'unknown_action: ' + action });
     }
   } catch (err) {
@@ -462,6 +465,152 @@ function handleBook_(params) {
   });
   setCellByHeader_(pipeline, pipelineRow, 'Status', 'booked');
   return jsonOut_({ ok: true, booked_row: bookedRow });
+}
+
+/* ---------- signed agreements (authenticated, via the worker) ---------- */
+// The worker writes the email text, the PDF HTML and the row values. This
+// block only turns the HTML into a PDF, emails it, and logs one row per
+// booking number. No new OAuth scope: MailApp and Utilities are already used.
+// See scripts/APPS-SCRIPT-PATCH-agreement.md.
+
+const AGREEMENT_API_VERSION = 1;
+const CONTRACTS_TAB = 'Contracts';
+const CONTRACTS_TEST_TAB = 'Contracts TEST';
+const CONTRACTS_COLUMNS = [
+  'Signed at', 'Booking number', 'Client', 'Partner', 'Email', 'Phone', 'Package', 'Event date',
+  'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version',
+  'Copy sent at', 'Status', 'Notes',
+];
+// Set by the script, never taken from row_json.
+const CONTRACTS_SCRIPT_COLUMNS = ['Booking number', 'Copy sent at', 'Status'];
+const AGREEMENT_EMAIL_RE = /^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/;
+const AGREEMENT_SENDER_NAME = 'Kash, AD Photography';
+
+function agreementField_(params, key) {
+  const v = params[key];
+  return v === undefined || v === null ? '' : String(v).trim();
+}
+
+// Strict live/test flag: absent or '' is live, the string '1' is test.
+// Anything else returns null, and the caller refuses the request.
+function agreementMode_(params) {
+  const t = params.test;
+  if (t === undefined || t === '') return 'live';
+  if (t === '1') return 'test';
+  return null;
+}
+
+// Sheets reads a string starting with = + - or @ as a formula or a number.
+// A leading apostrophe keeps it as plain text.
+function agreementSheetText_(v) {
+  return typeof v === 'string' && /^[=+\-@]/.test(v) ? "'" + v : v;
+}
+
+function handleAgreementSigned_(params) {
+  const mode = agreementMode_(params);
+  if (!mode) return jsonOut_({ ok: false, error: 'bad_request' });
+  const isTest = mode === 'test';
+  const required = ['booking_number', 'to_email', 'email_subject', 'email_body', 'pdf_html', 'pdf_name', 'row_json'];
+  if (required.some((k) => !agreementField_(params, k))) return jsonOut_({ ok: false, error: 'bad_request' });
+
+  const toEmail = agreementField_(params, 'to_email');
+  if (toEmail.length > 254 || !AGREEMENT_EMAIL_RE.test(toEmail)) {
+    return jsonOut_({ ok: false, error: 'bad_request' });
+  }
+  let row = params.row_json;
+  if (typeof row === 'string') {
+    try { row = JSON.parse(row); } catch (_) { row = null; }
+  }
+  if (!row || typeof row !== 'object' || Array.isArray(row)) {
+    return jsonOut_({ ok: false, error: 'bad_request' });
+  }
+  const bookingNumber = agreementField_(params, 'booking_number');
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const sheet = getOrCreateSheet_(isTest ? CONTRACTS_TEST_TAB : CONTRACTS_TAB, CONTRACTS_COLUMNS);
+    // Without these three headers the script cannot tell a sent copy from an
+    // unsent one, so it would email the client again on every retry.
+    const headers = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0].map(String);
+    if (CONTRACTS_SCRIPT_COLUMNS.some((col) => headers.indexOf(col) === -1)) {
+      return jsonOut_({ ok: false, error: 'contracts_headers' });
+    }
+    const matches = readSheet_(sheet).filter((r) => String(r['Booking number']).trim() === bookingNumber);
+    const done = matches.find((r) => r['Copy sent at']);
+    if (done) return jsonOut_({ ok: true, already: true, sent_at: done['Copy sent at'] });
+    const existing = matches[0];
+
+    let sendError = '';
+    try {
+      const pdf = Utilities.newBlob(String(params.pdf_html), 'text/html', 'agreement.html')
+        .getAs('application/pdf')
+        .setName(String(params.pdf_name));
+      const mail = {
+        to: isTest ? NOTIFY_EMAIL : toEmail,
+        replyTo: NOTIFY_EMAIL,
+        name: AGREEMENT_SENDER_NAME,
+        subject: (isTest ? '[TEST] ' : '') + agreementField_(params, 'email_subject'),
+        body: String(params.email_body),
+        attachments: [pdf],
+      };
+      if (!isTest) mail.bcc = NOTIFY_EMAIL;
+      MailApp.sendEmail(mail);
+    } catch (err) {
+      console.error('agreement copy send failed', err);
+      sendError = String((err && err.message) || err);
+    }
+
+    const now = new Date();
+    const values = {};
+    CONTRACTS_COLUMNS.forEach((col) => {
+      if (CONTRACTS_SCRIPT_COLUMNS.indexOf(col) !== -1) return;
+      if (Object.prototype.hasOwnProperty.call(row, col)) values[col] = agreementSheetText_(row[col]);
+    });
+    values['Booking number'] = bookingNumber;
+    values['Copy sent at'] = sendError ? '' : now;
+    values.Status = sendError ? 'copy failed' : 'signed';
+
+    // A sheet problem after a successful send must not look like a failed
+    // send, or the worker would email the client a second time.
+    let rowError = '';
+    try {
+      if (existing) {
+        // A retry after a failed send: update that row in place. Columns the
+        // owner removed are skipped.
+        Object.keys(values).forEach((col) => {
+          const idx = headers.indexOf(col);
+          if (idx !== -1) sheet.getRange(existing._row, idx + 1).setValue(values[col]);
+        });
+      } else {
+        sheet.appendRow(headers.map((h) => (Object.prototype.hasOwnProperty.call(values, h) ? values[h] : '')));
+      }
+    } catch (err) {
+      console.error('agreement row write failed', err);
+      rowError = String((err && err.message) || err);
+    }
+
+    const out = sendError
+      ? { ok: false, error: 'send_failed: ' + sendError }
+      : { ok: true, sent_at: now.toISOString() };
+    if (rowError) out.row_error = rowError;
+    return jsonOut_(out);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function handleAgreementNotice_(params) {
+  const mode = agreementMode_(params);
+  const subject = agreementField_(params, 'subject');
+  const body = agreementField_(params, 'body');
+  if (!mode || !subject || !body) return jsonOut_({ ok: false, error: 'bad_request' });
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: (mode === 'test' ? '[TEST] ' : '') + subject,
+    body: String(params.body),
+  });
+  return jsonOut_({ ok: true });
 }
 
 /* ---------- sheet helpers ---------- */

@@ -3,8 +3,8 @@
 // posts here instead and the worker forwards to Apps Script server-side.
 // Returns a tiny same-origin HTML body so the form's hidden iframe `load`
 // event fires reliably across all browsers.
-import onboardingSchemaJson from './data/onboarding-fields.json';
-import packagesJson from './data/packages.json';
+import onboardingSchemaJson from './data/onboarding-fields.json' with { type: 'json' };
+import packagesJson from './data/packages.json' with { type: 'json' };
 import {
   cleanBookingId,
   coupleName,
@@ -17,29 +17,9 @@ import {
   type Payload,
   type Schema,
 } from './lib/onboarding';
-
-const APPS_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbw5c2bxZOPov3y9XUgSWZdTmAhwZM9k2E5BBr9AJDiWGp2rDded_RYYrsVaq-HWm7VepQ/exec';
-
-const ALLOWED_ORIGINS = ['https://kashklicks.ca', 'https://www.kashklicks.ca'];
-
-// Headers shared by every worker-authored HTML response. run_worker_first means
-// these responses bypass the static-asset `_headers` file, so we attach the
-// security headers here ourselves (the static pages still get them from _headers).
-const HTML_HEADERS = {
-  'content-type': 'text/html; charset=utf-8',
-  'cache-control': 'no-store',
-  'x-content-type-options': 'nosniff',
-  'x-frame-options': 'DENY',
-  'referrer-policy': 'strict-origin-when-cross-origin',
-};
-
-const JSON_HEADERS = {
-  'content-type': 'application/json; charset=utf-8',
-  'cache-control': 'no-store',
-  'x-content-type-options': 'nosniff',
-  'x-robots-tag': 'noindex, nofollow',
-};
+import { handleAgreement } from './worker/agreement';
+import type { D1Like } from './worker/agreement-store';
+import { APPS_SCRIPT_URL, HTML_HEADERS, JSON_HEADERS, isSameOrigin } from './worker/shared';
 
 interface Env {
   ASSETS: Fetcher;
@@ -47,29 +27,12 @@ interface Env {
   /** Durable copy of every onboarding brief. Optional so a missing binding
    *  degrades to "forward only" instead of failing the submission. */
   ONBOARDING_KV?: KVNamespace;
-}
-
-// Preview hosts (wrangler versions upload --preview-alias) and local
-// `wrangler dev` serve the site on their own origin. Accept a POST whose
-// Origin equals the request's own origin on those hosts only, so previews can
-// submit without opening the live endpoint to other sites.
-function isPreviewHost(hostname: string): boolean {
-  return hostname.endsWith('.workers.dev') || hostname === 'localhost' || hostname === '127.0.0.1';
-}
-
-// Accept lead POSTs only from our own site. Real submissions (including from
-// IG/FB in-app webviews, which render same-origin) send an Origin header; we
-// fall back to Referer when Origin is absent. This closes the open-proxy abuse
-// vector — without it, anyone can script POSTs to /r/intake to flood the
-// Inquiries sheet + inbox and bury genuine leads.
-function isSameOrigin(request: Request): boolean {
-  const self = new URL(request.url);
-  const allowed = isPreviewHost(self.hostname) ? [...ALLOWED_ORIGINS, self.origin] : ALLOWED_ORIGINS;
-  const origin = request.headers.get('origin');
-  if (origin) return allowed.includes(origin);
-  const referer = request.headers.get('referer');
-  if (referer) return allowed.some((o) => referer === o || referer.startsWith(o + '/'));
-  return false;
+  /** Agreement booking records (/r/agreement/*). */
+  AGREEMENTS_KV?: KVNamespace;
+  /** Signed agreements, write once (migrations/0001_signed_agreements.sql). */
+  AGREEMENTS_DB?: D1Like;
+  /** Admin secret for the agreement tools; also the Apps Script token. */
+  FORMS_ADMIN_TOKEN?: string;
 }
 
 type GuardResult = { response: Response } | { formData: FormData };
@@ -575,6 +538,12 @@ export default {
     // routes, above the trailing-slash 301, which would turn a POST into a GET.
     if (path === ONBOARDING_SCHEMA.meta.endpoint) {
       return handleOnboarding(request, env);
+    }
+
+    // Service agreement signing (JSON in, JSON out). Also above the
+    // trailing-slash 301 so the sign POST is never redirected.
+    if (path.startsWith('/r/agreement/')) {
+      return handleAgreement(request, env, ctx);
     }
 
     // Ontario Parks fall colour JSON for the on-site panel. Sits ABOVE the

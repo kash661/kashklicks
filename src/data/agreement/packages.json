@@ -1,0 +1,36 @@
+{
+  "civil-ceremony": {
+    "name": "The Civil Ceremony",
+    "tags": ["NONWED", "EVENT", "COUPLE", "OT", "DRONE"],
+    "hours": 2,
+    "extraHoursAddOnId": "extra-hours-civil",
+    "overtimeBlock": 100.75,
+    "deliverables": [
+      "2 hours of photography in one continuous block",
+      "The ceremony, and couple portraits near the venue",
+      "At least 150 edited photos in a private online gallery"
+    ],
+    "deliveryDays": 28,
+    "deliveryPromise": "I deliver your edited photos within 4 weeks of your ceremony day.",
+    "deliveryRow": "Edited photos by {{DELIVERY_DATE}}, which is within 4 weeks of your ceremony.",
+    "dateRowLabel": "Ceremony date",
+    "balanceRowLabel": "Balance, due on or before the ceremony day",
+    "addOnRows": [
+      { "id": "extra-hours-civil", "label": "Additional hours", "priceText": "{{PRICE}} per hour", "note": "Book them before the day. They become part of your booked hours.", "bookable": true },
+      { "id": "extra-hours-civil", "label": "Overtime", "priceText": "{{PRICE}} per hour", "note": "Billed in 30 minute blocks of {{OT_BLOCK}}. See section 5.", "bookable": false },
+      { "id": "drone", "label": "Drone and aerial frames", "priceText": "{{PRICE}}", "note": "Weather and airspace permitting. Refunded in full if I cannot fly.", "bookable": true },
+      { "id": "extra-retouched", "label": "Five extra retouched images", "priceText": "{{PRICE}} per set of five", "note": "On top of the photos in your package.", "bookable": true },
+      { "id": "raw-photos-civil", "label": "RAW photos", "priceText": "{{PRICE}}", "note": "See section 13.", "bookable": true },
+      { "id": null, "label": "Parking", "priceText": "At cost", "note": "With the receipt. See section 6.", "bookable": false },
+      { "id": null, "label": "Travel outside the GTA", "priceText": "$0.75 per km", "note": "Round trip, counted from the GTA boundary. See section 6.", "bookable": false }
+    ],
+    "laterCosts": "Overtime at {{OT_RATE}} an hour, in 30 minute blocks of {{OT_BLOCK}} (section 5). Parking at cost (section 6). Travel outside the GTA at $0.75 per km (section 6). A change of date fee of $151.25 in some cases (section 11). Any add-on you choose later, at the prices in section 4.",
+    "introBullets": ["{{CLIENT_FIRST}} signs for both of you.", "You can download or print a copy before you sign.", "You will get a PDF copy by email the moment you sign."],
+    "sharing": {
+      "share": { "tags": ["SHARE", "SHARE-C"], "row": "You allow sharing. It does not change your price.", "option": "Share our work. My price stays the same." },
+      "private": { "tags": ["PRIVATE"], "row": "Private. Your work is not shown in public.", "option": "Keep our work private. My price stays the same." }
+    },
+    "agreeLabel": "I have read this agreement and I agree to it. I am signing for myself and for {{PARTNER_NAME}}. Signing here is my electronic signature.",
+    "afterSigning": { "title": "Your timeline", "text": "Please send me your final timeline, your addresses and your list of family photos at least 14 days before the day. Reply to the email, or message me on WhatsApp." }
+  }
+}

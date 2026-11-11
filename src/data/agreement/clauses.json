@@ -1,0 +1,2613 @@
+{
+  "version": "b5b70cc6a0f21eba13d8d6985e5efc252da736fb916c66d7f43c973804602f9b",
+  "title": "Photography and Film Agreement",
+  "intro": "This is the agreement between you and me for your booking. I wrote it in plain English on purpose. Please read all of it. If anything is unclear or wrong, do not sign yet. Message me, and I will fix it or explain it.",
+  "sections": [
+    {
+      "num": 0,
+      "title": "Who we are",
+      "items": [
+        {
+          "type": "clause",
+          "id": "0.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "**You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}} and your phone is {{CLIENT_PHONE}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "0.2",
+          "tags": [
+            [
+              "COUPLE"
+            ]
+          ],
+          "text": "You are signing for yourself and for your partner, {{PARTNER_NAME}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "0.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "**I** am {{BUSINESS_LEGAL_NAME}}, operating as AD Photography and KashKlicks. Phone 647 613 7430. Email info@kashklicks.ca. Website kashklicks.ca.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "0.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "In this agreement, \"I\" and \"me\" mean that business and Akash Desai, who runs it. \"You\" means the person signing, and their partner if the booking is for two people.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "0.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "This agreement is dated {{SIGN_DATE}}. Your booking number is {{BOOKING_ID}}.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 1,
+      "title": "Your booking",
+      "items": [
+        {
+          "type": "block",
+          "name": "TABLE:BOOKING"
+        },
+        {
+          "type": "clause",
+          "id": "1.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "All prices are in Canadian dollars.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "1.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Please check every line of the table. If anything is wrong, do not sign. Message me and I will correct it first.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "1.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "In this agreement, \"in writing\" means by email or by WhatsApp message. \"Days\" means calendar days. Times are Toronto time.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "title": "What you get",
+      "items": [
+        {
+          "type": "clause",
+          "id": "2.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Your package is {{PACKAGE_NAME}}. It includes:",
+          "bullets": []
+        },
+        {
+          "type": "block",
+          "name": "LIST:DELIVERABLES"
+        },
+        {
+          "type": "clause",
+          "id": "2.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "\"Edited\" means I choose the best frames and correct the colour, the light and the crop in my style. It does not mean heavy retouching, such as changing a body shape, removing people or objects, or replacing a background.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "2.3",
+          "tags": [
+            [
+              "HEADSHOT"
+            ]
+          ],
+          "text": "\"Retouched\" means a closer edit of the face and skin on the headshots you choose.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "2.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I choose which photos go in your gallery. I do not deliver duplicates, test frames, blinks or frames that are out of focus.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "2.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "The numbers in this section are what I promise. If I deliver more, the extra is a gift. It does not change this agreement.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "2.6",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "Films are delivered in 4K, in landscape format. Reels are vertical. The film length in this section is the length of the finished film.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "2.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Anything not listed in this section or in section 1 is not included. RAW files, prints, albums and extra hours are not included unless section 1 lists them. You can add extras from section 4.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 3,
+      "title": "Price and payment",
+      "items": [
+        {
+          "type": "clause",
+          "id": "3.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Your total is in section 1. It is fixed for your booking, even if my website prices change later.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.3",
+          "tags": [
+            [
+              "HST-ADDED"
+            ]
+          ],
+          "text": "HST of 13% is added to every price in this agreement. Section 1 shows the HST on your total. My HST number is {{HST_NUMBER}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.4",
+          "tags": [
+            [
+              "HST-INCLUDED"
+            ]
+          ],
+          "text": "Every price in this agreement includes HST of 13%. My HST number is {{HST_NUMBER}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.5",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.6",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "You pay in three parts.",
+          "bullets": [
+            "The retainer is 50% of your total. It is due when you sign.",
+            "The second payment is 25%. It is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session 60 days before the wedding, it is due 60 days before the wedding.",
+            "The final payment is 25%. It is due 14 days before the wedding."
+          ]
+        },
+        {
+          "type": "clause",
+          "id": "3.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "The retainer reserves your date. From the moment it is paid, I turn away other bookings for that date and I start planning your booking. That is why the retainer is not refundable if you cancel, except in the cases this agreement describes (mainly sections 16, 17 and 19). We both agree it is a fair estimate of what a cancelled date costs me, and not a penalty.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Your date is held when two things are done: this agreement is signed, and the retainer has arrived. If the retainer has not arrived within 3 days of signing, I may release the date. This agreement then ends, with nothing owed by either of us.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You can pay by Interac e-transfer to {{ETRANSFER_EMAIL}}. Please put your booking number in the message. I send a receipt or an invoice for every payment.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.10",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "You can also pay the balance in cash on the shoot day.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.11",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "If the balance is not paid before the shoot starts, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the shoot day (section 16).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.12",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "If a payment is late, I send you a written reminder. If it is still not paid 3 days after the reminder, I may treat it as a cancellation by you (section 16).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.13",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Costs on the day are paid on the day, by e-transfer or cash. These are overtime, add-ons you choose on the day, parking and travel. If that is not possible, I add them to your invoice.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.14",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I deliver your photos and films only after everything you owe is paid.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.15",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I only charge for extras you asked for or said yes to. If you add something after signing, I confirm it in writing with its price from section 4, and it is added to what you owe.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 4,
+      "title": "Add-ons",
+      "items": [
+        {
+          "type": "clause",
+          "id": "4.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "These are the add-ons for your package. The prices are fixed for your booking.",
+          "bullets": []
+        },
+        {
+          "type": "block",
+          "name": "TABLE:ADDONS"
+        },
+        {
+          "type": "clause",
+          "id": "4.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If an add-on is listed in section 1, it is already in your total.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "4.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "To add something later, ask me in writing before the shoot. Some add-ons can also be added on the day, if time and equipment allow.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "4.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Add-ons that need planning must be booked before the shoot day. Examples are extra hours, faster delivery, a second photographer, a split day or an extra location, where your package offers them.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "4.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Extra hours that you book in advance become part of your booked hours.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "4.6",
+          "tags": [
+            [
+              "DRONE"
+            ]
+          ],
+          "text": "Drone flying depends on the weather, the airspace rules at the location, and safety. I do not fly over guests or crowds. The decision to fly is mine alone. If I cannot fly at all, the drone fee is refunded in full.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 5,
+      "title": "Your time, and overtime",
+      "items": [
+        {
+          "type": "clause",
+          "id": "5.1",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "Your start time and end time for each day are set in your run of show (section 7). Your booked hours are in section 1.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.2",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "Your start time and end time are in section 1. If we change them later, we confirm the new times in writing.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "The clock starts at your start time. It runs without stopping until your end time.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.4",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "The clock includes arriving and setting up, moving between locations, outfit changes and short breaks. Your run of show plans all of these inside your booked hours.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.5",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "The clock includes moving between places and short breaks. Your hours are one continuous block. They cannot be split into parts or moved to another day, unless section 1 says so.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.6",
+          "tags": [
+            [
+              "SPLIT"
+            ]
+          ],
+          "text": "If your hours are spread over two days, they are counted in total across both days.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you are late or not ready at the start time, the clock still starts at the start time.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.8",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "If you have not arrived 60 minutes after the start time and I cannot reach you, I may leave. That counts as a cancellation by you on the shoot day (section 16).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If I am late, I stay later by the same amount of time at no cost. If that is not possible, I refund that share of your package price.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.10",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If we finish early because the plan is complete, or because you choose to stop, there is no refund for unused time.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.11",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Overtime is any time I work for you after your end time. It happens when you ask me to stay longer, or when the day runs late for a reason on your side and you want me to keep going.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.12",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "\"On your side\" means things like a late arrival, hair and makeup running over, or outfits or locations you add on the day.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.13",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "\"On your side\" means anything that is not caused by me. Examples are a late start, a timeline that slips, a delay caused by your venue, your guests or another vendor, traffic between your venues, or events you add on the day.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.14",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Time lost because of me is never charged. Examples are my late arrival or a problem with my equipment.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.15",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "Travel between locations that takes longer than the run of show planned is also never charged.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.16",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "If we both agree to wait for the weather to clear during the shoot, the clock pauses for up to 30 minutes in total.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.17",
+          "tags": [
+            [
+              "OT"
+            ]
+          ],
+          "text": "Overtime costs {{OT_RATE}} per hour. I bill it in 30 minute blocks of {{OT_BLOCK}}. A part of a block counts as a full block.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.18",
+          "tags": [
+            [
+              "NO-OT"
+            ]
+          ],
+          "text": "Your package has no listed overtime rate. If you want more time on the day and I am free, we agree the price in writing before I continue.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.19",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I give you a heads up 15 minutes before your end time, and I ask if you want me to stay. Overtime starts only if you say yes. If you say no, I stop at your end time, and anything not yet photographed is not covered.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.20",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "If I cannot ask you at that moment, I ask the contact person you named (section 7). Their yes counts as your yes.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.21",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I can say no to overtime, for example if I have another booking after yours, or if it is not safe to continue.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.22",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Overtime is paid on the day (section 3).",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 6,
+      "title": "Travel, parking, permits and location rules",
+      "items": [
+        {
+          "type": "clause",
+          "id": "6.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "There is no travel fee inside the Greater Toronto Area (GTA). In this agreement, the GTA means the City of Toronto and the regions of Peel, York, Durham and Halton.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Outside the GTA, travel costs $0.75 per kilometre. I count the driving distance of the round trip, starting and ending at the GTA boundary, using Google Maps. If your location is known when you sign, the amount is in section 1.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "For shoots that are far away or outside Canada, I give you a written travel quote before any travel is booked. Flights, nights away and ground transport are charged at cost, with receipts. Travel that I have already booked for you is not refundable if you cancel or move the date, unless I can get the money back.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You pay for my parking at every location, at cost. I send you the receipt.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If a location you choose has an entry fee, a ferry ticket or a similar cost for me, you pay it at cost.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Some places need a permit or written permission for photography. Examples are City of Toronto parks, some venues, and private property. Getting the permit or permission, and paying for it, is your responsibility. I tell you when one is needed, and I help you with the steps.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If we do not have a permit or permission where one is needed, I may move the shoot to a place nearby that does not need one. If staff ask us to stop or leave, the time lost is on your side. If I am fined because we shot without a permit at a location you chose after I told you a permit was needed, you pay the fine.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I follow the rules of every venue, park, place of worship and officiant. I am not responsible for photos I cannot take because of their rules, such as limits on flash, on where I may stand, or on time.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "6.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I can say no to any location, pose or idea that is unsafe, illegal or not permitted. Examples are train tracks, private land without permission, and standing in traffic.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 7,
+      "title": "Planning, and what I need from you",
+      "items": [
+        {
+          "type": "clause",
+          "id": "7.1",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "After you sign, I send you a shoot brief. Please complete it at least 14 days before the shoot. If your shoot is sooner than that, please complete it within 3 days of signing.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.2",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "I turn your brief into a plan for the day, called the run of show. It sets the times, the locations and the order of the day. You review it and tell me your changes. I lock it 3 days before the shoot. The locked run of show is part of this agreement.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.3",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "Please send me your final timeline, your addresses and your list of family photos at least 14 days before the day. I may suggest changes so the photos get the time they need.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.4",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "Please name one contact person for the day who is not one of you, with a phone number. This person can make decisions about the timeline and about overtime for you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Please give me correct information (names, times, addresses), and tell me in writing as soon as anything changes.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Please be ready at your start time.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.7",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "Hair, makeup and your first outfit should be done by the time in your run of show.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you change the plan on the day, I may not be able to cover everything in your booked hours. I will tell you what has to move or be dropped.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Good photos need your help. I am not responsible for photos that could not be taken because someone was late, absent, unwilling, or did not follow direction.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.10",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Please tell me before the shoot about anything I should know. Examples are venue rules, religious or cultural rules, family sensitivities, health or mobility needs, and people or moments you do not want photographed.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.11",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Outfits, props, styling, hair and makeup are yours to arrange, unless section 1 lists them.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.12",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You are responsible for the people you bring or invite, including children, and for any pets.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.13",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You are responsible for your own safety and your own belongings during the shoot. Please tell me if anything feels unsafe, and we will stop or change it.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "7.14",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you are unwell before the shoot, tell me as early as you can. Section 11 explains how to move the date.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 8,
+      "title": "My promise to you",
+      "items": [
+        {
+          "type": "clause",
+          "id": "8.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I, Akash Desai, shoot your booking myself.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.2",
+          "tags": [
+            [
+              "SECOND"
+            ]
+          ],
+          "text": "A second photographer from my team joins for the hours in section 1. I choose who it is. I edit their photos myself, and they are part of your gallery.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.3",
+          "tags": [
+            [
+              "WEDDING",
+              "FILM"
+            ]
+          ],
+          "text": "When your wedding includes a film, I shoot the film, and a photographer from my team shoots your photos in my style. I edit everything myself.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I arrive on time and prepared. I treat you, your family and your guests with respect.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I bring backup equipment to every booking: at least two camera bodies, spare lenses, spare batteries and spare memory cards. My main cameras save every photo to two memory cards at the same time.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "After the shoot, I copy your files to two separate drives before any memory card is erased. I keep two copies until your work is delivered.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I deliver what section 2 promises, by the date in section 1.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I do the work with the skill and care of a professional photographer, in the same style and to the same standard as the work on kashklicks.ca.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If something in your delivery is wrong, I fix it at no cost. Examples are a photo missing from the promised number, a file that will not open, or a wrong name or date in a film. Please tell me within 14 days of delivery, while your files are still on my working drive.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.10",
+          "tags": [
+            [
+              "RUSH"
+            ]
+          ],
+          "text": "If you paid for rush or priority delivery and I miss that date, I refund the rush or priority fee.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.11",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If I am going to be late with a delivery, I tell you before the date and give you a new date.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.12",
+          "tags": [
+            [
+              "INSURED"
+            ]
+          ],
+          "text": "I carry liability insurance. If your venue asks for proof, I can send a certificate.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "8.13",
+          "tags": [
+            [
+              "TRYME"
+            ]
+          ],
+          "text": "Your booking includes my try me first promise. After I deliver your engagement session gallery, you have 14 days to decide. If your wedding is less than 60 days away, you have 7 days. If you tell me in writing in that time that you do not want to continue, I refund your retainer in full and this agreement ends. The engagement photos stay with me, your gallery closes, and you may not use the photos.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 9,
+      "title": "My creative style",
+      "items": [
+        {
+          "type": "clause",
+          "id": "9.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You chose me because of my style. You have seen my work on kashklicks.ca and on Instagram.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I use my own artistic judgment during the shoot and in the edit. This covers posing, light, lenses, which moments I capture, which frames I deliver, and how the colours and the crop look.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.3",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "For films, my artistic judgment also covers the story, the shots I use, the pace and the music.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Your work will not look exactly like any other gallery, film, or reference picture. References you send me are inspiration, not a promise. Light, weather, location, time and people are different on every shoot.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I do my best to capture every moment and every photo you ask for. I cannot guarantee any single photo, pose, person or moment. A shot list or a list of must haves is a guide for me, not a guarantee.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you do not like a creative choice, such as a pose, a crop, the colour style or my selection, that is not a fault in the work. It is not a reason for a refund, a new edit or a new shoot.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "A real fault is different. Section 8 says how I fix faults.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "9.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I may deliver some photos in black and white, when I think the photo is stronger that way.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 10,
+      "title": "Other photographers, guests and safety",
+      "items": [
+        {
+          "type": "clause",
+          "id": "10.1",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "I am the only professional photographer at your wedding or event. Please do not hire or invite anyone else to photograph the day as a professional. This includes friends or relatives with professional cameras, content creators, and photographers building a portfolio. If you want someone like that there, ask me in writing first.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.2",
+          "tags": [
+            [
+              "EVENT",
+              "FILM"
+            ]
+          ],
+          "text": "Because your booking includes a film, I am also the only professional videographer.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.3",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "My own team is not covered by this rule.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.4",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "If you hire a separate videographer or content creator, tell me in writing at least 14 days before. I will work with them politely. They must not block my view or stand in my frame during key moments. I am not responsible for photos affected by their position, their lights or their equipment.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.5",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "Your guests are welcome to take photos with their phones. They must not get in my way. Please ask them to stay out of the aisle, to keep phones and tablets down during key moments, and to step aside when I ask.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.6",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "I am not responsible for photos that are missed or spoiled because a guest, a relative, a vendor or anyone else blocked my view, used a flash, or stepped into the frame.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.7",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "For family photos, please choose one helper who knows both families to gather people. Please ask guests not to shoot over my shoulder, because it pulls eyes away from my camera. I am not responsible for a group photo that is missed because people were absent, late or could not be found.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.8",
+          "tags": [
+            [
+              "LONGDAY"
+            ]
+          ],
+          "text": "If your coverage is 6 hours or longer, please provide a hot meal for me and for each member of my team, served when your guests eat, and a seat in or near the main room. I take one 30 minute break at that time. If no meal is provided, I may leave for up to 45 minutes to eat. That time still counts as coverage.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.9",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "Please ask your venue and your officiant about their photography rules, and tell me at least 14 days before the day.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.10",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "You are the host. Please let your guests know that a photographer is working. For parties with children, you confirm that the parents are fine with photos being taken.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.11",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "Your session is for the people named in this agreement. Friends or family may come to help, but they must not distract you or direct the shoot. Please do not bring another photographer or videographer.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.12",
+          "tags": [
+            [
+              "PROPOSAL"
+            ]
+          ],
+          "text": "Your partner does not know about the shoot. I photograph from a distance in a public place. Please send me the plan (the time, the exact spot, what you will wear, and your signal) at least 3 days before. If the proposal does not happen at the planned time and place, the time still counts as your coverage. If your partner asks me to stop photographing, I stop, and the package price stays the same.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.13",
+          "tags": [
+            [
+              "ENGAGEMENT"
+            ]
+          ],
+          "text": "Your package includes an engagement session: {{ENGAGEMENT_DESC}}. It is optional. Please use it at least 30 days before your wedding. It has no cash value and cannot be swapped for money off. The rules for shoots in this agreement apply to it.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.14",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I work best when everyone feels safe. If anyone at your shoot or event threatens, harasses or endangers me or my team, I tell you or your contact person once. If it does not stop, I may end my coverage and leave. In that case there is no refund, and I deliver my work up to that point as usual.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "10.15",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you, or someone at your shoot or event, damages my equipment on purpose or through careless behaviour, you pay the cost to repair or replace it.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 11,
+      "title": "Moving your date, and weather",
+      "items": [
+        {
+          "type": "clause",
+          "id": "11.1",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "You get one free change of date to any open date on my calendar, if you ask in writing at least 7 days before the shoot.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.2",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "A change of date that you ask for less than 7 days before the shoot costs $151.25. A second change of date also costs $151.25.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.3",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "The new date must be within 6 months of your original date.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.4",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "You may move your wedding to a new date once at no cost, if I am free on the new date. Everything you have paid moves with you. The new date must be within 12 months of your original date.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.5",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "If I am already booked on your new date, it is treated as a cancellation by you (section 16), counted from your original wedding date.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.6",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "A second change of date costs $500.00.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "We confirm every new date in writing. That message becomes part of this agreement. If we cannot agree a new date in the time allowed, it is treated as a cancellation by you (section 16), counted from your original date.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.8",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "I can call a weather change of date for heavy rain, storms, extreme cold or heat, poor air quality, or unsafe conditions. It costs you nothing, and it does not count as your free change. I decide by 6 pm the day before, or on the morning of the shoot if the forecast changes.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.9",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "Light rain does not stop the shoot if you agreed to shoot in light rain in your brief.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.10",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "For a weather change, we first try your backup date in section 1. If that does not work, we pick another open date.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.11",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "If the weather turns during the shoot, we move under cover, we wait (section 5), or I stop the shoot and we finish your remaining time on another date at no cost.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "11.12",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "Weddings and events go ahead in any weather. If it rains, I use covered and indoor spots. Weather is not a reason for a refund.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 12,
+      "title": "Delivery, gallery and changes",
+      "items": [
+        {
+          "type": "clause",
+          "id": "12.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "{{DELIVERY_PROMISE}} If your booking has more than one shoot day, the time starts after the last one.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Delivery time is counted from the day after the shoot. Time I spend waiting for something from you does not count. Examples are a payment, your answers, or your list of film changes.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.3",
+          "tags": [
+            [
+              "SNEAK"
+            ]
+          ],
+          "text": "I send you a short preview of your photos within 24 hours of your wedding.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I deliver your photos as high resolution JPEG files in a private online gallery.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.5",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "I deliver your film as a download link.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Your gallery stays online for 90 days. Please download everything and keep your own backup in that time. After 90 days I may close the gallery.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.7",
+          "tags": [
+            [
+              "HEADSHOT"
+            ]
+          ],
+          "text": "After you receive your gallery, you choose your favourites within 14 days. I send the retouched headshots within 7 days of your choice. If I do not hear from you in 14 days, I choose for you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.8",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "One round of changes is included for each film. A round of changes is one list, with all your changes together, sent to me in writing within 7 days of receiving the film. If I do not receive your list within 7 days, the film is final.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.9",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "A change means a small edit to the film I delivered. Examples are swapping or removing a shot, fixing a name or a date, or changing the music once. A change does not mean a new story, a different style, or footage that was not filmed.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.10",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "I send the changed film within 14 days of your list. Each extra round of changes costs $76.25.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.11",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Changes are for films only. Photo editing follows my style (section 9). If a photo has a real fault, I fix it (section 8).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.12",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "I choose the music for your film from music libraries that I pay to license. I cannot promise that a song you ask for can be used. Songs by well known artists belong to their owners, and I do not hold a licence to them. If you ask me to use such a song in your private film and I agree, you understand that a platform such as Instagram or YouTube may mute, block or remove the film. That is outside my control, and it is not a reason for a new edit at no cost.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "12.13",
+          "tags": [
+            [
+              "FILM"
+            ]
+          ],
+          "text": "I record sound with microphones when the plan calls for it. Wind, crowds, traffic and venue sound systems can affect it. I cannot guarantee clean sound in every scene.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 13,
+      "title": "RAW files, and how long I keep your files",
+      "items": [
+        {
+          "type": "clause",
+          "id": "13.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "RAW files and unedited footage are the files straight from my cameras, before any editing. They are not included in any package.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "13.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You can buy them at the price in section 4. Ask me in writing and pay within 30 days of your final delivery.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "13.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "After those 30 days, I may delete RAW files and unedited footage for good. I do not have to keep them, even if you ask later.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "13.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "RAW files need special software to open. They are for your private archive. Please do not post them in public as my finished work.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "13.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "As a courtesy, I keep a copy of your delivered photos and films for at least 2 years after delivery. This is not a promise to store them forever. Keeping your own backup is your responsibility.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "13.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I keep this agreement, your invoices and my delivery records for 7 years.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 14,
+      "title": "Who owns the photos and films, and what you can do with them",
+      "items": [
+        {
+          "type": "clause",
+          "id": "14.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I own the copyright in every photo, film, RAW file and piece of footage I make for you. Nothing in this agreement transfers the copyright to you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "When you have paid in full, I give you a personal licence. It lasts forever, and it works anywhere in the world. It is not exclusive, and you cannot sell or transfer it.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.3",
+          "tags": [
+            [
+              "COUPLE"
+            ],
+            [
+              "EVENT"
+            ],
+            [
+              "PROPOSAL"
+            ]
+          ],
+          "text": "With this licence you can print the work at any lab, share it with family and friends, post it on your personal social media, and use it for your own invitations, thank you cards, albums and personal or wedding website. Your family and friends may do the same.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.4",
+          "tags": [
+            [
+              "HEADSHOT"
+            ]
+          ],
+          "text": "With this licence you can use your headshots to present yourself. Examples are LinkedIn, your resume, your personal website, a staff page that shows you as a team member, a speaker profile, and press about you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You cannot do these things without my written permission:",
+          "bullets": [
+            "sell the work, or license it to anyone;",
+            "use it to advertise or promote a business, a product or a service;",
+            "give it to a business for its marketing, including a venue, a planner, a makeup artist, a clothing brand, a magazine or a blog. If a vendor wants photos, please send them to me;",
+            "enter it in a contest, or submit it for publication;",
+            "use it to train an artificial intelligence tool, or to create altered images of people."
+          ]
+        },
+        {
+          "type": "clause",
+          "id": "14.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Please post the work as I delivered it. Do not edit it again, add filters, or change it for public posting. Cropping a photo to fit a platform is fine. If you want a different edit, ask me first.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "When you post my work, a credit or a tag (@kash.klicks) is appreciated.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you use the work in a way this section does not allow, and you do not stop after I ask you in writing, I may end your licence.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "14.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "This section sets out what you may do with the work. It applies in place of the default personal use rule in Canada's Copyright Act.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 15,
+      "title": "Sharing your work, and your privacy",
+      "items": [
+        {
+          "type": "clause",
+          "id": "15.1",
+          "tags": [
+            [
+              "SHARE-A"
+            ]
+          ],
+          "text": "Your price in section 1 includes a portfolio credit of {{PORTFOLIO_CREDIT}}. You receive it because you allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign, and your price will be {{PRIVATE_PRICE}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.2",
+          "tags": [
+            [
+              "SHARE-B"
+            ]
+          ],
+          "text": "You have chosen to allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign. It adds a privacy fee of {{PRIVACY_FEE}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.3",
+          "tags": [
+            [
+              "SHARE-C"
+            ]
+          ],
+          "text": "You have chosen to allow me to share your work as described in this section. This is your choice, and it does not change your price. If you would rather keep your work private, choose the private option before you sign.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.4",
+          "tags": [
+            [
+              "PRIVATE"
+            ]
+          ],
+          "text": "You have chosen to keep your work private. I will not show your photos or film in public. I use them only to deliver your booking and for my own records.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.5",
+          "tags": [
+            [
+              "SHARE"
+            ]
+          ],
+          "text": "Sharing means I may show a selection of your photos and film, with your first names, on kashklicks.ca, on my social media pages, on my Google business profile, in printed samples, in submissions to publications and competitions, and in paid ads. I choose the selection. You are not paid for this use.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.6",
+          "tags": [
+            [
+              "SHARE"
+            ]
+          ],
+          "text": "I will not tag you without asking. I will not share your last name, your contact details or your home address. I keep private moments, such as getting dressed, and any moment you mark as sensitive, off my public pages.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.7",
+          "tags": [
+            [
+              "SHARE"
+            ]
+          ],
+          "text": "If you have sensitive requests, write them in your brief or tell me in writing. Examples are no faces of family members, or no venue name. I will follow them.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.8",
+          "tags": [
+            [
+              "SHARE"
+            ]
+          ],
+          "text": "I do not use a photo where a guest is the main subject in a paid ad without that guest's permission. I do not use photos of children in paid ads without a parent's permission.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.9",
+          "tags": [
+            [
+              "SHARE"
+            ]
+          ],
+          "text": "You can change your mind at any time. Tell me in writing. Within 30 days I remove your work from my website and my social media pages, and I stop using it in new posts and ads. I cannot recall printed material, or copies that other people have already saved or published.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.10",
+          "tags": [
+            [
+              "SHARE-A"
+            ]
+          ],
+          "text": "If you change your mind after the shoot, the portfolio credit of {{PORTFOLIO_CREDIT}} becomes payable, the same as if you had chosen the private option.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.11",
+          "tags": [
+            [
+              "COUPLE"
+            ]
+          ],
+          "text": "You confirm that your partner agrees with the choice made in this section.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.12",
+          "tags": [
+            [
+              "PROPOSAL"
+            ]
+          ],
+          "text": "Your proposal photos start as private. After the proposal, I ask you both whether I may share them. I show them in public only if both of you say yes in writing.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.13",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "To do my work, I use trusted services and people. These are an online gallery host, cloud storage and backup, editing software (some with artificial intelligence features), email and messaging, and editors who work with me. Some of them are outside Canada. Your photos and details may be stored or processed in other countries, including the United States and India, under the laws of those countries. I stay responsible for your files.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "15.14",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I use your personal details (names, contact details and event details) only to plan and deliver your booking and to keep my records. I do not sell them. You can ask to see or correct the details I hold about you at info@kashklicks.ca. My privacy policy is at kashklicks.ca/privacy.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 16,
+      "title": "If you cancel",
+      "items": [
+        {
+          "type": "clause",
+          "id": "16.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "To cancel, tell me in writing. The cancellation counts from the day I receive your message.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Moving your booking to a new date is not a cancellation. See section 11.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.3",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "If you cancel for any reason, the retainer is not refunded (section 3).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.4",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "If you cancel more than 14 days before the shoot, I refund everything you have paid beyond the retainer.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.5",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "If you cancel 14 days or less before the shoot, I refund nothing that you have paid. The same applies if you do not show up (section 5), or if the balance is not paid before the shoot starts (section 3).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.6",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "If you cancel for a covered reason, I refund a share of everything you have paid. The share depends on how many days are left before your wedding.",
+          "bullets": [
+            "More than 180 days: 80%.",
+            "90 to 180 days: 60%.",
+            "60 to 89 days: 40%.",
+            "30 to 59 days: 20%.",
+            "Fewer than 30 days: no refund is owed, unless I choose to give one, as this section allows."
+          ]
+        },
+        {
+          "type": "clause",
+          "id": "16.7",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "A covered reason is one of these: the death, serious illness or serious injury of one of you or of a close family member; your wedding being called off; a military posting; the loss of your job; a move out of Ontario; your venue closing; or an event described in section 19. I may ask for simple proof.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.8",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "If you cancel for any other reason, for example because you chose another photographer, the retainer is not refunded. I refund a share of what you paid beyond the retainer, using the same list.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.9",
+          "tags": [
+            [
+              "WEDDING",
+              "ENGAGEMENT"
+            ]
+          ],
+          "text": "If your engagement session has already been photographed, its value of {{ENGAGEMENT_VALUE}} is delivered work. I take it off the amount you paid before I work out the refund.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.10",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "Payments that were not yet due on the day you cancel are no longer owed.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.11",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Money I have already spent for your booking at your request, such as travel bookings, is not refunded unless I can get it back.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.12",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I may choose to refund more than this section requires in a case of real hardship. If I do, it is a gesture of good faith. It does not change these terms.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.13",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I pay any refund within 15 days, by e-transfer.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.14",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I may end this agreement if a payment stays unpaid after my reminder, if section 10 gives me the right to leave, or if you ask me to do something illegal or unsafe. That counts as a cancellation by you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "16.15",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Nothing in this section takes away a right to cancel that Ontario's Consumer Protection Act gives you.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 17,
+      "title": "If I cannot make it",
+      "items": [
+        {
+          "type": "clause",
+          "id": "17.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I will not cancel your booking unless something serious stops me, such as illness, injury or a family emergency.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "17.2",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "If that happens, you choose: a new date at no cost, or a full refund of everything you paid, including the retainer.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "17.3",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "If that happens, I first try to send a professional photographer I trust, at the same price to you. I edit the work myself, so the style stays the same. I tell you who it is, and you can say no.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "17.4",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "If I cannot find someone, or you say no, I refund everything you paid, including the retainer.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "17.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If I have to stop partway through because of illness or injury, I refund the share of your package price for the time I could not cover.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "17.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "A new date, a replacement photographer you accept, or a full refund is everything I owe you if I cannot make it (section 18).",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 18,
+      "title": "If something goes wrong",
+      "items": [
+        {
+          "type": "clause",
+          "id": "18.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I take every reasonable step to protect your photos and films (section 8). Even so, equipment can fail, and files can be lost or damaged.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.2",
+          "tags": [
+            [
+              "SHOOT"
+            ]
+          ],
+          "text": "If I cannot deliver any of your work because of a problem on my side, you choose: a new shoot of the same package at no cost, or a full refund.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.3",
+          "tags": [
+            [
+              "EVENT"
+            ]
+          ],
+          "text": "If I cannot deliver any of your work because of a problem on my side, I refund everything you paid.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If only part of your work is lost, I refund a fair share of the package price for the missing part.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "My total responsibility to you under this agreement, for any reason, is limited to the amount you have paid me.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I am not responsible for other losses or costs, such as the cost of arranging the shoot or event again, travel, outfits, or hair and makeup.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I am not responsible for things I do not control. Examples are the weather, the light, the rules of a venue or an officiant, a permit that is refused, traffic, people who are late, absent or unwilling, guests or vendors who block the view, and changes you make on the day.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "18.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Nothing in this agreement takes away rights that Ontario's Consumer Protection Act gives you and that cannot be waived, including your right to services of reasonably acceptable quality. Where the law does not allow a limit in this section, that limit does not apply, and the rest of this agreement stays in force.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 19,
+      "title": "Things outside our control",
+      "items": [
+        {
+          "type": "clause",
+          "id": "19.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Some events are outside anyone's control. Examples are a natural disaster, a fire, a flood, a pandemic, a government order, a strike, a power failure, a venue that closes, or travel that is shut down. If such an event stops your shoot or event from going ahead, neither of us has broken this agreement.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "19.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "We first move your booking to a new date within 12 months at no cost. Everything you have paid moves with you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "19.3",
+          "tags": [
+            [
+              "NONWED"
+            ]
+          ],
+          "text": "If a new date is not possible, I refund everything you paid beyond the retainer, and I may refund more (section 16).",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "19.4",
+          "tags": [
+            [
+              "WEDDING"
+            ]
+          ],
+          "text": "If a new date is not possible, it is treated as a cancellation for a covered reason (section 16), and I may refund more.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "19.5",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If the event stops me from working, and not you, section 17 applies instead.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "19.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Weather on its own is covered by section 11, not by this section.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 20,
+      "title": "If we disagree",
+      "items": [
+        {
+          "type": "clause",
+          "id": "20.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If you are unhappy with anything, please tell me in writing first and give me the chance to fix it. I reply within 5 days.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "20.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "We both try in good faith to solve the problem within 30 days.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "20.3",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "The law of Ontario, and the laws of Canada that apply in Ontario, govern this agreement. If we cannot solve a problem ourselves, the courts of Ontario decide it.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 21,
+      "title": "The legal basics",
+      "items": [
+        {
+          "type": "clause",
+          "id": "21.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "This agreement is the whole agreement between us. It includes the table in section 1, the add-on list in section 4, your locked run of show or final timeline, and any change we both confirm in writing. It replaces anything we said or wrote before. My website is a guide. If it differs from this agreement, this agreement applies.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.2",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "We can change this agreement only in writing, and we both must agree. An email or a WhatsApp message from each of us is enough.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.3",
+          "tags": [
+            [
+              "COUPLE"
+            ]
+          ],
+          "text": "One of you signs for both of you. By signing, you confirm that your partner has read this agreement, agrees to it, and has asked you to sign for them. Each of you is responsible for everything in this agreement, together and on your own.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.4",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "By signing, you confirm that you are 18 or older.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.5",
+          "tags": [
+            [
+              "HEADSHOT"
+            ]
+          ],
+          "text": "If you are under 18, a parent or guardian must sign for you.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.6",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You cannot pass this booking to someone else without my written agreement. I may work with assistants, second photographers and editors I trust. I stay responsible for their work.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.7",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "I send notices to the email in this agreement. You send notices to info@kashklicks.ca or to my WhatsApp at 647 613 7430. Please tell me if your email or phone number changes.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.8",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If a court finds one part of this agreement invalid, the rest still applies.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.9",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "If I do not enforce a term once, I can still enforce it later.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.10",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "The sections about copyright, your licence, sharing, privacy and responsibility continue after your booking is complete.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.11",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "Signing electronically is as valid as signing on paper. When you type your name, tick the box and press Sign, that is your signature. I keep a record of the date, the time, your device details and the exact text you signed. You receive a PDF copy by email right away. Please keep it.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "21.12",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "You had the chance to read this agreement, to ask me questions, and to get advice before signing.",
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "num": 22,
+      "title": "Signatures",
+      "items": [
+        {
+          "type": "clause",
+          "id": "22.1",
+          "tags": [
+            [
+              "ALL"
+            ]
+          ],
+          "text": "By signing, you confirm that you have read this agreement and agree to it.",
+          "bullets": []
+        }
+      ]
+    }
+  ]
+}

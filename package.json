@@ -11,7 +11,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "test:unit": "playwright test -c playwright.unit.config.ts",
+    "agreement:clauses": "node scripts/agreement/build-clauses.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.3.0",

@@ -1,0 +1,460 @@
+---
+// Private agreement page: /welcome/agreement/?k=<token>.
+// The couple reads the agreement, chooses sharing or private, types their name,
+// reviews and signs. The document comes only from the server payload and is
+// rendered by src/lib/agreement/html.ts; this file holds the shell and the styles.
+// Kept out of search: noindex here, x-robots-tag from the worker, not in the sitemap.
+// Everything the script or the spec selects carries a data-agr-* attribute.
+import PrivateLayout from '../../layouts/PrivateLayout.astro';
+
+const WHATSAPP = 'https://wa.me/16476137430';
+---
+
+<PrivateLayout title="Your agreement, AD Photography">
+  <p class="agr-ribbon" data-agr-ribbon hidden>TEST. Nothing here is real.</p>
+
+  <main class="agr" data-agr-state="loading" aria-busy="true">
+    <header class="agr-top">
+      <p class="agr-brand">AD Photography</p>
+      <p class="agr-kicker">Private agreement</p>
+    </header>
+
+    <div class="agr-view agr-loading" data-agr-view="loading" aria-hidden="true">
+      <span class="agr-skel agr-skel--short"></span>
+      <span class="agr-skel agr-skel--title"></span>
+      <span class="agr-skel"></span>
+      <span class="agr-skel"></span>
+    </div>
+
+    <div class="agr-view" data-agr-view="ready">
+      <section class="agr-hero">
+        <p class="agr-eyebrow" data-agr-eyebrow></p>
+        <h1 class="agr-title" tabindex="-1">Your <em>agreement.</em></h1>
+        <p class="agr-lede">Everything we agreed, in one place. Read it through, then sign at the bottom. It takes about fifteen minutes.</p>
+        <ul class="agr-bullets" data-agr-bullets></ul>
+      </section>
+
+      <nav class="agr-toc" aria-labelledby="agr-toc-title">
+        <p class="agr-cap" id="agr-toc-title">On this page</p>
+        <ol data-agr-toc></ol>
+      </nav>
+
+      <div class="agr-doc" data-agr-doc></div>
+
+      <!-- Moved into section 22, after its clause, by the script. -->
+      <div class="agr-signbox" data-agr-signbox tabindex="-1">
+        <div class="agr-sigcards">
+          <div class="agr-card">
+            <p class="agr-cap">AD Photography</p>
+            <p class="agr-bizline" data-agr-business-signature></p>
+          </div>
+
+          <form class="agr-card agr-card--you" data-agr-form novalidate>
+            <p class="agr-cap">You</p>
+            <!-- Disabled as one while the review is open inline and while the sign request is out. -->
+            <fieldset class="agr-controls" data-agr-controls>
+            <div class="agr-field">
+              <label for="agr-name">Your full legal name</label>
+              <input id="agr-name" class="agr-input" type="text" autocomplete="name" aria-describedby="agr-signer" data-agr-name />
+              <p class="agr-note" id="agr-signer" data-agr-signer></p>
+            </div>
+            <fieldset class="agr-field">
+              <legend>Sharing your work (section 15)</legend>
+              <label class="agr-check">
+                <input type="radio" name="agr-choice" value="share" data-agr-choice="share" />
+                <span data-agr-share-option></span>
+              </label>
+              <label class="agr-check">
+                <input type="radio" name="agr-choice" value="private" data-agr-choice="private" />
+                <span data-agr-private-option></span>
+              </label>
+              <p class="agr-status" data-agr-choice-status role="status"></p>
+            </fieldset>
+            <label class="agr-check">
+              <input type="checkbox" data-agr-agree />
+              <span data-agr-agree-label></span>
+            </label>
+            </fieldset>
+            <p class="agr-error" data-agr-error tabindex="-1" hidden></p>
+            <button type="submit" class="agr-btn" data-agr-review disabled>Review and sign</button>
+            <p class="agr-note">Next you see a short summary of your names, your date and your total. You confirm it, and the agreement is signed. I record the date, the time and the exact text you signed, and I email you a PDF copy right away.</p>
+            <div class="agr-actions">
+              <button type="button" class="agr-btn agr-btn--ghost" data-agr-print>Download or print a copy first</button>
+              <!-- Shown once the button is pressed: some in-app browsers cannot print. -->
+              <p class="agr-note agr-print-hint" data-agr-print-hint role="status" hidden>Nothing happened? Open this page in Safari or Chrome, then print it or save it as a PDF.</p>
+              <button type="button" class="agr-link" data-agr-not-yet>Something is wrong, I do not want to sign yet</button>
+            </div>
+          </form>
+        </div>
+        <p class="agr-note agr-questions">Questions before you sign? Reply to the email or message Akash on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
+
+        <dialog class="agr-review" data-agr-dialog aria-labelledby="agr-review-title">
+          <h2 class="agr-review__title" id="agr-review-title" data-agr-dialog-title tabindex="-1">Check and sign</h2>
+          <dl class="agr-rows" data-agr-review-rows></dl>
+          <div class="agr-review__buttons">
+            <button type="button" class="agr-btn agr-btn--ghost" data-agr-back>Go back</button>
+            <button type="button" class="agr-btn" data-agr-sign>Sign the agreement</button>
+          </div>
+        </dialog>
+      </div>
+    </div>
+
+    <div class="agr-view" data-agr-view="signed" data-agr-signed>
+      <section class="agr-hero agr-signed-head">
+        <p class="agr-status-line" data-agr-already hidden>This agreement was already signed. Here is the signed copy.</p>
+        <p class="agr-ok">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span data-agr-signed-on></span>
+        </p>
+        <h1 class="agr-title" data-agr-thanks tabindex="-1">Thank you, <em data-agr-thanks-name></em></h1>
+        <p class="agr-lede" data-agr-copy-line></p>
+      </section>
+
+      <section class="agr-steps">
+        <div class="agr-card">
+          <p class="agr-cap">Step 1 · Retainer</p>
+          <p class="agr-amount" data-agr-retainer></p>
+          <dl class="agr-rows agr-rows--compact">
+            <div><dt>Send an e-transfer to</dt><dd data-agr-etransfer></dd></div>
+            <div><dt>Message or reference</dt><dd data-agr-reference></dd></div>
+            <div><dt>Balance on the day</dt><dd data-agr-balance></dd></div>
+          </dl>
+        </div>
+        <div class="agr-card">
+          <p class="agr-cap" data-agr-step2-title></p>
+          <p class="agr-step2" data-agr-step2-text></p>
+        </div>
+      </section>
+
+      <div class="agr-signed-foot">
+        <button type="button" class="agr-btn agr-btn--ghost" data-agr-print>Print or save this page</button>
+        <p class="agr-note agr-print-hint" data-agr-print-hint role="status" hidden>Nothing happened? Open this page in Safari or Chrome, then print it or save it as a PDF.</p>
+        <p class="agr-note" data-agr-signed-footer></p>
+      </div>
+
+      <div class="agr-doc" data-agr-signed-doc></div>
+    </div>
+
+    <div class="agr-view agr-msg" data-agr-view="not-yet">
+      <p class="agr-msg__text" data-agr-not-yet-msg tabindex="-1">No problem. Nothing is signed and nothing is owed. Tell me what is wrong and I will fix it. Reply to the email, or message me on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
+      <button type="button" class="agr-btn agr-btn--ghost" data-agr-back-to-doc>Back to the agreement</button>
+    </div>
+
+    <div class="agr-view agr-msg" data-agr-view="gone">
+      <p class="agr-msg__text" data-agr-gone-msg tabindex="-1"></p>
+    </div>
+
+    <div class="agr-view agr-msg" data-agr-view="error">
+      <p class="agr-msg__text" data-agr-load-error tabindex="-1">This page did not load. Please try again in a minute.</p>
+      <button type="button" class="agr-btn agr-btn--ghost" data-agr-retry>Try again</button>
+    </div>
+
+    <!-- Signature lines under a signed agreement. Cloned and filled by the script. -->
+    <template data-agr-siglines-tpl>
+      <div class="agr-sigcards" data-agr-siglines>
+        <div class="agr-card">
+          <p class="agr-cap">AD Photography</p>
+          <p class="agr-bizline" data-agr-sig-business></p>
+        </div>
+        <div class="agr-card agr-card--you">
+          <p class="agr-cap">You</p>
+          <p class="agr-signature" data-agr-sig-name></p>
+          <p class="agr-bizline" data-agr-sig-when></p>
+        </div>
+      </div>
+    </template>
+  </main>
+</PrivateLayout>
+
+<!-- Global, scoped under .agr: the document and the signature lines are built at runtime, and Astro's scoped styles do not reach them. -->
+<style is:global>
+  html { overflow-anchor: none; }
+
+  .agr {
+    --agr-ok: #2f6b3a;
+    --agr-line: var(--color-surface-container);
+    --agr-gutter: 24px;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px var(--agr-gutter) 72px;
+    box-sizing: border-box;
+    color: var(--color-on-surface);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 480px) { .agr { --agr-gutter: 16px; } }
+  .agr *, .agr *::before, .agr *::after { box-sizing: border-box; }
+  html:has(.agr-ribbon:not([hidden])) .agr { padding-top: 64px; }
+
+  /* Views: only the one for the current state shows. */
+  .agr-view { display: none; }
+  .agr[data-agr-state='loading'] [data-agr-view='loading'],
+  .agr[data-agr-state='ready'] [data-agr-view='ready'],
+  .agr[data-agr-state='signed'] [data-agr-view='signed'],
+  .agr[data-agr-state='not-yet'] [data-agr-view='not-yet'],
+  .agr[data-agr-state='gone'] [data-agr-view='gone'],
+  .agr[data-agr-state='error'] [data-agr-view='error'] { display: block; }
+
+  .agr-ribbon {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    margin: 0;
+    padding: 8px 16px;
+    background: var(--color-surface-dark);
+    color: var(--color-on-dark);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .agr-ribbon[hidden] { display: none; }
+
+  .agr-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .agr-brand { margin: 0; font-family: var(--font-serif); font-size: 1.625rem; font-weight: var(--fw-medium); letter-spacing: 0.02em; }
+  .agr-kicker, .agr-cap, .agr-eyebrow {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+  .agr-eyebrow { font-size: 0.8125rem; letter-spacing: 0.1em; }
+
+  /* Loading */
+  .agr-loading { padding-top: 64px; }
+  .agr-skel { display: block; height: 18px; margin-bottom: 16px; border-radius: 4px; background: var(--color-surface-dim); max-width: 620px; animation: agr-pulse 1.4s ease-in-out infinite; }
+  .agr-skel--short { width: 40%; }
+  .agr-skel--title { height: 56px; width: 70%; margin: 8px 0 24px; }
+  @keyframes agr-pulse { 50% { opacity: 0.5; } }
+  @media (prefers-reduced-motion: reduce) { .agr-skel { animation: none; } }
+
+  /* Hero */
+  .agr-hero { display: flex; flex-direction: column; gap: 20px; padding: 64px 0 40px; }
+  .agr-title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: clamp(2.75rem, 8vw, 4rem); line-height: 1.05; letter-spacing: -0.02em; }
+  .agr-title em { font-style: italic; font-weight: var(--fw-regular); }
+  .agr-title:focus { outline: none; }
+  .agr-title:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 4px; }
+  .agr-lede { margin: 0; max-width: 620px; font-size: 1.125rem; color: var(--color-on-surface-variant); }
+  .agr-bullets { margin: 0; padding-left: 20px; max-width: 620px; list-style: disc; color: var(--color-on-surface-variant); display: flex; flex-direction: column; gap: 6px; }
+
+  /* On this page */
+  .agr-toc { border-top: 1px solid var(--agr-line); padding: 20px 0 48px; display: flex; flex-direction: column; gap: 12px; }
+  .agr-toc ol { margin: 0; padding: 0; list-style: none; columns: 260px 2; column-gap: 32px; font-size: 0.9375rem; }
+  .agr-toc li { break-inside: avoid; }
+  .agr-toc a { display: inline-block; padding: 6px 0; color: var(--color-on-surface); text-decoration: none; text-underline-offset: 3px; }
+  .agr-toc a:hover { text-decoration: underline; color: var(--color-primary); }
+  .agr-toc a:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+
+  /* The document */
+  .agr-doc { display: flex; flex-direction: column; gap: 48px; }
+  .agr-sec { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 24px; }
+  html:has(.agr-ribbon:not([hidden])) .agr-sec { scroll-margin-top: 56px; }
+  .agr-sec h2 { margin: 0 0 4px; font-family: var(--font-serif); font-weight: var(--fw-medium); font-size: clamp(1.625rem, 4vw, 2.125rem); line-height: 1.15; }
+  .agr-sec p { margin: 0; }
+  .agr-sec ul { margin: 0; padding-left: 22px; list-style: disc; display: flex; flex-direction: column; gap: 6px; }
+  .agr-n { font-weight: var(--fw-bold); }
+  #sec-0 { background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; padding: 24px; }
+  #sec-0 h2 { font-size: clamp(1.5rem, 3.5vw, 1.875rem); }
+  /* The document's own title and intro, above section 0, as in the PDF. */
+  .agr-doc-head { display: flex; flex-direction: column; gap: 12px; }
+  .agr-doc-title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-medium); font-size: clamp(1.75rem, 4.5vw, 2.375rem); line-height: 1.15; }
+  .agr-intro { margin: 0; max-width: 620px; color: var(--color-on-surface-variant); }
+
+  .agr-table { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; overflow: hidden; margin: 4px 0 8px; }
+  .agr-table td { padding: 14px 18px; vertical-align: top; border-bottom: 1px solid var(--agr-line); font-weight: var(--fw-medium); }
+  .agr-table tr:last-child td { border-bottom: 0; }
+  .agr-table td.agr-label { width: 40%; color: var(--color-on-surface-variant); font-weight: var(--fw-regular); }
+  .agr-table strong { font-weight: var(--fw-bold); }
+  @media (max-width: 560px) {
+    .agr-table, .agr-table tbody, .agr-table tr, .agr-table td { display: block; width: 100%; }
+    .agr-table tr { border-bottom: 1px solid var(--agr-line); padding: 12px 16px; }
+    .agr-table tr:last-child { border-bottom: 0; }
+    .agr-table td { padding: 0; border: 0; }
+    .agr-table td.agr-label { width: 100%; font-size: 0.875rem; margin-bottom: 2px; }
+  }
+
+  /* Section 15 before a choice: both versions, each in its own card. */
+  .agr-variant { background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .agr-variant h3 { margin: 0; font-family: var(--font-sans); font-size: 0.8125rem; font-weight: var(--fw-medium); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-on-surface-variant); }
+  @media (max-width: 480px) { .agr-variant, #sec-0 { padding: 18px 16px; } }
+
+  /* Sign box and signature lines */
+  .agr-signbox { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+  .agr-signbox:focus { outline: none; }
+  .agr-sigcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 24px; align-items: start; }
+  .agr-card { background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .agr-card--you { border-color: var(--color-on-surface); }
+  @media (max-width: 480px) { .agr-card { padding: 20px 16px; } }
+  .agr-bizline { margin: 0; color: var(--color-on-surface-variant); font-size: 0.875rem; }
+  .agr-signature { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: 2.25rem; line-height: 1.1; padding-bottom: 10px; border-bottom: 1px solid var(--color-on-surface); }
+
+  .agr-controls { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .agr-controls:disabled { opacity: 0.6; }
+  .agr-controls:disabled .agr-check, .agr-controls:disabled input { cursor: not-allowed; }
+  .agr-controls:disabled .agr-check:hover span { color: inherit; }
+  .agr-field { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .agr-field > label, .agr-field legend { padding: 0; margin: 0 0 2px; font-size: 0.875rem; font-weight: var(--fw-medium); }
+  .agr-input {
+    font: inherit;
+    font-size: 1.125rem;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-on-surface-muted);
+    border-radius: 4px;
+    background: var(--color-background);
+    color: var(--color-on-surface);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .agr-input::placeholder { color: var(--color-on-surface-muted); }
+  .agr-input:hover { border-color: var(--color-on-surface-variant); }
+  .agr-input:focus { outline: none; border-color: var(--color-on-surface); box-shadow: 0 0 0 3px var(--color-surface-container); }
+  .agr-input[aria-invalid='true'] { border-color: var(--color-error); box-shadow: 0 0 0 3px rgba(158, 66, 44, 0.15); }
+
+  .agr-check { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding: 8px 0; font-size: 0.9375rem; line-height: 1.5; cursor: pointer; }
+  .agr-check input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--color-on-surface); cursor: pointer; }
+  .agr-check input:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
+  .agr-check:hover span { color: var(--color-primary-hover); }
+
+  .agr-status { margin: 4px 0 0; font-size: 0.875rem; color: var(--agr-ok); }
+  .agr-status:empty { margin: 0; }
+  .agr [hidden] { display: none !important; }
+  .agr-error { margin: 0; padding: 12px 14px; border-left: 3px solid var(--color-error); background: rgba(158, 66, 44, 0.06); color: var(--color-error); font-size: 0.9375rem; }
+  .agr-error:focus { outline: none; }
+  .agr-error:focus-visible { outline: 2px solid var(--color-error); outline-offset: 2px; }
+  .agr-note { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--color-on-surface-variant); }
+  .agr-questions { font-size: 0.875rem; }
+  .agr-note a, .agr-msg a { color: var(--color-on-surface); text-underline-offset: 3px; }
+  .agr-note a:hover, .agr-msg a:hover { color: var(--color-primary); }
+  .agr-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .agr-print-hint { max-width: 420px; }
+  .agr-signed-foot .agr-print-hint { flex-basis: 100%; }
+
+  /* Buttons: rest, hover, press, focus, disabled, loading. */
+  .agr-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px 20px;
+    border: 1px solid var(--color-on-surface);
+    border-radius: 4px;
+    background: var(--color-on-surface);
+    color: var(--color-on-dark);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: var(--fw-medium);
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, transform 100ms ease, opacity 150ms ease;
+  }
+  .agr-btn:hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+  .agr-btn:active { transform: translateY(1px); background: var(--color-surface-dark); }
+  .agr-btn:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
+  .agr-btn--ghost { background: var(--color-surface); color: var(--color-on-surface); min-height: 44px; font-size: 0.9375rem; }
+  .agr-btn--ghost:hover { background: var(--color-surface-dim); border-color: var(--color-on-surface); }
+  .agr-btn--ghost:active { background: var(--color-surface-container); }
+  .agr-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .agr-btn:disabled:hover { background: var(--color-on-surface); border-color: var(--color-on-surface); }
+  .agr-btn--ghost:disabled:hover { background: var(--color-surface); }
+  .agr-btn[aria-busy='true'], .agr-link[aria-busy='true'] { opacity: 0.75; cursor: progress; }
+  .agr-btn[aria-busy='true']::after, .agr-link[aria-busy='true']::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: agr-spin 0.8s linear infinite;
+  }
+  @keyframes agr-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .agr-btn[aria-busy='true']::after, .agr-link[aria-busy='true']::after { animation: none; } }
+
+  .agr-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-on-surface);
+    font: inherit;
+    font-size: 0.875rem;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .agr-link:hover { color: var(--color-primary); text-decoration-thickness: 2px; }
+  .agr-link:active { color: var(--color-primary-hover); }
+  .agr-link:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .agr-link:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Review step */
+  .agr-review { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 28px 24px; border: 1px solid var(--color-on-surface); border-radius: 4px; background: var(--color-surface); color: var(--color-on-surface); }
+  .agr-review:not([open]) { display: none; }
+  .agr-review[open] { display: flex; flex-direction: column; gap: 20px; }
+  .agr-review::backdrop { background: rgba(44, 40, 36, 0.55); }
+  .agr-review__title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-medium); font-size: 1.875rem; }
+  .agr-review__title:focus { outline: none; }
+  .agr-review__buttons { display: flex; flex-wrap: wrap-reverse; gap: 12px; justify-content: flex-end; }
+  .agr-review__buttons .agr-btn { flex: 1 1 160px; }
+  /* No <dialog> support: the same panel shows inline in the sign box. */
+  .agr-review--inline { position: static; width: 100%; max-height: none; }
+
+  .agr-rows { margin: 0; display: flex; flex-direction: column; }
+  .agr-rows > div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--agr-line); }
+  .agr-rows dt { color: var(--color-on-surface-variant); flex: none; }
+  .agr-rows dd { margin: 0; font-weight: var(--fw-medium); text-align: right; min-width: 0; }
+  .agr-rows--compact > div { padding: 8px 0; font-size: 0.9375rem; }
+  @media (max-width: 420px) {
+    .agr-rows > div { flex-direction: column; gap: 2px; }
+    .agr-rows dd { text-align: left; }
+  }
+
+  /* Signed */
+  .agr-signed-head { padding-bottom: 24px; }
+  .agr-ok { margin: 0; display: flex; align-items: center; gap: 10px; color: var(--agr-ok); font-size: 0.875rem; font-weight: var(--fw-medium); letter-spacing: 0.08em; text-transform: uppercase; }
+  .agr-status-line { margin: 0; padding: 12px 14px; border-left: 3px solid var(--color-on-surface); background: var(--color-surface); }
+  .agr-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 24px; padding: 16px 0 32px; }
+  .agr-amount { margin: 0; font-family: var(--font-serif); font-size: 3rem; line-height: 1; }
+  .agr-step2 { margin: 0; font-size: 1.0625rem; line-height: 1.5; }
+  .agr-signed-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding-bottom: 56px; border-bottom: 1px solid var(--agr-line); margin-bottom: 48px; }
+  .agr-signed-foot .agr-note { font-size: 0.875rem; }
+
+  /* Not yet, gone, error */
+  .agr-msg { padding: 64px 0; }
+  .agr-msg__text { margin: 0 0 28px; max-width: 620px; font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.3; }
+  .agr-msg__text:focus { outline: none; }
+  .agr-msg__text:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 4px; }
+
+  /* Print: the document only, and when signed the signed header and the signature lines. */
+  @media print {
+    html, body { background: #fff !important; }
+    .agr { max-width: none; padding: 0 !important; font-size: 10.5pt; }
+    /* Test mode: the ribbon prints too, at the top of the first page, so a printed test agreement never looks real. */
+    .agr-ribbon:not([hidden]) { position: static; margin: 0 0 12pt; border: 1pt solid #000; background: #fff !important; color: #000 !important; }
+    html:has(.agr-ribbon:not([hidden])) .agr { padding-top: 0 !important; }
+    .agr-top, [data-agr-view='ready'] > .agr-hero, .agr-toc, .agr-signbox, .agr-review, .agr-btn, .agr-link, .agr-loading, .agr-print-hint { display: none !important; }
+    .agr-signed-head { padding: 0 0 12pt; }
+    .agr-steps { display: grid; grid-template-columns: 1fr 1fr; padding: 0 0 12pt; }
+    .agr-signed-foot { padding-bottom: 12pt; margin-bottom: 12pt; }
+    .agr-doc { gap: 16pt; }
+    .agr-sec { break-inside: auto; }
+    .agr-sec h2 { break-after: avoid; }
+    .agr-table tr, .agr-sigcards, .agr-card { break-inside: avoid; }
+  }
+</style>
+
+<script>
+  import { initAgreement } from '../../scripts/agreement';
+  initAgreement();
+</script>
