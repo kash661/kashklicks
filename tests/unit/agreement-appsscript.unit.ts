@@ -94,7 +94,7 @@ class FakeSheet {
 
 type SentMail = Record<string, any>;
 
-function makeEnv(opts: { failSends?: number; sheetsDown?: boolean; failRowWrites?: boolean } = {}) {
+function makeEnv(opts: { failSends?: number; sheetsDown?: boolean; failRowWrites?: boolean; failConvert?: boolean } = {}) {
   const sheets = new Map<string, FakeSheet>();
   const sent: SentMail[] = [];
   const lockLog: string[] = [];
@@ -138,6 +138,7 @@ function makeEnv(opts: { failSends?: number; sheetsDown?: boolean; failRowWrites
     Utilities: {
       newBlob: (content: string, contentType: string, name: string) => ({
         getAs: (type: string) => {
+          if (opts.failConvert) throw new Error('Conversion from text/html to application/pdf failed.');
           const pdf = {
             kind: 'converted',
             from: { content, contentType, name },
@@ -147,10 +148,13 @@ function makeEnv(opts: { failSends?: number; sheetsDown?: boolean; failRowWrites
               pdf.name = n;
               return pdf;
             },
+            // Stand-in bytes: the converter's real bytes are a PDF of the HTML.
+            getBytes: () => Array.from(Buffer.from(`%PDF-fake ${contentType} ${name} ${type} ${content}`, 'utf8')),
           };
           return pdf;
         },
       }),
+      base64Encode: (bytes: number[]) => Buffer.from(bytes).toString('base64'),
     },
     LockService: {
       getScriptLock: () => ({
@@ -231,12 +235,12 @@ const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
 test('ping answers with the agreements version', () => {
   const env = makeEnv();
-  expect(env.post({ action: 'agreement_ping', token: TOKEN })).toEqual({ ok: true, agreements: 1 });
+  expect(env.post({ action: 'agreement_ping', token: TOKEN })).toEqual({ ok: true, agreements: 2 });
 });
 
 test('agreement actions need the admin token', () => {
   const env = makeEnv();
-  for (const action of ['agreement_ping', 'agreement_signed', 'agreement_notice']) {
+  for (const action of ['agreement_ping', 'agreement_signed', 'agreement_notice', 'agreement_pdf']) {
     for (const token of [undefined, '', 'wrong-token']) {
       const p: Record<string, string> = { ...signedParams(), action, subject: 'S', body: 'B' };
       if (token === undefined) delete p.token;
@@ -545,6 +549,38 @@ async function pilotSigned(mode: 'live' | 'test'): Promise<SignedRecord> {
     country: null,
   };
 }
+
+test('agreement_pdf returns the converted bytes as base64, with no email and no sheet', () => {
+  const env = makeEnv();
+  const html = '<!doctype html><html><body><p>Copy to read. Not signed.</p></body></html>';
+  for (const test of ['', '1']) {
+    const out = env.post({ action: 'agreement_pdf', token: TOKEN, test, pdf_html: html });
+    expect(out).toEqual({
+      ok: true,
+      pdf_base64: Buffer.from(`%PDF-fake text/html agreement.html application/pdf ${html}`, 'utf8').toString('base64'),
+    });
+  }
+  expect(env.sent).toHaveLength(0);
+  expect(env.sheets.size).toBe(0);
+  expect(env.lockLog).toEqual([]);
+});
+
+test('agreement_pdf refuses a bad request and a page that is too big', () => {
+  const env = makeEnv();
+  expect(env.post({ action: 'agreement_pdf', token: TOKEN, test: '' })).toEqual({ ok: false, error: 'bad_request' });
+  expect(env.post({ action: 'agreement_pdf', token: TOKEN, test: '', pdf_html: '' })).toEqual({ ok: false, error: 'bad_request' });
+  expect(env.post({ action: 'agreement_pdf', token: TOKEN, test: 'yes', pdf_html: '<p>x</p>' })).toEqual({ ok: false, error: 'bad_request' });
+  expect(env.post({ action: 'agreement_pdf', token: TOKEN, test: '', pdf_html: 'x'.repeat(400001) })).toEqual({ ok: false, error: 'too_big' });
+  expect(env.post({ action: 'agreement_pdf', token: TOKEN, test: '', pdf_html: 'x'.repeat(400000) }).ok).toBe(true);
+});
+
+test('agreement_pdf answers pdf_failed when the conversion throws', () => {
+  const env = makeEnv({ failConvert: true });
+  expect(env.post({ action: 'agreement_pdf', token: TOKEN, test: '', pdf_html: '<p>x</p>' })).toEqual({
+    ok: false,
+    error: 'pdf_failed: Conversion from text/html to application/pdf failed.',
+  });
+});
 
 test('the copy fields the worker sends are accepted by the real script', async () => {
   for (const mode of ['test', 'live'] as const) {

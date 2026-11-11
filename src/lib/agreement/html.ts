@@ -96,6 +96,35 @@ li { margin: 0 0 3pt 0; }
 .agr-fingerprint { word-break: break-all; }
 `;
 
+// The unsigned copy adds one rule; the signed copy keeps PDF_STYLE exactly as it was.
+const PDF_DRAFT_STYLE = `${PDF_STYLE}.agr-draft { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; font-weight: bold; margin: 0 0 12pt 0; }
+`;
+
+/** The frame both PDFs share: letterhead, document head, the agreement text, then the closing section. */
+function pdfFrame(doc: AgreementDoc, o: { title: string; style: string; lead: string; signDateText: string; closing: string }): string {
+  const e = escapeHtml;
+  const [trade1, trade2] = BUSINESS.tradeNames;
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>${e(o.title)}</title>
+<style>${o.style}</style>
+</head>
+<body>
+<div class="letterhead">
+<p class="lh-name">${e(trade1)}</p>
+<p class="lh-trade">${e(trade2)}</p>
+<p class="lh-contact">${e(`${BUSINESS.phone} · ${BUSINESS.email} · ${BUSINESS.website}`)}</p>
+</div>
+${o.lead}${docHeadHtml(doc, 'h1')}
+${agreementToHtml(doc, { signDateText: o.signDateText })}
+${o.closing}
+</body>
+</html>
+`;
+}
+
 /** The complete, self-contained signed agreement for the PDF: inline style only, nothing loaded. */
 export function pdfDocument(doc: AgreementDoc, sig: SignatureBlock): string {
   // A PDF must never say two different things.
@@ -103,7 +132,6 @@ export function pdfDocument(doc: AgreementDoc, sig: SignatureBlock): string {
   if (sig.number !== doc.number) throw new Error(`signature booking ${sig.number} does not match document booking ${doc.number}`);
   const { date, time } = torontoStamp(sig.signed_at);
   const e = escapeHtml;
-  const [trade1, trade2] = BUSINESS.tradeNames;
   const signed = [
     `<p>${e(doc.business_signature)}</p>`,
     `<p>${e(`Signed by ${sig.signed_name}, for themselves and for ${sig.partner_name}, on ${date} at ${time} (Toronto time)`)}</p>`,
@@ -112,26 +140,32 @@ export function pdfDocument(doc: AgreementDoc, sig: SignatureBlock): string {
     `<p>${e(`Agreement version ${doc.clause_version.slice(0, 12)}`)}</p>`,
     `<p class="agr-fingerprint">${e(`Text fingerprint ${sig.final_hash}`)}</p>`,
   ].join('\n');
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>${e(`${doc.title}, ${sig.number}`)}</title>
-<style>${PDF_STYLE}</style>
-</head>
-<body>
-<div class="letterhead">
-<p class="lh-name">${e(trade1)}</p>
-<p class="lh-trade">${e(trade2)}</p>
-<p class="lh-contact">${e(`${BUSINESS.phone} · ${BUSINESS.email} · ${BUSINESS.website}`)}</p>
-</div>
-${docHeadHtml(doc, 'h1')}
-${agreementToHtml(doc, { signDateText: date })}
-<section class="agr-signed">
-<h2>Signed</h2>
-${signed}
-</section>
-</body>
-</html>
-`;
+  return pdfFrame(doc, {
+    title: `${doc.title}, ${sig.number}`,
+    style: PDF_STYLE,
+    lead: '',
+    signDateText: date,
+    closing: `<section class="agr-signed">\n<h2>Signed</h2>\n${signed}\n</section>`,
+  });
+}
+
+/** The unsigned agreement as a copy to read: the same frame, marked as not signed on its first and last lines. */
+export function pdfDraftDocument(doc: AgreementDoc, opts: { signDateText: string }): string {
+  const e = escapeHtml;
+  const closing = [
+    '<section class="agr-signed">',
+    '<h2>Not signed yet</h2>',
+    `<p>${e('This is a copy to read. It is not signed.')}</p>`,
+    `<p>${e(`Sharing choice shown in this copy: ${doc.choice}. You choose when you sign.`)}</p>`,
+    `<p>${e(`Booking ${doc.number}`)}</p>`,
+    `<p>${e(`Agreement version ${doc.clause_version.slice(0, 12)}`)}</p>`,
+    '</section>',
+  ].join('\n');
+  return pdfFrame(doc, {
+    title: `${doc.title}, ${doc.number} (not signed)`,
+    style: PDF_DRAFT_STYLE,
+    lead: `<p class="agr-draft">${e('Copy to read. Not signed.')}</p>\n`,
+    signDateText: opts.signDateText,
+    closing,
+  });
 }

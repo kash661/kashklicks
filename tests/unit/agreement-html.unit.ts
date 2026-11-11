@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { buildBookingFacts, renderVariant } from '../../src/lib/agreement/render';
 import { sha256Hex } from '../../src/lib/agreement/hash';
-import { escapeHtml, agreementToHtml, docHeadHtml, sectionToHtml, pdfDocument } from '../../src/lib/agreement/html';
+import { escapeHtml, agreementToHtml, docHeadHtml, sectionToHtml, pdfDocument, pdfDraftDocument } from '../../src/lib/agreement/html';
 import type { SignatureBlock } from '../../src/lib/agreement/html';
 
 // Invented people only.
@@ -150,4 +150,48 @@ test('pdf document refuses a booking number that differs from the document', () 
   expect(() => pdfDocument(doc(), sig({ number: 'KK-TEST-2026-002' }))).toThrow(
     'signature booking KK-TEST-2026-002 does not match document booking KK-TEST-2026-001',
   );
+});
+
+test('pdfDocument output is pinned byte for byte', async () => {
+  // Pinned before pdfDraftDocument shared its frame. A change here changes every emailed copy.
+  expect(await sha256Hex(pdfDocument(doc(), sig()))).toBe('d586e131ff48a3b07df3c7df83f4a29afedcd476d1c6be49ac2cab496571eb9e');
+  expect(await sha256Hex(pdfDocument(doc({}, 'private'), sig({ choice: 'private' })))).toBe('c9abf60fe2ab86b34a94826222741be3f3152561e94f3fdd7fa881fadef9d575');
+});
+
+test('the unsigned copy says so at the top and at the end, for both choices', () => {
+  for (const choice of ['share', 'private'] as const) {
+    const d = doc({}, choice);
+    const html = pdfDraftDocument(d, { signDateText: '10 November 2026' });
+    expect(html).toContain('<title>Photography and Film Agreement, KK-TEST-2026-001 (not signed)</title>');
+    expect(html).toContain('.agr-draft { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; font-weight: bold; margin: 0 0 12pt 0; }');
+    // Right under the letterhead, before the document head.
+    expect(html).toContain(`</div>\n<p class="agr-draft">Copy to read. Not signed.</p>\n${docHeadHtml(d, 'h1')}\n`);
+    expect(html).toContain(agreementToHtml(d, { signDateText: '10 November 2026' }));
+    expect(html).toContain(
+      [
+        '<section class="agr-signed">',
+        '<h2>Not signed yet</h2>',
+        '<p>This is a copy to read. It is not signed.</p>',
+        `<p>Sharing choice shown in this copy: ${choice}. You choose when you sign.</p>`,
+        '<p>Booking KK-TEST-2026-001</p>',
+        `<p>Agreement version ${d.clause_version.slice(0, 12)}</p>`,
+        '</section>',
+      ].join('\n'),
+    );
+    expect(html).not.toContain('Signed by');
+    expect(html).not.toContain('<h2>Signed</h2>');
+    expect(html).not.toContain('Text fingerprint');
+    expect(html).not.toContain('{{');
+  }
+});
+
+test('the unsigned copy escapes what it shows', () => {
+  const d = { ...doc(), title: 'A <b>title</b>', number: 'KK-<x>', clause_version: '<script>abcdef' };
+  const html = pdfDraftDocument(d, { signDateText: '<i>today</i>' });
+  expect(html).toContain('<title>A &lt;b&gt;title&lt;/b&gt;, KK-&lt;x&gt; (not signed)</title>');
+  expect(html).toContain('<p>Booking KK-&lt;x&gt;</p>');
+  expect(html).toContain('<p>Agreement version &lt;script&gt;abcd</p>'); // the first 12 characters, then escaped
+  expect(html).toContain('&lt;i&gt;today&lt;/i&gt;');
+  expect(html).not.toContain('<script>');
+  expect(html).not.toContain('<i>today</i>');
 });

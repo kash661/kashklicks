@@ -7,6 +7,10 @@ sign, the website asks your Google Apps Script to do three things:
 - email the PDF to the client (you get a copy), and
 - add one row to a new **Contracts** tab in your sheet.
 
+It also makes a PDF when a client presses the download button on the
+agreement page, before or after signing. For that it sends no email and adds
+no row.
+
 The script needs one update so it knows how to do this. It is the same
 script you already use for the contact form.
 

@@ -422,34 +422,108 @@ test.describe('Private agreement page', () => {
     expect(calls).toHaveLength(3);
   });
 
-  test('each print button prints and then shows what to do if nothing happened', async ({ page }) => {
+  test('without a PDF from the server each button prints and then shows what to do if nothing happened', async ({ page }) => {
     await page.addInitScript(() => {
       (window as unknown as { printed: number }).printed = 0;
       window.print = () => void ((window as unknown as { printed: number }).printed += 1);
     });
     const HINT = 'Nothing happened? Open this page in Safari or Chrome, then print it or save it as a PDF.';
     const printed = () => page.evaluate(() => (window as unknown as { printed: number }).printed);
+    // The live Apps Script does not know agreement_pdf yet: the worker answers 502.
+    await page.route('**/r/agreement/pdf**', (route) => reply(route, 502, { ok: false, error: 'pdf_unavailable' }));
     await mockDoc(page, [[200, docPayload()]]);
     await page.goto(PATH);
     const hint = page.locator('[data-agr-view="ready"] [data-agr-print-hint]');
     await expect(hint).toBeHidden();
     await expect(hint).toHaveAttribute('role', 'status');
-    await page.getByRole('button', { name: 'Download or print a copy first' }).click();
-    expect(await printed()).toBe(1);
+    await page.getByRole('button', { name: 'Download a copy (PDF)' }).click();
+    await expect.poll(printed).toBe(1);
     await expect(hint).toBeVisible();
     await expect(hint).toHaveText(HINT);
+    await expect(page.getByRole('button', { name: 'Download a copy (PDF)' })).toBeEnabled();
 
     await page.unrouteAll();
+    await page.route('**/r/agreement/pdf**', (route) => route.abort());
     await mockDoc(page, [[200, signedPayload('share', { copy: { status: 'sent', to: 'priya@example.com' } })]]);
     await page.goto(PATH);
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
     const signedHint = page.locator('[data-agr-view="signed"] [data-agr-print-hint]');
     await expect(signedHint).toBeHidden();
-    await page.getByRole('button', { name: 'Print or save this page' }).click();
-    expect(await printed()).toBe(1);
+    await page.getByRole('button', { name: 'Download your signed copy (PDF)' }).click();
+    await expect.poll(printed).toBe(1);
     await expect(signedHint).toBeVisible();
     await expect(signedHint).toHaveText(HINT);
     await expect(signedHint).toHaveAttribute('role', 'status');
+  });
+
+  test('a 200 answer that is not a PDF also falls back to printing', async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as unknown as { printed: number }).printed = 0;
+      window.print = () => void ((window as unknown as { printed: number }).printed += 1);
+    });
+    await page.route('**/r/agreement/pdf**', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<p>hi</p>' }));
+    await mockDoc(page, [[200, docPayload()]]);
+    await page.goto(PATH);
+    await page.getByRole('button', { name: 'Download a copy (PDF)' }).click();
+    await expect.poll(() => page.evaluate(() => (window as unknown as { printed: number }).printed)).toBe(1);
+  });
+
+  test('each button downloads the PDF the server made', async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as unknown as { printed: number }).printed = 0;
+      window.print = () => void ((window as unknown as { printed: number }).printed += 1);
+    });
+    const PDF = Buffer.from(`%PDF-1.4\n${'x'.repeat(1200)}\n%%EOF`, 'latin1');
+    const SAVED = 'Your PDF is in your downloads. Nothing happened? Open this page in Safari or Chrome and try again.';
+    const urls: string[] = [];
+    let release: () => void = () => {};
+    await page.route('**/r/agreement/pdf**', async (route) => {
+      const url = new URL(route.request().url());
+      urls.push(url.search);
+      const signed = !url.searchParams.has('c');
+      // While the PDF is being made, the button is busy and the line says so.
+      if (urls.length === 1) await new Promise<void>((r) => (release = r));
+      return route.fulfill({
+        status: 200,
+        headers: {
+          'content-type': 'application/pdf',
+          'content-disposition': `attachment; filename="AD Photography agreement ${NUMBER}${signed ? '' : ' (not signed)'}.pdf"`,
+        },
+        body: PDF,
+      });
+    });
+    await mockDoc(page, [[200, docPayload()]]);
+    await page.goto(PATH);
+    const button = page.getByRole('button', { name: 'Download a copy (PDF)' });
+    const hint = page.locator('[data-agr-view="ready"] [data-agr-print-hint]');
+
+    // Before a choice the copy is the share version.
+    let download = page.waitForEvent('download');
+    await button.click();
+    await expect(hint).toHaveText('Preparing your PDF. This can take a few seconds.');
+    await expect(button).toBeDisabled();
+    await expect(button).toHaveAttribute('aria-busy', 'true');
+    release();
+    expect((await download).suggestedFilename()).toBe(`AD Photography agreement ${NUMBER} (not signed).pdf`);
+    await expect(hint).toHaveText(SAVED);
+    await expect(button).toBeEnabled();
+
+    // After a choice, the copy is the version on screen.
+    await page.locator('[data-agr-choice="private"]').check();
+    download = page.waitForEvent('download');
+    await button.click();
+    await download;
+    expect(urls).toEqual([`?k=${TOKEN}&c=share`, `?k=${TOKEN}&c=private`]);
+
+    await mockDoc(page, [[200, signedPayload('share', { copy: { status: 'sent', to: 'priya@example.com' } })]]);
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
+    download = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Download your signed copy (PDF)' }).click();
+    expect((await download).suggestedFilename()).toBe(`AD Photography agreement ${NUMBER}.pdf`);
+    await expect(page.locator('[data-agr-view="signed"] [data-agr-print-hint]')).toHaveText(SAVED);
+    expect(urls[2]).toBe(`?k=${TOKEN}`);
+    expect(await page.evaluate(() => (window as unknown as { printed: number }).printed)).toBe(0);
   });
 
   test('a sign that never answers times out and checks the link again', async ({ page }) => {

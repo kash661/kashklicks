@@ -14,18 +14,23 @@ const COPY_RETRY_MS = 60_000;
 
 export const firstWord = (name: string) => name.trim().split(/\s+/)[0] ?? '';
 
-/** The fields of the agreement_signed call. Exported for the contract test against the real Apps Script. */
-export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, string> {
-  const f = s.facts;
+/** The HTML of the signed copy's PDF: the emailed copy and the download are made from this one place. */
+export function signedPdfHtml(s: SignedRecord): string {
   const doc = JSON.parse(s.final_doc_json) as AgreementDoc;
-  const pdf_html = pdfDocument(doc, {
+  return pdfDocument(doc, {
     signed_name: s.signed_name,
-    partner_name: f.partner_name,
+    partner_name: s.facts.partner_name,
     choice: s.choice,
     signed_at: new Date(s.signed_at),
     number: s.number,
     final_hash: s.final_hash,
   });
+}
+
+/** The fields of the agreement_signed call. Exported for the contract test against the real Apps Script. */
+export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, string> {
+  const f = s.facts;
+  const pdf_html = signedPdfHtml(s);
   const email_body = [
     `Hi ${firstWord(f.client_name)},`,
     '',

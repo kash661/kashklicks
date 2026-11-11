@@ -100,6 +100,7 @@ export const keys = (mode: Mode) => ({
   num: (number: string) => `agr:${mode}:num:${number}`,
   seq: (year: string) => `agr:${mode}:seq:${year}`,
   signed: (token: string) => `agr:${mode}:signed:${token}`, // backup copy only
+  pdf: (token: string, name: string) => `agr:${mode}:pdf:${token}:${name}`, // a cached PDF copy, as bytes
 });
 
 export interface Store {

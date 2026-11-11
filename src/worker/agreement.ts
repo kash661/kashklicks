@@ -7,7 +7,8 @@ import { longDate, money, shortDate, torontoIsoDate, torontoStamp } from '../lib
 import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, fillSignDate, renderVariant, signLabels } from '../lib/agreement/render';
 import { sha256Hex } from '../lib/agreement/hash';
 import type { BookingFacts } from '../lib/agreement/types';
-import { BUSINESS, claimAttempt, copyDue, firstWord, sendCopy } from './agreement-copy';
+import { BUSINESS, claimAttempt, copyDue, firstWord, sendCopy, signedPdfHtml } from './agreement-copy';
+import { pdfDraftDocument } from '../lib/agreement/html';
 import {
   StorageUnavailable,
   bookingByNumber,
@@ -48,6 +49,10 @@ const NOT_YET_DAY_MAX = 5; // messages a booking may send in 24 hours
 const NOT_YET_KEEP = 10; // messages kept on the booking
 const NOT_YET_MAX_TRIES = 5; // sends of one message that was not delivered
 const DAY_MS = 24 * 3600_000;
+const PDF_MIN_BYTES = 1000;
+const PDF_MAX_BYTES = 5_000_000;
+const PDF_TTL_UNSIGNED = 172800; // 2 days: an unsigned copy carries today's date
+const PDF_TTL_SIGNED = 2592000; // 30 days
 const NUMBER_RE = /^KK-(TEST-)?\d{4}-\d{3,6}$/;
 const CONTROL = /[\u0000-\u001F\u007F-\u009F]/g;
 const CONTROL_BUT_NEWLINE = /[\u0000-\u0009\u000B-\u001F\u007F-\u009F]/g;
@@ -68,6 +73,7 @@ const ROUTES: Record<string, 'GET' | 'POST'> = {
   '/r/agreement/doc': 'GET',
   '/r/agreement/sign': 'POST',
   '/r/agreement/not-yet': 'POST',
+  '/r/agreement/pdf': 'GET',
 };
 
 const json = (status: number, body: Record<string, unknown>, extra: Record<string, string> = {}) =>
@@ -307,6 +313,84 @@ async function readDoc(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDep
   });
 }
 
+/** The bytes of a base64 PDF, or null when it is not one of a sensible size. One plain loop: Workers have little CPU time. */
+const pdfBytes = (b64: string): Uint8Array | null => {
+  if (b64.length > Math.ceil(PDF_MAX_BYTES / 3) * 4 + 4) return null;
+  let bin: string;
+  try {
+    bin = atob(b64);
+  } catch {
+    return null;
+  }
+  if (bin.length < PDF_MIN_BYTES || bin.length > PDF_MAX_BYTES || !bin.startsWith('%PDF-')) return null;
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i += 1) out[i] = bin.charCodeAt(i);
+  return out;
+};
+
+/** The copy as a PDF download. Made by Apps Script, cached in KV. Never changes the booking. */
+async function readPdf(s: Store, env: AgreementEnv, deps: AgreementDeps, url: URL): Promise<Response> {
+  const bk = await mustLoad(s, url.searchParams.get('k'));
+  const signed = await selectSigned(s, bk.token);
+  let cacheName: string;
+  let filename: string;
+  let expirationTtl: number;
+  let html: () => string;
+  if (signed) {
+    // Exactly the emailed copy; the sharing choice is the signed one.
+    cacheName = 'signed';
+    filename = `AD Photography agreement ${signed.number}.pdf`;
+    expirationTtl = PDF_TTL_SIGNED;
+    html = () => signedPdfHtml(signed);
+  } else {
+    if (bk.status === 'void') return fail(410, 'void');
+    const c = url.searchParams.get('c');
+    if (c !== 'share' && c !== 'private') return fail(400, 'bad_choice');
+    const now = s.now();
+    cacheName = `${c}:${torontoIsoDate(now)}`;
+    filename = `AD Photography agreement ${bk.number} (not signed).pdf`;
+    expirationTtl = PDF_TTL_UNSIGNED;
+    html = () => pdfDraftDocument(JSON.parse(bk.variants[c].doc_json), { signDateText: shortDate(now) });
+  }
+
+  const key = s.key.pdf(bk.token, cacheName);
+  let bytes: Uint8Array | null = null;
+  try {
+    const hit = await s.kv.get(key, 'arrayBuffer');
+    if (hit) bytes = new Uint8Array(hit);
+  } catch (err) {
+    console.error('agreement pdf cache read failed', bk.number, err);
+  }
+  if (!bytes) {
+    const res = await callAppsScript(
+      { action: 'agreement_pdf', token: env.FORMS_ADMIN_TOKEN ?? '', test: bk.mode === 'test' ? '1' : '', pdf_html: html() },
+      { fetchImpl: deps.fetchImpl },
+    );
+    const made = res?.ok === true && typeof res.pdf_base64 === 'string' ? pdfBytes(res.pdf_base64) : null;
+    if (!made) {
+      const reason = !res ? 'no answer' : res.ok !== true ? String(res.error ?? 'not ok') : 'not a pdf';
+      console.error('agreement pdf not made', bk.number, reason);
+      return fail(502, 'pdf_unavailable');
+    }
+    bytes = made;
+    try {
+      await s.kv.put(key, bytes, { expirationTtl });
+    } catch (err) {
+      console.error('agreement pdf cache write failed', bk.number, err);
+    }
+  }
+  return new Response(bytes, {
+    status: 200,
+    headers: {
+      'content-type': 'application/pdf',
+      'content-disposition': `attachment; filename="${filename}"`,
+      'cache-control': 'no-store',
+      'x-content-type-options': 'nosniff',
+      'x-robots-tag': JSON_HEADERS['x-robots-tag'],
+    },
+  });
+}
+
 const header = (request: Request, name: string, max = 512): string | null => {
   const v = request.headers.get(name);
   return v ? v.slice(0, max) : null;
@@ -468,6 +552,7 @@ export async function handleAgreement(request: Request, env: AgreementEnv, ctx: 
     const s: Store = { kv: env.AGREEMENTS_KV, db: env.AGREEMENTS_DB, mode, key: keys(mode), now: deps.now ?? (() => new Date()) };
 
     if (route === '/r/agreement/doc') return await readDoc(s, env, ctx, deps, url);
+    if (route === '/r/agreement/pdf') return await readPdf(s, env, deps, url);
     const body = await readBody(request);
     if (route === '/r/agreement/new') return await newBooking(s, body);
     if (route === '/r/agreement/void') return await voidBooking(s, body);

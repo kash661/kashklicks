@@ -65,6 +65,8 @@ const TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 const POLL_MS = 5000;
 const POLL_MAX = 24;
 const SIGN_TIMEOUT_MS = 30000;
+const PDF_TIMEOUT_MS = 45000; // the worker may wait up to 25 s for Apps Script to make the PDF
+const PDF_URL_KEEP_MS = 60000; // some browsers read the object URL after click() returns
 const MSG = {
   nameMismatch: (name: string, first: string) =>
     `Please type your name exactly as it is written at the top of the agreement: ${name}. Only ${first} can sign. If that name is wrong, do not sign. Message me and I will fix it.`,
@@ -77,6 +79,9 @@ const MSG = {
   void: 'This link is no longer active. Message me and I will send you a new one.',
   choiceShown: 'Sections 1 and 15 above now show your choice.',
   copyLate: 'If the PDF copy does not arrive in a few minutes, message me and I will send it again.',
+  pdfPreparing: 'Preparing your PDF. This can take a few seconds.',
+  pdfSaved: 'Your PDF is in your downloads. Nothing happened? Open this page in Safari or Chrome and try again.',
+  printHint: 'Nothing happened? Open this page in Safari or Chrome, then print it or save it as a PDF.',
   fixTooShort: 'Please write what I should fix.',
   fixFailed: 'That did not go through. Please reply to the email or message me on WhatsApp.',
 };
@@ -156,6 +161,7 @@ export function initAgreement(): void {
   form.reset();
 
   let ready: ReadyPayload | null = null;
+  let bookingNumber = ''; // for the PDF file name when the answer carries none
   let view: ReturnType<typeof docView> | null = null;
   let choice: Choice | null = null;
   let busy = false;
@@ -191,6 +197,7 @@ export function initAgreement(): void {
         pick('[data-agr-signer]', main).textContent = MSG.signer(p.labels.name_expected);
         view = v;
         ready = p;
+        bookingNumber = p.number;
       } catch {
         docEl.replaceChildren();
         return showError(focus);
@@ -234,6 +241,7 @@ export function initAgreement(): void {
    */
   function showSigned(p: SignedPayload, focus: boolean, already = false) {
     const s = p.signed;
+    bookingNumber = p.number;
     const put = (sel: string, value: string | null) => {
       const el = pick(sel, main);
       el.textContent = value ?? '';
@@ -487,14 +495,60 @@ export function initAgreement(): void {
     e.preventDefault();
     void sendFix();
   });
-  // window.print() does nothing in some in-app browsers: after it, the line under the button says what to do.
-  main.querySelectorAll<HTMLButtonElement>('[data-agr-print]').forEach((b) =>
-    b.addEventListener('click', () => {
+  /**
+   * Downloads the copy as a PDF made by the server. When the server has no PDF to give (any other
+   * answer), it falls back to the print window, as before: window.print() does nothing in some in-app
+   * browsers, so the line under the button then says what to do.
+   */
+  async function downloadPdf(b: HTMLButtonElement) {
+    const hint = b.parentElement?.querySelector<HTMLElement>('[data-agr-print-hint]') ?? null;
+    const say = (message: string) => {
+      if (!hint) return;
+      hint.textContent = message;
+      hint.hidden = false;
+    };
+    const signedCopy = b.closest('[data-agr-signed]') !== null;
+    // Before a choice both versions are on screen: the copy shows the share version, as the contents list does.
+    const query = signedCopy ? '' : `&c=${choice ?? 'share'}`;
+    setBusy(b, true);
+    say(MSG.pdfPreparing);
+    let blob: Blob | null = null;
+    let name = '';
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), PDF_TIMEOUT_MS);
+    try {
+      const res = await fetch(`/r/agreement/pdf?k=${encodeURIComponent(k)}${query}`, {
+        cache: 'no-store',
+        credentials: 'same-origin',
+        signal: controller.signal,
+      });
+      if (res.status === 200 && (res.headers.get('content-type') ?? '').startsWith('application/pdf')) {
+        blob = await res.blob();
+        name = /filename="([^"]+)"/.exec(res.headers.get('content-disposition') ?? '')?.[1] ?? '';
+      }
+    } catch {
+      blob = null;
+    } finally {
+      window.clearTimeout(timer);
+    }
+    setBusy(b, false);
+    if (!blob) {
       window.print();
-      const hint = b.parentElement?.querySelector<HTMLElement>('[data-agr-print-hint]');
-      if (hint) hint.hidden = false;
-    }),
-  );
+      say(MSG.printHint);
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name || `AD Photography agreement ${bookingNumber}${signedCopy ? '' : ' (not signed)'}.pdf`;
+    a.hidden = true;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), PDF_URL_KEEP_MS);
+    say(MSG.pdfSaved);
+  }
+  main.querySelectorAll<HTMLButtonElement>('[data-agr-print]').forEach((b) => b.addEventListener('click', () => void downloadPdf(b)));
   pick('[data-agr-back-to-doc]', main).addEventListener('click', () => {
     setState('ready');
     signbox.focus();

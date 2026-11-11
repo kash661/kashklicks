@@ -93,6 +93,7 @@ function doPost(e) {
       case 'agreement_ping':   return jsonOut_({ ok: true, agreements: AGREEMENT_API_VERSION });
       case 'agreement_signed': return handleAgreementSigned_(params);
       case 'agreement_notice': return handleAgreementNotice_(params);
+      case 'agreement_pdf':    return handleAgreementPdf_(params);
       default:              return jsonOut_({ ok: false, error: 'unknown_action: ' + action });
     }
   } catch (err) {
@@ -473,7 +474,7 @@ function handleBook_(params) {
 // booking number. No new OAuth scope: MailApp and Utilities are already used.
 // See scripts/APPS-SCRIPT-PATCH-agreement.md.
 
-const AGREEMENT_API_VERSION = 1;
+const AGREEMENT_API_VERSION = 2;
 const CONTRACTS_TAB = 'Contracts';
 const CONTRACTS_TEST_TAB = 'Contracts TEST';
 const CONTRACTS_COLUMNS = [
@@ -597,6 +598,22 @@ function handleAgreementSigned_(params) {
     return jsonOut_(out);
   } finally {
     lock.releaseLock();
+  }
+}
+
+// A copy to download from the page: the worker sends the HTML, this returns the PDF.
+// No email, no sheet, no lock.
+function handleAgreementPdf_(params) {
+  const mode = agreementMode_(params);
+  const html = params.pdf_html === undefined || params.pdf_html === null ? '' : String(params.pdf_html);
+  if (!mode || !html) return jsonOut_({ ok: false, error: 'bad_request' });
+  if (html.length > 400000) return jsonOut_({ ok: false, error: 'too_big' });
+  try {
+    const pdf = Utilities.newBlob(html, 'text/html', 'agreement.html').getAs('application/pdf');
+    return jsonOut_({ ok: true, pdf_base64: Utilities.base64Encode(pdf.getBytes()) });
+  } catch (err) {
+    console.error('agreement pdf failed', err);
+    return jsonOut_({ ok: false, error: 'pdf_failed: ' + String((err && err.message) || err) });
   }
 }
 

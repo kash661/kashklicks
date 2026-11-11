@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { handleAgreement } from '../../src/worker/agreement';
 import { APPS_SCRIPT_URL, callAppsScript } from '../../src/worker/shared';
+import { signedPdfHtml } from '../../src/worker/agreement-copy';
 import worker from '../../src/worker';
 import { sha256Hex } from '../../src/lib/agreement/hash';
 import { SIGN_DATE_TOKEN } from '../../src/lib/agreement/render';
@@ -29,7 +30,7 @@ const TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 // ------------------------------------------------------------------ fakes
 
 interface Entry {
-  value: string;
+  value: string | Uint8Array; // bytes for a cached PDF
   metadata?: unknown;
   expirationTtl?: number;
 }
@@ -45,14 +46,18 @@ class FakeKV {
   freeze() {
     this.snapshot = new Map(this.store);
   }
-  async get(key: string): Promise<string | null> {
+  async get(key: string, type?: 'text' | 'arrayBuffer'): Promise<any> {
     if (this.failGets.some((p) => key.startsWith(p))) throw new Error('KV GET failed: 500');
-    return (this.snapshot ?? this.store).get(key)?.value ?? null;
+    const v = (this.snapshot ?? this.store).get(key)?.value ?? null;
+    if (v === null) return null;
+    const bytes = typeof v === 'string' ? new TextEncoder().encode(v) : v;
+    if (type === 'arrayBuffer') return bytes.slice().buffer;
+    return typeof v === 'string' ? v : new TextDecoder().decode(v);
   }
-  async put(key: string, value: string, opts: { metadata?: unknown; expirationTtl?: number } = {}): Promise<void> {
+  async put(key: string, value: string | Uint8Array, opts: { metadata?: unknown; expirationTtl?: number } = {}): Promise<void> {
     if (this.failPuts.some((p) => key.startsWith(p))) throw new Error('KV PUT failed: 429');
     this.puts.push(key);
-    this.store.set(key, { value, metadata: opts.metadata, expirationTtl: opts.expirationTtl });
+    this.store.set(key, { value: typeof value === 'string' ? value : new Uint8Array(value), metadata: opts.metadata, expirationTtl: opts.expirationTtl });
   }
   async list(opts: { prefix?: string } = {}) {
     const prefix = opts.prefix ?? '';
@@ -176,6 +181,14 @@ function setup(opts: { kv?: boolean; db?: boolean; admin?: string | null } = {})
     return { status: res.status, body: (await res.json()) as any, headers: res.headers };
   };
 
+  /** A GET whose answer may not be JSON (the PDF route). */
+  const raw = async (origin: string, path: string, method = 'GET') => {
+    const res = await handleAgreement(new Request(origin + path, { method }), env, ctx, { now: () => clock, fetchImpl });
+    const bytes = new Uint8Array(await res.arrayBuffer());
+    const type = res.headers.get('content-type') ?? '';
+    return { status: res.status, headers: res.headers, bytes, body: type.startsWith('application/json') ? JSON.parse(new TextDecoder().decode(bytes)) : null };
+  };
+
   const admin = (origin: string, path: string, body: unknown, token: string | null = ADMIN) =>
     call(origin, 'POST', path, body, token === null ? {} : { 'x-kk-admin': token });
 
@@ -222,6 +235,7 @@ function setup(opts: { kv?: boolean; db?: boolean; admin?: string | null } = {})
     calls,
     pending,
     call,
+    raw,
     admin,
     create,
     doc,
@@ -1381,6 +1395,149 @@ test('not yet answers 502 when the notice did not go out, and keeps the message'
     errors.restore();
   }
   expect(t.booking(TEST, token).not_yet_messages.map((m: { text: string }) => m.text)).toEqual([FIX, 'Second try, other words.']);
+});
+
+// ------------------------------------------------------------------ the PDF copy
+
+const FAKE_PDF = new Uint8Array(Buffer.from(`%PDF-1.4\n${'x'.repeat(1200)}\n%%EOF`, 'latin1'));
+const b64 = (bytes: Uint8Array) => Buffer.from(bytes).toString('base64');
+const pdfAnswer = (base64: string | undefined = b64(FAKE_PDF)) => async (c: { fields: Record<string, string> }) =>
+  c.fields.action === 'agreement_pdf' ? jsonResponse({ ok: true, pdf_base64: base64 }) : jsonResponse({ ok: true, sent_at: '2026-11-10T15:00:04.000Z' });
+
+test('pdf: the unsigned copy of either variant downloads, made from the draft HTML', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  t.replyWith(pdfAnswer());
+  for (const c of ['share', 'private'] as const) {
+    const r = await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=${c}`);
+    expect(r.status).toBe(200);
+    expect(r.bytes).toEqual(FAKE_PDF);
+    expect(Object.fromEntries(r.headers)).toEqual({
+      'content-type': 'application/pdf',
+      'content-disposition': 'attachment; filename="AD Photography agreement KK-TEST-2026-001 (not signed).pdf"',
+      'cache-control': 'no-store',
+      'x-content-type-options': 'nosniff',
+      'x-robots-tag': 'noindex, nofollow',
+    });
+    const call = t.calls[t.calls.length - 1];
+    expect(Object.keys(call.fields).sort()).toEqual(['action', 'pdf_html', 'test', 'token']);
+    expect(call.fields).toMatchObject({ action: 'agreement_pdf', token: ADMIN, test: '1' });
+    expect(call.fields.pdf_html).toContain('<p class="agr-draft">Copy to read. Not signed.</p>');
+    expect(call.fields.pdf_html).toContain(`<p>Sharing choice shown in this copy: ${c}. You choose when you sign.</p>`);
+    expect(call.fields.pdf_html).toContain('This agreement is dated 10 November 2026.');
+    expect(call.fields.pdf_html).not.toContain('Signed by');
+  }
+  expect(t.calls).toHaveLength(2);
+  const key = (name: string) => `agr:test:pdf:${token}:${name}`;
+  for (const c of ['share', 'private']) {
+    expect(t.kv.store.get(key(`${c}:2026-11-10`))!.value).toEqual(FAKE_PDF);
+    expect(t.kv.store.get(key(`${c}:2026-11-10`))!.expirationTtl).toBe(172800);
+  }
+  // The live site sends an empty test flag.
+  const live = await t.create(LIVE);
+  expect((await t.raw(LIVE, `/r/agreement/pdf?k=${live.token}&c=share`)).status).toBe(200);
+  expect(t.calls[t.calls.length - 1].fields.test).toBe('');
+});
+
+test('pdf: a second call the same day comes from KV, the next day is made again', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  t.replyWith(pdfAnswer());
+  const get = () => t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share`);
+  expect((await get()).status).toBe(200);
+  t.advance(6 * 3600_000);
+  const again = await get();
+  expect(again.status).toBe(200);
+  expect(again.bytes).toEqual(FAKE_PDF);
+  expect(again.headers.get('content-disposition')).toBe('attachment; filename="AD Photography agreement KK-TEST-2026-001 (not signed).pdf"');
+  expect(t.calls).toHaveLength(1);
+  t.advance(24 * 3600_000);
+  expect((await get()).status).toBe(200);
+  expect(t.calls).toHaveLength(2);
+  expect(t.calls[1].fields.pdf_html).toContain('This agreement is dated 11 November 2026.');
+  expect(t.kv.store.has(`agr:test:pdf:${token}:share:2026-11-11`)).toBe(true);
+});
+
+test('pdf: the signed copy is the emailed copy, whatever c says', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  await t.signOk(TEST, token, { choice: 'private', text_hash: t.hashOf(TEST, token, 'private') });
+  await t.settle();
+  t.replyWith(pdfAnswer());
+  const before = t.calls.length;
+  for (const q of ['', '&c=share', '&c=nonsense']) {
+    const r = await t.raw(TEST, `/r/agreement/pdf?k=${token}${q}`);
+    expect(r.status, q).toBe(200);
+    expect(r.headers.get('content-disposition')).toBe('attachment; filename="AD Photography agreement KK-TEST-2026-001.pdf"');
+    expect(r.bytes).toEqual(FAKE_PDF);
+  }
+  // Made once, cached for 30 days.
+  expect(t.calls.length - before).toBe(1);
+  expect(t.calls[before].fields.pdf_html).toBe(signedPdfHtml(t.signedRecord(TEST, token)));
+  expect(t.kv.store.get(`agr:test:pdf:${token}:signed`)!.expirationTtl).toBe(2592000);
+});
+
+test('pdf: unknown token 404, void 410, bad choice 400, wrong method 405', async () => {
+  const t = setup();
+  const { token, number } = await t.create(TEST);
+  t.replyWith(pdfAnswer());
+  expect(await t.raw(TEST, `/r/agreement/pdf?k=${'C'.repeat(43)}&c=share`)).toMatchObject({ status: 404, body: { ok: false, error: 'not_found' } });
+  for (const q of ['', '&c=', '&c=Share', '&c=both'])
+    expect(await t.raw(TEST, `/r/agreement/pdf?k=${token}${q}`), q).toMatchObject({ status: 400, body: { ok: false, error: 'bad_choice' } });
+  expect(await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share`, 'POST')).toMatchObject({ status: 405 });
+  await t.admin(TEST, '/r/agreement/void', { number });
+  expect(await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share`)).toMatchObject({ status: 410, body: { ok: false, error: 'void' } });
+  expect(t.calls).toHaveLength(0);
+});
+
+test('pdf: anything but a real PDF answers 502 and caches nothing', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  const get = () => t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share`);
+  const small = new Uint8Array(Buffer.from(`%PDF-1.4 ${'x'.repeat(980)}`, 'latin1')); // 989 bytes
+  const notPdf = new Uint8Array(Buffer.from(`<html>${'x'.repeat(1200)}`, 'latin1'));
+  const answers: ((c: { fields: Record<string, string> }) => Promise<Response>)[] = [
+    async () => new Response('down', { status: 500 }),
+    async () => jsonResponse({ ok: false, error: 'pdf_failed: Conversion failed.' }),
+    async () => jsonResponse({ ok: true }),
+    async () => jsonResponse({ ok: true, pdf_base64: 42 }),
+    pdfAnswer('not base64 at all!'),
+    pdfAnswer(b64(notPdf)),
+    pdfAnswer(b64(small)),
+  ];
+  const errors = silenceErrors();
+  try {
+    for (const [i, answer] of answers.entries()) {
+      t.replyWith(answer);
+      expect(await get(), `answer ${i}`).toMatchObject({ status: 502, body: { ok: false, error: 'pdf_unavailable' } });
+    }
+    expect(errors.logged.filter((args) => String(args[0]).includes('pdf not made'))).toHaveLength(answers.length);
+  } finally {
+    errors.restore();
+  }
+  expect([...t.kv.store.keys()].filter((k) => k.includes(':pdf:'))).toEqual([]);
+  expect(t.calls).toHaveLength(answers.length);
+});
+
+test('pdf: the booking record is never changed, and a failed cache write still serves the PDF', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  t.replyWith(pdfAnswer());
+  const key = `agr:test:bk:${token}`;
+  const before = t.kv.store.get(key)!.value;
+  const errors = silenceErrors();
+  try {
+    t.kv.failPuts = ['agr:test:pdf:'];
+    const r = await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=private`);
+    expect(r.status).toBe(200);
+    expect(r.bytes).toEqual(FAKE_PDF);
+    expect(errors.logged.some((args) => String(args[0]).includes('pdf cache write failed'))).toBe(true);
+  } finally {
+    errors.restore();
+  }
+  expect(t.kv.store.get(key)!.value).toBe(before);
+  expect(t.booking(TEST, token).status).toBe('sent');
+  expect(t.booking(TEST, token).opened_at).toBeUndefined();
 });
 
 // ------------------------------------------------------------------ D1: the write-once signed record
