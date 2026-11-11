@@ -51,7 +51,8 @@ export interface BookingRecord {
   created_at: string;
   opened_at?: string;
   signed_at?: string;
-  not_yet_at?: string;
+  not_yet_at?: string; // the time of the last stored "not yet" message
+  not_yet_messages?: { at: string; text: string }[]; // the newest 10, oldest first
   facts: BookingFacts;
   clause_version: string;
   variants: Record<Choice, { doc_json: string; hash: string }>; // hash = sha256Hex(doc_json), date token still inside

@@ -136,8 +136,22 @@ const WHATSAPP = 'https://wa.me/16476137430';
     </div>
 
     <div class="agr-view agr-msg" data-agr-view="not-yet">
-      <p class="agr-msg__text" data-agr-not-yet-msg tabindex="-1">No problem. Nothing is signed and nothing is owed. Tell me what is wrong and I will fix it. Reply to the email, or message me on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
-      <button type="button" class="agr-btn agr-btn--ghost" data-agr-back-to-doc>Back to the agreement</button>
+      <p class="agr-msg__text" data-agr-not-yet-msg tabindex="-1">No problem. Nothing is signed and nothing is owed. Tell me what is wrong and I will fix it.</p>
+      <div class="agr-signbox">
+        <form class="agr-card agr-card--you" data-agr-fix-form novalidate>
+          <div class="agr-field">
+            <label for="agr-fix">What should I fix?</label>
+            <textarea id="agr-fix" class="agr-input" rows="5" maxlength="1000" data-agr-fix-text></textarea>
+          </div>
+          <p class="agr-error" data-agr-fix-error tabindex="-1" hidden></p>
+          <button type="submit" class="agr-btn" data-agr-fix-send>Send</button>
+        </form>
+        <p class="agr-msg__text" data-agr-fix-done role="status" tabindex="-1" hidden>Thank you. I got your message. Nothing is signed. I will fix it and write back to you.</p>
+        <div class="agr-actions">
+          <p class="agr-note agr-questions">You can also reply to the email or message me on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
+          <button type="button" class="agr-btn agr-btn--ghost" data-agr-back-to-doc>Back to the agreement</button>
+        </div>
+      </div>
     </div>
 
     <div class="agr-view agr-msg" data-agr-view="gone">

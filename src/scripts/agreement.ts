@@ -77,6 +77,8 @@ const MSG = {
   void: 'This link is no longer active. Message me and I will send you a new one.',
   choiceShown: 'Sections 1 and 15 above now show your choice.',
   copyLate: 'If the PDF copy does not arrive in a few minutes, message me and I will send it again.',
+  fixTooShort: 'Please write what I should fix.',
+  fixFailed: 'That did not go through. Please reply to the email or message me on WhatsApp.',
 };
 
 const pick = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document): T => root.querySelector(sel) as T;
@@ -140,6 +142,11 @@ export function initAgreement(): void {
   const errorEl = pick('[data-agr-error]', main);
   const reviewBtn = pick<HTMLButtonElement>('[data-agr-review]', main);
   const notYetBtn = pick<HTMLButtonElement>('[data-agr-not-yet]', main);
+  const fixForm = pick<HTMLFormElement>('[data-agr-fix-form]', main);
+  const fixText = pick<HTMLTextAreaElement>('[data-agr-fix-text]', main);
+  const fixError = pick('[data-agr-fix-error]', main);
+  const fixSend = pick<HTMLButtonElement>('[data-agr-fix-send]', main);
+  const fixDone = pick('[data-agr-fix-done]', main);
   const dlg = pick<HTMLDialogElement>('[data-agr-dialog]', main);
   const signBtn = pick<HTMLButtonElement>('[data-agr-sign]', main);
   const backBtn = pick<HTMLButtonElement>('[data-agr-back]', main);
@@ -400,23 +407,48 @@ export function initAgreement(): void {
     closeReview(errorEl);
   }
 
-  async function notYet() {
+  /** Shows the form to say what is wrong. Nothing is sent until they press Send. */
+  function notYet() {
     if (busy) return;
+    fixForm.hidden = false;
+    fixDone.hidden = true;
+    fixError.hidden = true;
+    setState('not-yet');
+    fixText.focus();
+  }
+
+  function showFixError(message: string) {
+    fixError.textContent = message;
+    fixError.hidden = false;
+    fixError.focus();
+  }
+
+  async function sendFix() {
+    if (busy) return;
+    const message = fixText.value.trim();
+    if (message.length < 3) return showFixError(MSG.fixTooShort);
+    fixError.hidden = true;
     busy = true;
-    setBusy(notYetBtn, true);
+    setBusy(fixSend, true, 'Sending…');
     update();
-    const a = await post('/r/agreement/not-yet', { k });
+    const a = await post('/r/agreement/not-yet', { k, message }, SIGN_TIMEOUT_MS);
     busy = false;
-    setBusy(notYetBtn, false);
+    setBusy(fixSend, false, 'Send');
     update();
+    if (a.status === 200 && a.body?.ok === true) {
+      fixText.value = '';
+      fixForm.hidden = true;
+      fixDone.hidden = false;
+      fixDone.focus();
+      return;
+    }
     if (a.status === 409) {
       const d = await getDoc(k);
       if (isSigned(d)) return showSigned(d.body as SignedPayload, true);
     }
     if (a.status === 404 || a.status === 410) return showGone(a.status, true);
-    // Any other answer: nothing is signed either way, and the message asks them to get in touch.
-    setState('not-yet');
-    pick('[data-agr-not-yet-msg]', main).focus();
+    // Their text stays in the box.
+    showFixError(MSG.fixFailed);
   }
 
   nameInput.addEventListener('input', () => {
@@ -450,7 +482,11 @@ export function initAgreement(): void {
     if (!busy) lockForm(false);
     target?.focus();
   });
-  notYetBtn.addEventListener('click', () => void notYet());
+  notYetBtn.addEventListener('click', notYet);
+  fixForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    void sendFix();
+  });
   // window.print() does nothing in some in-app browsers: after it, the line under the button says what to do.
   main.querySelectorAll<HTMLButtonElement>('[data-agr-print]').forEach((b) =>
     b.addEventListener('click', () => {

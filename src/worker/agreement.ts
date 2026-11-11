@@ -43,9 +43,21 @@ export interface AgreementDeps {
 type Ctx = Pick<ExecutionContext, 'waitUntil'>;
 
 const MAX_BODY = 16384; // 16 KB
-const NOT_YET_QUIET_MS = 10 * 60_000; // one notice to Akash per 10 minutes at most
+const NOT_YET_QUIET_MS = 10 * 60_000; // the same message twice within this time is sent once
+const NOT_YET_DAY_MAX = 5; // messages a booking may send in 24 hours
+const NOT_YET_KEEP = 10; // messages kept on the booking
+const DAY_MS = 24 * 3600_000;
 const NUMBER_RE = /^KK-(TEST-)?\d{4}-\d{3,6}$/;
 const CONTROL = /[\u0000-\u001F\u007F-\u009F]/g;
+const CONTROL_BUT_NEWLINE = /[\u0000-\u0009\u000B-\u001F\u007F-\u009F]/g;
+
+/** A "not yet" message: line ends made \n, other control characters removed, trimmed, at most one blank line in a row. */
+const cleanMessage = (v: string) =>
+  v
+    .replace(/\r\n?/g, '\n')
+    .replace(CONTROL_BUT_NEWLINE, '')
+    .trim()
+    .replace(/\n{3,}/g, '\n\n');
 
 const ROUTES: Record<string, 'GET' | 'POST'> = {
   '/r/agreement/new': 'POST',
@@ -365,35 +377,52 @@ async function sign(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, 
   return json(200, signedPayload(bk, winner));
 }
 
-async function notYet(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, body: Record<string, unknown>): Promise<Response> {
+async function notYet(s: Store, env: AgreementEnv, deps: AgreementDeps, body: Record<string, unknown>): Promise<Response> {
   const bk = await mustLoad(s, body.k);
   // D1 decides when it is bound; this route works on KV alone, then the booking's hint is all there is.
   const signed = s.db ? (await selectSigned(s, bk.token)) !== null : bk.status === 'signed';
   if (signed) return fail(409, 'already_signed');
   if (bk.status === 'void') return fail(410, 'void');
 
+  const message = typeof body.message === 'string' ? cleanMessage(body.message) : '';
+  if (message.length < 3 || message.length > 1000) return fail(400, 'bad_message');
+
   const now = s.now();
-  const last = bk.not_yet_at ? Date.parse(bk.not_yet_at) : Number.NaN;
-  // A double press sends one notice: not_yet_at is the time of the last notice.
-  if (!(now.getTime() - last <= NOT_YET_QUIET_MS)) {
-    bk.not_yet_at = now.toISOString();
-    await putBookingQuietly(s, bk);
-    const f = bk.facts;
-    const { date, time } = torontoStamp(now);
-    ctx.waitUntil(
-      callAppsScript(
-        {
-          action: 'agreement_notice',
-          token: env.FORMS_ADMIN_TOKEN ?? '',
-          test: bk.mode === 'test' ? '1' : '',
-          subject: `Agreement not signed yet: ${f.client_name} (${bk.number})`,
-          body: `${f.client_name} pressed "Something is wrong, I do not want to sign yet" on ${date} at ${time} (Toronto time). Nothing is signed. Their email: ${f.client_email}.`,
-        },
-        { fetchImpl: deps.fetchImpl },
-      ).then((res) => {
-        if (res?.ok !== true) console.error('agreement notice not sent', bk.number, res?.error ?? 'no answer');
-      }),
-    );
+  const age = (m: { at: string }) => now.getTime() - Date.parse(m.at);
+  const messages = bk.not_yet_messages ?? [];
+  const last = messages[messages.length - 1];
+  // A double press sends the message once.
+  if (last && last.text === message && age(last) < NOT_YET_QUIET_MS) return json(200, { ok: true });
+  if (messages.filter((m) => age(m) < DAY_MS).length >= NOT_YET_DAY_MAX) return fail(429, 'too_many');
+
+  bk.not_yet_at = now.toISOString();
+  bk.not_yet_messages = [...messages, { at: bk.not_yet_at, text: message }].slice(-NOT_YET_KEEP);
+  await putBookingQuietly(s, bk);
+
+  const f = bk.facts;
+  const { date, time } = torontoStamp(now);
+  // Awaited: the page says "I got your message" only when the notice went out.
+  const res = await callAppsScript(
+    {
+      action: 'agreement_notice',
+      token: env.FORMS_ADMIN_TOKEN ?? '',
+      test: bk.mode === 'test' ? '1' : '',
+      subject: `Agreement: ${f.client_name} asks for a change (${bk.number})`,
+      body: [
+        `${f.client_name} does not want to sign yet. They wrote this on ${date} at ${time} (Toronto time):`,
+        '',
+        message,
+        '',
+        `Nothing is signed. Booking ${bk.number}.`,
+        `Their email: ${f.client_email}`,
+        `Their phone: ${f.client_phone}`,
+      ].join('\n'),
+    },
+    { fetchImpl: deps.fetchImpl },
+  );
+  if (res?.ok !== true) {
+    console.error('agreement notice not sent', bk.number, res?.error ?? 'no answer');
+    return fail(502, 'not_delivered');
   }
   return json(200, { ok: true });
 }
@@ -430,7 +459,7 @@ export async function handleAgreement(request: Request, env: AgreementEnv, ctx: 
     if (route === '/r/agreement/void') return await voidBooking(s, body);
     if (route === '/r/agreement/resend') return await resend(s, env, deps, body);
     if (route === '/r/agreement/sign') return await sign(s, env, ctx, deps, request, body);
-    return await notYet(s, env, ctx, deps, body);
+    return await notYet(s, env, deps, body);
   } catch (err) {
     if (err instanceof Refusal) return err.response;
     if (err instanceof StorageUnavailable) {

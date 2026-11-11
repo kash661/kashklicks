@@ -471,27 +471,100 @@ test.describe('Private agreement page', () => {
     await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
   });
 
-  test('not yet shows the message and can go back', async ({ page }) => {
+  test('not yet shows a form, sends nothing until Send, and can go back', async ({ page }) => {
     await mockDoc(page, [[200, docPayload()]]);
-    let body: Record<string, unknown> | null = null;
-    await page.route('**/r/agreement/not-yet', (route) => {
-      body = route.request().postDataJSON();
+    const bodies: Record<string, unknown>[] = [];
+    await page.route('**/r/agreement/not-yet', async (route) => {
+      bodies.push(route.request().postDataJSON());
+      // While the request is out, the button says so and cannot be pressed again.
+      await expect(page.locator('[data-agr-fix-send]')).toHaveText('Sending…');
+      await expect(page.locator('[data-agr-fix-send]')).toBeDisabled();
       return reply(route, 200, { ok: true });
     });
     await page.goto(PATH);
     await page.locator('[data-agr-name]').fill('Priya Sharma');
     await page.locator('[data-agr-not-yet]').click();
     await expect(main(page)).toHaveAttribute('data-agr-state', 'not-yet');
-    const msg = page.locator('[data-agr-not-yet-msg]');
-    await expect(msg).toHaveText(
-      'No problem. Nothing is signed and nothing is owed. Tell me what is wrong and I will fix it. Reply to the email, or message me on WhatsApp.',
+    await expect(page.locator('[data-agr-not-yet-msg]')).toHaveText(
+      'No problem. Nothing is signed and nothing is owed. Tell me what is wrong and I will fix it.',
     );
-    await expect(msg).toBeFocused();
-    expect(body).toEqual({ k: TOKEN });
+    const box = page.getByLabel('What should I fix?');
+    await expect(box).toBeFocused();
+    await expect(box).toHaveAttribute('maxlength', '1000');
+    await expect(box).toHaveAttribute('rows', '5');
+    await expect(page.locator('[data-agr-view="not-yet"]')).toContainText('You can also reply to the email or message me on WhatsApp.');
+    await expect(page.locator('[data-agr-view="not-yet"]').getByRole('link', { name: 'WhatsApp' })).toBeVisible();
+    expect(bodies).toEqual([]);
+
+    // Too short: no request, and the error says so.
+    await box.fill('  ok  ');
+    await page.getByRole('button', { name: 'Send' }).click();
+    const err = page.locator('[data-agr-fix-error]');
+    await expect(err).toHaveText('Please write what I should fix.');
+    await expect(err).toBeFocused();
+    expect(bodies).toEqual([]);
+
+    await box.fill('Please spell my partner as Arjun K. Mehta.\nThanks');
+    await page.getByRole('button', { name: 'Send' }).click();
+    const done = page.locator('[data-agr-fix-done]');
+    await expect(done).toHaveText('Thank you. I got your message. Nothing is signed. I will fix it and write back to you.');
+    await expect(done).toBeFocused();
+    await expect(done).toHaveAttribute('role', 'status');
+    await expect(page.locator('[data-agr-fix-form]')).toBeHidden();
+    await expect(err).toBeHidden();
+    expect(bodies).toEqual([{ k: TOKEN, message: 'Please spell my partner as Arjun K. Mehta.\nThanks' }]);
+
     await page.getByRole('button', { name: 'Back to the agreement' }).click();
     await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
     await expect(page.locator('[data-agr-signbox]')).toBeVisible();
     await expect(page.locator('[data-agr-name]')).toHaveValue('Priya Sharma');
+  });
+
+  test('a message that did not go through keeps the text and says what to do', async ({ page }) => {
+    await mockDoc(page, [[200, docPayload()]]);
+    const answers: [number, unknown][] = [
+      [502, { ok: false, error: 'not_delivered' }],
+      [429, { ok: false, error: 'too_many' }],
+      [400, { ok: false, error: 'bad_message' }],
+    ];
+    let n = 0;
+    await page.route('**/r/agreement/not-yet', (route) => {
+      const a = answers[n++];
+      return a ? reply(route, a[0], a[1]) : route.abort();
+    });
+    await page.goto(PATH);
+    await page.locator('[data-agr-not-yet]').click();
+    const box = page.getByLabel('What should I fix?');
+    await box.fill('The date is wrong.');
+    const err = page.locator('[data-agr-fix-error]');
+    for (let i = 0; i < 4; i += 1) {
+      await page.getByRole('button', { name: 'Send' }).click();
+      await expect.poll(() => n).toBe(i + 1);
+      await expect(err).toHaveText('That did not go through. Please reply to the email or message me on WhatsApp.');
+      await expect(err).toBeFocused();
+      await expect(box).toHaveValue('The date is wrong.');
+      await expect(page.locator('[data-agr-fix-done]')).toBeHidden();
+      await expect(page.getByRole('button', { name: 'Send' })).toBeEnabled();
+    }
+  });
+
+  test('a message to a link that was signed or voided meanwhile shows that', async ({ page }) => {
+    await mockDoc(page, [[200, docPayload()], [200, signedPayload('share')]]);
+    await page.route('**/r/agreement/not-yet', (route) => reply(route, 409, { ok: false, error: 'already_signed' }));
+    await page.goto(PATH);
+    await page.locator('[data-agr-not-yet]').click();
+    await page.getByLabel('What should I fix?').fill('The date is wrong.');
+    await page.getByRole('button', { name: 'Send' }).click();
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
+
+    await page.unrouteAll();
+    await mockDoc(page, [[200, docPayload()]]);
+    await page.route('**/r/agreement/not-yet', (route) => reply(route, 410, { ok: false, error: 'void' }));
+    await page.goto(PATH);
+    await page.locator('[data-agr-not-yet]').click();
+    await page.getByLabel('What should I fix?').fill('The date is wrong.');
+    await page.getByRole('button', { name: 'Send' }).click();
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'gone');
   });
 
   test('unknown and void links show their messages', async ({ page }) => {
