@@ -46,15 +46,17 @@ const MAX_BODY = 16384; // 16 KB
 const NOT_YET_QUIET_MS = 10 * 60_000; // the same message twice within this time is sent once
 const NOT_YET_DAY_MAX = 5; // messages a booking may send in 24 hours
 const NOT_YET_KEEP = 10; // messages kept on the booking
+const NOT_YET_MAX_TRIES = 5; // sends of one message that was not delivered
 const DAY_MS = 24 * 3600_000;
 const NUMBER_RE = /^KK-(TEST-)?\d{4}-\d{3,6}$/;
 const CONTROL = /[\u0000-\u001F\u007F-\u009F]/g;
 const CONTROL_BUT_NEWLINE = /[\u0000-\u0009\u000B-\u001F\u007F-\u009F]/g;
 
-/** A "not yet" message: line ends made \n, other control characters removed, trimmed, at most one blank line in a row. */
+/** A "not yet" message: line ends made \n, a tab one space, other control characters removed, trimmed, at most one blank line in a row. */
 const cleanMessage = (v: string) =>
   v
     .replace(/\r\n?/g, '\n')
+    .replace(/\t/g, ' ')
     .replace(CONTROL_BUT_NEWLINE, '')
     .trim()
     .replace(/\n{3,}/g, '\n\n');
@@ -391,16 +393,26 @@ async function notYet(s: Store, env: AgreementEnv, deps: AgreementDeps, body: Re
   const age = (m: { at: string }) => now.getTime() - Date.parse(m.at);
   const messages = bk.not_yet_messages ?? [];
   const last = messages[messages.length - 1];
-  // A double press sends the message once.
-  if (last && last.text === message && age(last) < NOT_YET_QUIET_MS) return json(200, { ok: true });
-  if (messages.filter((m) => age(m) < DAY_MS).length >= NOT_YET_DAY_MAX) return fail(429, 'too_many');
-
-  bk.not_yet_at = now.toISOString();
-  bk.not_yet_messages = [...messages, { at: bk.not_yet_at, text: message }].slice(-NOT_YET_KEEP);
+  let entry: NonNullable<BookingRecord['not_yet_messages']>[number];
+  if (last && last.text === message && age(last) < NOT_YET_QUIET_MS) {
+    // A double press sends a delivered message once; one that was not delivered is tried again.
+    if (last.sent === true) return json(200, { ok: true });
+    const tries = last.tries ?? 1;
+    if (tries >= NOT_YET_MAX_TRIES) return fail(429, 'too_many');
+    last.tries = tries + 1;
+    last.sent = false;
+    entry = last;
+  } else {
+    if (messages.filter((m) => age(m) < DAY_MS).length >= NOT_YET_DAY_MAX) return fail(429, 'too_many');
+    entry = { at: now.toISOString(), text: message, sent: false, tries: 1 };
+    bk.not_yet_at = entry.at;
+    bk.not_yet_messages = [...messages, entry].slice(-NOT_YET_KEEP);
+  }
+  // Stored before the call, so the text is never lost.
   await putBookingQuietly(s, bk);
 
   const f = bk.facts;
-  const { date, time } = torontoStamp(now);
+  const { date, time } = torontoStamp(new Date(entry.at));
   // Awaited: the page says "I got your message" only when the notice went out.
   const res = await callAppsScript(
     {
@@ -424,6 +436,8 @@ async function notYet(s: Store, env: AgreementEnv, deps: AgreementDeps, body: Re
     console.error('agreement notice not sent', bk.number, res?.error ?? 'no answer');
     return fail(502, 'not_delivered');
   }
+  entry.sent = true;
+  await putBookingQuietly(s, bk);
   return json(200, { ok: true });
 }
 

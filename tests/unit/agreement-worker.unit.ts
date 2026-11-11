@@ -1196,7 +1196,7 @@ test('not yet sends the message to the owner and keeps the link usable', async (
   });
   const bk = t.booking(TEST, token);
   expect(bk.not_yet_at).toBe('2026-11-10T19:41:00.000Z');
-  expect(bk.not_yet_messages).toEqual([{ at: '2026-11-10T19:41:00.000Z', text: FIX }]);
+  expect(bk.not_yet_messages).toEqual([{ at: '2026-11-10T19:41:00.000Z', text: FIX, sent: true, tries: 1 }]);
 
   // The link still opens and can still be signed; then not yet is refused.
   expect(await t.doc(TEST, token)).toMatchObject({ status: 200, body: { status: 'opened' } });
@@ -1241,7 +1241,7 @@ test('not yet keeps newlines and cleans the rest', async () => {
   const { token } = await t.create(TEST);
   const raw = '  Two things:\r\n1. the date\r\r\r\r2. the\u0000 place\u0007\n\n\n\nThanks\t!  ';
   expect(await t.call(TEST, 'POST', '/r/agreement/not-yet', { k: token, message: raw }, t.browser(TEST))).toMatchObject({ status: 200 });
-  const clean = 'Two things:\n1. the date\n\n2. the place\n\nThanks!';
+  const clean = 'Two things:\n1. the date\n\n2. the place\n\nThanks !';
   expect(t.booking(TEST, token).not_yet_messages[0].text).toBe(clean);
   expect(t.calls[0].fields.body).toContain(`(Toronto time):\n\n${clean}\n\nNothing is signed.`);
 });
@@ -1293,6 +1293,77 @@ test('not yet takes at most 5 messages in 24 hours and keeps the newest 10', asy
   expect(kept).toHaveLength(10);
   expect(kept[0]).toBe('Day 0 change 0');
   expect(kept[9]).toBe('Day 1 change 4');
+});
+
+test('not yet: a tab becomes one space, so words do not join', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  expect(await t.call(TEST, 'POST', '/r/agreement/not-yet', { k: token, message: 'the\tdate\t\tis wrong' }, t.browser(TEST))).toMatchObject({
+    status: 200,
+  });
+  expect(t.booking(TEST, token).not_yet_messages[0].text).toBe('the date  is wrong');
+});
+
+test('not yet sends a message that was not delivered again', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  const say = () => t.call(TEST, 'POST', '/r/agreement/not-yet', { k: token, message: FIX }, t.browser(TEST));
+  const stored = () => t.booking(TEST, token).not_yet_messages;
+  const errors = silenceErrors();
+  try {
+    t.replyWith(async () => jsonResponse({ ok: false, error: 'bad_request' }));
+    expect(await say()).toMatchObject({ status: 502, body: { error: 'not_delivered' } });
+    expect(stored()).toEqual([{ at: START.toISOString(), text: FIX, sent: false, tries: 1 }]);
+  } finally {
+    errors.restore();
+  }
+  // The same text again, now with a working script: one more call, and still one entry.
+  t.replyWith(async () => jsonResponse({ ok: true }));
+  t.advance(60_000);
+  expect(await say()).toMatchObject({ status: 200, body: { ok: true } });
+  expect(t.calls).toHaveLength(2);
+  expect(stored()).toEqual([{ at: START.toISOString(), text: FIX, sent: true, tries: 2 }]);
+  // The notice says when they wrote it.
+  expect(t.calls[1].fields.body).toContain('They wrote this on 10 November 2026 at 10:00 am (Toronto time):');
+  // A third press within 10 minutes: delivered, so nothing is sent.
+  t.advance(60_000);
+  expect(await say()).toMatchObject({ status: 200, body: { ok: true } });
+  expect(t.calls).toHaveLength(2);
+  expect(stored()).toHaveLength(1);
+});
+
+test('not yet tries a message that is never delivered at most 5 times', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  const say = () => t.call(TEST, 'POST', '/r/agreement/not-yet', { k: token, message: FIX }, t.browser(TEST));
+  const errors = silenceErrors();
+  try {
+    t.replyWith(async () => jsonResponse({ ok: false, error: 'bad_request' }));
+    for (let i = 1; i <= 5; i += 1) {
+      expect(await say(), `try ${i}`).toMatchObject({ status: 502, body: { error: 'not_delivered' } });
+      t.advance(60_000);
+    }
+    expect(t.calls).toHaveLength(5);
+    expect(await say()).toMatchObject({ status: 429, body: { ok: false, error: 'too_many' } });
+    expect(t.calls).toHaveLength(5);
+    expect(t.booking(TEST, token).not_yet_messages).toEqual([{ at: START.toISOString(), text: FIX, sent: false, tries: 5 }]);
+  } finally {
+    errors.restore();
+  }
+});
+
+test('not yet: an entry stored without delivery state counts as not sent, with 1 try', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  const key = `agr:test:bk:${token}`;
+  const old = t.booking(TEST, token);
+  old.not_yet_at = START.toISOString();
+  old.not_yet_messages = [{ at: START.toISOString(), text: FIX }];
+  t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
+  t.advance(60_000);
+  expect(await t.call(TEST, 'POST', '/r/agreement/not-yet', { k: token, message: FIX }, t.browser(TEST))).toMatchObject({ status: 200 });
+  expect(t.calls).toHaveLength(1);
+  expect(t.booking(TEST, token).not_yet_messages).toEqual([{ at: START.toISOString(), text: FIX, sent: true, tries: 2 }]);
 });
 
 test('not yet answers 502 when the notice did not go out, and keeps the message', async () => {

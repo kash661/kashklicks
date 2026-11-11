@@ -52,7 +52,8 @@ export interface BookingRecord {
   opened_at?: string;
   signed_at?: string;
   not_yet_at?: string; // the time of the last stored "not yet" message
-  not_yet_messages?: { at: string; text: string }[]; // the newest 10, oldest first
+  // The newest 10, oldest first. sent and tries are missing on entries stored before they existed: not sent, 1 try.
+  not_yet_messages?: { at: string; text: string; sent?: boolean; tries?: number }[];
   facts: BookingFacts;
   clause_version: string;
   variants: Record<Choice, { doc_json: string; hash: string }>; // hash = sha256Hex(doc_json), date token still inside
