@@ -65,7 +65,9 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 **3.9** `[ALL]` You can pay by Interac e-transfer to {{ETRANSFER_EMAIL}}. Please put your booking number in the message. I send a receipt or an invoice for every payment. ⚑N1
 
-**3.10** `[NONWED]` You can also pay the balance in cash on the shoot day.
+**3.10** `[NONWED+BAL-ANY]` You can also pay the balance in cash on the shoot day.
+
+**3.17** `[NONWED+BAL-CASH]` You pay the balance in cash on the shoot day, not by e-transfer. ⚑C24
 
 **3.11** `[NONWED]` If the balance is not paid before the shoot starts, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the shoot day (section 16).
 

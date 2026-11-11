@@ -9,7 +9,8 @@
 //                   https://kashklicks.ca                                  LIVE booking, only with --live
 // <booking.json>  the booking facts: package_id, client_name, partner_name, client_email,
 //                 client_phone, event_date, start_time, end_time, place, price, notes, add_ons,
-//                 retainer (optional; default: half of the total, rounded up to the next dollar)
+//                 retainer (optional; default: half of the total, rounded up to the next dollar),
+//                 balance_cash (optional; true = the balance is paid in cash only)
 // --live          required for the live origin. Without it the live origin is refused.
 //
 // The admin token is read from the file in admin-access.mjs and sent only in the x-kk-admin
@@ -74,5 +75,5 @@ const money = (n) => `$${Number(n).toLocaleString('en-CA', { minimumFractionDigi
 console.log(`Booking  ${body.number}  (mode: ${body.mode})`);
 console.log(`Total    ${money(body.total)}`);
 console.log(`Retainer ${money(body.retainer)}`);
-console.log(`Balance  ${money(body.balance)}`);
+console.log(`Balance  ${money(body.balance)}${body.balance_cash === true ? ' (cash only)' : ''}`);
 console.log(`Link     ${target.origin}${body.path}`);

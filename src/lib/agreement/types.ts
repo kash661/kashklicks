@@ -35,6 +35,7 @@ export interface BookingInput {
   place: string;
   price?: number;
   retainer?: number;
+  balance_cash?: boolean;
   add_ons?: { id: string; qty: number }[];
   notes?: string;
 }

@@ -37,6 +37,8 @@ export interface StoredSummary {
   total: string;
   retainer: string;
   balance: string;
+  // How the balance is paid: 'in cash' or 'e-transfer or cash'. Missing on summaries stored before it existed.
+  balance_how?: string;
   etransfer_email: string;
 }
 

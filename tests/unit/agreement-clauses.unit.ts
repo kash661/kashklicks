@@ -66,6 +66,13 @@ test('the retainer clause has a half and a set version', () => {
   expect(clause('3.15').text.startsWith('I only charge for extras you asked for or said yes to.')).toBe(true);
 });
 
+test('the cash clause has an any-way and a cash-only version', () => {
+  expect(clause('3.10').tags).toEqual([['NONWED', 'BAL-ANY']]);
+  expect(clause('3.10').text).toBe('You can also pay the balance in cash on the shoot day.');
+  expect(clause('3.17').tags).toEqual([['NONWED', 'BAL-CASH']]);
+  expect(clause('3.17').text).toBe('You pay the balance in cash on the shoot day, not by e-transfer.');
+});
+
 test('bullets attach to their clause', () => {
   expect(clause('16.6').bullets).toHaveLength(5);
   expect(clause('14.5').bullets).toHaveLength(5);

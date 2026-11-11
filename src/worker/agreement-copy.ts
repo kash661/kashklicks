@@ -33,7 +33,9 @@ export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, s
     '',
     `Next step: send the retainer of ${money(f.retainer)} by Interac e-transfer to ${BUSINESS.etransferEmail}. Please put your booking number, ${s.number}, in the message. Your date is held once the retainer arrives.`,
     '',
-    `The balance of ${money(f.balance)} is due on or before the day, by e-transfer or cash.`,
+    f.balance_cash === true
+      ? `The balance of ${money(f.balance)} is due on or before the day, in cash.`
+      : `The balance of ${money(f.balance)} is due on or before the day, by e-transfer or cash.`,
     '',
     'If anything looks wrong, just reply to this email.',
     '',

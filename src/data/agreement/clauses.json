@@ -1,5 +1,5 @@
 {
-  "version": "a5792448ea2a80e0ef65ae07bccf8997a8def48426efa3f5d415e73ea438774c",
+  "version": "07f9e4172cd544c17ce1ee2090098b23c7e1e8b903bd6c7aa0ca8054dad5e1e6",
   "title": "Photography and Film Agreement",
   "intro": "This is the agreement between you and me for your booking. I wrote it in plain English on purpose. Please read all of it. If anything is unclear or wrong, do not sign yet. Message me, and I will fix it or explain it.",
   "sections": [
@@ -308,10 +308,23 @@
           "id": "3.10",
           "tags": [
             [
-              "NONWED"
+              "NONWED",
+              "BAL-ANY"
             ]
           ],
           "text": "You can also pay the balance in cash on the shoot day.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.17",
+          "tags": [
+            [
+              "NONWED",
+              "BAL-CASH"
+            ]
+          ],
+          "text": "You pay the balance in cash on the shoot day, not by e-transfer.",
           "bullets": []
         },
         {

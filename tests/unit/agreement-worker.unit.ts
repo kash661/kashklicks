@@ -289,6 +289,7 @@ test('new booking stores both variants and returns the link', async () => {
     total: 501.25,
     retainer: 251,
     balance: 250.25,
+    balance_cash: false,
   });
   expect(r.body.path).toMatch(/^\/welcome\/agreement\/\?k=[A-Za-z0-9_-]{43}$/);
 
@@ -425,6 +426,7 @@ test('doc: unknown token 404, void 410, first open sets opened', async () => {
       total: '$501.25',
       retainer: '$251.00',
       balance: '$250.25',
+      balance_how: 'e-transfer or cash',
       etransfer_email: 'info@kashklicks.ca',
     },
   });
@@ -602,6 +604,7 @@ test('sign writes the record once and fills the date', async () => {
       total: '$501.25',
       retainer: '$251.00',
       balance: '$250.25',
+      balance_how: 'e-transfer or cash',
       etransfer_email: 'info@kashklicks.ca',
     },
     labels: { ...r.body.labels, name_expected: 'Priya Sharma' },
@@ -852,6 +855,48 @@ test('a booking with its own retainer carries it to the client and the copy', as
     status: 400,
     body: { ok: false, error: 'bad_retainer', field: 'retainer' },
   });
+});
+
+test('a booking can say the balance is paid in cash only', async () => {
+  const t = setup();
+  const r = await t.admin(TEST, '/r/agreement/new', { ...PILOT, balance_cash: true });
+  expect(r.status).toBe(200);
+  expect(r.body).toMatchObject({ ok: true, balance: 250.25, balance_cash: true });
+  expect((await t.doc(TEST, r.body.token)).body.summary.balance_how).toBe('in cash');
+
+  await t.signOk(TEST, r.body.token);
+  await t.settle();
+  expect(t.calls).toHaveLength(1);
+  expect(t.calls[0].fields.email_body).toContain('The balance of $250.25 is due on or before the day, in cash.');
+  expect(t.calls[0].fields.email_body).not.toContain('by e-transfer or cash');
+
+  // The default booking is unchanged.
+  const d = await t.admin(TEST, '/r/agreement/new', PILOT);
+  expect(d.body.balance_cash).toBe(false);
+  expect((await t.doc(TEST, d.body.token)).body.summary.balance_how).toBe('e-transfer or cash');
+
+  expect(await t.admin(TEST, '/r/agreement/new', { ...PILOT, balance_cash: 'yes' })).toMatchObject({
+    status: 400,
+    body: { ok: false, error: 'bad_balance_cash', field: 'balance_cash' },
+  });
+});
+
+test('a booking stored before balance_cash existed signs as before', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  const key = `agr:test:bk:${token}`;
+  const old = t.booking(TEST, token);
+  delete old.facts.balance_cash;
+  delete old.summary.balance_how;
+  t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
+
+  const opened = await t.doc(TEST, token);
+  expect(opened.status).toBe(200);
+  expect(opened.body.summary.balance_how).toBeUndefined();
+  expect(opened.body.summary.balance).toBe('$250.25');
+  await t.signOk(TEST, token);
+  await t.settle();
+  expect(t.calls[0].fields.email_body).toContain('The balance of $250.25 is due on or before the day, by e-transfer or cash.');
 });
 
 test('resend runs the copy step now', async () => {

@@ -258,6 +258,14 @@ test.describe('Private agreement page', () => {
     await expect(page.locator('[data-agr-signbox]')).toBeHidden();
   });
 
+  test('the signed view says how the balance is paid', async ({ page }) => {
+    // SUMMARY has no balance_how, like a booking made before it was stored: the line reads as before.
+    await mockDoc(page, [[200, signedPayload('share', { summary: { ...SUMMARY, balance_how: 'in cash' } })]]);
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
+    await expect(page.locator('[data-agr-balance]')).toHaveText('$250.25, in cash');
+  });
+
   test('signs when crypto.subtle is unavailable', async ({ page }) => {
     await page.addInitScript(() => {
       Object.defineProperty(Crypto.prototype, 'subtle', { get: () => undefined, configurable: true });

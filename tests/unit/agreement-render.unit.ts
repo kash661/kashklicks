@@ -167,6 +167,77 @@ test('a set retainer must be a sensible amount', () => {
   }
 });
 
+const ANY_WAY = 'You can also pay the balance in cash on the shoot day.';
+const CASH_ONLY = 'You pay the balance in cash on the shoot day, not by e-transfer.';
+const BALANCE_ROW = 'Balance, due on or before the ceremony day';
+const sectionGapless = (doc: AgreementDoc, num: number) => {
+  const s = doc.sections.find((x) => x.num === num)!;
+  const ns = s.items.filter((i) => i.type === 'clause').map((i) => (i as { n: string }).n);
+  expect(ns).toEqual(ns.map((_, k) => `${num}.${k + 1}`));
+};
+
+test('by default the balance can be paid either way', () => {
+  const f = facts();
+  expect(f.balance_cash).toBe(false);
+  for (const choice of ['share', 'private'] as const) {
+    const doc = renderVariant(f, choice);
+    const texts = clauses(doc).map((c) => c.text);
+    expect(texts).toContain(ANY_WAY);
+    expect(texts).not.toContain(CASH_ONLY);
+    expect(Object.fromEntries(table(doc, 'booking').rows)[BALANCE_ROW]).toBe('$250.25 by e-transfer or cash');
+    sectionGapless(doc, 3);
+  }
+  // Saying false is the same as saying nothing.
+  for (const choice of ['share', 'private'] as const)
+    expect(JSON.stringify(renderVariant(facts({ balance_cash: false }), choice))).toBe(JSON.stringify(renderVariant(f, choice)));
+});
+
+test('a booking can say the balance is paid in cash only', () => {
+  const f = facts({ balance_cash: true });
+  expect(f.balance_cash).toBe(true);
+  expect(f.balance).toBe(250.25);
+  for (const choice of ['share', 'private'] as const) {
+    const doc = renderVariant(f, choice);
+    const texts = clauses(doc).map((c) => c.text);
+    expect(texts.filter((t) => t === CASH_ONLY)).toHaveLength(1);
+    expect(texts).not.toContain(ANY_WAY);
+    expect(Object.fromEntries(table(doc, 'booking').rows)[BALANCE_ROW]).toBe('$250.25 in cash');
+    expect(perSection(doc)).toEqual(perSection(renderVariant(facts(), choice)));
+    sectionGapless(doc, 3);
+  }
+});
+
+test('cash only together with a set retainer', () => {
+  const f = facts({ price: 501.25, retainer: 51.25, balance_cash: true });
+  for (const choice of ['share', 'private'] as const) {
+    const rows = Object.fromEntries(table(renderVariant(f, choice), 'booking').rows);
+    expect(rows['Retainer, due at signing']).toBe('$51.25 by e-transfer');
+    expect(rows[BALANCE_ROW]).toBe('$450.00 in cash');
+  }
+});
+
+test('balance_cash must be true or false', () => {
+  for (const balance_cash of ['yes', 1, null, 'true']) {
+    let err: unknown;
+    try {
+      facts({ balance_cash });
+    } catch (e) {
+      err = e;
+    }
+    expect(err, String(balance_cash)).toBeInstanceOf(BookingError);
+    expect((err as BookingError).code, String(balance_cash)).toBe('bad_balance_cash');
+    expect((err as BookingError).field, String(balance_cash)).toBe('balance_cash');
+  }
+});
+
+test('stored facts without balance_cash render as before', () => {
+  const { balance_cash: _drop, ...old } = facts();
+  for (const choice of ['share', 'private'] as const)
+    expect(JSON.stringify(renderVariant(old as Parameters<typeof renderVariant>[0], choice))).toBe(
+      JSON.stringify(renderVariant(facts(), choice)),
+    );
+});
+
 test('pilot facts', () => {
   const f = facts();
   expect(f.number).toBe('KK-TEST-2026-001');

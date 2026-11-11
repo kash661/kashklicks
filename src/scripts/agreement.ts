@@ -30,6 +30,7 @@ interface Summary {
   total: string;
   retainer: string;
   balance: string;
+  balance_how?: string; // missing on bookings made before it was stored
   etransfer_email: string;
 }
 interface Base {
@@ -238,7 +239,7 @@ export function initAgreement(): void {
     put('[data-agr-retainer]', text(p.summary?.retainer));
     put('[data-agr-etransfer]', text(p.summary?.etransfer_email));
     put('[data-agr-reference]', text(p.number));
-    put('[data-agr-balance]', text(p.summary?.balance, ', e-transfer or cash'));
+    put('[data-agr-balance]', text(p.summary?.balance, ', ', p.summary?.balance_how ?? 'e-transfer or cash'));
     put('[data-agr-step2-title]', text('Step 2 · ', p.labels?.after_signing?.title));
     put('[data-agr-step2-text]', text(p.labels?.after_signing?.text));
     put('[data-agr-signed-footer]', text('Signed by ', s.signed_name, ' · Record ', p.number, ' · Kept for 7 years'));

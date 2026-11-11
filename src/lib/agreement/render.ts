@@ -205,6 +205,9 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   }
   const balance = cents(total - retainer);
 
+  if (o.balance_cash !== undefined && typeof o.balance_cash !== 'boolean') throw new BookingError('bad_balance_cash', 'balance_cash');
+  const balance_cash = o.balance_cash === true;
+
   return {
     package_id,
     client_name,
@@ -223,6 +226,7 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     total,
     retainer,
     balance,
+    balance_cash,
     hours,
     delivery_date: addDays(event_date, pkg.deliveryDays),
     notes,
@@ -233,7 +237,9 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
 
 const activeTags = (pkg: PackageFacts, choice: Choice, facts: BookingFacts): Set<string> => {
   const retainerTag = facts.retainer === usualRetainer(facts.total) ? 'RET-HALF' : 'RET-SET';
-  const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode], retainerTag]);
+  // Stored bookings made before balance_cash existed have none: they read as false.
+  const balanceTag = facts.balance_cash === true ? 'BAL-CASH' : 'BAL-ANY';
+  const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode], retainerTag, balanceTag]);
   if (BUSINESS.insured) tags.add('INSURED');
   return tags;
 };
@@ -259,7 +265,7 @@ const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string
     ['Sharing choice (section 15)', pkg.sharing[choice].row],
     ['Total', money(f.total)],
     ['Retainer, due at signing', `${money(f.retainer)} by e-transfer`],
-    [pkg.balanceRowLabel, `${money(f.balance)} by e-transfer or cash`],
+    [pkg.balanceRowLabel, f.balance_cash === true ? `${money(f.balance)} in cash` : `${money(f.balance)} by e-transfer or cash`],
     [pkg.dateRowLabel, longDate(f.event_date)],
     ['Coverage', `${f.hours} ${f.hours === 1 ? 'hour' : 'hours'}, from ${clockTime(f.start_time)} to ${clockTime(f.end_time)}`],
     ['Where', f.place],

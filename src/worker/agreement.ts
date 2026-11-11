@@ -131,6 +131,7 @@ const summaryOf = (f: BookingFacts): StoredSummary => ({
   total: money(f.total),
   retainer: money(f.retainer),
   balance: money(f.balance),
+  balance_how: f.balance_cash === true ? 'in cash' : 'e-transfer or cash',
   etransfer_email: BUSINESS.etransferEmail,
 });
 
@@ -236,6 +237,7 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     total: facts.total,
     retainer: facts.retainer,
     balance: facts.balance,
+    balance_cash: facts.balance_cash === true,
   });
 }
 
