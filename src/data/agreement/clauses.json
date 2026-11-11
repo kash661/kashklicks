@@ -1,5 +1,5 @@
 {
-  "version": "b5b70cc6a0f21eba13d8d6985e5efc252da736fb916c66d7f43c973804602f9b",
+  "version": "a5792448ea2a80e0ef65ae07bccf8997a8def48426efa3f5d415e73ea438774c",
   "title": "Photography and Film Agreement",
   "intro": "This is the agreement between you and me for your booking. I wrote it in plain English on purpose. Please read all of it. If anything is unclear or wrong, do not sign yet. Message me, and I will fix it or explain it.",
   "sections": [
@@ -236,10 +236,23 @@
           "id": "3.5",
           "tags": [
             [
-              "NONWED"
+              "NONWED",
+              "RET-HALF"
             ]
           ],
           "text": "You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "3.16",
+          "tags": [
+            [
+              "NONWED",
+              "RET-SET"
+            ]
+          ],
+          "text": "You pay in two parts. The retainer is {{RETAINER}} and is due when you sign. The balance is due on or before the shoot day, before I start shooting.",
           "bullets": []
         },
         {

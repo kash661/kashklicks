@@ -833,6 +833,27 @@ test('copy call carries the contract fields', async () => {
   expect(t.calls[1].fields.email_subject).toBe('Your signed agreement with AD Photography (KK-2026-001)');
 });
 
+test('a booking with its own retainer carries it to the client and the copy', async () => {
+  const t = setup();
+  const r = await t.admin(TEST, '/r/agreement/new', { ...PILOT, retainer: 51.25 });
+  expect(r.status).toBe(200);
+  expect(r.body).toMatchObject({ ok: true, total: 501.25, retainer: 51.25, balance: 450 });
+  const opened = await t.doc(TEST, r.body.token);
+  expect(opened.body.summary.retainer).toBe('$51.25');
+  expect(opened.body.summary.balance).toBe('$450.00');
+
+  await t.signOk(TEST, r.body.token);
+  await t.settle();
+  expect(t.calls).toHaveLength(1);
+  expect(t.calls[0].fields.email_body).toContain('send the retainer of $51.25');
+  expect(t.calls[0].fields.email_body).toContain('The balance of $450.00');
+
+  expect(await t.admin(TEST, '/r/agreement/new', { ...PILOT, retainer: 0 })).toMatchObject({
+    status: 400,
+    body: { ok: false, error: 'bad_retainer', field: 'retainer' },
+  });
+});
+
 test('resend runs the copy step now', async () => {
   const t = setup();
   const errors = silenceErrors();

@@ -120,6 +120,9 @@ const cleanText = (v: unknown, min: number, max: number, code: string, field: st
 /** True when n is a whole number of cents (allowing for binary float noise). */
 const wholeCents = (n: number) => Math.abs(n * 100 - Math.round(n * 100)) < 1e-6;
 
+/** The usual retainer: half of the total, rounded up to the next dollar. */
+const usualRetainer = (total: number) => Math.ceil(total / 2);
+
 const MAX_DAYS_AHEAD = 1096;
 
 const isIsoDate = (s: unknown): s is string => {
@@ -193,7 +196,13 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const notes = o.notes === undefined || o.notes === '' ? '' : cleanText(o.notes, 0, 300, 'bad_notes', 'notes');
 
   const total = cents(package_price + add_ons.reduce((sum, a) => sum + a.line_total, 0));
-  const retainer = Math.ceil(total / 2);
+  let retainer: number;
+  if (o.retainer === undefined) retainer = usualRetainer(total);
+  else {
+    if (typeof o.retainer !== 'number' || !Number.isFinite(o.retainer) || !wholeCents(o.retainer) || o.retainer < 1 || cents(o.retainer) >= total)
+      throw new BookingError('bad_retainer', 'retainer');
+    retainer = cents(o.retainer);
+  }
   const balance = cents(total - retainer);
 
   return {
@@ -222,8 +231,9 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
 
 // ---------------------------------------------------------------- rendering
 
-const activeTags = (pkg: PackageFacts, choice: Choice): Set<string> => {
-  const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode]]);
+const activeTags = (pkg: PackageFacts, choice: Choice, facts: BookingFacts): Set<string> => {
+  const retainerTag = facts.retainer === usualRetainer(facts.total) ? 'RET-HALF' : 'RET-SET';
+  const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode], retainerTag]);
   if (BUSINESS.insured) tags.add('INSURED');
   return tags;
 };
@@ -271,7 +281,7 @@ const hasStrayPlaceholder = (s: string) => s.split(SIGN_DATE_TOKEN).join('').inc
 
 export function renderVariant(facts: BookingFacts, choice: Choice): AgreementDoc {
   const pkg = packageFacts(facts.package_id);
-  const active = activeTags(pkg, choice);
+  const active = activeTags(pkg, choice, facts);
   const vals: Record<string, string> = {
     CLIENT_NAME: facts.client_name,
     CLIENT_EMAIL: facts.client_email,
@@ -282,6 +292,7 @@ export function renderVariant(facts: BookingFacts, choice: Choice): AgreementDoc
     PACKAGE_NAME: pkg.name,
     ETRANSFER_EMAIL: BUSINESS.etransferEmail,
     DELIVERY_PROMISE: pkg.deliveryPromise,
+    RETAINER: money(facts.retainer),
     ...otValues(pkg),
   };
 

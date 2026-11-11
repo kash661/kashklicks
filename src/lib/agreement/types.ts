@@ -34,10 +34,11 @@ export interface BookingInput {
   end_time: string;
   place: string;
   price?: number;
+  retainer?: number;
   add_ons?: { id: string; qty: number }[];
   notes?: string;
 }
-export interface BookingFacts extends Required<Omit<BookingInput, 'price' | 'add_ons' | 'notes'>> {
+export interface BookingFacts extends Required<Omit<BookingInput, 'price' | 'retainer' | 'add_ons' | 'notes'>> {
   number: string;
   created_at: string;
   package_name: string;

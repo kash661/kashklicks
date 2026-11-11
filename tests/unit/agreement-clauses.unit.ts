@@ -54,6 +54,18 @@ test('tag groups', () => {
   expect(clause('5.2').tags).toEqual([['EVENT']]);
 });
 
+test('the retainer clause has a half and a set version', () => {
+  expect(clause('3.5').tags).toEqual([['NONWED', 'RET-HALF']]);
+  expect(clause('3.16').tags).toEqual([['NONWED', 'RET-SET']]);
+  expect(clause('3.16').text).toBe(clause('3.5').text.replace('50% of your total', '{{RETAINER}}'));
+  expect(clause('3.16').text).toBe(
+    'You pay in two parts. The retainer is {{RETAINER}} and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
+  );
+  // 3.15 is the older clause about extras; the new clause must not take its id.
+  expect(clause('3.15').tags).toEqual([['ALL']]);
+  expect(clause('3.15').text.startsWith('I only charge for extras you asked for or said yes to.')).toBe(true);
+});
+
 test('bullets attach to their clause', () => {
   expect(clause('16.6').bullets).toHaveLength(5);
   expect(clause('14.5').bullets).toHaveLength(5);

@@ -101,6 +101,72 @@ test('retainer is half, rounded up to the next dollar', () => {
   }
 });
 
+const TWO_PARTS = 'You pay in two parts.';
+const perSection = (doc: AgreementDoc) =>
+  Object.fromEntries(doc.sections.map((s) => [s.num, s.items.filter((i) => i.type === 'clause').length]));
+
+test('a booking can set its own retainer', () => {
+  const f = facts({ retainer: 51.25 });
+  expect(f.total).toBe(501.25);
+  expect(f.retainer).toBe(51.25);
+  expect(f.balance).toBe(450);
+  for (const choice of ['share', 'private'] as const) {
+    const doc = renderVariant(f, choice);
+    const rows = table(doc, 'booking').rows;
+    expect(rows).toContainEqual(['Retainer, due at signing', '$51.25 by e-transfer']);
+    expect(rows).toContainEqual(['Balance, due on or before the ceremony day', '$450.00 by e-transfer or cash']);
+    const pay = clauses(doc).filter((c) => c.text.startsWith(TWO_PARTS));
+    expect(pay).toHaveLength(1);
+    expect(pay[0].text).toBe(
+      'You pay in two parts. The retainer is $51.25 and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
+    );
+    const json = JSON.stringify(doc);
+    expect(json).not.toContain('50% of your total');
+    expect(json).not.toContain('{{RETAINER}}');
+    expect(perSection(doc)).toEqual(perSection(renderVariant(facts(), choice)));
+    for (const s of doc.sections) {
+      const ns = s.items.filter((i) => i.type === 'clause').map((i) => (i as { n: string }).n);
+      if (s.num !== 0) expect(ns).toEqual(ns.map((_, k) => `${s.num}.${k + 1}`));
+    }
+  }
+});
+
+test('without a set retainer the clause still says 50%', () => {
+  const f = facts();
+  expect(f.retainer).toBe(251);
+  expect(f.balance).toBe(250.25);
+  for (const choice of ['share', 'private'] as const) {
+    const doc = renderVariant(f, choice);
+    const pay = clauses(doc).filter((c) => c.text.startsWith(TWO_PARTS));
+    expect(pay.map((c) => c.text)).toEqual([
+      'You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
+    ]);
+    expect(JSON.stringify(doc)).not.toContain('The retainer is $');
+  }
+});
+
+test('a set retainer equal to the usual half gives the standard document', () => {
+  const f = facts({ retainer: 251 });
+  expect(f.retainer).toBe(251);
+  expect(f.balance).toBe(250.25);
+  for (const choice of ['share', 'private'] as const)
+    expect(JSON.stringify(renderVariant(f, choice))).toBe(JSON.stringify(renderVariant(facts(), choice)));
+});
+
+test('a set retainer must be a sensible amount', () => {
+  for (const retainer of [0, -5, 0.5, 501.25, 600, '51.25', NaN, Infinity, 51.255, null]) {
+    let err: unknown;
+    try {
+      facts({ retainer });
+    } catch (e) {
+      err = e;
+    }
+    expect(err, String(retainer)).toBeInstanceOf(BookingError);
+    expect((err as BookingError).code, String(retainer)).toBe('bad_retainer');
+    expect((err as BookingError).field, String(retainer)).toBe('retainer');
+  }
+});
+
 test('pilot facts', () => {
   const f = facts();
   expect(f.number).toBe('KK-TEST-2026-001');
@@ -247,7 +313,9 @@ test('clause text is the source text, with only placeholders filled', () => {
   const doc = renderVariant(facts(), 'share');
   const sourceTexts = file.sections.flatMap((s) => s.items).filter((i): i is SourceClause => i.type === 'clause');
   for (const c of clauses(doc)) {
-    const from = sourceTexts.filter((s) => matches(s, c.text));
+    // A word for word match wins over a template that also fits through a placeholder (3.5 and its set-retainer twin).
+    const exact = sourceTexts.filter((s) => s.text === c.text);
+    const from = exact.length ? exact : sourceTexts.filter((s) => matches(s, c.text));
     expect(from, c.text).toHaveLength(1);
     expect(c.bullets).toEqual(from[0].bullets);
   }

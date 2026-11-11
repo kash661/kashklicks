@@ -8,7 +8,8 @@
 //                   http://localhost:<port> or http://127.0.0.1:<port>     TEST booking (local)
 //                   https://kashklicks.ca                                  LIVE booking, only with --live
 // <booking.json>  the booking facts: package_id, client_name, partner_name, client_email,
-//                 client_phone, event_date, start_time, end_time, place, price, notes, add_ons
+//                 client_phone, event_date, start_time, end_time, place, price, notes, add_ons,
+//                 retainer (optional; default: half of the total, rounded up to the next dollar)
 // --live          required for the live origin. Without it the live origin is refused.
 //
 // The admin token is read from the file in admin-access.mjs and sent only in the x-kk-admin

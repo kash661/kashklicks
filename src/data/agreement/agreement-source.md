@@ -50,7 +50,9 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 **3.4** `[HST-INCLUDED]` Every price in this agreement includes HST of 13%. My HST number is {{HST_NUMBER}}. ⚑N2
 
-**3.5** `[NONWED]` You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.
+**3.5** `[NONWED+RET-HALF]` You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.
+
+**3.16** `[NONWED+RET-SET]` You pay in two parts. The retainer is {{RETAINER}} and is due when you sign. The balance is due on or before the shoot day, before I start shooting. ⚑C23
 
 **3.6** `[WEDDING]` You pay in three parts. ⚑C1
 - The retainer is 50% of your total. It is due when you sign.
