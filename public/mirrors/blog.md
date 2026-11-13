@@ -12,6 +12,30 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Fall Engagement Photos in Toronto: Where and When to Shoot
+
+- **URL:** https://kashklicks.ca/blog/fall-engagement-photos-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/fall-engagement-photos-toronto.md
+- **Published:** 2026-11-13
+- **Tags:** Pre-Wedding, Engagement, Fall, High Park, RC Harris, Toronto
+- **Summary:** Fall engagement photos in Toronto from one real October day: RC Harris in the morning, High Park colour after lunch, and the skyline after dark.
+
+### Rainy Day Engagement Photos in Toronto: Why Grey Skies Work
+
+- **URL:** https://kashklicks.ca/blog/rainy-day-engagement-photos-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/rainy-day-engagement-photos-toronto.md
+- **Published:** 2026-11-13
+- **Tags:** Pre-Wedding, Engagement, Rainy Day, Overcast, RC Harris, High Park, Toronto
+- **Summary:** Rainy day engagement photos in Toronto, from one grey October Sunday: cloud at RC Harris, wet roads in High Park, light rain on the skyline that night.
+
+### What Colours to Wear for Engagement Photos: 3 Real Outfits
+
+- **URL:** https://kashklicks.ca/blog/what-colours-to-wear-engagement-photos/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/what-colours-to-wear-engagement-photos.md
+- **Published:** 2026-11-13
+- **Tags:** Pre-Wedding, Engagement, Style, Colour, Fall, Toronto
+- **Summary:** What colours to wear for engagement photos, from one real Toronto day: black at RC Harris, cream in High Park's fall leaves, deep red under the night skyline.
+
 ### Alexander Muir Memorial Gardens: A Toronto Proposal Photo Guide
 
 - **URL:** https://kashklicks.ca/blog/alexander-muir-memorial-gardens-proposal-photos/

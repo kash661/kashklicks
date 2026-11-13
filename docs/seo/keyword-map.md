@@ -39,10 +39,13 @@ Solo photographer/filmmaker. Toronto-based. Focus on intimate weddings, civil ce
 | how-marquee-letters-work | how marquee letters work (bulbs, power, setup, photos) | draft, links to /services/marquee-letters |
 | parkwood-estate-engagement-photos-oshawa | parkwood estate engagement photos (secondary: parkwood estate photo pass, engagement photos oshawa) | published 2026-10-14, venue guide paired with the maninder-parneet gallery (S12) |
 | sunrise-engagement-photos-toronto | sunrise engagement photos toronto (secondary: best time of day for engagement photos, best time for outdoor photography toronto) | published 2026-10-14, owns WHY and HOW; best-toronto-sunrise-photo-locations-lake-ontario keeps WHERE |
+| fall-engagement-photos-toronto | fall engagement photos toronto (secondary: high park fall colours, fall photoshoot locations toronto) | published 2026-11-13, paired with the harnoor-harsh gallery (S12) |
+| rainy-day-engagement-photos-toronto | rainy day engagement photos (secondary: cloudy day engagement photos, overcast engagement photos) | published 2026-11-13, built on the harnoor-harsh session |
+| what-colours-to-wear-engagement-photos | what colours to wear for engagement photos (secondary: best colours for fall engagement photos) | published 2026-11-13, owns COLOUR only; what-to-wear-pre-wedding-shoot keeps the general outfit guide |
 
 ## Keyword Gaps (target with future content)
 
-- "fall engagement photos Toronto"
+- "fall engagement photos Toronto" (targeted 2026-11-13 by fall-engagement-photos-toronto)
 - "wedding photography timeline planning"
 - "how to choose a wedding photographer"
 - "Aga Khan Museum engagement photos"

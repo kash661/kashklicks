@@ -33,6 +33,8 @@ You don't need to wear the same colour. In fact, please don't. Matching outfits 
 - Busy patterns that compete with each other
 - Neon or very bright colours (they reflect onto skin and can be distracting)
 
+For a closer look at colour, with one couple's three outfits across three Toronto locations, read [what colours to wear for engagement photos](/blog/what-colours-to-wear-engagement-photos/).
+
 ## Consider Your Location
 
 Your outfit should complement your location, not clash with it.

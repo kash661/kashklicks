@@ -10,7 +10,7 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (38)
+## Sessions (39)
 
 ### Richie + Aimee
 
@@ -18,6 +18,13 @@ Every gallery below is a real session photographed by Akash. Categories cover we
 - **Type:** Proposal
 - **Location:** Alexander Muir Memorial Gardens, Toronto
 - **Date:** 2026-10-14
+
+### Harnoor + Harsh
+
+- **Gallery:** https://kashklicks.ca/portfolio/harnoor-harsh/
+- **Type:** Pre-Wedding (photo and film)
+- **Location:** RC Harris, High Park & Biidaasige Park, Toronto
+- **Date:** 2026-10-11
 
 ### A Styled Sunset Wedding
 
