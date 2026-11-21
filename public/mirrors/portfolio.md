@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (39)
+## Sessions (40)
+
+### David + Alvina
+
+- **Gallery:** https://kashklicks.ca/portfolio/david-alvina/
+- **Type:** Civil Ceremony
+- **Location:** Toronto City Hall, TD Centre & Commerce Court, Toronto
+- **Date:** 2026-10-26
 
 ### Richie + Aimee
 
