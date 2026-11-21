@@ -162,6 +162,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 
 ## Blog
 
+- [Toronto City Hall Weddings Pause in 2027: Where to Marry Instead](https://kashklicks.ca/blog/toronto-city-hall-weddings-2027-alternatives/): Toronto City Hall wedding ceremonies pause from January 2027. What changes, what does not, and other places to marry: Old City Hall, civic centres and more.
 - [Fall Engagement Photos in Toronto: Where and When to Shoot](https://kashklicks.ca/blog/fall-engagement-photos-toronto/): Fall engagement photos in Toronto from one real October day: RC Harris in the morning, High Park colour after lunch, and the skyline after dark.
 - [Rainy Day Engagement Photos in Toronto: Why Grey Skies Work](https://kashklicks.ca/blog/rainy-day-engagement-photos-toronto/): Rainy day engagement photos in Toronto, from one grey October Sunday: cloud at RC Harris, wet roads in High Park, light rain on the skyline that night.
 - [What Colours to Wear for Engagement Photos: 3 Real Outfits](https://kashklicks.ca/blog/what-colours-to-wear-engagement-photos/): What colours to wear for engagement photos, from one real Toronto day: black at RC Harris, cream in High Park's fall leaves, deep red under the night skyline.
@@ -332,6 +333,7 @@ Full markdown representations of each page are available at:
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Services · Marquee Letters](https://kashklicks.ca/mirrors/services-marquee-letters.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · Toronto City Hall Weddings Pause in 2027: Where to Marry Instead](https://kashklicks.ca/mirrors/blog/toronto-city-hall-weddings-2027-alternatives.md)
 - [Blog · Fall Engagement Photos in Toronto: Where and When to Shoot](https://kashklicks.ca/mirrors/blog/fall-engagement-photos-toronto.md)
 - [Blog · Rainy Day Engagement Photos in Toronto: Why Grey Skies Work](https://kashklicks.ca/mirrors/blog/rainy-day-engagement-photos-toronto.md)
 - [Blog · What Colours to Wear for Engagement Photos: 3 Real Outfits](https://kashklicks.ca/mirrors/blog/what-colours-to-wear-engagement-photos.md)

@@ -24,6 +24,8 @@ faq:
     answer: "Yes. For a small wedding party with a handheld camera, no permit is needed on the public sidewalks around Old City Hall or on Nathan Phillips Square across the street. You only need a City permit if you bring tripods, lighting stands, or stage a larger production. Osgoode Hall nearby does not need a permit either."
 ---
 
+**Update, November 20, 2026:** For 2027 the City lists this ceremony at $566.25 including HST, on select weekdays, and you now book it online. The fees and booking steps below were written in July 2026. The current numbers are in my guide to [Toronto City Hall weddings in 2027](/blog/toronto-city-hall-weddings-2027-alternatives/).
+
 For most of the last century, if you walked into Old City Hall you were probably there for a court date. The sandstone giant at the corner of Queen and Bay spent decades as a courthouse. Judges, lawyers, the full weight of it.
 
 That changed in 2025. The courts moved out, and the City of Toronto did something quietly wonderful with the rooms they left behind. It started marrying people there.

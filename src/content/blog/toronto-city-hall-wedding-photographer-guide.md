@@ -28,6 +28,8 @@ faq:
     answer: "Yes. The City of Toronto rents its own wedding chambers at the North York, Scarborough and York civic centres for $136.85 including HST per 30 minutes. That is the room only, so you arrange your own officiant. You book online through toronto.ca or in person at a City office. The downtown chamber costs more because the officiant is included."
 ---
 
+**Update, November 20, 2026:** Ceremonies in this Wedding Chamber are paused from January 1, 2027. Dates booked for 2026 go ahead. If you are planning a 2027 date, read [where to marry in Toronto instead](/blog/toronto-city-hall-weddings-2027-alternatives/).
+
 Anushka and Anthony did not want a production. They wanted to get married. A Tuesday at Toronto City Hall, an officiant with a red scarf, white orchids on either side of the aisle, and the two of them saying the words that mattered. The ceremony ran about fifteen minutes. Then we stepped outside onto Nathan Phillips Square, the curved towers rising overhead, Old City Hall sitting in the background like a postcard, and for forty-five minutes the whole plaza belonged to them.
 
 That is the quiet appeal of a City Hall wedding. No twelve-hour timeline, no hall to fill, no second mortgage. Just the legal ceremony, the people who matter, and a downtown core full of architecture that photographs beautifully.

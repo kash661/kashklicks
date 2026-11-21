@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### Toronto City Hall Weddings Pause in 2027: Where to Marry Instead
+
+- **URL:** https://kashklicks.ca/blog/toronto-city-hall-weddings-2027-alternatives/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/toronto-city-hall-weddings-2027-alternatives.md
+- **Published:** 2026-11-20
+- **Tags:** Civil Ceremony, Toronto City Hall, Old City Hall, Planning, Toronto, Wedding
+- **Summary:** Toronto City Hall wedding ceremonies pause from January 2027. What changes, what does not, and other places to marry: Old City Hall, civic centres and more.
+
 ### Fall Engagement Photos in Toronto: Where and When to Shoot
 
 - **URL:** https://kashklicks.ca/blog/fall-engagement-photos-toronto/
