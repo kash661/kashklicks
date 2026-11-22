@@ -51,6 +51,14 @@ export interface BookingFacts extends Required<Omit<BookingInput, 'price' | 'ret
   hours: number;
   delivery_date: string;
   notes: string;
+  // Only on bookings of a package with three payments (a wedding). Missing on every other booking,
+  // and on bookings stored before they existed.
+  second_payment?: number;
+  final_payment?: number;
+  second_due?: string; // 'YYYY-MM-DD'
+  final_due?: string; // 'YYYY-MM-DD'
+  // Only on bookings of a package with a second photographer: the hours they join for.
+  second_hours?: number;
 }
 export type DocItem =
   | { type: 'clause'; n: string; text: string; bullets: string[] } // n is '' in section 0

@@ -5,7 +5,7 @@ import agreementPackagesJson from '../../data/agreement/packages.json' with { ty
 import businessJson from '../../data/agreement/business.json' with { type: 'json' };
 import sitePackagesJson from '../../data/packages.json' with { type: 'json' };
 import siteAddOnsJson from '../../data/add-ons.json' with { type: 'json' };
-import { money, longDate, shortDate, clockTime, addDays, torontoIsoDate } from './format';
+import { money, longDate, shortDate, clockTime, addDays, addMonths, torontoIsoDate } from './format';
 import { SIGN_DATE_TOKEN } from './token';
 import type { AgreementDoc, BookingFacts, Choice, ClauseFile, DocItem, SourceClause } from './types';
 
@@ -36,11 +36,20 @@ interface PackageFacts {
   extraHoursAddOnId: string;
   overtimeBlock: number;
   deliverables: string[];
-  deliveryDays: number;
+  // One of the two: delivery in calendar months, or in days.
+  deliveryMonths?: number;
+  deliveryDays?: number;
   deliveryPromise: string;
   deliveryRow: string;
   dateRowLabel: string;
-  balanceRowLabel: string;
+  // The label of the one balance row. Only packages paid in two parts have one.
+  balanceRowLabel?: string;
+  // 'three-part': retainer, second payment and final payment (clause 3.6, tag WEDDING).
+  payments?: 'three-part';
+  // The hours a second photographer joins for (clause 8.2, tag SECOND), and the add-on that adds more.
+  secondPhotographer?: { includedHours: number; addOnId: string };
+  // The engagement session in the package (clauses 10.13 and 16.9, tag ENGAGEMENT).
+  engagement?: { desc: string; valuePackageId: string };
   addOnRows: AddOnRow[];
   laterCosts: string;
   introBullets: string[];
@@ -86,6 +95,26 @@ const packageFacts = (id: unknown): PackageFacts => {
   const pkg = typeof id === 'string' && Object.hasOwn(PACKAGES, id) ? PACKAGES[id] : undefined;
   if (!pkg || !SITE_PACKAGES.some((p) => p.id === id)) throw new BookingError('package_not_ready', 'package_id');
   return pkg;
+};
+
+/**
+ * True when the package is paid in three parts. A package's data must agree with its clause tags:
+ * three payments go with WEDDING (clause 3.6), a second photographer setting with SECOND (clause 8.2).
+ * Anything else is a data mistake and throws, so no booking is made or shown from it.
+ */
+const threePart = (pkg: PackageFacts): boolean => {
+  if (pkg.payments !== undefined && pkg.payments !== 'three-part') throw new Error(`package ${pkg.name}: unknown payments ${String(pkg.payments)}`);
+  const three = pkg.payments === 'three-part';
+  if (three !== pkg.tags.includes('WEDDING')) throw new Error(`package ${pkg.name}: three payments and the WEDDING tag go together`);
+  if ((pkg.secondPhotographer !== undefined) !== pkg.tags.includes('SECOND'))
+    throw new Error(`package ${pkg.name}: a second photographer setting and the SECOND tag go together`);
+  return three;
+};
+
+const deliveryDate = (pkg: PackageFacts, eventDate: string): string => {
+  if (pkg.deliveryMonths !== undefined) return addMonths(eventDate, pkg.deliveryMonths);
+  if (pkg.deliveryDays !== undefined) return addDays(eventDate, pkg.deliveryDays);
+  throw new Error(`package ${pkg.name} has no delivery time`);
 };
 
 const siteAddOn = (id: string): SiteAddOn => {
@@ -141,6 +170,7 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const o = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
   const pkg = packageFacts(o.package_id);
   const package_id = o.package_id as string;
+  const three = threePart(pkg);
 
   const client_name = cleanText(o.client_name, 2, 120, 'bad_name', 'client_name');
   const partner_name = cleanText(o.partner_name, 2, 120, 'bad_name', 'partner_name');
@@ -158,6 +188,10 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const today = torontoIsoDate(ctx.createdAt);
   if (!isIsoDate(event_date) || event_date < today || event_date > addDays(today, MAX_DAYS_AHEAD))
     throw new BookingError('bad_date', 'event_date');
+  // Three payments: the second falls due 60 days before the wedding at the latest. That date must
+  // still be ahead, or the dates in section 1 would already have passed.
+  const second_due = three ? addDays(event_date, -60) : undefined;
+  if (second_due !== undefined && second_due <= today) throw new BookingError('bad_date', 'event_date');
 
   const place = cleanText(o.place, 3, 200, 'bad_place', 'place');
 
@@ -193,6 +227,11 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const end = minutes(o.end_time);
   if (start === null || end === null || end - start !== hours * 60) throw new BookingError('bad_times', 'end_time');
 
+  // The second photographer joins for the hours in the package plus any booked on top, never more than the coverage.
+  const sp = pkg.secondPhotographer;
+  const second_hours = sp ? sp.includedHours + (add_ons.find((a) => a.id === sp.addOnId)?.qty ?? 0) : undefined;
+  if (second_hours !== undefined && second_hours > hours) throw new BookingError('bad_add_on', 'add_ons');
+
   const notes = o.notes === undefined || o.notes === '' ? '' : cleanText(o.notes, 0, 300, 'bad_notes', 'notes');
 
   const total = cents(package_price + add_ons.reduce((sum, a) => sum + a.line_total, 0));
@@ -203,10 +242,23 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
       throw new BookingError('bad_retainer', 'retainer');
     retainer = cents(o.retainer);
   }
+  // The clause for a set retainer is for two payments only (NONWED).
+  if (three && retainer !== usualRetainer(total)) throw new BookingError('bad_retainer', 'retainer');
   const balance = cents(total - retainer);
 
   if (o.balance_cash !== undefined && typeof o.balance_cash !== 'boolean') throw new BookingError('bad_balance_cash', 'balance_cash');
   const balance_cash = o.balance_cash === true;
+  // The cash only clause is for two payments only (NONWED).
+  if (three && balance_cash) throw new BookingError('bad_balance_cash', 'balance_cash');
+
+  // Three payments (clause 3.6): half at signing, a quarter, then the rest. They add up to the total exactly.
+  let payments = {};
+  if (three) {
+    const second_payment = Math.ceil(total / 4);
+    const final_payment = cents(total - retainer - second_payment);
+    if (final_payment < 1) throw new BookingError('bad_price', 'price');
+    payments = { second_payment, final_payment, second_due: second_due as string, final_due: addDays(event_date, -14) };
+  }
 
   return {
     package_id,
@@ -228,8 +280,10 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     balance,
     balance_cash,
     hours,
-    delivery_date: addDays(event_date, pkg.deliveryDays),
+    delivery_date: deliveryDate(pkg, event_date),
     notes,
+    ...payments,
+    ...(second_hours === undefined ? {} : { second_hours }),
   };
 }
 
@@ -251,6 +305,53 @@ const otValues = (pkg: PackageFacts) => ({
   OT_BLOCK: money(pkg.overtimeBlock),
 });
 
+/**
+ * The two payments after the retainer of a booking paid in three parts, as label and sentence, or
+ * null for a booking without them. Section 1, the page after signing and the review step use these words.
+ */
+export function laterPaymentRows(f: BookingFacts): { label: string; text: string }[] | null {
+  if (f.second_payment === undefined) return null;
+  if (f.final_payment === undefined || f.second_due === undefined || f.final_due === undefined)
+    throw new Error(`booking ${f.number} has a second payment but no final payment or due dates`);
+  return [
+    {
+      label: 'Second payment',
+      text: `${money(f.second_payment)} by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by ${longDate(f.second_due)}, it is due on that date.`,
+    },
+    { label: 'Final payment', text: `${money(f.final_payment)} by e-transfer. Due by ${longDate(f.final_due)}, which is 14 days before your wedding.` },
+  ];
+}
+
+const paymentRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
+  if (threePart(pkg)) {
+    const later = laterPaymentRows(f);
+    if (!later) throw new Error(`booking ${f.number} of ${pkg.name} has no later payments`);
+    return later.map((r) => [r.label, r.text]);
+  }
+  if (pkg.balanceRowLabel === undefined) throw new Error(`package ${pkg.name} has no balance row label`);
+  return [[pkg.balanceRowLabel, f.balance_cash === true ? `${money(f.balance)} in cash` : `${money(f.balance)} by e-transfer or cash`]];
+};
+
+const hoursText = (n: number) => `${n} ${n === 1 ? 'hour' : 'hours'}`;
+
+/** The second photographer row of section 1, after "Who shoots". None for a package without one. */
+const secondPhotographerRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
+  const sp = pkg.secondPhotographer;
+  if (!sp) return [];
+  if (f.second_hours === undefined) throw new Error(`booking ${f.number} of ${pkg.name} has no second photographer hours`);
+  const added = f.add_ons.find((a) => a.id === sp.addOnId)?.qty ?? 0;
+  if (f.second_hours !== sp.includedHours + added || f.second_hours > f.hours)
+    throw new Error(`booking ${f.number}: second photographer hours do not add up`);
+  const split = `${hoursText(sp.includedHours)} ${sp.includedHours === 1 ? 'is' : 'are'} in your package and ${added} ${added === 1 ? 'is' : 'are'} added.`;
+  const text =
+    added === 0
+      ? `${hoursText(sp.includedHours)}, for the ceremony or the reception (your choice)`
+      : f.second_hours === f.hours
+        ? `${hoursText(f.second_hours)}, for your whole coverage. ${split}`
+        : `${hoursText(f.second_hours)} in one continuous block. You choose which part of the day. ${split}`;
+  return [['Second photographer', text]];
+};
+
 const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string[][] => {
   // Only the no-HST case has agreed row text so far.
   if (BUSINESS.hstMode !== 'none') throw new Error(`hstMode ${BUSINESS.hstMode} has no booking table rows yet`);
@@ -265,11 +366,12 @@ const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string
     ['Sharing choice (section 15)', pkg.sharing[choice].row],
     ['Total', money(f.total)],
     ['Retainer, due at signing', `${money(f.retainer)} by e-transfer`],
-    [pkg.balanceRowLabel, f.balance_cash === true ? `${money(f.balance)} in cash` : `${money(f.balance)} by e-transfer or cash`],
+    ...paymentRows(f, pkg),
     [pkg.dateRowLabel, longDate(f.event_date)],
-    ['Coverage', `${f.hours} ${f.hours === 1 ? 'hour' : 'hours'}, from ${clockTime(f.start_time)} to ${clockTime(f.end_time)}`],
+    ['Coverage', `${hoursText(f.hours)}, from ${clockTime(f.start_time)} to ${clockTime(f.end_time)}`],
     ['Where', f.place],
     ['Who shoots', BUSINESS.whoShoots],
+    ...secondPhotographerRows(f, pkg),
     ['Delivery', fill(pkg.deliveryRow, { DELIVERY_DATE: longDate(f.delivery_date) })],
   ];
   if (f.notes) rows.push(['Also agreed for your day', f.notes]);
@@ -282,6 +384,15 @@ const addOnTableRows = (pkg: PackageFacts): string[][] =>
     const vals = { ...(r.id === null ? {} : { PRICE: money(siteAddOn(r.id).price as number) }), OT_BLOCK: money(pkg.overtimeBlock) };
     return [r.label, fill(r.priceText, vals), fill(r.note, vals)];
   });
+
+/** ENGAGEMENT_DESC and ENGAGEMENT_VALUE (the list price of the site package), only for a package with an engagement session. */
+const engagementValues = (pkg: PackageFacts): Record<string, string> => {
+  const e = pkg.engagement;
+  if (!e) return {};
+  const site = SITE_PACKAGES.find((p) => p.id === e.valuePackageId);
+  if (!site || typeof site.price !== 'number') throw new Error(`package ${pkg.name}: no list price for ${e.valuePackageId}`);
+  return { ENGAGEMENT_DESC: e.desc, ENGAGEMENT_VALUE: money(site.price) };
+};
 
 const hasStrayPlaceholder = (s: string) => s.split(SIGN_DATE_TOKEN).join('').includes('{{');
 
@@ -300,6 +411,7 @@ export function renderVariant(facts: BookingFacts, choice: Choice): AgreementDoc
     DELIVERY_PROMISE: pkg.deliveryPromise,
     RETAINER: money(facts.retainer),
     ...otValues(pkg),
+    ...engagementValues(pkg),
   };
 
   let signDateTokens = 0;

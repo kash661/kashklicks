@@ -32,5 +32,45 @@
     },
     "agreeLabel": "I have read this agreement and I agree to it. I am signing for myself and for {{PARTNER_NAME}}. Signing here is my electronic signature.",
     "afterSigning": { "title": "Your timeline", "text": "Please send me your final timeline, your addresses and your list of family photos at least 14 days before the day. Reply to the email, or message me on WhatsApp." }
+  },
+  "wedding-full": {
+    "name": "The Full Day",
+    "tags": ["WEDDING", "EVENT", "COUPLE", "OT", "DRONE", "ENGAGEMENT", "SECOND", "SNEAK", "LONGDAY"],
+    "hours": 10,
+    "extraHoursAddOnId": "extra-hours-wedding",
+    "overtimeBlock": 150.75,
+    "deliverables": [
+      "10 hours of wedding photography in one continuous block",
+      "At least 400 edited photos in a private online gallery",
+      "A second photographer for 3 hours, for the ceremony or the reception (your choice)",
+      "A short preview of your photos within 24 hours of your wedding",
+      "An engagement session: 2 hours, with photos and a short film"
+    ],
+    "deliveryMonths": 3,
+    "deliveryPromise": "I deliver your edited photos within 3 months of your wedding day.",
+    "deliveryRow": "Edited photos by {{DELIVERY_DATE}}, which is within 3 months of your wedding.",
+    "dateRowLabel": "Wedding date",
+    "payments": "three-part",
+    "secondPhotographer": { "includedHours": 3, "addOnId": "second-photographer" },
+    "engagement": { "desc": "2 hours, with photos and a short film", "valuePackageId": "love-story-mini-film" },
+    "addOnRows": [
+      { "id": "extra-hours-wedding", "label": "Additional hours", "priceText": "{{PRICE}} per hour", "note": "Book them before the day. They become part of your booked hours.", "bookable": true },
+      { "id": "extra-hours-wedding", "label": "Overtime", "priceText": "{{PRICE}} per hour", "note": "Billed in 30 minute blocks of {{OT_BLOCK}}. See section 5.", "bookable": false },
+      { "id": "second-photographer", "label": "Second photographer, extra hours", "priceText": "{{PRICE}} per hour", "note": "On top of the 3 hours in your package. Book them before the day.", "bookable": true },
+      { "id": "drone", "label": "Drone and aerial frames", "priceText": "{{PRICE}}", "note": "Weather and airspace permitting. Refunded in full if I cannot fly.", "bookable": true },
+      { "id": null, "label": "A wedding film", "priceText": "Quoted for your wedding", "note": "Every price in this agreement is for photography. A film is agreed in writing, with its own price.", "bookable": false },
+      { "id": "priority-delivery-wedding", "label": "Priority delivery", "priceText": "{{PRICE}}", "note": "Your full gallery within 3 weeks of your wedding. Ask me in writing.", "bookable": false },
+      { "id": "raw-photos-wedding", "label": "RAW photos", "priceText": "{{PRICE}}", "note": "See section 13.", "bookable": true },
+      { "id": null, "label": "Parking", "priceText": "At cost", "note": "With the receipt. See section 6.", "bookable": false },
+      { "id": null, "label": "Travel outside the GTA", "priceText": "$0.75 per km", "note": "Round trip, counted from the GTA boundary. See section 6.", "bookable": false }
+    ],
+    "laterCosts": "Overtime at {{OT_RATE}} an hour, in 30 minute blocks of {{OT_BLOCK}} (section 5). Parking at cost (section 6). Travel outside the GTA at $0.75 per km (section 6). A fee of $500.00 for a second change of date (section 11). Any add-on you choose later, at the prices in section 4.",
+    "introBullets": ["{{CLIENT_FIRST}} signs for both of you.", "You can download or print a copy before you sign.", "You will get a PDF copy by email the moment you sign."],
+    "sharing": {
+      "share": { "tags": ["SHARE", "SHARE-C"], "row": "You allow sharing. It does not change your price.", "option": "Share our work. My price stays the same." },
+      "private": { "tags": ["PRIVATE"], "row": "Private. Your work is not shown in public.", "option": "Keep our work private. My price stays the same." }
+    },
+    "agreeLabel": "I have read this agreement and I agree to it. I am signing for myself and for {{PARTNER_NAME}}. Signing here is my electronic signature.",
+    "afterSigning": { "title": "Your engagement session", "text": "Your package includes an engagement session. Message me when you are ready to plan it. Closer to the wedding, please send me your final timeline, your addresses and your list of family photos, at least 14 days before the day." }
   }
 }

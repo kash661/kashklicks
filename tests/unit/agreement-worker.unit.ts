@@ -1878,3 +1878,123 @@ test('existing routes still work', async () => {
   expect(page.status).toBe(301);
   expect(page.headers.get('location')).toBe(`${LIVE}/about/`);
 });
+
+// ------------------------------------------------------------------ a wedding: three payments
+
+// Invented people only.
+const WEDDING = {
+  package_id: 'wedding-full',
+  client_name: 'Elena Marchetti',
+  partner_name: 'Daniel Okafor',
+  client_email: 'elena@example.com',
+  client_phone: '416 555 0177',
+  event_date: '2027-05-29',
+  start_time: '12:00',
+  end_time: '22:00',
+  place: 'St. Example Church, Hamilton. Reception in Burlington',
+  add_ons: [
+    { id: 'second-photographer', qty: 7 },
+    { id: 'raw-photos-wedding', qty: 1 },
+  ],
+};
+const WEDDING_LATER = [
+  {
+    label: 'Second payment',
+    text: '$783.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+  },
+  { label: 'Final payment', text: '$782.25 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.' },
+];
+
+test('a wedding booking answers with its three payments, and its summary carries the later two', async () => {
+  const t = setup();
+  const r = await t.admin(TEST, '/r/agreement/new', WEDDING);
+  expect(r.status).toBe(200);
+  expect(r.body).toEqual({
+    ok: true,
+    number: 'KK-TEST-2026-001',
+    token: r.body.token,
+    path: `/welcome/agreement/?k=${r.body.token}`,
+    mode: 'test',
+    total: 3131.25,
+    retainer: 1566,
+    balance: 1565.25,
+    balance_cash: false,
+    second_payment: 783,
+    final_payment: 782.25,
+  });
+  const opened = await t.doc(TEST, r.body.token);
+  expect(opened.body.summary).toEqual({
+    package: 'The Full Day',
+    date: 'Saturday 29 May 2027',
+    total: '$3,131.25',
+    retainer: '$1,566.00',
+    balance: '$1,565.25',
+    balance_how: 'e-transfer or cash',
+    etransfer_email: 'info@kashklicks.ca',
+    later_payments: WEDDING_LATER,
+  });
+  expect(t.booking(TEST, r.body.token).facts).toMatchObject({ second_payment: 783, final_payment: 782.25, second_due: '2027-03-30', final_due: '2027-05-15', second_hours: 10 });
+
+  // The civil booking has none of it.
+  const civil = await t.admin(TEST, '/r/agreement/new', PILOT);
+  expect(civil.body).not.toHaveProperty('second_payment');
+  expect(civil.body).not.toHaveProperty('final_payment');
+  expect((await t.doc(TEST, civil.body.token)).body.summary).not.toHaveProperty('later_payments');
+});
+
+test('a wedding the agreement has no clause for is refused before a number is used', async () => {
+  const t = setup();
+  for (const [over, error, field] of [
+    [{ balance_cash: true }, 'bad_balance_cash', 'balance_cash'],
+    [{ retainer: 1000 }, 'bad_retainer', 'retainer'],
+    [{ event_date: '2027-01-01' }, 'bad_date', 'event_date'],
+    [{ add_ons: [{ id: 'second-photographer', qty: 8 }] }, 'bad_add_on', 'add_ons'],
+    [{ add_ons: [{ id: 'priority-delivery-wedding', qty: 1 }] }, 'bad_add_on', 'add_ons'],
+  ] as const) {
+    expect(await t.admin(TEST, '/r/agreement/new', { ...WEDDING, ...over }), error).toMatchObject({ status: 400, body: { ok: false, error, field } });
+  }
+  expect(t.kv.puts).toEqual([]);
+});
+
+test('the email after signing a wedding names the second and the final payment', async () => {
+  const t = setup();
+  // Not t.create: that merges in the civil booking's price and notes.
+  const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING)).body;
+  const signed = await t.signOk(TEST, token, { signed_name: 'Elena Marchetti' });
+  expect(signed.status).toBe(200);
+  expect(signed.body.summary.later_payments).toEqual(WEDDING_LATER);
+  await t.settle();
+  expect(t.calls).toHaveLength(1);
+  const f = t.calls[0].fields;
+  expect(f.email_body).toBe(
+    [
+      'Hi Elena,',
+      '',
+      'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
+      '',
+      'Next step: send the retainer of $1,566.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
+      '',
+      'The second payment of $783.00 is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+      '',
+      'The final payment of $782.25 is due by Saturday 15 May 2027.',
+      '',
+      'If anything looks wrong, just reply to this email.',
+      '',
+      'Warmly,',
+      'Kash',
+      'AD Photography',
+      'kashklicks.ca',
+    ].join('\n'),
+  );
+  expect(f.email_body).not.toMatch(/balance/i);
+  expect(f.email_subject + f.email_body).not.toMatch(/[–—]/);
+  // The Contracts row keeps its columns. Balance is what is left after the retainer.
+  const row = JSON.parse(f.row_json);
+  expect(Object.keys(row)).toEqual([
+    'Signed at', 'Booking number', 'Client', 'Partner', 'Email', 'Phone', 'Package', 'Event date',
+    'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version', 'Notes',
+  ]);
+  expect(row).toMatchObject({ Package: 'The Full Day', 'Event date': '2027-05-29', Total: '$3,131.25', Retainer: '$1,566.00', Balance: '$1,565.25' });
+  expect(f.pdf_html).toContain('Second payment');
+  expect(f.pdf_html).toContain('Final payment');
+});

@@ -1,7 +1,7 @@
 // The emailed copy of a signed agreement: the email text, the Contracts row and the
 // call to Apps Script. Everything is built from the signed record in D1.
 import businessJson from '../data/agreement/business.json' with { type: 'json' };
-import { money, torontoStamp } from '../lib/agreement/format';
+import { longDate, money, torontoStamp } from '../lib/agreement/format';
 import { pdfDocument } from '../lib/agreement/html';
 import type { AgreementDoc } from '../lib/agreement/types';
 import { putBookingQuietly, type AgreementEnv, type BookingRecord, type SignedRecord, type Store } from './agreement-store';
@@ -27,6 +27,22 @@ export function signedPdfHtml(s: SignedRecord): string {
   });
 }
 
+/** What the email says is still to pay after the retainer: one balance line, or two paragraphs for a booking paid in three parts. */
+const balanceLines = (f: SignedRecord['facts']): string[] => {
+  if (f.second_payment !== undefined && f.final_payment !== undefined && f.second_due !== undefined && f.final_due !== undefined)
+    return [
+      `The second payment of ${money(f.second_payment)} is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by ${longDate(f.second_due)}, it is due on that date.`,
+      '',
+      `The final payment of ${money(f.final_payment)} is due by ${longDate(f.final_due)}.`,
+    ];
+  if (f.second_payment !== undefined) throw new Error(`booking ${f.number} has a second payment but no final payment or due dates`);
+  return [
+    f.balance_cash === true
+      ? `The balance of ${money(f.balance)} is due on or before the day, in cash.`
+      : `The balance of ${money(f.balance)} is due on or before the day, by e-transfer or cash.`,
+  ];
+};
+
 /** The fields of the agreement_signed call. Exported for the contract test against the real Apps Script. */
 export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, string> {
   const f = s.facts;
@@ -38,9 +54,7 @@ export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, s
     '',
     `Next step: send the retainer of ${money(f.retainer)} by Interac e-transfer to ${BUSINESS.etransferEmail}. Please put your booking number, ${s.number}, in the message. Your date is held once the retainer arrives.`,
     '',
-    f.balance_cash === true
-      ? `The balance of ${money(f.balance)} is due on or before the day, in cash.`
-      : `The balance of ${money(f.balance)} is due on or before the day, by e-transfer or cash.`,
+    ...balanceLines(f),
     '',
     'If anything looks wrong, just reply to this email.',
     '',

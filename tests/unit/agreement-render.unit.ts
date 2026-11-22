@@ -515,7 +515,7 @@ test('sign labels name the client, and a placeholder left in a label throws', ()
 test('validation codes', () => {
   expect(codeOf(() => facts())).toBeUndefined();
   expect(codeOf(() => facts({ package_id: 'no-such-package' }))).toBe('package_not_ready');
-  expect(codeOf(() => facts({ package_id: 'wedding-full' }))).toBe('package_not_ready');
+  expect(codeOf(() => facts({ package_id: 'pre-wedding-full' }))).toBe('package_not_ready');
   expect(codeOf(() => buildBookingFacts(null, CTX))).toBe('package_not_ready');
   expect(codeOf(() => facts({ client_name: ' P ' }))).toBe('bad_name');
   expect(codeOf(() => facts({ partner_name: 'A\u0000' }))).toBe('bad_name');

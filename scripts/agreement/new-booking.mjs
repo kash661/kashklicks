@@ -11,6 +11,9 @@
 //                 client_phone, event_date, start_time, end_time, place, price, notes, add_ons,
 //                 retainer (optional; default: half of the total, rounded up to the next dollar),
 //                 balance_cash (optional; true = the balance is paid in cash only)
+//                 A wedding (package wedding-full) is paid in three parts: a retainer other
+//                 than the usual half, or balance_cash true, is refused, and the answer adds
+//                 the second and the final payment.
 // --live          required for the live origin. Without it the live origin is refused.
 //
 // The admin token is read from the file in admin-access.mjs and sent only in the x-kk-admin
@@ -76,4 +79,7 @@ console.log(`Booking  ${body.number}  (mode: ${body.mode})`);
 console.log(`Total    ${money(body.total)}`);
 console.log(`Retainer ${money(body.retainer)}`);
 console.log(`Balance  ${money(body.balance)}${body.balance_cash === true ? ' (cash only)' : ''}`);
+// Only a booking paid in three parts (a wedding) has these: the balance is split in two.
+if (body.second_payment !== undefined) console.log(`Second   ${money(body.second_payment)}`);
+if (body.final_payment !== undefined) console.log(`Final    ${money(body.final_payment)}`);
 console.log(`Link     ${target.origin}${body.path}`);

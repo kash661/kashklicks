@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { buildBookingFacts, fillSignDate, renderVariant, signLabels } from '../src/lib/agreement/render';
 import { longDate, money } from '../src/lib/agreement/format';
 import type { AgreementDoc, Choice } from '../src/lib/agreement/types';
+import { laterPaymentRows } from '../src/lib/agreement/render';
 
 // The private agreement page. There is no worker in dev, so every /r/agreement/* call is mocked here.
 // Invented people only.
@@ -805,5 +806,113 @@ test.describe('Private agreement page', () => {
     expect(calls).toHaveLength(2);
     expect(posts).toBe(1);
     for (const c of ['[data-agr-name]', '[data-agr-choice="share"]', '[data-agr-agree]']) await expect(page.locator(c), c).toBeEnabled();
+  });
+});
+
+// A wedding paid in three parts: the second and the final payment take the place of the balance. Invented people only.
+test.describe('Private agreement page, a wedding paid in three parts', () => {
+  let pageErrors: string[] = [];
+  test.beforeEach(({ page }) => {
+    pageErrors = [];
+    page.on('pageerror', (e) => pageErrors.push(e.message));
+  });
+  test.afterEach(() => {
+    expect(pageErrors).toEqual([]);
+  });
+
+  const W_NUMBER = 'KK-TEST-2026-007';
+  const wFacts = buildBookingFacts(
+    {
+      package_id: 'wedding-full',
+      client_name: 'Elena Marchetti',
+      partner_name: 'Daniel Okafor',
+      client_email: 'elena@example.com',
+      client_phone: '416 555 0177',
+      event_date: '2027-05-29',
+      start_time: '12:00',
+      end_time: '22:00',
+      place: 'St. Example Church, Hamilton. Reception in Burlington',
+      add_ons: [
+        { id: 'second-photographer', qty: 7 },
+        { id: 'raw-photos-wedding', qty: 1 },
+      ],
+    },
+    { number: W_NUMBER, createdAt: new Date('2026-11-10T15:00:00Z') },
+  );
+  const wVariant = (c: Choice) => {
+    const doc_json = JSON.stringify(renderVariant(wFacts, c));
+    return { doc_json, hash: sha256(doc_json) };
+  };
+  const W_VARIANTS = { share: wVariant('share'), private: wVariant('private') };
+  const W_LABELS = { ...signLabels(wFacts), name_expected: wFacts.client_name };
+  const W_SUMMARY = {
+    package: wFacts.package_name,
+    date: longDate(wFacts.event_date),
+    total: money(wFacts.total),
+    retainer: money(wFacts.retainer),
+    balance: money(wFacts.balance),
+    balance_how: 'e-transfer or cash',
+    etransfer_email: 'info@kashklicks.ca',
+    later_payments: laterPaymentRows(wFacts),
+  };
+  const SECOND =
+    '$783.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.';
+  const FINAL = '$782.25 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.';
+  const base = {
+    ok: true,
+    mode: 'test',
+    number: W_NUMBER,
+    client_first: 'Elena',
+    partner_first: 'Daniel',
+    client_name: 'Elena Marchetti',
+    partner_name: 'Daniel Okafor',
+    labels: W_LABELS,
+    summary: W_SUMMARY,
+  };
+  const wReady = { ...base, status: 'opened', today: '10 November 2026', variants: W_VARIANTS };
+  const wSigned = (choice: Choice) => {
+    const final_doc_json = fillSignDate(W_VARIANTS[choice].doc_json, '10 November 2026');
+    return {
+      ...base,
+      status: 'signed',
+      signed: { choice, signed_name: 'Elena Marchetti', date: '10 November 2026', time: '10:00 am', final_doc_json, final_hash: sha256(final_doc_json) },
+      copy: { status: 'sent', to: 'elena@example.com' },
+    };
+  };
+
+  test('the review step lists the second and the final payment after the retainer', async ({ page }) => {
+    await mockDoc(page, [[200, wReady]]);
+    await page.goto(PATH);
+    await fillReady(page, 'share', 'Elena Marchetti');
+    await page.locator('[data-agr-review]').click();
+    const rows = page.locator('[data-agr-review-rows] > div');
+    await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Second payment', 'Final payment', 'Sharing']);
+    await expect(rows.nth(6).locator('dd')).toHaveText(SECOND);
+    await expect(rows.nth(7).locator('dd')).toHaveText(FINAL);
+    await expect(page.locator('[data-agr-dialog]')).not.toContainText(/balance/i);
+  });
+
+  test('the signed view shows the two later payments instead of the balance', async ({ page }) => {
+    await mockDoc(page, [[200, wSigned('share')]]);
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
+    await expect(page.locator('[data-agr-retainer]')).toHaveText('$1,566.00');
+    await expect(page.locator('[data-agr-balance-row]')).toBeHidden();
+    const card = page.locator('.agr-steps .agr-card').first();
+    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Second payment', 'Final payment']);
+    await expect(card.locator('[data-agr-later-row] dd')).toHaveText([SECOND, FINAL]);
+    // innerText leaves out the hidden balance row; textContent would not.
+    expect(await card.innerText()).not.toMatch(/balance/i);
+    await expect(page.locator('[data-agr-step2-title]')).toHaveText('Step 2 · Your engagement session');
+    await expect(page.locator('[data-agr-signed-doc] #sec-1')).toContainText('Final payment');
+  });
+
+  test('a civil booking still shows its balance line and no later payment rows', async ({ page }) => {
+    await mockDoc(page, [[200, signedPayload('share')]]);
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
+    await expect(page.locator('[data-agr-balance-row]')).toBeVisible();
+    await expect(page.locator('[data-agr-balance]')).toHaveText('$250.25, e-transfer or cash');
+    await expect(page.locator('[data-agr-later-row]')).toHaveCount(0);
   });
 });

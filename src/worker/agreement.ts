@@ -4,7 +4,7 @@
 // in D1, whose atomic insert means a link is signed once and never overwritten, and
 // an upstream failure never loses a signature. Live and test data never mix.
 import { longDate, money, shortDate, torontoIsoDate, torontoStamp } from '../lib/agreement/format';
-import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, fillSignDate, renderVariant, signLabels } from '../lib/agreement/render';
+import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, fillSignDate, laterPaymentRows, renderVariant, signLabels } from '../lib/agreement/render';
 import { sha256Hex } from '../lib/agreement/hash';
 import type { BookingFacts } from '../lib/agreement/types';
 import { BUSINESS, claimAttempt, copyDue, firstWord, sendCopy, signedPdfHtml } from './agreement-copy';
@@ -145,15 +145,19 @@ const mustLoadByNumber = async (s: Store, body: Record<string, unknown>): Promis
 // ------------------------------------------------------------------ payloads
 
 // Computed from today's data files only when a booking or record has none stored (made before they were).
-const summaryOf = (f: BookingFacts): StoredSummary => ({
-  package: f.package_name,
-  date: longDate(f.event_date),
-  total: money(f.total),
-  retainer: money(f.retainer),
-  balance: money(f.balance),
-  balance_how: f.balance_cash === true ? 'in cash' : 'e-transfer or cash',
-  etransfer_email: BUSINESS.etransferEmail,
-});
+const summaryOf = (f: BookingFacts): StoredSummary => {
+  const later = laterPaymentRows(f);
+  return {
+    package: f.package_name,
+    date: longDate(f.event_date),
+    total: money(f.total),
+    retainer: money(f.retainer),
+    balance: money(f.balance),
+    balance_how: f.balance_cash === true ? 'in cash' : 'e-transfer or cash',
+    etransfer_email: BUSINESS.etransferEmail,
+    ...(later ? { later_payments: later } : {}),
+  };
+};
 
 const labelsOf = (f: BookingFacts): StoredLabels => ({ ...signLabels(f), name_expected: f.client_name });
 
@@ -258,6 +262,8 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     retainer: facts.retainer,
     balance: facts.balance,
     balance_cash: facts.balance_cash === true,
+    // Only for a booking paid in three parts.
+    ...(facts.second_payment === undefined ? {} : { second_payment: facts.second_payment, final_payment: facts.final_payment }),
   });
 }
 

@@ -40,6 +40,9 @@ export interface StoredSummary {
   // How the balance is paid: 'in cash' or 'e-transfer or cash'. Missing on summaries stored before it existed.
   balance_how?: string;
   etransfer_email: string;
+  // A booking paid in three parts: the second and the final payment, ready to show. Missing on every
+  // other booking, and on summaries stored before it existed. When present, the page shows these instead of the balance.
+  later_payments?: { label: string; text: string }[];
 }
 
 export interface BookingRecord {

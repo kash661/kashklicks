@@ -32,6 +32,7 @@ interface Summary {
   balance: string;
   balance_how?: string; // missing on bookings made before it was stored
   etransfer_email: string;
+  later_payments?: { label: string; text: string }[]; // only a booking paid in three parts: shown instead of the balance
 }
 interface Base {
   ok: true;
@@ -123,6 +124,20 @@ const isReady = (a: Answer): boolean =>
 
 /** Joins the parts when every one is a string; null when any is missing. */
 const text = (...parts: unknown[]): string | null => (parts.every((p) => typeof p === 'string') ? parts.join('') : null);
+
+/** The later payments of a booking paid in three parts, as [label, text] rows; null when there are none or they are malformed. */
+const laterPayments = (s: Summary | undefined): [string, string][] | null => {
+  const list = s?.later_payments;
+  if (!Array.isArray(list) || !list.length || !list.every((r) => typeof r?.label === 'string' && typeof r?.text === 'string')) return null;
+  return list.map((r) => [r.label, r.text]);
+};
+
+/** One <div><dt>…</dt><dd>…</dd></div> row of an agr-rows list. */
+const dlRow = (dt: string, dd: string): HTMLDivElement => {
+  const row = document.createElement('div');
+  row.append(Object.assign(document.createElement('dt'), { textContent: dt }), Object.assign(document.createElement('dd'), { textContent: dd }));
+  return row;
+};
 
 function setBusy(btn: HTMLButtonElement, on: boolean, label?: string) {
   btn.disabled = on;
@@ -255,6 +270,19 @@ export function initAgreement(): void {
     put('[data-agr-etransfer]', text(p.summary?.etransfer_email));
     put('[data-agr-reference]', text(p.number));
     put('[data-agr-balance]', text(p.summary?.balance, ', ', p.summary?.balance_how ?? 'e-transfer or cash'));
+    // Paid in three parts: the second and the final payment take the place of the balance line.
+    const later = laterPayments(p.summary);
+    const balanceRow = main.querySelector<HTMLElement>('[data-agr-balance-row]');
+    const rowList = balanceRow?.parentElement;
+    if (balanceRow && rowList) {
+      balanceRow.hidden = later !== null;
+      rowList.querySelectorAll('[data-agr-later-row]').forEach((el) => el.remove());
+      for (const [dt, dd] of later ?? []) {
+        const row = dlRow(dt, dd);
+        row.dataset.agrLaterRow = '';
+        rowList.append(row);
+      }
+    }
     put('[data-agr-step2-title]', text('Step 2 · ', p.labels?.after_signing?.title));
     put('[data-agr-step2-text]', text(p.labels?.after_signing?.text));
     put('[data-agr-signed-footer]', text('Signed by ', s.signed_name, ' · Record ', p.number, ' · Kept for 7 years'));
@@ -336,15 +364,10 @@ export function initAgreement(): void {
       ['Date', p.summary.date],
       ['Total', p.summary.total],
       ['Retainer', p.summary.retainer],
+      ...(laterPayments(p.summary) ?? []),
       ['Sharing', choice === 'private' ? p.labels.private_option : p.labels.share_option],
     ];
-    pick('[data-agr-review-rows]', dlg).replaceChildren(
-      ...rows.map(([dt, dd]) => {
-        const row = document.createElement('div');
-        row.append(Object.assign(document.createElement('dt'), { textContent: dt }), Object.assign(document.createElement('dd'), { textContent: dd }));
-        return row;
-      }),
-    );
+    pick('[data-agr-review-rows]', dlg).replaceChildren(...rows.map(([dt, dd]) => dlRow(dt, dd)));
     if (nativeDialog) dlg.showModal();
     else {
       // No <dialog>: the panel shows inline, and the page behind it is not inert, so lock the form.
