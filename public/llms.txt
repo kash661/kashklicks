@@ -119,6 +119,7 @@ Couples, planners, and search engines find this studio via a wide range of query
 
 Recent real sessions and galleries, newest first. Each links to the full online gallery.
 
+- [C + A at Bau-Xi Gallery, 340 Dundas Street West, Toronto](https://kashklicks.ca/portfolio/c-a-bau-xi-gallery/): Proposal session. 2026-11-06.
 - [David + Alvina at Toronto City Hall, TD Centre & Commerce Court, Toronto](https://kashklicks.ca/portfolio/david-alvina/): Civil Ceremony session. 2026-10-26.
 - [Richie + Aimee at Alexander Muir Memorial Gardens, Toronto](https://kashklicks.ca/portfolio/richie-aimee/): Proposal session. 2026-10-14.
 - [Harnoor + Harsh at RC Harris, High Park & Biidaasige Park, Toronto](https://kashklicks.ca/portfolio/harnoor-harsh/): Pre-Wedding session, with cinematic film. 2026-10-11.
@@ -162,6 +163,7 @@ Recent real sessions and galleries, newest first. Each links to the full online 
 
 ## Blog
 
+- [An Art Gallery Proposal at Bau-Xi, Across From the AGO](https://kashklicks.ca/blog/bau-xi-gallery-proposal-toronto/): Planning an indoor proposal in Toronto? How a small evening proposal at Bau-Xi Gallery on Dundas Street West worked, the best rooms, timing, and how to ask the gallery.
 - [Toronto City Hall Weddings Pause in 2027: Where to Marry Instead](https://kashklicks.ca/blog/toronto-city-hall-weddings-2027-alternatives/): Toronto City Hall wedding ceremonies pause from January 2027. What changes, what does not, and other places to marry: Old City Hall, civic centres and more.
 - [Fall Engagement Photos in Toronto: Where and When to Shoot](https://kashklicks.ca/blog/fall-engagement-photos-toronto/): Fall engagement photos in Toronto from one real October day: RC Harris in the morning, High Park colour after lunch, and the skyline after dark.
 - [Rainy Day Engagement Photos in Toronto: Why Grey Skies Work](https://kashklicks.ca/blog/rainy-day-engagement-photos-toronto/): Rainy day engagement photos in Toronto, from one grey October Sunday: cloud at RC Harris, wet roads in High Park, light rain on the skyline that night.
@@ -333,6 +335,7 @@ Full markdown representations of each page are available at:
 - [Services · Celebrations](https://kashklicks.ca/mirrors/services-celebrations.md)
 - [Services · Marquee Letters](https://kashklicks.ca/mirrors/services-marquee-letters.md)
 - [Blog](https://kashklicks.ca/mirrors/blog.md)
+- [Blog · An Art Gallery Proposal at Bau-Xi, Across From the AGO](https://kashklicks.ca/mirrors/blog/bau-xi-gallery-proposal-toronto.md)
 - [Blog · Toronto City Hall Weddings Pause in 2027: Where to Marry Instead](https://kashklicks.ca/mirrors/blog/toronto-city-hall-weddings-2027-alternatives.md)
 - [Blog · Fall Engagement Photos in Toronto: Where and When to Shoot](https://kashklicks.ca/mirrors/blog/fall-engagement-photos-toronto.md)
 - [Blog · Rainy Day Engagement Photos in Toronto: Why Grey Skies Work](https://kashklicks.ca/mirrors/blog/rainy-day-engagement-photos-toronto.md)

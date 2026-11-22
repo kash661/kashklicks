@@ -12,6 +12,14 @@ AD Photography is a solo, Toronto-based wedding and pre-wedding photography and 
 
 ## Published Posts
 
+### An Art Gallery Proposal at Bau-Xi, Across From the AGO
+
+- **URL:** https://kashklicks.ca/blog/bau-xi-gallery-proposal-toronto/
+- **Mirror:** https://kashklicks.ca/mirrors/blog/bau-xi-gallery-proposal-toronto.md
+- **Published:** 2026-11-21
+- **Tags:** Photo Location, Bau-Xi Gallery, Proposal, Engagement, Downtown Toronto, Indoor
+- **Summary:** Planning an indoor proposal in Toronto? How a small evening proposal at Bau-Xi Gallery on Dundas Street West worked, the best rooms, timing, and how to ask the gallery.
+
 ### Toronto City Hall Weddings Pause in 2027: Where to Marry Instead
 
 - **URL:** https://kashklicks.ca/blog/toronto-city-hall-weddings-2027-alternatives/

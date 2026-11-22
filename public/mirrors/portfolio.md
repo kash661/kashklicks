@@ -10,7 +10,14 @@
 
 Every gallery below is a real session photographed by Akash. Categories cover wedding days, pre-wedding and engagement sessions, and civil ceremonies across Toronto, the GTA, and beyond. Galleries marked with film include a cinematic video.
 
-## Sessions (40)
+## Sessions (41)
+
+### C + A
+
+- **Gallery:** https://kashklicks.ca/portfolio/c-a-bau-xi-gallery/
+- **Type:** Proposal
+- **Location:** Bau-Xi Gallery, 340 Dundas Street West, Toronto
+- **Date:** 2026-11-06
 
 ### David + Alvina
 
