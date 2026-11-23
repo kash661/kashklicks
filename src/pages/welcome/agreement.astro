@@ -1,8 +1,10 @@
 ---
 // Private agreement page: /welcome/agreement/?k=<token>.
-// The couple reads the agreement, chooses sharing or private, types their name,
-// reviews and signs. The document comes only from the server payload and is
-// rendered by src/lib/agreement/html.ts; this file holds the shell and the styles.
+// The couple reads the agreement in seven parts (main points, then the full wording one tap away),
+// ticks the extras they want, chooses sharing or private, types their name, reviews and signs.
+// The document comes only from the server payload and is rendered by src/lib/agreement/html.ts;
+// this file holds the shell and the styles. The parts, the glance, the tick boxes and the recap are
+// built by the script (src/scripts/agreement-ready.ts).
 // Kept out of search: noindex here, x-robots-tag from the worker, not in the sitemap.
 // Everything the script or the spec selects carries a data-agr-* attribute.
 import PrivateLayout from '../../layouts/PrivateLayout.astro';
@@ -16,7 +18,6 @@ const WHATSAPP = 'https://wa.me/16476137430';
   <main class="agr" data-agr-state="loading" aria-busy="true">
     <header class="agr-top">
       <p class="agr-brand">AD Photography</p>
-      <p class="agr-kicker">Private agreement</p>
     </header>
 
     <div class="agr-view agr-loading" data-agr-view="loading" aria-hidden="true">
@@ -26,87 +27,105 @@ const WHATSAPP = 'https://wa.me/16476137430';
       <span class="agr-skel"></span>
     </div>
 
-    <div class="agr-view" data-agr-view="ready">
+    <div class="agr-view agr-ready" data-agr-view="ready">
       <section class="agr-hero">
-        <p class="agr-eyebrow" data-agr-eyebrow></p>
-        <h1 class="agr-title" tabindex="-1">Your <em>agreement.</em></h1>
-        <p class="agr-lede">Everything we agreed, in one place. Read it through, then sign at the bottom. It takes about fifteen minutes.</p>
-        <ul class="agr-bullets" data-agr-bullets></ul>
+        <h1 class="agr-title" id="agr-title" tabindex="-1" data-agr-title></h1>
+        <p class="agr-who" data-agr-who></p>
+        <p class="agr-booking" data-agr-booking></p>
       </section>
 
-      <nav class="agr-toc" aria-labelledby="agr-toc-title">
-        <p class="agr-cap" id="agr-toc-title">On this page</p>
-        <ol data-agr-toc></ol>
-      </nav>
+      <div class="agr-lede-block" data-agr-lede></div>
 
-      <div class="agr-doc" data-agr-doc></div>
+      <section class="agr-glance" aria-labelledby="agr-glance-title">
+        <h2 class="agr-glance__title" id="agr-glance-title">At a glance</h2>
+        <dl class="agr-glance__grid" data-agr-glance></dl>
+      </section>
 
-      <!-- Moved into section 22, after its clause, by the script. -->
-      <div class="agr-signbox" data-agr-signbox tabindex="-1">
-        <div class="agr-sigcards">
-          <div class="agr-card">
-            <p class="agr-cap">AD Photography</p>
-            <p class="agr-bizline" data-agr-business-signature></p>
+      <!-- One form for every control: the tick boxes and the sharing cards are made at run time inside it. -->
+      <form class="agr-form" data-agr-form novalidate>
+        <div class="agr-areas">
+          <nav class="agr-toc" aria-labelledby="agr-toc-title">
+            <h2 class="agr-toc__title" id="agr-toc-title">Contents</h2>
+            <ul class="agr-toc__list" data-agr-toc></ul>
+          </nav>
+
+          <div class="agr-main">
+            <div class="agr-parts" data-agr-doc></div>
+
+            <section id="sign" class="agr-sign" data-agr-signbox aria-labelledby="agr-sign-title">
+              <h2 class="agr-sign__title" id="agr-sign-title" tabindex="-1" data-agr-sign-title>Sign your agreement</h2>
+              <dl class="agr-kv" data-agr-recap></dl>
+              <ul class="agr-bullets" data-agr-bullets></ul>
+              <!-- Disabled as one, with the tick boxes and the sharing cards, while the review is open inline and while the sign request is out. -->
+              <fieldset class="agr-controls" data-agr-controls>
+                <div class="agr-field">
+                  <label for="agr-name">Your full legal name</label>
+                  <input
+                    id="agr-name"
+                    class="agr-input"
+                    type="text"
+                    autocomplete="name"
+                    autocapitalize="words"
+                    autocorrect="off"
+                    spellcheck="false"
+                    enterkeyhint="done"
+                    aria-describedby="agr-signer"
+                    data-agr-name
+                  />
+                  <p class="agr-note" id="agr-signer" data-agr-signer></p>
+                </div>
+                <label class="agr-opt">
+                  <input class="agr-opt-input" type="checkbox" data-agr-agree />
+                  <span class="agr-opt-frame" aria-hidden="true"></span>
+                  <span class="agr-opt-box" aria-hidden="true"><svg class="agr-opt-mark" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 8.5l3 3 6-7"></path></svg></span>
+                  <span class="agr-opt-text" data-agr-agree-label></span>
+                </label>
+              </fieldset>
+              <p class="agr-error" data-agr-error tabindex="-1" hidden></p>
+              <div class="agr-submit">
+                <button type="submit" class="agr-btn" data-agr-review aria-describedby="agr-missing" disabled>Review and sign</button>
+                <!-- Always here, never hidden: empty when nothing is missing. -->
+                <p class="agr-missing" id="agr-missing" data-agr-missing aria-live="polite"></p>
+              </div>
+              <p class="agr-note">Next you see a short summary of your names, your date and your total. You confirm it, and the agreement is signed. I record the date, the time and the exact text you signed, and I email you a PDF copy right away.</p>
+              <div class="agr-actions">
+                <div class="agr-actions__item">
+                  <button type="button" class="agr-btn agr-btn--ghost" data-agr-print>Download a copy (PDF)</button>
+                  <!-- Shown once the button is pressed: some in-app browsers cannot print. -->
+                  <p class="agr-note agr-print-hint" data-agr-print-hint role="status" hidden>Nothing happened? Open this page in Safari or Chrome, then print it or save it as a PDF.</p>
+                </div>
+                <div class="agr-actions__item">
+                  <button type="button" class="agr-link" data-agr-not-yet>Something is wrong, I do not want to sign yet</button>
+                </div>
+              </div>
+              <p class="agr-note agr-questions">Questions before you sign? Reply to the email or message Akash on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
+
+              <dialog class="agr-review" data-agr-dialog aria-labelledby="agr-review-title">
+                <h2 class="agr-review__title" id="agr-review-title" data-agr-dialog-title tabindex="-1">Check and sign</h2>
+                <!-- The rows' own scroll area. It takes keyboard focus: Safari does not make a scroll area reachable by Tab on its own. -->
+                <div class="agr-review__scroll" tabindex="0" role="group" aria-labelledby="agr-review-title" data-agr-review-scroll>
+                  <dl class="agr-rows" data-agr-review-rows></dl>
+                </div>
+                <div class="agr-review__buttons">
+                  <button type="button" class="agr-btn agr-btn--ghost" data-agr-back>Go back</button>
+                  <button type="button" class="agr-btn" data-agr-sign>Sign the agreement</button>
+                </div>
+              </dialog>
+            </section>
           </div>
-
-          <form class="agr-card agr-card--you" data-agr-form novalidate>
-            <p class="agr-cap">You</p>
-            <!-- Disabled as one while the review is open inline and while the sign request is out. -->
-            <fieldset class="agr-controls" data-agr-controls>
-            <div class="agr-field">
-              <label for="agr-name">Your full legal name</label>
-              <input id="agr-name" class="agr-input" type="text" autocomplete="name" aria-describedby="agr-signer" data-agr-name />
-              <p class="agr-note" id="agr-signer" data-agr-signer></p>
-            </div>
-            <fieldset class="agr-field">
-              <legend>Sharing your work (section 15)</legend>
-              <label class="agr-check">
-                <input type="radio" name="agr-choice" value="share" data-agr-choice="share" />
-                <span data-agr-share-option></span>
-              </label>
-              <label class="agr-check">
-                <input type="radio" name="agr-choice" value="private" data-agr-choice="private" />
-                <span data-agr-private-option></span>
-              </label>
-              <p class="agr-status" data-agr-choice-status role="status"></p>
-            </fieldset>
-            <label class="agr-check">
-              <input type="checkbox" data-agr-agree />
-              <span data-agr-agree-label></span>
-            </label>
-            </fieldset>
-            <p class="agr-error" data-agr-error tabindex="-1" hidden></p>
-            <button type="submit" class="agr-btn" data-agr-review disabled>Review and sign</button>
-            <p class="agr-note">Next you see a short summary of your names, your date and your total. You confirm it, and the agreement is signed. I record the date, the time and the exact text you signed, and I email you a PDF copy right away.</p>
-            <div class="agr-actions">
-              <button type="button" class="agr-btn agr-btn--ghost" data-agr-print>Download a copy (PDF)</button>
-              <!-- Shown once the button is pressed: some in-app browsers cannot print. -->
-              <p class="agr-note agr-print-hint" data-agr-print-hint role="status" hidden>Nothing happened? Open this page in Safari or Chrome, then print it or save it as a PDF.</p>
-              <button type="button" class="agr-link" data-agr-not-yet>Something is wrong, I do not want to sign yet</button>
-            </div>
-          </form>
         </div>
-        <p class="agr-note agr-questions">Questions before you sign? Reply to the email or message Akash on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
-
-        <dialog class="agr-review" data-agr-dialog aria-labelledby="agr-review-title">
-          <h2 class="agr-review__title" id="agr-review-title" data-agr-dialog-title tabindex="-1">Check and sign</h2>
-          <dl class="agr-rows" data-agr-review-rows></dl>
-          <div class="agr-review__buttons">
-            <button type="button" class="agr-btn agr-btn--ghost" data-agr-back>Go back</button>
-            <button type="button" class="agr-btn" data-agr-sign>Sign the agreement</button>
-          </div>
-        </dialog>
-      </div>
+      </form>
     </div>
 
     <div class="agr-view" data-agr-view="signed" data-agr-signed>
       <section class="agr-hero agr-signed-head">
         <p class="agr-status-line" data-agr-already hidden>This agreement was already signed. Here is the signed copy.</p>
+        <h1 class="agr-title" data-agr-thanks tabindex="-1">Thank you, <em data-agr-thanks-name></em></h1>
+        <!-- Under the title, never above it: no label sits over a title. -->
         <p class="agr-ok">
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
           <span data-agr-signed-on></span>
         </p>
-        <h1 class="agr-title" data-agr-thanks tabindex="-1">Thank you, <em data-agr-thanks-name></em></h1>
         <p class="agr-lede" data-agr-copy-line></p>
       </section>
 
@@ -118,7 +137,7 @@ const WHATSAPP = 'https://wa.me/16476137430';
             <div><dt>Send an e-transfer to</dt><dd data-agr-etransfer></dd></div>
             <div><dt>Message or reference</dt><dd data-agr-reference></dd></div>
             <div data-agr-balance-row><dt>Balance on the day</dt><dd data-agr-balance></dd></div>
-            <!-- A booking paid in three parts shows its second and final payment here instead, added by the script. -->
+            <!-- A booking paid in three parts shows its second and final payment here instead, and a ticked deposit its own row, added by the script. -->
           </dl>
         </div>
         <div class="agr-card">
@@ -138,9 +157,9 @@ const WHATSAPP = 'https://wa.me/16476137430';
 
     <div class="agr-view agr-msg" data-agr-view="not-yet">
       <p class="agr-msg__text" data-agr-not-yet-msg tabindex="-1">No problem. Nothing is signed and nothing is owed. Tell me what is wrong and I will fix it.</p>
-      <div class="agr-signbox">
+      <div class="agr-fix">
         <form class="agr-card agr-card--you" data-agr-fix-form novalidate>
-          <div class="agr-field">
+          <div class="agr-field agr-field--wide">
             <label for="agr-fix">What should I fix?</label>
             <textarea id="agr-fix" class="agr-input" rows="5" maxlength="1000" data-agr-fix-text></textarea>
           </div>
@@ -148,7 +167,7 @@ const WHATSAPP = 'https://wa.me/16476137430';
           <button type="submit" class="agr-btn" data-agr-fix-send>Send</button>
         </form>
         <p class="agr-msg__text" data-agr-fix-done role="status" tabindex="-1" hidden>Thank you. I got your message. Nothing is signed. I will fix it and write back to you.</p>
-        <div class="agr-actions">
+        <div class="agr-actions agr-actions--stack">
           <p class="agr-note agr-questions">You can also reply to the email or message me on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>.</p>
           <button type="button" class="agr-btn agr-btn--ghost" data-agr-back-to-doc>Back to the agreement</button>
         </div>
@@ -181,29 +200,31 @@ const WHATSAPP = 'https://wa.me/16476137430';
   </main>
 </PrivateLayout>
 
-<!-- Global, scoped under .agr: the document and the signature lines are built at runtime, and Astro's scoped styles do not reach them. -->
+<!-- Global, scoped under .agr: the parts, the document and the signature lines are built at runtime, and Astro's scoped styles do not reach them. -->
 <style is:global>
   html { overflow-anchor: none; }
 
   .agr {
     --agr-ok: #2f6b3a;
-    --agr-line: var(--color-surface-container);
-    --agr-gutter: 24px;
-    max-width: 880px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 28px var(--agr-gutter) 72px;
+    padding: 24px clamp(16px, 4vw, 48px) 120px;
+    /* A phone with a notch, turned sideways: viewport-fit=cover lays the page under the camera housing. */
+    padding-left: max(clamp(16px, 4vw, 48px), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(16px, 4vw, 48px), env(safe-area-inset-right, 0px));
     box-sizing: border-box;
     color: var(--color-on-surface);
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.6;
     overflow-wrap: anywhere;
   }
-  @media (max-width: 480px) { .agr { --agr-gutter: 16px; } }
   .agr *, .agr *::before, .agr *::after { box-sizing: border-box; }
   html:has(.agr-ribbon:not([hidden])) .agr { padding-top: 64px; }
+  /* Not h1: the big title keeps its -0.01em (.agr-title). */
+  .agr h2, .agr h3, .agr h4 { letter-spacing: normal; }
 
-  /* Views: only the one for the current state shows. */
+  /* Views: only the one for the current state shows. Every view but the ready one keeps a column of 880 px, left aligned. */
   .agr-view { display: none; }
   .agr[data-agr-state='loading'] [data-agr-view='loading'],
   .agr[data-agr-state='ready'] [data-agr-view='ready'],
@@ -211,6 +232,7 @@ const WHATSAPP = 'https://wa.me/16476137430';
   .agr[data-agr-state='not-yet'] [data-agr-view='not-yet'],
   .agr[data-agr-state='gone'] [data-agr-view='gone'],
   .agr[data-agr-state='error'] [data-agr-view='error'] { display: block; }
+  .agr-view:not([data-agr-view='ready']) { max-width: 880px; }
 
   .agr-ribbon {
     position: fixed;
@@ -229,159 +251,335 @@ const WHATSAPP = 'https://wa.me/16476137430';
   }
   .agr-ribbon[hidden] { display: none; }
 
-  .agr-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-  .agr-brand { margin: 0; font-family: var(--font-serif); font-size: 1.625rem; font-weight: var(--fw-medium); letter-spacing: 0.02em; }
-  .agr-kicker, .agr-cap, .agr-eyebrow {
-    margin: 0;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-on-surface-variant);
-  }
-  .agr-eyebrow { font-size: 0.8125rem; letter-spacing: 0.1em; }
+  .agr-top { display: flex; align-items: center; min-height: 44px; padding-bottom: 16px; border-bottom: 1px solid var(--color-surface-container); }
+  .agr-brand { margin: 0; font-family: var(--font-sans); font-size: 1.0625rem; font-weight: var(--fw-medium); letter-spacing: 0.01em; }
+  /* Normal case, no tracking: the approved picture has no uppercase label anywhere. */
+  .agr-cap { margin: 0; font-size: 0.9375rem; font-weight: var(--fw-medium); letter-spacing: normal; color: var(--color-on-surface-variant); }
 
   /* Loading */
   .agr-loading { padding-top: 64px; }
-  .agr-skel { display: block; height: 18px; margin-bottom: 16px; border-radius: 4px; background: var(--color-surface-dim); max-width: 620px; animation: agr-pulse 1.4s ease-in-out infinite; }
+  .agr-skel { display: block; height: 18px; margin-bottom: 16px; border-radius: 8px; background: var(--color-surface-dim); max-width: 620px; animation: agr-pulse 1.4s ease-in-out infinite; }
   .agr-skel--short { width: 40%; }
   .agr-skel--title { height: 56px; width: 70%; margin: 8px 0 24px; }
   @keyframes agr-pulse { 50% { opacity: 0.5; } }
-  @media (prefers-reduced-motion: reduce) { .agr-skel { animation: none; } }
 
   /* Hero */
-  .agr-hero { display: flex; flex-direction: column; gap: 20px; padding: 64px 0 40px; }
-  .agr-title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: clamp(2.75rem, 8vw, 4rem); line-height: 1.05; letter-spacing: -0.02em; }
+  .agr-hero { display: flex; flex-direction: column; gap: 16px; padding-top: clamp(40px, 7vw, 72px); }
+  .agr-title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: clamp(2.625rem, 7vw, 5rem); line-height: 1.04; letter-spacing: -0.01em; }
+  .agr-ready .agr-title { max-width: 14ch; }
   .agr-title em { font-style: italic; font-weight: var(--fw-regular); }
   .agr-title:focus { outline: none; }
   .agr-title:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 4px; }
-  .agr-lede { margin: 0; max-width: 620px; font-size: 1.125rem; color: var(--color-on-surface-variant); }
-  .agr-bullets { margin: 0; padding-left: 20px; max-width: 620px; list-style: disc; color: var(--color-on-surface-variant); display: flex; flex-direction: column; gap: 6px; }
+  .agr-who { margin: 0; font-size: 1.1875rem; color: var(--color-on-surface-variant); }
+  .agr-booking { margin: 0; font-size: 0.9375rem; color: var(--color-on-surface-variant); }
 
-  /* On this page */
-  .agr-toc { border-top: 1px solid var(--agr-line); padding: 20px 0 48px; display: flex; flex-direction: column; gap: 12px; }
-  .agr-toc ol { margin: 0; padding: 0; list-style: none; columns: 260px 2; column-gap: 32px; font-size: 0.9375rem; }
-  .agr-toc li { break-inside: avoid; }
-  .agr-toc a { display: inline-block; padding: 6px 0; color: var(--color-on-surface); text-decoration: none; text-underline-offset: 3px; }
-  .agr-toc a:hover { text-decoration: underline; color: var(--color-primary); }
-  .agr-toc a:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  /* Lede */
+  .agr-lede-block { margin-top: clamp(40px, 6vw, 64px); display: flex; flex-direction: column; gap: 16px; max-width: 640px; }
+  .agr-lede-block p { margin: 0; }
+  .agr-lede__lead { font-family: var(--font-serif); font-size: clamp(1.625rem, 3.4vw, 2.125rem); line-height: 1.25; }
+  .agr-lede__line { font-size: 1.1875rem; line-height: 1.6; }
 
-  /* The document */
-  .agr-doc { display: flex; flex-direction: column; gap: 48px; }
-  .agr-sec { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 24px; }
-  html:has(.agr-ribbon:not([hidden])) .agr-sec { scroll-margin-top: 56px; }
-  .agr-sec h2 { margin: 0 0 4px; font-family: var(--font-serif); font-weight: var(--fw-medium); font-size: clamp(1.625rem, 4vw, 2.125rem); line-height: 1.15; }
-  .agr-sec p { margin: 0; }
-  .agr-sec ul { margin: 0; padding-left: 22px; list-style: disc; display: flex; flex-direction: column; gap: 6px; }
-  .agr-n { font-weight: var(--fw-bold); }
-  #sec-0 { background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; padding: 24px; }
-  #sec-0 h2 { font-size: clamp(1.5rem, 3.5vw, 1.875rem); }
-  /* The document's own title and intro, above section 0, as in the PDF. */
-  .agr-doc-head { display: flex; flex-direction: column; gap: 12px; }
-  .agr-doc-title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-medium); font-size: clamp(1.75rem, 4.5vw, 2.375rem); line-height: 1.15; }
-  .agr-intro { margin: 0; max-width: 620px; color: var(--color-on-surface-variant); }
+  /* At a glance: the grid lines come from the grid's own background; the last cell fills its row. */
+  .agr-glance { margin-top: clamp(40px, 6vw, 64px); display: flex; flex-direction: column; gap: 16px; }
+  .agr-glance__title { margin: 0; font-family: var(--font-sans); font-size: 1.25rem; font-weight: var(--fw-medium); line-height: 1.3; }
+  .agr-glance__grid { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--color-surface-container); border: 1px solid var(--color-surface-container); border-radius: 14px; overflow: hidden; }
+  .agr-glance__cell { background: var(--color-surface); padding: 20px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .agr-glance__cell dt { font-size: 0.9375rem; color: var(--color-on-surface-variant); }
+  .agr-glance__cell dd { margin: 0; font-size: 1.125rem; font-weight: var(--fw-medium); line-height: 1.4; }
+  .agr-glance__cell--total dd { font-variant-numeric: tabular-nums; }
+  .agr-glance__cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  @media (min-width: 900px) {
+    .agr-glance__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .agr-glance__cell:last-child:nth-child(4n + 1) { grid-column: 1 / -1; }
+    .agr-glance__cell:last-child:nth-child(4n + 2) { grid-column: auto / span 3; }
+    .agr-glance__cell:last-child:nth-child(4n + 3) { grid-column: auto / span 2; }
+  }
+  .agr-undecided { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--color-on-surface-variant); }
 
-  .agr-table { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; overflow: hidden; margin: 4px 0 8px; }
-  .agr-table td { padding: 14px 18px; vertical-align: top; border-bottom: 1px solid var(--agr-line); font-weight: var(--fw-medium); }
-  .agr-table tr:last-child td { border-bottom: 0; }
-  .agr-table td.agr-label { width: 40%; color: var(--color-on-surface-variant); font-weight: var(--fw-regular); }
-  .agr-table strong { font-weight: var(--fw-bold); }
+  /* Contents and parts: side by side from 960 px, contents above the parts below that. Nothing sticky. */
+  .agr-form { margin: 0; }
+  .agr-areas { margin-top: clamp(56px, 8vw, 96px); display: flex; flex-direction: column; gap: 48px; }
+  @media (min-width: 960px) {
+    .agr-areas { display: grid; grid-template-columns: 220px minmax(0, 1fr); column-gap: 72px; align-items: start; }
+  }
+  .agr-toc { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .agr-toc__title { margin: 0 0 0 12px; font-family: var(--font-sans); font-size: 1.0625rem; font-weight: var(--fw-medium); line-height: 1.3; }
+  .agr-toc__list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; }
+  @media (min-width: 960px) { .agr-toc__list { grid-template-columns: minmax(0, 1fr); } }
+  .agr-toc__list a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 12px; border-radius: 8px; color: var(--color-on-surface); font-size: 1.0625rem; line-height: 1.3; text-decoration: none; transition: background-color 150ms ease; }
+  .agr-toc__list a:active { background: var(--color-surface-container); }
+  .agr-toc__list a:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  .agr-toc__n { min-width: 1ch; color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums; }
+  @media (hover: hover) { .agr-toc__list a:hover { background: var(--color-surface-dim); } }
+
+  .agr-main { min-width: 0; display: flex; flex-direction: column; gap: clamp(64px, 8vw, 96px); }
+  .agr-parts { min-width: 0; display: flex; flex-direction: column; gap: clamp(64px, 8vw, 96px); }
+  .agr-part { min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+  .agr-part + .agr-part { padding-top: clamp(40px, 5vw, 56px); border-top: 1px solid var(--color-surface-container); }
+  .agr-part__title { margin: 0; display: flex; align-items: baseline; gap: 20px; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: clamp(1.875rem, 4vw, 2.625rem); line-height: 1.15; }
+  .agr-part__n { font-size: clamp(3.25rem, 6vw, 4.75rem); line-height: 1; color: var(--color-on-surface-variant); }
+  .agr-part__title:focus, .agr-sign__title:focus { outline: none; }
+  .agr-part__title:focus-visible, .agr-sign__title:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 4px; }
+
+  /* Jump targets, and what focus lands on when the review closes: the ribbon in test mode covers the top. */
+  .agr [data-agr-part], .agr #sign, .agr #agr-sharing, .agr .agr-disc, .agr .agr-error, .agr [data-agr-review] { scroll-margin-top: 24px; }
+  html:has(.agr-ribbon:not([hidden])) .agr [data-agr-part],
+  html:has(.agr-ribbon:not([hidden])) .agr #sign,
+  html:has(.agr-ribbon:not([hidden])) .agr #agr-sharing,
+  html:has(.agr-ribbon:not([hidden])) .agr .agr-disc,
+  html:has(.agr-ribbon:not([hidden])) .agr .agr-error,
+  html:has(.agr-ribbon:not([hidden])) .agr [data-agr-review] { scroll-margin-top: 56px; }
+
+  /* Main points */
+  .agr-points { display: flex; flex-direction: column; gap: 14px; }
+  .agr-points__title { margin: 0; font-family: var(--font-sans); font-size: 1.0625rem; font-weight: var(--fw-medium); line-height: 1.6; }
+  .agr-points__list { margin: 0; padding-left: 1.25em; list-style: disc; display: flex; flex-direction: column; gap: 12px; max-width: 68ch; }
+  .agr-points__list li { padding-left: 4px; }
+  .agr-points__list li::marker { color: var(--color-on-surface-variant); }
+  .agr-points__list--quiet { gap: 8px; color: var(--color-on-surface-variant); }
+  .agr-points__note { margin: 8px 0 0; max-width: 68ch; color: var(--color-on-surface-variant); }
+  .agr-points a, .agr-missing a, .agr-questions a, .agr-msg a { color: var(--color-on-surface); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; border-radius: 6px; }
+  .agr-points a:active, .agr-missing a:active, .agr-questions a:active, .agr-msg a:active { text-decoration-thickness: 2px; }
+  .agr-points a:focus-visible, .agr-missing a:focus-visible, .agr-questions a:focus-visible, .agr-msg a:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
+  @media (hover: hover) {
+    .agr-points a:hover, .agr-missing a:hover, .agr-questions a:hover, .agr-msg a:hover { color: var(--color-on-surface-variant); }
+  }
+
+  /* Part 3: the total, the price lines and the payments of the shown mix. */
+  .agr-money { display: flex; flex-direction: column; gap: 16px; max-width: 860px; }
+  .agr-total-line { margin: 0; font-size: 1.1875rem; line-height: 1.5; max-width: 68ch; }
+  .agr-price-lines { margin: 0; max-width: 640px; border-top: 1px solid var(--color-surface-container); }
+  .agr-price-lines > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--color-surface-container); }
+  .agr-price-lines dt { flex: 1 1 auto; min-width: 0; }
+  .agr-price-lines dd { margin: 0; flex: none; font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+  .agr-pay { margin: 8px 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 12px; }
+  .agr-pay__step { display: flex; flex-direction: column; gap: 8px; padding: 20px; background: var(--color-surface); border: 1px solid var(--color-surface-container); border-radius: 14px; min-width: 0; }
+  .agr-pay__n { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-surface-dim); font-size: 0.9375rem; font-weight: var(--fw-medium); }
+  .agr-pay__title { font-weight: var(--fw-medium); }
+  .agr-pay__amount { font-size: 1.5rem; font-weight: var(--fw-medium); line-height: 1.2; font-variant-numeric: tabular-nums; }
+  .agr-pay__note { color: var(--color-on-surface-variant); }
+  .agr-deposit-line { margin: 0; max-width: 68ch; color: var(--color-on-surface-variant); }
+
+  /* Part 4 and part 5: the tick cards and the sharing cards */
+  /* The picture's values: 24 px between the blocks of part 4, 10 px from a heading to its own list. */
+  .agr-extras { display: flex; flex-direction: column; gap: 24px; max-width: 720px; }
+  .agr-extras__intro { margin: 0; max-width: 68ch; }
+  .agr-extras > .agr-points__title + .agr-points__list { margin-top: -14px; }
+  .agr-opts { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+  .agr-sharing__legend { margin: 0 0 12px; padding: 0; font-size: 1.1875rem; font-weight: var(--fw-medium); line-height: 1.4; }
+  .agr-sharing__points { margin-bottom: 8px; }
+
+  /* One card build for the tick cards, the sharing cards and the agree card. The real input lies over
+     the whole card; the frame draws the border, the ticked ring and the focus outline; the mark is drawn.
+     The colours that carry a state (the frame, the drawn marks, the primary button) have the token's own
+     value as a fallback: a browser without cascade layers (Safari before 15.4, the phones of the inline
+     review) never sees the tokens, which Tailwind writes in @layer theme, and must still show every state. */
+  .agr-opt { position: relative; isolation: isolate; display: flex; align-items: flex-start; gap: 16px; min-height: 44px; padding: 20px; border-radius: 14px; }
+  .agr-opt-input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .agr-opt-input:focus, .agr-opt-input:focus-visible { outline: none; }
+  .agr-opt-frame { position: absolute; inset: 0; z-index: -1; pointer-events: none; border: 1px solid var(--color-surface-container, #e4e2e1); border-radius: inherit; background: var(--color-surface, #ffffff); transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease; }
+  .agr-opt-box, .agr-opt-dot { flex: none; width: 26px; height: 26px; margin-top: 1px; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--color-on-surface-variant, #5c605c); background: var(--color-surface, #ffffff); transition: border-color 150ms ease, background-color 150ms ease; }
+  .agr-opt-box { border-radius: 6px; color: var(--color-on-dark, #faf9f6); }
+  .agr-opt-dot { border-radius: 50%; }
+  .agr-opt-box .agr-opt-mark { opacity: 0; transition: opacity 150ms ease; }
+  .agr-opt-dot .agr-opt-mark { width: 12px; height: 12px; border-radius: 50%; background: var(--color-surface-dark, #2c2824); opacity: 0; transition: opacity 150ms ease; }
+  .agr-opt-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .agr-opt-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; }
+  .agr-opt-title, .agr-opt-price { font-weight: var(--fw-medium); }
+  .agr-opt-price { font-variant-numeric: tabular-nums; }
+  .agr-opt-sub { display: block; color: var(--color-on-surface-variant); }
+  /* pressed */
+  .agr-opt-input:not(:disabled):active ~ .agr-opt-frame { background: var(--color-surface-dim, #f4f4f0); }
+  /* ticked */
+  .agr-opt-input:checked ~ .agr-opt-frame { border-color: var(--color-on-surface, #1a1a18); box-shadow: inset 0 0 0 1px var(--color-on-surface, #1a1a18); }
+  .agr-opt-input:checked ~ .agr-opt-box { background: var(--color-surface-dark, #2c2824); border-color: var(--color-surface-dark, #2c2824); }
+  .agr-opt-input:checked ~ .agr-opt-dot { border-color: var(--color-surface-dark, #2c2824); }
+  .agr-opt-input:checked ~ .agr-opt-box .agr-opt-mark,
+  .agr-opt-input:checked ~ .agr-opt-dot .agr-opt-mark { opacity: 1; }
+  /* keyboard focus */
+  .agr-opt-input:focus-visible ~ .agr-opt-frame { outline: 2px solid var(--color-on-surface, #1a1a18); outline-offset: 3px; }
+  /* locked: no hover or pressed change, a ticked card keeps its tick */
+  .agr-opt-input:disabled { cursor: not-allowed; }
+  .agr-opt-input:disabled ~ * { opacity: 0.6; }
+  .agr-opt-input:disabled:active ~ .agr-opt-frame { background: var(--color-surface, #ffffff); }
+  @media (hover: hover) {
+    .agr-opt-input:not(:disabled):not(:checked):hover ~ .agr-opt-frame { border-color: var(--color-on-surface-variant, #5c605c); }
+    .agr-opt-input:not(:disabled):hover ~ .agr-opt-box,
+    .agr-opt-input:not(:disabled):hover ~ .agr-opt-dot { border-color: var(--color-on-surface, #1a1a18); }
+    .agr-opt-input:not(:disabled):checked:hover ~ .agr-opt-box { border-color: var(--color-surface-dark, #2c2824); }
+  }
+  @media (forced-colors: active) {
+    .agr-opt-box, .agr-opt-dot { display: none; }
+    .agr-opt-input { position: static; flex: none; width: 22px; height: 22px; margin: 2px 0 0; opacity: 1; }
+    .agr-opt-frame { border-color: CanvasText; }
+  }
+
+  /* Status lines: next to the control they speak for. */
+  .agr-status { margin: 0; font-size: 0.9375rem; color: var(--agr-ok); }
+  /* An empty status line takes no room: the gap before it is taken back. It stays in the page, so it can still speak. */
+  .agr-part > .agr-status:empty { margin-top: -24px; }
+  .agr-extras > .agr-status:empty { margin-top: -24px; }
+  .agr [hidden] { display: none !important; }
+
+  /* Read the full wording */
+  .agr-disc { align-self: flex-start; max-width: 100%; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 20px; border: 1px solid var(--color-surface-container, #e4e2e1); border-radius: 999px; background: var(--color-surface, #ffffff); color: var(--color-on-surface, #1a1a18); font: inherit; font-size: 1.0625rem; font-weight: var(--fw-medium); line-height: 1.2; text-align: left; cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease; }
+  .agr-disc:active { background: var(--color-surface-dim, #f4f4f0); }
+  .agr-disc:focus-visible { outline: 2px solid var(--color-on-surface, #1a1a18); outline-offset: 3px; }
+  .agr-disc[aria-expanded='true'] { background: var(--color-surface-dim, #f4f4f0); }
+  .agr-disc__chev { flex: none; transition: transform 200ms ease; }
+  .agr-disc[aria-expanded='true'] .agr-disc__chev { transform: rotate(180deg); }
+  @media (hover: hover) { .agr-disc:hover { border-color: var(--color-on-surface-variant, #5c605c); } }
+  /* At 360 px a two digit count must still fit on one line. */
+  @media (max-width: 379px) { .agr-disc { padding: 12px 16px; gap: 8px; } }
+
+  /* The full wording of a part: always in the DOM, shown when open. Never the hidden attribute. */
+  .agr-full { min-width: 0; padding: clamp(20px, 4vw, 40px); background: var(--color-surface); border: 1px solid var(--color-surface-container); border-radius: 14px; font-size: 1.0625rem; line-height: 1.6; }
+  .agr .agr-full:not([data-agr-open]) { display: none; }
+  .agr-full > :first-child { margin-top: 0; }
+  .agr-full > :last-child { margin-bottom: 0; }
+  .agr-full .agr-sec { display: block; margin: 36px 0 0; }
+  .agr-full .agr-sec:first-child { margin-top: 0; }
+  .agr-full .agr-sec h3 { margin: 0 0 14px; font-family: var(--font-sans); font-size: 1.0625rem; font-weight: var(--fw-medium); line-height: 1.4; }
+  .agr-full p { margin: 0 0 14px; max-width: 68ch; }
+  .agr-full .agr-sec > :last-child { margin-bottom: 0; }
+  .agr-full .agr-sec ul { margin: -4px 0 16px; padding-left: 1.3em; list-style: disc; display: flex; flex-direction: column; gap: 6px; max-width: 66ch; }
+  .agr-full .agr-sec ul li::marker { color: var(--color-on-surface-variant); }
+  /* html.ts writes a space after the number: with it the gap to the text is the picture's 6 px. */
+  .agr-full .agr-n { margin-right: 2px; font-weight: var(--fw-medium); color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums; }
+  /* Inter has 400 and 500 only: a bold word of the text is the medium weight, never a made up bold. */
+  .agr-full strong, .agr-doc strong { font-weight: var(--fw-medium); }
+  .agr-doc-title { font-family: var(--font-serif); font-size: clamp(1.5rem, 3vw, 1.875rem); line-height: 1.2; }
+  /* At the top of the part 1 panel the document title is sans, medium (the serif is for the h1, the part titles, the big numbers and the first lede line). */
+  .agr-full .agr-doc-title { margin: 0 0 12px; font-family: var(--font-sans); font-weight: var(--fw-medium); }
+  .agr-full .agr-intro { margin: 0 0 36px; color: var(--color-on-surface-variant); }
+  .agr-full .agr-bizline { margin: 14px 0 0; font-size: 1.0625rem; color: var(--color-on-surface-variant); }
+  /* Before a choice: both versions of a section, each in its own card. */
+  .agr-variant { margin: 8px 0 16px; padding: 20px; background: var(--color-background); border: 1px solid var(--color-surface-container); border-radius: 14px; }
+  .agr-variant h4 { margin: 0 0 12px; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: var(--fw-medium); line-height: 1.4; color: var(--color-on-surface-variant); }
+  .agr-variant > :last-child { margin-bottom: 0; }
+
+  /* Tables of the agreement text (both the parts and the signed copy) */
+  .agr-table { width: 100%; max-width: 800px; margin: 4px 0 20px; border-collapse: collapse; border-top: 1px solid var(--color-surface-container); }
+  .agr-table td { padding: 12px 16px 12px 0; vertical-align: top; border-bottom: 1px solid var(--color-surface-container); }
+  .agr-table td:last-child { padding-right: 0; }
+  .agr-table td.agr-label { width: 210px; font-weight: var(--fw-medium); }
+  .agr-table td.agr-label:nth-last-child(3) { width: 190px; }
+  .agr-table td:nth-child(2):nth-last-child(2) { width: 170px; }
+  .agr-table strong { font-weight: var(--fw-medium); }
   @media (max-width: 560px) {
     .agr-table, .agr-table tbody, .agr-table tr, .agr-table td { display: block; width: 100%; }
-    .agr-table tr { border-bottom: 1px solid var(--agr-line); padding: 12px 16px; }
-    .agr-table tr:last-child { border-bottom: 0; }
-    .agr-table td { padding: 0; border: 0; }
-    .agr-table td.agr-label { width: 100%; font-size: 0.875rem; margin-bottom: 2px; }
+    .agr-table tr { padding: 12px 0; border-bottom: 1px solid var(--color-surface-container); }
+    .agr-table td, .agr-table td.agr-label, .agr-table td.agr-label:nth-last-child(3), .agr-table td:nth-child(2):nth-last-child(2) { width: 100%; padding: 0; border: 0; }
+    .agr-table td.agr-label { margin-bottom: 2px; }
   }
 
-  /* Section 15 before a choice: both versions, each in its own card. */
-  .agr-variant { background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
-  .agr-variant h3 { margin: 0; font-family: var(--font-sans); font-size: 0.8125rem; font-weight: var(--fw-medium); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-on-surface-variant); }
-  @media (max-width: 480px) { .agr-variant, #sec-0 { padding: 18px 16px; } }
-
-  /* Sign box and signature lines */
-  .agr-signbox { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
-  .agr-signbox:focus { outline: none; }
-  .agr-sigcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 24px; align-items: start; }
-  .agr-card { background: var(--color-surface); border: 1px solid var(--agr-line); border-radius: 4px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-  .agr-card--you { border-color: var(--color-on-surface); }
-  @media (max-width: 480px) { .agr-card { padding: 20px 16px; } }
-  .agr-bizline { margin: 0; color: var(--color-on-surface-variant); font-size: 0.875rem; }
-  .agr-signature { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: 2.25rem; line-height: 1.1; padding-bottom: 10px; border-bottom: 1px solid var(--color-on-surface); }
-
-  .agr-controls { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-  .agr-controls:disabled { opacity: 0.6; }
-  .agr-controls:disabled .agr-check, .agr-controls:disabled input { cursor: not-allowed; }
-  .agr-controls:disabled .agr-check:hover span { color: inherit; }
-  .agr-field { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-  .agr-field > label, .agr-field legend { padding: 0; margin: 0 0 2px; font-size: 0.875rem; font-weight: var(--fw-medium); }
+  /* The sign block */
+  .agr-sign { min-width: 0; display: flex; flex-direction: column; gap: 28px; padding: clamp(24px, 4vw, 48px); background: var(--color-surface); border: 1px solid var(--color-surface-container); border-radius: 18px; }
+  .agr-sign__title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: clamp(1.875rem, 4vw, 2.625rem); line-height: 1.15; }
+  .agr-kv { margin: 0; max-width: 640px; border-top: 1px solid var(--color-surface-container); }
+  .agr-kv > div { display: grid; grid-template-columns: minmax(0, 210px) minmax(0, 1fr); gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--color-surface-container); }
+  .agr-kv dt { font-weight: var(--fw-medium); }
+  .agr-kv dd { margin: 0; }
+  .agr-kv [data-agr-recap-row='total'] dd, .agr-kv [data-agr-recap-row='due'] dd { font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; }
+  .agr-kv .agr-undecided { grid-column: 1 / -1; }
+  /* The recap rows stack below 640 px (the picture's value); the tables of the text keep their 560 px. */
+  @media (max-width: 639px) { .agr-kv > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+  .agr-bullets { margin: 0; padding-left: 1.25em; max-width: 68ch; list-style: disc; display: flex; flex-direction: column; gap: 6px; color: var(--color-on-surface-variant); }
+  .agr-controls { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+  .agr-controls .agr-opt { max-width: 640px; }
+  .agr-field { margin: 0; padding: 0; border: 0; min-width: 0; max-width: 480px; display: flex; flex-direction: column; gap: 8px; }
+  .agr-field--wide { max-width: none; }
+  .agr-field > label { font-weight: var(--fw-medium); }
   .agr-input {
-    font: inherit;
-    font-size: 1.125rem;
     width: 100%;
-    min-height: 48px;
-    padding: 12px 14px;
-    border: 1px solid var(--color-on-surface-muted);
-    border-radius: 4px;
-    background: var(--color-background);
-    color: var(--color-on-surface);
-    transition: border-color 150ms ease, box-shadow 150ms ease;
+    min-height: 52px;
+    padding: 12px 16px;
+    border: 1px solid var(--color-on-surface-variant, #5c605c);
+    border-radius: 10px;
+    background: var(--color-surface, #ffffff);
+    color: var(--color-on-surface, #1a1a18);
+    font: inherit;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    transition: border-color 150ms ease;
   }
-  .agr-input::placeholder { color: var(--color-on-surface-muted); }
-  .agr-input:hover { border-color: var(--color-on-surface-variant); }
-  .agr-input:focus { outline: none; border-color: var(--color-on-surface); box-shadow: 0 0 0 3px var(--color-surface-container); }
-  .agr-input[aria-invalid='true'] { border-color: var(--color-error); box-shadow: 0 0 0 3px rgba(158, 66, 44, 0.15); }
+  .agr-input::placeholder { color: var(--color-on-surface-variant, #5c605c); opacity: 1; }
+  .agr-input:focus, .agr-input:focus-visible { outline: 2px solid var(--color-on-surface, #1a1a18); outline-offset: 2px; border-color: var(--color-on-surface, #1a1a18); }
+  .agr-input[aria-invalid='true'] { border-color: var(--color-error, #9e422c); }
+  .agr-input:disabled { background: var(--color-surface-dim, #f4f4f0); cursor: not-allowed; }
+  @media (hover: hover) { .agr-input:not(:disabled):not(:focus):not([aria-invalid='true']):hover { border-color: var(--color-on-surface, #1a1a18); } }
 
-  .agr-check { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding: 8px 0; font-size: 0.9375rem; line-height: 1.5; cursor: pointer; }
-  .agr-check input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--color-on-surface); cursor: pointer; }
-  .agr-check input:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
-  .agr-check:hover span { color: var(--color-primary-hover); }
-
-  .agr-status { margin: 4px 0 0; font-size: 0.875rem; color: var(--agr-ok); }
-  .agr-status:empty { margin: 0; }
-  .agr [hidden] { display: none !important; }
-  .agr-error { margin: 0; padding: 12px 14px; border-left: 3px solid var(--color-error); background: rgba(158, 66, 44, 0.06); color: var(--color-error); font-size: 0.9375rem; }
+  .agr-error { margin: 0; padding: 12px 16px; border: 1px solid var(--color-error, #9e422c); border-radius: 14px; background: rgba(158, 66, 44, 0.06); color: var(--color-error, #9e422c); font-size: 0.9375rem; }
   .agr-error:focus { outline: none; }
-  .agr-error:focus-visible { outline: 2px solid var(--color-error); outline-offset: 2px; }
-  .agr-note { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--color-on-surface-variant); }
-  .agr-questions { font-size: 0.875rem; }
-  .agr-note a, .agr-msg a { color: var(--color-on-surface); text-underline-offset: 3px; }
-  .agr-note a:hover, .agr-msg a:hover { color: var(--color-primary); }
-  .agr-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .agr-error:focus-visible { outline: 2px solid var(--color-error, #9e422c); outline-offset: 2px; }
+  .agr-submit { display: flex; flex-direction: column; align-items: flex-start; }
+  .agr-missing { margin: 12px 0 0; max-width: 60ch; color: var(--color-on-surface-variant); }
+  .agr-missing:empty { margin: 0; }
+  .agr-note { margin: 0; max-width: 68ch; font-size: 0.9375rem; line-height: 1.5; color: var(--color-on-surface-variant); }
+  .agr-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px 28px; }
+  .agr-actions--stack { flex-direction: column; gap: 8px; }
+  .agr-actions__item { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
   .agr-print-hint { max-width: 420px; }
-  .agr-signed-foot .agr-print-hint { flex-basis: 100%; }
 
-  /* Buttons: rest, hover, press, focus, disabled, loading. */
+  /* Buttons. Primary: rest, hover, pressed, focus, off, busy. */
   .agr-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-height: 48px;
-    padding: 12px 20px;
-    border: 1px solid var(--color-on-surface);
-    border-radius: 4px;
-    background: var(--color-on-surface);
-    color: var(--color-on-dark);
+    gap: 10px;
+    width: 100%;
+    min-height: 56px;
+    padding: 14px 32px;
+    border: 0;
+    border-radius: 999px;
+    /* Fallbacks: see the card build. */
+    background: var(--color-surface-dark, #2c2824);
+    color: var(--color-on-dark, #faf9f6);
     font: inherit;
-    font-size: 1rem;
+    font-size: 1.0625rem;
     font-weight: var(--fw-medium);
+    line-height: 1.2;
     text-align: center;
     cursor: pointer;
-    transition: background-color 150ms ease, color 150ms ease, transform 100ms ease, opacity 150ms ease;
+    transition: background-color 150ms ease, color 150ms ease, transform 50ms ease;
   }
-  .agr-btn:hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
-  .agr-btn:active { transform: translateY(1px); background: var(--color-surface-dark); }
-  .agr-btn:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
-  .agr-btn--ghost { background: var(--color-surface); color: var(--color-on-surface); min-height: 44px; font-size: 0.9375rem; }
-  .agr-btn--ghost:hover { background: var(--color-surface-dim); border-color: var(--color-on-surface); }
-  .agr-btn--ghost:active { background: var(--color-surface-container); }
-  .agr-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .agr-btn:disabled:hover { background: var(--color-on-surface); border-color: var(--color-on-surface); }
-  .agr-btn--ghost:disabled:hover { background: var(--color-surface); }
-  .agr-btn[aria-busy='true'], .agr-link[aria-busy='true'] { opacity: 0.75; cursor: progress; }
+  @media (min-width: 640px) { .agr-btn { width: auto; } }
+  .agr-btn:not(:disabled):active { transform: translateY(1px); background: var(--color-on-surface, #1a1a18); }
+  .agr-btn:focus-visible { outline: 2px solid var(--color-on-surface, #1a1a18); outline-offset: 3px; }
+  .agr-btn:disabled { background: var(--color-surface-container, #e4e2e1); color: var(--color-on-surface-variant, #5c605c); cursor: not-allowed; }
+  @media (hover: hover) { .agr-btn:not(:disabled):hover { background: var(--color-on-surface, #1a1a18); } }
+  /* Quiet buttons: underlined text. rest, hover, pressed, focus, busy. */
+  .agr-btn.agr-btn--ghost, .agr-link {
+    width: auto;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--color-on-surface-variant);
+    font: inherit;
+    font-size: 1.0625rem;
+    font-weight: var(--fw-regular);
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .agr-btn.agr-btn--ghost:not(:disabled):active, .agr-link:not(:disabled):active { transform: none; background: none; color: var(--color-on-surface); text-decoration-thickness: 2px; }
+  .agr-btn.agr-btn--ghost:focus-visible, .agr-link:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 3px; }
+  .agr-btn.agr-btn--ghost:disabled, .agr-link:disabled { background: none; color: var(--color-on-surface-variant); }
+  /* Off (not busy: a busy one keeps its progress cursor and its spinner). */
+  .agr-btn.agr-btn--ghost:disabled:not([aria-busy='true']), .agr-link:disabled:not([aria-busy='true']) { opacity: 0.6; cursor: not-allowed; }
+  @media (hover: hover) { .agr-btn.agr-btn--ghost:not(:disabled):hover, .agr-link:not(:disabled):hover { background: none; color: var(--color-on-surface); } }
+  .agr-btn[aria-busy='true'], .agr-link[aria-busy='true'] { cursor: progress; }
   .agr-btn[aria-busy='true']::after, .agr-link[aria-busy='true']::after {
     content: '';
+    flex: none;
     width: 14px;
     height: 14px;
     border: 2px solid currentColor;
@@ -390,81 +588,111 @@ const WHATSAPP = 'https://wa.me/16476137430';
     animation: agr-spin 0.8s linear infinite;
   }
   @keyframes agr-spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .agr-btn[aria-busy='true']::after, .agr-link[aria-busy='true']::after { animation: none; } }
 
-  .agr-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--color-on-surface);
-    font: inherit;
-    font-size: 0.875rem;
-    text-align: left;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    cursor: pointer;
-  }
-  .agr-link:hover { color: var(--color-primary); text-decoration-thickness: 2px; }
-  .agr-link:active { color: var(--color-primary-hover); }
-  .agr-link:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 2px; }
-  .agr-link:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* Review step */
-  .agr-review { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 28px 24px; border: 1px solid var(--color-on-surface); border-radius: 4px; background: var(--color-surface); color: var(--color-on-surface); }
+  /* Review step: a modal centred on the screen; the rows scroll, the title and the buttons do not.
+     max-width: none, or the browser's own dialog:modal cap (100% - 6px - 2em) makes it narrower than 100vw - 32px on a phone. */
+  .agr-review { margin: auto; width: min(520px, calc(100vw - 32px)); max-width: none; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--color-surface-container); border-radius: 18px; background: var(--color-surface); color: var(--color-on-surface); overflow: hidden; }
   .agr-review:not([open]) { display: none; }
-  .agr-review[open] { display: flex; flex-direction: column; gap: 20px; }
+  .agr-review[open] { display: flex; flex-direction: column; }
   .agr-review::backdrop { background: rgba(44, 40, 36, 0.55); }
-  .agr-review__title { margin: 0; font-family: var(--font-serif); font-weight: var(--fw-medium); font-size: 1.875rem; }
+  .agr-review__title { flex: none; margin: 0; padding: 28px 24px 12px; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: 1.875rem; line-height: 1.15; }
   .agr-review__title:focus { outline: none; }
-  .agr-review__buttons { display: flex; flex-wrap: wrap-reverse; gap: 12px; justify-content: flex-end; }
-  .agr-review__buttons .agr-btn { flex: 1 1 160px; }
-  /* No <dialog> support: the same panel shows inline in the sign box. */
-  .agr-review--inline { position: static; width: 100%; max-height: none; }
+  .agr-review__scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 24px 8px; }
+  .agr-review__scroll:focus { outline: none; }
+  /* Inside the edge: the dialog clips what lies outside it. */
+  .agr-review__scroll:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: -2px; }
+  .agr-review__buttons { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 24px; padding: 16px 24px 24px; border-top: 1px solid var(--color-surface-container); }
+  @media (max-width: 639px) {
+    .agr-review__buttons { flex-direction: column-reverse; align-items: stretch; }
+    .agr-review__buttons .agr-btn, .agr-review__buttons .agr-btn.agr-btn--ghost { width: 100%; justify-content: center; text-align: center; }
+  }
+  /* No <dialog> support: the same panel shows inline in the sign block. */
+  .agr-review--inline { position: static; margin: 0; width: 100%; max-height: none; overflow: visible; }
+  .agr-review--inline .agr-review__scroll { flex: none; overflow: visible; }
 
   .agr-rows { margin: 0; display: flex; flex-direction: column; }
-  .agr-rows > div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--agr-line); }
-  .agr-rows dt { color: var(--color-on-surface-variant); flex: none; }
-  .agr-rows dd { margin: 0; font-weight: var(--fw-medium); text-align: right; min-width: 0; }
+  .agr-rows > div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--color-surface-container); }
+  .agr-rows dt { flex: none; max-width: 45%; color: var(--color-on-surface-variant); }
+  .agr-rows dd { margin: 0; min-width: 0; font-weight: var(--fw-medium); text-align: right; }
   .agr-rows--compact > div { padding: 8px 0; font-size: 0.9375rem; }
   @media (max-width: 420px) {
     .agr-rows > div { flex-direction: column; gap: 2px; }
+    .agr-rows dt { max-width: none; }
     .agr-rows dd { text-align: left; }
   }
 
   /* Signed */
   .agr-signed-head { padding-bottom: 24px; }
-  .agr-ok { margin: 0; display: flex; align-items: center; gap: 10px; color: var(--agr-ok); font-size: 0.875rem; font-weight: var(--fw-medium); letter-spacing: 0.08em; text-transform: uppercase; }
-  .agr-status-line { margin: 0; padding: 12px 14px; border-left: 3px solid var(--color-on-surface); background: var(--color-surface); }
+  /* "Signed on ... at ...", right under the h1: normal case, no tracking. */
+  .agr-ok { margin: 0; display: flex; align-items: center; gap: 10px; color: var(--agr-ok); font-size: 0.9375rem; font-weight: var(--fw-medium); letter-spacing: normal; }
+  .agr-status-line { margin: 0; padding: 12px 16px; border: 1px solid var(--color-on-surface); border-radius: 14px; background: var(--color-surface); }
+  .agr-lede { margin: 0; max-width: 640px; font-size: 1.1875rem; color: var(--color-on-surface-variant); }
   .agr-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 24px; padding: 16px 0 32px; }
+  .agr-card { min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 24px; background: var(--color-surface); border: 1px solid var(--color-surface-container); border-radius: 14px; }
+  .agr-card--you { border-color: var(--color-on-surface); }
+  /* A button in a card is full width below 640 px only, like every primary button (the card is a flex column). */
+  @media (min-width: 640px) { .agr-card > .agr-btn { align-self: flex-start; } }
+  @media (max-width: 480px) { .agr-card { padding: 20px 16px; } }
   .agr-amount { margin: 0; font-family: var(--font-serif); font-size: 3rem; line-height: 1; }
   .agr-step2 { margin: 0; font-size: 1.0625rem; line-height: 1.5; }
-  .agr-signed-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding-bottom: 56px; border-bottom: 1px solid var(--agr-line); margin-bottom: 48px; }
-  .agr-signed-foot .agr-note { font-size: 0.875rem; }
+  .agr-signed-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-bottom: 56px; margin-bottom: 48px; border-bottom: 1px solid var(--color-surface-container); }
+  .agr-signed-foot .agr-print-hint { flex-basis: 100%; }
+  .agr-bizline { margin: 0; font-size: 0.9375rem; color: var(--color-on-surface-variant); }
+  .agr-sigcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 24px; align-items: start; }
+  .agr-signature { margin: 0; padding-bottom: 10px; border-bottom: 1px solid var(--color-on-surface); font-family: var(--font-serif); font-style: italic; font-size: 2.25rem; line-height: 1.1; }
+
+  /* The signed copy: the full document, 23 sections in order, read only. */
+  .agr-doc { display: flex; flex-direction: column; gap: 40px; }
+  .agr-doc .agr-doc-head { display: flex; flex-direction: column; gap: 12px; }
+  .agr-doc .agr-doc-title { margin: 0; font-weight: var(--fw-regular); }
+  .agr-doc .agr-intro { margin: 0; max-width: 68ch; color: var(--color-on-surface-variant); }
+  .agr-doc .agr-sec { display: flex; flex-direction: column; gap: 12px; }
+  .agr-doc .agr-sec h2 { margin: 0 0 4px; font-family: var(--font-serif); font-weight: var(--fw-regular); font-size: clamp(1.5rem, 3.5vw, 1.875rem); line-height: 1.15; }
+  .agr-doc .agr-sec p { margin: 0; max-width: 68ch; }
+  .agr-doc .agr-sec ul { margin: 0; padding-left: 1.3em; list-style: disc; display: flex; flex-direction: column; gap: 6px; max-width: 66ch; }
+  .agr-doc .agr-n { margin-right: 6px; font-weight: var(--fw-medium); color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums; }
+  .agr-doc #sec-0 { padding: 24px; background: var(--color-surface); border: 1px solid var(--color-surface-container); border-radius: 14px; }
+  @media (max-width: 480px) { .agr-doc #sec-0 { padding: 20px 16px; } }
 
   /* Not yet, gone, error */
   .agr-msg { padding: 64px 0; }
   .agr-msg__text { margin: 0 0 28px; max-width: 620px; font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.3; }
   .agr-msg__text:focus { outline: none; }
   .agr-msg__text:focus-visible { outline: 2px solid var(--color-on-surface); outline-offset: 4px; }
+  .agr-fix { display: flex; flex-direction: column; gap: 16px; }
 
-  /* Print: the document only, and when signed the signed header and the signature lines. */
+  @media (prefers-reduced-motion: reduce) {
+    .agr-skel, .agr-btn[aria-busy='true']::after, .agr-link[aria-busy='true']::after { animation: none; }
+    .agr-opt-frame, .agr-opt-box, .agr-opt-dot, .agr-opt-box .agr-opt-mark, .agr-opt-dot .agr-opt-mark, .agr-disc, .agr-disc__chev, .agr-input, .agr-btn, .agr-toc__list a { transition: none; }
+  }
+
+  /* Print, CSS only: in the ready view the names, the booking number and every part's heading with its
+     full wording (open or closed); in the signed view the signed header, the step cards and the text. */
   @media print {
     html, body { background: #fff !important; }
     .agr { max-width: none; padding: 0 !important; font-size: 10.5pt; }
+    .agr-view:not([data-agr-view='ready']) { max-width: none; }
     /* Test mode: the ribbon prints too, at the top of the first page, so a printed test agreement never looks real. */
     .agr-ribbon:not([hidden]) { position: static; margin: 0 0 12pt; border: 1pt solid #000; background: #fff !important; color: #000 !important; }
     html:has(.agr-ribbon:not([hidden])) .agr { padding-top: 0 !important; }
-    .agr-top, [data-agr-view='ready'] > .agr-hero, .agr-toc, .agr-signbox, .agr-review, .agr-btn, .agr-link, .agr-loading, .agr-print-hint { display: none !important; }
+    .agr-top, .agr-loading, .agr-print-hint, .agr-review, .agr-btn, .agr-link,
+    [data-agr-view='ready'] .agr-title, .agr-lede-block, .agr-glance, .agr-toc, .agr-points, .agr-money, .agr-extras,
+    [data-agr-sharing], .agr-status, [data-agr-total-undecided], .agr-disc, .agr-sign { display: none !important; }
+    .agr .agr-full:not([data-agr-open]) { display: block; }
+    [data-agr-view='ready'] .agr-hero { padding: 0 0 12pt; display: block; }
+    .agr-form, .agr-areas, .agr-main, .agr-parts, .agr-part, .agr-full, .agr-full .agr-sec, .agr-variant { display: block; }
+    .agr-areas { margin: 0; }
+    .agr-part, .agr-part + .agr-part { padding: 0; border: 0; margin: 0 0 16pt; }
+    .agr-full { padding: 0; border: 0; border-radius: 0; background: none; }
+    /* The full wording prints at the text size of the signed copy (the .agr print size), not at the screen's 17 px. */
+    .agr .agr-full, .agr .agr-full .agr-bizline { font-size: inherit; }
+    .agr-variant { background: none; }
+    .agr-part__title, .agr-full .agr-sec h3, .agr-doc .agr-sec h2 { break-after: avoid; }
     .agr-signed-head { padding: 0 0 12pt; }
     .agr-steps { display: grid; grid-template-columns: 1fr 1fr; padding: 0 0 12pt; }
     .agr-signed-foot { padding-bottom: 12pt; margin-bottom: 12pt; }
     .agr-doc { gap: 16pt; }
     .agr-sec { break-inside: auto; }
-    .agr-sec h2 { break-after: avoid; }
     .agr-table tr, .agr-sigcards, .agr-card { break-inside: avoid; }
   }
 </style>

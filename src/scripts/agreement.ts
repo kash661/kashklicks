@@ -1,56 +1,27 @@
 // Page script for the private agreement page (/welcome/agreement/?k=<token>).
 //
-// 1. Read the booking by its token. A signed link opens straight in the signed state.
-// 2. Show the agreement exactly as the server sent it (agreement-doc.ts). Until a sharing
-//    choice is made, section 1 hides the sharing row and section 15 shows both versions.
-// 3. Review and sign: the fingerprint sent is the SHA-256 of the chosen doc_json, the
-//    very string the server hashed. The form is locked while the review is open inline
-//    and while the request is out, so what is reviewed is what is posted.
+// 1. Read the booking by its token (doc answer v=2). A signed link opens straight in the signed state.
+// 2. Build one model from either answer shape (agreement-model.ts): every mix's exact text, hash and
+//    amounts, all checked before anything shows. The ready view (agreement-ready.ts) shows the mix of
+//    the sharing choice and the ticked extras; before a choice, the share mix, and sections that differ
+//    between the two choices show both versions.
+// 3. Review and sign: the fingerprint sent is the SHA-256 of the shown mix's doc_json, the very string
+//    the server hashed. Every group of controls is locked while the review is open inline and while the
+//    request is out, so what is reviewed is what is posted. The two buttons of the review take no press in
+//    the first 600 ms after it opens, so a double tap on "Review and sign" can neither sign unseen nor close
+//    the review at once. Escape still closes it at any time while no request is out.
 // 4. Thank you state, with the retainer details and the signed text, read only.
 //
-// This file may import only html.ts, hash.ts, token.ts, format.ts and types from
-// src/lib/agreement/ (here through agreement-doc.ts), so the clause file never ships.
+// This file may import only html.ts, hash.ts, token.ts, format.ts, set.ts, parts.ts and types from
+// src/lib/agreement/ (also through the agreement-*.ts modules), so the clause file never ships.
 import { sha256Hex } from '../lib/agreement/hash';
-import type { AgreementDoc, Choice } from '../lib/agreement/types';
-import { CHOICES, docView, parseVariants, renderSignedDoc, tocItems, type Docs } from './agreement-doc';
+import type { AgreementDoc, Choice, StoredSummary } from '../lib/agreement/types';
+import { CHOICES, renderSignedDoc } from './agreement-doc';
+import { buildModel, type Base, type Model, type ReadyPayload } from './agreement-model';
+import { buildReady, clearReady, depositText, extrasText, type ReadyView, type Selection, type Source } from './agreement-ready';
 
 type State = 'loading' | 'ready' | 'signed' | 'not-yet' | 'gone' | 'error';
 
-interface Labels {
-  share_option: string;
-  private_option: string;
-  agree_label: string;
-  intro_bullets: string[];
-  after_signing: { title: string; text: string };
-  name_expected: string;
-}
-interface Summary {
-  package: string;
-  date: string;
-  total: string;
-  retainer: string;
-  balance: string;
-  balance_how?: string; // missing on bookings made before it was stored
-  etransfer_email: string;
-  later_payments?: { label: string; text: string }[]; // only a booking paid in three parts: shown instead of the balance
-}
-interface Base {
-  ok: true;
-  mode: 'test' | 'live';
-  number: string;
-  client_first: string;
-  partner_first: string;
-  client_name: string;
-  partner_name: string;
-  labels: Labels;
-  summary: Summary;
-}
-interface ReadyPayload extends Base {
-  status: 'sent' | 'opened';
-  today: string;
-  summary_private?: Summary; // only a booking with a fee for private work: the amounts if they choose private
-  variants: Record<Choice, { doc_json: string; hash: string }>;
-}
 interface SignedPayload extends Base {
   status: 'signed';
   signed: { choice: Choice; signed_name: string; date: string; time: string; final_doc_json: string; final_hash: string };
@@ -69,17 +40,19 @@ const POLL_MAX = 24;
 const SIGN_TIMEOUT_MS = 30000;
 const PDF_TIMEOUT_MS = 45000; // the worker may wait up to 25 s for Apps Script to make the PDF
 const PDF_URL_KEEP_MS = 60000; // some browsers read the object URL after click() returns
+// On a phone a button of the review ("Sign the agreement" or "Go back") can open right under the finger that
+// pressed "Review and sign": the second tap of a double tap must neither sign nor close the review. Both
+// take presses this long after the review opened.
+const SIGN_GUARD_MS = 600;
 const MSG = {
   nameMismatch: (name: string, first: string) =>
-    `Please type your name exactly as it is written at the top of the agreement: ${name}. Only ${first} can sign. If that name is wrong, do not sign. Message me and I will fix it.`,
+    `Please type your name exactly as it is written here: ${name}. Only ${first} can sign. If that name is wrong, do not sign. Message me and I will fix it.`,
   partnerCannotSign: (name: string, first: string) => `Only ${name} can sign this agreement. Please ask ${first} to sign.`,
-  signer: (name: string) => `Only ${name} can sign this agreement.`,
   textChanged: 'This agreement was updated. Please reload the page and read it again.',
   failed: 'That did not go through. Nothing was signed. Please try again.',
   unchecked: 'I could not check if that went through. Please reload this page before you try again.',
   unknown: 'This link does not work. Please check that you opened the full link from my message.',
   void: 'This link is no longer active. Message me and I will send you a new one.',
-  choiceShown: 'Sections 1 and 15 above now show your choice.',
   copyLate: 'If the PDF copy does not arrive in a few minutes, message me and I will send it again.',
   pdfPreparing: 'Preparing your PDF. This can take a few seconds.',
   pdfSaved: 'Your PDF is in your downloads. Nothing happened? Open this page in Safari or Chrome and try again.',
@@ -110,7 +83,8 @@ async function call(path: string, init: RequestInit = {}, timeoutMs?: number): P
     if (timer) window.clearTimeout(timer);
   }
 }
-const getDoc = (k: string) => call(`/r/agreement/doc?k=${encodeURIComponent(k)}`, { headers: { accept: 'application/json' } });
+// v=2: a booking with a set answers with the whole set and its page content (an older booking answers as always).
+const getDoc = (k: string) => call(`/r/agreement/doc?k=${encodeURIComponent(k)}&v=2`, { headers: { accept: 'application/json' } });
 const post = (path: string, body: Record<string, unknown>, timeoutMs?: number) =>
   call(
     path,
@@ -120,17 +94,26 @@ const post = (path: string, body: Record<string, unknown>, timeoutMs?: number) =
 
 const isSigned = (a: Answer): boolean =>
   a.status === 200 && a.body?.ok === true && a.body.status === 'signed' && typeof a.body.signed?.final_doc_json === 'string';
-const isReady = (a: Answer): boolean =>
-  a.status === 200 && a.body?.ok === true && a.body.status !== 'signed' && CHOICES.every((c) => typeof a.body?.variants?.[c]?.doc_json === 'string');
+const isReady = (a: Answer): boolean => {
+  if (a.status !== 200 || a.body?.ok !== true || a.body.status === 'signed') return false;
+  const set = a.body.set;
+  if (set && Array.isArray(set.pool) && set.mixes?.share && set.mixes?.private) return true;
+  return CHOICES.every((c) => typeof a.body?.variants?.[c]?.doc_json === 'string');
+};
 
 /** Joins the parts when every one is a string; null when any is missing. */
 const text = (...parts: unknown[]): string | null => (parts.every((p) => typeof p === 'string') ? parts.join('') : null);
 
 /** The later payments of a booking paid in three parts, as [label, text] rows; null when there are none or they are malformed. */
-const laterPayments = (s: Summary | undefined): [string, string][] | null => {
+const laterPayments = (s: StoredSummary | undefined): [string, string][] | null => {
   const list = s?.later_payments;
   if (!Array.isArray(list) || !list.length || !list.every((r) => typeof r?.label === 'string' && typeof r?.text === 'string')) return null;
   return list.map((r) => [r.label, r.text]);
+};
+/** The refundable deposit of a summary, when it is whole. */
+const depositOf = (s: StoredSummary | undefined): NonNullable<StoredSummary['deposit']> | null => {
+  const d = s?.deposit;
+  return d && typeof d.label === 'string' && typeof d.amount === 'string' && typeof d.note === 'string' ? d : null;
 };
 
 /** One <div><dt>…</dt><dd>…</dd></div> row of an agr-rows list. */
@@ -152,14 +135,13 @@ export function initAgreement(): void {
   if (!main) return;
   const k = new URLSearchParams(location.search).get('k') ?? '';
   const ribbon = pick('[data-agr-ribbon]');
-  let readyView: HTMLElement | null = pick('[data-agr-view="ready"]', main);
+  let readyView: HTMLElement | null = pick<HTMLElement>('[data-agr-view="ready"]', main);
   const docEl = pick('[data-agr-doc]', main);
   const signbox = pick('[data-agr-signbox]', main);
+  const signTitle = pick('[data-agr-sign-title]', main);
   const form = pick<HTMLFormElement>('[data-agr-form]', main);
-  const controls = pick<HTMLFieldSetElement>('[data-agr-controls]', main);
   const nameInput = pick<HTMLInputElement>('[data-agr-name]', main);
   const agreeBox = pick<HTMLInputElement>('[data-agr-agree]', main);
-  const choiceStatus = pick('[data-agr-choice-status]', main);
   const errorEl = pick('[data-agr-error]', main);
   const reviewBtn = pick<HTMLButtonElement>('[data-agr-review]', main);
   const notYetBtn = pick<HTMLButtonElement>('[data-agr-not-yet]', main);
@@ -177,11 +159,14 @@ export function initAgreement(): void {
   form.reset();
 
   let ready: ReadyPayload | null = null;
+  let model: Model | null = null;
+  let view: ReadyView | null = null;
   let bookingNumber = ''; // for the PDF file name when the answer carries none
-  let view: ReturnType<typeof docView> | null = null;
   let choice: Choice | null = null;
+  const ticked = new Set<string>();
   let busy = false;
   let afterClose: HTMLElement | null = null;
+  let armTimer = 0;
 
   const setState = (s: State) => {
     main.dataset.agrState = s;
@@ -190,35 +175,37 @@ export function initAgreement(): void {
   const showRibbon = (mode: unknown) => {
     ribbon.hidden = mode !== 'test';
   };
+  /** The ticked extras, in tick box order. These ids, never labels, go into the sign body and the PDF query. */
+  const tickedIds = (): string[] => (model ? model.ticks.filter((t) => ticked.has(t.id)).map((t) => t.id) : []);
+  const selection = (): Selection => ({ choice, ids: tickedIds() });
+  const formState = () => ({ name: nameInput.value.trim() !== '', agree: agreeBox.checked });
+  const draw = (src: Source, anchor: Element | null = null) => view?.render(selection(), src, formState(), anchor);
 
   // ---------------------------------------------------------------- states
 
-  /** Builds the whole ready view, or nothing: on any failure the document is emptied and a retry starts over. */
+  /** Builds the whole ready view, or nothing: on any failure everything built is emptied and a retry starts over. */
   function showReady(p: ReadyPayload, focus: boolean) {
     if (!ready) {
       try {
-        const docs: Docs = parseVariants(p.variants);
-        const v = docView(docEl, docs, p.today, signbox);
-        v.render(null);
-        pick('[data-agr-eyebrow]', main).textContent = `${p.client_first} and ${p.partner_first} · Booking ${p.number}`;
-        pick('[data-agr-bullets]', main).replaceChildren(
-          ...p.labels.intro_bullets.map((b) => Object.assign(document.createElement('li'), { textContent: b })),
-        );
-        pick('[data-agr-toc]', main).replaceChildren(...tocItems(docs.share));
-        pick('[data-agr-business-signature]', main).textContent = docs.share.business_signature;
-        pick('[data-agr-share-option]', main).textContent = p.labels.share_option;
-        pick('[data-agr-private-option]', main).textContent = p.labels.private_option;
-        pick('[data-agr-agree-label]', main).textContent = p.labels.agree_label;
-        nameInput.placeholder = p.labels.name_expected;
-        pick('[data-agr-signer]', main).textContent = MSG.signer(p.labels.name_expected);
+        const m = buildModel(p, p.today);
+        const v = buildReady(main, m, p);
+        // The controls were just made: none may start ticked, whatever the browser restored.
+        form.reset();
+        choice = null;
+        ticked.clear();
+        model = m;
         view = v;
+        draw('init');
         ready = p;
         bookingNumber = p.number;
       } catch {
-        docEl.replaceChildren();
+        model = null;
+        view = null;
+        clearReady(main);
         return showError(focus);
       }
     }
+    update();
     showRibbon(p.mode);
     setState('ready');
   }
@@ -277,10 +264,17 @@ export function initAgreement(): void {
     const rowList = balanceRow?.parentElement;
     if (balanceRow && rowList) {
       balanceRow.hidden = later !== null;
-      rowList.querySelectorAll('[data-agr-later-row]').forEach((el) => el.remove());
+      rowList.querySelectorAll('[data-agr-later-row], [data-agr-deposit-row]').forEach((el) => el.remove());
       for (const [dt, dd] of later ?? []) {
         const row = dlRow(dt, dd);
         row.dataset.agrLaterRow = '';
+        rowList.append(row);
+      }
+      // A refundable deposit ticked at signing: its own row, after the payments.
+      const deposit = depositOf(p.summary);
+      if (deposit) {
+        const row = dlRow(deposit.label, depositText(deposit));
+        row.dataset.agrDepositRow = '';
         rowList.append(row);
       }
     }
@@ -301,7 +295,7 @@ export function initAgreement(): void {
       signedDoc.replaceChildren();
     }
 
-    // The sign box goes away for good: a signed link cannot be signed again.
+    // The sign block, the ticks and the sharing cards go away for good: a signed link cannot be signed again.
     readyView?.remove();
     readyView = null;
     showRibbon(p.mode);
@@ -337,17 +331,17 @@ export function initAgreement(): void {
     main.setAttribute('aria-busy', 'true');
     if (!TOKEN_RE.test(k)) return showGone(404, focus);
     route(await getDoc(k), focus);
-    if (focus && main.dataset.agrState === 'ready') pick('h1', readyView!).focus();
+    if (focus && main.dataset.agrState === 'ready') pick('[data-agr-title]', readyView!).focus();
   }
 
-  // ---------------------------------------------------------------- the sign box
+  // ---------------------------------------------------------------- the sign block
 
   const update = () => {
     reviewBtn.disabled = busy || !(nameInput.value.trim() && choice && agreeBox.checked);
   };
-  /** The name, the sharing choice and the tick cannot change while they are being reviewed or posted. */
+  /** The ticks, the sharing choice, the name and the agree tick cannot change while they are being reviewed or posted. */
   const lockForm = (on: boolean) => {
-    controls.disabled = on;
+    main.querySelectorAll<HTMLFieldSetElement>('fieldset[data-agr-controls]').forEach((f) => (f.disabled = on));
   };
 
   function showSignError(message: string) {
@@ -357,18 +351,22 @@ export function initAgreement(): void {
 
   function openReview() {
     const p = ready!;
+    const c = choice!;
     errorEl.hidden = true;
-    // The amounts of the chosen option: private has its own when it carries a fee.
-    const sum = choice === 'private' && p.summary_private ? p.summary_private : p.summary;
+    // The amounts of the shown mix: the chosen sharing option and the ticked extras.
+    const sum = model!.mix(c, tickedIds()).summary;
+    const deposit = depositOf(sum);
     const rows: [string, string][] = [
       ['Your name', nameInput.value.trim()],
       ['Your partner', p.partner_name],
       ['Package', sum.package],
       ['Date', sum.date],
+      ...(model!.ticks.length ? [['Extras', extrasText(sum)] as [string, string]] : []),
       ['Total', sum.total],
       ['Retainer', sum.retainer],
       ...(laterPayments(sum) ?? []),
-      ['Sharing', choice === 'private' ? p.labels.private_option : p.labels.share_option],
+      ...(deposit ? [[deposit.label, depositText(deposit)] as [string, string]] : []),
+      ['Sharing', view!.optionLabel[c]],
     ];
     pick('[data-agr-review-rows]', dlg).replaceChildren(...rows.map(([dt, dd]) => dlRow(dt, dd)));
     if (nativeDialog) dlg.showModal();
@@ -378,8 +376,20 @@ export function initAgreement(): void {
       dlg.classList.add('agr-review--inline');
       dlg.setAttribute('open', '');
     }
+    // Not yet: a press in the first moment is the second tap of a double tap, not a look at the rows.
+    const guarded = [signBtn, backBtn];
+    for (const b of guarded) b.setAttribute('aria-disabled', 'true');
+    window.clearTimeout(armTimer);
+    armTimer = window.setTimeout(() => guarded.forEach((b) => b.removeAttribute('aria-disabled')), SIGN_GUARD_MS);
     pick('[data-agr-dialog-title]', dlg).focus();
   }
+
+  /** Whole on screen, and below the TEST ribbon when it shows. */
+  const onScreen = (e: Element): boolean => {
+    const r = e.getBoundingClientRect();
+    const top = ribbon.hidden ? 0 : ribbon.getBoundingClientRect().bottom;
+    return r.top >= top && r.bottom <= window.innerHeight;
+  };
 
   /** Closes the review step and unlocks the form, then moves focus to `then` (none: the state change moves it). */
   function closeReview(then: HTMLElement | null) {
@@ -388,31 +398,37 @@ export function initAgreement(): void {
     if (nativeDialog && dlg.open) dlg.close();
     else {
       dlg.removeAttribute('open');
-      then?.focus();
+      // The inline panel took its height with it, and WebKit does not scroll to a focused button: bring it back first.
+      if (then && !onScreen(then)) then.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior });
+      then?.focus({ preventScroll: true });
     }
   }
 
   async function sign() {
-    if (busy || !choice || !ready) return;
+    if (busy || !choice || !ready || !model) return;
     busy = true;
     lockForm(true);
     update();
     setBusy(signBtn, true, 'Signing…');
     backBtn.disabled = true;
-    const v = ready.variants[choice];
-    // The fingerprint of the exact string on screen. Without WebCrypto, the server's own value.
-    let text_hash = v.hash;
+    const ids = tickedIds();
+    const m = model.mix(choice, ids);
+    // The fingerprint of the exact string shown. Without WebCrypto, the server's own value.
+    let text_hash = m.hash;
     if (typeof crypto !== 'undefined' && crypto.subtle && typeof crypto.subtle.digest === 'function') {
       try {
-        text_hash = await sha256Hex(v.doc_json);
+        text_hash = await sha256Hex(m.doc_json);
       } catch {
-        text_hash = v.hash;
+        text_hash = m.hash;
       }
     }
     // One POST per press. It is never retried by the page. After 30 s (data-agr-sign-timeout, a test
     // hook) it is aborted, which is no clear answer: the link is read again below.
     const timeout = Number(main.dataset.agrSignTimeout) || SIGN_TIMEOUT_MS;
-    const a = await post('/r/agreement/sign', { k, choice, signed_name: nameInput.value.trim(), agree: agreeBox.checked, text_hash }, timeout);
+    const body: Record<string, unknown> = { k, choice, signed_name: nameInput.value.trim(), agree: agreeBox.checked, text_hash };
+    // Only when something is ticked: a sign with nothing ticked is exactly what it always was.
+    if (ids.length) body.extras = ids;
+    const a = await post('/r/agreement/sign', body, timeout);
     const err = a.body?.error;
     const clear =
       isSigned(a) || a.status === 404 || a.status === 410 || err === 'name_mismatch' || err === 'partner_cannot_sign' || err === 'text_changed';
@@ -487,26 +503,56 @@ export function initAgreement(): void {
 
   nameInput.addEventListener('input', () => {
     nameInput.removeAttribute('aria-invalid');
+    draw('name');
     update();
   });
-  agreeBox.addEventListener('change', update);
-  for (const c of CHOICES) {
-    pick<HTMLInputElement>(`[data-agr-choice="${c}"]`, main).addEventListener('change', (e) => {
-      if (!(e.target as HTMLInputElement).checked || !view) return;
-      choice = c;
-      view.render(c);
-      // Set at the moment of the choice, so screen readers announce the live region.
-      choiceStatus.textContent = MSG.choiceShown;
-      update();
-    });
-  }
+  // The tick boxes and the sharing cards are made at run time: one listener on the form.
+  form.addEventListener('change', (e) => {
+    const t = e.target as HTMLInputElement;
+    if (!view) return;
+    if (t.matches('[data-agr-extra]')) {
+      const id = t.dataset.agrExtra ?? '';
+      if (t.checked) ticked.add(id);
+      else ticked.delete(id);
+      draw('tick', t.closest('.agr-opt'));
+    } else if (t.matches('[data-agr-choice]')) {
+      if (!t.checked) return;
+      choice = t.dataset.agrChoice === 'private' ? 'private' : 'share';
+      draw('choice', t.closest('.agr-opt'));
+    } else if (t === agreeBox) draw('agree');
+    update();
+  });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     update();
     if (!reviewBtn.disabled) openReview();
   });
-  backBtn.addEventListener('click', () => closeReview(reviewBtn));
-  signBtn.addEventListener('click', () => void sign());
+  docEl.addEventListener('click', (e) => {
+    const b = (e.target as Element).closest<HTMLButtonElement>('[data-agr-disc]');
+    if (b && view) view.toggle(Number(b.dataset.agrDisc));
+  });
+  // A contents link, a "part N" link or the missing line's link: the browser scrolls, then focus follows.
+  main.addEventListener('click', (e) => {
+    const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!a || !readyView?.contains(a)) return;
+    const href = a.getAttribute('href') ?? '';
+    const target = a.matches('[data-agr-missing-jump]')
+      ? pick<HTMLElement>('[data-agr-choice="share"]', main)
+      : href === '#sign'
+        ? signTitle
+        : /^#part-\d+$/.test(href)
+          ? pick<HTMLElement>(`${href} > h2`, main)
+          : null;
+    if (target) window.setTimeout(() => target.focus({ preventScroll: true }), 0);
+  });
+  /** A button of the review takes no press in its first moment (aria-disabled, set by openReview). */
+  const armed = (b: HTMLButtonElement) => b.getAttribute('aria-disabled') !== 'true';
+  backBtn.addEventListener('click', () => {
+    if (armed(backBtn)) closeReview(reviewBtn);
+  });
+  signBtn.addEventListener('click', () => {
+    if (armed(signBtn)) void sign();
+  });
   dlg.addEventListener('cancel', (e) => {
     if (busy) e.preventDefault();
   });
@@ -534,8 +580,9 @@ export function initAgreement(): void {
       hint.hidden = false;
     };
     const signedCopy = b.closest('[data-agr-signed]') !== null;
-    // Before a choice both versions are on screen: the copy shows the share version, as the contents list does.
-    const query = signedCopy ? '' : `&c=${choice ?? 'share'}`;
+    // The copy is the mix on screen; before a choice, the share version, as the parts show it.
+    const ids = tickedIds();
+    const query = signedCopy ? '' : `&c=${choice ?? 'share'}${ids.length ? `&x=${ids.map(encodeURIComponent).join(',')}` : ''}`;
     setBusy(b, true);
     say(MSG.pdfPreparing);
     let blob: Blob | null = null;
@@ -575,9 +622,11 @@ export function initAgreement(): void {
     say(MSG.pdfSaved);
   }
   main.querySelectorAll<HTMLButtonElement>('[data-agr-print]').forEach((b) => b.addEventListener('click', () => void downloadPdf(b)));
+  // Back from "not yet": ticks, choice, name and open panels are as they were.
   pick('[data-agr-back-to-doc]', main).addEventListener('click', () => {
     setState('ready');
-    signbox.focus();
+    signbox.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior });
+    signTitle.focus({ preventScroll: true });
   });
   pick('[data-agr-retry]', main).addEventListener('click', () => void load(true));
 
