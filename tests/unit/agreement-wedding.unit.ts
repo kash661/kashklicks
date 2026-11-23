@@ -343,7 +343,7 @@ test('notes still add their row for a wedding', () => {
   expect(labels.indexOf('Also agreed for your day')).toBe(labels.indexOf('Delivery') + 1);
 });
 
-test('section 4 table is exact for the wedding, every price from the site data', () => {
+test('section 4 table is exact for the wedding, every site price from the site data', () => {
   const price = (id: string) => (siteAddOns as { id: string; price: number }[]).find((a) => a.id === id)!.price;
   expect([price('extra-hours-wedding'), price('second-photographer'), price('drone'), price('priority-delivery-wedding'), price('raw-photos-wedding')]).toEqual([
     301.25, 101.25, 76.25, 501.25, 121.25,
@@ -355,9 +355,15 @@ test('section 4 table is exact for the wedding, every price from the site data',
     ['Drone and aerial frames', '$76.25', 'Weather and airspace permitting. Refunded in full if I cannot fly.'],
     ['A wedding film', 'Quoted for your wedding', 'Every price in this agreement is for photography. A film is agreed in writing, with its own price.'],
     ['Priority delivery', '$501.25', 'Your full gallery within 3 weeks of your wedding. Ask me in writing.'],
-    ['RAW photos', '$121.25', 'See section 13.'],
     ['Parking', 'At cost', 'With the receipt. See section 6.'],
     ['Travel outside the GTA', '$0.75 per km', 'Round trip, counted from the GTA boundary. See section 6.'],
+    ['RAW photos', '$121.25', 'See section 13.'],
+    ['Instax guest prints', '$60.00', '50 Fujifilm Instax instant prints, made on your wedding day.'],
+    [
+      'Guest camera',
+      '$100.00 refundable deposit',
+      'A small Sony camera that I hand to one of your guests for the day. There is no fee. You get the deposit back in full when the camera comes back working and undamaged.',
+    ],
   ]);
 });
 
@@ -374,11 +380,84 @@ test('wedding package data agrees with the site data', () => {
   const byId = new Map((siteAddOns as { id: string; price: number | null; note: string; max?: number }[]).map((a) => [a.id, a]));
   for (const row of pkg.addOnRows) {
     if (row.id === null) continue;
+    if (row.price !== undefined) {
+      // A contract-only add-on: never in the public site data.
+      expect(byId.has(row.id), row.id).toBe(false);
+      expect(site.addOnIds, row.id).not.toContain(row.id);
+      continue;
+    }
     expect(site.addOnIds, row.id).toContain(row.id);
     expect(typeof byId.get(row.id)!.price, row.id).toBe('number');
   }
   expect(byId.get('extra-hours-wedding')!.note).toContain(`(${money(pkg.overtimeBlock)} per block)`);
   expect(byId.get('second-photographer')!.max).toBe(14);
+});
+
+// ------------------------------------------------------------------ contract-only add-ons
+
+const SECOND_ONLY = [{ id: 'second-photographer', qty: 7 }];
+
+test('without RAW photos: the three payments for second photographer hours only', () => {
+  const f = facts({ add_ons: SECOND_ONLY });
+  expect(f.total).toBe(3010);
+  expect(f.retainer).toBe(1505);
+  expect(f.second_payment).toBe(753);
+  expect(f.final_payment).toBe(752);
+  expect(Math.round((f.retainer + f.second_payment! + f.final_payment!) * 100)).toBe(Math.round(f.total * 100));
+  expect(rowsOf(renderVariant(f, 'share'))['Add-ons chosen at booking']).toBe('Second photographer, extra hours, 7 × $101.25 = $708.75');
+});
+
+test('Instax guest prints are booked once at their contract price; the guest camera is never booked', () => {
+  const f = facts({ add_ons: [...SECOND_ONLY, { id: 'instax-guest-prints', qty: 1 }] });
+  expect(f.total).toBe(3070);
+  expect(f.add_ons[1]).toEqual({ id: 'instax-guest-prints', label: 'Instax guest prints', qty: 1, unit_price: 60, line_total: 60 });
+  expect(Math.round((f.retainer + f.second_payment! + f.final_payment!) * 100)).toBe(307000);
+  const line = rowsOf(renderVariant(f, 'share'))['Add-ons chosen at booking'];
+  expect(line).toContain('Instax guest prints, 1 × $60.00 = $60.00');
+  expect(rowsOf(renderVariant(f, 'share'))['Total']).toBe('$3,070.00');
+  expect(codeOf(() => facts({ add_ons: [{ id: 'instax-guest-prints', qty: 2 }] }))).toEqual({ code: 'bad_add_on', field: 'add_ons' });
+  expect(codeOf(() => facts({ add_ons: [{ id: 'instax-guest-prints', qty: 0 }] }))).toEqual({ code: 'bad_add_on', field: 'add_ons' });
+  expect(codeOf(() => facts({ add_ons: [{ id: 'guest-camera', qty: 1 }] }))).toEqual({ code: 'bad_add_on', field: 'add_ons' });
+  // Not an add-on of the civil ceremony.
+  expect(
+    codeOf(() =>
+      buildBookingFacts(
+        {
+          package_id: 'civil-ceremony',
+          client_name: 'Priya Sharma',
+          partner_name: 'Arjun Mehta',
+          client_email: 'priya@example.com',
+          client_phone: '416 555 0142',
+          event_date: '2026-12-12',
+          start_time: '12:00',
+          end_time: '14:00',
+          place: 'Vaughan City Hall',
+          add_ons: [{ id: 'instax-guest-prints', qty: 1 }],
+        },
+        { number: 'KK-TEST-2026-001', createdAt: new Date('2026-11-10T15:00:00Z') },
+      ),
+    ),
+  ).toEqual({ code: 'bad_add_on', field: 'add_ons' });
+});
+
+test('a contract-only price on a site add-on, or on a row without an id, is a data mistake', () => {
+  const rows = WEDDING_PKG().addOnRows as { id: string | null; label: string; price?: number }[];
+  const instax = rows.find((r) => r.id === 'instax-guest-prints')!;
+  const film = rows.find((r) => r.label === 'A wedding film')!;
+  try {
+    instax.id = 'drone'; // an id the site data has
+    expect(() => renderVariant(facts(), 'share')).toThrow('package The Full Day, add-on row Instax guest prints: a contract-only price');
+  } finally {
+    instax.id = 'instax-guest-prints';
+  }
+  try {
+    film.price = 10;
+    expect(() => renderVariant(facts(), 'share')).toThrow('add-on row A wedding film: a contract-only price');
+  } finally {
+    delete film.price;
+  }
+  expect(() => renderVariant(facts(), 'share')).not.toThrow();
+  expect(Object.hasOwn(film, 'price')).toBe(false);
 });
 
 // ------------------------------------------------------------------ the second photographer row
@@ -459,6 +538,7 @@ test('no dash in anything a wedding client reads', () => {
     ...strings(renderVariant(facts(), 'share')),
     ...strings(renderVariant(facts(), 'private')),
     ...strings(renderVariant(facts({ add_ons: [] }), 'share')),
+    ...strings(renderVariant(facts({ add_ons: [{ id: 'second-photographer', qty: 7 }, { id: 'instax-guest-prints', qty: 1 }] }), 'private')),
     ...strings(signLabels(facts())),
     ...strings(laterPaymentRows(facts())),
     secondRow(facts({ add_ons: [{ id: 'second-photographer', qty: 1 }] })),
@@ -473,7 +553,9 @@ test('no dash in anything a wedding client reads', () => {
 test('wedding sample text', () => {
   const out = process.env.AGREEMENT_SAMPLE;
   test.skip(!out, 'set AGREEMENT_SAMPLE to write the sample');
-  const doc = JSON.parse(fillSignDate(JSON.stringify(renderVariant(facts(), 'share')), '22 November 2026')) as AgreementDoc;
+  // Booked as the owner decided: second photographer extra hours only, no RAW photos.
+  const booked = facts({ add_ons: [{ id: 'second-photographer', qty: 7 }] });
+  const doc = JSON.parse(fillSignDate(JSON.stringify(renderVariant(booked, 'share')), '22 November 2026')) as AgreementDoc;
   const lines: string[] = [doc.title, '', doc.intro, ''];
   for (const s of doc.sections) {
     lines.push(s.num === 0 ? s.title : `${s.num}. ${s.title}`, '');
@@ -487,7 +569,7 @@ test('wedding sample text', () => {
     }
   }
   lines.push(doc.business_signature, '');
-  const labels = signLabels(facts());
+  const labels = signLabels(booked);
   lines.push('--- around the text on the page ---', ...labels.intro_bullets.map((b) => `* ${b}`), labels.share_option, labels.private_option, labels.agree_label);
   lines.push(`Step 2: ${labels.after_signing.title}. ${labels.after_signing.text}`, '');
   writeFileSync(out!, lines.join('\n'));

@@ -28,6 +28,8 @@ interface AddOnRow {
   priceText: string;
   note: string;
   bookable: boolean;
+  // A contract-only price, for an add-on that is not in the site data (add-ons.json). Booked once at most.
+  price?: number;
 }
 interface PackageFacts {
   name: string;
@@ -123,6 +125,17 @@ const siteAddOn = (id: string): SiteAddOn => {
   return a;
 };
 
+/**
+ * The unit price of an add-on row: its own contract-only price, or the site price as before.
+ * A row with its own price must have an id that the site data does not have; anything else is a data mistake.
+ */
+const rowPrice = (pkg: PackageFacts, row: AddOnRow): number => {
+  if (row.price === undefined) return siteAddOn(row.id!).price as number;
+  if (row.id === null || SITE_ADD_ONS.some((a) => a.id === row.id) || typeof row.price !== 'number' || !Number.isFinite(row.price))
+    throw new Error(`package ${pkg.name}, add-on row ${row.label}: a contract-only price needs its own id, one that add-ons.json does not have`);
+  return row.price;
+};
+
 /** Replaces each {{NAME}} from vals. SIGN_DATE stays as the token. An unknown name throws. */
 const fill = (template: string, vals: Record<string, string>): string =>
   template.replace(/\{\{([A-Z0-9_]+)\}\}/g, (whole, name: string) => {
@@ -215,10 +228,10 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     const row = pkg.addOnRows.find((r) => r.bookable && r.id !== null && r.id === id);
     if (!row || seen.has(row.id!)) throw new BookingError('bad_add_on', 'add_ons');
     seen.add(row.id!);
-    const site = siteAddOn(row.id!);
-    if (typeof qty !== 'number' || !Number.isInteger(qty) || qty < 1 || qty > (site.max ?? 1))
-      throw new BookingError('bad_add_on', 'add_ons');
-    const unit_price = site.price as number;
+    const unit_price = rowPrice(pkg, row);
+    // A contract-only add-on is booked once at most.
+    const max = row.price === undefined ? (siteAddOn(row.id!).max ?? 1) : 1;
+    if (typeof qty !== 'number' || !Number.isInteger(qty) || qty < 1 || qty > max) throw new BookingError('bad_add_on', 'add_ons');
     return { id: row.id!, label: row.label, qty, unit_price, line_total: cents(unit_price * qty) };
   });
 
@@ -381,7 +394,7 @@ const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string
 
 const addOnTableRows = (pkg: PackageFacts): string[][] =>
   pkg.addOnRows.map((r) => {
-    const vals = { ...(r.id === null ? {} : { PRICE: money(siteAddOn(r.id).price as number) }), OT_BLOCK: money(pkg.overtimeBlock) };
+    const vals = { ...(r.id === null && r.price === undefined ? {} : { PRICE: money(rowPrice(pkg, r)) }), OT_BLOCK: money(pkg.overtimeBlock) };
     return [r.label, fill(r.priceText, vals), fill(r.note, vals)];
   });
 

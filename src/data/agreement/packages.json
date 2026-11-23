@@ -60,9 +60,11 @@
       { "id": "drone", "label": "Drone and aerial frames", "priceText": "{{PRICE}}", "note": "Weather and airspace permitting. Refunded in full if I cannot fly.", "bookable": true },
       { "id": null, "label": "A wedding film", "priceText": "Quoted for your wedding", "note": "Every price in this agreement is for photography. A film is agreed in writing, with its own price.", "bookable": false },
       { "id": "priority-delivery-wedding", "label": "Priority delivery", "priceText": "{{PRICE}}", "note": "Your full gallery within 3 weeks of your wedding. Ask me in writing.", "bookable": false },
-      { "id": "raw-photos-wedding", "label": "RAW photos", "priceText": "{{PRICE}}", "note": "See section 13.", "bookable": true },
       { "id": null, "label": "Parking", "priceText": "At cost", "note": "With the receipt. See section 6.", "bookable": false },
-      { "id": null, "label": "Travel outside the GTA", "priceText": "$0.75 per km", "note": "Round trip, counted from the GTA boundary. See section 6.", "bookable": false }
+      { "id": null, "label": "Travel outside the GTA", "priceText": "$0.75 per km", "note": "Round trip, counted from the GTA boundary. See section 6.", "bookable": false },
+      { "id": "raw-photos-wedding", "label": "RAW photos", "priceText": "{{PRICE}}", "note": "See section 13.", "bookable": true },
+      { "id": "instax-guest-prints", "label": "Instax guest prints", "price": 60, "priceText": "{{PRICE}}", "note": "50 Fujifilm Instax instant prints, made on your wedding day.", "bookable": true },
+      { "id": "guest-camera", "label": "Guest camera", "price": 100, "priceText": "{{PRICE}} refundable deposit", "note": "A small Sony camera that I hand to one of your guests for the day. There is no fee. You get the deposit back in full when the camera comes back working and undamaged.", "bookable": false }
     ],
     "laterCosts": "Overtime at {{OT_RATE}} an hour, in 30 minute blocks of {{OT_BLOCK}} (section 5). Parking at cost (section 6). Travel outside the GTA at $0.75 per km (section 6). A fee of $500.00 for a second change of date (section 11). Any add-on you choose later, at the prices in section 4.",
     "introBullets": ["{{CLIENT_FIRST}} signs for both of you.", "You can download or print a copy before you sign.", "You will get a PDF copy by email the moment you sign."],
