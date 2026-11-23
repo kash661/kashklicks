@@ -51,10 +51,10 @@ interface PackageFacts {
   deliveryPromise: string;
   deliveryRow: string;
   dateRowLabel: string;
-  // The label of the one balance row. Only packages paid in two parts have one.
+  // The label of the one balance row (every package is paid in two parts since 2026-11-23).
   balanceRowLabel?: string;
-  // 'three-part': retainer, second payment and final payment (clause 3.6, tag WEDDING).
-  payments?: 'three-part';
+  // Not a setting any more: a package that still has it is refused (see checkPackage). Typed only for that check.
+  payments?: unknown;
   // The hours a second photographer joins for (clause 8.2, tag SECOND), and the add-on that adds more.
   secondPhotographer?: { includedHours: number; addOnId: string };
   // The engagement session in the package (clauses 10.13 and 16.9, tag ENGAGEMENT).
@@ -76,7 +76,12 @@ interface Business {
   phone: string;
   email: string;
   website: string;
+  // Frozen into every new booking (facts.etransfer_email): a later change never reaches a booking made before it.
   etransferEmail: string;
+  // The usual retainer, in percent of the total (facts.retainer_percent, frozen the same way).
+  retainerPercent: number;
+  // The balance is paid in cash only, unless a booking says otherwise (balance_cash: false).
+  balanceCashOnly: boolean;
   hstMode: 'none' | 'added' | 'included';
   hstNumber: string;
   insured: boolean;
@@ -111,22 +116,58 @@ const packageFacts = (id: unknown): PackageFacts => {
 };
 
 /**
- * True when the package is paid in three parts. A package's data must agree with its clause tags:
- * three payments go with WEDDING (clause 3.6), a second photographer setting with SECOND (clause 8.2).
- * Anything else is a data mistake and throws, so no booking is made or shown from it.
+ * A package's data must agree with its clause tags: a second photographer setting goes with SECOND
+ * (clause 8.2). Every booking is paid in two parts since 2026-11-23 (clauses 3.5, 3.6 and 3.16), so a
+ * package with a `payments` setting is refused. Anything else is a data mistake and throws, so no
+ * booking is made or shown from it.
  */
-const threePart = (pkg: PackageFacts): boolean => {
-  if (pkg.payments !== undefined && pkg.payments !== 'three-part') throw new Error(`package ${pkg.name}: unknown payments ${String(pkg.payments)}`);
-  const three = pkg.payments === 'three-part';
-  if (three !== pkg.tags.includes('WEDDING')) throw new Error(`package ${pkg.name}: three payments and the WEDDING tag go together`);
+const checkPackage = (pkg: PackageFacts): void => {
+  if (Object.hasOwn(pkg, 'payments')) throw new Error(`package ${pkg.name}: payments is not a package setting any more, every booking is paid in two parts`);
   if ((pkg.secondPhotographer !== undefined) !== pkg.tags.includes('SECOND'))
     throw new Error(`package ${pkg.name}: a second photographer setting and the SECOND tag go together`);
-  return three;
+};
+
+// What every booking made before 2026-11-23 was made with. Its facts carry neither retainer_percent nor
+// etransfer_email, so they read as these values: the 50% retainer and the old e-transfer address. A
+// later change of business.json never reaches a booking: new ones carry their own frozen values.
+export const RETAINER_PERCENT_BEFORE_2026_11_23 = 50;
+export const ETRANSFER_EMAIL_BEFORE_2026_11_23 = 'info@kashklicks.ca';
+
+/** The retainer percent frozen with a booking (50 for a booking made before 2026-11-23). */
+export const retainerPercentOf = (f: BookingFacts): number => f.retainer_percent ?? RETAINER_PERCENT_BEFORE_2026_11_23;
+/** The e-transfer address frozen with a booking (the old address for a booking made before 2026-11-23). */
+export const etransferEmailOf = (f: BookingFacts): string => f.etransfer_email ?? ETRANSFER_EMAIL_BEFORE_2026_11_23;
+
+/**
+ * The percents the clauses name for the usual retainer ("The retainer is 25% of your total", clauses 3.5
+ * and 3.6), in clause file order. The clauses write it as fixed text, not as a placeholder.
+ */
+const clauseRetainerPercents = (): number[] => {
+  const out: number[] = [];
+  for (const sec of CLAUSES.sections)
+    for (const item of sec.items)
+      if (item.type === 'clause')
+        for (const m of [item.text, ...item.bullets].join('\n').matchAll(/The retainer is (\d+)% of your total/g)) out.push(Number(m[1]));
+  return out;
+};
+
+/** The business settings a new booking freezes. A broken value is a data mistake and throws. */
+const businessPayments = (): { retainer_percent: number; etransfer_email: string; cashOnly: boolean } => {
+  const p = BUSINESS.retainerPercent;
+  if (typeof p !== 'number' || !Number.isInteger(p) || p < 1 || p > 99) throw new Error('business.json: retainerPercent must be a whole number from 1 to 99');
+  // A percent the clauses do not name would give a section 1 retainer that its own clause 3.5 or 3.6 contradicts.
+  const named = clauseRetainerPercents();
+  if (named.length === 0 || named.some((n) => n !== p))
+    throw new Error(`business.json: retainerPercent ${p} is not the percent the clauses name (${named.join(', ') || 'none'})`);
+  const email = BUSINESS.etransferEmail;
+  if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('business.json: etransferEmail must be an email address');
+  if (typeof BUSINESS.balanceCashOnly !== 'boolean') throw new Error('business.json: balanceCashOnly must be true or false');
+  return { retainer_percent: p, etransfer_email: email, cashOnly: BUSINESS.balanceCashOnly };
 };
 
 /**
  * The package's fee for private work, or undefined. The fee goes together with the tag SHARE-B in the
- * share option (clause 15.2), and for now only a package paid in three parts may have one.
+ * share option (clause 15.2).
  */
 const privateFeeOf = (pkg: PackageFacts): number | undefined => {
   const fee = pkg.privateFee;
@@ -138,7 +179,6 @@ const privateFeeOf = (pkg: PackageFacts): number | undefined => {
   if (!shareB) throw new Error(`package ${pkg.name}: a privateFee goes with the SHARE-B tag`);
   if (typeof fee !== 'number' || !Number.isFinite(fee) || fee < 1 || !wholeCents(fee))
     throw new Error(`package ${pkg.name}: privateFee must be a whole number of cents, at least 1`);
-  if (!threePart(pkg)) throw new Error(`package ${pkg.name}: a fee for private work on a package paid in two parts is not built yet`);
   return fee;
 };
 
@@ -198,10 +238,10 @@ interface ResolvedTick {
 
 /**
  * The tick boxes of a package, checked against its add-on rows. A broken rule is a data mistake and
- * throws, like threePart(): at most 3, ids unique and plain (a to z, 0 to 9, hyphens), each id has
+ * throws, like checkPackage(): at most 3, ids unique and plain (a to z, 0 to 9, hyphens), each id has
  * exactly one add-on row, never an hours add-on (hours set the times of the day), a price that is a whole
  * number of cents of at least 1, a priced one on a bookable row, a deposit on a row that is not bookable
- * and has its own price, and a deposit row that uses only PRICE and FINAL_DUE.
+ * and has its own price, and a deposit row that uses only PRICE (there is no final payment any more).
  */
 const tickBoxesOf = (pkg: PackageFacts): ResolvedTick[] => {
   // Contract-only prices are checked first, for every row, so a broken row is named as such.
@@ -233,9 +273,7 @@ const tickBoxesOf = (pkg: PackageFacts): ResolvedTick[] => {
     if (row.bookable !== false || row.price === undefined) throw new Error(`${at}: a deposit needs a row that is not bookable, with its own price`);
     if (!d || typeof d !== 'object' || typeof d.rowLabel !== 'string' || typeof d.row !== 'string' || typeof d.note !== 'string')
       throw new Error(`${at}: a deposit needs rowLabel, row and note`);
-    if (placeholderNames(d.row).some((n) => n !== 'PRICE' && n !== 'FINAL_DUE')) throw new Error(`${at}: the deposit row may use PRICE and FINAL_DUE only`);
-    // A deposit is due with the final payment: only a package paid in three parts has one.
-    if (!threePart(pkg)) throw new Error(`${at}: a deposit tick box needs a package paid in three parts`);
+    if (placeholderNames(d.row).some((n) => n !== 'PRICE')) throw new Error(`${at}: the deposit row may use PRICE only`);
     if (hasMarkup(d.rowLabel) || hasMarkup(d.note)) throw new Error(`${at}: the deposit label and note take no placeholder`);
     return { id, row, amount, deposit: { rowLabel: d.rowLabel, row: d.row, note: d.note } };
   });
@@ -273,10 +311,17 @@ const cleanText = (v: unknown, min: number, max: number, code: string, field: st
 /** True when n is a whole number of cents (allowing for binary float noise). */
 const wholeCents = (n: number) => Math.abs(n * 100 - Math.round(n * 100)) < 1e-6;
 
-/** The usual retainer: half of the total, rounded up to the next dollar. */
-const usualRetainer = (total: number) => Math.ceil(total / 2);
+/**
+ * The usual retainer: `percent` of the total, rounded up to the next dollar. Every caller passes the
+ * percent frozen with the booking (retainerPercentOf): 25 for a booking made since 2026-11-23, 50 before.
+ */
+export const usualRetainer = (total: number, percent: number) => Math.ceil((total * percent) / 100);
 
-/** Three payments (clause 3.6): after the retainer, a quarter of the total rounded up to the next dollar, then the rest. */
+/**
+ * Three payments (the clause 3.6 of bookings made before 2026-11-23): after the retainer, a quarter of the
+ * total rounded up to the next dollar, then the rest. Only factsFor uses it, for the stored facts of such
+ * a booking (they carry second_payment); no new booking is paid in three parts.
+ */
 const laterPayments = (total: number, retainer: number) => {
   const second_payment = Math.ceil(total / 4);
   const final_payment = cents(total - retainer - second_payment);
@@ -302,9 +347,11 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const o = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
   const pkg = packageFacts(o.package_id);
   const package_id = o.package_id as string;
-  const three = threePart(pkg);
+  checkPackage(pkg);
   const private_fee = privateFeeOf(pkg);
   const ticks = tickBoxesOf(pkg);
+  // Frozen with the booking: the retainer percent and the e-transfer address of today's business settings.
+  const { retainer_percent, etransfer_email, cashOnly } = businessPayments();
 
   const client_name = cleanText(o.client_name, 2, 120, 'bad_name', 'client_name');
   const partner_name = cleanText(o.partner_name, 2, 120, 'bad_name', 'partner_name');
@@ -322,10 +369,6 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const today = torontoIsoDate(ctx.createdAt);
   if (!isIsoDate(event_date) || event_date < today || event_date > addDays(today, MAX_DAYS_AHEAD))
     throw new BookingError('bad_date', 'event_date');
-  // Three payments: the second falls due 60 days before the wedding at the latest. That date must
-  // still be ahead, or the dates in section 1 would already have passed.
-  const second_due = three ? addDays(event_date, -60) : undefined;
-  if (second_due !== undefined && second_due <= today) throw new BookingError('bad_date', 'event_date');
 
   const place = cleanText(o.place, 3, 200, 'bad_place', 'place');
 
@@ -370,26 +413,20 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
 
   const total = cents(package_price + add_ons.reduce((sum, a) => sum + a.line_total, 0));
   let retainer: number;
-  if (o.retainer === undefined) retainer = usualRetainer(total);
+  if (o.retainer === undefined) retainer = usualRetainer(total, retainer_percent);
   else {
     if (typeof o.retainer !== 'number' || !Number.isFinite(o.retainer) || !wholeCents(o.retainer) || o.retainer < 1 || cents(o.retainer) >= total)
       throw new BookingError('bad_retainer', 'retainer');
     retainer = cents(o.retainer);
   }
-  // The clause for a set retainer is for two payments only (NONWED).
-  if (three && retainer !== usualRetainer(total)) throw new BookingError('bad_retainer', 'retainer');
+  // The clause for a set retainer (3.16) is for bookings that are not weddings (NONWED): the wedding
+  // clause 3.6 names the usual percent.
+  if (pkg.tags.includes('WEDDING') && retainer !== usualRetainer(total, retainer_percent)) throw new BookingError('bad_retainer', 'retainer');
   const balance = cents(total - retainer);
 
+  // Missing: the business setting (cash only). false lets this one booking pay the balance by e-transfer too.
   if (o.balance_cash !== undefined && typeof o.balance_cash !== 'boolean') throw new BookingError('bad_balance_cash', 'balance_cash');
-  const balance_cash = o.balance_cash === true;
-  // The cash only clause is for two payments only (NONWED).
-  if (three && balance_cash) throw new BookingError('bad_balance_cash', 'balance_cash');
-
-  // Three payments (clause 3.6): half at signing, a quarter, then the rest. They add up to the total exactly.
-  let payments = {};
-  if (three) payments = { ...laterPayments(total, retainer), second_due: second_due as string, final_due: addDays(event_date, -14) };
-  // The private choice must also give sensible payments.
-  if (private_fee !== undefined) laterPayments(cents(total + private_fee), usualRetainer(cents(total + private_fee)));
+  const balance_cash = o.balance_cash === undefined ? cashOnly : o.balance_cash;
 
   // What can still be ticked at signing: a tick box whose add-on is booked already is not offered again.
   const tick_boxes: TickBox[] = ticks
@@ -419,38 +456,51 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     retainer,
     balance,
     balance_cash,
+    retainer_percent,
+    etransfer_email,
     hours,
     delivery_date: deliveryDate(pkg, event_date),
     notes,
-    ...payments,
     ...(second_hours === undefined ? {} : { second_hours }),
     ...(private_fee === undefined ? {} : { private_fee }),
     ...(tick_boxes.length === 0 ? {} : { tick_boxes }),
   };
-  // Every mix must give sensible amounts too (three payments: no final payment below a dollar).
-  for (const m of mixesOf(facts)) if (m.extras.length > 0) factsFor(facts, m.choice, m.extras);
+  // Every mix must give sensible amounts too.
+  for (const m of mixesOf(facts)) factsFor(facts, m.choice, m.extras);
   return facts;
 }
 
 /**
  * The facts of one mix: a sharing choice plus the extras ticked at signing. The one amounts function.
  * Nothing ticked, and share or a booking without a fee for private work: the facts as they are (the same
- * object). Private with a fee: the fee is added to the total, and the retainer and the later payments are
- * worked out again from the new total by the same rules. Ticked extras (ids of f.tick_boxes, any order):
- * priced ones join add_ons and the total, deposits go to `deposits` and never into the total. A booking
- * made with the usual retainer keeps the usual rule; a set retainer stays as it was set. Uses the stored
- * facts only (no package lookup), never changes f. Facts that already carry the fee or extras throw.
+ * object). Private with a fee: the fee is added to the total, and the retainer (and, for a booking paid
+ * in three parts, made before 2026-11-23, the later payments) are worked out again from the new total by
+ * the same rules. Ticked extras (ids of f.tick_boxes, any order): priced ones join add_ons and the total,
+ * deposits go to `deposits` and never into the total. A booking made with the usual retainer keeps the
+ * usual rule, at the percent frozen with it (retainerPercentOf: 50 for a booking made before 2026-11-23);
+ * a set retainer stays as it was set. Uses the stored facts only (no package lookup, no business
+ * setting), never changes f. Facts that already carry the fee or extras throw.
  */
 export function factsFor(f: BookingFacts, choice: Choice, extras: string[] = []): BookingFacts {
   if (f.sharing_fee !== undefined) throw new Error(`booking ${f.number}: the fee for private work is already in these facts`);
   if (f.extras !== undefined) throw new Error(`booking ${f.number}: the ticked extras are already in these facts`);
   if (!Array.isArray(extras)) throw new BookingError('bad_extras', 'extras');
+  const percent = retainerPercentOf(f);
+  // The usual rule follows the total of the mix; a set retainer stays. A booking paid in three parts
+  // always had the usual retainer, so for it this is the usual retainer of the new total, as before.
+  const retainerOf = (total: number) => (f.retainer === usualRetainer(f.total, percent) ? usualRetainer(total, percent) : f.retainer);
   if (extras.length === 0) {
     if (choice === 'share' || f.private_fee === undefined) return f;
-    if (f.second_payment === undefined) throw new Error(`booking ${f.number}: a fee for private work needs three payments`);
     const total = cents(f.total + f.private_fee);
-    const retainer = usualRetainer(total);
-    return { ...f, sharing_fee: f.private_fee, total, retainer, balance: cents(total - retainer), ...laterPayments(total, retainer) };
+    const retainer = retainerOf(total);
+    return {
+      ...f,
+      sharing_fee: f.private_fee,
+      total,
+      retainer,
+      balance: cents(total - retainer),
+      ...(f.second_payment === undefined ? {} : laterPayments(total, retainer)),
+    };
   }
   const offered = f.tick_boxes ?? [];
   const picked = new Set<string>();
@@ -465,9 +515,8 @@ export function factsFor(f: BookingFacts, choice: Choice, extras: string[] = [])
     .filter((t) => t.kind === 'deposit')
     .map((t) => ({ id: t.id, label: t.deposit_label as string, amount: t.amount, note: t.deposit_note as string }));
   const fee = choice === 'private' ? f.private_fee : undefined;
-  if (fee !== undefined && f.second_payment === undefined) throw new Error(`booking ${f.number}: a fee for private work needs three payments`);
   const total = cents(f.total + priced.reduce((sum, t) => sum + t.amount, 0) + (fee ?? 0));
-  const retainer = f.retainer === usualRetainer(f.total) ? usualRetainer(total) : f.retainer;
+  const retainer = retainerOf(total);
   return {
     ...f,
     add_ons: [...f.add_ons, ...priced.map((t) => ({ id: t.id, label: t.label, qty: 1, unit_price: t.amount, line_total: cents(t.amount) }))],
@@ -483,10 +532,10 @@ export function factsFor(f: BookingFacts, choice: Choice, extras: string[] = [])
 
 // ---------------------------------------------------------------- rendering
 
-// The retainer tag comes from the BOOKED facts: a set retainer that happens to equal half of one mix's
-// total stays a set retainer (clause 3.16) in every mix. For every booking without extras it is the same tag as before.
+// The retainer tag comes from the BOOKED facts, at their frozen percent: a set retainer that happens to
+// equal the usual share of one mix's total stays a set retainer (clause 3.16) in every mix.
 const activeTags = (pkg: PackageFacts, choice: Choice, booked: BookingFacts): Set<string> => {
-  const retainerTag = booked.retainer === usualRetainer(booked.total) ? 'RET-HALF' : 'RET-SET';
+  const retainerTag = booked.retainer === usualRetainer(booked.total, retainerPercentOf(booked)) ? 'RET-USUAL' : 'RET-SET';
   // Stored bookings made before balance_cash existed have none: they read as false.
   const balanceTag = booked.balance_cash === true ? 'BAL-CASH' : 'BAL-ANY';
   const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode], retainerTag, balanceTag]);
@@ -502,8 +551,9 @@ const otValues = (pkg: PackageFacts) => ({
 });
 
 /**
- * The two payments after the retainer of a booking paid in three parts, as label and sentence, or
- * null for a booking without them. Section 1, the page after signing and the review step use these words.
+ * The two payments after the retainer of a booking paid in three parts (made before 2026-11-23), as label
+ * and sentence, or null for a booking without them (every booking made since). The summaries of such a
+ * booking, the page after signing and the review step use these words.
  */
 export function laterPaymentRows(f: BookingFacts): { label: string; text: string }[] | null {
   if (f.second_payment === undefined) return null;
@@ -519,21 +569,18 @@ export function laterPaymentRows(f: BookingFacts): { label: string; text: string
 }
 
 const paymentRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
-  if (threePart(pkg)) {
-    const later = laterPaymentRows(f);
-    if (!later) throw new Error(`booking ${f.number} of ${pkg.name} has no later payments`);
-    return later.map((r) => [r.label, r.text]);
-  }
+  // A booking paid in three parts was made before 2026-11-23: its texts are stored and never made again.
+  if (f.second_payment !== undefined) throw new Error(`booking ${f.number} is paid in three parts: its texts are stored, no new one is made`);
   if (pkg.balanceRowLabel === undefined) throw new Error(`package ${pkg.name} has no balance row label`);
   return [[pkg.balanceRowLabel, f.balance_cash === true ? `${money(f.balance)} in cash` : `${money(f.balance)} by e-transfer or cash`]];
 };
 
-/** One row per ticked deposit, after the payment rows: its label, and its package row text with PRICE and FINAL_DUE. */
+/** One row per ticked deposit, after the payment rows: its label, and its package row text with PRICE. */
 const depositRows = (f: BookingFacts, ticks: ResolvedTick[]): string[][] =>
   (f.deposits ?? []).map((d) => {
     const t = ticks.find((x) => x.id === d.id);
     if (!t || !t.deposit) throw new Error(`booking ${f.number}: deposit ${d.id} is not a deposit tick box of its package`);
-    return [d.label, fill(t.deposit.row, { PRICE: money(d.amount), ...(f.final_due === undefined ? {} : { FINAL_DUE: longDate(f.final_due) }) })];
+    return [d.label, fill(t.deposit.row, { PRICE: money(d.amount) })];
   });
 
 /** The section 1 row of the fee for private work. page.ts uses the same words for its price line. */
@@ -621,6 +668,7 @@ interface Prepared {
 
 const prepare = (booked: BookingFacts, choice: Choice, extras: string[]): Prepared => {
   const pkg = packageFacts(booked.package_id);
+  checkPackage(pkg);
   const fee = feeOf(pkg, booked);
   // The amounts of this mix: a fee for private work and ticked priced extras give a larger total.
   const facts = factsFor(booked, choice, extras);
@@ -634,7 +682,8 @@ const prepare = (booked: BookingFacts, choice: Choice, extras: string[]): Prepar
     BUSINESS_LEGAL_NAME: BUSINESS.legalName,
     BOOKING_ID: facts.number,
     PACKAGE_NAME: pkg.name,
-    ETRANSFER_EMAIL: BUSINESS.etransferEmail,
+    // Frozen with the booking, never today's business setting.
+    ETRANSFER_EMAIL: etransferEmailOf(booked),
     DELIVERY_PROMISE: pkg.deliveryPromise,
     RETAINER: money(facts.retainer),
     ...otValues(pkg),
@@ -841,6 +890,7 @@ export function pageFacts(f: BookingFacts): {
   sitePrice: (id: string) => string;
 } {
   const pkg = packageFacts(f.package_id);
+  checkPackage(pkg);
   feeOf(pkg, f);
   const ticks = ticksAgree(pkg, f);
   const tickPrice: Record<string, string> = {};

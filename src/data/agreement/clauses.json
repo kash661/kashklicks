@@ -1,5 +1,5 @@
 {
-  "version": "89e67a4f871838e201944a62d18f690ac720eedf0d0d6ac41c5cf76af0d90e10",
+  "version": "8f15fd04765241a11b5f447f0b6cfdf70cc8b446d1d18ae6e8a2a2cd4070482d",
   "title": "Photography and Film Agreement",
   "intro": "This is the agreement between you and me for your booking. I wrote it in plain English on purpose. Please read all of it. If anything is unclear or wrong, do not sign yet. Message me, and I will fix it or explain it.",
   "sections": [
@@ -237,10 +237,10 @@
           "tags": [
             [
               "NONWED",
-              "RET-HALF"
+              "RET-USUAL"
             ]
           ],
-          "text": "You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.",
+          "text": "You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on or before the shoot day, before I start shooting.",
           "bullets": []
         },
         {
@@ -263,12 +263,8 @@
               "WEDDING"
             ]
           ],
-          "text": "You pay in three parts.",
-          "bullets": [
-            "The retainer is 50% of your total. It is due when you sign.",
-            "The second payment is 25%. It is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session 60 days before the wedding, it is due 60 days before the wedding.",
-            "The final payment is 25%. It is due 14 days before the wedding."
-          ]
+          "text": "You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on your wedding day, before I start shooting.",
+          "bullets": []
         },
         {
           "type": "clause",
@@ -300,7 +296,7 @@
               "ALL"
             ]
           ],
-          "text": "You can pay by Interac e-transfer to {{ETRANSFER_EMAIL}}. Please put your booking number in the message. I send a receipt or an invoice for every payment.",
+          "text": "You pay the retainer by Interac e-transfer to {{ETRANSFER_EMAIL}}. Any other payment by e-transfer goes to the same address. Please put your booking number in the message. I send a receipt or an invoice for every payment.",
           "bullets": []
         },
         {
@@ -308,11 +304,10 @@
           "id": "3.10",
           "tags": [
             [
-              "NONWED",
               "BAL-ANY"
             ]
           ],
-          "text": "You can also pay the balance in cash on the shoot day.",
+          "text": "You can pay the balance by e-transfer or in cash.",
           "bullets": []
         },
         {
@@ -320,11 +315,10 @@
           "id": "3.17",
           "tags": [
             [
-              "NONWED",
               "BAL-CASH"
             ]
           ],
-          "text": "You pay the balance in cash on the shoot day, not by e-transfer.",
+          "text": "You pay the balance in cash, not by e-transfer.",
           "bullets": []
         },
         {
@@ -332,21 +326,10 @@
           "id": "3.11",
           "tags": [
             [
-              "NONWED"
+              "ALL"
             ]
           ],
-          "text": "If the balance is not paid before the shoot starts, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the shoot day (section 16).",
-          "bullets": []
-        },
-        {
-          "type": "clause",
-          "id": "3.12",
-          "tags": [
-            [
-              "WEDDING"
-            ]
-          ],
-          "text": "If a payment is late, I send you a written reminder. If it is still not paid 3 days after the reminder, I may treat it as a cancellation by you (section 16).",
+          "text": "If the balance is not paid before I start shooting, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the day (section 16).",
           "bullets": []
         },
         {
@@ -2187,7 +2170,7 @@
               "ALL"
             ]
           ],
-          "text": "I may end this agreement if a payment stays unpaid after my reminder, if section 10 gives me the right to leave, or if you ask me to do something illegal or unsafe. That counts as a cancellation by you.",
+          "text": "I may end this agreement if a payment stays unpaid after I remind you in writing, if section 10 gives me the right to leave, or if you ask me to do something illegal or unsafe. That counts as a cancellation by you.",
           "bullets": []
         },
         {

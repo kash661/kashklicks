@@ -3,6 +3,9 @@ import { buildBookingFacts, renderVariant } from '../../src/lib/agreement/render
 import { sha256Hex } from '../../src/lib/agreement/hash';
 import { escapeHtml, agreementToHtml, docHeadHtml, sectionToHtml, pdfDocument, pdfDraftDocument } from '../../src/lib/agreement/html';
 import type { SignatureBlock } from '../../src/lib/agreement/html';
+import type { AgreementDoc } from '../../src/lib/agreement/types';
+import { unpack } from './fixtures/old-bookings-runner';
+import oldBookings from './fixtures/old-bookings.json' with { type: 'json' };
 
 // Invented people only.
 const PILOT = {
@@ -155,8 +158,17 @@ test('pdf document refuses a booking number that differs from the document', () 
 test('pdfDocument output is pinned byte for byte', async () => {
   // Pinned before pdfDraftDocument shared its frame. A change here changes every emailed copy.
   // Re-pinned on 2026-11-22 because the clause version changed (15.2 wording: privacy fee became marketing fee).
-  expect(await sha256Hex(pdfDocument(doc(), sig()))).toBe('c6791bae5119a70760ea900093c1685764248bf5f1975ea7319a1139056b0c23');
-  expect(await sha256Hex(pdfDocument(doc({}, 'private'), sig({ choice: 'private' })))).toBe('8d89a6e1bf69d007deb55db69de18215db2bebac598b8368e1298e12232e8921');
+  // Re-pinned on 2026-11-23 for the payment change (spec section 5.6): the clause text of a NEW booking
+  // changed (25%, cash only), so its PDF did too. html.ts itself did not change: the old pins still hold
+  // for the text stored with the pilot booking made before the change (tests/unit/fixtures/old-bookings.json).
+  // Re-pinned for spec 2026-11-23, section 5.8: the clause text of a NEW booking changed again (3.5 and 3.6
+  // rounded up to the next dollar, 3.9 any other e-transfer, 16.14 the written reminder; clause version 8f15fd047652).
+  expect(await sha256Hex(pdfDocument(doc(), sig()))).toBe('dc4a88844e05a344a7dedb632c620b22864e3bcf7b66f77321cef8a878fd2aac');
+  expect(await sha256Hex(pdfDocument(doc({}, 'private'), sig({ choice: 'private' })))).toBe('d715954e748a3100dea849788559aa1be82327b601ecb7220177aa83f22e6b03');
+  const old = unpack((oldBookings as any).records['civil-noset'], oldBookings as any, { strings: true }) as any;
+  const stored = (choice: 'share' | 'private') => JSON.parse(old.variants[choice].doc_json) as AgreementDoc;
+  expect(await sha256Hex(pdfDocument(stored('share'), sig()))).toBe('c6791bae5119a70760ea900093c1685764248bf5f1975ea7319a1139056b0c23');
+  expect(await sha256Hex(pdfDocument(stored('private'), sig({ choice: 'private' })))).toBe('8d89a6e1bf69d007deb55db69de18215db2bebac598b8368e1298e12232e8921');
 });
 
 test('the unsigned copy says so at the top and at the end, for both choices', () => {

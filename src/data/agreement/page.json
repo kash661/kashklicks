@@ -35,9 +35,10 @@
           { "text": "I bring backup cameras. My main cameras save every photo to two memory cards at the same time." }
         ],
         "3": [
-          { "text": "You pay by e-transfer to {{ETRANSFER_EMAIL}}." },
+          { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. You pay the balance in cash on your wedding day, not by e-transfer.", "when": "bal:cash" },
+          { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. The balance can be an e-transfer or cash.", "when": "bal:any" },
           { "text": "The retainer is not refunded if you cancel, except in the cases part 6 lists." },
-          { "text": "If a payment is late, I send you a written reminder. If it is still not paid 3 days after the reminder, I may treat it as a cancellation by you." },
+          { "text": "If the balance is not paid before I start shooting, I do not have to shoot. That counts as a cancellation by you on the day." },
           { "text": "If you choose to keep your photos private in part 5, a marketing fee of {{PRIVATE_FEE}} is added to your total.", "when": "fee" },
           { "text": "Costs that can come on top, only if they happen: overtime ({{OT_RATE}} an hour), a second change of date ($500.00), and any extra you add later." },
           { "text": "Costs at the places of your day: my parking at every location and any entry fee or ferry ticket at a place you choose (all at cost), a permit or written permission if a place needs one (you arrange it and pay for it), and travel outside the GTA ($0.75 per km). For travel far away or outside Canada I send you a written quote first. Flights, nights away and transport are then charged at cost." },
@@ -69,9 +70,9 @@
       },
       "totalLine": "Your total is {{TOTAL}}. It stays the same even if my website prices change later.",
       "steps": [
-        { "title": "When you sign", "amount": "{{RETAINER}}", "note": "Your date is held once this arrives." },
-        { "title": "After your engagement photos", "amount": "{{SECOND}}", "note": "Due 7 days after I deliver them. If you have not had the session by {{SECOND_DUE}}, it is due on that date." },
-        { "title": "By {{FINAL_DUE}}", "amount": "{{FINAL}}", "note": "14 days before your wedding." }
+        { "title": "When you sign", "amount": "{{RETAINER}}", "note": "By e-transfer. Your date is held once this arrives." },
+        { "title": "On your wedding day", "amount": "{{BALANCE}}", "note": "In cash, before I start shooting.", "when": "bal:cash" },
+        { "title": "On your wedding day", "amount": "{{BALANCE}}", "note": "By e-transfer or in cash, before I start shooting.", "when": "bal:any" }
       ],
       "extras": {
         "intro": "These are added only if you tick them. Your total updates right away.",
@@ -79,7 +80,7 @@
         "ticks": {
           "raw-photos-wedding": "The files straight from my cameras, before any editing.",
           "instax-guest-prints": "50 instant prints, made on your wedding day.",
-          "guest-camera": "A small Sony camera that one of your guests carries for the day. There is no fee, only a deposit that is not part of your total. You pay it with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged."
+          "guest-camera": "A small Sony camera that one of your guests carries for the day. There is no fee, only a deposit that is not part of your total. You pay it together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged."
         },
         "moreTitle": "More extras. Ask me in writing before the wedding.",
         "more": [
@@ -129,7 +130,7 @@
         ],
         "3": [
           { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. The balance can be an e-transfer or cash.", "when": "bal:any" },
-          { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. You pay the balance in cash on the day, not by e-transfer.", "when": "bal:cash" },
+          { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. You pay the balance in cash, not by e-transfer.", "when": "bal:cash" },
           { "text": "The retainer is not refunded if you cancel, except in the cases part 6 lists." },
           { "text": "If the balance is not paid before I start shooting, I do not have to shoot. That counts as a cancellation by you on the day." },
           { "text": "Costs that can come on top, only if they happen: overtime ({{OT_RATE}} an hour), a change of date fee in some cases ($151.25), and any extra you add later." },

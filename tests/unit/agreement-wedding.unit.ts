@@ -17,10 +17,19 @@ import {
   signLabels,
 } from '../../src/lib/agreement/render';
 import type { AgreementDoc, BookingFacts, ClauseFile, DocItem, SourceClause } from '../../src/lib/agreement/types';
+import { unpack } from './fixtures/old-bookings-runner';
+import oldBookings from './fixtures/old-bookings.json' with { type: 'json' };
 
-// The Full Day (wedding-full): three payments, a second photographer, an engagement session.
-// Invented people only.
+// The Full Day (wedding-full): two payments since 2026-11-23 (spec section 5), a second photographer,
+// an engagement session. Invented people only.
 const file = clausesJson as unknown as ClauseFile;
+
+// A wedding booked before the payment change, as the code of that time stored it (three payments, the
+// fee for private work; tests/unit/fixtures/old-bookings.json): the code that reads such facts stays.
+const OLD = unpack((oldBookings as any).records['wedding-noset-fee'], oldBookings as any, { strings: true }) as {
+  facts: BookingFacts;
+  variants: Record<'share' | 'private', { doc_json: string }>;
+};
 
 const WEDDING = {
   package_id: 'wedding-full',
@@ -71,21 +80,22 @@ const table = (doc: AgreementDoc, kind: 'booking' | 'addons') => {
 const rowsOf = (doc: AgreementDoc) => Object.fromEntries(table(doc, 'booking').rows);
 
 // The tags a wedding booking has, worked out here on their own (not by the engine).
-const activeTags = (choice: 'share' | 'private') =>
+const activeTags = (choice: 'share' | 'private', balance: string) =>
   new Set([
     'ALL',
     ...(agreementPackages as Record<string, { tags: string[] }>)['wedding-full'].tags,
     ...(agreementPackages as Record<string, { sharing: Record<string, { tags: string[] }> }>)['wedding-full'].sharing[choice].tags,
     'HST-NO',
-    'RET-HALF',
-    'BAL-ANY',
+    // Re-pinned for the payment change (spec 2026-11-23, sections 5.1 and 5.3): RET-USUAL (was RET-HALF), and cash only by default.
+    'RET-USUAL',
+    balance,
     ...(business.insured ? ['INSURED'] : []),
   ]);
-const visibleSource = (choice: 'share' | 'private') =>
-  sourceClauses().filter((c) => c.tags.some((g) => g.every((t) => activeTags(choice).has(t))));
+const visibleSource = (choice: 'share' | 'private', balance = 'BAL-CASH') =>
+  sourceClauses().filter((c) => c.tags.some((g) => g.every((t) => activeTags(choice, balance).has(t))));
 /** Rendered clause id list: each rendered clause paired, in order, with the source clause it must come from. */
-const renderedIds = (doc: AgreementDoc, choice: 'share' | 'private'): string[] => {
-  const expected = visibleSource(choice);
+const renderedIds = (doc: AgreementDoc, choice: 'share' | 'private', balance = 'BAL-CASH'): string[] => {
+  const expected = visibleSource(choice, balance);
   const got = clauses(doc);
   expect(got.map((c) => c.text).length).toBe(expected.length);
   got.forEach((c, k) => expect(matches(expected[k], c.text), `${expected[k].id}: ${c.text}`).toBe(true));
@@ -109,7 +119,9 @@ test('addMonths keeps the day of the month and clamps to a shorter month', () =>
 
 // ------------------------------------------------------------------ facts
 
-test('wedding facts: three payments that add up, second photographer hours, delivery in months', () => {
+test('wedding facts: two payments that add up, second photographer hours, delivery in months', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): a 25% retainer and the
+  // balance in cash on the day; no second or final payment (was 1,566 / 783 / 782.25 by e-transfer).
   const f = facts();
   expect(f.package_name).toBe('The Full Day');
   expect(f.package_price).toBe(2301.25); // the site sale price
@@ -118,28 +130,33 @@ test('wedding facts: three payments that add up, second photographer hours, deli
     { id: 'raw-photos-wedding', label: 'RAW photos', qty: 1, unit_price: 121.25, line_total: 121.25 },
   ]);
   expect(f.total).toBe(3131.25);
-  expect(f.retainer).toBe(1566);
-  expect(f.second_payment).toBe(783);
-  expect(f.final_payment).toBe(782.25);
-  expect(Math.round((f.retainer + f.second_payment! + f.final_payment!) * 100)).toBe(Math.round(f.total * 100));
-  expect(f.balance).toBe(1565.25);
-  expect(f.second_due).toBe('2027-03-30');
-  expect(f.final_due).toBe('2027-05-15');
+  expect(f.retainer).toBe(783);
+  expect(f.balance).toBe(2348.25);
+  expect(Math.round((f.retainer + f.balance) * 100)).toBe(Math.round(f.total * 100));
+  for (const k of ['second_payment', 'final_payment', 'second_due', 'final_due']) expect(f).not.toHaveProperty(k);
+  expect(laterPaymentRows(f)).toBeNull();
+  expect(f.retainer_percent).toBe(25);
+  expect(f.etransfer_email).toBe('kashklicks.ca@gmail.com');
   expect(f.delivery_date).toBe('2027-08-29');
   expect(f.second_hours).toBe(10);
   expect(f.hours).toBe(10);
-  expect(f.balance_cash).toBe(false);
+  expect(f.balance_cash).toBe(true);
 });
 
-test('the three payments add up to the total for many totals', () => {
+test('the two payments add up to the total for many totals', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): retainer = 25% rounded up to the
+  // dollar, balance = the rest (was half, a quarter, and the rest).
   for (const price of [2301.25, 2301, 2301.01, 2301.5, 2301.75, 2302.99, 999.99, 4000]) {
     const f = facts({ price, add_ons: [] });
-    expect(f.retainer).toBe(Math.ceil(f.total / 2));
-    expect(f.second_payment).toBe(Math.ceil(f.total / 4));
-    expect(Math.round((f.retainer + f.second_payment! + f.final_payment!) * 100), String(price)).toBe(Math.round(f.total * 100));
-    expect(f.final_payment!, String(price)).toBeGreaterThan(0);
-    expect(Math.abs(f.final_payment! * 100 - Math.round(f.final_payment! * 100)) < 1e-6, String(price)).toBe(true);
+    expect(f.retainer, String(price)).toBe(Math.ceil((f.total * 25) / 100));
+    expect(f).not.toHaveProperty('second_payment');
+    expect(Math.round((f.retainer + f.balance) * 100), String(price)).toBe(Math.round(f.total * 100));
+    expect(f.balance, String(price)).toBeGreaterThan(0);
+    expect(Math.abs(f.balance * 100 - Math.round(f.balance * 100)) < 1e-6, String(price)).toBe(true);
   }
+  // A wedding booked before the change keeps its three payments, and they add up (spec section 5.5).
+  expect([OLD.facts.total, OLD.facts.retainer, OLD.facts.second_payment, OLD.facts.final_payment]).toEqual([3010, 1505, 753, 752]);
+  expect(OLD.facts).not.toHaveProperty('retainer_percent');
 });
 
 test('civil facts carry none of the wedding fields', () => {
@@ -166,14 +183,18 @@ test('civil facts carry none of the wedding fields', () => {
 test('what the wedding package has no clause for is refused', () => {
   // 3 + 8 = 11 second photographer hours on a 10 hour day.
   expect(codeOf(() => facts({ add_ons: [{ id: 'second-photographer', qty: 8 }] }))).toEqual({ code: 'bad_add_on', field: 'add_ons' });
-  // A set retainer is a two payment clause (NONWED).
+  // A set retainer has no wedding clause (3.16 is NONWED): still refused (spec 2026-11-23, section 5.3).
   expect(codeOf(() => facts({ retainer: 1000 }))).toEqual({ code: 'bad_retainer', field: 'retainer' });
-  expect(codeOf(() => facts({ retainer: 1567 }))).toEqual({ code: 'bad_retainer', field: 'retainer' });
-  // The usual half, typed out, is the same as leaving it out.
-  expect(JSON.stringify(facts({ retainer: 1566 }))).toBe(JSON.stringify(facts()));
-  // Cash only is a two payment clause (NONWED). Saying false is the same as saying nothing.
-  expect(codeOf(() => facts({ balance_cash: true }))).toEqual({ code: 'bad_balance_cash', field: 'balance_cash' });
-  expect(JSON.stringify(facts({ balance_cash: false }))).toBe(JSON.stringify(facts()));
+  // Re-pinned (spec section 5.3): the usual retainer is 25% now, $783.00, so one dollar more is a set retainer.
+  expect(codeOf(() => facts({ retainer: 784 }))).toEqual({ code: 'bad_retainer', field: 'retainer' });
+  expect(codeOf(() => facts({ retainer: 1566 }))).toEqual({ code: 'bad_retainer', field: 'retainer' });
+  // The usual 25%, typed out, is the same as leaving it out.
+  expect(JSON.stringify(facts({ retainer: 783 }))).toBe(JSON.stringify(facts()));
+  // Re-pinned (spec section 5.3): a wedding no longer refuses balance_cash. Cash only is the default, so
+  // saying true is the same as saying nothing; false lets this wedding pay the balance by e-transfer too.
+  expect(JSON.stringify(facts({ balance_cash: true }))).toBe(JSON.stringify(facts()));
+  expect(codeOf(() => facts({ balance_cash: false }))).toBeUndefined();
+  expect(facts({ balance_cash: false }).balance_cash).toBe(false);
   // Booking priority delivery or a film needs clauses this agreement does not have yet.
   expect(codeOf(() => facts({ add_ons: [{ id: 'priority-delivery-wedding', qty: 1 }] }))).toEqual({ code: 'bad_add_on', field: 'add_ons' });
   expect(codeOf(() => facts({ add_ons: [{ id: 'wedding-film', qty: 1 }] }))).toEqual({ code: 'bad_add_on', field: 'add_ons' });
@@ -187,43 +208,55 @@ test('what the wedding package has no clause for is refused', () => {
   expect(codeOf(() => facts({ end_time: '20:00' }))).toEqual({ code: 'bad_times', field: 'end_time' });
 });
 
-test('a wedding whose second payment date has already come is refused', () => {
-  // 40 days ahead: 60 days before the wedding was 20 days ago.
-  expect(codeOf(() => facts({ event_date: '2027-01-01' }))).toEqual({ code: 'bad_date', field: 'event_date' });
-  // Exactly 60 days ahead: the second payment would be due today.
-  expect(codeOf(() => facts({ event_date: '2027-01-21' }))).toEqual({ code: 'bad_date', field: 'event_date' });
-  // 61 days ahead: due tomorrow, which is fine.
-  const f = facts({ event_date: '2027-01-22' });
-  expect(f.second_due).toBe('2026-11-23');
-  expect(f.final_due).toBe('2027-01-08');
+test('a wedding soon after booking is accepted: there is no second payment date any more', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.6): the 60 day limit existed
+  // only for the second payment, so it went. 30 days ahead, 40 days ahead, even today: accepted.
+  for (const event_date of ['2026-12-22', '2027-01-01', '2027-01-21', '2027-01-22', '2026-11-22']) {
+    expect(codeOf(() => facts({ event_date })), event_date).toBeUndefined();
+    const f = facts({ event_date });
+    for (const k of ['second_payment', 'final_payment', 'second_due', 'final_due']) expect(f, `${event_date} ${k}`).not.toHaveProperty(k);
+  }
+  // A date before today is still refused.
+  expect(codeOf(() => facts({ event_date: '2026-11-21' }))).toEqual({ code: 'bad_date', field: 'event_date' });
   // The Toronto date counts: 03:00 UTC on 23 November is still 22 November in Toronto.
   const late = { number: 'KK-TEST-2026-008', createdAt: new Date('2026-11-23T03:00:00Z') };
-  expect(codeOf(() => buildBookingFacts({ ...WEDDING, event_date: '2027-01-22' }, late))).toBeUndefined();
+  expect(codeOf(() => buildBookingFacts({ ...WEDDING, event_date: '2026-11-22' }, late))).toBeUndefined();
+  expect(codeOf(() => buildBookingFacts({ ...WEDDING, event_date: '2026-11-21' }, late))).toEqual({ code: 'bad_date', field: 'event_date' });
 });
 
 test('a package whose data does not match its tags throws instead of rendering', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): no package has `payments` any more,
+  // and a package that has one is refused (was: three payments go with the WEDDING tag).
   const pkg = WEDDING_PKG();
-  const keep = { payments: pkg.payments, secondPhotographer: pkg.secondPhotographer };
+  const keep = { secondPhotographer: pkg.secondPhotographer };
+  expect(Object.hasOwn(pkg, 'payments')).toBe(false);
+  const booked = facts();
   try {
+    for (const payments of ['three-part', 'four-part', undefined]) {
+      pkg.payments = payments;
+      expect(() => facts(), String(payments)).toThrow('payments is not a package setting any more');
+      expect(() => renderVariant(booked, 'share'), String(payments)).toThrow('payments is not a package setting any more');
+    }
     delete pkg.payments;
-    expect(() => facts()).toThrow('three payments and the WEDDING tag go together');
-    pkg.payments = 'four-part';
-    expect(() => facts()).toThrow('unknown payments');
-    pkg.payments = keep.payments;
     delete pkg.secondPhotographer;
     expect(() => facts()).toThrow('SECOND tag');
   } finally {
-    pkg.payments = keep.payments;
+    delete pkg.payments;
     pkg.secondPhotographer = keep.secondPhotographer;
   }
+  expect(Object.hasOwn(pkg, 'payments')).toBe(false);
   expect(() => facts()).not.toThrow();
 });
 
-test('stored wedding facts missing their payment fields do not render', () => {
-  const { second_payment: _a, ...noPayments } = facts();
-  expect(() => renderVariant(noPayments as BookingFacts, 'share')).toThrow('no later payments');
-  const { final_due: _b, ...noFinalDue } = facts();
-  expect(() => renderVariant(noFinalDue as BookingFacts, 'share')).toThrow('no final payment or due dates');
+test('stored wedding facts with three payments, or without their second photographer hours, do not render', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): a wedding booked before the change
+  // has three payments; its texts are stored and served as they are, and no new text is made from its
+  // facts (the clauses say two parts now). Facts that have half of the three payment fields still throw
+  // where they are read (laterPaymentRows), as before.
+  expect(() => renderVariant(OLD.facts, 'share')).toThrow('is paid in three parts');
+  expect(() => renderVariant(OLD.facts, 'private')).toThrow('is paid in three parts');
+  const { final_due: _b, ...noFinalDue } = OLD.facts;
+  expect(() => laterPaymentRows(noFinalDue as BookingFacts)).toThrow('no final payment or due dates');
   const { second_hours: _c, ...noHours } = facts();
   expect(() => renderVariant(noHours as BookingFacts, 'share')).toThrow('no second photographer hours');
 });
@@ -258,7 +291,9 @@ test('numbering has no gaps in a wedding agreement', () => {
 });
 
 test('the visible clauses are exactly the ones the wedding tags allow', () => {
-  const must = ['3.6', '3.12', '5.17', '5.20', '7.4', '8.2', '10.8', '10.13', '11.4', '11.5', '11.6', '12.3', '16.6', '16.7', '16.8', '16.9', '16.10', '19.4'];
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.1): 3.12 is gone; 3.11 and the cash
+  // clause 3.17 are for every package now, and a wedding is cash only by default.
+  const must = ['3.6', '3.9', '3.11', '3.17', '5.17', '5.20', '7.4', '8.2', '10.8', '10.13', '11.4', '11.5', '11.6', '12.3', '16.6', '16.7', '16.8', '16.9', '16.10', '19.4'];
   // Every clause that only a two payment booking (NONWED) or a session (SHOOT) gets, read from clauses.json.
   const onlyNonWedOrShoot = sourceClauses()
     .filter((c) => c.tags.every((g) => g.includes('NONWED') || g.includes('SHOOT')))
@@ -266,10 +301,16 @@ test('the visible clauses are exactly the ones the wedding tags allow', () => {
   const filmOnly = sourceClauses()
     .filter((c) => c.tags.every((g) => g.includes('FILM')))
     .map((c) => c.id);
-  expect(onlyNonWedOrShoot).toEqual(expect.arrayContaining(['3.5', '3.10', '3.11', '5.1', '7.1', '11.1', '16.3', '19.3']));
+  expect(onlyNonWedOrShoot).toEqual(expect.arrayContaining(['3.5', '3.16', '5.1', '7.1', '11.1', '16.3', '19.3']));
+  expect(onlyNonWedOrShoot).not.toContain('3.10');
+  expect(onlyNonWedOrShoot).not.toContain('3.11');
   expect(filmOnly).toEqual(expect.arrayContaining(['2.6', '8.3', '10.2', '12.5', '12.8']));
-  const mustNot = [...new Set([...onlyNonWedOrShoot, ...filmOnly, '3.5', '3.16', '3.10', '3.17', '8.3', '8.10', '8.13'])];
+  const mustNot = [...new Set([...onlyNonWedOrShoot, ...filmOnly, '3.5', '3.16', '3.10', '3.12', '8.3', '8.10', '8.13'])];
   for (const choice of ['share', 'private'] as const) {
+    // balance_cash: false shows clause 3.10 and not 3.17 (spec section 5.6).
+    const anyWay = renderedIds(renderVariant(facts({ balance_cash: false }), choice), choice, 'BAL-ANY');
+    expect(anyWay).toContain('3.10');
+    expect(anyWay).not.toContain('3.17');
     const ids = renderedIds(renderVariant(facts(), choice), choice);
     for (const id of must) expect(ids, id).toContain(id);
     for (const id of mustNot) expect(ids, id).not.toContain(id);
@@ -319,12 +360,10 @@ test('section 1 table is exact for the wedding', () => {
     ['Add-ons chosen at booking', 'Second photographer, extra hours, 7 × $101.25 = $708.75; RAW photos, 1 × $121.25 = $121.25'],
     ['Sharing choice (section 15)', sharing],
     ['Total', '$3,131.25'],
-    ['Retainer, due at signing', '$1,566.00 by e-transfer'],
-    [
-      'Second payment',
-      '$783.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
-    ],
-    ['Final payment', '$782.25 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.'],
+    // Re-pinned for the payment change (spec 2026-11-23, section 5.3): the retainer (25%) and one balance
+    // row in cash, instead of the second and the final payment.
+    ['Retainer, due at signing', '$783.00 by e-transfer'],
+    ['Balance, due on your wedding day', '$2,348.25 in cash'],
     ['Wedding date', 'Saturday 29 May 2027'],
     ['Coverage', '10 hours, from 12:00 pm to 10:00 pm'],
     ['Where', 'St. Example Church, Hamilton. Reception in Burlington'],
@@ -342,16 +381,17 @@ test('section 1 table is exact for the wedding', () => {
   // Private: the fee row before Total, and every amount worked out again from the new total.
   const priv = expected('Private. Your work is not shown in public. A marketing fee of $75.00 is in your total.').map((r) => {
     if (r[0] === 'Total') return ['Total', '$3,206.25'];
-    if (r[0] === 'Retainer, due at signing') return [r[0], '$1,604.00 by e-transfer'];
-    if (r[0] === 'Second payment') return [r[0], r[1].replace('$783.00', '$802.00')];
-    if (r[0] === 'Final payment') return [r[0], r[1].replace('$782.25', '$800.25')];
+    if (r[0] === 'Retainer, due at signing') return [r[0], '$802.00 by e-transfer'];
+    if (r[0] === 'Balance, due on your wedding day') return [r[0], '$2,404.25 in cash'];
     return r;
   });
   priv.splice(priv.findIndex((r) => r[0] === 'Total'), 0, ['Marketing fee for private work', '$75.00']);
   expect(table(renderVariant(facts(), 'private'), 'booking').rows).toEqual(priv);
   const labels = share.rows.map((r) => r[0]);
   expect(labels).not.toContain('Balance, due on or before the ceremony day');
-  expect(labels.filter((l) => /balance/i.test(l))).toEqual([]);
+  expect(labels.filter((l) => /balance|payment/i.test(l))).toEqual(['Balance, due on your wedding day']);
+  // balance_cash: false: the same row, either way.
+  expect(rowsOf(renderVariant(facts({ balance_cash: false }), 'share'))['Balance, due on your wedding day']).toBe('$2,348.25 by e-transfer or cash');
 });
 
 test('notes still add their row for a wedding', () => {
@@ -414,13 +454,16 @@ test('wedding package data agrees with the site data', () => {
 
 const SECOND_ONLY = [{ id: 'second-photographer', qty: 7 }];
 
-test('without RAW photos: the three payments for second photographer hours only', () => {
+test('without RAW photos: the two payments for second photographer hours only', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.5): 753.00 / 2,257.00 cash (was 1,505 / 753 / 752).
   const f = facts({ add_ons: SECOND_ONLY });
   expect(f.total).toBe(3010);
-  expect(f.retainer).toBe(1505);
-  expect(f.second_payment).toBe(753);
-  expect(f.final_payment).toBe(752);
-  expect(Math.round((f.retainer + f.second_payment! + f.final_payment!) * 100)).toBe(Math.round(f.total * 100));
+  expect(f.retainer).toBe(753);
+  expect(f.balance).toBe(2257);
+  expect(f).not.toHaveProperty('second_payment');
+  expect(f).not.toHaveProperty('final_payment');
+  expect(Math.round((f.retainer + f.balance) * 100)).toBe(Math.round(f.total * 100));
+  expect(rowsOf(renderVariant(f, 'share'))['Balance, due on your wedding day']).toBe('$2,257.00 in cash');
   expect(rowsOf(renderVariant(f, 'share'))['Add-ons chosen at booking']).toBe('Second photographer, extra hours, 7 × $101.25 = $708.75');
 });
 
@@ -428,7 +471,9 @@ test('Instax guest prints are booked once at their contract price; the guest cam
   const f = facts({ add_ons: [...SECOND_ONLY, { id: 'instax-guest-prints', qty: 1 }] });
   expect(f.total).toBe(3070);
   expect(f.add_ons[1]).toEqual({ id: 'instax-guest-prints', label: 'Instax guest prints', qty: 1, unit_price: 60, line_total: 60 });
-  expect(Math.round((f.retainer + f.second_payment! + f.final_payment!) * 100)).toBe(307000);
+  // Re-pinned (spec 2026-11-23, section 5.3): two payments now.
+  expect([f.retainer, f.balance]).toEqual([768, 2302]);
+  expect(Math.round((f.retainer + f.balance) * 100)).toBe(307000);
   const line = rowsOf(renderVariant(f, 'share'))['Add-ons chosen at booking'];
   expect(line).toContain('Instax guest prints, 1 × $60.00 = $60.00');
   expect(rowsOf(renderVariant(f, 'share'))['Total']).toBe('$3,070.00');
@@ -484,7 +529,8 @@ test('share: no fee, and clause 15.2 names the marketing fee', () => {
   expect(f.private_fee).toBe(75);
   expect(f).not.toHaveProperty('sharing_fee');
   expect(factsFor(f, 'share')).toBe(f);
-  expect([f.total, f.retainer, f.second_payment, f.final_payment]).toEqual([3010, 1505, 753, 752]);
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.5): 3,010.00 / 753.00 / 2,257.00, no later payments.
+  expect([f.total, f.retainer, f.balance, f.second_payment, f.final_payment]).toEqual([3010, 753, 2257, undefined, undefined]);
   const doc = renderVariant(f, 'share');
   const rows = table(doc, 'booking').rows;
   expect(rows.map((r) => r[0])).not.toContain('Marketing fee for private work');
@@ -497,19 +543,26 @@ test('share: no fee, and clause 15.2 names the marketing fee', () => {
   expect(texts.some((t) => matches(src('15.3'), t))).toBe(false);
 });
 
-test('private: the fee is in the total and the three payments are worked out again', () => {
+test('private: the fee is in the total and the payments are worked out again', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): a fee for private work works
+  // with two payments: 3,085.00, the usual 25% retainer of it (772.00), the balance (2,313.00).
   const booked = facts({ add_ons: SECOND_ONLY });
   const p = factsFor(booked, 'private');
   expect(p).not.toBe(booked);
   expect(p.sharing_fee).toBe(75);
-  expect([p.total, p.retainer, p.second_payment, p.final_payment, p.balance]).toEqual([3085, 1543, 772, 770, 1542]);
-  expect(Math.round((p.retainer + p.second_payment! + p.final_payment!) * 100)).toBe(308500);
+  expect([p.total, p.retainer, p.balance, p.second_payment, p.final_payment]).toEqual([3085, 772, 2313, undefined, undefined]);
+  expect(Math.round((p.retainer + p.balance) * 100)).toBe(308500);
   // Nothing else moves.
-  const { sharing_fee: _f, total: _t, retainer: _r, balance: _b, second_payment: _s, final_payment: _p, ...restP } = p;
-  const { total: _t2, retainer: _r2, balance: _b2, second_payment: _s2, final_payment: _p2, ...restB } = booked;
+  const { sharing_fee: _f, total: _t, retainer: _r, balance: _b, ...restP } = p;
+  const { total: _t2, retainer: _r2, balance: _b2, ...restB } = booked;
   expect(restP).toEqual(restB);
   // The booking itself is not changed.
   expect(booked.total).toBe(3010);
+  // A wedding booked before the change: the three payments worked out again from the new total, as before.
+  const old = factsFor(OLD.facts, 'private');
+  expect([old.total, old.retainer, old.second_payment, old.final_payment, old.balance]).toEqual([3085, 1543, 772, 770, 1542]);
+  expect(Math.round((old.retainer + old.second_payment! + old.final_payment!) * 100)).toBe(308500);
+  expect(laterPaymentRows(old)!.map((r) => r.text.slice(0, 7))).toEqual(['$772.00', '$770.00']);
 
   const doc = renderVariant(booked, 'private');
   const rows = table(doc, 'booking').rows;
@@ -518,11 +571,12 @@ test('private: the fee is in the total and the three payments are worked out aga
   const byLabel = Object.fromEntries(rows);
   expect(byLabel['Marketing fee for private work']).toBe('$75.00');
   expect(byLabel['Total']).toBe('$3,085.00');
-  expect(byLabel['Retainer, due at signing']).toBe('$1,543.00 by e-transfer');
-  expect(byLabel['Second payment'].startsWith('$772.00 by e-transfer.')).toBe(true);
-  expect(byLabel['Final payment'].startsWith('$770.00 by e-transfer.')).toBe(true);
+  expect(byLabel['Retainer, due at signing']).toBe('$772.00 by e-transfer');
+  expect(byLabel['Balance, due on your wedding day']).toBe('$2,313.00 in cash');
+  expect(labels).not.toContain('Second payment');
+  expect(labels).not.toContain('Final payment');
   expect(byLabel['Sharing choice (section 15)']).toBe('Private. Your work is not shown in public. A marketing fee of $75.00 is in your total.');
-  expect(laterPaymentRows(p)!.map((r) => r.text.slice(0, 7))).toEqual(['$772.00', '$770.00']);
+  expect(laterPaymentRows(p)).toBeNull();
   const texts = clauses(doc).map((c) => c.text);
   expect(texts.some((t) => matches(src('15.4'), t))).toBe(true);
   expect(texts.some((t) => matches(src('15.2'), t))).toBe(false);
@@ -577,25 +631,32 @@ test('a fee for private work that does not fit its package is a data mistake', (
   }
   const civilShare = civilPkg.sharing.share.tags;
   try {
-    // A package paid in two parts.
+    // Re-pinned for the payment change (spec 2026-11-23, section 5.3): a fee for private work works with
+    // two payments now (it threw "not built yet"): the new total, its usual retainer, the balance.
     civilPkg.privateFee = 75;
     civilPkg.sharing.share.tags = ['SHARE', 'SHARE-B'];
-    expect(() =>
-      buildBookingFacts(
-        {
-          package_id: 'civil-ceremony',
-          client_name: 'Priya Sharma',
-          partner_name: 'Arjun Mehta',
-          client_email: 'priya@example.com',
-          client_phone: '416 555 0142',
-          event_date: '2026-12-12',
-          start_time: '12:00',
-          end_time: '14:00',
-          place: 'Vaughan City Hall',
-        },
-        { number: 'KK-TEST-2026-001', createdAt: new Date('2026-11-10T15:00:00Z') },
-      ),
-    ).toThrow('not built yet');
+    const civil = buildBookingFacts(
+      {
+        package_id: 'civil-ceremony',
+        client_name: 'Priya Sharma',
+        partner_name: 'Arjun Mehta',
+        client_email: 'priya@example.com',
+        client_phone: '416 555 0142',
+        event_date: '2026-12-12',
+        start_time: '12:00',
+        end_time: '14:00',
+        place: 'Vaughan City Hall',
+        price: 501.25,
+      },
+      { number: 'KK-TEST-2026-001', createdAt: new Date('2026-11-10T15:00:00Z') },
+    );
+    expect(civil.private_fee).toBe(75);
+    const p = factsFor(civil, 'private');
+    expect([p.total, p.retainer, p.balance, p.sharing_fee]).toEqual([576.25, 145, 431.25, 75]);
+    expect(p).not.toHaveProperty('second_payment');
+    // A set retainer stays a set retainer with the fee.
+    const set = factsFor({ ...civil, retainer: 300, balance: 201.25 }, 'private');
+    expect([set.total, set.retainer, set.balance]).toEqual([576.25, 300, 276.25]);
   } finally {
     delete civilPkg.privateFee;
     civilPkg.sharing.share.tags = civilShare;
@@ -672,11 +733,15 @@ test('wedding sign labels', () => {
 });
 
 test('later payment rows use the same words as section 1', () => {
-  const f = facts();
-  const later = laterPaymentRows(f)!;
-  expect(later.map((r) => r.label)).toEqual(['Second payment', 'Final payment']);
-  const rows = rowsOf(renderVariant(f, 'share'));
-  for (const r of later) expect(rows[r.label]).toBe(r.text);
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): only a wedding booked before the
+  // change has later payments. Their rows are the words of section 1 of its STORED texts, for both choices.
+  expect(laterPaymentRows(facts())).toBeNull();
+  for (const choice of ['share', 'private'] as const) {
+    const later = laterPaymentRows(factsFor(OLD.facts, choice))!;
+    expect(later.map((r) => r.label)).toEqual(['Second payment', 'Final payment']);
+    const rows = rowsOf(JSON.parse(OLD.variants[choice].doc_json) as AgreementDoc);
+    for (const r of later) expect(rows[r.label], `${choice} ${r.label}`).toBe(r.text);
+  }
 });
 
 const strings = (v: unknown): string[] =>

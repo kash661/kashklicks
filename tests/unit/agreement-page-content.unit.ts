@@ -53,14 +53,19 @@ const SAMPLES: Record<string, () => BookingFacts> = {
     weddingFacts({ add_ons: [{ id: 'second-photographer', qty: 3 }, { id: 'instax-guest-prints', qty: 1 }], notes: 'First look at the church garden.' }),
   'civil, usual retainer': () => civilFacts(),
   'civil, set retainer, cash only': () => civilFacts({ retainer: 51.25, balance_cash: true }),
-  'civil, set retainer equal to half of one mix': () => civilFacts({ price: 551.25, retainer: 314, notes: '' }),
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.6): 157 is 25% of one mix (the drone), was 314 (half).
+  'civil, set retainer equal to the usual share of one mix': () => civilFacts({ price: 551.25, retainer: 157, notes: '' }),
   'civil, everything booked up front': () =>
     civilFacts({ add_ons: [{ id: 'drone', qty: 1 }, { id: 'extra-retouched', qty: 2 }, { id: 'raw-photos-civil', qty: 1 }] }),
 };
 
 const B = business as { legalName: string; tradeNames: string[]; phone: string; email: string; etransferEmail: string; whoShoots: string };
 const PAGE = pageJson as any;
-const CAMERA_NOTE = 'Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.';
+// Re-pinned for the payment change (spec 2026-11-23, section 5.3).
+// Re-pinned for spec 2026-11-23, section 5.8: paid together with the balance (no payment method named).
+const CAMERA_NOTE = 'Refundable, and not part of your total. Paid together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.';
+// The e-transfer address every new booking freezes (spec 2026-11-23, section 5.2).
+const NEW_ETRANSFER = 'kashklicks.ca@gmail.com';
 
 // The page words of spec 3.4, typed out here so page.json cannot drift from them unseen.
 const LEDE = [
@@ -182,11 +187,13 @@ test('page content of a wedding with three tick boxes', () => {
     'An engagement session: 2 hours, with photos and a short film. Please use it at least 30 days before your wedding.',
     'I bring backup cameras. My main cameras save every photo to two memory cards at the same time.',
   ]);
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.4): the retainer by e-transfer, the balance
+  // in cash on the wedding day (clauses 3.6, 3.9 and 3.17), and the unpaid balance line (clause 3.11; 3.12 is gone).
   expect(pointsOf(c, 3)).toEqual([
-    `You pay by e-transfer to ${B.etransferEmail}.`,
+    `You pay the retainer by e-transfer to ${NEW_ETRANSFER}. You pay the balance in cash on your wedding day, not by e-transfer.`,
     'The retainer is not refunded if you cancel, except in the cases part 6 lists.',
-    // Clause 3.12 (WEDDING).
-    'If a payment is late, I send you a written reminder. If it is still not paid 3 days after the reminder, I may treat it as a cancellation by you.',
+    // Clause 3.11 (ALL).
+    'If the balance is not paid before I start shooting, I do not have to shoot. That counts as a cancellation by you on the day.',
     'If you choose to keep your photos private in part 5, a marketing fee of $75.00 is added to your total.',
     // Clauses 5.17, 11.6 and 3.15.
     'Costs that can come on top, only if they happen: overtime ($301.25 an hour), a second change of date ($500.00), and any extra you add later.',
@@ -228,8 +235,10 @@ test('page content of a wedding with three tick boxes', () => {
         kind: 'deposit',
         label: 'Guest camera',
         price: '$100.00 refundable deposit',
+        // Re-pinned for the payment change (spec 2026-11-23, section 5.4).
+        // Re-pinned for spec 2026-11-23, section 5.8: paid together with the balance (no payment method named).
         blurb:
-          'A small Sony camera that one of your guests carries for the day. There is no fee, only a deposit that is not part of your total. You pay it with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+          'A small Sony camera that one of your guests carries for the day. There is no fee, only a deposit that is not part of your total. You pay it together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
       },
     ],
     more_title: 'More extras. Ask me in writing before the wedding.',
@@ -268,8 +277,10 @@ test('page content of a civil ceremony', () => {
     'Your gallery stays online for 90 days. Please download your photos and keep your own backup.',
     'I bring backup cameras. My main cameras save every photo to two memory cards at the same time.',
   ]);
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.4): cash only by default, so the bal:cash line shows.
+  // Re-pinned for spec 2026-11-23, section 5.8: the civil bal:cash point no longer says 'on the day'.
   expect(pointsOf(c, 3)).toEqual([
-    `You pay the retainer by e-transfer to ${B.etransferEmail}. The balance can be an e-transfer or cash.`,
+    `You pay the retainer by e-transfer to ${NEW_ETRANSFER}. You pay the balance in cash, not by e-transfer.`,
     'The retainer is not refunded if you cancel, except in the cases part 6 lists.',
     'If the balance is not paid before I start shooting, I do not have to shoot. That counts as a cancellation by you on the day.',
     // Clauses 5.17, 11.2 and 3.15.
@@ -292,8 +303,9 @@ test('page content of a civil ceremony', () => {
   ]);
   expect(pointsOf(c, 7)).toEqual(PART_7);
   expect(pointsOf(c, 3).some((p) => p.includes('marketing fee'))).toBe(false);
-  // The late payment line is clause 3.12, a WEDDING clause: not in the civil part 3.
+  // The late payment line was clause 3.12, which is gone (spec 2026-11-23, section 5.1): in neither package.
   expect(pointsOf(c, 3).some((p) => p.startsWith('If a payment is late'))).toBe(false);
+  expect(pointsOf(content(SAMPLES['wedding, three tick boxes']()), 3).some((p) => p.startsWith('If a payment is late'))).toBe(false);
   expect(pointsOf(c, 5)).toContain(RAW_TICKABLE);
   expect(pointsOf(c, 5)).not.toContain(RAW_OLD);
   // Clause 11.1 (NONWED): "one free change of date to any open date on my calendar".
@@ -319,7 +331,7 @@ test('every condition of the page text', () => {
   const raw = SAMPLES['wedding, RAW already booked']();
   const civil = SAMPLES['civil, usual retainer']();
   const cash = SAMPLES['civil, set retainer, cash only']();
-  const noNotes = SAMPLES['civil, set retainer equal to half of one mix']();
+  const noNotes = SAMPLES['civil, set retainer equal to the usual share of one mix']();
 
   // second:all / second:base / second:part, in the glance and in part 1. Exactly one of them holds.
   expect(content(base).glance[2]).toEqual({ label: 'Photographers', value: `${B.whoShoots}, and a second photographer for 3 hours` });
@@ -341,10 +353,19 @@ test('every condition of the page text', () => {
   expect(pointsOf(content(noNotes), 1).some((p) => p.startsWith('Also agreed'))).toBe(false);
   expect([probed(civil, 'notes'), probed(noNotes, 'notes')]).toEqual([true, false]);
 
-  // bal:any / bal:cash
-  expect(pointsOf(content(cash), 3)[0]).toBe(`You pay the retainer by e-transfer to ${B.etransferEmail}. You pay the balance in cash on the day, not by e-transfer.`);
+  // bal:any / bal:cash. Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.4): cash only
+  // is the default now; balance_cash: false gives bal:any, for both packages.
+  const anyWay = civilFacts({ balance_cash: false });
+  const weddingAnyWay = weddingFacts({ add_ons: SECOND_ONLY, balance_cash: false });
+  // Re-pinned for spec 2026-11-23, section 5.8: the civil bal:cash point no longer says 'on the day'.
+  expect(pointsOf(content(cash), 3)[0]).toBe(`You pay the retainer by e-transfer to ${NEW_ETRANSFER}. You pay the balance in cash, not by e-transfer.`);
   expect(pointsOf(content(cash), 3).filter((p) => p.startsWith('You pay the retainer'))).toHaveLength(1);
-  expect([probed(cash, 'bal:any'), probed(cash, 'bal:cash'), probed(civil, 'bal:any'), probed(civil, 'bal:cash')]).toEqual([false, true, true, false]);
+  expect(pointsOf(content(anyWay), 3)[0]).toBe(`You pay the retainer by e-transfer to ${NEW_ETRANSFER}. The balance can be an e-transfer or cash.`);
+  expect(pointsOf(content(weddingAnyWay), 3)[0]).toBe(`You pay the retainer by e-transfer to ${NEW_ETRANSFER}. The balance can be an e-transfer or cash.`);
+  for (const f of [anyWay, weddingAnyWay]) expect(pointsOf(content(f), 3).filter((p) => p.startsWith('You pay the retainer'))).toHaveLength(1);
+  expect([probed(cash, 'bal:any'), probed(cash, 'bal:cash'), probed(anyWay, 'bal:any'), probed(anyWay, 'bal:cash')]).toEqual([false, true, true, false]);
+  expect([probed(civil, 'bal:any'), probed(civil, 'bal:cash'), probed(all, 'bal:any'), probed(all, 'bal:cash')]).toEqual([false, true, false, true]);
+  expect([probed(weddingAnyWay, 'bal:any'), probed(weddingAnyWay, 'bal:cash')]).toEqual([true, false]);
 
   // fee
   expect([probed(all, 'fee'), probed(civil, 'fee')]).toEqual([true, false]);
@@ -460,16 +481,17 @@ test('no page text for a package: no page content, and the summary of today', ()
     },
     () => {
       expect(pageContent(f)).toBeNull();
+      // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 126.00 / 375.25 in cash, the new address.
       expect(mixSummary(f, 'share', [])).toEqual({
         package: 'The Civil Ceremony',
         date: 'Saturday 12 December 2026',
         total: '$501.25',
-        retainer: '$251.00',
-        balance: '$250.25',
-        balance_how: 'e-transfer or cash',
-        etransfer_email: B.etransferEmail,
+        retainer: '$126.00',
+        balance: '$375.25',
+        balance_how: 'in cash',
+        etransfer_email: NEW_ETRANSFER,
       });
-      expect(mixSummary(f, 'share', ['drone'])).toMatchObject({ total: '$577.50', retainer: '$289.00', balance: '$288.50' });
+      expect(mixSummary(f, 'share', ['drone'])).toMatchObject({ total: '$577.50', retainer: '$145.00', balance: '$432.50' });
       expect(mixSummary(f, 'share', ['drone'])).not.toHaveProperty('price_lines');
     },
   );
@@ -479,43 +501,46 @@ test('no page text for a package: no page content, and the summary of today', ()
 // ------------------------------------------------------------------ the summary of a mix
 
 test('mixSummary: today\'s fields keep their wording, the new ones show the mix', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3, 5.4 and 5.5): two steps, the retainer by
+  // e-transfer and the balance in cash on the wedding day; no later payments; the new address.
   const w = SAMPLES['wedding, three tick boxes']();
   const share = mixSummary(w, 'share', []);
+  expect(laterPaymentRows(w)).toBeNull();
   expect(share).toEqual({
     package: 'The Full Day',
     date: 'Saturday 29 May 2027',
     total: '$3,010.00',
-    retainer: '$1,505.00',
-    balance: '$1,505.00',
-    balance_how: 'e-transfer or cash',
-    etransfer_email: B.etransferEmail,
-    later_payments: laterPaymentRows(w),
+    retainer: '$753.00',
+    balance: '$2,257.00',
+    balance_how: 'in cash',
+    etransfer_email: NEW_ETRANSFER,
     total_line: 'Your total is $3,010.00. It stays the same even if my website prices change later.',
     price_lines: [
       { label: 'The Full Day', amount: '$2,301.25' },
       { label: 'Second photographer, extra hours, 7 × $101.25', amount: '$708.75' },
     ],
     steps: [
-      { title: 'When you sign', amount: '$1,505.00', note: 'Your date is held once this arrives.' },
-      {
-        title: 'After your engagement photos',
-        amount: '$753.00',
-        note: 'Due 7 days after I deliver them. If you have not had the session by Tuesday 30 March 2027, it is due on that date.',
-      },
-      { title: 'By Saturday 15 May 2027', amount: '$752.00', note: '14 days before your wedding.' },
+      { title: 'When you sign', amount: '$753.00', note: 'By e-transfer. Your date is held once this arrives.' },
+      { title: 'On your wedding day', amount: '$2,257.00', note: 'In cash, before I start shooting.' },
     ],
   });
+  expect(share).not.toHaveProperty('later_payments');
+  // balance_cash: false: the other wedding step.
+  expect(mixSummary(weddingFacts({ add_ons: SECOND_ONLY, balance_cash: false }), 'share', []).steps).toEqual([
+    { title: 'When you sign', amount: '$753.00', note: 'By e-transfer. Your date is held once this arrives.' },
+    { title: 'On your wedding day', amount: '$2,257.00', note: 'By e-transfer or in cash, before I start shooting.' },
+  ]);
 
   const p = mixSummary(w, 'private', ['guest-camera', 'raw-photos-wedding']);
-  expect([p.total, p.retainer, p.balance]).toEqual(['$3,206.25', '$1,604.00', '$1,602.25']);
-  expect(p.later_payments).toEqual(laterPaymentRows(factsFor(w, 'private', ['raw-photos-wedding'])));
+  expect([p.total, p.retainer, p.balance]).toEqual(['$3,206.25', '$802.00', '$2,404.25']);
+  expect(p).not.toHaveProperty('later_payments');
   expect(p.price_lines).toEqual([
     { label: 'The Full Day', amount: '$2,301.25' },
     { label: 'Second photographer, extra hours, 7 × $101.25', amount: '$708.75' },
     { label: 'RAW photos', amount: '$121.25' },
     { label: 'Marketing fee for private work', amount: '$75.00' },
   ]);
-  expect(p.steps!.map((s) => s.amount)).toEqual(['$1,604.00', '$802.00', '$800.25']);
+  expect(p.steps!.map((s) => s.amount)).toEqual(['$802.00', '$2,404.25']);
   expect(p.deposit).toEqual({ label: 'Guest camera deposit', amount: '$100.00', note: CAMERA_NOTE });
   // Labels are extra_labels; the name `extras` always means ids.
   expect(p.extra_labels).toEqual(['RAW photos', 'Guest camera']);
@@ -525,11 +550,17 @@ test('mixSummary: today\'s fields keep their wording, the new ones show the mix'
   expect(share).not.toHaveProperty('deposit');
   expect(share).not.toHaveProperty('extra_labels');
 
+  // Re-pinned (spec 2026-11-23, section 5.3): 25% of 527.50, and cash only by default.
   const civil = mixSummary(SAMPLES['civil, usual retainer'](), 'share', ['extra-retouched']);
   expect(civil.steps).toEqual([
-    { title: 'When you sign', amount: '$264.00', note: 'By e-transfer. Your date is held once this arrives.' },
-    { title: 'On or before your ceremony day', amount: '$263.50', note: 'By e-transfer or in cash, before I start shooting.' },
+    { title: 'When you sign', amount: '$132.00', note: 'By e-transfer. Your date is held once this arrives.' },
+    { title: 'On or before your ceremony day', amount: '$395.50', note: 'In cash, before I start shooting.' },
   ]);
+  expect(mixSummary(civilFacts({ balance_cash: false }), 'share', ['extra-retouched']).steps![1]).toEqual({
+    title: 'On or before your ceremony day',
+    amount: '$395.50',
+    note: 'By e-transfer or in cash, before I start shooting.',
+  });
   expect(civil).not.toHaveProperty('later_payments');
   const cash = mixSummary(SAMPLES['civil, set retainer, cash only'](), 'private', ['drone']);
   expect(cash.steps).toEqual([
@@ -543,6 +574,35 @@ test('mixSummary: today\'s fields keep their wording, the new ones show the mix'
   ]);
   const booked = mixSummary(SAMPLES['civil, everything booked up front'](), 'share', []);
   expect(booked.price_lines![2]).toEqual({ label: 'Five extra retouched images, 2 × $26.25', amount: '$52.50' });
+});
+
+test('the numbers of the payment change, and the frozen e-transfer address (spec 2026-11-23, sections 5.3 and 5.5)', () => {
+  const amounts = (s: ReturnType<typeof mixSummary>) => [s.total, s.retainer, s.balance, s.balance_how, ...s.steps!.map((x) => x.amount)];
+  // The wedding ($3,010.00): share 753.00 / 2,257.00 cash; private 3,085.00: 772.00 / 2,313.00;
+  // private + RAW + Instax + guest camera 3,266.25: 817.00 / 2,449.25, plus the $100.00 deposit outside the total.
+  const w = SAMPLES['wedding, three tick boxes']();
+  expect(amounts(mixSummary(w, 'share', []))).toEqual(['$3,010.00', '$753.00', '$2,257.00', 'in cash', '$753.00', '$2,257.00']);
+  expect(amounts(mixSummary(w, 'private', []))).toEqual(['$3,085.00', '$772.00', '$2,313.00', 'in cash', '$772.00', '$2,313.00']);
+  const all = mixSummary(w, 'private', ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera']);
+  expect(amounts(all)).toEqual(['$3,266.25', '$817.00', '$2,449.25', 'in cash', '$817.00', '$2,449.25']);
+  expect(all.deposit).toEqual({ label: 'Guest camera deposit', amount: '$100.00', note: CAMERA_NOTE });
+  // The Civil Ceremony at the site price ($551.25): 138.00 / 413.25 cash; private with every extra 723.00: 181.00 / 542.00.
+  const site = civilFacts({ price: undefined });
+  expect(amounts(mixSummary(site, 'share', []))).toEqual(['$551.25', '$138.00', '$413.25', 'in cash', '$138.00', '$413.25']);
+  expect(amounts(mixSummary(site, 'private', ['drone', 'extra-retouched', 'raw-photos-civil']))).toEqual(['$723.00', '$181.00', '$542.00', 'in cash', '$181.00', '$542.00']);
+  // The pilot ($501.25): 126.00 / 375.25.
+  expect(amounts(mixSummary(civilFacts(), 'share', []))).toEqual(['$501.25', '$126.00', '$375.25', 'in cash', '$126.00', '$375.25']);
+  // The e-transfer address is the one frozen with the booking, never today's setting: in the summary and in part 3.
+  for (const f of [w, site]) {
+    expect(f.etransfer_email).toBe(NEW_ETRANSFER);
+    const changed = { ...f, etransfer_email: 'frozen@example.com' };
+    expect(mixSummary(changed, 'share', []).etransfer_email).toBe('frozen@example.com');
+    expect(pointsOf(content(changed), 3)[0]).toContain('frozen@example.com');
+    // Facts without one (made before 2026-11-23) read as the old address.
+    const { etransfer_email: _e, ...old } = f;
+    expect(mixSummary(old as BookingFacts, 'share', []).etransfer_email).toBe('info@kashklicks.ca');
+  }
+  expect(B.etransferEmail).toBe(NEW_ETRANSFER);
 });
 
 test('mixSummary: price lines add up to the total and steps carry the amounts of every mix', () => {

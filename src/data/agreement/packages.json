@@ -51,7 +51,7 @@
     "deliveryPromise": "I deliver your edited photos within 3 months of your wedding day.",
     "deliveryRow": "Edited photos by {{DELIVERY_DATE}}, which is within 3 months of your wedding.",
     "dateRowLabel": "Wedding date",
-    "payments": "three-part",
+    "balanceRowLabel": "Balance, due on your wedding day",
     "secondPhotographer": { "includedHours": 3, "addOnId": "second-photographer" },
     "engagement": { "desc": "2 hours, with photos and a short film", "valuePackageId": "love-story-mini-film" },
     "addOnRows": [
@@ -74,8 +74,8 @@
         "id": "guest-camera",
         "deposit": {
           "rowLabel": "Guest camera deposit",
-          "row": "{{PRICE}} by e-transfer, refundable. It is not part of your total. Due with your final payment, by {{FINAL_DUE}}. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.",
-          "note": "Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged."
+          "row": "{{PRICE}}, refundable. It is not part of your total. You pay it together with your balance, on your wedding day. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.",
+          "note": "Refundable, and not part of your total. Paid together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged."
         }
       }
     ],

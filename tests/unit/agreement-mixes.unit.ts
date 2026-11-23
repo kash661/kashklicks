@@ -15,6 +15,11 @@ import {
 } from '../../src/lib/agreement/render';
 import { docJsonFromSet, mixId } from '../../src/lib/agreement/set';
 import type { AgreementDoc, BookingFacts, Choice, ClauseFile, SourceClause } from '../../src/lib/agreement/types';
+import { unpack } from './fixtures/old-bookings-runner';
+import oldBookings from './fixtures/old-bookings.json' with { type: 'json' };
+
+// Bookings stored before the payment change of 2026-11-23, as the code of that time made them.
+const oldRecord = (name: string) => unpack((oldBookings as any).records[name], oldBookings as any, { strings: true }) as any;
 
 // Tick boxes at signing ("extras"), the mixes they make, and the set of finished documents of a booking.
 // Invented people only.
@@ -61,14 +66,17 @@ const SAMPLES: Record<string, () => BookingFacts> = {
   'wedding, RAW already booked': () => weddingFacts(),
   'civil, usual retainer': () => civilFacts(),
   'civil, set retainer, cash only': () => civilFacts({ retainer: 51.25, balance_cash: true }),
-  // 314 is half of the total with the drone ticked (551.25 + 76.25 = 627.50), by coincidence.
-  'civil, set retainer equal to half of one mix': () => civilFacts({ price: 551.25, retainer: 314 }),
+  // 157 is 25% of the total with the drone ticked (551.25 + 76.25 = 627.50, rounded up), by coincidence.
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.6): the usual share is 25% now (was 314, half).
+  'civil, set retainer equal to the usual share of one mix': () => civilFacts({ price: 551.25, retainer: 157 }),
 };
 
 const RAW = 'raw-photos-wedding';
 const INSTAX = 'instax-guest-prints';
 const CAMERA = 'guest-camera';
-const CAMERA_NOTE = 'Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.';
+// Re-pinned for the payment change (spec 2026-11-23, section 5.3): paid with the balance.
+// Re-pinned for spec 2026-11-23, section 5.8: paid together with the balance (no payment method named).
+const CAMERA_NOTE = 'Refundable, and not part of your total. Paid together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.';
 
 const codeOf = (fn: () => unknown): { code: string; field?: string } | undefined => {
   try {
@@ -110,7 +118,9 @@ test('tick boxes: at most three per package, in display order', () => {
   expect(pkgOf('civil-ceremony').tickBoxes.map((t: { id: string }) => t.id)).toEqual(['drone', 'extra-retouched', 'raw-photos-civil']);
   expect(pkgOf('wedding-full').tickBoxes[2].deposit).toEqual({
     rowLabel: 'Guest camera deposit',
-    row: '{{PRICE}} by e-transfer, refundable. It is not part of your total. Due with your final payment, by {{FINAL_DUE}}. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.',
+    // Re-pinned for the payment change (spec 2026-11-23, section 5.3).
+    // Re-pinned for spec 2026-11-23, section 5.8: paid together with the balance (no payment method named).
+    row: '{{PRICE}}, refundable. It is not part of your total. You pay it together with your balance, on your wedding day. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.',
     note: CAMERA_NOTE,
   });
 });
@@ -139,7 +149,9 @@ test('a tick box that breaks a rule is a data mistake and throws', () => {
     [civ, [{ id: 7 }], 'a tick box needs an id'],
     [wed, [{ id: 'priority-delivery-wedding' }], 'tick box priority-delivery-wedding: a priced tick box needs a bookable row'],
     [wed, [{ id: 'drone', deposit: { rowLabel: 'Drone deposit', row: '{{PRICE}}', note: 'n' } }], 'tick box drone: a deposit needs a row that is not bookable'],
-    [wed, [{ id: 'guest-camera', deposit: { rowLabel: 'Guest camera deposit', row: '{{PRICE}} by {{EVENT_DATE}}', note: 'n' } }], 'tick box guest-camera: the deposit row may use PRICE and FINAL_DUE only'],
+    // Re-pinned (spec 2026-11-23, section 5.3): there is no final payment any more, so PRICE is the only name.
+    [wed, [{ id: 'guest-camera', deposit: { rowLabel: 'Guest camera deposit', row: '{{PRICE}} by {{EVENT_DATE}}', note: 'n' } }], 'tick box guest-camera: the deposit row may use PRICE only'],
+    [wed, [{ id: 'guest-camera', deposit: { rowLabel: 'Guest camera deposit', row: '{{PRICE}} by {{FINAL_DUE}}', note: 'n' } }], 'tick box guest-camera: the deposit row may use PRICE only'],
     [wed, [{ id: 'guest-camera' }], 'tick box guest-camera: a priced tick box needs a bookable row'],
   ];
   for (const [pkg, ticks, message] of cases) {
@@ -148,8 +160,12 @@ test('a tick box that breaks a rule is a data mistake and throws', () => {
       expect(make, message).toThrow(message);
     });
   }
-  // A deposit is due with the final payment: a package paid in two parts cannot have one.
-  for (const row of ['{{PRICE}}, due by {{FINAL_DUE}}.', '{{PRICE}}, refundable.'])
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): every package is paid in two parts, so
+  // a deposit no longer needs three payments; its row still may not name a date of a final payment.
+  for (const [row, outcome] of [
+    ['{{PRICE}}, due by {{FINAL_DUE}}.', 'tick box civil-camera: the deposit row may use PRICE only'],
+    ['{{PRICE}}, refundable.', null],
+  ] as const)
     withChange(
       () => {
         const rows = civ().addOnRows;
@@ -161,7 +177,16 @@ test('a tick box that breaks a rule is a data mistake and throws', () => {
           civ().tickBoxes = before;
         };
       },
-      () => expect(() => civilFacts(), row).toThrow('tick box civil-camera: a deposit tick box needs a package paid in three parts'),
+      () => {
+        if (outcome) return expect(() => civilFacts(), row).toThrow(outcome);
+        // A package paid in two parts can have one: its row comes right after the balance row, outside the total.
+        const f = civilFacts();
+        const rows = bookingRows(renderVariant(f, 'share', ['civil-camera']));
+        const labels = rows.map((r) => r[0]);
+        expect(rows[labels.indexOf('Deposit')]).toEqual(['Deposit', '$100.00, refundable.']);
+        expect(labels[labels.indexOf('Deposit') - 1]).toBe('Balance, due on or before the ceremony day');
+        expect(factsFor(f, 'share', ['civil-camera']).total).toBe(f.total);
+      },
     );
   // An id with a "+" would make two mixes share one id, even when it names a real row.
   withChange(
@@ -240,7 +265,9 @@ test('booking facts list the tick boxes still open, frozen with the booking', ()
 });
 
 test('every mix must give sensible amounts when the link is made', () => {
-  // Price 4 alone pays 2 + 1 + 1. With a ticked extra of $1.00 the total is 5: 3 + 2 + 0, a final payment below a dollar.
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3). With three payments, price 4 and a
+  // ticked extra of $1.00 gave a final payment below a dollar and was refused. With two payments every mix
+  // has a retainer of at least a dollar and a balance of zero or more, so the same booking is made.
   withChange(
     () => {
       const row = pkgOf('wedding-full').addOnRows.find((r: { id: string | null }) => r.id === INSTAX);
@@ -250,7 +277,16 @@ test('every mix must give sensible amounts when the link is made', () => {
       };
     },
     () => {
-      expect(codeOf(() => weddingFacts({ price: 4, add_ons: [] }))).toEqual({ code: 'bad_price', field: 'price' });
+      const f = weddingFacts({ price: 4, add_ons: [] });
+      expect([f.total, f.retainer, f.balance]).toEqual([4, 1, 3]);
+      const m = factsFor(f, 'share', [INSTAX]);
+      expect([m.total, m.retainer, m.balance]).toEqual([5, 2, 3]);
+      for (const x of mixesOf(f)) {
+        const g = factsFor(f, x.choice, x.extras);
+        expect(g.retainer, x.id).toBeGreaterThanOrEqual(1);
+        expect(g.balance, x.id).toBeGreaterThanOrEqual(0);
+        expect(cents(g.retainer) + cents(g.balance), x.id).toBe(cents(g.total));
+      }
     },
   );
   expect(weddingFacts({ price: 4, add_ons: [] }).total).toBe(4);
@@ -279,22 +315,34 @@ test('factsFor: ticked extras in tick box order, priced ones in the total, depos
     { id: RAW, label: 'RAW photos', qty: 1, unit_price: 121.25, line_total: 121.25 },
   ]);
   expect(a.deposits).toEqual([{ id: CAMERA, label: 'Guest camera deposit', amount: 100, note: CAMERA_NOTE }]);
-  // The same amounts as a booking made with RAW photos up front.
-  expect([a.total, a.retainer, a.second_payment, a.final_payment, a.balance]).toEqual([3131.25, 1566, 783, 782.25, 1565.25]);
+  // The same amounts as a booking made with RAW photos up front. Re-pinned for the payment change (spec
+  // 2026-11-23, sections 5.3 and 5.5): a 25% retainer and the balance, no second or final payment.
+  expect([a.total, a.retainer, a.second_payment, a.final_payment, a.balance]).toEqual([3131.25, 783, undefined, undefined, 2348.25]);
   expect(a).not.toHaveProperty('sharing_fee');
 
   const camera = factsFor(w, 'share', [CAMERA]);
-  expect([camera.total, camera.retainer, camera.second_payment, camera.final_payment, camera.balance]).toEqual([3010, 1505, 753, 752, 1505]);
+  expect([camera.total, camera.retainer, camera.second_payment, camera.final_payment, camera.balance]).toEqual([3010, 753, undefined, undefined, 2257]);
   expect(camera.add_ons).toEqual(w.add_ons);
   expect(camera.extras).toEqual([CAMERA]);
 
   const instax = factsFor(w, 'share', [INSTAX]);
   expect(instax).not.toHaveProperty('deposits');
-  expect([instax.total, instax.retainer, instax.second_payment, instax.final_payment]).toEqual([3070, 1535, 768, 767]);
+  expect([instax.total, instax.retainer, instax.balance]).toEqual([3070, 768, 2302]);
 
   const p = factsFor(w, 'private', [RAW]);
   expect(p.sharing_fee).toBe(75);
-  expect([p.total, p.retainer, p.second_payment, p.final_payment, p.balance]).toEqual([3206.25, 1604, 802, 800.25, 1602.25]);
+  expect([p.total, p.retainer, p.second_payment, p.final_payment, p.balance]).toEqual([3206.25, 802, undefined, undefined, 2404.25]);
+  // Spec section 5.5: private + RAW + Instax + guest camera: 3,266.25 = 817.00 + 2,449.25, the deposit outside the total.
+  const all = factsFor(w, 'private', [RAW, INSTAX, CAMERA]);
+  expect([all.total, all.retainer, all.balance]).toEqual([3266.25, 817, 2449.25]);
+  expect(all.deposits!.map((d) => d.amount)).toEqual([100]);
+
+  // A wedding booked before the change (three payments) keeps the old rules for every mix.
+  const old = oldRecord('wedding-set').facts as BookingFacts;
+  const o = factsFor(old, 'private', [RAW]);
+  expect([o.total, o.retainer, o.second_payment, o.final_payment, o.balance]).toEqual([3206.25, 1604, 802, 800.25, 1602.25]);
+  const oc = factsFor(old, 'share', [CAMERA]);
+  expect([oc.total, oc.retainer, oc.second_payment, oc.final_payment, oc.balance]).toEqual([3010, 1505, 753, 752, 1505]);
 
   // The booked facts are never changed.
   expect(JSON.stringify(w)).toBe(before);
@@ -330,11 +378,24 @@ test('factsFor: a set retainer stays, the usual retainer follows the total', () 
   const set = civilFacts({ retainer: 51.25, balance_cash: true });
   const s = factsFor(set, 'share', ['drone']);
   expect([s.total, s.retainer, s.balance]).toEqual([577.5, 51.25, 526.25]);
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): the usual retainer is 25% of the mix total (was half).
   const usual = factsFor(civilFacts(), 'private', ['drone', 'raw-photos-civil']);
-  expect([usual.total, usual.retainer, usual.balance]).toEqual([646.75, 324, 322.75]);
+  expect([usual.total, usual.retainer, usual.balance]).toEqual([646.75, 162, 484.75]);
   expect(usual).not.toHaveProperty('sharing_fee'); // civil has no fee for private work
-  const coincidence = factsFor(civilFacts({ price: 551.25, retainer: 314 }), 'share', ['drone']);
-  expect([coincidence.total, coincidence.retainer, coincidence.balance]).toEqual([627.5, 314, 313.5]);
+  // Spec section 5.5: the Civil Ceremony at the site price, private with every extra: 723.00 = 181.00 + 542.00.
+  const site = factsFor(civilFacts({ price: undefined }), 'private', ['drone', 'extra-retouched', 'raw-photos-civil']);
+  expect([site.total, site.retainer, site.balance]).toEqual([723, 181, 542]);
+  const coincidence = factsFor(civilFacts({ price: 551.25, retainer: 157 }), 'share', ['drone']);
+  expect([coincidence.total, coincidence.retainer, coincidence.balance]).toEqual([627.5, 157, 470.5]);
+  // A booking made before the change keeps its own percent (50): its usual retainer follows at half.
+  const old = oldRecord('civil-set').facts as BookingFacts;
+  const o = factsFor(old, 'private', ['drone', 'raw-photos-civil']);
+  expect([o.total, o.retainer, o.balance]).toEqual([646.75, 324, 322.75]);
+  // ...and its set retainer stays, even one that equals 25% of its total.
+  const oldSet = oldRecord('civil-set-retainer-cash').facts as BookingFacts;
+  expect(oldSet.retainer).toBe(126);
+  const os = factsFor(oldSet, 'share', ['drone']);
+  expect([os.total, os.retainer, os.balance]).toEqual([577.5, 126, 451.5]);
 });
 
 test('factsFor: the payments add up for every mix of every sample booking', () => {
@@ -357,8 +418,13 @@ test('factsFor works from the stored facts only, also for a package that no long
   const w = weddingFacts({ add_ons: SECOND_ONLY });
   const retired = { ...w, package_id: 'retired-package' };
   const f = factsFor(retired, 'private', [RAW, CAMERA]);
-  expect([f.total, f.retainer, f.second_payment, f.final_payment]).toEqual([3206.25, 1604, 802, 800.25]);
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): two payments at the frozen 25%.
+  expect([f.total, f.retainer, f.balance, f.second_payment, f.final_payment]).toEqual([3206.25, 802, 2404.25, undefined, undefined]);
   expect(() => renderVariant(retired, 'share')).toThrow();
+  // No business setting either: a later change of the percent never reaches a booking.
+  const old = { ...(oldRecord('wedding-set').facts as BookingFacts), package_id: 'retired-package' };
+  expect([factsFor(old, 'private', [RAW, CAMERA]).total, factsFor(old, 'private', [RAW, CAMERA]).retainer]).toEqual([3206.25, 1604]);
+  expect(factsFor(old, 'private', [RAW, CAMERA])).toMatchObject({ second_payment: 802, final_payment: 800.25 });
 });
 
 // ------------------------------------------------------------------ rendering a mix
@@ -373,8 +439,9 @@ test('a ticked priced extra joins the row "Add-ons chosen at booking"', () => {
   const civil = Object.fromEntries(bookingRows(renderVariant(civilFacts(), 'share', ['raw-photos-civil', 'drone'])));
   expect(civil['Add-ons chosen at booking']).toBe('Drone and aerial frames, 1 × $76.25 = $76.25; RAW photos, 1 × $69.25 = $69.25');
   expect(civil['Total']).toBe('$646.75');
-  expect(civil['Retainer, due at signing']).toBe('$324.00 by e-transfer');
-  expect(civil['Balance, due on or before the ceremony day']).toBe('$322.75 by e-transfer or cash');
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): 25%, cash only.
+  expect(civil['Retainer, due at signing']).toBe('$162.00 by e-transfer');
+  expect(civil['Balance, due on or before the ceremony day']).toBe('$484.75 in cash');
 });
 
 test('no mix is worked out two ways: a ticked extra gives the document of a booking made with it', () => {
@@ -414,30 +481,36 @@ test('no mix is worked out two ways: a ticked extra gives the document of a book
 });
 
 test('the retainer clause follows the booked facts, not the amounts of a mix', () => {
-  const RET_SET = 'You pay in two parts. The retainer is $314.00 and is due when you sign.';
-  const booked = SAMPLES['civil, set retainer equal to half of one mix']();
-  expect(booked.retainer).toBe(314);
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.1 and 5.6): the coincidence is 25% of
+  // one mix's total now ($157.00, was $314.00, half), and the usual clause says 25%.
+  const RET_SET = 'You pay in two parts. The retainer is $157.00 and is due when you sign.';
+  const booked = SAMPLES['civil, set retainer equal to the usual share of one mix']();
+  expect(booked.retainer).toBe(157);
   const seen = new Set<string>();
   for (const m of mixesOf(booked)) {
     const doc = renderVariant(booked, m.choice, m.extras);
     const text = clauseText(doc, '3.2');
     expect(text.startsWith(RET_SET), m.id).toBe(true);
-    expect(JSON.stringify(doc), m.id).not.toContain('50% of your total');
+    expect(JSON.stringify(doc), m.id).not.toContain('25% of your total');
     seen.add(JSON.stringify(doc.sections[3]));
   }
   // Section 3 has one version across all 16 mixes, the drone one included.
   expect(seen.size).toBe(1);
   expect(factsFor(booked, 'share', ['drone']).total).toBe(627.5);
-  // A booking with the usual retainer keeps "50%" in every mix.
+  expect(factsFor(booked, 'share', ['drone']).retainer).toBe(157);
+  // A booking with the usual retainer keeps "25%" in every mix.
   const usual = SAMPLES['civil, usual retainer']();
-  for (const m of mixesOf(usual)) expect(clauseText(renderVariant(usual, m.choice, m.extras), '3.2'), m.id).toContain('50% of your total');
+  for (const m of mixesOf(usual)) expect(clauseText(renderVariant(usual, m.choice, m.extras), '3.2'), m.id).toContain('25% of your total');
 });
 
-test('the guest camera deposit row: after the final payment, only when ticked, amounts unchanged', () => {
+test('the guest camera deposit row: after the balance, only when ticked, amounts unchanged', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.3): in cash with the balance on the
+  // wedding day, right after the balance row (was: by e-transfer with the final payment).
   const w = weddingFacts({ add_ons: SECOND_ONLY });
+  // Re-pinned for spec 2026-11-23, section 5.8: paid together with the balance (no payment method named).
   const ROW = [
     'Guest camera deposit',
-    '$100.00 by e-transfer, refundable. It is not part of your total. Due with your final payment, by Saturday 15 May 2027. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.',
+    '$100.00, refundable. It is not part of your total. You pay it together with your balance, on your wedding day. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.',
   ];
   for (const choice of ['share', 'private'] as const) {
     const plain = bookingRows(renderVariant(w, choice));
@@ -445,7 +518,7 @@ test('the guest camera deposit row: after the final payment, only when ticked, a
     const labels = ticked.map((r) => r[0]);
     const at = labels.indexOf('Guest camera deposit');
     expect(ticked[at]).toEqual(ROW);
-    expect(labels[at - 1]).toBe('Final payment');
+    expect(labels[at - 1]).toBe('Balance, due on your wedding day');
     expect(labels[at + 1]).toBe('Wedding date');
     // Apart from that one row, the table is the table without the camera.
     expect([...ticked.slice(0, at), ...ticked.slice(at + 1)]).toEqual(plain);
@@ -622,13 +695,26 @@ test('docJsonFromSet refuses an index list that does not fit its pool', () => {
 
 // sha256 of JSON.stringify(renderVariant(...)), the sign date token still inside. Pinned before tick boxes
 // existed (20408b9): a booking with nothing ticked must keep exactly the text it had.
+// Re-pinned for the payment change (spec 2026-11-23, sections 5.1 and 5.6): a NEW booking gets the new
+// clause text (25%, cash only, two payments), so its hashes are new. A booking made before keeps its
+// stored text: the old pins still hold for the stored texts of the old bookings (and the old-booking guard
+// in agreement-old-bookings.unit.ts checks every answer about them).
+// Re-pinned for spec 2026-11-23, section 5.8: the clause text of a NEW booking changed again (3.5 and 3.6
+// rounded up to the next dollar, 3.9 any other e-transfer, 16.14 the written reminder; clause version
+// 8f15fd047652). With those words swapped back and the version 749c631df042, the four texts give the
+// four pins of section 5.6 again (23d26213, 982777cf, 7ca46625, df7ea6da).
 test('nothing ticked: the documents are byte for byte the ones made before tick boxes', () => {
   const civil = civilFacts();
-  expect(sha256(JSON.stringify(renderVariant(civil, 'share')))).toBe('1e45ce43c109e8170d479decc3d1bb355dec009ed74882c9acfa94c7856d8629');
-  expect(sha256(JSON.stringify(renderVariant(civil, 'private')))).toBe('5c03a6b37e0c39591ef15bb39b577919a1837387c771aa0cda5c281d84ed46be');
+  expect(sha256(JSON.stringify(renderVariant(civil, 'share')))).toBe('767ae39806ab19c984b1b87c6924dcbb04fd70a4e6596bd304f60bf593a17cbb');
+  expect(sha256(JSON.stringify(renderVariant(civil, 'private')))).toBe('dfbf0726736e70c741265301aaae32d4d712ab74c15c36bfd6d8507baabb119c');
   const wed = weddingFacts();
-  expect(sha256(JSON.stringify(renderVariant(wed, 'share')))).toBe('f4f8280026885497c9723ad3ed3e817c9e40b3b44c5e5a8f92331f00b380e5d1');
-  expect(sha256(JSON.stringify(renderVariant(wed, 'private')))).toBe('cfc6b75c591279e9e957a2200f3b4a3644437a46b6774b323e4ca6d9f0512342');
+  expect(sha256(JSON.stringify(renderVariant(wed, 'share')))).toBe('6a7d8e0f51c6058c7b9bb74db43290a72efbaa2b3c13933bbf479f2eb0c221eb');
+  expect(sha256(JSON.stringify(renderVariant(wed, 'private')))).toBe('5d990338eeda9af3c25c7cd8697ab36ceb87164f464737509fb6274800340928');
+  // The old pins, on the two texts stored with the pilot booking (same number) made by git 20408b9, before the change.
+  const old = oldRecord('civil-noset');
+  expect(old.number).toBe('KK-TEST-2026-001');
+  expect(sha256(old.variants.share.doc_json)).toBe('1e45ce43c109e8170d479decc3d1bb355dec009ed74882c9acfa94c7856d8629');
+  expect(sha256(old.variants.private.doc_json)).toBe('5c03a6b37e0c39591ef15bb39b577919a1837387c771aa0cda5c281d84ed46be');
   // The set gives the same two texts for share and private.
   for (const booked of [civil, wed]) {
     const set = buildVariantSet(booked);

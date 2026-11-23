@@ -33,8 +33,8 @@ Your love story deserves to be told beautifully, before the big day even arrives
 
 1. **Book a Consultation.** Free, no-obligation call about your session.
 2. **Planning Together.** Location, outfits, time of day, mood.
-3. **Lock In Your Date.** Simple contract, 50% retainer.
-4. **Your Session Day.** Remaining 50% due on the day.
+3. **Lock In Your Date.** Simple contract, 25% retainer.
+4. **Your Session Day.** Balance paid in cash on or before the day, before I start shooting.
 5. **Video Draft.** One round of feedback on the film.
 6. **Full Delivery.** Complete gallery and final film within 1 to 3 weeks.
 

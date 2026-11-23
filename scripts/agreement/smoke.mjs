@@ -105,9 +105,10 @@ const madeOk =
   /^KK-TEST-\d{4}-\d{3,6}$/.test(b.number ?? '') &&
   /^[A-Za-z0-9_-]{43}$/.test(b.token ?? '') &&
   b.path === `/welcome/agreement/?k=${b.token}` &&
+  // 25% retainer, rounded up to the dollar, and the rest (the payment rule since 2026-11-23).
   b.total === 501.25 &&
-  b.retainer === 251 &&
-  b.balance === 250.25;
+  b.retainer === 126 &&
+  b.balance === 375.25;
 report(
   'new booking',
   madeOk,

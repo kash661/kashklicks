@@ -12,6 +12,11 @@ import {
   renderVariant,
   fillSignDate,
   signLabels,
+  usualRetainer,
+  retainerPercentOf,
+  etransferEmailOf,
+  RETAINER_PERCENT_BEFORE_2026_11_23,
+  ETRANSFER_EMAIL_BEFORE_2026_11_23,
 } from '../../src/lib/agreement/render';
 import type { AgreementDoc, ClauseFile, SourceClause, DocItem } from '../../src/lib/agreement/types';
 
@@ -88,17 +93,113 @@ test('sign date uses Toronto time', () => {
   expect(torontoStamp(new Date('2026-12-13T04:30:00Z'))).toEqual({ date: '12 December 2026', time: '11:30 pm' });
 });
 
-test('retainer is half, rounded up to the next dollar', () => {
+test('retainer is 25%, rounded up to the next dollar', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 25% of the total, was half.
   for (const [price, retainer, balance] of [
-    [501.25, 251, 250.25],
-    [551.25, 276, 275.25],
-    [851.25, 426, 425.25],
+    [501.25, 126, 375.25],
+    [551.25, 138, 413.25],
+    [851.25, 213, 638.25],
   ]) {
     const f = facts({ price });
     expect(f.total).toBe(price);
     expect(f.retainer).toBe(retainer);
     expect(f.balance).toBe(balance);
   }
+});
+
+test('the business settings of the payment change (spec 2026-11-23, section 5.2)', () => {
+  expect(business.etransferEmail).toBe('kashklicks.ca@gmail.com');
+  expect(business.retainerPercent).toBe(25);
+  expect(business.balanceCashOnly).toBe(true);
+  // The contact address (clauses 0.3 and 21.7) stays.
+  expect(business.email).toBe('info@kashklicks.ca');
+  // The percent the engine works with is the percent the clauses name: changing one without the other is a mistake.
+  for (const id of ['3.5', '3.6']) expect(src(id).text, id).toContain(`The retainer is ${business.retainerPercent}% of your total`);
+});
+
+test('a retainer percent that clauses 3.5 and 3.6 do not name is a data mistake, and /new makes no booking from it', () => {
+  // Review finding (spec 5.2): the clauses write the usual retainer as fixed text ("The retainer is 25% of
+  // your total"). A business.json percent they do not name would give every new booking a section 1
+  // retainer that its own clause 3.5 or 3.6 contradicts. buildBookingFacts throws a plain Error, like the
+  // other data checks, so /new answers 500 and uses up no number.
+  const b = business as Record<string, unknown>;
+  const keep = b.retainerPercent;
+  const named = ['3.5', '3.6'].map((id) => [src(id), src(id).text] as const);
+  const f = facts();
+  try {
+    b.retainerPercent = 40;
+    expect(() => facts()).toThrow('business.json: retainerPercent 40 is not the percent the clauses name (25, 25)');
+    // A stored booking is not touched: it renders from its own frozen percent.
+    expect(JSON.stringify(renderVariant(f, 'share'))).toContain('The retainer is 25% of your total');
+    // The clauses changed with it: a booking is made at 40.
+    for (const [c, t] of named) c.text = t.replace('The retainer is 25% of your total', 'The retainer is 40% of your total');
+    expect([facts().retainer_percent, facts().retainer]).toEqual([40, 201]);
+    // One clause left behind is still a mistake.
+    named[1][0].text = named[1][1];
+    expect(() => facts()).toThrow('business.json: retainerPercent 40 is not the percent the clauses name (40, 25)');
+    // A clause file that names no percent at all is a mistake too (today's clauses always name one).
+    for (const [c, t] of named) c.text = t.replace('The retainer is 25% of your total', 'The retainer is a part of your total');
+    expect(() => facts()).toThrow('business.json: retainerPercent 40 is not the percent the clauses name (none)');
+  } finally {
+    b.retainerPercent = keep;
+    for (const [c, t] of named) c.text = t;
+  }
+  expect(facts()).toEqual(f);
+});
+
+test('usual retainer: percent 50 gives exactly half rounded up, for every cent total from 0.01 to 20,000.00', () => {
+  // Every booking made before 2026-11-23 reads as 50: its retainer rule must not move by one cent.
+  expect(RETAINER_PERCENT_BEFORE_2026_11_23).toBe(50);
+  let checked = 0;
+  for (let c = 1; c <= 2_000_000; c += 1) {
+    const total = c / 100;
+    if (usualRetainer(total, 50) !== Math.ceil(total / 2)) throw new Error(`total ${total}: ${usualRetainer(total, 50)} is not ${Math.ceil(total / 2)}`);
+    checked += 1;
+  }
+  expect(checked).toBe(2_000_000);
+  // And 25 is a quarter, rounded up to the next dollar (spec section 5.5).
+  expect([3010, 3085, 3266.25, 551.25, 723, 501.25].map((t) => usualRetainer(t, 25))).toEqual([753, 772, 817, 138, 181, 126]);
+});
+
+test('facts made before 2026-11-23 read as 50% and the old e-transfer address; new facts carry their own', () => {
+  const f = facts();
+  expect([f.retainer_percent, f.etransfer_email]).toEqual([25, 'kashklicks.ca@gmail.com']);
+  expect([retainerPercentOf(f), etransferEmailOf(f)]).toEqual([25, 'kashklicks.ca@gmail.com']);
+  const { retainer_percent: _p, etransfer_email: _e, ...old } = f;
+  expect(ETRANSFER_EMAIL_BEFORE_2026_11_23).toBe('info@kashklicks.ca');
+  expect([retainerPercentOf(old as typeof f), etransferEmailOf(old as typeof f)]).toEqual([50, 'info@kashklicks.ca']);
+  // The values are frozen with the booking: a later change of business.json does not reach it.
+  const b = business as Record<string, unknown>;
+  const keep = { etransferEmail: b.etransferEmail, retainerPercent: b.retainerPercent, balanceCashOnly: b.balanceCashOnly };
+  const named = ['3.5', '3.6'].map((id) => [src(id), src(id).text] as const);
+  try {
+    b.etransferEmail = 'later@example.com';
+    b.retainerPercent = 30;
+    b.balanceCashOnly = false;
+    const doc = JSON.stringify(renderVariant(f, 'share'));
+    expect(doc).toContain('You pay the retainer by Interac e-transfer to kashklicks.ca@gmail.com.');
+    expect(doc).not.toContain('later@example.com');
+    expect(doc).toContain('The retainer is 25% of your total');
+    // A booking made now takes the new values. A new percent goes with clause text that names it (review
+    // finding: /new refuses a percent that clauses 3.5 and 3.6 do not name), so the clauses say 30% here too.
+    for (const [c, t] of named) c.text = t.replace('The retainer is 25% of your total', 'The retainer is 30% of your total');
+    const later = facts();
+    expect([later.retainer_percent, later.etransfer_email, later.balance_cash, later.retainer]).toEqual([30, 'later@example.com', false, 151]);
+    // A broken setting is a data mistake.
+    for (const [key, value] of [['retainerPercent', 0], ['retainerPercent', 100], ['retainerPercent', 25.5], ['retainerPercent', '25'], ['etransferEmail', 'nope'], ['balanceCashOnly', 'yes']] as const) {
+      const before = b[key];
+      b[key] = value;
+      try {
+        expect(() => facts(), `${key} ${String(value)}`).toThrow(`business.json: ${key}`);
+      } finally {
+        b[key] = before;
+      }
+    }
+  } finally {
+    Object.assign(b, keep);
+    for (const [c, t] of named) c.text = t;
+  }
+  expect(facts()).toEqual(f);
 });
 
 const TWO_PARTS = 'You pay in two parts.';
@@ -114,13 +215,16 @@ test('a booking can set its own retainer', () => {
     const doc = renderVariant(f, choice);
     const rows = table(doc, 'booking').rows;
     expect(rows).toContainEqual(['Retainer, due at signing', '$51.25 by e-transfer']);
-    expect(rows).toContainEqual(['Balance, due on or before the ceremony day', '$450.00 by e-transfer or cash']);
+    // Re-pinned (spec 2026-11-23, section 5.3): the balance is cash only unless the booking says otherwise.
+    expect(rows).toContainEqual(['Balance, due on or before the ceremony day', '$450.00 in cash']);
     const pay = clauses(doc).filter((c) => c.text.startsWith(TWO_PARTS));
     expect(pay).toHaveLength(1);
     expect(pay[0].text).toBe(
       'You pay in two parts. The retainer is $51.25 and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
     );
     const json = JSON.stringify(doc);
+    // Re-pinned (spec 2026-11-23, section 5.1): the usual clause says 25% now.
+    expect(json).not.toContain('25% of your total');
     expect(json).not.toContain('50% of your total');
     expect(json).not.toContain('{{RETAINER}}');
     expect(perSection(doc)).toEqual(perSection(renderVariant(facts(), choice)));
@@ -131,24 +235,27 @@ test('a booking can set its own retainer', () => {
   }
 });
 
-test('without a set retainer the clause still says 50%', () => {
+test('without a set retainer the clause says 25%', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.1 and 5.5): 25% and $126.00 for the pilot, was 50% and $251.00.
   const f = facts();
-  expect(f.retainer).toBe(251);
-  expect(f.balance).toBe(250.25);
+  expect(f.retainer).toBe(126);
+  expect(f.balance).toBe(375.25);
   for (const choice of ['share', 'private'] as const) {
     const doc = renderVariant(f, choice);
     const pay = clauses(doc).filter((c) => c.text.startsWith(TWO_PARTS));
+    // Re-pinned for spec 2026-11-23, section 5.8: clause 3.5 says the retainer is rounded up to the next dollar.
     expect(pay.map((c) => c.text)).toEqual([
-      'You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
+      'You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
     ]);
     expect(JSON.stringify(doc)).not.toContain('The retainer is $');
   }
 });
 
-test('a set retainer equal to the usual half gives the standard document', () => {
-  const f = facts({ retainer: 251 });
-  expect(f.retainer).toBe(251);
-  expect(f.balance).toBe(250.25);
+test('a set retainer equal to the usual 25% gives the standard document', () => {
+  // Re-pinned (spec 2026-11-23, section 5.5): the usual retainer of the pilot is $126.00 now.
+  const f = facts({ retainer: 126 });
+  expect(f.retainer).toBe(126);
+  expect(f.balance).toBe(375.25);
   for (const choice of ['share', 'private'] as const)
     expect(JSON.stringify(renderVariant(f, choice))).toBe(JSON.stringify(renderVariant(facts(), choice)));
 });
@@ -167,8 +274,9 @@ test('a set retainer must be a sensible amount', () => {
   }
 });
 
-const ANY_WAY = 'You can also pay the balance in cash on the shoot day.';
-const CASH_ONLY = 'You pay the balance in cash on the shoot day, not by e-transfer.';
+// Re-pinned for the payment change (spec 2026-11-23, section 5.1): the words of clauses 3.10 and 3.17.
+const ANY_WAY = 'You can pay the balance by e-transfer or in cash.';
+const CASH_ONLY = 'You pay the balance in cash, not by e-transfer.';
 const BALANCE_ROW = 'Balance, due on or before the ceremony day';
 const sectionGapless = (doc: AgreementDoc, num: number) => {
   const s = doc.sections.find((x) => x.num === num)!;
@@ -176,35 +284,37 @@ const sectionGapless = (doc: AgreementDoc, num: number) => {
   expect(ns).toEqual(ns.map((_, k) => `${num}.${k + 1}`));
 };
 
-test('by default the balance can be paid either way', () => {
-  const f = facts();
+// Re-pinned for the payment change (spec 2026-11-23, sections 5.2 and 5.3): the business setting
+// balanceCashOnly makes cash only the default; balance_cash: false lets one booking pay by e-transfer too.
+test('a booking can say the balance may be paid either way', () => {
+  const f = facts({ balance_cash: false });
   expect(f.balance_cash).toBe(false);
   for (const choice of ['share', 'private'] as const) {
     const doc = renderVariant(f, choice);
     const texts = clauses(doc).map((c) => c.text);
     expect(texts).toContain(ANY_WAY);
     expect(texts).not.toContain(CASH_ONLY);
-    expect(Object.fromEntries(table(doc, 'booking').rows)[BALANCE_ROW]).toBe('$250.25 by e-transfer or cash');
+    expect(Object.fromEntries(table(doc, 'booking').rows)[BALANCE_ROW]).toBe('$375.25 by e-transfer or cash');
+    expect(perSection(doc)).toEqual(perSection(renderVariant(facts(), choice)));
     sectionGapless(doc, 3);
   }
-  // Saying false is the same as saying nothing.
-  for (const choice of ['share', 'private'] as const)
-    expect(JSON.stringify(renderVariant(facts({ balance_cash: false }), choice))).toBe(JSON.stringify(renderVariant(f, choice)));
 });
 
-test('a booking can say the balance is paid in cash only', () => {
-  const f = facts({ balance_cash: true });
+test('by default the balance is paid in cash only', () => {
+  const f = facts();
   expect(f.balance_cash).toBe(true);
-  expect(f.balance).toBe(250.25);
+  expect(f.balance).toBe(375.25);
   for (const choice of ['share', 'private'] as const) {
     const doc = renderVariant(f, choice);
     const texts = clauses(doc).map((c) => c.text);
     expect(texts.filter((t) => t === CASH_ONLY)).toHaveLength(1);
     expect(texts).not.toContain(ANY_WAY);
-    expect(Object.fromEntries(table(doc, 'booking').rows)[BALANCE_ROW]).toBe('$250.25 in cash');
-    expect(perSection(doc)).toEqual(perSection(renderVariant(facts(), choice)));
+    expect(Object.fromEntries(table(doc, 'booking').rows)[BALANCE_ROW]).toBe('$375.25 in cash');
     sectionGapless(doc, 3);
   }
+  // Saying true is the same as saying nothing.
+  for (const choice of ['share', 'private'] as const)
+    expect(JSON.stringify(renderVariant(facts({ balance_cash: true }), choice))).toBe(JSON.stringify(renderVariant(f, choice)));
 });
 
 test('cash only together with a set retainer', () => {
@@ -231,10 +341,12 @@ test('balance_cash must be true or false', () => {
 });
 
 test('stored facts without balance_cash render as before', () => {
+  // Facts stored before balance_cash existed read as false (either way). Re-pinned (spec 2026-11-23,
+  // section 5.3): the default of a new booking is cash only now, so the comparison names false.
   const { balance_cash: _drop, ...old } = facts();
   for (const choice of ['share', 'private'] as const)
     expect(JSON.stringify(renderVariant(old as Parameters<typeof renderVariant>[0], choice))).toBe(
-      JSON.stringify(renderVariant(facts(), choice)),
+      JSON.stringify(renderVariant(facts({ balance_cash: false }), choice)),
     );
 });
 
@@ -246,8 +358,13 @@ test('pilot facts', () => {
   expect(f.package_price).toBe(501.25);
   expect(f.add_ons).toEqual([]);
   expect(f.total).toBe(501.25);
-  expect(f.retainer).toBe(251);
-  expect(f.balance).toBe(250.25);
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5).
+  expect(f.retainer).toBe(126);
+  expect(f.balance).toBe(375.25);
+  expect(f.balance_cash).toBe(true);
+  expect(f.retainer_percent).toBe(25);
+  expect(f.etransfer_email).toBe('kashklicks.ca@gmail.com');
+  expect(f).not.toHaveProperty('second_payment');
   expect(f.hours).toBe(2);
   expect(f.delivery_date).toBe('2027-01-09');
   expect(f.client_name).toBe('Priya Sharma');
@@ -270,14 +387,15 @@ test('an extra hour changes total, hours and coverage', () => {
   expect(f.hours).toBe(3);
   expect(f.add_ons).toEqual([{ id: 'extra-hours-civil', label: 'Additional hours', qty: 1, unit_price: 201.25, line_total: 201.25 }]);
   expect(f.total).toBe(702.5);
-  expect(f.retainer).toBe(352);
-  expect(f.balance).toBe(350.5);
+  // Re-pinned (spec 2026-11-23, section 5.3): 25%, cash only.
+  expect(f.retainer).toBe(176);
+  expect(f.balance).toBe(526.5);
   const rows = Object.fromEntries(table(renderVariant(f, 'share'), 'booking').rows);
   expect(rows['Add-ons chosen at booking']).toBe('Additional hours, 1 × $201.25 = $201.25');
   expect(rows['Coverage']).toBe('3 hours, from 12:00 pm to 3:00 pm');
   expect(rows['Total']).toBe('$702.50');
-  expect(rows['Retainer, due at signing']).toBe('$352.00 by e-transfer');
-  expect(rows['Balance, due on or before the ceremony day']).toBe('$350.50 by e-transfer or cash');
+  expect(rows['Retainer, due at signing']).toBe('$176.00 by e-transfer');
+  expect(rows['Balance, due on or before the ceremony day']).toBe('$526.50 in cash');
   // The same extra hour without moving the end time is refused.
   expect(codeOf(() => facts({ add_ons: [{ id: 'extra-hours-civil', qty: 1 }] }))).toBe('bad_times');
 });
@@ -299,8 +417,9 @@ test('section 1 table is exact for the pilot', () => {
     ['Add-ons chosen at booking', 'None'],
     ['Sharing choice (section 15)', sharing],
     ['Total', '$501.25'],
-    ['Retainer, due at signing', '$251.00 by e-transfer'],
-    ['Balance, due on or before the ceremony day', '$250.25 by e-transfer or cash'],
+    // Re-pinned for the payment change (spec 2026-11-23, section 5.5): 126.00 / 375.25 cash.
+    ['Retainer, due at signing', '$126.00 by e-transfer'],
+    ['Balance, due on or before the ceremony day', '$375.25 in cash'],
     ['Ceremony date', 'Saturday 12 December 2026'],
     ['Coverage', '2 hours, from 12:00 pm to 2:00 pm'],
     ['Where', 'Vaughan City Hall, 2141 Major Mackenzie Dr W, Vaughan, ON L6A 1T1'],
@@ -362,8 +481,11 @@ test('clause visibility for a civil ceremony', () => {
     const doc = renderVariant(facts(), choice);
     expect(shows(doc, '5.2')).toBe(true);
     expect(shows(doc, '5.1')).toBe(false);
-    for (const id of ['3.5', '3.10', '3.11', '7.3', '10.1', '11.12', '16.3']) expect(shows(doc, id), id).toBe(true);
+    // Re-pinned (spec 2026-11-23, section 5.1): cash only by default shows 3.17, not 3.10.
+    for (const id of ['3.5', '3.17', '3.11', '7.3', '10.1', '11.12', '16.3']) expect(shows(doc, id), id).toBe(true);
+    expect(shows(doc, '3.10')).toBe(false);
     expect(shows(doc, '3.6')).toBe(false);
+    expect(shows(renderVariant(facts({ balance_cash: false }), choice), '3.10')).toBe(true);
     expect(clauses(doc).filter((c) => c.text.includes('HST'))).toEqual([]);
   }
 });
@@ -399,8 +521,10 @@ test('clause text is the source text, with only placeholders filled', () => {
   expect(all[4].text).toBe('This agreement is dated {{SIGN_DATE}}. Your booking number is KK-TEST-2026-001.');
   const texts = all.map((c) => c.text);
   expect(texts).toContain('Overtime costs $201.25 per hour. I bill it in 30 minute blocks of $100.75. A part of a block counts as a full block.');
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.1 and 5.2): clause 3.9, the new address frozen with the booking.
+  // Re-pinned for spec 2026-11-23, section 5.8: clause 3.9 adds that any other e-transfer goes to the same address.
   expect(texts).toContain(
-    'You can pay by Interac e-transfer to info@kashklicks.ca. Please put your booking number in the message. I send a receipt or an invoice for every payment.',
+    'You pay the retainer by Interac e-transfer to kashklicks.ca@gmail.com. Any other payment by e-transfer goes to the same address. Please put your booking number in the message. I send a receipt or an invoice for every payment.',
   );
   expect(texts).toContain(
     'I deliver your edited photos within 4 weeks of your ceremony day. If your booking has more than one shoot day, the time starts after the last one.',

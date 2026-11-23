@@ -33,11 +33,11 @@ From getting ready to the last dance, I capture every moment of your wedding day
 
 1. **Book a Consultation.** Free, no-obligation call about your wedding day.
 2. **Planning Together.** Walk through every package, find the right fit for your budget.
-3. **Lock In Your Date.** Simple contract, 50% retainer secures the date.
+3. **Lock In Your Date.** Simple contract, 25% retainer secures the date.
 4. **Your Engagement Shoot.** Pre-wedding session, I learn your editing style.
-5. **Your Wedding Day.** I capture everything. Second 30% due two weeks before.
+5. **Your Wedding Day.** I capture everything. Balance paid in cash on the day, before I start shooting.
 6. **Sneak Peek.** Curated preview within days of your wedding.
-7. **Full Delivery.** Complete gallery in 2 to 3 months. Final 20% due once you are happy.
+7. **Full Delivery.** Complete gallery in 2 to 3 months.
 
 ---
 

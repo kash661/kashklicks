@@ -1,11 +1,10 @@
 import { test, expect, type Locator, type Page, type Route } from '@playwright/test';
 import { createHash } from 'node:crypto';
 import pageJson from '../src/data/agreement/page.json' with { type: 'json' };
-import { buildBookingFacts, buildVariantSet, fillSignDate, renderVariant, signLabels } from '../src/lib/agreement/render';
-import { longDate, money } from '../src/lib/agreement/format';
+import oldPage from './fixtures/agreement-page-old.json' with { type: 'json' };
+import { buildBookingFacts, buildVariantSet, fillSignDate, signLabels } from '../src/lib/agreement/render';
 import { sectionToHtml } from '../src/lib/agreement/html';
 import type { AgreementDoc, BookingFacts, Choice, PageContent, StoredSummary } from '../src/lib/agreement/types';
-import { factsFor, laterPaymentRows } from '../src/lib/agreement/render';
 import { mixSummaries, pageContent } from '../src/lib/agreement/page';
 import { PARTS } from '../src/lib/agreement/parts';
 import { docJsonFromSet, mixId } from '../src/lib/agreement/set';
@@ -30,22 +29,38 @@ const TOKEN = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJ0123456'; // 43 characters, l
 const PATH = `/welcome/agreement/?k=${TOKEN}`;
 
 const sha256 = (s: string) => createHash('sha256').update(s, 'utf8').digest('hex');
+// Made by today's engine: the bookings made with the simpler page (C2, C3 below) start from these facts.
 const facts = buildBookingFacts(PILOT, { number: NUMBER, createdAt: new Date('2026-11-10T15:00:00Z') });
-const DOCS: Record<Choice, AgreementDoc> = { share: renderVariant(facts, 'share'), private: renderVariant(facts, 'private') };
-const variant = (c: Choice) => {
-  const doc_json = JSON.stringify(DOCS[c]);
-  return { doc_json, hash: sha256(doc_json) };
+
+// The group "a booking made before the simpler page" serves what the worker stored back then. Since the
+// payment change of 2026-11-23 (build spec section 5) today's engine makes the new rule (a 25% retainer, a
+// wedding in two parts) and refuses to render three payments, so these answers come byte for byte from the
+// code of 881fd2b, the last commit before that change (tests/fixtures/make-agreement-page-old.mjs): the
+// same PILOT booking with its 50% retainer, and the same wedding paid in three parts.
+type OldLabels = ReturnType<typeof signLabels> & { name_expected: string };
+type OldBooking = { variants: Record<Choice, { doc_json: string; hash: string }>; labels: OldLabels; summary: StoredSummary };
+const OLD = oldPage as unknown as {
+  made_by: string;
+  civil: OldBooking;
+  wedding: OldBooking & { summary_private: StoredSummary };
+  // The v=2 answer of the wedding made with the simpler page before that change (W_OLD_SET below).
+  wedding_set: {
+    ok: true;
+    mode: string;
+    number: string;
+    client_first: string;
+    partner_first: string;
+    client_name: string;
+    partner_name: string;
+    labels: OldLabels;
+    set: { pool: string[]; mixes: Record<string, V2Mix> };
+    page: PageContent;
+  };
 };
-const VARIANTS = { share: variant('share'), private: variant('private') };
-const LABELS = { ...signLabels(facts), name_expected: facts.client_name };
-const SUMMARY = {
-  package: facts.package_name,
-  date: longDate(facts.event_date),
-  total: money(facts.total),
-  retainer: money(facts.retainer),
-  balance: money(facts.balance),
-  etransfer_email: 'info@kashklicks.ca',
-};
+const VARIANTS = OLD.civil.variants;
+const DOCS: Record<Choice, AgreementDoc> = { share: JSON.parse(VARIANTS.share.doc_json), private: JSON.parse(VARIANTS.private.doc_json) };
+const LABELS = OLD.civil.labels;
+const SUMMARY = OLD.civil.summary;
 
 const docPayload = (over: Record<string, unknown> = {}) => ({
   ok: true,
@@ -119,6 +134,31 @@ test.describe('a booking made before the simpler page', () => {
     });
     test.afterEach(() => {
       expect(pageErrors).toEqual([]);
+    });
+
+    test('the answers of this group are the ones stored before the payment change, not made by today\'s engine', () => {
+      // Pins of the texts made before 2026-11-23 (the PILOT pins of build spec section 1, and the wedding of
+      // the group below). A fixture made again by today's engine, or edited, fails here first.
+      expect(OLD.made_by).toBe('881fd2b');
+      expect([sha256(VARIANTS.share.doc_json), sha256(VARIANTS.private.doc_json)]).toEqual([
+        '1e45ce43c109e8170d479decc3d1bb355dec009ed74882c9acfa94c7856d8629',
+        '5c03a6b37e0c39591ef15bb39b577919a1837387c771aa0cda5c281d84ed46be',
+      ]);
+      expect([VARIANTS.share.hash, VARIANTS.private.hash]).toEqual([sha256(VARIANTS.share.doc_json), sha256(VARIANTS.private.doc_json)]);
+      const w = OLD.wedding.variants;
+      expect([sha256(w.share.doc_json), sha256(w.private.doc_json)]).toEqual([
+        '495364565aba62f93806b96e630e922ab5cc190af87b50cbd4754328b575017b',
+        '5abac7bc0850b87ac091eb8f6df6bfb6dc47ee497b8d2ffb335e894e94bd3f87',
+      ]);
+      expect([w.share.hash, w.private.hash]).toEqual([sha256(w.share.doc_json), sha256(w.private.doc_json)]);
+      // The same wedding made with a set then: nothing ticked, the very same two texts.
+      const set = OLD.wedding_set.set;
+      expect([sha256(docJsonFromSet(set.pool, set.mixes.share.f)), sha256(docJsonFromSet(set.pool, set.mixes.private.f))]).toEqual([w.share.hash, w.private.hash]);
+      // The old rule: half at signing, and the wedding in three parts, by e-transfer to the old address.
+      expect([SUMMARY.total, SUMMARY.retainer, SUMMARY.balance, SUMMARY.etransfer_email]).toEqual(['$501.25', '$251.00', '$250.25', 'info@kashklicks.ca']);
+      expect(DOCS.share.sections[3].items.map((i) => (i as { text?: string }).text ?? '').join(' ')).toContain('The retainer is 50% of your total');
+      expect(OLD.wedding.summary.later_payments!.map((r) => r.label)).toEqual(['Second payment', 'Final payment']);
+      expect(OLD.wedding.summary_private.later_payments!.map((r) => r.label)).toEqual(['Second payment', 'Final payment']);
     });
 
     test('robots meta is noindex and no tracker code is in the page', async ({ page }) => {
@@ -265,6 +305,36 @@ test.describe('a booking made before the simpler page', () => {
       await dlg.locator('[data-agr-back]').click();
       await expect(dlg).toBeHidden();
       await expect(page.locator('[data-agr-review]')).toBeFocused();
+    });
+
+    test('the review step shows the balance on the day right after the retainer, in the words of the signed view', async ({ page }) => {
+      // Build spec 5.4: no later payments, so one more row after "Retainer". SUMMARY has no balance_how (it
+      // was stored before it existed): the row reads as the signed view reads it ("e-transfer or cash").
+      await mockDoc(page, [[200, docPayload()]]);
+      await page.goto(PATH);
+      await fillReady(page, 'share');
+      await page.locator('[data-agr-review]').click();
+      const rows = page.locator('[data-agr-review-rows] > div');
+      await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
+      await expect(rows.locator('dd')).toHaveText([
+        'Priya Sharma',
+        'Arjun Mehta',
+        'The Civil Ceremony',
+        'Saturday 12 December 2026',
+        '$501.25',
+        '$251.00',
+        '$250.25, e-transfer or cash',
+        LABELS.share_option,
+      ]);
+      // A stored summary that says how the balance is paid: its own words.
+      await page.unrouteAll();
+      await mockDoc(page, [[200, docPayload({ summary: { ...SUMMARY, balance_how: 'in cash' } })]]);
+      await page.goto(PATH);
+      await fillReady(page, 'private');
+      await page.locator('[data-agr-review]').click();
+      await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
+      await expect(rows.nth(6).locator('dd')).toHaveText('$250.25, in cash');
+      await expect(rows.nth(7).locator('dd')).toHaveText(LABELS.private_option);
     });
 
     test('signing posts the hash of the chosen text and shows the thank you state', async ({ page }) => {
@@ -875,39 +945,12 @@ test.describe('a booking made before the simpler page', () => {
     });
 
     const W_NUMBER = 'KK-TEST-2026-007';
-    const wFacts = buildBookingFacts(
-      {
-        package_id: 'wedding-full',
-        client_name: 'Elena Marchetti',
-        partner_name: 'Daniel Okafor',
-        client_email: 'elena@example.com',
-        client_phone: '416 555 0177',
-        event_date: '2027-05-29',
-        start_time: '12:00',
-        end_time: '22:00',
-        place: 'St. Example Church, Hamilton. Reception in Burlington',
-        add_ons: [{ id: 'second-photographer', qty: 7 }],
-      },
-      { number: W_NUMBER, createdAt: new Date('2026-11-10T15:00:00Z') },
-    );
-    const wVariant = (c: Choice) => {
-      const doc_json = JSON.stringify(renderVariant(wFacts, c));
-      return { doc_json, hash: sha256(doc_json) };
-    };
-    const W_VARIANTS = { share: wVariant('share'), private: wVariant('private') };
-    const W_LABELS = { ...signLabels(wFacts), name_expected: wFacts.client_name };
-    const summaryOf = (f: typeof wFacts) => ({
-      package: f.package_name,
-      date: longDate(f.event_date),
-      total: money(f.total),
-      retainer: money(f.retainer),
-      balance: money(f.balance),
-      balance_how: 'e-transfer or cash',
-      etransfer_email: 'info@kashklicks.ca',
-      later_payments: laterPaymentRows(f),
-    });
-    const W_SUMMARY = summaryOf(wFacts);
-    const W_SUMMARY_PRIVATE = summaryOf(factsFor(wFacts, 'private'));
+    // The wedding of Elena Marchetti and Daniel Okafor (second photographer, 7 added hours), made by the code
+    // of 881fd2b: paid in three parts, with the fee for private work (see OLD at the top of this file).
+    const W_VARIANTS = OLD.wedding.variants;
+    const W_LABELS = OLD.wedding.labels;
+    const W_SUMMARY = OLD.wedding.summary;
+    const W_SUMMARY_PRIVATE = OLD.wedding.summary_private;
     const SECOND =
       '$753.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.';
     const FINAL = '$752.00 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.';
@@ -943,6 +986,29 @@ test.describe('a booking made before the simpler page', () => {
       await expect(rows.nth(6).locator('dd')).toHaveText(SECOND);
       await expect(rows.nth(7).locator('dd')).toHaveText(FINAL);
       await expect(page.locator('[data-agr-dialog]')).not.toContainText(/balance/i);
+    });
+
+    test('the review step of a wedding paid in three parts has no balance row, for either choice', async ({ page }) => {
+      // Build spec 5.4: a booking with later payments keeps its later rows and gets no balance row.
+      await mockDoc(page, [[200, wReady]]);
+      await page.goto(PATH);
+      await page.locator('[data-agr-name]').fill('Elena Marchetti');
+      await page.locator('[data-agr-agree]').check();
+      const rows = page.locator('[data-agr-review-rows] > div');
+      for (const [choice, summary] of [
+        ['share', W_SUMMARY],
+        ['private', W_SUMMARY_PRIVATE],
+      ] as const) {
+        await page.locator(`[data-agr-choice="${choice}"]`).check();
+        await page.locator('[data-agr-review]').click();
+        await expect(rows.locator('dt'), choice).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Second payment', 'Final payment', 'Sharing']);
+        await expect(rows.locator('dd').nth(5), choice).toHaveText(summary.retainer);
+        await expect(rows.locator('dd').nth(6), choice).toHaveText(summary.later_payments![0].text);
+        await expect(rows.locator('dd').nth(7), choice).toHaveText(summary.later_payments![1].text);
+        await expect(page.locator('[data-agr-dialog]'), choice).not.toContainText(/balance/i);
+        await page.locator('[data-agr-back]').click();
+        await expect(page.locator('[data-agr-dialog]')).toBeHidden();
+      }
     });
 
     test('the review step shows the amounts of the chosen option', async ({ page }) => {
@@ -1103,7 +1169,8 @@ const W2 = v2Booking(
 );
 const PRIYA = { client_first: 'Priya', partner_first: 'Arjun', email: 'priya@example.com' };
 const C2 = v2Booking(facts, PRIYA);
-// A set and no page content: the civil ceremony (two payments) and the wedding (three payments, a fee for private work).
+// A set and no page content: the civil ceremony and the wedding (a fee for private work). Both pay in two parts
+// since the payment change of 2026-11-23 (build spec 5.3); a wedding paid in three parts is in the first group.
 const C3 = withoutPageText('civil-ceremony', () => v2Booking(facts, PRIYA));
 const W3 = withoutPageText('wedding-full', () => v2Booking(W2.facts, { client_first: 'Elena', partner_first: 'Daniel', email: 'elena@example.com' }));
 // The civil ceremony with a set retainer and the balance in cash only.
@@ -1111,6 +1178,27 @@ const CASH = v2Booking(
   buildBookingFacts({ ...PILOT, retainer: 51.25, balance_cash: true }, { number: NUMBER, createdAt: new Date('2026-11-10T15:00:00Z') }),
   PRIYA,
 );
+// A wedding made with the simpler page before the payment change of 2026-11-23: its stored v=2 answer (a set,
+// page content, three payments), made by the code of 881fd2b (OLD at the top of this file). The same booking
+// as W2, as it was stored then.
+const W_OLD_SET = (() => {
+  const ready = OLD.wedding_set;
+  const docs = Object.fromEntries(Object.entries(ready.set.mixes).map(([id, m]) => [id, docJsonFromSet(ready.set.pool, m.f)]));
+  const signed = (choice: Choice, extras: string[] = []) => {
+    const id = mixId(choice, extras);
+    const final_doc_json = fillSignDate(docs[id], '10 November 2026');
+    const { ok, mode, number, client_first, partner_first, client_name, partner_name, labels } = ready;
+    return {
+      ...{ ok, mode, number, client_first, partner_first, client_name, partner_name, labels },
+      status: 'signed',
+      signed: { choice, signed_name: ready.client_name, date: '10 November 2026', time: '10:00 am', final_doc_json, final_hash: sha256(final_doc_json) },
+      extras,
+      summary: ready.set.mixes[id].summary,
+      copy: { status: 'sent', to: 'elena@example.com' },
+    };
+  };
+  return { ready, docs, signed };
+})();
 const RAW = 'raw-photos-wedding';
 const INSTAX = 'instax-guest-prints';
 const CAMERA = 'guest-camera';
@@ -1309,7 +1397,9 @@ test.describe('a booking made with the simpler page', () => {
     const label = (c: number) => `Read the full wording (${c} ${c === 1 ? 'point' : 'points'})`;
     // Before a sharing choice, the counts of the share text with nothing ticked.
     const share = W2.counts('share');
-    expect(share).toEqual([49, 27, 9, 6, 23, 37, 12]);
+    // Part 3 counts 10 since the payment change (build spec 5.1): clauses 3.11 and 3.17 now apply to a
+    // wedding too, and 3.12 is gone (it was 9).
+    expect(share).toEqual([49, 27, 10, 6, 23, 37, 12]);
     await expect(discs).toHaveText(share.map(label));
     for (let n = 1; n <= 7; n += 1) {
       const b = page.locator(`[data-agr-disc="${n}"]`);
@@ -1469,11 +1559,13 @@ test.describe('a booking made with the simpler page', () => {
       'Extras',
       'Total',
       'Retainer',
-      'Second payment',
-      'Final payment',
+      // A wedding made since the payment change pays in two parts (build spec 5.4): the balance on the day,
+      // where a wedding made before had its second and final payment.
+      'Balance on the day',
       s.deposit!.label,
       'Sharing',
     ]);
+    expect(s.later_payments).toBeUndefined();
     await expect(rows.locator('dd')).toHaveText([
       'Elena Marchetti',
       'Daniel Okafor',
@@ -1482,8 +1574,7 @@ test.describe('a booking made with the simpler page', () => {
       s.extra_labels!.join(', '),
       s.total,
       s.retainer,
-      s.later_payments![0].text,
-      s.later_payments![1].text,
+      `${s.balance}, in cash`,
       `${s.deposit!.amount}. ${s.deposit!.note}`,
       W2.labels.private_option,
     ]);
@@ -1498,9 +1589,11 @@ test.describe('a booking made with the simpler page', () => {
       extras: [RAW, CAMERA],
     });
     expect(body.text_hash).toBe(W2.mixes[id].hash);
-    // The signed view adds the deposit row after the later payments.
+    // The signed view adds the deposit row after the balance (build spec 5.4: no later payments any more).
     const card = page.locator('.agr-steps .agr-card').first();
-    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Second payment', 'Final payment', s.deposit!.label]);
+    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Balance on the day', s.deposit!.label]);
+    await expect(page.locator('[data-agr-balance]')).toHaveText(`${s.balance}, in cash`);
+    await expect(page.locator('[data-agr-later-row]')).toHaveCount(0);
     await expect(page.locator('[data-agr-deposit-row] dd')).toHaveText(`${s.deposit!.amount}. ${s.deposit!.note}`);
   });
 
@@ -1585,12 +1678,15 @@ test.describe('a booking made with the simpler page', () => {
     await fillReady(page, 'share', 'Elena Marchetti');
     await page.locator('[data-agr-review]').click();
     const rows = page.locator('[data-agr-review-rows] > div');
-    const LIST = ['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Second payment', 'Final payment'];
+    // Two payments since the payment change (build spec 5.4): the balance on the day after the retainer,
+    // where the second and the final payment were.
+    const LIST = ['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Balance on the day'];
     await expect(rows.locator('dt')).toHaveText([...LIST, cam.deposit!.label, 'Sharing']);
     await expect(rows.nth(4).locator('dd')).toHaveText('Guest camera');
     await expect(rows.nth(5).locator('dd')).toHaveText(plain.total);
     await expect(rows.nth(6).locator('dd')).toHaveText(plain.retainer);
-    await expect(rows.nth(9).locator('dd')).toHaveText(`${cam.deposit!.amount}. ${cam.deposit!.note}`);
+    await expect(rows.nth(7).locator('dd')).toHaveText(`${plain.balance}, in cash`);
+    await expect(rows.nth(8).locator('dd')).toHaveText(`${cam.deposit!.amount}. ${cam.deposit!.note}`);
     await page.locator('[data-agr-back]').click();
     await expect(page.locator('[data-agr-dialog]')).toBeHidden();
     // Unticked: the deposit is gone everywhere.
@@ -1599,6 +1695,72 @@ test.describe('a booking made with the simpler page', () => {
     await page.locator('[data-agr-review]').click();
     await expect(rows.locator('dt')).toHaveText([...LIST, 'Sharing']);
     await expect(rows.nth(4).locator('dd')).toHaveText('None');
+  });
+
+  test('a wedding made since the payment change: two steps, the balance in cash on the wedding day, and the camera deposit paid with it', async ({ page }) => {
+    // Build spec 5.4 and 5.5, typed out here rather than taken from the engine. The wedding of $3,010.00:
+    // $753.00 when signing and $2,257.00 in cash on the day; private with every extra $3,266.25: $817.00 and
+    // $2,449.25, plus the $100.00 deposit outside the total.
+    await mockDoc(page, [[200, W2.ready]]);
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
+    const steps = page.locator('[data-agr-pay] > li');
+    const stepTexts = async (retainer: string, balance: string) => {
+      await expect(steps).toHaveCount(2);
+      await expect(steps.nth(0).locator('> span')).toHaveText(['1', 'When you sign', retainer, 'By e-transfer. Your date is held once this arrives.']);
+      await expect(steps.nth(1).locator('> span')).toHaveText(['2', 'On your wedding day', balance, 'In cash, before I start shooting.']);
+    };
+    await stepTexts('$753.00', '$2,257.00');
+    await expect(page.locator('[data-agr-points="3"] > li').first()).toHaveText(
+      'You pay the retainer by e-transfer to kashklicks.ca@gmail.com. You pay the balance in cash on your wedding day, not by e-transfer.',
+    );
+    // Section 1, in the full wording of part 1: the balance row right after the retainer row, no later payments.
+    await page.locator('[data-agr-choice="share"]').check();
+    await page.locator('[data-agr-disc="1"]').click();
+    await expect(page.locator('[data-agr-full="1"]')).toBeVisible();
+    const sec1 = page.locator('#sec-1');
+    const rowOf = (label: string) => sec1.locator('tr', { has: page.locator('td.agr-label', { hasText: new RegExp(`^${label}$`) }) }).locator('td');
+    const labels = () => sec1.locator('tr > td.agr-label').allInnerTexts();
+    await expect(rowOf('Retainer, due at signing')).toHaveText(['Retainer, due at signing', '$753.00 by e-transfer']);
+    await expect(rowOf('Balance, due on your wedding day')).toHaveText(['Balance, due on your wedding day', '$2,257.00 in cash']);
+    let list = await labels();
+    expect(list[list.indexOf('Retainer, due at signing') + 1]).toBe('Balance, due on your wedding day');
+    expect(list.filter((l) => /payment/i.test(l))).toEqual([]);
+    // The guest camera: the deposit line in its new words, the deposit row of section 1 after the balance row,
+    // and the same two steps.
+    const camera = page.locator(`[data-agr-extra="${CAMERA}"]`);
+    // Re-pinned for spec 2026-11-23, section 5.8 (blurb, deposit line and deposit row): the deposit is paid
+    // together with the balance, with no payment method named.
+    await expect(camera.locator('xpath=..').locator('.agr-opt-sub')).toHaveText(
+      'A small Sony camera that one of your guests carries for the day. There is no fee, only a deposit that is not part of your total. You pay it together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+    );
+    await camera.check();
+    await expect(page.locator('[data-agr-deposit-line]')).toHaveText(
+      'Guest camera deposit: $100.00. Refundable, and not part of your total. Paid together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+    );
+    await stepTexts('$753.00', '$2,257.00');
+    await expect(rowOf('Guest camera deposit')).toHaveText([
+      'Guest camera deposit',
+      '$100.00, refundable. It is not part of your total. You pay it together with your balance, on your wedding day. I return it in full within 7 days after your wedding, when the camera comes back working and undamaged.',
+    ]);
+    list = await labels();
+    expect(list[list.indexOf('Balance, due on your wedding day') + 1]).toBe('Guest camera deposit');
+    await expect(page.locator('[data-agr-view="ready"]')).not.toContainText(/final payment|second payment/i);
+    // Private with every extra.
+    await page.locator('[data-agr-choice="private"]').check();
+    await setTicks(page, W2, [RAW, INSTAX, CAMERA]);
+    await stepTexts('$817.00', '$2,449.25');
+    await expect(rowOf('Total')).toHaveText(['Total', '$3,266.25']);
+    await expect(rowOf('Balance, due on your wedding day')).toHaveText(['Balance, due on your wedding day', '$2,449.25 in cash']);
+    // The review: the balance on the day right after the retainer, then the deposit.
+    await page.locator('[data-agr-name]').fill('Elena Marchetti');
+    await page.locator('[data-agr-agree]').check();
+    await page.locator('[data-agr-review]').click();
+    const rows = page.locator('[data-agr-review-rows] > div');
+    await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Balance on the day', 'Guest camera deposit', 'Sharing']);
+    await expect(rows.locator('dd').nth(5)).toHaveText('$3,266.25');
+    await expect(rows.locator('dd').nth(6)).toHaveText('$817.00');
+    await expect(rows.locator('dd').nth(7)).toHaveText('$2,449.25, in cash');
   });
 
   test('ticking every box and then unticking every box gives back the plain mix everywhere', async ({ page }) => {
@@ -1645,9 +1807,11 @@ test.describe('a booking made with the simpler page', () => {
     await fillReady(page, 'private', 'Elena Marchetti');
     await page.locator('[data-agr-review]').click();
     const rows = page.locator('[data-agr-review-rows] > div');
-    await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Second payment', 'Final payment', 'Sharing']);
+    // Two payments since the payment change (build spec 5.4): the balance on the day after the retainer.
+    await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
     await expect(rows.nth(4).locator('dd')).toHaveText('None');
     await expect(rows.nth(5).locator('dd')).toHaveText(W2.mixes.private.summary.total);
+    await expect(rows.nth(7).locator('dd')).toHaveText(`${W2.mixes.private.summary.balance}, in cash`);
     await page.locator('[data-agr-sign]').click();
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
     expect(body).toEqual({ k: TOKEN, choice: 'private', signed_name: 'Elena Marchetti', agree: true, text_hash: sha256(W2.docs.private) });
@@ -1688,7 +1852,10 @@ test.describe('a booking made with the simpler page', () => {
     await expect(sec1).not.toContainText('RAW photos, 1 ×');
     await expect(sec1).not.toContainText('Guest camera deposit');
     await expect(page.locator('[data-agr-retainer]')).toHaveText(s.retainer);
-    await expect(page.locator('[data-agr-later-row] dd')).toHaveText(s.later_payments!.map((r) => r.text));
+    // Two payments since the payment change (build spec 5.4): the balance of the first signature's mix.
+    expect(s.later_payments).toBeUndefined();
+    await expect(page.locator('[data-agr-balance]')).toHaveText(`${s.balance}, in cash`);
+    await expect(page.locator('[data-agr-later-row]')).toHaveCount(0);
     await expect(page.locator('[data-agr-deposit-row]')).toHaveCount(0);
   });
 
@@ -1697,8 +1864,11 @@ test.describe('a booking made with the simpler page', () => {
     await page.goto(PATH);
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
     const card = page.locator('.agr-steps .agr-card').first();
-    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Second payment', 'Final payment']);
-    await expect(page.locator('[data-agr-balance-row]')).toBeHidden();
+    // Two payments since the payment change (build spec 5.4): the balance row shows, no later rows.
+    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Balance on the day']);
+    await expect(page.locator('[data-agr-balance-row]')).toBeVisible();
+    await expect(page.locator('[data-agr-balance]')).toHaveText(`${W2.mixes.share.summary.balance}, in cash`);
+    await expect(page.locator('[data-agr-later-row]')).toHaveCount(0);
     await expect(page.locator('[data-agr-deposit-row]')).toHaveCount(0);
     // The signed view keeps a column of at most 880 px, left aligned in the page.
     const col = await page.evaluate(() => {
@@ -1715,10 +1885,11 @@ test.describe('a booking made with the simpler page', () => {
     await mockDoc(page, [[200, W2.signed('private', [INSTAX, CAMERA])]]);
     await page.goto(PATH);
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
-    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Second payment', 'Final payment', s.deposit!.label]);
+    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Balance on the day', s.deposit!.label]);
     await expect(page.locator('[data-agr-deposit-row] dd')).toHaveText(`${s.deposit!.amount}. ${s.deposit!.note}`);
     await expect(page.locator('[data-agr-retainer]')).toHaveText(s.retainer);
-    await expect(page.locator('[data-agr-later-row] dd')).toHaveText(s.later_payments!.map((r) => r.text));
+    await expect(page.locator('[data-agr-balance]')).toHaveText(`${s.balance}, in cash`);
+    await expect(page.locator('[data-agr-later-row]')).toHaveCount(0);
     // The signed copy: the full text of that mix, 23 sections, read only.
     const signedDoc = page.locator('[data-agr-signed-doc]');
     await expect(signedDoc.locator('section.agr-sec')).toHaveCount(23);
@@ -1726,6 +1897,78 @@ test.describe('a booking made with the simpler page', () => {
     await expect(signedDoc.locator('#sec-1')).toContainText('Guest camera deposit');
     await expect(signedDoc.locator('input, button')).toHaveCount(0);
     await expect(page.locator('[data-agr-choice], [data-agr-extra], [data-agr-disc]')).toHaveCount(0);
+  });
+
+  test('a wedding made with the simpler page before the payment change keeps its three payments, and its review has no balance row', async ({ page }) => {
+    // Build spec 5.1 and 5.4: a booking stored before 2026-11-23 shows its stored amounts and words. The review
+    // keeps the second and the final payment and gets no balance row; the signed view shows the same rows.
+    const b = W_OLD_SET;
+    const id = mixId('private', [RAW, CAMERA]);
+    const s = b.ready.set.mixes[id].summary;
+    // What 881fd2b stored: three steps, the later payments, the deposit due with the final payment.
+    expect(Object.keys(b.ready.set.mixes)).toHaveLength(16);
+    expect(s.steps!.map((st) => st.title)).toEqual(['When you sign', 'After your engagement photos', 'By Saturday 15 May 2027']);
+    expect(s.later_payments!.map((r) => r.label)).toEqual(['Second payment', 'Final payment']);
+    expect(s.deposit!.note).toContain('Due with your final payment.');
+    expect([s.total, s.retainer, s.etransfer_email]).toEqual(['$3,206.25', '$1,604.00', 'info@kashklicks.ca']);
+    await mockDoc(page, [[200, b.ready]]);
+    let body: Record<string, unknown> = {};
+    await page.route('**/r/agreement/sign', (route) => {
+      body = route.request().postDataJSON();
+      return reply(route, 200, b.signed('private', [RAW, CAMERA]));
+    });
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
+    await expect(page.locator('[data-agr-points="3"] > li')).toHaveText(b.ready.page.parts[2].points);
+    await expect(page.locator('[data-agr-points="3"] > li').first()).toHaveText('You pay by e-transfer to info@kashklicks.ca.');
+    await page.locator(`[data-agr-extra="${CAMERA}"]`).check();
+    await page.locator(`[data-agr-extra="${RAW}"]`).check();
+    await fillReady(page, 'private', 'Elena Marchetti');
+    const steps = page.locator('[data-agr-pay] > li');
+    await expect(steps).toHaveCount(3);
+    for (const [i, st] of s.steps!.entries()) await expect(steps.nth(i).locator('> span')).toHaveText([String(i + 1), st.title, st.amount, st.note]);
+    await expect(page.locator('[data-agr-deposit-line]')).toHaveText(`${s.deposit!.label}: ${s.deposit!.amount}. ${s.deposit!.note}`);
+    await page.locator('[data-agr-review]').click();
+    const rows = page.locator('[data-agr-review-rows] > div');
+    await expect(rows.locator('dt')).toHaveText([
+      'Your name',
+      'Your partner',
+      'Package',
+      'Date',
+      'Extras',
+      'Total',
+      'Retainer',
+      'Second payment',
+      'Final payment',
+      s.deposit!.label,
+      'Sharing',
+    ]);
+    await expect(rows.locator('dd')).toHaveText([
+      'Elena Marchetti',
+      'Daniel Okafor',
+      s.package,
+      s.date,
+      s.extra_labels!.join(', '),
+      s.total,
+      s.retainer,
+      s.later_payments![0].text,
+      s.later_payments![1].text,
+      `${s.deposit!.amount}. ${s.deposit!.note}`,
+      b.ready.labels.private_option,
+    ]);
+    await expect(page.locator('[data-agr-dialog]')).not.toContainText(/balance/i);
+    await page.locator('[data-agr-sign]').click();
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
+    expect(body).toEqual({ k: TOKEN, choice: 'private', signed_name: 'Elena Marchetti', agree: true, text_hash: sha256(b.docs[id]), extras: [RAW, CAMERA] });
+    expect(body.text_hash).toBe(b.ready.set.mixes[id].hash);
+    // The signed view: the later payments in place of the balance, then the deposit, to the old address.
+    const card = page.locator('.agr-steps .agr-card').first();
+    await expect(card.locator('dl > div:visible dt')).toHaveText(['Send an e-transfer to', 'Message or reference', 'Second payment', 'Final payment', s.deposit!.label]);
+    await expect(page.locator('[data-agr-balance-row]')).toBeHidden();
+    await expect(page.locator('[data-agr-later-row] dd')).toHaveText(s.later_payments!.map((r) => r.text));
+    await expect(page.locator('[data-agr-deposit-row] dd')).toHaveText(`${s.deposit!.amount}. ${s.deposit!.note}`);
+    await expect(page.locator('[data-agr-etransfer]')).toHaveText('info@kashklicks.ca');
+    await expect(page.locator('[data-agr-retainer]')).toHaveText('$1,604.00');
   });
 
   /** Every control a lock must reach: the tick boxes, both sharing cards, the name field and the agree box. */
@@ -2635,20 +2878,25 @@ test.describe('a booking made with the simpler page', () => {
     await fillReady(page, 'share');
     await expectShownText(page, C3.docs.share);
     await page.locator('[data-agr-review]').click();
-    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Sharing']);
+    // Build spec 5.4: no later payments, so the balance on the day follows the retainer.
+    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
+    await expect(page.locator('[data-agr-review-rows] > div:nth-child(7) > dd')).toHaveText(`${s.balance}, ${s.balance_how}`);
     await page.locator('[data-agr-sign]').click();
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
     expect(body).toEqual({ k: TOKEN, choice: 'share', signed_name: 'Priya Sharma', agree: true, text_hash: sha256(C3.docs.share) });
     expect(body.text_hash).toBe(C3.mixes.share.hash);
   });
 
-  test('a wedding with a set and no page content: part 3 shows the later payments of the shown choice', async ({ page }) => {
+  test('a wedding with a set and no page content: part 3 shows the balance of the shown choice', async ({ page }) => {
+    // Made since the payment change (build spec 5.3, 5.4): two payments, so the balance row where a wedding
+    // made before had its later payments (those are kept by the group "a booking made before the simpler page").
     expect(W3.ready).not.toHaveProperty('page');
     expect(W3.mixes.private.summary.steps).toBeUndefined();
     const share = W3.mixes.share.summary;
     const priv = W3.mixes.private.summary;
     expect(share.total).not.toBe(priv.total);
-    const rows = (s: StoredSummary) => [s.total, s.retainer, ...s.later_payments!.map((r) => r.text)];
+    expect([share.later_payments, priv.later_payments, share.balance_how, priv.balance_how]).toEqual([undefined, undefined, 'in cash', 'in cash']);
+    const rows = (s: StoredSummary) => [s.total, s.retainer, `${s.balance}, ${s.balance_how}`];
     await mockDoc(page, [[200, W3.ready]]);
     let body: Record<string, unknown> = {};
     await page.route('**/r/agreement/sign', (route) => {
@@ -2658,7 +2906,7 @@ test.describe('a booking made with the simpler page', () => {
     await page.goto(PATH);
     await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
     await expect(page.locator('[data-agr-extra], [data-agr-disc]')).toHaveCount(0);
-    await expect(page.locator('[data-agr-old-pay] dt')).toHaveText(['Total', 'Retainer', 'Second payment', 'Final payment']);
+    await expect(page.locator('[data-agr-old-pay] dt')).toHaveText(['Total', 'Retainer', 'Balance']);
     await expect(page.locator('[data-agr-old-pay] dd')).toHaveText(rows(share));
     // The two totals differ: the undecided line in its three places.
     await expect(page.locator('[data-agr-total-undecided]')).toHaveCount(3);
@@ -2676,7 +2924,9 @@ test.describe('a booking made with the simpler page', () => {
     await page.locator('[data-agr-name]').fill('Elena Marchetti');
     await page.locator('[data-agr-agree]').check();
     await page.locator('[data-agr-review]').click();
-    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Second payment', 'Final payment', 'Sharing']);
+    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
+    await expect(page.locator('[data-agr-review-rows] > div > dd').nth(5)).toHaveText(priv.retainer);
+    await expect(page.locator('[data-agr-review-rows] > div > dd').nth(6)).toHaveText(`${priv.balance}, in cash`);
     await page.locator('[data-agr-sign]').click();
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
     expect(body).toEqual({ k: TOKEN, choice: 'private', signed_name: 'Elena Marchetti', agree: true, text_hash: sha256(W3.docs.private) });
@@ -2696,7 +2946,9 @@ test.describe('a booking made with the simpler page', () => {
     await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
     await expect(page.locator('[data-agr-points="3"] > li')).toHaveText(CASH.page.parts[2].points);
     await expect(page.locator('[data-agr-points="3"] > li').first()).toHaveText(
-      'You pay the retainer by e-transfer to info@kashklicks.ca. You pay the balance in cash on the day, not by e-transfer.',
+      // A booking made since the payment change carries the new e-transfer address (build spec 5.2, 5.3).
+      // Re-pinned for spec 2026-11-23, section 5.8: the civil bal:cash point no longer says 'on the day'.
+      'You pay the retainer by e-transfer to kashklicks.ca@gmail.com. You pay the balance in cash, not by e-transfer.',
     );
     await expect(page.locator('[data-agr-total-undecided]')).toHaveCount(0);
     for (const choice of CHOICE_LIST) {
@@ -2715,7 +2967,8 @@ test.describe('a booking made with the simpler page', () => {
     await page.locator('[data-agr-agree]').check();
     await page.locator('[data-agr-review]').click();
     const s = CASH.mixes[signedId].summary;
-    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Sharing']);
+    // Build spec 5.4: the balance on the day follows the retainer, in cash.
+    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
     await expect(page.locator('[data-agr-review-rows] > div > dd')).toHaveText([
       'Priya Sharma',
       'Arjun Mehta',
@@ -2724,6 +2977,7 @@ test.describe('a booking made with the simpler page', () => {
       'Drone and aerial frames',
       s.total,
       '$51.25',
+      `${s.balance}, in cash`,
       CASH.labels.private_option,
     ]);
     await page.locator('[data-agr-sign]').click();
@@ -3247,7 +3501,9 @@ test.describe('a booking made with the simpler page', () => {
     await expect(page.locator('[data-agr-recap-row="total"] dd')).toHaveText(s.total);
     await expectShownText(page, C_ALL.docs.private, 'private');
     await page.locator('[data-agr-review]').click();
-    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Sharing']);
+    // Build spec 5.4: no later payments, so the balance on the day follows the retainer.
+    await expect(page.locator('[data-agr-review-rows] > div > dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Total', 'Retainer', 'Balance on the day', 'Sharing']);
+    await expect(page.locator('[data-agr-review-rows] > div > dd').nth(6)).toHaveText(`${s.balance}, in cash`);
     await page.locator('[data-agr-sign]').click();
     await expect(main(page)).toHaveAttribute('data-agr-state', 'signed');
     expect(body).toEqual({ k: TOKEN, choice: 'private', signed_name: 'Priya Sharma', agree: true, text_hash: sha256(C_ALL.docs.private) });

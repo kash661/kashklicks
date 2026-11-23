@@ -11,6 +11,9 @@ import { docJsonFromSet, mixId } from '../../src/lib/agreement/set';
 import { mixSummary, pageContent } from '../../src/lib/agreement/page';
 import pageJson from '../../src/data/agreement/page.json' with { type: 'json' };
 import clausesJson from '../../src/data/agreement/clauses.json' with { type: 'json' };
+import agreementPackages from '../../src/data/agreement/packages.json' with { type: 'json' };
+import { unpack } from './fixtures/old-bookings-runner';
+import oldBookingsJson from './fixtures/old-bookings.json' with { type: 'json' };
 
 // Invented people only.
 const PILOT = {
@@ -32,6 +35,33 @@ const TEST = 'https://agreements-kashklicks.example.workers.dev';
 const ADMIN = 'admin-secret-for-tests-only';
 const START = new Date('2026-11-10T15:00:00Z'); // 10:00 am in Toronto
 const TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
+
+// The summary of the pilot, share, nothing ticked. Re-pinned for the payment change (spec 2026-11-23,
+// sections 5.2, 5.3 and 5.5): 126.00 / 375.25 in cash, the retainer by e-transfer to the new address.
+const NEW_ETRANSFER = 'kashklicks.ca@gmail.com';
+const PILOT_SUMMARY = {
+  package: 'The Civil Ceremony',
+  date: 'Saturday 12 December 2026',
+  total: '$501.25',
+  retainer: '$126.00',
+  balance: '$375.25',
+  balance_how: 'in cash',
+  etransfer_email: NEW_ETRANSFER,
+  total_line: 'Your total is $501.25. It stays the same even if my website prices change later.',
+  price_lines: [{ label: 'The Civil Ceremony', amount: '$501.25' }],
+  steps: [
+    { title: 'When you sign', amount: '$126.00', note: 'By e-transfer. Your date is held once this arrives.' },
+    { title: 'On or before your ceremony day', amount: '$375.25', note: 'In cash, before I start shooting.' },
+  ],
+};
+
+/**
+ * A booking stored before the payment change, exactly as the code of that time made it
+ * (tests/unit/fixtures/old-bookings.json, see agreement-old-bookings.unit.ts): its facts read as 50% and
+ * the old e-transfer address. Names: civil-noset, wedding-noset-fee (three payments, the fee),
+ * wedding-set and civil-set (sets with three tick boxes), civil-set-retainer-cash, and the -bare ones.
+ */
+const oldRecord = (name: string) => unpack((oldBookingsJson as any).records[name], oldBookingsJson as any, { strings: true }) as any;
 
 // ------------------------------------------------------------------ fakes
 
@@ -246,6 +276,17 @@ function setup(opts: { kv?: boolean; db?: boolean; admin?: string | null } = {})
       ...over,
     });
 
+  /** Stores a booking made before the payment change (oldRecord), status sent, and returns it. */
+  const putOld = (name: string) => {
+    const rec = oldRecord(name);
+    kv.store.set(`agr:${rec.mode}:bk:${rec.token}`, {
+      value: JSON.stringify(rec),
+      metadata: { number: rec.number, client: rec.facts.client_name, status: rec.status, created_at: rec.created_at, copy_status: rec.copy.status, copy_attempts: rec.copy.attempts },
+    });
+    kv.store.set(`agr:${rec.mode}:num:${rec.number}`, { value: rec.token });
+    return rec;
+  };
+
   /** Rewrites a stored booking into the shape of a booking made before sets (see legacy). */
   const toOld = (origin: string, token: string) => {
     const key = `agr:${mode(origin)}:bk:${token}`;
@@ -276,6 +317,7 @@ function setup(opts: { kv?: boolean; db?: boolean; admin?: string | null } = {})
     variantOf,
     hashOf,
     toOld,
+    putOld,
     settle,
     browser,
     advance: (ms: number) => void (clock = new Date(clock.getTime() + ms)),
@@ -356,10 +398,11 @@ test('new booking stores every mix of its text and returns the link', async () =
     token,
     path: `/welcome/agreement/?k=${token}`,
     mode: 'test',
+    // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 25%, cash only by default.
     total: 501.25,
-    retainer: 251,
-    balance: 250.25,
-    balance_cash: false,
+    retainer: 126,
+    balance: 375.25,
+    balance_cash: true,
     // What can still be ticked at signing. The amounts above are nothing ticked, share.
     tick_boxes: [
       { id: 'drone', kind: 'price', label: 'Drone and aerial frames', amount: 76.25 },
@@ -526,21 +569,7 @@ test('doc: unknown token 404, void 410, first open sets opened', async () => {
     partner_name: 'Arjun Mehta',
     variants,
     labels: { ...r.body.labels, name_expected: 'Priya Sharma' },
-    summary: {
-      package: 'The Civil Ceremony',
-      date: 'Saturday 12 December 2026',
-      total: '$501.25',
-      retainer: '$251.00',
-      balance: '$250.25',
-      balance_how: 'e-transfer or cash',
-      etransfer_email: 'info@kashklicks.ca',
-      total_line: 'Your total is $501.25. It stays the same even if my website prices change later.',
-      price_lines: [{ label: 'The Civil Ceremony', amount: '$501.25' }],
-      steps: [
-        { title: 'When you sign', amount: '$251.00', note: 'By e-transfer. Your date is held once this arrives.' },
-        { title: 'On or before your ceremony day', amount: '$250.25', note: 'By e-transfer or in cash, before I start shooting.' },
-      ],
-    },
+    summary: PILOT_SUMMARY,
   });
   expect(Object.keys(r.body.labels).sort()).toEqual(
     ['after_signing', 'agree_label', 'intro_bullets', 'name_expected', 'private_option', 'share_option'].sort(),
@@ -715,21 +744,7 @@ test('sign writes the record once and fills the date', async () => {
       final_hash: s.final_hash,
     },
     extras: [],
-    summary: {
-      package: 'The Civil Ceremony',
-      date: 'Saturday 12 December 2026',
-      total: '$501.25',
-      retainer: '$251.00',
-      balance: '$250.25',
-      balance_how: 'e-transfer or cash',
-      etransfer_email: 'info@kashklicks.ca',
-      total_line: 'Your total is $501.25. It stays the same even if my website prices change later.',
-      price_lines: [{ label: 'The Civil Ceremony', amount: '$501.25' }],
-      steps: [
-        { title: 'When you sign', amount: '$251.00', note: 'By e-transfer. Your date is held once this arrives.' },
-        { title: 'On or before your ceremony day', amount: '$250.25', note: 'By e-transfer or in cash, before I start shooting.' },
-      ],
-    },
+    summary: PILOT_SUMMARY,
     labels: { ...r.body.labels, name_expected: 'Priya Sharma' },
     copy: { status: 'pending', to: 'priya@example.com' },
   });
@@ -914,9 +929,10 @@ test('copy call carries the contract fields', async () => {
       '',
       'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
       '',
-      'Next step: send the retainer of $251.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
+      // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 25%, the new address, cash only.
+      'Next step: send the retainer of $126.00 by Interac e-transfer to kashklicks.ca@gmail.com. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
       '',
-      'The balance of $250.25 is due on or before the day, by e-transfer or cash.',
+      'The balance of $375.25 is due on or before the day, in cash.',
       '',
       'If anything looks wrong, just reply to this email.',
       '',
@@ -942,8 +958,8 @@ test('copy call carries the contract fields', async () => {
     Package: 'The Civil Ceremony',
     'Event date': '2026-12-12',
     Total: '$501.25',
-    Retainer: '$251.00',
-    Balance: '$250.25',
+    Retainer: '$126.00',
+    Balance: '$375.25',
     Sharing: 'share',
     'Signed name': 'Priya Sharma',
     'Text hash': s.final_hash,
@@ -951,12 +967,26 @@ test('copy call carries the contract fields', async () => {
     Notes: 'Family group photos after the ceremony, inside your 2 hours.',
   });
 
+
   // The live site sends an empty test flag.
   const live = await t.create(LIVE);
   await t.signOk(LIVE, live.token);
   await t.settle();
   expect(t.calls[1].fields.test).toBe('');
   expect(t.calls[1].fields.email_subject).toBe('Your signed agreement with AD Photography (KK-2026-001)');
+
+  // A booking made before the change keeps its amounts and the old address in the email (spec 2026-11-23, section 5.1).
+  // Its own store: it has the same number as the first booking above.
+  const o = setup();
+  const old = o.putOld('civil-noset');
+  expect((await o.sign(TEST, old.token, { text_hash: old.variants.share.hash })).status).toBe(200);
+  await o.settle();
+  expect(o.calls).toHaveLength(1);
+  const oldBody = o.calls[0].fields.email_body;
+  expect(oldBody).toContain(`Next step: send the retainer of $251.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, ${old.number}, in the message.`);
+  expect(oldBody).toContain('The balance of $250.25 is due on or before the day, by e-transfer or cash.');
+  expect(oldBody).not.toContain(NEW_ETRANSFER);
+  expect(JSON.parse(o.calls[0].fields.row_json)).toMatchObject({ Total: '$501.25', Retainer: '$251.00', Balance: '$250.25' });
 });
 
 test('a booking with its own retainer carries it to the client and the copy', async () => {
@@ -981,22 +1011,39 @@ test('a booking with its own retainer carries it to the client and the copy', as
 });
 
 test('a booking can say the balance is paid in cash only', async () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.6): cash only is the default now
+  // (the business setting balanceCashOnly); balance_cash: false lets one booking pay the balance by e-transfer too.
   const t = setup();
   const r = await t.admin(TEST, '/r/agreement/new', { ...PILOT, balance_cash: true });
   expect(r.status).toBe(200);
-  expect(r.body).toMatchObject({ ok: true, balance: 250.25, balance_cash: true });
+  expect(r.body).toMatchObject({ ok: true, balance: 375.25, balance_cash: true });
   expect((await t.doc(TEST, r.body.token)).body.summary.balance_how).toBe('in cash');
 
   await t.signOk(TEST, r.body.token);
   await t.settle();
   expect(t.calls).toHaveLength(1);
-  expect(t.calls[0].fields.email_body).toContain('The balance of $250.25 is due on or before the day, in cash.');
+  expect(t.calls[0].fields.email_body).toContain('The balance of $375.25 is due on or before the day, in cash.');
   expect(t.calls[0].fields.email_body).not.toContain('by e-transfer or cash');
 
-  // The default booking is unchanged.
+  // The default booking is the same as saying true.
   const d = await t.admin(TEST, '/r/agreement/new', PILOT);
-  expect(d.body.balance_cash).toBe(false);
-  expect((await t.doc(TEST, d.body.token)).body.summary.balance_how).toBe('e-transfer or cash');
+  expect(d.body.balance_cash).toBe(true);
+  expect((await t.doc(TEST, d.body.token)).body.summary.balance_how).toBe('in cash');
+  expect(t.variantOf(TEST, d.body.token).doc_json).toBe(t.variantOf(TEST, r.body.token).doc_json.replaceAll('KK-TEST-2026-001', 'KK-TEST-2026-002'));
+
+  // balance_cash: false shows clause 3.10 and not 3.17, in every mix, and the summary and the email say either way.
+  const any = await t.admin(TEST, '/r/agreement/new', { ...PILOT, balance_cash: false });
+  expect(any.body).toMatchObject({ ok: true, balance: 375.25, balance_cash: false });
+  expect((await t.doc(TEST, any.body.token)).body.summary.balance_how).toBe('e-transfer or cash');
+  for (const m of mixesOf(t.booking(TEST, any.body.token).facts)) {
+    const text = t.variantOf(TEST, any.body.token, m.choice, m.extras).doc_json;
+    expect(text, m.id).toContain('You can pay the balance by e-transfer or in cash.');
+    expect(text, m.id).not.toContain('You pay the balance in cash, not by e-transfer.');
+    expect(t.variantOf(TEST, d.body.token, m.choice, m.extras).doc_json, m.id).toContain('You pay the balance in cash, not by e-transfer.');
+  }
+  await t.signOk(TEST, any.body.token);
+  await t.settle();
+  expect(t.calls[t.calls.length - 1].fields.email_body).toContain('The balance of $375.25 is due on or before the day, by e-transfer or cash.');
 
   expect(await t.admin(TEST, '/r/agreement/new', { ...PILOT, balance_cash: 'yes' })).toMatchObject({
     status: 400,
@@ -1006,10 +1053,11 @@ test('a booking can say the balance is paid in cash only', async () => {
 
 test('a booking stored before balance_cash existed signs as before', async () => {
   const t = setup();
-  const { token } = await t.create(TEST);
+  // Made before sets too: two full texts and the summary. Re-pinned for the payment change (spec
+  // 2026-11-23, section 5.6): a real booking made by the code of that time (50%), no more a new one rewritten.
+  const old = t.putOld('civil-noset');
+  const token = old.token;
   const key = `agr:test:bk:${token}`;
-  // Made before sets too: two full texts and the summary.
-  const old = t.toOld(TEST, token);
   delete old.facts.balance_cash;
   delete old.summary.balance_how;
   t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
@@ -1018,7 +1066,7 @@ test('a booking stored before balance_cash existed signs as before', async () =>
   expect(opened.status).toBe(200);
   expect(opened.body.summary.balance_how).toBeUndefined();
   expect(opened.body.summary.balance).toBe('$250.25');
-  await t.signOk(TEST, token);
+  await t.sign(TEST, token, { text_hash: old.variants.share.hash });
   await t.settle();
   expect(t.calls[0].fields.email_body).toContain('The balance of $250.25 is due on or before the day, by e-transfer or cash.');
 });
@@ -1206,7 +1254,20 @@ test('labels and summary are stored with the booking and copied into the signed 
   expect(summary).toEqual(opened.body.summary);
   expect(bk.labels.name_expected).toBe('Priya Sharma');
   expect(bk.labels.intro_bullets[0]).toBe('Priya signs for both of you.');
-  expect(summary.etransfer_email).toBe('info@kashklicks.ca');
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.2): the new address, frozen with the booking.
+  expect(summary.etransfer_email).toBe(NEW_ETRANSFER);
+  expect(bk.facts.etransfer_email).toBe(NEW_ETRANSFER);
+  expect(bk.facts.retainer_percent).toBe(25);
+  for (const m of Object.values<any>(bk.set.mixes)) expect(m.summary.etransfer_email).toBe(NEW_ETRANSFER);
+  // Clause 3.9 of every stored text names it too; a booking made before keeps the old clause and address.
+  // Re-pinned for spec 2026-11-23, section 5.8: clause 3.9 adds that any other e-transfer goes to the same address.
+  for (const m of mixesOf(bk.facts))
+    expect(t.variantOf(TEST, token, m.choice, m.extras).doc_json, m.id).toContain(
+      'You pay the retainer by Interac e-transfer to kashklicks.ca@gmail.com. Any other payment by e-transfer goes to the same address. Please put your booking number in the message.',
+    );
+  const old = oldRecord('civil-noset');
+  expect(old.variants.share.doc_json).toContain('You can pay by Interac e-transfer to info@kashklicks.ca. Please put your booking number in the message.');
+  expect(old.summary.etransfer_email).toBe('info@kashklicks.ca');
 
   await t.signOk(TEST, token);
   await t.settle();
@@ -2042,15 +2103,19 @@ const WEDDING = {
     { id: 'raw-photos-wedding', qty: 1 },
   ],
 };
-const WEDDING_LATER = [
+// The later payments of the wedding booked before the payment change (oldRecord('wedding-noset-fee'), second
+// photographer hours only, $3,010.00): what its summary and its email still say.
+const OLD_WEDDING_LATER = [
   {
     label: 'Second payment',
-    text: '$783.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+    text: '$753.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
   },
-  { label: 'Final payment', text: '$782.25 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.' },
+  { label: 'Final payment', text: '$752.00 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.' },
 ];
 
-test('a wedding booking answers with its three payments, and its summary carries the later two', async () => {
+test('a wedding booking answers with its two payments, and a wedding booked before still with its three', async () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): a new wedding is paid in two
+  // parts, 25% by e-transfer and the balance in cash on the day (was 1,566 / 783 / 782.25, three parts).
   const t = setup();
   const r = await t.admin(TEST, '/r/agreement/new', WEDDING);
   expect(r.status).toBe(200);
@@ -2061,14 +2126,12 @@ test('a wedding booking answers with its three payments, and its summary carries
     path: `/welcome/agreement/?k=${r.body.token}`,
     mode: 'test',
     total: 3131.25,
-    retainer: 1566,
-    balance: 1565.25,
-    balance_cash: false,
-    second_payment: 783,
-    final_payment: 782.25,
+    retainer: 783,
+    balance: 2348.25,
+    balance_cash: true,
     private_fee: 75,
     private_total: 3206.25,
-    private_retainer: 1604,
+    private_retainer: 802,
     // RAW photos are booked, so they are not a tick box any more.
     tick_boxes: [
       { id: 'instax-guest-prints', kind: 'price', label: 'Instax guest prints', amount: 60 },
@@ -2080,11 +2143,10 @@ test('a wedding booking answers with its three payments, and its summary carries
     package: 'The Full Day',
     date: 'Saturday 29 May 2027',
     total: '$3,131.25',
-    retainer: '$1,566.00',
-    balance: '$1,565.25',
-    balance_how: 'e-transfer or cash',
-    etransfer_email: 'info@kashklicks.ca',
-    later_payments: WEDDING_LATER,
+    retainer: '$783.00',
+    balance: '$2,348.25',
+    balance_how: 'in cash',
+    etransfer_email: NEW_ETRANSFER,
     total_line: 'Your total is $3,131.25. It stays the same even if my website prices change later.',
     price_lines: [
       { label: 'The Full Day', amount: '$2,301.25' },
@@ -2092,16 +2154,24 @@ test('a wedding booking answers with its three payments, and its summary carries
       { label: 'RAW photos', amount: '$121.25' },
     ],
     steps: [
-      { title: 'When you sign', amount: '$1,566.00', note: 'Your date is held once this arrives.' },
-      {
-        title: 'After your engagement photos',
-        amount: '$783.00',
-        note: 'Due 7 days after I deliver them. If you have not had the session by Tuesday 30 March 2027, it is due on that date.',
-      },
-      { title: 'By Saturday 15 May 2027', amount: '$782.25', note: '14 days before your wedding.' },
+      { title: 'When you sign', amount: '$783.00', note: 'By e-transfer. Your date is held once this arrives.' },
+      { title: 'On your wedding day', amount: '$2,348.25', note: 'In cash, before I start shooting.' },
     ],
   });
-  expect(t.booking(TEST, r.body.token).facts).toMatchObject({ second_payment: 783, final_payment: 782.25, second_due: '2027-03-30', final_due: '2027-05-15', second_hours: 10 });
+  const facts = t.booking(TEST, r.body.token).facts;
+  expect(facts).toMatchObject({ second_hours: 10, retainer_percent: 25, etransfer_email: NEW_ETRANSFER });
+  for (const k of ['second_payment', 'final_payment', 'second_due', 'final_due']) expect(facts, k).not.toHaveProperty(k);
+  for (const m of Object.values<any>(t.booking(TEST, r.body.token).set.mixes)) expect(m.summary).not.toHaveProperty('later_payments');
+
+  // A wedding booked before the change keeps its three payments, in its stored summary and its stored text.
+  const o = setup();
+  const old = o.putOld('wedding-noset-fee');
+  const oldOpened = await o.doc(TEST, old.token);
+  expect(oldOpened.body.summary).toEqual(old.summary);
+  expect(oldOpened.body.summary.later_payments).toEqual(OLD_WEDDING_LATER);
+  expect(oldOpened.body.summary).toMatchObject({ total: '$3,010.00', retainer: '$1,505.00', etransfer_email: 'info@kashklicks.ca' });
+  expect(oldOpened.body.variants.share.doc_json).toBe(old.variants.share.doc_json);
+  expect(old.variants.share.doc_json).toContain('Second payment');
 
   // The civil booking has none of it.
   const civil = await t.admin(TEST, '/r/agreement/new', PILOT);
@@ -2113,26 +2183,54 @@ test('a wedding booking answers with its three payments, and its summary carries
 });
 
 test('a wedding the agreement has no clause for is refused before a number is used', async () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.6): balance_cash and a wedding soon
+  // after booking (no 60 day limit) are accepted now; a set retainer is still refused, and so is a past date.
   const t = setup();
   for (const [over, error, field] of [
-    [{ balance_cash: true }, 'bad_balance_cash', 'balance_cash'],
+    [{ balance_cash: 'yes' }, 'bad_balance_cash', 'balance_cash'],
     [{ retainer: 1000 }, 'bad_retainer', 'retainer'],
-    [{ event_date: '2027-01-01' }, 'bad_date', 'event_date'],
+    [{ event_date: '2026-11-09' }, 'bad_date', 'event_date'],
     [{ add_ons: [{ id: 'second-photographer', qty: 8 }] }, 'bad_add_on', 'add_ons'],
     [{ add_ons: [{ id: 'priority-delivery-wedding', qty: 1 }] }, 'bad_add_on', 'add_ons'],
   ] as const) {
     expect(await t.admin(TEST, '/r/agreement/new', { ...WEDDING, ...over }), error).toMatchObject({ status: 400, body: { ok: false, error, field } });
   }
   expect(t.kv.puts).toEqual([]);
+  // Accepted now: cash only or either way, and a wedding 30 days ahead.
+  expect(await t.admin(TEST, '/r/agreement/new', { ...WEDDING, balance_cash: true })).toMatchObject({ status: 200, body: { balance_cash: true } });
+  expect(await t.admin(TEST, '/r/agreement/new', { ...WEDDING, balance_cash: false })).toMatchObject({ status: 200, body: { balance_cash: false } });
+  const soon = await t.admin(TEST, '/r/agreement/new', { ...WEDDING, event_date: '2026-12-10' });
+  expect(soon).toMatchObject({ status: 200, body: { ok: true, total: 3131.25, retainer: 783, balance: 2348.25 } });
+  expect(soon.body).not.toHaveProperty('second_payment');
 });
 
-test('the email after signing a wedding names the second and the final payment', async () => {
+test('a package with a payments setting is refused, before a number is used', async () => {
+  // Spec 2026-11-23, section 5.3: no package is paid in three parts any more.
+  const pkg = (agreementPackages as Record<string, any>)['wedding-full'];
+  const t = setup();
+  const quiet = silenceErrors();
+  try {
+    pkg.payments = 'three-part';
+    expect(await t.admin(TEST, '/r/agreement/new', WEDDING)).toMatchObject({ status: 500, body: { ok: false, error: 'server_error' } });
+    expect(t.kv.puts).toEqual([]);
+    expect(String(quiet.logged[0]?.[1])).toContain('payments is not a package setting any more');
+  } finally {
+    delete pkg.payments;
+    quiet.restore();
+  }
+  expect((await t.admin(TEST, '/r/agreement/new', WEDDING)).status).toBe(200);
+});
+
+test('the email after signing a wedding names the retainer and the balance; a wedding booked before, its second and final payment', async () => {
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): a new wedding pays the
+  // retainer by e-transfer to the new address and the balance in cash; the email balance line is the one
+  // of every two payment booking. A wedding booked before keeps the email it had (three payments).
   const t = setup();
   // Not t.create: that merges in the civil booking's price and notes.
   const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING)).body;
   const signed = await t.signOk(TEST, token, { signed_name: 'Elena Marchetti' });
   expect(signed.status).toBe(200);
-  expect(signed.body.summary.later_payments).toEqual(WEDDING_LATER);
+  expect(signed.body.summary).not.toHaveProperty('later_payments');
   await t.settle();
   expect(t.calls).toHaveLength(1);
   const f = t.calls[0].fields;
@@ -2142,11 +2240,9 @@ test('the email after signing a wedding names the second and the final payment',
       '',
       'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
       '',
-      'Next step: send the retainer of $1,566.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
+      'Next step: send the retainer of $783.00 by Interac e-transfer to kashklicks.ca@gmail.com. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
       '',
-      'The second payment of $783.00 is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
-      '',
-      'The final payment of $782.25 is due by Saturday 15 May 2027.',
+      'The balance of $2,348.25 is due on or before the day, in cash.',
       '',
       'If anything looks wrong, just reply to this email.',
       '',
@@ -2156,7 +2252,7 @@ test('the email after signing a wedding names the second and the final payment',
       'kashklicks.ca',
     ].join('\n'),
   );
-  expect(f.email_body).not.toMatch(/balance/i);
+  expect(f.email_body).not.toMatch(/second payment|final payment/i);
   expect(f.email_subject + f.email_body).not.toMatch(/[–—]/);
   // The Contracts row keeps its columns. Balance is what is left after the retainer.
   const row = JSON.parse(f.row_json);
@@ -2164,9 +2260,43 @@ test('the email after signing a wedding names the second and the final payment',
     'Signed at', 'Booking number', 'Client', 'Partner', 'Email', 'Phone', 'Package', 'Event date',
     'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version', 'Notes',
   ]);
-  expect(row).toMatchObject({ Package: 'The Full Day', 'Event date': '2027-05-29', Total: '$3,131.25', Retainer: '$1,566.00', Balance: '$1,565.25' });
-  expect(f.pdf_html).toContain('Second payment');
-  expect(f.pdf_html).toContain('Final payment');
+  expect(row).toMatchObject({ Package: 'The Full Day', 'Event date': '2027-05-29', Total: '$3,131.25', Retainer: '$783.00', Balance: '$2,348.25' });
+  expect(f.pdf_html).toContain('Balance, due on your wedding day');
+  expect(f.pdf_html).not.toContain('Second payment');
+  expect(f.pdf_html).not.toContain('Final payment');
+
+  // A wedding booked before the change: the email of that time, word for word.
+  const o = setup();
+  const old = o.putOld('wedding-noset-fee');
+  const oldSigned = await o.sign(TEST, old.token, { signed_name: 'Elena Marchetti', text_hash: old.variants.share.hash });
+  expect(oldSigned.status).toBe(200);
+  expect(oldSigned.body.summary.later_payments).toEqual(OLD_WEDDING_LATER);
+  await o.settle();
+  const g = o.calls[0].fields;
+  expect(g.email_body).toBe(
+    [
+      'Hi Elena,',
+      '',
+      'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
+      '',
+      `Next step: send the retainer of $1,505.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, ${old.number}, in the message. Your date is held once the retainer arrives.`,
+      '',
+      'The second payment of $753.00 is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+      '',
+      'The final payment of $752.00 is due by Saturday 15 May 2027.',
+      '',
+      'If anything looks wrong, just reply to this email.',
+      '',
+      'Warmly,',
+      'Kash',
+      'AD Photography',
+      'kashklicks.ca',
+    ].join('\n'),
+  );
+  expect(g.email_body).not.toMatch(/balance/i);
+  expect(JSON.parse(g.row_json)).toMatchObject({ Total: '$3,010.00', Retainer: '$1,505.00', Balance: '$1,505.00' });
+  expect(g.pdf_html).toContain('Second payment');
+  expect(g.pdf_html).toContain('Final payment');
 });
 
 // ------------------------------------------------------------------ a wedding: the marketing fee for private work
@@ -2176,7 +2306,10 @@ const WEDDING_SECOND_ONLY = { ...WEDDING, add_ons: [{ id: 'second-photographer',
 test('a wedding booking stores the private summary next to the share one', async () => {
   const t = setup();
   const r = await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY);
-  expect(r.body).toMatchObject({ total: 3010, retainer: 1505, second_payment: 753, final_payment: 752, private_fee: 75, private_total: 3085, private_retainer: 1543 });
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.5): 753.00 / 2,257.00, private 3,085.00: 772.00 / 2,313.00.
+  expect(r.body).toMatchObject({ total: 3010, retainer: 753, balance: 2257, private_fee: 75, private_total: 3085, private_retainer: 772 });
+  expect(r.body).not.toHaveProperty('second_payment');
+  expect(r.body).not.toHaveProperty('final_payment');
   const bk = t.booking(TEST, r.body.token);
   expect(bk.facts.private_fee).toBe(75);
   expect(bk.facts.total).toBe(3010);
@@ -2185,22 +2318,15 @@ test('a wedding booking stores the private summary next to the share one', async
   expect(bk).not.toHaveProperty('summary_private');
   const share = bk.set.mixes.share.summary;
   const priv = bk.set.mixes.private.summary;
-  expect(share).toMatchObject({ total: '$3,010.00', retainer: '$1,505.00', balance: '$1,505.00' });
+  expect(share).toMatchObject({ total: '$3,010.00', retainer: '$753.00', balance: '$2,257.00' });
   expect(priv).toEqual({
     package: 'The Full Day',
     date: 'Saturday 29 May 2027',
     total: '$3,085.00',
-    retainer: '$1,543.00',
-    balance: '$1,542.00',
-    balance_how: 'e-transfer or cash',
-    etransfer_email: 'info@kashklicks.ca',
-    later_payments: [
-      {
-        label: 'Second payment',
-        text: '$772.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
-      },
-      { label: 'Final payment', text: '$770.00 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.' },
-    ],
+    retainer: '$772.00',
+    balance: '$2,313.00',
+    balance_how: 'in cash',
+    etransfer_email: NEW_ETRANSFER,
     total_line: 'Your total is $3,085.00. It stays the same even if my website prices change later.',
     price_lines: [
       { label: 'The Full Day', amount: '$2,301.25' },
@@ -2208,13 +2334,8 @@ test('a wedding booking stores the private summary next to the share one', async
       { label: 'Marketing fee for private work', amount: '$75.00' },
     ],
     steps: [
-      { title: 'When you sign', amount: '$1,543.00', note: 'Your date is held once this arrives.' },
-      {
-        title: 'After your engagement photos',
-        amount: '$772.00',
-        note: 'Due 7 days after I deliver them. If you have not had the session by Tuesday 30 March 2027, it is due on that date.',
-      },
-      { title: 'By Saturday 15 May 2027', amount: '$770.00', note: '14 days before your wedding.' },
+      { title: 'When you sign', amount: '$772.00', note: 'By e-transfer. Your date is held once this arrives.' },
+      { title: 'On your wedding day', amount: '$2,313.00', note: 'In cash, before I start shooting.' },
     ],
   });
   const opened = await t.doc(TEST, r.body.token);
@@ -2234,18 +2355,20 @@ const signedWedding = async (choice: 'share' | 'private') => {
 
 test('signing a wedding as private records the private amounts, in the email and the sheet row too', async () => {
   const { signed, f, rec, t, token } = await signedWedding('private');
-  expect(rec.facts).toMatchObject({ total: 3085, retainer: 1543, balance: 1542, second_payment: 772, final_payment: 770, sharing_fee: 75, private_fee: 75 });
-  expect(rec.summary.retainer).toBe('$1,543.00');
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 3,085.00 = 772.00 + 2,313.00 in cash.
+  expect(rec.facts).toMatchObject({ total: 3085, retainer: 772, balance: 2313, sharing_fee: 75, private_fee: 75, retainer_percent: 25 });
+  expect(rec.facts).not.toHaveProperty('second_payment');
+  expect(rec.summary.retainer).toBe('$772.00');
   expect(rec.summary.total).toBe('$3,085.00');
-  expect(signed.body.summary.retainer).toBe('$1,543.00');
+  expect(signed.body.summary.retainer).toBe('$772.00');
   // The booking keeps the share facts; the signed record holds the signed choice.
   expect(t.booking(TEST, token).facts.total).toBe(3010);
-  expect(f.email_body).toContain('send the retainer of $1,543.00 by Interac e-transfer');
-  expect(f.email_body).toContain('The second payment of $772.00 is due 7 days after');
-  expect(f.email_body).toContain('The final payment of $770.00 is due by Saturday 15 May 2027.');
+  expect(f.email_body).toContain('send the retainer of $772.00 by Interac e-transfer to kashklicks.ca@gmail.com');
+  expect(f.email_body).toContain('The balance of $2,313.00 is due on or before the day, in cash.');
+  expect(f.email_body).not.toMatch(/second payment|final payment/i);
   expect(f.email_body).not.toMatch(/[–—]/);
   const row = JSON.parse(f.row_json);
-  expect(row).toMatchObject({ Total: '$3,085.00', Retainer: '$1,543.00', Balance: '$1,542.00', Sharing: 'private' });
+  expect(row).toMatchObject({ Total: '$3,085.00', Retainer: '$772.00', Balance: '$2,313.00', Sharing: 'private' });
   expect(Object.keys(row)).toEqual([
     'Signed at', 'Booking number', 'Client', 'Partner', 'Email', 'Phone', 'Package', 'Event date',
     'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version', 'Notes',
@@ -2258,13 +2381,15 @@ test('signing a wedding as private records the private amounts, in the email and
 
 test('signing a wedding as share keeps the amounts without the fee', async () => {
   const { f, rec } = await signedWedding('share');
-  expect(rec.facts).toMatchObject({ total: 3010, retainer: 1505, second_payment: 753, final_payment: 752 });
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.5): 3,010.00 = 753.00 + 2,257.00 in cash.
+  expect(rec.facts).toMatchObject({ total: 3010, retainer: 753, balance: 2257 });
+  expect(rec.facts).not.toHaveProperty('second_payment');
   expect(rec.facts).not.toHaveProperty('sharing_fee');
-  expect(rec.summary.retainer).toBe('$1,505.00');
-  expect(f.email_body).toContain('send the retainer of $1,505.00');
-  expect(f.email_body).toContain('The second payment of $753.00');
-  expect(f.email_body).toContain('The final payment of $752.00');
-  expect(JSON.parse(f.row_json)).toMatchObject({ Total: '$3,010.00', Retainer: '$1,505.00', Balance: '$1,505.00', Sharing: 'share' });
+  expect(rec.summary.retainer).toBe('$753.00');
+  expect(f.email_body).toContain('send the retainer of $753.00');
+  expect(f.email_body).toContain('The balance of $2,257.00 is due on or before the day, in cash.');
+  expect(f.email_body).not.toMatch(/second payment|final payment/i);
+  expect(JSON.parse(f.row_json)).toMatchObject({ Total: '$3,010.00', Retainer: '$753.00', Balance: '$2,257.00', Sharing: 'share' });
   expect(f.pdf_html).not.toContain('Marketing fee for private work');
 });
 
@@ -2288,9 +2413,11 @@ test('a wedding stored before the fee existed signs as before', async () => {
 
 test('a wedding stored before sets, with its fee, signs as private with its stored private summary', async () => {
   // Every booking in KV before this build has this shape: two full texts, summary and summary_private.
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.6): a real booking made by the code of that
+  // time (three payments, 50%), no more a new booking rewritten into the old shape.
   const t = setup();
-  const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY)).body;
-  const old = t.toOld(TEST, token);
+  const old = t.putOld('wedding-noset-fee');
+  const token = old.token;
   expect(old.facts.private_fee).toBe(75);
   expect(old.summary_private).toBeDefined();
   expect(old.summary_private).not.toEqual(old.summary);
@@ -2316,12 +2443,17 @@ test('a wedding stored before sets, with its fee, signs as private with its stor
   expect(rec).not.toHaveProperty('extras');
   expect(rec).not.toHaveProperty('page');
   expect(rec.final_doc_json.replace('10 November 2026', SIGN_DATE_TOKEN)).toBe(old.variants.private.doc_json);
-  expect(t.calls[0].fields.email_body).toContain('send the retainer of $1,543.00 by Interac e-transfer');
+  expect(t.calls[0].fields.email_body).toContain('send the retainer of $1,543.00 by Interac e-transfer to info@kashklicks.ca.');
+  expect(t.calls[0].fields.email_body).toContain('The second payment of $772.00 is due 7 days after');
+  expect(t.calls[0].fields.email_body).toContain('The final payment of $770.00 is due by Saturday 15 May 2027.');
 });
 
 // ------------------------------------------------------------------ the set: every mix of a booking, frozen when the link is made
 
 const ALL_WEDDING_TICKS = ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera'];
+// Re-pinned for the payment change (spec 2026-11-23, section 5.3): paid with the balance.
+// Re-pinned for spec 2026-11-23, section 5.8: paid together with the balance (no payment method named).
+const CAMERA_NOTE = 'Refundable, and not part of your total. Paid together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.';
 const newWedding = async (t: ReturnType<typeof setup>, input: Record<string, unknown> = WEDDING_SECOND_ONLY) => {
   const r = await t.admin(TEST, '/r/agreement/new', input);
   expect(r.status).toBe(200);
@@ -2362,11 +2494,7 @@ test('a new booking stores a set of every mix and its page content, and no full 
   expect(hashes.size).toBe(16);
   // The nothing ticked texts are the ones a booking made before sets would hold.
   expect(docJsonFromSet(rec.set.pool, rec.set.mixes.share.f)).toBe(JSON.stringify(renderVariant(rec.facts, 'share')));
-  expect(rec.set.mixes['share+guest-camera'].summary.deposit).toEqual({
-    label: 'Guest camera deposit',
-    amount: '$100.00',
-    note: 'Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
-  });
+  expect(rec.set.mixes['share+guest-camera'].summary.deposit).toEqual({ label: 'Guest camera deposit', amount: '$100.00', note: CAMERA_NOTE });
   // About the size of a booking made before sets (two full texts), not 16 full texts.
   const size = t.kv.store.get(`agr:test:bk:${token}`)!.value.length;
   const oldSize = JSON.stringify(legacy(rec)).length;
@@ -2447,7 +2575,9 @@ test('sign with ticked extras records the facts, the summary, the ids and the pa
 
   const rec = t.signedRecord(TEST, token);
   expect(rec.facts).toEqual(factsFor(bk.facts, 'private', extras));
-  expect(rec.facts).toMatchObject({ total: 3206.25, retainer: 1604, balance: 1602.25, second_payment: 802, final_payment: 800.25, sharing_fee: 75, extras });
+  // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 25% of 3,206.25, two payments.
+  expect(rec.facts).toMatchObject({ total: 3206.25, retainer: 802, balance: 2404.25, sharing_fee: 75, extras });
+  expect(rec.facts).not.toHaveProperty('second_payment');
   expect(rec.facts.deposits).toEqual([{ id: 'guest-camera', label: 'Guest camera deposit', amount: 100, note: mix.summary.deposit.note }]);
   expect(rec.summary).toEqual(mix.summary);
   expect(rec.extras).toEqual(extras);
@@ -2645,13 +2775,13 @@ test('copy: ticked extras reach the email (the deposit line) and the Notes value
       '',
       'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
       '',
-      'Next step: send the retainer of $1,596.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
+      // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 25% to the new address, the
+      // balance in cash, the deposit paid in cash with it.
+      'Next step: send the retainer of $798.00 by Interac e-transfer to kashklicks.ca@gmail.com. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
       '',
-      'The second payment of $798.00 is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+      'The balance of $2,393.25 is due on or before the day, in cash.',
       '',
-      'The final payment of $797.25 is due by Saturday 15 May 2027.',
-      '',
-      'Guest camera deposit: $100.00. Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+      `Guest camera deposit: $100.00. ${CAMERA_NOTE}`,
       '',
       'If anything looks wrong, just reply to this email.',
       '',
@@ -2668,7 +2798,7 @@ test('copy: ticked extras reach the email (the deposit line) and the Notes value
     'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version', 'Notes',
   ]);
   // The deposit is never in the total.
-  expect(row).toMatchObject({ Total: '$3,191.25', Retainer: '$1,596.00', Balance: '$1,595.25', Sharing: 'share' });
+  expect(row).toMatchObject({ Total: '$3,191.25', Retainer: '$798.00', Balance: '$2,393.25', Sharing: 'share' });
   expect(row.Notes).toBe('Ticked at signing: RAW photos, Instax guest prints, Guest camera.');
   expect(f.pdf_html).toContain('Guest camera deposit');
 
@@ -2678,10 +2808,43 @@ test('copy: ticked extras reach the email (the deposit line) and the Notes value
   await t.settle();
   const c = t.calls[1].fields;
   expect(JSON.parse(c.row_json).Notes).toBe('Family group photos after the ceremony, inside your 2 hours. Ticked at signing: Drone and aerial frames.');
-  expect(JSON.parse(c.row_json)).toMatchObject({ Total: '$577.50', Retainer: '$289.00', Balance: '$288.50' });
-  expect(c.email_body).toContain('Next step: send the retainer of $289.00');
-  expect(c.email_body).toContain('The balance of $288.50 is due on or before the day, by e-transfer or cash.\n\nIf anything looks wrong');
+  // Re-pinned (spec 2026-11-23, section 5.3): 25% of 577.50, cash only.
+  expect(JSON.parse(c.row_json)).toMatchObject({ Total: '$577.50', Retainer: '$145.00', Balance: '$432.50' });
+  expect(c.email_body).toContain('Next step: send the retainer of $145.00');
+  expect(c.email_body).toContain('The balance of $432.50 is due on or before the day, in cash.\n\nIf anything looks wrong');
   expect(c.email_body).not.toContain('deposit');
+
+  // A wedding booked before the change, every extra ticked: the email of that time, word for word (three
+  // payments, the old address, the deposit due with the final payment).
+  const o = setup();
+  const old = o.putOld('wedding-set');
+  await o.sign(TEST, old.token, { signed_name: 'Elena Marchetti', extras: ALL_WEDDING_TICKS, text_hash: old.set.mixes[`share+${ALL_WEDDING_TICKS.join('+')}`].hash });
+  await o.settle();
+  const g = o.calls[0].fields;
+  expect(g.email_body).toBe(
+    [
+      'Hi Elena,',
+      '',
+      'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
+      '',
+      `Next step: send the retainer of $1,596.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, ${old.number}, in the message. Your date is held once the retainer arrives.`,
+      '',
+      'The second payment of $798.00 is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+      '',
+      'The final payment of $797.25 is due by Saturday 15 May 2027.',
+      '',
+      'Guest camera deposit: $100.00. Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+      '',
+      'If anything looks wrong, just reply to this email.',
+      '',
+      'Warmly,',
+      'Kash',
+      'AD Photography',
+      'kashklicks.ca',
+    ].join('\n'),
+  );
+  expect(JSON.parse(g.row_json)).toMatchObject({ Total: '$3,191.25', Retainer: '$1,596.00', Balance: '$1,595.25', Sharing: 'share' });
+  expect(JSON.parse(g.row_json).Notes).toBe('Ticked at signing: RAW photos, Instax guest prints, Guest camera.');
 });
 
 test('copyFields never throws for a record with extras but no tick box list, or none at all', () => {

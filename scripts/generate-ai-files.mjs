@@ -887,11 +887,11 @@ function buildServiceWeddingMirror() {
   p();
   p('1. **Book a Consultation.** Free, no-obligation call about your wedding day.');
   p('2. **Planning Together.** Walk through every package, find the right fit for your budget.');
-  p('3. **Lock In Your Date.** Simple contract, 50% retainer secures the date.');
+  p('3. **Lock In Your Date.** Simple contract, 25% retainer secures the date.');
   p('4. **Your Engagement Shoot.** Pre-wedding session, I learn your editing style.');
-  p('5. **Your Wedding Day.** I capture everything. Second 30% due two weeks before.');
+  p('5. **Your Wedding Day.** I capture everything. Balance paid in cash on the day, before I start shooting.');
   p('6. **Sneak Peek.** Curated preview within days of your wedding.');
-  p('7. **Full Delivery.** Complete gallery in 2 to 3 months. Final 20% due once you are happy.');
+  p('7. **Full Delivery.** Complete gallery in 2 to 3 months.');
   p();
   p('---');
   p();
@@ -983,8 +983,8 @@ function buildServicePreWeddingMirror() {
   p();
   p('1. **Book a Consultation.** Free, no-obligation call about your session.');
   p('2. **Planning Together.** Location, outfits, time of day, mood.');
-  p('3. **Lock In Your Date.** Simple contract, 50% retainer.');
-  p('4. **Your Session Day.** Remaining 50% due on the day.');
+  p('3. **Lock In Your Date.** Simple contract, 25% retainer.');
+  p('4. **Your Session Day.** Balance paid in cash on or before the day, before I start shooting.');
   p('5. **Video Draft.** One round of feedback on the film.');
   p('6. **Full Delivery.** Complete gallery and final film within 1 to 3 weeks.');
   p();

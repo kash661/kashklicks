@@ -6,6 +6,9 @@ import { buildBookingFacts, factsFor, fillSignDate, renderVariant } from '../../
 import { sha256Hex } from '../../src/lib/agreement/hash';
 import { copyFields } from '../../src/worker/agreement-copy';
 import type { SignedRecord } from '../../src/worker/agreement-store';
+import { docJsonFromSet } from '../../src/lib/agreement/set';
+import { unpack } from './fixtures/old-bookings-runner';
+import oldBookings from './fixtures/old-bookings.json' with { type: 'json' };
 
 // Runs scripts/google-apps-script.gs in a node:vm context with small
 // in-memory fakes for the Apps Script services it touches.
@@ -660,20 +663,79 @@ test('a wedding signed with ticked extras and a deposit is accepted by the real 
     expect(env.sent).toHaveLength(1);
     expect(env.sent[0].to).toBe(mode === 'test' ? NOTIFY : 'elena@example.com');
     // The private amounts with both priced extras; the deposit outside the total, on its own line.
-    expect(env.sent[0].body).toContain('send the retainer of $1,634.00');
-    expect(env.sent[0].body).toContain('The final payment of $815.25 is due by Saturday 15 May 2027.\n\nGuest camera deposit: $100.00. Refundable, and not part of your total. Due with your final payment.');
+    // Re-pinned for the payment change (spec 2026-11-23, sections 5.3 and 5.5): 3,266.25 = 817.00 + 2,449.25 in cash.
+    expect(env.sent[0].body).toContain('send the retainer of $817.00 by Interac e-transfer to kashklicks.ca@gmail.com.');
+    // Re-pinned for spec 2026-11-23, section 5.8: the deposit is paid together with the balance (no payment method named).
+    expect(env.sent[0].body).toContain(
+      'The balance of $2,449.25 is due on or before the day, in cash.\n\nGuest camera deposit: $100.00. Refundable, and not part of your total. Paid together with your balance, on your wedding day.',
+    );
     const rows = env.sheets.get(mode === 'test' ? 'Contracts TEST' : 'Contracts')!.records();
     expect(rows).toHaveLength(1);
     expect(rows[0]).toMatchObject({
       'Booking number': fields.booking_number,
       Total: '$3,266.25',
-      Retainer: '$1,634.00',
-      Balance: '$1,632.25',
+      Retainer: '$817.00',
+      Balance: '$2,449.25',
       Sharing: 'private',
       'Text hash': signed.final_hash,
       Notes: 'Ticked at signing: RAW photos, Instax guest prints, Guest camera.',
     });
   }
+});
+
+test('a wedding booked before the payment change, signed with ticked extras, is accepted by the real script as before', async () => {
+  // The wedding with a set made by git 881fd2b (tests/unit/fixtures/old-bookings.json), signed as the sign
+  // route signs it: its stored text, and factsFor of its stored facts (three payments, 50%, the old address).
+  const old = unpack((oldBookings as any).records['wedding-set'], oldBookings as any, { strings: true }) as any;
+  const extras = ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera'];
+  const mix = old.set.mixes[['private', ...extras].join('+')];
+  const doc_json = docJsonFromSet(old.set.pool, mix.f);
+  const final_doc_json = fillSignDate(doc_json, '12 November 2026');
+  const signed: SignedRecord = {
+    v: 1,
+    mode: 'test',
+    token: old.token,
+    number: old.number,
+    choice: 'private',
+    signed_name: 'Elena Marchetti',
+    signed_at: '2026-11-12T16:30:00.000Z',
+    signed_date_text: '12 November 2026',
+    presented_hash: mix.hash,
+    final_doc_json,
+    final_hash: await sha256Hex(final_doc_json),
+    clause_version: old.clause_version,
+    facts: factsFor(old.facts, 'private', extras),
+    link_created_at: old.created_at,
+    ip: null,
+    user_agent: null,
+    cf_ray: null,
+    country: null,
+    labels: old.labels,
+    summary: mix.summary,
+    extras,
+    page: old.page,
+  };
+  const fields = copyFields({ FORMS_ADMIN_TOKEN: TOKEN }, signed);
+  expect(Object.keys(fields)).toHaveLength(10);
+  const env = makeEnv();
+  const res = env.post(Object.fromEntries(new URLSearchParams(fields)));
+  expect(res).toMatchObject({ ok: true });
+  expect(res.row_error).toBeUndefined();
+  expect(env.sent).toHaveLength(1);
+  // The pins this test had before the change: the private amounts with both priced extras, three payments.
+  expect(env.sent[0].body).toContain('send the retainer of $1,634.00 by Interac e-transfer to info@kashklicks.ca.');
+  expect(env.sent[0].body).toContain('The final payment of $815.25 is due by Saturday 15 May 2027.\n\nGuest camera deposit: $100.00. Refundable, and not part of your total. Due with your final payment.');
+  const rows = env.sheets.get('Contracts TEST')!.records();
+  expect(rows).toHaveLength(1);
+  expect(rows[0]).toMatchObject({
+    'Booking number': old.number,
+    Total: '$3,266.25',
+    Retainer: '$1,634.00',
+    Balance: '$1,632.25',
+    Sharing: 'private',
+    'Text hash': signed.final_hash,
+    Notes: 'Ticked at signing: RAW photos, Instax guest prints, Guest camera.',
+  });
 });
 
 test('existing form intake still appends to Inquiries', () => {

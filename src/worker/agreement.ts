@@ -4,12 +4,22 @@
 // in D1, whose atomic insert means a link is signed once and never overwritten, and
 // an upstream failure never loses a signature. Live and test data never mix.
 import { longDate, money, shortDate, torontoIsoDate, torontoStamp } from '../lib/agreement/format';
-import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, buildVariantSet, factsFor, fillSignDate, laterPaymentRows, signLabels } from '../lib/agreement/render';
+import {
+  BookingError,
+  SIGN_DATE_TOKEN,
+  buildBookingFacts,
+  buildVariantSet,
+  etransferEmailOf,
+  factsFor,
+  fillSignDate,
+  laterPaymentRows,
+  signLabels,
+} from '../lib/agreement/render';
 import { mixSummaries, pageContent } from '../lib/agreement/page';
 import { docJsonFromSet, mixId } from '../lib/agreement/set';
 import { sha256Hex } from '../lib/agreement/hash';
 import type { AgreementDoc, BookingFacts, Choice } from '../lib/agreement/types';
-import { BUSINESS, claimAttempt, copyDue, firstWord, sendCopy, signedPdfHtml } from './agreement-copy';
+import { claimAttempt, copyDue, firstWord, sendCopy, signedPdfHtml } from './agreement-copy';
 import { pdfDraftDocument } from '../lib/agreement/html';
 import {
   StorageUnavailable,
@@ -148,7 +158,8 @@ const mustLoadByNumber = async (s: Store, body: Record<string, unknown>): Promis
 
 // ------------------------------------------------------------------ payloads
 
-// Computed from today's data files only when a booking or record has none stored (made before they were).
+// Computed only when a booking or record has none stored (made before they were). The amounts and the
+// e-transfer address come from the stored facts (a booking made before 2026-11-23 reads as the old address).
 const summaryOf = (f: BookingFacts): StoredSummary => {
   const later = laterPaymentRows(f);
   return {
@@ -158,7 +169,7 @@ const summaryOf = (f: BookingFacts): StoredSummary => {
     retainer: money(f.retainer),
     balance: money(f.balance),
     balance_how: f.balance_cash === true ? 'in cash' : 'e-transfer or cash',
-    etransfer_email: BUSINESS.etransferEmail,
+    etransfer_email: etransferEmailOf(f),
     ...(later ? { later_payments: later } : {}),
   };
 };
@@ -317,7 +328,7 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     retainer: facts.retainer,
     balance: facts.balance,
     balance_cash: facts.balance_cash === true,
-    // Only for a booking paid in three parts.
+    // Only for a booking paid in three parts: none is made since 2026-11-23, kept for the shape of the answer.
     ...(facts.second_payment === undefined ? {} : { second_payment: facts.second_payment, final_payment: facts.final_payment }),
     // Only for a booking with a fee for private work: the amounts if they choose private.
     ...(facts.private_fee === undefined ? {} : privateAnswer(facts)),

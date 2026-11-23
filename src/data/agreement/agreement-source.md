@@ -50,28 +50,23 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 **3.4** `[HST-INCLUDED]` Every price in this agreement includes HST of 13%. My HST number is {{HST_NUMBER}}. ⚑N2
 
-**3.5** `[NONWED+RET-HALF]` You pay in two parts. The retainer is 50% of your total and is due when you sign. The balance is due on or before the shoot day, before I start shooting.
+**3.5** `[NONWED+RET-USUAL]` You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on or before the shoot day, before I start shooting. ⚑C39
 
 **3.16** `[NONWED+RET-SET]` You pay in two parts. The retainer is {{RETAINER}} and is due when you sign. The balance is due on or before the shoot day, before I start shooting. ⚑C23
 
-**3.6** `[WEDDING]` You pay in three parts. ⚑C1
-- The retainer is 50% of your total. It is due when you sign.
-- The second payment is 25%. It is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session 60 days before the wedding, it is due 60 days before the wedding.
-- The final payment is 25%. It is due 14 days before the wedding.
+**3.6** `[WEDDING]` You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on your wedding day, before I start shooting. ⚑C39
 
 **3.7** `[ALL]` The retainer reserves your date. From the moment it is paid, I turn away other bookings for that date and I start planning your booking. That is why the retainer is not refundable if you cancel, except in the cases this agreement describes (mainly sections 16, 17 and 19). We both agree it is a fair estimate of what a cancelled date costs me, and not a penalty.
 
 **3.8** `[ALL]` Your date is held when two things are done: this agreement is signed, and the retainer has arrived. If the retainer has not arrived within 3 days of signing, I may release the date. This agreement then ends, with nothing owed by either of us. ⚑C2
 
-**3.9** `[ALL]` You can pay by Interac e-transfer to {{ETRANSFER_EMAIL}}. Please put your booking number in the message. I send a receipt or an invoice for every payment. ⚑N1
+**3.9** `[ALL]` You pay the retainer by Interac e-transfer to {{ETRANSFER_EMAIL}}. Any other payment by e-transfer goes to the same address. Please put your booking number in the message. I send a receipt or an invoice for every payment. ⚑N1
 
-**3.10** `[NONWED+BAL-ANY]` You can also pay the balance in cash on the shoot day.
+**3.10** `[BAL-ANY]` You can pay the balance by e-transfer or in cash.
 
-**3.17** `[NONWED+BAL-CASH]` You pay the balance in cash on the shoot day, not by e-transfer. ⚑C24
+**3.17** `[BAL-CASH]` You pay the balance in cash, not by e-transfer. ⚑C24
 
-**3.11** `[NONWED]` If the balance is not paid before the shoot starts, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the shoot day (section 16).
-
-**3.12** `[WEDDING]` If a payment is late, I send you a written reminder. If it is still not paid 3 days after the reminder, I may treat it as a cancellation by you (section 16). ⚑C3
+**3.11** `[ALL]` If the balance is not paid before I start shooting, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the day (section 16).
 
 **3.13** `[ALL]` Costs on the day are paid on the day, by e-transfer or cash. These are overtime, add-ons you choose on the day, parking and travel. If that is not possible, I add them to your invoice.
 
@@ -425,7 +420,7 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 **16.13** `[ALL]` I pay any refund within 15 days, by e-transfer.
 
-**16.14** `[ALL]` I may end this agreement if a payment stays unpaid after my reminder, if section 10 gives me the right to leave, or if you ask me to do something illegal or unsafe. That counts as a cancellation by you.
+**16.14** `[ALL]` I may end this agreement if a payment stays unpaid after I remind you in writing, if section 10 gives me the right to leave, or if you ask me to do something illegal or unsafe. That counts as a cancellation by you.
 
 **16.15** `[ALL]` Nothing in this section takes away a right to cancel that Ontario's Consumer Protection Act gives you.
 

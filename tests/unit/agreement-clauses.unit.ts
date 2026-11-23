@@ -54,29 +54,68 @@ test('tag groups', () => {
   expect(clause('5.2').tags).toEqual([['EVENT']]);
 });
 
-test('the retainer clause has a half and a set version', () => {
-  expect(clause('3.5').tags).toEqual([['NONWED', 'RET-HALF']]);
+test('the retainer clause has a usual and a set version', () => {
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.1): the usual retainer is 25%, tag RET-USUAL (was RET-HALF, 50%).
+  expect(clause('3.5').tags).toEqual([['NONWED', 'RET-USUAL']]);
+  // Re-pinned for spec 2026-11-23, section 5.8: 3.5 says the usual retainer is rounded up to the next dollar.
+  expect(clause('3.5').text).toBe(
+    'You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
+  );
   expect(clause('3.16').tags).toEqual([['NONWED', 'RET-SET']]);
-  expect(clause('3.16').text).toBe(clause('3.5').text.replace('50% of your total', '{{RETAINER}}'));
+  // Re-pinned for spec 2026-11-23, section 5.8: a set retainer is an exact amount, so 3.16 has no rounding words.
+  expect(clause('3.16').text).toBe(clause('3.5').text.replace('25% of your total, rounded up to the next dollar,', '{{RETAINER}}'));
   expect(clause('3.16').text).toBe(
     'You pay in two parts. The retainer is {{RETAINER}} and is due when you sign. The balance is due on or before the shoot day, before I start shooting.',
   );
+  // No clause names the old tag any more.
+  expect(JSON.stringify(file)).not.toContain('RET-HALF');
   // 3.15 is the older clause about extras; the new clause must not take its id.
   expect(clause('3.15').tags).toEqual([['ALL']]);
   expect(clause('3.15').text.startsWith('I only charge for extras you asked for or said yes to.')).toBe(true);
 });
 
+test('the right to end the agreement names its own reminder (spec 2026-11-23, section 5.8)', () => {
+  // Clause 3.12, the wedding reminder, is gone: 16.14 says what the reminder is, in its own words.
+  expect(clause('16.14').tags).toEqual([['ALL']]);
+  expect(clause('16.14').text).toBe(
+    'I may end this agreement if a payment stays unpaid after I remind you in writing, if section 10 gives me the right to leave, or if you ask me to do something illegal or unsafe. That counts as a cancellation by you.',
+  );
+  expect(JSON.stringify(file)).not.toContain('after my reminder');
+});
+
 test('the cash clause has an any-way and a cash-only version', () => {
-  expect(clause('3.10').tags).toEqual([['NONWED', 'BAL-ANY']]);
-  expect(clause('3.10').text).toBe('You can also pay the balance in cash on the shoot day.');
-  expect(clause('3.17').tags).toEqual([['NONWED', 'BAL-CASH']]);
-  expect(clause('3.17').text).toBe('You pay the balance in cash on the shoot day, not by e-transfer.');
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.1): both versions are for every package now (no NONWED).
+  expect(clause('3.10').tags).toEqual([['BAL-ANY']]);
+  expect(clause('3.10').text).toBe('You can pay the balance by e-transfer or in cash.');
+  expect(clause('3.17').tags).toEqual([['BAL-CASH']]);
+  expect(clause('3.17').text).toBe('You pay the balance in cash, not by e-transfer.');
+});
+
+test('two payments for every package: the wedding clause, the retainer by e-transfer, the unpaid balance', () => {
+  // Spec 2026-11-23, section 5.1: 3.6 two parts, 3.9 the retainer by e-transfer, 3.11 for every package, 3.12 removed.
+  expect(clause('3.6').tags).toEqual([['WEDDING']]);
+  // Re-pinned for spec 2026-11-23, section 5.8: 3.6 says the usual retainer is rounded up to the next dollar.
+  expect(clause('3.6').text).toBe(
+    'You pay in two parts. The retainer is 25% of your total, rounded up to the next dollar, and is due when you sign. The balance is due on your wedding day, before I start shooting.',
+  );
+  expect(clause('3.6').bullets).toEqual([]);
+  expect(clause('3.9').tags).toEqual([['ALL']]);
+  // Re-pinned for spec 2026-11-23, section 5.8: 3.9 adds that any other e-transfer goes to the same address.
+  expect(clause('3.9').text).toBe(
+    'You pay the retainer by Interac e-transfer to {{ETRANSFER_EMAIL}}. Any other payment by e-transfer goes to the same address. Please put your booking number in the message. I send a receipt or an invoice for every payment.',
+  );
+  expect(clause('3.11').tags).toEqual([['ALL']]);
+  expect(clause('3.11').text).toBe(
+    'If the balance is not paid before I start shooting, I do not have to shoot. If I do not shoot for that reason, it counts as a cancellation by you on the day (section 16).',
+  );
+  expect(allClauses().find((c) => c.id === '3.12')).toBeUndefined();
 });
 
 test('bullets attach to their clause', () => {
   expect(clause('16.6').bullets).toHaveLength(5);
   expect(clause('14.5').bullets).toHaveLength(5);
-  expect(clause('3.6').bullets).toHaveLength(3);
+  // Re-pinned for the payment change (spec 2026-11-23, section 5.1): 3.6 has no bullets any more, so 16.6 and 14.5 carry the check.
+  expect(clause('3.6').bullets).toHaveLength(0);
 });
 
 test('blocks sit in sections 1, 2 and 4', () => {

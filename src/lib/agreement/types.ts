@@ -51,8 +51,13 @@ export interface BookingFacts extends Required<Omit<BookingInput, 'price' | 'ret
   hours: number;
   delivery_date: string;
   notes: string;
-  // Only on bookings of a package with three payments (a wedding). Missing on every other booking,
-  // and on bookings stored before they existed.
+  // Frozen from business.json when the booking is made (2026-11-23 on): the usual retainer in percent of
+  // the total, and the address the retainer is sent to. Missing on every booking made before: those read
+  // as 50 and info@kashklicks.ca (retainerPercentOf and etransferEmailOf in render.ts).
+  retainer_percent?: number;
+  etransfer_email?: string;
+  // Only on wedding bookings made before 2026-11-23, which were paid in three parts. Missing on every
+  // other booking, and on every booking made since (two payments: the retainer and the balance).
   second_payment?: number;
   final_payment?: number;
   second_due?: string; // 'YYYY-MM-DD'
@@ -90,8 +95,8 @@ export interface StoredSummary {
   // How the balance is paid: 'in cash' or 'e-transfer or cash'. Missing on summaries stored before it existed.
   balance_how?: string;
   etransfer_email: string;
-  // A booking paid in three parts: the second and the final payment, ready to show. Missing on every
-  // other booking, and on summaries stored before it existed. When present, the page shows these instead of the balance.
+  // A booking paid in three parts (a wedding made before 2026-11-23): the second and the final payment,
+  // ready to show. Missing on every other booking. When present, the page shows these instead of the balance.
   later_payments?: { label: string; text: string }[];
   // The fields below are present only on bookings that have page content (src/data/agreement/page.json).
   total_line?: string; // "Your total is $3,010.00. It stays the same ..."

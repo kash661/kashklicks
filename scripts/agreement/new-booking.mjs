@@ -9,11 +9,20 @@
 //                   https://kashklicks.ca                                  LIVE booking, only with --live
 // <booking.json>  the booking facts: package_id, client_name, partner_name, client_email,
 //                 client_phone, event_date, start_time, end_time, place, price, notes, add_ons,
-//                 retainer (optional; default: half of the total, rounded up to the next dollar),
-//                 balance_cash (optional; true = the balance is paid in cash only)
-//                 A wedding (package wedding-full) is paid in three parts: a retainer other
-//                 than the usual half, or balance_cash true, is refused, and the answer adds
-//                 the second and the final payment.
+//                 retainer (optional; default: 25% of the total, rounded up to the next dollar,
+//                   paid by e-transfer when signing),
+//                 balance_cash (optional; default true: the balance is paid in cash only, on the
+//                   day, before shooting starts; false lets this one booking pay the balance by
+//                   e-transfer or cash)
+//                 Every booking is paid in two parts (since 2026-11-23): the retainer, then the
+//                 balance. A wedding (package wedding-full) refuses a retainer other than the
+//                 usual 25%. The percent and the e-transfer address come from
+//                 src/data/agreement/business.json and are frozen with the booking.
+//                 A wedding can be booked for any date (the old 60 day limit went with the second
+//                 payment). Booked close to the day, some deadlines in its text are already past:
+//                 the engagement session "at least 30 days before your wedding", the timeline,
+//                 venue rules and videographer notices "at least 14 days before". Check them with
+//                 the couple before you send the link (whether to keep a shorter limit is open).
 //                 A package with tick boxes prints one more line, Extras: what the couple can
 //                 still tick when they sign (an add-on booked here is not offered again).
 // --live          required for the live origin. Without it the live origin is refused.
@@ -81,7 +90,7 @@ console.log(`Booking  ${body.number}  (mode: ${body.mode})`);
 console.log(`Total    ${money(body.total)}`);
 console.log(`Retainer ${money(body.retainer)}`);
 console.log(`Balance  ${money(body.balance)}${body.balance_cash === true ? ' (cash only)' : ''}`);
-// Only a booking paid in three parts (a wedding) has these: the balance is split in two.
+// Only a booking paid in three parts (none is made since 2026-11-23) has these: the balance is split in two.
 if (body.second_payment !== undefined) console.log(`Second   ${money(body.second_payment)}`);
 if (body.final_payment !== undefined) console.log(`Final    ${money(body.final_payment)}`);
 // Only a booking with a fee for private work: what they pay if they choose private.

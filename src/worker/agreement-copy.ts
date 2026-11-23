@@ -1,13 +1,11 @@
 // The emailed copy of a signed agreement: the email text, the Contracts row and the
 // call to Apps Script. Everything is built from the signed record in D1.
-import businessJson from '../data/agreement/business.json' with { type: 'json' };
 import { longDate, money, torontoStamp } from '../lib/agreement/format';
 import { pdfDocument } from '../lib/agreement/html';
+import { etransferEmailOf } from '../lib/agreement/render';
 import type { AgreementDoc } from '../lib/agreement/types';
 import { putBookingQuietly, type AgreementEnv, type BookingRecord, type SignedRecord, type Store } from './agreement-store';
 import { callAppsScript } from './shared';
-
-export const BUSINESS = businessJson as unknown as { etransferEmail: string };
 
 const COPY_MAX_ATTEMPTS = 5;
 const COPY_RETRY_MS = 60_000;
@@ -27,7 +25,10 @@ export function signedPdfHtml(s: SignedRecord): string {
   });
 }
 
-/** What the email says is still to pay after the retainer: one balance line, or two paragraphs for a booking paid in three parts. */
+/**
+ * What the email says is still to pay after the retainer: one balance line, or two paragraphs for a
+ * booking paid in three parts (a wedding made before 2026-11-23).
+ */
 const balanceLines = (f: SignedRecord['facts']): string[] => {
   if (f.second_payment !== undefined && f.final_payment !== undefined && f.second_due !== undefined && f.final_due !== undefined)
     return [
@@ -74,7 +75,8 @@ export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, s
     '',
     'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
     '',
-    `Next step: send the retainer of ${money(f.retainer)} by Interac e-transfer to ${BUSINESS.etransferEmail}. Please put your booking number, ${s.number}, in the message. Your date is held once the retainer arrives.`,
+    // The address frozen with the booking (the old one for a booking made before 2026-11-23), never today's setting.
+    `Next step: send the retainer of ${money(f.retainer)} by Interac e-transfer to ${etransferEmailOf(f)}. Please put your booking number, ${s.number}, in the message. Your date is held once the retainer arrives.`,
     '',
     ...balanceLines(f),
     ...depositLines(f),

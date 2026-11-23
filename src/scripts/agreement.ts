@@ -110,6 +110,11 @@ const laterPayments = (s: StoredSummary | undefined): [string, string][] | null 
   if (!Array.isArray(list) || !list.length || !list.every((r) => typeof r?.label === 'string' && typeof r?.text === 'string')) return null;
   return list.map((r) => [r.label, r.text]);
 };
+/**
+ * The balance of a summary with how it is paid ("$375.25, in cash"), as the signed view and the review show
+ * it; null when the balance is missing. A summary stored before `balance_how` existed reads as it always did.
+ */
+const balanceText = (s: StoredSummary | undefined): string | null => text(s?.balance, ', ', s?.balance_how ?? 'e-transfer or cash');
 /** The refundable deposit of a summary, when it is whole. */
 const depositOf = (s: StoredSummary | undefined): NonNullable<StoredSummary['deposit']> | null => {
   const d = s?.deposit;
@@ -257,7 +262,7 @@ export function initAgreement(): void {
     put('[data-agr-retainer]', text(p.summary?.retainer));
     put('[data-agr-etransfer]', text(p.summary?.etransfer_email));
     put('[data-agr-reference]', text(p.number));
-    put('[data-agr-balance]', text(p.summary?.balance, ', ', p.summary?.balance_how ?? 'e-transfer or cash'));
+    put('[data-agr-balance]', balanceText(p.summary));
     // Paid in three parts: the second and the final payment take the place of the balance line.
     const later = laterPayments(p.summary);
     const balanceRow = main.querySelector<HTMLElement>('[data-agr-balance-row]');
@@ -356,6 +361,10 @@ export function initAgreement(): void {
     // The amounts of the shown mix: the chosen sharing option and the ticked extras.
     const sum = model!.mix(c, tickedIds()).summary;
     const deposit = depositOf(sum);
+    // Paid in three parts (a wedding made before 2026-11-23): the later payments. Otherwise the balance on
+    // the day, in the words of the signed view.
+    const later = laterPayments(sum);
+    const balance = later ? null : balanceText(sum);
     const rows: [string, string][] = [
       ['Your name', nameInput.value.trim()],
       ['Your partner', p.partner_name],
@@ -364,7 +373,8 @@ export function initAgreement(): void {
       ...(model!.ticks.length ? [['Extras', extrasText(sum)] as [string, string]] : []),
       ['Total', sum.total],
       ['Retainer', sum.retainer],
-      ...(laterPayments(sum) ?? []),
+      ...(balance === null ? [] : [['Balance on the day', balance] as [string, string]]),
+      ...(later ?? []),
       ...(deposit ? [[deposit.label, depositText(deposit)] as [string, string]] : []),
       ['Sharing', view!.optionLabel[c]],
     ];

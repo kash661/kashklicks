@@ -5,7 +5,7 @@
 import pageJson from '../../data/agreement/page.json' with { type: 'json' };
 import businessJson from '../../data/agreement/business.json' with { type: 'json' };
 import { clockTime, longDate, money } from './format';
-import { BookingError, MARKETING_FEE_LABEL, factsFor, fill, hoursText, laterPaymentRows, pageFacts } from './render';
+import { BookingError, MARKETING_FEE_LABEL, etransferEmailOf, factsFor, fill, hoursText, laterPaymentRows, pageFacts } from './render';
 import { PARTS } from './parts';
 import type { BookingFacts, Choice, PageContent, StoredSummary } from './types';
 
@@ -31,12 +31,12 @@ interface PageFile {
   note: string;
   packages: Record<string, PackagePage>;
 }
+// The e-transfer address is not read from here: it is frozen with the booking (etransferEmailOf).
 interface Business {
   legalName: string;
   tradeNames: string[];
   phone: string;
   email: string;
-  etransferEmail: string;
   whoShoots: string;
 }
 
@@ -91,7 +91,7 @@ const valuesOf = (f: BookingFacts, pf: ReturnType<typeof pageFacts>): Record<str
     SECOND_HOURS: f.second_hours === undefined ? undefined : hoursText(f.second_hours),
     DELIVERY_DATE: longDate(f.delivery_date),
     ...pf.ot,
-    ETRANSFER_EMAIL: BUSINESS.etransferEmail,
+    ETRANSFER_EMAIL: etransferEmailOf(f),
     ...pf.engagement,
     PRIVATE_FEE: f.private_fee === undefined ? undefined : money(f.private_fee),
     SECOND_DUE: f.second_due === undefined ? undefined : longDate(f.second_due),
@@ -179,7 +179,8 @@ export function mixSummaries(booked: BookingFacts, mixes: readonly { choice: Cho
       retainer: money(f.retainer),
       balance: money(f.balance),
       balance_how: f.balance_cash === true ? 'in cash' : 'e-transfer or cash',
-      etransfer_email: BUSINESS.etransferEmail,
+      // Frozen with the booking, never today's business setting.
+      etransfer_email: etransferEmailOf(f),
       ...(later ? { later_payments: later } : {}),
     };
     if (!page) return summary;
