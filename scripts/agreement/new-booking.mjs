@@ -14,6 +14,8 @@
 //                 A wedding (package wedding-full) is paid in three parts: a retainer other
 //                 than the usual half, or balance_cash true, is refused, and the answer adds
 //                 the second and the final payment.
+//                 A package with tick boxes prints one more line, Extras: what the couple can
+//                 still tick when they sign (an add-on booked here is not offered again).
 // --live          required for the live origin. Without it the live origin is refused.
 //
 // The admin token is read from the file in admin-access.mjs and sent only in the x-kk-admin
@@ -86,3 +88,8 @@ if (body.final_payment !== undefined) console.log(`Final    ${money(body.final_p
 if (body.private_fee !== undefined)
   console.log(`Private  total ${money(body.private_total)}, retainer ${money(body.private_retainer)} (marketing fee ${money(body.private_fee)})`);
 console.log(`Link     ${target.origin}${body.path}`);
+// Only a booking with tick boxes: what the couple can still tick when they sign. The amounts above are nothing ticked.
+if (Array.isArray(body.tick_boxes) && body.tick_boxes.length > 0) {
+  const extras = body.tick_boxes.map((t) => `${t.label} ${money(t.amount)}${t.kind === 'deposit' ? ' deposit' : ''}`);
+  console.log(`Extras   ${extras.join(', ')}  (tick boxes at signing)`);
+}

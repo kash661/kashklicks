@@ -1,10 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { handleAgreement } from '../../src/worker/agreement';
 import { APPS_SCRIPT_URL, callAppsScript } from '../../src/worker/shared';
-import { signedPdfHtml } from '../../src/worker/agreement-copy';
+import { copyFields, signedPdfHtml } from '../../src/worker/agreement-copy';
+import { storedVariant } from '../../src/worker/agreement-store';
+import { pdfDraftDocument } from '../../src/lib/agreement/html';
 import worker from '../../src/worker';
 import { sha256Hex } from '../../src/lib/agreement/hash';
-import { SIGN_DATE_TOKEN } from '../../src/lib/agreement/render';
+import { SIGN_DATE_TOKEN, buildBookingFacts, factsFor, mixesOf, renderVariant } from '../../src/lib/agreement/render';
+import { docJsonFromSet, mixId } from '../../src/lib/agreement/set';
+import { mixSummary, pageContent } from '../../src/lib/agreement/page';
+import pageJson from '../../src/data/agreement/page.json' with { type: 'json' };
+import clausesJson from '../../src/data/agreement/clauses.json' with { type: 'json' };
 
 // Invented people only.
 const PILOT = {
@@ -217,12 +223,36 @@ function setup(opts: { kv?: boolean; db?: boolean; admin?: string | null } = {})
     const row = db.rows.find((r) => r.mode === mode(origin) && r.token === token);
     return row ? JSON.parse(row.record) : undefined;
   };
-  const hashOf = (origin: string, token: string, choice: 'share' | 'private' = 'share') =>
-    booking(origin, token).variants[choice].hash as string;
+  /** The stored text of one mix as the worker reads it: from the set, or from the two variants of a booking made before sets. */
+  const variantOf = (
+    origin: string,
+    token: string,
+    choice: 'share' | 'private' = 'share',
+    extras: string[] = [],
+  ): { doc_json: string; hash: string; summary?: any } => {
+    const bk = booking(origin, token);
+    if (!bk.set) return bk.variants[choice];
+    const m = bk.set.mixes[mixId(choice, extras)];
+    return { doc_json: docJsonFromSet(bk.set.pool, m.f), hash: m.hash as string, summary: m.summary };
+  };
+  /** extras in tick box order. */
+  const hashOf = (origin: string, token: string, choice: 'share' | 'private' = 'share', extras: string[] = []) =>
+    variantOf(origin, token, choice, extras).hash;
 
-  /** Sign with the right hash for the chosen variant. */
+  /** Sign with the right hash for the chosen mix (over.extras in tick box order). */
   const signOk = (origin: string, token: string, over: Record<string, unknown> = {}) =>
-    sign(origin, token, { text_hash: hashOf(origin, token, (over.choice as 'share' | 'private') ?? 'share'), ...over });
+    sign(origin, token, {
+      text_hash: hashOf(origin, token, (over.choice as 'share' | 'private') ?? 'share', (over.extras as string[] | undefined) ?? []),
+      ...over,
+    });
+
+  /** Rewrites a stored booking into the shape of a booking made before sets (see legacy). */
+  const toOld = (origin: string, token: string) => {
+    const key = `agr:${mode(origin)}:bk:${token}`;
+    const old = legacy(booking(origin, token));
+    kv.store.set(key, { ...kv.store.get(key)!, value: JSON.stringify(old) });
+    return old;
+  };
 
   const settle = async () => {
     while (pending.length) await pending.shift();
@@ -243,7 +273,9 @@ function setup(opts: { kv?: boolean; db?: boolean; admin?: string | null } = {})
     signOk,
     booking,
     signedRecord,
+    variantOf,
     hashOf,
+    toOld,
     settle,
     browser,
     advance: (ms: number) => void (clock = new Date(clock.getTime() + ms)),
@@ -260,6 +292,30 @@ const silenceErrors = () => {
   const logged: unknown[][] = [];
   console.error = (...args: unknown[]) => void logged.push(args);
   return { logged, restore: () => void (console.error = original) };
+};
+
+// ------------------------------------------------------------------ bookings made before sets
+
+/** The keys a stored summary had before page content existed. */
+const OLD_SUMMARY_KEYS = ['package', 'date', 'total', 'retainer', 'balance', 'balance_how', 'etransfer_email', 'later_payments'];
+const oldSummary = (s: Record<string, unknown>) => Object.fromEntries(Object.entries(s).filter(([k]) => OLD_SUMMARY_KEYS.includes(k)));
+
+/**
+ * A booking record in the shape stored before sets: the two nothing ticked texts in full (they are byte
+ * identical to what that code made), the share summary and, with a fee, the private one, in their old
+ * shape. No set, no page, no tick boxes in the facts.
+ */
+const legacy = (rec: any) => {
+  const { set, page: _page, ...rest } = rec;
+  const { tick_boxes: _ticks, ...facts } = rest.facts;
+  const v = (id: string) => ({ doc_json: docJsonFromSet(set.pool, set.mixes[id].f), hash: set.mixes[id].hash });
+  return {
+    ...rest,
+    facts,
+    variants: { share: v('share'), private: v('private') },
+    summary: oldSummary(set.mixes.share.summary),
+    ...(facts.private_fee === undefined ? {} : { summary_private: oldSummary(set.mixes.private.summary) }),
+  };
 };
 
 // ------------------------------------------------------------------ admin: new
@@ -286,7 +342,7 @@ test('new booking needs the admin token', async () => {
   expect((await t.create(TEST)).number).toBe('KK-TEST-2026-001');
 });
 
-test('new booking stores both variants and returns the link', async () => {
+test('new booking stores every mix of its text and returns the link', async () => {
   const t = setup();
   const r = await t.admin(TEST, '/r/agreement/new', PILOT);
   expect(r.status).toBe(200);
@@ -304,6 +360,12 @@ test('new booking stores both variants and returns the link', async () => {
     retainer: 251,
     balance: 250.25,
     balance_cash: false,
+    // What can still be ticked at signing. The amounts above are nothing ticked, share.
+    tick_boxes: [
+      { id: 'drone', kind: 'price', label: 'Drone and aerial frames', amount: 76.25 },
+      { id: 'extra-retouched', kind: 'price', label: 'Five extra retouched images', amount: 26.25 },
+      { id: 'raw-photos-civil', kind: 'price', label: 'RAW photos', amount: 69.25 },
+    ],
   });
   expect(r.body.path).toMatch(/^\/welcome\/agreement\/\?k=[A-Za-z0-9_-]{43}$/);
 
@@ -329,16 +391,22 @@ test('new booking stores both variants and returns the link', async () => {
   });
   expect(rec.facts.client_name).toBe('Priya Sharma');
   expect(rec.facts.number).toBe('KK-TEST-2026-001');
-  for (const choice of ['share', 'private'] as const) {
-    const v = rec.variants[choice];
+  // Byte for byte the facts of the engine for this number, key order included.
+  expect(JSON.stringify(rec.facts)).toBe(JSON.stringify(buildBookingFacts(PILOT, { number: 'KK-TEST-2026-001', createdAt: START })));
+  // A set replaces the two full texts: 2 choices x 8 subsets of the 3 tick boxes.
+  expect(rec).not.toHaveProperty('variants');
+  expect(Object.keys(rec.set.mixes)).toEqual(mixesOf(rec.facts).map((m) => m.id));
+  expect(Object.keys(rec.set.mixes)).toHaveLength(16);
+  for (const m of mixesOf(rec.facts)) {
+    const v = t.variantOf(TEST, token, m.choice, m.extras);
     expect(v.hash).toBe(await sha256Hex(v.doc_json));
     expect(v.doc_json.split(SIGN_DATE_TOKEN)).toHaveLength(2);
     const parsed = JSON.parse(v.doc_json);
-    expect(parsed.choice).toBe(choice);
+    expect(parsed.choice).toBe(m.choice);
     expect(parsed.number).toBe('KK-TEST-2026-001');
     expect(rec.clause_version).toBe(parsed.clause_version);
   }
-  expect(rec.variants.share.hash).not.toBe(rec.variants.private.hash);
+  expect(t.hashOf(TEST, token, 'share')).not.toBe(t.hashOf(TEST, token, 'private'));
   expect(t.kv.store.get('agr:test:num:KK-TEST-2026-001')!.value).toBe(token);
   expect(t.kv.store.get('agr:test:seq:2026')!.value).toBe('1');
 
@@ -353,6 +421,28 @@ test('new booking stores both variants and returns the link', async () => {
   await t.kv.put('agr:live:num:KK-2026-002', 'someone-else');
   expect((await t.create(LIVE)).number).toBe('KK-2026-003');
   expect(t.kv.store.get('agr:live:seq:2026')!.value).toBe('3');
+});
+
+test('new booking refuses a text that has no single place for the sign date, before anything is stored', async () => {
+  // Signing fills the date into exactly one place (fillSignDate), so a mix without it could never be signed.
+  const clause = (clausesJson as any).sections[0].items.find((i: { id?: string }) => i.id === '0.5');
+  const before = clause.text;
+  expect(before).toContain(SIGN_DATE_TOKEN);
+  const quiet = silenceErrors();
+  try {
+    clause.text = before.replace(SIGN_DATE_TOKEN, 'on the day you sign');
+    for (const input of [PILOT, WEDDING]) {
+      const t = setup();
+      const r = await t.admin(TEST, '/r/agreement/new', input);
+      expect(r, input.package_id).toMatchObject({ status: 500, body: { ok: false, error: 'server_error' } });
+      expect(t.kv.puts, input.package_id).toEqual([]);
+    }
+    expect(String(quiet.logged[0]?.[1])).toContain('has no single sign date');
+  } finally {
+    clause.text = before;
+    quiet.restore();
+  }
+  expect((await setup().admin(TEST, '/r/agreement/new', PILOT)).status).toBe(200);
 });
 
 test('live and test records never share keys', async () => {
@@ -418,10 +508,12 @@ test('doc: unknown token 404, void 410, first open sets opened', async () => {
   expect(await t.call(TEST, 'GET', '/r/agreement/doc')).toMatchObject({ status: 404, body: { error: 'not_found' } });
 
   const { token } = await t.create(TEST);
-  const stored = t.booking(TEST, token);
+  const plain = (v: { doc_json: string; hash: string }) => ({ doc_json: v.doc_json, hash: v.hash });
+  const variants = { share: plain(t.variantOf(TEST, token, 'share')), private: plain(t.variantOf(TEST, token, 'private')) };
   t.advance(30_000);
   const r = await t.doc(TEST, token);
   expect(r.status).toBe(200);
+  // Without v=2: today's shape, the two nothing ticked texts rebuilt from the set.
   expect(r.body).toEqual({
     ok: true,
     status: 'opened',
@@ -432,7 +524,7 @@ test('doc: unknown token 404, void 410, first open sets opened', async () => {
     partner_first: 'Arjun',
     client_name: 'Priya Sharma',
     partner_name: 'Arjun Mehta',
-    variants: stored.variants,
+    variants,
     labels: { ...r.body.labels, name_expected: 'Priya Sharma' },
     summary: {
       package: 'The Civil Ceremony',
@@ -442,6 +534,12 @@ test('doc: unknown token 404, void 410, first open sets opened', async () => {
       balance: '$250.25',
       balance_how: 'e-transfer or cash',
       etransfer_email: 'info@kashklicks.ca',
+      total_line: 'Your total is $501.25. It stays the same even if my website prices change later.',
+      price_lines: [{ label: 'The Civil Ceremony', amount: '$501.25' }],
+      steps: [
+        { title: 'When you sign', amount: '$251.00', note: 'By e-transfer. Your date is held once this arrives.' },
+        { title: 'On or before your ceremony day', amount: '$250.25', note: 'By e-transfer or in cash, before I start shooting.' },
+      ],
     },
   });
   expect(Object.keys(r.body.labels).sort()).toEqual(
@@ -561,7 +659,7 @@ test('sign writes the record once and fills the date', async () => {
   const t = setup();
   const { token } = await t.create(TEST);
   t.advance(5 * 60_000); // signed at 10:05 am Toronto time
-  const presented = t.booking(TEST, token).variants.private;
+  const presented = t.variantOf(TEST, token, 'private');
   const r = await t.signOk(TEST, token, { choice: 'private' });
   expect(r.status).toBe(200);
 
@@ -592,8 +690,12 @@ test('sign writes the record once and fills the date', async () => {
     cf_ray: '8f00aa11bb22cc33-YYZ',
     country: null,
     labels: t.booking(TEST, token).labels,
-    summary: t.booking(TEST, token).summary,
+    summary: presented.summary,
+    // A booking with a set: the ticked ids (none) and the page content it was shown.
+    extras: [],
+    page: t.booking(TEST, token).page,
   });
+  expect(s.page.title).toBe('Your agreement');
 
   expect(r.body).toEqual({
     ok: true,
@@ -612,6 +714,7 @@ test('sign writes the record once and fills the date', async () => {
       final_doc_json: s.final_doc_json,
       final_hash: s.final_hash,
     },
+    extras: [],
     summary: {
       package: 'The Civil Ceremony',
       date: 'Saturday 12 December 2026',
@@ -620,6 +723,12 @@ test('sign writes the record once and fills the date', async () => {
       balance: '$250.25',
       balance_how: 'e-transfer or cash',
       etransfer_email: 'info@kashklicks.ca',
+      total_line: 'Your total is $501.25. It stays the same even if my website prices change later.',
+      price_lines: [{ label: 'The Civil Ceremony', amount: '$501.25' }],
+      steps: [
+        { title: 'When you sign', amount: '$251.00', note: 'By e-transfer. Your date is held once this arrives.' },
+        { title: 'On or before your ceremony day', amount: '$250.25', note: 'By e-transfer or in cash, before I start shooting.' },
+      ],
     },
     labels: { ...r.body.labels, name_expected: 'Priya Sharma' },
     copy: { status: 'pending', to: 'priya@example.com' },
@@ -899,7 +1008,8 @@ test('a booking stored before balance_cash existed signs as before', async () =>
   const t = setup();
   const { token } = await t.create(TEST);
   const key = `agr:test:bk:${token}`;
-  const old = t.booking(TEST, token);
+  // Made before sets too: two full texts and the summary.
+  const old = t.toOld(TEST, token);
   delete old.facts.balance_cash;
   delete old.summary.balance_how;
   t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
@@ -1089,17 +1199,20 @@ test('labels and summary are stored with the booking and copied into the signed 
   const { token } = await t.create(TEST);
   const bk = t.booking(TEST, token);
   const opened = await t.doc(TEST, token);
+  // One summary per mix, in the set; the doc answer gives the nothing ticked share one.
+  const summary = bk.set.mixes.share.summary;
+  expect(bk).not.toHaveProperty('summary');
   expect(bk.labels).toEqual(opened.body.labels);
-  expect(bk.summary).toEqual(opened.body.summary);
+  expect(summary).toEqual(opened.body.summary);
   expect(bk.labels.name_expected).toBe('Priya Sharma');
   expect(bk.labels.intro_bullets[0]).toBe('Priya signs for both of you.');
-  expect(bk.summary.etransfer_email).toBe('info@kashklicks.ca');
+  expect(summary.etransfer_email).toBe('info@kashklicks.ca');
 
   await t.signOk(TEST, token);
   await t.settle();
   const s = t.signedRecord(TEST, token);
   expect(s.labels).toEqual(bk.labels);
-  expect(s.summary).toEqual(bk.summary);
+  expect(s.summary).toEqual(summary);
 });
 
 test('a link keeps working from its stored values when the package data changes later', async () => {
@@ -1110,10 +1223,13 @@ test('a link keeps working from its stored values when the package data changes 
   await t.settle();
 
   // As if the package were renamed in the data files: computing labels now would throw package_not_ready.
+  // A booking with a set keeps one summary per mix; a signed record and an old booking keep one summary.
   const retire = (rec: any) => {
     rec.facts = { ...rec.facts, package_id: 'retired-package' };
     rec.labels = { ...rec.labels, agree_label: 'The words shown when this link was made.' };
-    rec.summary = { ...rec.summary, etransfer_email: 'old-address@example.com' };
+    const old = (s: any) => ({ ...s, etransfer_email: 'old-address@example.com' });
+    if (rec.set) for (const m of Object.values<any>(rec.set.mixes)) m.summary = old(m.summary);
+    else rec.summary = old(rec.summary);
     return rec;
   };
   const putBk = (token: string) => {
@@ -1136,12 +1252,40 @@ test('a link keeps working from its stored values when the package data changes 
   expect(signed.body.labels).toEqual(JSON.parse(row.record).labels);
   expect(signed.body.summary).toEqual(JSON.parse(row.record).summary);
   expect(signed.body.labels.agree_label).toBe('The words shown when this link was made.');
+
+  // The set and the page content are stored values too: v=2, and a sign with ticked extras, look nothing up.
+  const v2 = await t.call(TEST, 'GET', `/r/agreement/doc?k=${a.token}&v=2`);
+  expect(v2.status).toBe(200);
+  expect(v2.body.set).toEqual(t.booking(TEST, a.token).set);
+  expect(v2.body.page).toEqual(t.booking(TEST, a.token).page);
+  expect(v2.body.summary.etransfer_email).toBe('old-address@example.com');
+  // Sent in another order: the worker puts them in tick box order.
+  const ticked = await t.sign(TEST, a.token, { extras: ['raw-photos-civil', 'drone'], text_hash: t.hashOf(TEST, a.token, 'share', ['drone', 'raw-photos-civil']) });
+  expect(ticked.status).toBe(200);
+  expect(ticked.body.extras).toEqual(['drone', 'raw-photos-civil']);
+  expect(ticked.body.summary.etransfer_email).toBe('old-address@example.com');
+  const rec = t.signedRecord(TEST, a.token);
+  expect(rec.facts.package_id).toBe('retired-package');
+  expect(rec.facts.total).toBe(646.75);
+  expect(rec.labels.agree_label).toBe('The words shown when this link was made.');
+  expect((await t.doc(TEST, a.token)).status).toBe(200);
+
+  // The same for a booking made before sets.
+  const c = await t.create(TEST);
+  t.toOld(TEST, c.token);
+  putBk(c.token);
+  expect((await t.doc(TEST, c.token)).body.summary.etransfer_email).toBe('old-address@example.com');
+  expect(await t.signOk(TEST, c.token)).toMatchObject({ status: 200, body: { status: 'signed', extras: [] } });
+  await t.settle();
 });
 
 test('a booking and a signed record made before labels were stored still load', async () => {
   const t = setup();
   const a = await t.create(TEST);
   const b = await t.create(TEST);
+  // Those bookings were made before sets too.
+  t.toOld(TEST, a.token);
+  t.toOld(TEST, b.token);
   const expected = (await t.doc(TEST, a.token)).body;
   await t.signOk(TEST, b.token);
   await t.settle();
@@ -1171,6 +1315,7 @@ test('a booking and a signed record made before labels were stored still load', 
   // Signing an old booking stores the labels it was shown.
   const c = await t.create(TEST);
   const key = `agr:test:bk:${c.token}`;
+  t.toOld(TEST, c.token);
   t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(strip(t.booking(TEST, c.token))) });
   await t.signOk(TEST, c.token);
   await t.settle();
@@ -1924,6 +2069,11 @@ test('a wedding booking answers with its three payments, and its summary carries
     private_fee: 75,
     private_total: 3206.25,
     private_retainer: 1604,
+    // RAW photos are booked, so they are not a tick box any more.
+    tick_boxes: [
+      { id: 'instax-guest-prints', kind: 'price', label: 'Instax guest prints', amount: 60 },
+      { id: 'guest-camera', kind: 'deposit', label: 'Guest camera', amount: 100 },
+    ],
   });
   const opened = await t.doc(TEST, r.body.token);
   expect(opened.body.summary).toEqual({
@@ -1935,6 +2085,21 @@ test('a wedding booking answers with its three payments, and its summary carries
     balance_how: 'e-transfer or cash',
     etransfer_email: 'info@kashklicks.ca',
     later_payments: WEDDING_LATER,
+    total_line: 'Your total is $3,131.25. It stays the same even if my website prices change later.',
+    price_lines: [
+      { label: 'The Full Day', amount: '$2,301.25' },
+      { label: 'Second photographer, extra hours, 7 × $101.25', amount: '$708.75' },
+      { label: 'RAW photos', amount: '$121.25' },
+    ],
+    steps: [
+      { title: 'When you sign', amount: '$1,566.00', note: 'Your date is held once this arrives.' },
+      {
+        title: 'After your engagement photos',
+        amount: '$783.00',
+        note: 'Due 7 days after I deliver them. If you have not had the session by Tuesday 30 March 2027, it is due on that date.',
+      },
+      { title: 'By Saturday 15 May 2027', amount: '$782.25', note: '14 days before your wedding.' },
+    ],
   });
   expect(t.booking(TEST, r.body.token).facts).toMatchObject({ second_payment: 783, final_payment: 782.25, second_due: '2027-03-30', final_due: '2027-05-15', second_hours: 10 });
 
@@ -2015,8 +2180,13 @@ test('a wedding booking stores the private summary next to the share one', async
   const bk = t.booking(TEST, r.body.token);
   expect(bk.facts.private_fee).toBe(75);
   expect(bk.facts.total).toBe(3010);
-  expect(bk.summary).toMatchObject({ total: '$3,010.00', retainer: '$1,505.00', balance: '$1,505.00' });
-  expect(bk.summary_private).toEqual({
+  // One summary per mix, in the set: `share` and `private` are the nothing ticked ones.
+  expect(bk).not.toHaveProperty('summary');
+  expect(bk).not.toHaveProperty('summary_private');
+  const share = bk.set.mixes.share.summary;
+  const priv = bk.set.mixes.private.summary;
+  expect(share).toMatchObject({ total: '$3,010.00', retainer: '$1,505.00', balance: '$1,505.00' });
+  expect(priv).toEqual({
     package: 'The Full Day',
     date: 'Saturday 29 May 2027',
     total: '$3,085.00',
@@ -2031,10 +2201,25 @@ test('a wedding booking stores the private summary next to the share one', async
       },
       { label: 'Final payment', text: '$770.00 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.' },
     ],
+    total_line: 'Your total is $3,085.00. It stays the same even if my website prices change later.',
+    price_lines: [
+      { label: 'The Full Day', amount: '$2,301.25' },
+      { label: 'Second photographer, extra hours, 7 × $101.25', amount: '$708.75' },
+      { label: 'Marketing fee for private work', amount: '$75.00' },
+    ],
+    steps: [
+      { title: 'When you sign', amount: '$1,543.00', note: 'Your date is held once this arrives.' },
+      {
+        title: 'After your engagement photos',
+        amount: '$772.00',
+        note: 'Due 7 days after I deliver them. If you have not had the session by Tuesday 30 March 2027, it is due on that date.',
+      },
+      { title: 'By Saturday 15 May 2027', amount: '$770.00', note: '14 days before your wedding.' },
+    ],
   });
   const opened = await t.doc(TEST, r.body.token);
-  expect(opened.body.summary).toEqual(bk.summary);
-  expect(opened.body.summary_private).toEqual(bk.summary_private);
+  expect(opened.body.summary).toEqual(share);
+  expect(opened.body.summary_private).toEqual(priv);
 });
 
 const signedWedding = async (choice: 'share' | 'private') => {
@@ -2087,7 +2272,8 @@ test('a wedding stored before the fee existed signs as before', async () => {
   const t = setup();
   const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY)).body;
   const key = `agr:test:bk:${token}`;
-  const old = t.booking(TEST, token);
+  // Made before sets too: two full texts and the summary.
+  const old = t.toOld(TEST, token);
   delete old.facts.private_fee;
   delete old.summary_private;
   t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
@@ -2098,4 +2284,443 @@ test('a wedding stored before the fee existed signs as before', async () => {
   expect(rec.facts.total).toBe(3010);
   expect(rec.facts).not.toHaveProperty('sharing_fee');
   expect(rec.summary).toEqual(old.summary);
+});
+
+test('a wedding stored before sets, with its fee, signs as private with its stored private summary', async () => {
+  // Every booking in KV before this build has this shape: two full texts, summary and summary_private.
+  const t = setup();
+  const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY)).body;
+  const old = t.toOld(TEST, token);
+  expect(old.facts.private_fee).toBe(75);
+  expect(old.summary_private).toBeDefined();
+  expect(old.summary_private).not.toEqual(old.summary);
+  // One stored field changed, so a summary worked out again would show.
+  old.summary_private.etransfer_email = 'old-address@example.com';
+  const key = `agr:test:bk:${token}`;
+  t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
+  const opened = await t.doc(TEST, token);
+  expect(opened.status).toBe(200);
+  expect(opened.body.summary_private.etransfer_email).toBe('old-address@example.com');
+  const signed = await t.sign(TEST, token, { signed_name: 'Elena Marchetti', choice: 'private', text_hash: old.variants.private.hash });
+  expect(signed.status).toBe(200);
+  await t.settle();
+  const rec = t.signedRecord(TEST, token);
+  // The stored private summary, not the share one and not one worked out again.
+  expect(rec.summary).toEqual(old.summary_private);
+  expect(rec.summary.etransfer_email).toBe('old-address@example.com');
+  expect(rec.summary.retainer).toBe('$1,543.00');
+  expect(signed.body.summary).toEqual(old.summary_private);
+  expect(signed.body.summary.etransfer_email).toBe('old-address@example.com');
+  expect(rec.facts).toMatchObject({ total: 3085, retainer: 1543, balance: 1542, second_payment: 772, final_payment: 770, sharing_fee: 75 });
+  expect(rec.facts).toEqual(factsFor(old.facts, 'private'));
+  expect(rec).not.toHaveProperty('extras');
+  expect(rec).not.toHaveProperty('page');
+  expect(rec.final_doc_json.replace('10 November 2026', SIGN_DATE_TOKEN)).toBe(old.variants.private.doc_json);
+  expect(t.calls[0].fields.email_body).toContain('send the retainer of $1,543.00 by Interac e-transfer');
+});
+
+// ------------------------------------------------------------------ the set: every mix of a booking, frozen when the link is made
+
+const ALL_WEDDING_TICKS = ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera'];
+const newWedding = async (t: ReturnType<typeof setup>, input: Record<string, unknown> = WEDDING_SECOND_ONLY) => {
+  const r = await t.admin(TEST, '/r/agreement/new', input);
+  expect(r.status).toBe(200);
+  return r.body as { number: string; token: string };
+};
+const v2Doc = (t: ReturnType<typeof setup>, k: string, v = '2') => t.call(TEST, 'GET', `/r/agreement/doc?k=${k}&v=${v}`);
+
+test('a new booking stores a set of every mix and its page content, and no full texts', async () => {
+  const t = setup();
+  const putsBefore = t.kv.puts.length;
+  const { token } = await newWedding(t);
+  expect(t.kv.puts.length).toBe(putsBefore + 3); // still three keys per booking
+  const rec = t.booking(TEST, token);
+  expect(JSON.stringify(rec.facts)).toBe(JSON.stringify(buildBookingFacts(WEDDING_SECOND_ONLY, { number: rec.number, createdAt: START })));
+  expect(rec.clause_version).toBe((clausesJson as any).version);
+  for (const gone of ['variants', 'summary', 'summary_private']) expect(rec, gone).not.toHaveProperty(gone);
+  expect(Object.keys(rec.set).sort()).toEqual(['mixes', 'pool']);
+  expect(rec.labels.name_expected).toBe('Elena Marchetti');
+  expect(rec.page).toEqual(pageContent(rec.facts));
+  expect(rec.page.extras.ticks.map((x: { id: string }) => x.id)).toEqual(ALL_WEDDING_TICKS);
+
+  // 2 choices x 8 subsets of the 3 tick boxes, in mix order. Every mix rebuilds to the text the engine renders, and to its hash.
+  const mixes = mixesOf(rec.facts);
+  expect(Object.keys(rec.set.mixes)).toEqual(mixes.map((m) => m.id));
+  expect(mixes).toHaveLength(16);
+  expect(new Set(rec.set.pool).size).toBe(rec.set.pool.length);
+  const hashes = new Set<string>();
+  for (const m of mixes) {
+    const stored = rec.set.mixes[m.id];
+    expect(Object.keys(stored).sort(), m.id).toEqual(['f', 'hash', 'summary']);
+    const doc_json = docJsonFromSet(rec.set.pool, stored.f);
+    expect(doc_json, m.id).toBe(JSON.stringify(renderVariant(rec.facts, m.choice, m.extras)));
+    expect(doc_json.split(SIGN_DATE_TOKEN), m.id).toHaveLength(2);
+    expect(stored.hash, m.id).toBe(await sha256Hex(doc_json));
+    expect(stored.summary, m.id).toEqual(mixSummary(rec.facts, m.choice, m.extras));
+    hashes.add(stored.hash);
+  }
+  expect(hashes.size).toBe(16);
+  // The nothing ticked texts are the ones a booking made before sets would hold.
+  expect(docJsonFromSet(rec.set.pool, rec.set.mixes.share.f)).toBe(JSON.stringify(renderVariant(rec.facts, 'share')));
+  expect(rec.set.mixes['share+guest-camera'].summary.deposit).toEqual({
+    label: 'Guest camera deposit',
+    amount: '$100.00',
+    note: 'Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+  });
+  // About the size of a booking made before sets (two full texts), not 16 full texts.
+  const size = t.kv.store.get(`agr:test:bk:${token}`)!.value.length;
+  const oldSize = JSON.stringify(legacy(rec)).length;
+  expect(size).toBeLessThan(oldSize * 1.6);
+});
+
+test('doc: v=2 gives the set and the page of a new booking; without it, and for an old booking, today\'s shape', async () => {
+  const t = setup();
+  const { token } = await newWedding(t);
+  const stored = t.booking(TEST, token);
+  // The first open flips sent to opened, with v=2 too.
+  const v2 = await v2Doc(t, token);
+  expect(v2.status).toBe(200);
+  expect(t.booking(TEST, token).status).toBe('opened');
+  expect(v2.body).toEqual({
+    ok: true,
+    status: 'opened',
+    mode: 'test',
+    today: '10 November 2026',
+    number: 'KK-TEST-2026-001',
+    client_first: 'Elena',
+    partner_first: 'Daniel',
+    client_name: 'Elena Marchetti',
+    partner_name: 'Daniel Okafor',
+    labels: stored.labels,
+    summary: stored.set.mixes.share.summary,
+    summary_private: stored.set.mixes.private.summary,
+    set: stored.set,
+    page: stored.page,
+  });
+  // Every mix in the answer rebuilds to its hash.
+  for (const [id, m] of Object.entries<any>(v2.body.set.mixes)) expect(await sha256Hex(docJsonFromSet(v2.body.set.pool, m.f)), id).toBe(m.hash);
+
+  // Without v=2 (and with any other v): today's shape, the nothing ticked texts rebuilt from the set.
+  const plain = await t.doc(TEST, token);
+  const { set: _set, page: _page, ...rest } = v2.body;
+  const variants = {
+    share: { doc_json: docJsonFromSet(stored.set.pool, stored.set.mixes.share.f), hash: stored.set.mixes.share.hash },
+    private: { doc_json: docJsonFromSet(stored.set.pool, stored.set.mixes.private.f), hash: stored.set.mixes.private.hash },
+  };
+  expect(plain.body).toEqual({ ...rest, variants });
+  expect(Object.keys(plain.body)).toEqual([
+    'ok', 'status', 'mode', 'today', 'number', 'client_first', 'partner_first', 'client_name', 'partner_name',
+    'variants', 'labels', 'summary', 'summary_private',
+  ]);
+  for (const v of ['1', '3', '']) expect((await v2Doc(t, token, v)).body, v).toEqual(plain.body);
+
+  // A civil booking has no fee: no summary_private, with or without v=2.
+  const civil = await t.create(TEST);
+  expect(await v2Doc(t, civil.token)).not.toHaveProperty('body.summary_private');
+  expect((await v2Doc(t, civil.token)).body.page.title).toBe('Your agreement');
+
+  // A booking made before sets answers today's shape with v=2 too: no set, no page.
+  const old = await newWedding(t);
+  const oldRec = t.toOld(TEST, old.token);
+  const oldV2 = await v2Doc(t, old.token);
+  expect(oldV2.body).not.toHaveProperty('set');
+  expect(oldV2.body).not.toHaveProperty('page');
+  expect(oldV2.body.variants).toEqual(oldRec.variants);
+  expect(oldV2.body.summary).toEqual(oldRec.summary);
+  expect(oldV2.body.summary_private).toEqual(oldRec.summary_private);
+  expect(oldV2.body).toEqual((await t.doc(TEST, old.token)).body);
+});
+
+test('sign with ticked extras records the facts, the summary, the ids and the page of that mix', async () => {
+  const t = setup();
+  const { token } = await newWedding(t);
+  const bk = t.booking(TEST, token);
+  const extras = ['raw-photos-wedding', 'guest-camera'];
+  const mix = t.variantOf(TEST, token, 'private', extras);
+  t.advance(5 * 60_000);
+  // Sent in another order: the worker puts them in tick box order.
+  const r = await t.sign(TEST, token, { choice: 'private', signed_name: 'Elena Marchetti', extras: ['guest-camera', 'raw-photos-wedding'], text_hash: mix.hash });
+  expect(r.status).toBe(200);
+  expect(r.body.extras).toEqual(extras);
+  expect(r.body.summary).toEqual(mix.summary);
+  expect(r.body.summary.extra_labels).toEqual(['RAW photos', 'Guest camera']);
+
+  const rec = t.signedRecord(TEST, token);
+  expect(rec.facts).toEqual(factsFor(bk.facts, 'private', extras));
+  expect(rec.facts).toMatchObject({ total: 3206.25, retainer: 1604, balance: 1602.25, second_payment: 802, final_payment: 800.25, sharing_fee: 75, extras });
+  expect(rec.facts.deposits).toEqual([{ id: 'guest-camera', label: 'Guest camera deposit', amount: 100, note: mix.summary.deposit.note }]);
+  expect(rec.summary).toEqual(mix.summary);
+  expect(rec.extras).toEqual(extras);
+  expect(rec.page).toEqual(bk.page);
+  expect(rec.presented_hash).toBe(mix.hash);
+  expect(rec.final_doc_json.replace('10 November 2026', SIGN_DATE_TOKEN)).toBe(mix.doc_json);
+  expect(rec.final_doc_json).toContain('RAW photos, 1 × $121.25 = $121.25');
+  expect(rec.final_doc_json).toContain('Guest camera deposit');
+  // The booking keeps the booked facts.
+  expect(t.booking(TEST, token).facts).toEqual(bk.facts);
+  await t.settle();
+  // A later visit answers from the signed record, with the ticked ids.
+  const again = await t.doc(TEST, token);
+  expect(again.body.extras).toEqual(extras);
+  expect(again.body.signed.final_hash).toBe(rec.final_hash);
+
+  // Nothing ticked on a new booking: the booked facts as they are, extras [].
+  const plain = await newWedding(t);
+  await t.signOk(TEST, plain.token, { signed_name: 'Elena Marchetti' });
+  const p = t.signedRecord(TEST, plain.token);
+  expect(p.facts).toEqual(t.booking(TEST, plain.token).facts);
+  expect(p.extras).toEqual([]);
+  expect(p.summary).toEqual(t.booking(TEST, plain.token).set.mixes.share.summary);
+  expect(p.page).toEqual(t.booking(TEST, plain.token).page);
+  // `extras: []` is the same as no extras.
+  const empty = await newWedding(t);
+  expect(await t.signOk(TEST, empty.token, { signed_name: 'Elena Marchetti', extras: [] })).toMatchObject({ status: 200, body: { extras: [] } });
+  await t.settle();
+});
+
+test('sign refuses extras that are not tick boxes of the booking, and the text of another mix', async () => {
+  const t = setup();
+  const { token } = await newWedding(t);
+  const sign = (over: Record<string, unknown>) => t.sign(TEST, token, { signed_name: 'Elena Marchetti', text_hash: t.hashOf(TEST, token), ...over });
+  for (const extras of [['nope'], ['raw-photos-wedding', 'raw-photos-wedding'], 'raw-photos-wedding', {}, null, [42], [''], ['second-photographer'], ['drone']])
+    expect(await sign({ extras }), JSON.stringify(extras)).toMatchObject({ status: 400, body: { ok: false, error: 'bad_extras' } });
+  // The hash of another mix is a changed text.
+  const raw = ['raw-photos-wedding'];
+  expect(await sign({ extras: raw })).toMatchObject({ status: 409, body: { error: 'text_changed' } });
+  expect(await sign({ extras: raw, text_hash: t.hashOf(TEST, token, 'share', ['instax-guest-prints']) })).toMatchObject({ status: 409 });
+  expect(await sign({ extras: raw, text_hash: t.hashOf(TEST, token, 'private', raw) })).toMatchObject({ status: 409, body: { error: 'text_changed' } });
+  expect(await sign({ text_hash: t.hashOf(TEST, token, 'share', raw) })).toMatchObject({ status: 409, body: { error: 'text_changed' } });
+  // Checks keep their order: must_agree and bad_choice first, then bad_extras, then the text, then the name.
+  expect(await sign({ extras: ['nope'], agree: false })).toMatchObject({ status: 400, body: { error: 'must_agree' } });
+  expect(await sign({ extras: ['nope'], choice: 'both' })).toMatchObject({ status: 400, body: { error: 'bad_choice' } });
+  expect(await sign({ extras: ['nope'], text_hash: 'f'.repeat(64) })).toMatchObject({ status: 400, body: { error: 'bad_extras' } });
+  expect(await sign({ extras: ['nope'], signed_name: 'Daniel Okafor' })).toMatchObject({ status: 400, body: { error: 'bad_extras' } });
+  expect(await sign({ extras: raw, text_hash: t.hashOf(TEST, token, 'share', raw), signed_name: 'Daniel Okafor' })).toMatchObject({
+    status: 400,
+    body: { error: 'partner_cannot_sign' },
+  });
+  expect(t.signedRecord(TEST, token)).toBeUndefined();
+  expect(t.booking(TEST, token).status).toBe('sent');
+
+  // RAW photos booked up front are not a tick box of that booking.
+  const booked = await newWedding(t, WEDDING);
+  expect(await t.sign(TEST, booked.token, { signed_name: 'Elena Marchetti', extras: raw, text_hash: t.hashOf(TEST, booked.token) })).toMatchObject({
+    status: 400,
+    body: { error: 'bad_extras' },
+  });
+  // Once signed, any request answers with the signed record.
+  expect(await t.signOk(TEST, token, { signed_name: 'Elena Marchetti', extras: raw })).toMatchObject({ status: 200, body: { extras: raw } });
+  expect(await sign({ extras: ['nope'] })).toMatchObject({ status: 200, body: { already: true, extras: raw } });
+  await t.settle();
+});
+
+test('a booking made before sets signs only its two texts, with nothing ticked', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  const old = t.toOld(TEST, token);
+  const hash = old.variants.share.hash;
+  for (const extras of [['drone'], ['nope'], 'drone'])
+    expect(await t.sign(TEST, token, { text_hash: hash, extras }), JSON.stringify(extras)).toMatchObject({ status: 400, body: { error: 'bad_extras' } });
+  const r = await t.sign(TEST, token, { text_hash: hash, extras: [] });
+  expect(r).toMatchObject({ status: 200, body: { status: 'signed', extras: [] } });
+  const rec = t.signedRecord(TEST, token);
+  expect(rec.facts).toEqual(old.facts);
+  expect(rec.summary).toEqual(old.summary);
+  expect(rec).not.toHaveProperty('extras');
+  expect(rec).not.toHaveProperty('page');
+  expect(rec.final_doc_json.replace('10 November 2026', SIGN_DATE_TOKEN)).toBe(old.variants.share.doc_json);
+  await t.settle();
+});
+
+test('a package without page text: a set with today\'s summaries, and no page', async () => {
+  const pages = (pageJson as any).packages;
+  const civilPage = pages['civil-ceremony'];
+  delete pages['civil-ceremony'];
+  try {
+    const t = setup();
+    const { token } = await t.create(TEST);
+    const rec = t.booking(TEST, token);
+    expect(rec).not.toHaveProperty('page');
+    expect(Object.keys(rec.set.mixes)).toHaveLength(16);
+    expect(Object.keys(rec.set.mixes['share+drone'].summary)).toEqual(['package', 'date', 'total', 'retainer', 'balance', 'balance_how', 'etransfer_email']);
+    expect(rec.set.mixes['share+drone'].summary.total).toBe('$577.50');
+    const v2 = await v2Doc(t, token);
+    expect(v2.body.set).toEqual(rec.set);
+    expect(v2.body).not.toHaveProperty('page');
+    const r = await t.signOk(TEST, token, { extras: ['drone'] });
+    expect(r.status).toBe(200);
+    expect(t.signedRecord(TEST, token).extras).toEqual(['drone']);
+    expect(t.signedRecord(TEST, token)).not.toHaveProperty('page');
+    await t.settle();
+  } finally {
+    pages['civil-ceremony'] = civilPage;
+  }
+});
+
+test('storedVariant: the one way to a stored text, for both shapes of booking', async () => {
+  const t = setup();
+  const { token } = await newWedding(t);
+  const bk = t.booking(TEST, token);
+  const mix = storedVariant(bk, 'private', ['raw-photos-wedding', 'guest-camera'])!;
+  expect(mix.hash).toBe(bk.set.mixes['private+raw-photos-wedding+guest-camera'].hash);
+  expect(mix.doc_json).toBe(JSON.stringify(renderVariant(bk.facts, 'private', ['raw-photos-wedding', 'guest-camera'])));
+  expect(mix.summary).toEqual(bk.set.mixes['private+raw-photos-wedding+guest-camera'].summary);
+  // Extras must already be in tick box order; anything else is no mix.
+  expect(storedVariant(bk, 'private', ['guest-camera', 'raw-photos-wedding'])).toBeNull();
+  expect(storedVariant(bk, 'share', ['nope'])).toBeNull();
+  expect(storedVariant(bk, 'share', ['__proto__'])).toBeNull();
+  // A booking made before sets: its two texts, nothing ticked only, even if its facts listed tick boxes.
+  const old = { ...legacy(bk), facts: bk.facts };
+  expect(storedVariant(old, 'share', [])).toEqual(old.variants.share);
+  expect(storedVariant(old, 'private', [])).toEqual(old.variants.private);
+  expect(storedVariant(old, 'share', ['raw-photos-wedding'])).toBeNull();
+  expect(storedVariant(old, 'both' as any, [])).toBeNull();
+});
+
+test('pdf: x picks the mix, and the cache name carries the ticked ids', async () => {
+  const t = setup();
+  const { token } = await t.create(TEST);
+  t.replyWith(pdfAnswer());
+  const key = (name: string) => `agr:test:pdf:${token}:${name}`;
+  const r = await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=private&x=raw-photos-civil,drone`);
+  expect(r.status).toBe(200);
+  expect(r.bytes).toEqual(FAKE_PDF);
+  const mix = t.variantOf(TEST, token, 'private', ['drone', 'raw-photos-civil']);
+  expect(t.calls[0].fields.pdf_html).toBe(pdfDraftDocument(JSON.parse(mix.doc_json), { signDateText: '10 November 2026' }));
+  expect(t.calls[0].fields.pdf_html).toContain('Drone and aerial frames, 1 × $76.25 = $76.25; RAW photos, 1 × $69.25 = $69.25');
+  expect(t.kv.store.get(key('private+drone+raw-photos-civil:2026-11-10'))!.expirationTtl).toBe(172800);
+  // The same mix again comes from KV.
+  expect((await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=private&x=drone,raw-photos-civil`)).status).toBe(200);
+  expect(t.calls).toHaveLength(1);
+  // x missing or empty: nothing ticked, today's cache name.
+  expect((await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share&x=`)).status).toBe(200);
+  expect(t.kv.store.has(key('share:2026-11-10'))).toBe(true);
+  expect((await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share`)).status).toBe(200);
+  expect(t.calls).toHaveLength(2);
+  expect(t.calls[1].fields.pdf_html).toContain('<td class="agr-label">Add-ons chosen at booking</td><td>None</td>');
+
+  for (const x of ['nope', 'drone,drone', ',', 'drone,', 'second-photographer'])
+    expect(await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share&x=${x}`), x).toMatchObject({ status: 400, body: { ok: false, error: 'bad_extras' } });
+  // A bad choice is answered first.
+  expect(await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=both&x=nope`)).toMatchObject({ status: 400, body: { error: 'bad_choice' } });
+  expect(t.calls).toHaveLength(2);
+
+  // A booking made before sets has no mixes: only nothing ticked.
+  const old = await t.create(TEST);
+  const oldRec = t.toOld(TEST, old.token);
+  expect(await t.raw(TEST, `/r/agreement/pdf?k=${old.token}&c=share&x=drone`)).toMatchObject({ status: 400, body: { error: 'bad_extras' } });
+  expect((await t.raw(TEST, `/r/agreement/pdf?k=${old.token}&c=share&x=`)).status).toBe(200);
+  // Each sharing choice of an old booking downloads its own stored text.
+  expect(t.calls).toHaveLength(3);
+  expect(t.calls[2].fields.pdf_html).toBe(pdfDraftDocument(JSON.parse(oldRec.variants.share.doc_json), { signDateText: '10 November 2026' }));
+  expect((await t.raw(TEST, `/r/agreement/pdf?k=${old.token}&c=private`)).status).toBe(200);
+  expect(t.calls).toHaveLength(4);
+  expect(oldRec.variants.private.doc_json).not.toBe(oldRec.variants.share.doc_json);
+  expect(t.calls[3].fields.pdf_html).toBe(pdfDraftDocument(JSON.parse(oldRec.variants.private.doc_json), { signDateText: '10 November 2026' }));
+  expect(t.kv.store.has(`agr:test:pdf:${old.token}:private:2026-11-10`)).toBe(true);
+
+  // Signed: the signed copy, whatever x says.
+  await t.signOk(TEST, token, { extras: ['drone'] });
+  await t.settle();
+  t.replyWith(pdfAnswer());
+  const before = t.calls.length;
+  expect((await t.raw(TEST, `/r/agreement/pdf?k=${token}&c=share&x=nope`)).status).toBe(200);
+  expect(t.calls[before].fields.pdf_html).toBe(signedPdfHtml(t.signedRecord(TEST, token)));
+  expect(t.calls[before].fields.pdf_html).toContain('Drone and aerial frames, 1 × $76.25 = $76.25');
+});
+
+test('copy: ticked extras reach the email (the deposit line) and the Notes value of the sheet row', async () => {
+  const t = setup();
+  const { token } = await newWedding(t);
+  await t.signOk(TEST, token, { signed_name: 'Elena Marchetti', extras: ALL_WEDDING_TICKS });
+  await t.settle();
+  expect(t.calls).toHaveLength(1);
+  const f = t.calls[0].fields;
+  expect(Object.keys(f).sort()).toEqual(
+    ['action', 'token', 'test', 'booking_number', 'to_email', 'email_subject', 'email_body', 'pdf_html', 'pdf_name', 'row_json'].sort(),
+  );
+  expect(f.email_body).toBe(
+    [
+      'Hi Elena,',
+      '',
+      'Thank you for signing. Your signed agreement is attached as a PDF. Please keep it.',
+      '',
+      'Next step: send the retainer of $1,596.00 by Interac e-transfer to info@kashklicks.ca. Please put your booking number, KK-TEST-2026-001, in the message. Your date is held once the retainer arrives.',
+      '',
+      'The second payment of $798.00 is due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+      '',
+      'The final payment of $797.25 is due by Saturday 15 May 2027.',
+      '',
+      'Guest camera deposit: $100.00. Refundable, and not part of your total. Due with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+      '',
+      'If anything looks wrong, just reply to this email.',
+      '',
+      'Warmly,',
+      'Kash',
+      'AD Photography',
+      'kashklicks.ca',
+    ].join('\n'),
+  );
+  expect(f.email_subject + f.email_body).not.toMatch(/[–—]/);
+  const row = JSON.parse(f.row_json);
+  expect(Object.keys(row)).toEqual([
+    'Signed at', 'Booking number', 'Client', 'Partner', 'Email', 'Phone', 'Package', 'Event date',
+    'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version', 'Notes',
+  ]);
+  // The deposit is never in the total.
+  expect(row).toMatchObject({ Total: '$3,191.25', Retainer: '$1,596.00', Balance: '$1,595.25', Sharing: 'share' });
+  expect(row.Notes).toBe('Ticked at signing: RAW photos, Instax guest prints, Guest camera.');
+  expect(f.pdf_html).toContain('Guest camera deposit');
+
+  // A booking with notes keeps them first. No deposit ticked: no deposit line.
+  const civil = await t.create(TEST);
+  await t.signOk(TEST, civil.token, { extras: ['drone'] });
+  await t.settle();
+  const c = t.calls[1].fields;
+  expect(JSON.parse(c.row_json).Notes).toBe('Family group photos after the ceremony, inside your 2 hours. Ticked at signing: Drone and aerial frames.');
+  expect(JSON.parse(c.row_json)).toMatchObject({ Total: '$577.50', Retainer: '$289.00', Balance: '$288.50' });
+  expect(c.email_body).toContain('Next step: send the retainer of $289.00');
+  expect(c.email_body).toContain('The balance of $288.50 is due on or before the day, by e-transfer or cash.\n\nIf anything looks wrong');
+  expect(c.email_body).not.toContain('deposit');
+});
+
+test('copyFields never throws for a record with extras but no tick box list, or none at all', () => {
+  const base = buildBookingFacts(WEDDING_SECOND_ONLY, { number: 'KK-TEST-2026-001', createdAt: START });
+  const doc_json = JSON.stringify(renderVariant(base, 'share'));
+  const record = (facts: any) => ({
+    v: 1 as const,
+    mode: 'test' as const,
+    token: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJ0123456',
+    number: 'KK-TEST-2026-001',
+    choice: 'share' as const,
+    signed_name: 'Elena Marchetti',
+    signed_at: START.toISOString(),
+    signed_date_text: '10 November 2026',
+    presented_hash: 'ab'.repeat(32),
+    final_doc_json: doc_json.replace(SIGN_DATE_TOKEN, '10 November 2026'),
+    final_hash: 'cd'.repeat(32),
+    clause_version: 'x',
+    facts,
+    link_created_at: START.toISOString(),
+    ip: null,
+    user_agent: null,
+    cf_ray: null,
+    country: null,
+  });
+  const { tick_boxes: _t, ...noTicks } = factsFor(base, 'share', ['instax-guest-prints']);
+  expect(JSON.parse(copyFields({}, record(noTicks)).row_json).Notes).toBe('Ticked at signing: instax-guest-prints.');
+  const odd = { ...base, extras: 'not a list', deposits: 'not a list' };
+  expect(JSON.parse(copyFields({}, record(odd)).row_json).Notes).toBe('');
+  expect(copyFields({}, record(odd)).email_body).toBe(copyFields({}, record(base)).email_body);
+  // Damaged entries inside the lists are skipped, never thrown on.
+  const ticked = factsFor(base, 'share', ['instax-guest-prints', 'guest-camera']);
+  const damaged = {
+    ...ticked,
+    deposits: [null, 5, 'x', {}, { label: 'No amount', note: 'n' }, ...ticked.deposits!],
+    tick_boxes: [null, 5, {}, ...ticked.tick_boxes!],
+  };
+  const fields = copyFields({}, record(damaged));
+  expect(fields.email_body).toBe(copyFields({}, record(ticked)).email_body);
+  expect(fields.email_body.split('Guest camera deposit: $100.00.')).toHaveLength(2);
+  expect(JSON.parse(fields.row_json).Notes).toBe('Ticked at signing: Instax guest prints, Guest camera.');
 });

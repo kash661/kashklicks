@@ -43,6 +43,28 @@ const balanceLines = (f: SignedRecord['facts']): string[] => {
   ];
 };
 
+/**
+ * A refundable deposit ticked at signing (never in the total): one line each, after the payment lines.
+ * Facts without deposits (every record made before tick boxes) give none. Never throws.
+ */
+const depositLines = (f: SignedRecord['facts']): string[] =>
+  (Array.isArray(f.deposits) ? f.deposits : [])
+    // A damaged entry is skipped: no half line in a client email.
+    .filter((d) => d !== null && typeof d === 'object' && typeof d.label === 'string' && typeof d.note === 'string' && Number.isFinite(d.amount))
+    .flatMap((d) => ['', `${d.label}: ${money(d.amount)}. ${d.note}`]);
+
+/**
+ * The sheet's Notes value: the booking note, then the labels of the extras ticked at signing, so the
+ * owner sees them (the Contracts tab has no column for them, and Apps Script drops unknown keys).
+ * Facts without extras give the note as before. Never throws.
+ */
+const notesValue = (f: SignedRecord['facts']): string => {
+  const ticked = Array.isArray(f.extras) ? f.extras : [];
+  if (ticked.length === 0) return f.notes;
+  const labels = ticked.map((id) => (Array.isArray(f.tick_boxes) ? f.tick_boxes.find((t) => t?.id === id)?.label : undefined) ?? String(id));
+  return [f.notes, `Ticked at signing: ${labels.join(', ')}.`].filter(Boolean).join(' ');
+};
+
 /** The fields of the agreement_signed call. Exported for the contract test against the real Apps Script. */
 export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, string> {
   const f = s.facts;
@@ -55,6 +77,7 @@ export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, s
     `Next step: send the retainer of ${money(f.retainer)} by Interac e-transfer to ${BUSINESS.etransferEmail}. Please put your booking number, ${s.number}, in the message. Your date is held once the retainer arrives.`,
     '',
     ...balanceLines(f),
+    ...depositLines(f),
     '',
     'If anything looks wrong, just reply to this email.',
     '',
@@ -80,7 +103,7 @@ export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, s
     'Signed name': s.signed_name,
     'Text hash': s.final_hash,
     'Clause version': s.clause_version,
-    Notes: f.notes,
+    Notes: notesValue(f),
   };
   return {
     action: 'agreement_signed',

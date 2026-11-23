@@ -2,7 +2,10 @@
 // signed record that is never read for a decision). D1 holds the signed record and
 // is the only truth for "is this booking signed": its primary key makes the insert
 // atomic, which KV cannot do.
-import type { BookingFacts, Choice } from '../lib/agreement/types';
+import { docJsonFromSet, mixId } from '../lib/agreement/set';
+import type { BookingFacts, Choice, PageContent, StoredSummary } from '../lib/agreement/types';
+
+export type { PageContent, StoredSummary };
 
 export type Mode = 'live' | 'test';
 
@@ -31,20 +34,20 @@ export interface StoredLabels {
   after_signing: { title: string; text: string };
   name_expected: string;
 }
-export interface StoredSummary {
-  package: string;
-  date: string;
-  total: string;
-  retainer: string;
-  balance: string;
-  // How the balance is paid: 'in cash' or 'e-transfer or cash'. Missing on summaries stored before it existed.
-  balance_how?: string;
-  etransfer_email: string;
-  // A booking paid in three parts: the second and the final payment, ready to show. Missing on every
-  // other booking, and on summaries stored before it existed. When present, the page shows these instead of the balance.
-  later_payments?: { label: string; text: string }[];
+// StoredSummary lives in src/lib/agreement/types.ts (page.ts builds it) and is re-exported above.
+
+/**
+ * Every finished document of a booking: a pool of exact JSON text fragments, and per mix (its id, see
+ * mixId) the index list that rebuilds its text with docJsonFromSet, the hash of that text (sign date
+ * token still inside) and the amounts of that mix, ready to show.
+ */
+export interface StoredSet {
+  pool: string[];
+  mixes: Record<string, { f: number[]; hash: string; summary: StoredSummary }>;
 }
 
+// Old and new bookings are told apart by `set`: a booking made before sets has `variants` (and its
+// summaries at the top level) instead. Both stay v: 1.
 export interface BookingRecord {
   v: 1;
   mode: Mode;
@@ -59,11 +62,17 @@ export interface BookingRecord {
   not_yet_messages?: { at: string; text: string; sent?: boolean; tries?: number }[];
   facts: BookingFacts;
   clause_version: string;
-  variants: Record<Choice, { doc_json: string; hash: string }>; // hash = sha256Hex(doc_json), date token still inside
+  // Only on bookings made before sets: the two nothing ticked texts. hash = sha256Hex(doc_json), date token still inside.
+  variants?: Record<Choice, { doc_json: string; hash: string }>;
+  // Every booking made since: all mixes, with their summaries. Read a text only through storedVariant.
+  set?: StoredSet;
+  // The frozen page content, when the package has page text.
+  page?: PageContent;
   // Frozen at creation. Missing on bookings made before they were stored: those compute them.
   labels?: StoredLabels;
+  // Only on bookings made before sets (a set holds one summary per mix). Missing on the oldest ones.
   summary?: StoredSummary;
-  // Only for a booking with a fee for private work: the summary of the private choice. `summary` is the share one.
+  // Only for a booking made before sets with a fee for private work: the summary of the private choice. `summary` is the share one.
   summary_private?: StoredSummary;
   // notice_sent: unset until a refused copy first tries the owner notice; then whether that notice went out.
   copy: { status: 'none' | 'pending' | 'sent'; attempts: number; last_attempt_at?: string; sent_at?: string; notice_sent?: boolean };
@@ -91,6 +100,26 @@ export interface SignedRecord {
   // What the page showed around the text (tick box wording, options, summary). Missing on older records.
   labels?: StoredLabels;
   summary?: StoredSummary;
+  // Only for a booking with a set: the extras ticked at signing (ids, tick box order; [] when none),
+  // and the page content as stored with the booking.
+  extras?: string[];
+  page?: PageContent;
+}
+
+/**
+ * The stored document of one mix, or null when the booking has no such mix. Stored values only: the one
+ * way to reach a document. A booking made before sets has only its two nothing ticked texts (no summary
+ * here: those bookings keep theirs at the top level). extras must be in tick box order.
+ */
+export function storedVariant(bk: BookingRecord, choice: Choice, extras: string[]): { doc_json: string; hash: string; summary?: StoredSummary } | null {
+  if (bk.set) {
+    const id = mixId(choice, extras);
+    const m = Object.hasOwn(bk.set.mixes, id) ? bk.set.mixes[id] : undefined;
+    return m ? { doc_json: docJsonFromSet(bk.set.pool, m.f), hash: m.hash, summary: m.summary } : null;
+  }
+  if (extras.length > 0 || (choice !== 'share' && choice !== 'private')) return null;
+  const v = bk.variants?.[choice];
+  return v ? { doc_json: v.doc_json, hash: v.hash } : null;
 }
 
 /** A read (or a needed write) failed: the route answers 503 storage_unavailable. */

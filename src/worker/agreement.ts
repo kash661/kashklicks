@@ -4,9 +4,11 @@
 // in D1, whose atomic insert means a link is signed once and never overwritten, and
 // an upstream failure never loses a signature. Live and test data never mix.
 import { longDate, money, shortDate, torontoIsoDate, torontoStamp } from '../lib/agreement/format';
-import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, factsFor, fillSignDate, laterPaymentRows, renderVariant, signLabels } from '../lib/agreement/render';
+import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, buildVariantSet, factsFor, fillSignDate, laterPaymentRows, signLabels } from '../lib/agreement/render';
+import { mixSummaries, pageContent } from '../lib/agreement/page';
+import { docJsonFromSet, mixId } from '../lib/agreement/set';
 import { sha256Hex } from '../lib/agreement/hash';
-import type { BookingFacts, Choice } from '../lib/agreement/types';
+import type { AgreementDoc, BookingFacts, Choice } from '../lib/agreement/types';
 import { BUSINESS, claimAttempt, copyDue, firstWord, sendCopy, signedPdfHtml } from './agreement-copy';
 import { pdfDraftDocument } from '../lib/agreement/html';
 import {
@@ -22,6 +24,7 @@ import {
   putBookingQuietly,
   putSignedBackup,
   selectSigned,
+  storedVariant,
   ttl,
   type AgreementEnv,
   type BookingRecord,
@@ -29,6 +32,7 @@ import {
   type SignedRecord,
   type Store,
   type StoredLabels,
+  type StoredSet,
   type StoredSummary,
 } from './agreement-store';
 import { JSON_HEADERS, callAppsScript, isPreviewHost, isSameOrigin } from './shared';
@@ -159,13 +163,44 @@ const summaryOf = (f: BookingFacts): StoredSummary => {
   };
 };
 
-/** The private summary of a booking with a fee for private work, or undefined. Stored ones first. */
-const privateSummaryOf = (bk: BookingRecord): StoredSummary | undefined =>
-  bk.facts.private_fee === undefined ? undefined : (bk.summary_private ?? summaryOf(factsFor(bk.facts, 'private')));
+/** The stored summary of one mix of a booking with a set. A set without that mix is a broken record. */
+const setSummary = (bk: BookingRecord, set: StoredSet, choice: Choice, extras: string[] = []): StoredSummary => {
+  const id = mixId(choice, extras);
+  if (!Object.hasOwn(set.mixes, id)) throw new Error(`booking ${bk.number}: no stored mix ${id}`);
+  return set.mixes[id].summary;
+};
 
-/** The summary of one sharing choice: the private one when the booking has a fee for private work, else the usual one. */
-const summaryFor = (bk: BookingRecord, choice: Choice): StoredSummary =>
-  (choice === 'private' ? privateSummaryOf(bk) : undefined) ?? bk.summary ?? summaryOf(bk.facts);
+/** The private summary (nothing ticked) of a booking with a fee for private work, or undefined. Stored ones first. */
+const privateSummaryOf = (bk: BookingRecord): StoredSummary | undefined => {
+  if (bk.facts.private_fee === undefined) return undefined;
+  if (bk.set) return setSummary(bk, bk.set, 'private');
+  return bk.summary_private ?? summaryOf(factsFor(bk.facts, 'private'));
+};
+
+/**
+ * The summary of one sharing choice with nothing ticked. A booking with a set: that mix's stored summary.
+ * A booking made before sets: the private one when it has a fee for private work, else the usual one.
+ */
+const summaryFor = (bk: BookingRecord, choice: Choice): StoredSummary => {
+  if (bk.set) return setSummary(bk, bk.set, choice);
+  return (choice === 'private' ? privateSummaryOf(bk) : undefined) ?? bk.summary ?? summaryOf(bk.facts);
+};
+
+/**
+ * The extras a request ticked, in tick box order (missing = none), or null when they are not a list of
+ * distinct ids that this booking still offers (bk.facts.tick_boxes). A booking made before sets offers none.
+ */
+const canonicalExtras = (bk: BookingRecord, extras: unknown): string[] | null => {
+  if (extras === undefined) return [];
+  if (!Array.isArray(extras)) return null;
+  const offered = (bk.facts.tick_boxes ?? []).map((t) => t.id);
+  const picked = new Set<string>();
+  for (const id of extras) {
+    if (typeof id !== 'string' || picked.has(id) || !offered.includes(id)) return null;
+    picked.add(id);
+  }
+  return offered.filter((id) => picked.has(id));
+};
 
 const labelsOf = (f: BookingFacts): StoredLabels => ({ ...signLabels(f), name_expected: f.client_name });
 
@@ -182,6 +217,8 @@ function signedPayload(bk: BookingRecord, s: SignedRecord) {
     client_name: s.facts.client_name,
     partner_name: s.facts.partner_name,
     signed: { choice: s.choice, signed_name: s.signed_name, date, time, final_doc_json: s.final_doc_json, final_hash: s.final_hash },
+    // The extras ticked at signing (ids). Records made before sets have none.
+    extras: s.extras ?? [],
     summary: s.summary ?? summaryOf(s.facts),
     labels: s.labels ?? labelsOf(s.facts),
     copy: { status: bk.copy.status === 'none' ? 'pending' : bk.copy.status, to: s.facts.client_email },
@@ -200,8 +237,9 @@ async function followUpSigned(s: Store, env: AgreementEnv, ctx: Ctx, deps: Agree
 async function newBooking(s: Store, body: Record<string, unknown>): Promise<Response> {
   const createdAt = s.now();
   // Check the input before a number is used up: a rejected request never advances the sequence.
+  let checked: BookingFacts;
   try {
-    buildBookingFacts(body, { number: s.mode === 'test' ? 'KK-TEST-0000-000' : 'KK-0000-000', createdAt });
+    checked = buildBookingFacts(body, { number: s.mode === 'test' ? 'KK-TEST-0000-000' : 'KK-0000-000', createdAt });
   } catch (err) {
     if (err instanceof BookingError) return json(400, { ok: false, error: err.code, field: err.field });
     throw err;
@@ -222,17 +260,26 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
   }
   if (!number) return fail(500, 'number_unavailable');
 
-  const facts = buildBookingFacts(body, { number, createdAt });
-  const variants = {} as BookingRecord['variants'];
-  let clause_version = '';
-  for (const choice of ['share', 'private'] as const) {
-    const doc = renderVariant(facts, choice);
-    const doc_json = JSON.stringify(doc);
+  // The same input and the same time as the check: only the number differs, and buildBookingFacts only
+  // copies it into `number` (the key keeps its place, so the stored facts are byte for byte the same).
+  const facts: BookingFacts = { ...checked, number };
+  // Every finished text exists now, with its hash and its amounts: doc and sign only read them back.
+  const built = buildVariantSet(facts);
+  const texts = built.mixes.map((m) => {
+    const doc_json = docJsonFromSet(built.pool, m.f);
     // Signing fills the date into exactly one place; refuse a text that could not be signed.
-    if (doc_json.split(SIGN_DATE_TOKEN).length !== 2) throw new Error(`${choice} variant has no single sign date`);
-    variants[choice] = { doc_json, hash: await sha256Hex(doc_json) };
-    clause_version = doc.clause_version;
-  }
+    if (doc_json.split(SIGN_DATE_TOKEN).length !== 2) throw new Error(`mix ${m.id} has no single sign date`);
+    return doc_json;
+  });
+  const hashes = await Promise.all(texts.map((doc_json) => sha256Hex(doc_json)));
+  const set: StoredSet = { pool: built.pool, mixes: {} };
+  // mixSummary of every mix in one call: today's summary for a package without page text, and more for one with it.
+  const summaries = mixSummaries(facts, built.mixes);
+  built.mixes.forEach((m, i) => (set.mixes[m.id] = { f: m.f, hash: hashes[i], summary: summaries[i] }));
+  // head + tail of a mix is its document with no sections: small to parse, same clause_version.
+  const first = built.mixes[0].f;
+  const { clause_version } = JSON.parse(built.pool[first[0]] + built.pool[first[first.length - 1]]) as AgreementDoc;
+  const page = pageContent(facts);
 
   const token = newToken();
   const bk: BookingRecord = {
@@ -244,12 +291,11 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     created_at: createdAt.toISOString(),
     facts,
     clause_version,
-    variants,
+    set,
+    ...(page === null ? {} : { page }),
     copy: { status: 'none', attempts: 0 },
     // Frozen with the text: a later change to the data files never changes this link.
     labels: labelsOf(facts),
-    summary: summaryOf(facts),
-    ...(facts.private_fee === undefined ? {} : { summary_private: summaryOf(factsFor(facts, 'private')) }),
   };
   // Booking first, then its number, then the sequence. A crash in between leaves a used
   // number behind, which the next booking skips.
@@ -275,6 +321,8 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     ...(facts.second_payment === undefined ? {} : { second_payment: facts.second_payment, final_payment: facts.final_payment }),
     // Only for a booking with a fee for private work: the amounts if they choose private.
     ...(facts.private_fee === undefined ? {} : privateAnswer(facts)),
+    // Only for a booking with tick boxes: what the couple can still tick at signing.
+    ...(facts.tick_boxes === undefined ? {} : { tick_boxes: facts.tick_boxes.map(({ id, kind, label, amount }) => ({ id, kind, label, amount })) }),
   });
 }
 
@@ -320,6 +368,9 @@ async function readDoc(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDep
   }
   const f = bk.facts;
   const summaryPrivate = privateSummaryOf(bk);
+  // v=2, for a booking with a set: the whole set and the page content instead of the two full texts.
+  // Without it (old page scripts, smoke.mjs) and for a booking made before sets: today's shape.
+  const withSet = bk.set !== undefined && url.searchParams.get('v') === '2';
   return json(200, {
     ok: true,
     status: bk.status,
@@ -330,13 +381,22 @@ async function readDoc(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDep
     partner_first: firstWord(f.partner_name),
     client_name: f.client_name,
     partner_name: f.partner_name,
-    variants: { share: bk.variants.share, private: bk.variants.private },
+    ...(withSet ? {} : { variants: { share: nothingTicked(bk, 'share'), private: nothingTicked(bk, 'private') } }),
     labels: bk.labels ?? labelsOf(f),
-    summary: bk.summary ?? summaryOf(f),
+    // Nothing ticked, share.
+    summary: summaryFor(bk, 'share'),
     // Only for a booking with a fee for private work.
     ...(summaryPrivate ? { summary_private: summaryPrivate } : {}),
+    ...(withSet ? { set: bk.set, ...(bk.page ? { page: bk.page } : {}) } : {}),
   });
 }
+
+/** One of the two nothing ticked texts, as the doc answer has always given them. */
+const nothingTicked = (bk: BookingRecord, choice: Choice): { doc_json: string; hash: string } => {
+  const v = storedVariant(bk, choice, []);
+  if (!v) throw new Error(`booking ${bk.number}: no stored ${choice} text`);
+  return { doc_json: v.doc_json, hash: v.hash };
+};
 
 /** The bytes of a base64 PDF, or null when it is not one of a sensible size. One plain loop: Workers have little CPU time. */
 const pdfBytes = (b64: string): Uint8Array | null => {
@@ -371,11 +431,17 @@ async function readPdf(s: Store, env: AgreementEnv, deps: AgreementDeps, url: UR
     if (bk.status === 'void') return fail(410, 'void');
     const c = url.searchParams.get('c');
     if (c !== 'share' && c !== 'private') return fail(400, 'bad_choice');
+    // x: the ticked extras, comma separated; missing or empty = none. The same check as signing.
+    const x = url.searchParams.get('x');
+    const extras = canonicalExtras(bk, x === null || x === '' ? [] : x.split(','));
+    const presented = extras && storedVariant(bk, c, extras);
+    if (!extras || !presented) return fail(400, 'bad_extras');
     const now = s.now();
-    cacheName = `${c}:${torontoIsoDate(now)}`;
+    // Nothing ticked: `share:<date>` as before; else the mix id, as `share+drone:<date>`.
+    cacheName = `${mixId(c, extras)}:${torontoIsoDate(now)}`;
     filename = `AD Photography agreement ${bk.number} (not signed).pdf`;
     expirationTtl = PDF_TTL_UNSIGNED;
-    html = () => pdfDraftDocument(JSON.parse(bk.variants[c].doc_json), { signDateText: shortDate(now) });
+    html = () => pdfDraftDocument(JSON.parse(presented.doc_json) as AgreementDoc, { signDateText: shortDate(now) });
   }
 
   const key = s.key.pdf(bk.token, cacheName);
@@ -431,7 +497,10 @@ async function sign(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, 
   if (body.agree !== true) return fail(400, 'must_agree');
   const choice = body.choice;
   if (choice !== 'share' && choice !== 'private') return fail(400, 'bad_choice');
-  const presented = bk.variants[choice];
+  // The extras ticked at signing; missing = nothing ticked (old page scripts send none).
+  const extras = canonicalExtras(bk, body.extras);
+  const presented = extras && storedVariant(bk, choice, extras);
+  if (!extras || !presented) return fail(400, 'bad_extras');
   if (body.text_hash !== presented.hash) return fail(409, 'text_changed');
   const typed = typeof body.signed_name === 'string' ? body.signed_name.replace(CONTROL, ' ').replace(/\s+/g, ' ').trim() : '';
   const typedKey = nameKey(typed);
@@ -456,8 +525,8 @@ async function sign(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, 
     final_doc_json,
     final_hash: await sha256Hex(final_doc_json),
     clause_version: bk.clause_version,
-    // The amounts of the signed choice: with a fee for private work, private has its own total.
-    facts: factsFor(bk.facts, choice),
+    // The amounts of the signed mix: a fee for private work and ticked extras give their own total.
+    facts: factsFor(bk.facts, choice, extras),
     link_created_at: bk.created_at,
     ip: header(request, 'cf-connecting-ip', 64),
     user_agent: header(request, 'user-agent'),
@@ -465,7 +534,9 @@ async function sign(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, 
     country: (request as unknown as { cf?: { country?: string } }).cf?.country ?? header(request, 'cf-ipcountry', 8),
     // The wording shown around the text, as the page showed it.
     labels: bk.labels ?? labelsOf(bk.facts),
-    summary: summaryFor(bk, choice),
+    summary: presented.summary ?? summaryFor(bk, choice),
+    // A booking with a set: what was ticked, and the page content it was shown.
+    ...(bk.set ? { extras, ...(bk.page ? { page: bk.page } : {}) } : {}),
   };
 
   // The one write that makes it signed: an insert that does nothing when a row exists.

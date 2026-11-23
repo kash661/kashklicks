@@ -8,6 +8,7 @@
 // Refuses any origin but https://<name>-kashklicks.<account>.workers.dev, so it can never
 // make a live booking or send the admin token anywhere else.
 // It makes ONE test booking for invented people (Priya Sharma and Arjun Mehta), reads it,
+// reads it again as the new page does (v=2: every mix of its tick boxes, rebuilt and hashed here),
 // signs it the way the page does, tries to sign it again with the other choice, and reads it
 // again. One line per step, PASS or FAIL. Exit 1 on any FAIL.
 // Tokens are printed as their first 6 characters only. The admin token is never printed.
@@ -142,6 +143,31 @@ if (!docOk) {
   console.log('FAIL  remaining steps skipped (doc not readable)');
   process.exit(1);
 }
+
+// 2b. Read it again as the new page does (v=2): the set of every mix (sharing choice x ticked extras).
+// Each mix is rebuilt the way src/lib/agreement/set.ts does it, and must give its own hash. The
+// nothing ticked mixes, `share` and `private`, are exactly the two texts of the first read.
+const docJsonFromSet = (pool, f) => {
+  if (!Array.isArray(f) || f.length < 2 || !f.every((i) => Number.isInteger(i) && typeof pool[i] === 'string')) return null;
+  return pool[f[0]] + f.slice(1, -1).map((i) => pool[i]).join(',') + pool[f[f.length - 1]];
+};
+const docV2 = await call(`/r/agreement/doc?k=${encodeURIComponent(k)}&v=2`);
+const set = docV2.body?.set;
+let mixes = 0;
+let mixWhy = '';
+if (docV2.status !== 200 || docV2.body?.ok !== true) mixWhy = why(docV2);
+else if (!Array.isArray(set?.pool) || !set.mixes || typeof set.mixes !== 'object') mixWhy = 'no set in the v=2 answer';
+else {
+  for (const [id, m] of Object.entries(set.mixes)) {
+    mixes += 1;
+    const text = docJsonFromSet(set.pool, m?.f);
+    // A mix id names sharing choice and add-on ids only, never a person.
+    if (text === null || sha256Hex(text) !== m.hash) mixWhy ||= `mix ${id} does not match its hash`;
+  }
+  if (!mixWhy && (set.mixes.share?.hash !== share.hash || set.mixes.private?.hash !== priv.hash))
+    mixWhy = 'share or private differs from the first read';
+}
+report(mixWhy ? 'every mix has its own exact text' : `every mix has its own exact text (${mixes} mixes)`, !mixWhy, mixWhy);
 
 // 3. Sign with "share": the fingerprint is the SHA-256 of the chosen doc_json, as the page sends it.
 const s1 = await postSign({ k, choice: 'share', signed_name: PILOT.client_name, agree: true, text_hash: sha256Hex(share.doc_json) });

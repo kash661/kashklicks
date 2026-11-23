@@ -1,0 +1,191 @@
+{
+  "note": "The main points help you read. The full wording is what we both agree to.",
+  "packages": {
+    "wedding-full": {
+      "title": "Your wedding agreement",
+      "lede": [
+        "Everything we agreed, in plain words.",
+        "Seven short parts. Most parts start with the main points, and the full wording is one tap away. The full wording is the agreement, so please read it before you sign. You sign at the end."
+      ],
+      "glance": [
+        { "label": "Date", "value": "{{EVENT_DATE}}" },
+        { "label": "Coverage", "value": "{{HOURS}}, {{START}} to {{END}}" },
+        { "label": "Photographers", "value": "{{WHO}}, and a second photographer for all {{HOURS}}", "when": "second:all" },
+        { "label": "Photographers", "value": "{{WHO}}, and a second photographer for {{SECOND_HOURS}}", "when": "second:base" },
+        { "label": "Photographers", "value": "{{WHO}}, and a second photographer for {{SECOND_HOURS}}", "when": "second:part" }
+      ],
+      "points": {
+        "1": [
+          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block, from {{START}} to {{END}}." },
+          { "text": "Where: {{PLACE}}." },
+          { "text": "I photograph your day myself. A second photographer is with me for all {{HOURS}}.", "when": "second:all" },
+          { "text": "I photograph your day myself. A second photographer joins for {{SECOND_HOURS}}, for the ceremony or the reception. You choose.", "when": "second:base" },
+          { "text": "I photograph your day myself. A second photographer joins for {{SECOND_HOURS}} in one block. You choose which part of the day.", "when": "second:part" },
+          { "text": "Also agreed: {{NOTES}}", "when": "notes" },
+          { "text": "Please send me your final timeline, your addresses and your family photo list at least 14 days before." },
+          { "text": "If the day runs late and I am able to stay, overtime is {{OT_RATE}} an hour, billed in 30 minute blocks of {{OT_BLOCK}}. It starts only after a yes from you or your contact person." },
+          { "text": "This agreement is between you, {{CLIENT_NAME}}, and me, {{BUSINESS_LEGAL_NAME}}, operating as {{TRADE_1}} and {{TRADE_2}}. You sign for {{PARTNER_NAME}} too. My phone is {{BUSINESS_PHONE}} and my email is {{BUSINESS_EMAIL}}." }
+        ],
+        "2": [
+          { "text": "At least 400 edited photos in a private online gallery." },
+          { "text": "A short preview within 24 hours of your wedding." },
+          { "text": "Your edited photos by {{DELIVERY_DATE}}, which is within 3 months of your wedding." },
+          { "text": "Your gallery stays online for 90 days. Please download your photos and keep your own backup." },
+          { "text": "An engagement session: {{ENGAGEMENT_DESC}}. Please use it at least 30 days before your wedding." },
+          { "text": "I bring backup cameras. My main cameras save every photo to two memory cards at the same time." }
+        ],
+        "3": [
+          { "text": "You pay by e-transfer to {{ETRANSFER_EMAIL}}." },
+          { "text": "The retainer is not refunded if you cancel, except in the cases part 6 lists." },
+          { "text": "If a payment is late, I send you a written reminder. If it is still not paid 3 days after the reminder, I may treat it as a cancellation by you." },
+          { "text": "If you choose to keep your photos private in part 5, a marketing fee of {{PRIVATE_FEE}} is added to your total.", "when": "fee" },
+          { "text": "Costs that can come on top, only if they happen: overtime ({{OT_RATE}} an hour), a second change of date ($500.00), and any extra you add later." },
+          { "text": "Costs at the places of your day: my parking at every location and any entry fee or ferry ticket at a place you choose (all at cost), a permit or written permission if a place needs one (you arrange it and pay for it), and travel outside the GTA ($0.75 per km). For travel far away or outside Canada I send you a written quote first. Flights, nights away and transport are then charged at cost." },
+          { "text": "All prices are in Canadian dollars." }
+        ],
+        "4": [],
+        "5": [
+          { "text": "Once you have paid in full, you can print your photos, share them with family and friends, and post them on your personal social media. I keep the copyright." },
+          { "text": "A business needs my written permission to use them. Examples are your venue or a magazine. Please send them to me." },
+          { "text": "RAW files are not part of the package. You can add them in part 4, or ask me in writing and pay within 30 days of your final delivery.", "when": "tickable:raw-photos-wedding" },
+          { "text": "RAW files are in your booking. They are in your total in part 3.", "when": "booked:raw-photos-wedding" }
+        ],
+        "6": [
+          { "text": "You can move your date once at no cost, if I am free on the new date and it is within 12 months of your original date. A second change costs $500.00." },
+          { "text": "If you cancel for a covered reason, such as serious illness or the wedding being called off, I refund a share of what you have paid. More than 180 days before your wedding: 80%. 90 to 180 days: 60%. 60 to 89 days: 40%. 30 to 59 days: 20%. Fewer than 30 days: no refund is owed. The full list of covered reasons is in section 16." },
+          { "text": "If you cancel for any other reason, the retainer is not refunded. I refund a share of what you paid beyond the retainer, using the same list." },
+          { "text": "If your engagement session has already been photographed, its value of {{ENGAGEMENT_VALUE}} is taken off what you paid before I work out a refund." },
+          { "text": "If I cannot come, I first try to send a photographer I trust, at the same price. You can say no. If that does not work, I refund everything you paid." },
+          { "text": "If I cannot deliver any of your photos because of a problem on my side, I refund everything you paid. If only a part is lost, I refund a fair share. My responsibility is limited to the amount you have paid me. The rights that Ontario's Consumer Protection Act gives you stay in place." },
+          { "text": "Your wedding goes ahead in any weather. If it rains, I use covered and indoor spots. Weather is not a reason for a refund." },
+          { "text": "If we disagree, we first try to solve it together. The law of Ontario applies." }
+        ],
+        "7": [
+          { "text": "One of you signs for both of you. By signing, you confirm that your partner has read this agreement and agrees to it." },
+          { "text": "By signing, you confirm that you are 18 or older." },
+          { "text": "A change to this agreement needs both of us, in writing. Email or WhatsApp is enough." },
+          { "text": "You get a PDF copy by email right after you sign." }
+        ]
+      },
+      "totalLine": "Your total is {{TOTAL}}. It stays the same even if my website prices change later.",
+      "steps": [
+        { "title": "When you sign", "amount": "{{RETAINER}}", "note": "Your date is held once this arrives." },
+        { "title": "After your engagement photos", "amount": "{{SECOND}}", "note": "Due 7 days after I deliver them. If you have not had the session by {{SECOND_DUE}}, it is due on that date." },
+        { "title": "By {{FINAL_DUE}}", "amount": "{{FINAL}}", "note": "14 days before your wedding." }
+      ],
+      "extras": {
+        "intro": "These are added only if you tick them. Your total updates right away.",
+        "bookedTitle": "Already in your total",
+        "ticks": {
+          "raw-photos-wedding": "The files straight from my cameras, before any editing.",
+          "instax-guest-prints": "50 instant prints, made on your wedding day.",
+          "guest-camera": "A small Sony camera that one of your guests carries for the day. There is no fee, only a deposit that is not part of your total. You pay it with your final payment. I return it within 7 days after your wedding, when the camera comes back working and undamaged."
+        },
+        "moreTitle": "More extras. Ask me in writing before the wedding.",
+        "more": [
+          { "id": "extra-hours-wedding", "text": "Additional hours, {{PRICE}} per hour" },
+          { "id": "drone", "text": "Drone and aerial frames, {{PRICE}}", "when": "open:drone" },
+          { "id": "priority-delivery-wedding", "text": "Priority delivery, {{PRICE}}, your full gallery within 3 weeks of your wedding" },
+          { "text": "A wedding film, quoted for your wedding" }
+        ]
+      },
+      "sharing": {
+        "legend": "May I share some of your photos?",
+        "points": [
+          "Sharing means I may show a selection of your photos and film, with your first names, on my website, my social media and my Google business profile, in printed samples, in submissions to publications and competitions, and in paid ads.",
+          "I do not share your last name, your contact details or your home address, and I do not tag you without asking.",
+          "You can change your mind at any time. Tell me in writing. Within 30 days I take your work off my website and my social media pages, and I stop using it in new posts and ads.",
+          "I cannot take back printed material, or copies that other people have already saved or published."
+        ]
+      }
+    },
+    "civil-ceremony": {
+      "title": "Your agreement",
+      "lede": [
+        "Everything we agreed, in plain words.",
+        "Seven short parts. Most parts start with the main points, and the full wording is one tap away. The full wording is the agreement, so please read it before you sign. You sign at the end."
+      ],
+      "glance": [
+        { "label": "Date", "value": "{{EVENT_DATE}}" },
+        { "label": "Coverage", "value": "{{HOURS}}, {{START}} to {{END}}" },
+        { "label": "Photographer", "value": "{{WHO}}" }
+      ],
+      "points": {
+        "1": [
+          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block, from {{START}} to {{END}}." },
+          { "text": "Where: {{PLACE}}." },
+          { "text": "I photograph your ceremony myself." },
+          { "text": "Also agreed: {{NOTES}}", "when": "notes" },
+          { "text": "Please send me your final timeline, your addresses and your family photo list at least 14 days before." },
+          { "text": "If the day runs late and I am able to stay, overtime is {{OT_RATE}} an hour, billed in 30 minute blocks of {{OT_BLOCK}}. It starts only if you say yes." },
+          { "text": "This agreement is between you, {{CLIENT_NAME}}, and me, {{BUSINESS_LEGAL_NAME}}, operating as {{TRADE_1}} and {{TRADE_2}}. You sign for {{PARTNER_NAME}} too. My phone is {{BUSINESS_PHONE}} and my email is {{BUSINESS_EMAIL}}." }
+        ],
+        "2": [
+          { "text": "The ceremony, and couple portraits near the venue." },
+          { "text": "At least 150 edited photos in a private online gallery." },
+          { "text": "Your edited photos by {{DELIVERY_DATE}}, which is within 4 weeks of your ceremony." },
+          { "text": "Your gallery stays online for 90 days. Please download your photos and keep your own backup." },
+          { "text": "I bring backup cameras. My main cameras save every photo to two memory cards at the same time." }
+        ],
+        "3": [
+          { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. The balance can be an e-transfer or cash.", "when": "bal:any" },
+          { "text": "You pay the retainer by e-transfer to {{ETRANSFER_EMAIL}}. You pay the balance in cash on the day, not by e-transfer.", "when": "bal:cash" },
+          { "text": "The retainer is not refunded if you cancel, except in the cases part 6 lists." },
+          { "text": "If the balance is not paid before I start shooting, I do not have to shoot. That counts as a cancellation by you on the day." },
+          { "text": "Costs that can come on top, only if they happen: overtime ({{OT_RATE}} an hour), a change of date fee in some cases ($151.25), and any extra you add later." },
+          { "text": "Costs at the places of your day: my parking at every location and any entry fee or ferry ticket at a place you choose (all at cost), a permit or written permission if a place needs one (you arrange it and pay for it), and travel outside the GTA ($0.75 per km). For travel far away or outside Canada I send you a written quote first. Flights, nights away and transport are then charged at cost." },
+          { "text": "All prices are in Canadian dollars." }
+        ],
+        "4": [],
+        "5": [
+          { "text": "Once you have paid in full, you can print your photos, share them with family and friends, and post them on your personal social media. I keep the copyright." },
+          { "text": "A business needs my written permission to use them. Examples are your venue or a magazine. Please send them to me." },
+          { "text": "RAW files are not part of the package. You can add them in part 4, or ask me in writing and pay within 30 days of your final delivery.", "when": "tickable:raw-photos-civil" },
+          { "text": "RAW files are in your booking. They are in your total in part 3.", "when": "booked:raw-photos-civil" }
+        ],
+        "6": [
+          { "text": "You get one free change of date, to any open date on my calendar, if you ask in writing at least 7 days before. A change you ask for later than that costs $151.25. A second change also costs $151.25. The new date must be within 6 months of your original date." },
+          { "text": "If you cancel, the retainer is not refunded. If you cancel more than 14 days before, I refund everything you paid beyond the retainer. If you cancel 14 days or less before, or you do not show up, I refund nothing." },
+          { "text": "If I cannot come, I first try to send a photographer I trust, at the same price. You can say no. If that does not work, I refund everything you paid." },
+          { "text": "If I cannot deliver any of your photos because of a problem on my side, I refund everything you paid. If only a part is lost, I refund a fair share. My responsibility is limited to the amount you have paid me. The rights that Ontario's Consumer Protection Act gives you stay in place." },
+          { "text": "Your ceremony goes ahead in any weather. If it rains, I use covered and indoor spots. Weather is not a reason for a refund." },
+          { "text": "If we disagree, we first try to solve it together. The law of Ontario applies." }
+        ],
+        "7": [
+          { "text": "One of you signs for both of you. By signing, you confirm that your partner has read this agreement and agrees to it." },
+          { "text": "By signing, you confirm that you are 18 or older." },
+          { "text": "A change to this agreement needs both of us, in writing. Email or WhatsApp is enough." },
+          { "text": "You get a PDF copy by email right after you sign." }
+        ]
+      },
+      "totalLine": "Your total is {{TOTAL}}. It stays the same even if my website prices change later.",
+      "steps": [
+        { "title": "When you sign", "amount": "{{RETAINER}}", "note": "By e-transfer. Your date is held once this arrives." },
+        { "title": "On or before your ceremony day", "amount": "{{BALANCE}}", "note": "By e-transfer or in cash, before I start shooting.", "when": "bal:any" },
+        { "title": "On or before your ceremony day", "amount": "{{BALANCE}}", "note": "In cash, before I start shooting.", "when": "bal:cash" }
+      ],
+      "extras": {
+        "intro": "These are added only if you tick them. Your total updates right away.",
+        "bookedTitle": "Already in your total",
+        "ticks": {
+          "drone": "Weather and airspace permitting. Refunded in full if I cannot fly.",
+          "extra-retouched": "One set of five, on top of the photos in your package.",
+          "raw-photos-civil": "The files straight from my cameras, before any editing."
+        },
+        "moreTitle": "More extras. Ask me in writing before your ceremony.",
+        "more": [
+          { "id": "extra-hours-civil", "text": "Additional hours, {{PRICE}} per hour" }
+        ]
+      },
+      "sharing": {
+        "legend": "May I share some of your photos?",
+        "points": [
+          "Sharing means I may show a selection of your photos and film, with your first names, on my website, my social media and my Google business profile, in printed samples, in submissions to publications and competitions, and in paid ads.",
+          "I do not share your last name, your contact details or your home address, and I do not tag you without asking.",
+          "You can change your mind at any time. Tell me in writing. Within 30 days I take your work off my website and my social media pages, and I stop using it in new posts and ads.",
+          "I cannot take back printed material, or copies that other people have already saved or published."
+        ]
+      }
+    }
+  }
+}

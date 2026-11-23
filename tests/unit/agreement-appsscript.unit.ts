@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
-import { buildBookingFacts, fillSignDate, renderVariant } from '../../src/lib/agreement/render';
+import { buildBookingFacts, factsFor, fillSignDate, renderVariant } from '../../src/lib/agreement/render';
 import { sha256Hex } from '../../src/lib/agreement/hash';
 import { copyFields } from '../../src/worker/agreement-copy';
 import type { SignedRecord } from '../../src/worker/agreement-store';
@@ -600,6 +600,79 @@ test('the copy fields the worker sends are accepted by the real script', async (
     expect(rows[0]['Booking number']).toBe(fields.booking_number);
     expect(rows[0]['Text hash']).toBe(signed.final_hash);
     expect(rows[0].Sharing).toBe(signed.choice);
+  }
+});
+
+// The wedding fixture of the worker tests (invented people), booked with second photographer hours only.
+const WEDDING = {
+  package_id: 'wedding-full',
+  client_name: 'Elena Marchetti',
+  partner_name: 'Daniel Okafor',
+  client_email: 'elena@example.com',
+  client_phone: '416 555 0177',
+  event_date: '2027-05-29',
+  start_time: '12:00',
+  end_time: '22:00',
+  place: 'St. Example Church, Hamilton. Reception in Burlington',
+  add_ons: [{ id: 'second-photographer', qty: 7 }],
+};
+
+/** A wedding signed as private with every tick box ticked (two priced extras and the guest camera deposit), built the way the sign route builds it. */
+async function weddingTickedSigned(mode: 'live' | 'test'): Promise<SignedRecord> {
+  const number = mode === 'test' ? 'KK-TEST-2026-001' : 'KK-2026-001';
+  const createdAt = new Date('2026-11-10T15:00:00Z');
+  const booked = buildBookingFacts(WEDDING, { number, createdAt });
+  const extras = ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera'];
+  const doc_json = JSON.stringify(renderVariant(booked, 'private', extras));
+  const final_doc_json = fillSignDate(doc_json, '10 November 2026');
+  return {
+    v: 1,
+    mode,
+    token: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJ0123456',
+    number,
+    choice: 'private',
+    signed_name: 'Elena Marchetti',
+    signed_at: '2026-11-10T15:05:00.000Z',
+    signed_date_text: '10 November 2026',
+    presented_hash: await sha256Hex(doc_json),
+    final_doc_json,
+    final_hash: await sha256Hex(final_doc_json),
+    clause_version: JSON.parse(doc_json).clause_version,
+    facts: factsFor(booked, 'private', extras),
+    link_created_at: createdAt.toISOString(),
+    ip: null,
+    user_agent: null,
+    cf_ray: null,
+    country: null,
+    extras,
+  };
+}
+
+test('a wedding signed with ticked extras and a deposit is accepted by the real script', async () => {
+  for (const mode of ['test', 'live'] as const) {
+    const signed = await weddingTickedSigned(mode);
+    const fields = copyFields({ FORMS_ADMIN_TOKEN: TOKEN }, signed);
+    expect(Object.keys(fields)).toHaveLength(10);
+    const env = makeEnv();
+    const res = env.post(Object.fromEntries(new URLSearchParams(fields)));
+    expect(res, mode).toMatchObject({ ok: true });
+    expect(res.row_error).toBeUndefined();
+    expect(env.sent).toHaveLength(1);
+    expect(env.sent[0].to).toBe(mode === 'test' ? NOTIFY : 'elena@example.com');
+    // The private amounts with both priced extras; the deposit outside the total, on its own line.
+    expect(env.sent[0].body).toContain('send the retainer of $1,634.00');
+    expect(env.sent[0].body).toContain('The final payment of $815.25 is due by Saturday 15 May 2027.\n\nGuest camera deposit: $100.00. Refundable, and not part of your total. Due with your final payment.');
+    const rows = env.sheets.get(mode === 'test' ? 'Contracts TEST' : 'Contracts')!.records();
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      'Booking number': fields.booking_number,
+      Total: '$3,266.25',
+      Retainer: '$1,634.00',
+      Balance: '$1,632.25',
+      Sharing: 'private',
+      'Text hash': signed.final_hash,
+      Notes: 'Ticked at signing: RAW photos, Instax guest prints, Guest camera.',
+    });
   }
 });
 

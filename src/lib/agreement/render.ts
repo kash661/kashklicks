@@ -7,7 +7,8 @@ import sitePackagesJson from '../../data/packages.json' with { type: 'json' };
 import siteAddOnsJson from '../../data/add-ons.json' with { type: 'json' };
 import { money, longDate, shortDate, clockTime, addDays, addMonths, torontoIsoDate } from './format';
 import { SIGN_DATE_TOKEN } from './token';
-import type { AgreementDoc, BookingFacts, Choice, ClauseFile, DocItem, SourceClause } from './types';
+import { mixId } from './set';
+import type { AgreementDoc, BookingFacts, Choice, ClauseFile, DocItem, SourceBlock, SourceClause, SourceSection, TickBox } from './types';
 
 export { SIGN_DATE_TOKEN };
 
@@ -30,6 +31,12 @@ interface AddOnRow {
   bookable: boolean;
   // A contract-only price, for an add-on that is not in the site data (add-ons.json). Booked once at most.
   price?: number;
+}
+/** An add-on the couple can tick at signing. Without `deposit` it is priced (qty 1 at the row's price). */
+interface TickBoxData {
+  id: string;
+  // A refundable deposit instead of a price: never in the total. Its row goes into section 1 after the payments.
+  deposit?: { rowLabel: string; row: string; note: string };
 }
 interface PackageFacts {
   name: string;
@@ -55,6 +62,8 @@ interface PackageFacts {
   // A fee added to the total when the couple chooses private (clause 15.2, tag SHARE-B).
   privateFee?: number;
   addOnRows: AddOnRow[];
+  // At most 3. Order = display order = the order of ticked extras everywhere.
+  tickBoxes?: TickBoxData[];
   laterCosts: string;
   introBullets: string[];
   sharing: Record<Choice, { tags: string[]; row: string; option: string }>;
@@ -161,16 +170,90 @@ const rowPrice = (pkg: PackageFacts, row: AddOnRow): number => {
   if (row.price === undefined) return siteAddOn(row.id!).price as number;
   if (row.id === null || SITE_ADD_ONS.some((a) => a.id === row.id) || typeof row.price !== 'number' || !Number.isFinite(row.price))
     throw new Error(`package ${pkg.name}, add-on row ${row.label}: a contract-only price needs its own id, one that add-ons.json does not have`);
+  if (row.price < 1 || !wholeCents(row.price))
+    throw new Error(`package ${pkg.name}, add-on row ${row.label}: a contract-only price must be a whole number of cents, at least 1`);
   return row.price;
 };
 
-/** Replaces each {{NAME}} from vals. SIGN_DATE stays as the token. An unknown name throws. */
-const fill = (template: string, vals: Record<string, string>): string =>
+/** A tick box id goes into mix ids (joined by +) and the PDF query (split on commas): plain ids only. */
+const TICK_ID_RE = /^[a-z0-9-]+$/;
+
+/** Replaces each {{NAME}} from vals. SIGN_DATE stays as the token. An unknown name throws. page.ts uses it too. */
+export const fill = (template: string, vals: Record<string, string>): string =>
   template.replace(/\{\{([A-Z0-9_]+)\}\}/g, (whole, name: string) => {
     if (name === 'SIGN_DATE') return whole;
     if (!Object.hasOwn(vals, name)) throw new BookingError('unfilled_placeholder', name);
     return vals[name];
   });
+
+/** The {{NAME}} placeholders a template uses, in order. */
+const placeholderNames = (template: string): string[] => [...template.matchAll(/\{\{([A-Z0-9_]+)\}\}/g)].map((m) => m[1]);
+
+interface ResolvedTick {
+  id: string;
+  row: AddOnRow;
+  amount: number; // the row's price: the unit price of a priced tick box, or the deposit
+  deposit?: { rowLabel: string; row: string; note: string };
+}
+
+/**
+ * The tick boxes of a package, checked against its add-on rows. A broken rule is a data mistake and
+ * throws, like threePart(): at most 3, ids unique and plain (a to z, 0 to 9, hyphens), each id has
+ * exactly one add-on row, never an hours add-on (hours set the times of the day), a price that is a whole
+ * number of cents of at least 1, a priced one on a bookable row, a deposit on a row that is not bookable
+ * and has its own price, and a deposit row that uses only PRICE and FINAL_DUE.
+ */
+const tickBoxesOf = (pkg: PackageFacts): ResolvedTick[] => {
+  // Contract-only prices are checked first, for every row, so a broken row is named as such.
+  for (const r of pkg.addOnRows) if (r.price !== undefined) rowPrice(pkg, r);
+  const list = pkg.tickBoxes ?? [];
+  if (!Array.isArray(list)) throw new Error(`package ${pkg.name}: tickBoxes must be a list`);
+  if (list.length > 3) throw new Error(`package ${pkg.name}: at most 3 tick boxes`);
+  const seen = new Set<string>();
+  return list.map((tb: TickBoxData) => {
+    const id = tb && typeof tb === 'object' ? tb.id : undefined;
+    if (typeof id !== 'string' || id === '') throw new Error(`package ${pkg.name}: a tick box needs an id`);
+    if (seen.has(id)) throw new Error(`package ${pkg.name}: tick box ${id} twice`);
+    seen.add(id);
+    const at = `package ${pkg.name}, tick box ${id}`;
+    if (!TICK_ID_RE.test(id)) throw new Error(`${at}: an id may use only a to z, 0 to 9 and hyphens`);
+    if (id === pkg.extraHoursAddOnId || id === pkg.secondPhotographer?.addOnId)
+      throw new Error(`${at}: hours cannot be a tick box, they set the times of the day`);
+    const rows = pkg.addOnRows.filter((r) => r.id === id);
+    if (rows.length !== 1) throw new Error(`${at}: needs exactly one add-on row with this id`);
+    const row = rows[0];
+    const amount = rowPrice(pkg, row);
+    // The site price of a priced tick box is checked here; a contract-only price already by rowPrice.
+    if (!Number.isFinite(amount) || amount < 1 || !wholeCents(amount)) throw new Error(`${at}: its price must be a whole number of cents, at least 1`);
+    if (tb.deposit === undefined) {
+      if (row.bookable !== true) throw new Error(`${at}: a priced tick box needs a bookable row`);
+      return { id, row, amount };
+    }
+    const d = tb.deposit;
+    if (row.bookable !== false || row.price === undefined) throw new Error(`${at}: a deposit needs a row that is not bookable, with its own price`);
+    if (!d || typeof d !== 'object' || typeof d.rowLabel !== 'string' || typeof d.row !== 'string' || typeof d.note !== 'string')
+      throw new Error(`${at}: a deposit needs rowLabel, row and note`);
+    if (placeholderNames(d.row).some((n) => n !== 'PRICE' && n !== 'FINAL_DUE')) throw new Error(`${at}: the deposit row may use PRICE and FINAL_DUE only`);
+    // A deposit is due with the final payment: only a package paid in three parts has one.
+    if (!threePart(pkg)) throw new Error(`${at}: a deposit tick box needs a package paid in three parts`);
+    if (hasMarkup(d.rowLabel) || hasMarkup(d.note)) throw new Error(`${at}: the deposit label and note take no placeholder`);
+    return { id, row, amount, deposit: { rowLabel: d.rowLabel, row: d.row, note: d.note } };
+  });
+};
+
+/**
+ * The tick boxes of the package, and a check that stored facts agree with them (same idea as feeOf):
+ * every tick box in the facts is one of the package, of the same kind. A mismatch throws.
+ */
+const ticksAgree = (pkg: PackageFacts, f: BookingFacts): ResolvedTick[] => {
+  const ticks = tickBoxesOf(pkg);
+  for (const t of f.tick_boxes ?? []) {
+    const p = ticks.find((x) => x.id === t.id);
+    if (!p) throw new Error(`booking ${f.number}: tick box ${t.id} is not a tick box of ${pkg.name}`);
+    if ((p.deposit !== undefined) !== (t.kind === 'deposit')) throw new Error(`booking ${f.number}: tick box ${t.id} does not match its package`);
+  }
+  return ticks;
+};
 
 // ---------------------------------------------------------------- validation
 
@@ -221,6 +304,7 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const package_id = o.package_id as string;
   const three = threePart(pkg);
   const private_fee = privateFeeOf(pkg);
+  const ticks = tickBoxesOf(pkg);
 
   const client_name = cleanText(o.client_name, 2, 120, 'bad_name', 'client_name');
   const partner_name = cleanText(o.partner_name, 2, 120, 'bad_name', 'partner_name');
@@ -307,7 +391,16 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   // The private choice must also give sensible payments.
   if (private_fee !== undefined) laterPayments(cents(total + private_fee), usualRetainer(cents(total + private_fee)));
 
-  return {
+  // What can still be ticked at signing: a tick box whose add-on is booked already is not offered again.
+  const tick_boxes: TickBox[] = ticks
+    .filter((t) => !add_ons.some((a) => a.id === t.id))
+    .map((t) =>
+      t.deposit
+        ? { id: t.id, kind: 'deposit', label: t.row.label, amount: t.amount, deposit_label: t.deposit.rowLabel, deposit_note: t.deposit.note }
+        : { id: t.id, kind: 'price', label: t.row.label, amount: t.amount },
+    );
+
+  const facts: BookingFacts = {
     package_id,
     client_name,
     partner_name,
@@ -332,29 +425,70 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     ...payments,
     ...(second_hours === undefined ? {} : { second_hours }),
     ...(private_fee === undefined ? {} : { private_fee }),
+    ...(tick_boxes.length === 0 ? {} : { tick_boxes }),
   };
+  // Every mix must give sensible amounts too (three payments: no final payment below a dollar).
+  for (const m of mixesOf(facts)) if (m.extras.length > 0) factsFor(facts, m.choice, m.extras);
+  return facts;
 }
 
 /**
- * The facts of one sharing choice. Share, or a booking without a fee for private work: the facts as
- * they are. Private with a fee: the fee is added to the total, and the retainer and the later payments
- * are worked out again from the new total by the same rules. Facts that already carry the fee throw.
+ * The facts of one mix: a sharing choice plus the extras ticked at signing. The one amounts function.
+ * Nothing ticked, and share or a booking without a fee for private work: the facts as they are (the same
+ * object). Private with a fee: the fee is added to the total, and the retainer and the later payments are
+ * worked out again from the new total by the same rules. Ticked extras (ids of f.tick_boxes, any order):
+ * priced ones join add_ons and the total, deposits go to `deposits` and never into the total. A booking
+ * made with the usual retainer keeps the usual rule; a set retainer stays as it was set. Uses the stored
+ * facts only (no package lookup), never changes f. Facts that already carry the fee or extras throw.
  */
-export function factsFor(f: BookingFacts, choice: Choice): BookingFacts {
+export function factsFor(f: BookingFacts, choice: Choice, extras: string[] = []): BookingFacts {
   if (f.sharing_fee !== undefined) throw new Error(`booking ${f.number}: the fee for private work is already in these facts`);
-  if (choice === 'share' || f.private_fee === undefined) return f;
-  if (f.second_payment === undefined) throw new Error(`booking ${f.number}: a fee for private work needs three payments`);
-  const total = cents(f.total + f.private_fee);
-  const retainer = usualRetainer(total);
-  return { ...f, sharing_fee: f.private_fee, total, retainer, balance: cents(total - retainer), ...laterPayments(total, retainer) };
+  if (f.extras !== undefined) throw new Error(`booking ${f.number}: the ticked extras are already in these facts`);
+  if (!Array.isArray(extras)) throw new BookingError('bad_extras', 'extras');
+  if (extras.length === 0) {
+    if (choice === 'share' || f.private_fee === undefined) return f;
+    if (f.second_payment === undefined) throw new Error(`booking ${f.number}: a fee for private work needs three payments`);
+    const total = cents(f.total + f.private_fee);
+    const retainer = usualRetainer(total);
+    return { ...f, sharing_fee: f.private_fee, total, retainer, balance: cents(total - retainer), ...laterPayments(total, retainer) };
+  }
+  const offered = f.tick_boxes ?? [];
+  const picked = new Set<string>();
+  for (const id of extras) {
+    if (typeof id !== 'string' || picked.has(id) || !offered.some((t) => t.id === id)) throw new BookingError('bad_extras', 'extras');
+    picked.add(id);
+  }
+  // Tick box order, whatever the order they came in.
+  const ticked = offered.filter((t) => picked.has(t.id));
+  const priced = ticked.filter((t) => t.kind === 'price');
+  const deposits = ticked
+    .filter((t) => t.kind === 'deposit')
+    .map((t) => ({ id: t.id, label: t.deposit_label as string, amount: t.amount, note: t.deposit_note as string }));
+  const fee = choice === 'private' ? f.private_fee : undefined;
+  if (fee !== undefined && f.second_payment === undefined) throw new Error(`booking ${f.number}: a fee for private work needs three payments`);
+  const total = cents(f.total + priced.reduce((sum, t) => sum + t.amount, 0) + (fee ?? 0));
+  const retainer = f.retainer === usualRetainer(f.total) ? usualRetainer(total) : f.retainer;
+  return {
+    ...f,
+    add_ons: [...f.add_ons, ...priced.map((t) => ({ id: t.id, label: t.label, qty: 1, unit_price: t.amount, line_total: cents(t.amount) }))],
+    total,
+    retainer,
+    balance: cents(total - retainer),
+    ...(f.second_payment === undefined ? {} : laterPayments(total, retainer)),
+    ...(fee === undefined ? {} : { sharing_fee: fee }),
+    extras: ticked.map((t) => t.id),
+    ...(deposits.length === 0 ? {} : { deposits }),
+  };
 }
 
 // ---------------------------------------------------------------- rendering
 
-const activeTags = (pkg: PackageFacts, choice: Choice, facts: BookingFacts): Set<string> => {
-  const retainerTag = facts.retainer === usualRetainer(facts.total) ? 'RET-HALF' : 'RET-SET';
+// The retainer tag comes from the BOOKED facts: a set retainer that happens to equal half of one mix's
+// total stays a set retainer (clause 3.16) in every mix. For every booking without extras it is the same tag as before.
+const activeTags = (pkg: PackageFacts, choice: Choice, booked: BookingFacts): Set<string> => {
+  const retainerTag = booked.retainer === usualRetainer(booked.total) ? 'RET-HALF' : 'RET-SET';
   // Stored bookings made before balance_cash existed have none: they read as false.
-  const balanceTag = facts.balance_cash === true ? 'BAL-CASH' : 'BAL-ANY';
+  const balanceTag = booked.balance_cash === true ? 'BAL-CASH' : 'BAL-ANY';
   const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode], retainerTag, balanceTag]);
   if (BUSINESS.insured) tags.add('INSURED');
   return tags;
@@ -394,10 +528,22 @@ const paymentRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
   return [[pkg.balanceRowLabel, f.balance_cash === true ? `${money(f.balance)} in cash` : `${money(f.balance)} by e-transfer or cash`]];
 };
 
+/** One row per ticked deposit, after the payment rows: its label, and its package row text with PRICE and FINAL_DUE. */
+const depositRows = (f: BookingFacts, ticks: ResolvedTick[]): string[][] =>
+  (f.deposits ?? []).map((d) => {
+    const t = ticks.find((x) => x.id === d.id);
+    if (!t || !t.deposit) throw new Error(`booking ${f.number}: deposit ${d.id} is not a deposit tick box of its package`);
+    return [d.label, fill(t.deposit.row, { PRICE: money(d.amount), ...(f.final_due === undefined ? {} : { FINAL_DUE: longDate(f.final_due) }) })];
+  });
+
+/** The section 1 row of the fee for private work. page.ts uses the same words for its price line. */
+export const MARKETING_FEE_LABEL = 'Marketing fee for private work';
+
 /** PRIVATE_FEE for the sharing row and the option labels, only for a booking with a fee. */
 const feeValues = (f: BookingFacts): Record<string, string> => (f.private_fee === undefined ? {} : { PRIVATE_FEE: money(f.private_fee) });
 
-const hoursText = (n: number) => `${n} ${n === 1 ? 'hour' : 'hours'}`;
+/** 1 -> '1 hour', 10 -> '10 hours'. page.ts uses it too. */
+export const hoursText = (n: number) => `${n} ${n === 1 ? 'hour' : 'hours'}`;
 
 /** The second photographer row of section 1, after "Who shoots". None for a package without one. */
 const secondPhotographerRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
@@ -417,7 +563,7 @@ const secondPhotographerRows = (f: BookingFacts, pkg: PackageFacts): string[][] 
   return [['Second photographer', text]];
 };
 
-const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string[][] => {
+const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice, ticks: ResolvedTick[]): string[][] => {
   // Only the no-HST case has agreed row text so far.
   if (BUSINESS.hstMode !== 'none') throw new Error(`hstMode ${BUSINESS.hstMode} has no booking table rows yet`);
   const addOns = f.add_ons.length
@@ -429,10 +575,11 @@ const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string
     ['Package price', money(f.package_price)],
     ['Add-ons chosen at booking', addOns],
     ['Sharing choice (section 15)', fill(pkg.sharing[choice].row, feeValues(f))],
-    ...(f.sharing_fee === undefined ? [] : [['Marketing fee for private work', money(f.sharing_fee)]]),
+    ...(f.sharing_fee === undefined ? [] : [[MARKETING_FEE_LABEL, money(f.sharing_fee)]]),
     ['Total', money(f.total)],
     ['Retainer, due at signing', `${money(f.retainer)} by e-transfer`],
     ...paymentRows(f, pkg),
+    ...depositRows(f, ticks),
     [pkg.dateRowLabel, longDate(f.event_date)],
     ['Coverage', `${hoursText(f.hours)}, from ${clockTime(f.start_time)} to ${clockTime(f.end_time)}`],
     ['Where', f.place],
@@ -462,12 +609,23 @@ const engagementValues = (pkg: PackageFacts): Record<string, string> => {
 
 const hasStrayPlaceholder = (s: string) => s.split(SIGN_DATE_TOKEN).join('').includes('{{');
 
-export function renderVariant(booked: BookingFacts, choice: Choice): AgreementDoc {
+/** Everything one mix's sections are rendered from. */
+interface Prepared {
+  pkg: PackageFacts;
+  choice: Choice;
+  facts: BookingFacts; // the amounts of this mix
+  active: Set<string>;
+  vals: Record<string, string>;
+  ticks: ResolvedTick[];
+}
+
+const prepare = (booked: BookingFacts, choice: Choice, extras: string[]): Prepared => {
   const pkg = packageFacts(booked.package_id);
   const fee = feeOf(pkg, booked);
-  // The amounts of this choice: with a fee for private work, the private variant has a larger total.
-  const facts = factsFor(booked, choice);
-  const active = activeTags(pkg, choice, facts);
+  // The amounts of this mix: a fee for private work and ticked priced extras give a larger total.
+  const facts = factsFor(booked, choice, extras);
+  const ticks = ticksAgree(pkg, booked);
+  const active = activeTags(pkg, choice, booked);
   const vals: Record<string, string> = {
     CLIENT_NAME: facts.client_name,
     CLIENT_EMAIL: facts.client_email,
@@ -483,45 +641,220 @@ export function renderVariant(booked: BookingFacts, choice: Choice): AgreementDo
     ...engagementValues(pkg),
     ...(fee === undefined ? {} : { PRIVACY_FEE: money(fee) }),
   };
+  return { pkg, choice, facts, active, vals, ticks };
+};
 
-  let signDateTokens = 0;
+type DocSection = AgreementDoc['sections'][number];
+
+/**
+ * One section of one mix. tokensBefore = sign date tokens in the sections before it: a second token
+ * anywhere throws at the clause that holds it, as when the whole document is rendered in one go.
+ */
+const renderSection = (sec: SourceSection, p: Prepared, tokensBefore: number): { section: DocSection; tokens: number } => {
+  const items: DocItem[] = [];
+  let k = 0;
+  let signDateTokens = tokensBefore;
+  for (const it of sec.items) {
+    if (it.type === 'block') {
+      const name = (it as { name: string }).name;
+      if (name === 'TABLE:BOOKING') items.push({ type: 'table', kind: 'booking', rows: bookingRows(p.facts, p.pkg, p.choice, p.ticks), bold: ['Total'] });
+      else if (name === 'TABLE:ADDONS') items.push({ type: 'table', kind: 'addons', rows: addOnTableRows(p.pkg), bold: [] });
+      else if (name === 'LIST:DELIVERABLES') items.push({ type: 'list', items: [...p.pkg.deliverables] });
+      else throw new Error(`unknown block ${name} in section ${sec.num}`);
+      continue;
+    }
+    if (!isVisible(it, p.active)) continue;
+    k += 1;
+    const text = fill(it.text, p.vals);
+    const bullets = it.bullets.map((b) => fill(b, p.vals));
+    signDateTokens += text.split(SIGN_DATE_TOKEN).length - 1;
+    if (hasStrayPlaceholder(text) || bullets.some((b) => b.includes('{{')) || signDateTokens > 1)
+      throw new BookingError('unfilled_placeholder', it.id);
+    items.push({ type: 'clause', n: sec.num === 0 ? '' : `${sec.num}.${k}`, text, bullets });
+  }
+  // Table cells and list items may not carry any placeholder, not even the sign date.
+  for (const item of items) {
+    const strings = item.type === 'table' ? item.rows.flat() : item.type === 'list' ? item.items : [];
+    if (strings.some((s) => s.includes('{{'))) throw new BookingError('unfilled_placeholder', `section ${sec.num}`);
+  }
+  return { section: { num: sec.num, title: sec.title, items }, tokens: signDateTokens - tokensBefore };
+};
+
+/** The document around its sections. Key order is part of the exact text. */
+const docOf = (p: Prepared, sections: DocSection[]): AgreementDoc => ({
+  title: CLAUSES.title,
+  intro: CLAUSES.intro,
+  clause_version: CLAUSES.version,
+  choice: p.choice,
+  number: p.facts.number,
+  sections,
+  business_signature: `Signed for ${BUSINESS.legalName}, operating as AD Photography and KashKlicks, on ${shortDate(new Date(p.facts.created_at))}`,
+});
+
+/** The document of one mix: a sharing choice plus the extras ticked at signing (nothing ticked by default). */
+export function renderVariant(booked: BookingFacts, choice: Choice, extras: string[] = []): AgreementDoc {
+  const p = prepare(booked, choice, extras);
+  let tokens = 0;
   const sections = CLAUSES.sections.map((sec) => {
-    const items: DocItem[] = [];
-    let k = 0;
-    for (const it of sec.items) {
-      if (it.type === 'block') {
-        const name = (it as { name: string }).name;
-        if (name === 'TABLE:BOOKING') items.push({ type: 'table', kind: 'booking', rows: bookingRows(facts, pkg, choice), bold: ['Total'] });
-        else if (name === 'TABLE:ADDONS') items.push({ type: 'table', kind: 'addons', rows: addOnTableRows(pkg), bold: [] });
-        else if (name === 'LIST:DELIVERABLES') items.push({ type: 'list', items: [...pkg.deliverables] });
-        else throw new Error(`unknown block ${name} in section ${sec.num}`);
-        continue;
-      }
-      if (!isVisible(it, active)) continue;
-      k += 1;
-      const text = fill(it.text, vals);
-      const bullets = it.bullets.map((b) => fill(b, vals));
-      signDateTokens += text.split(SIGN_DATE_TOKEN).length - 1;
-      if (hasStrayPlaceholder(text) || bullets.some((b) => b.includes('{{')) || signDateTokens > 1)
-        throw new BookingError('unfilled_placeholder', it.id);
-      items.push({ type: 'clause', n: sec.num === 0 ? '' : `${sec.num}.${k}`, text, bullets });
-    }
-    // Table cells and list items may not carry any placeholder, not even the sign date.
-    for (const item of items) {
-      const strings = item.type === 'table' ? item.rows.flat() : item.type === 'list' ? item.items : [];
-      if (strings.some((s) => s.includes('{{'))) throw new BookingError('unfilled_placeholder', `section ${sec.num}`);
-    }
-    return { num: sec.num, title: sec.title, items };
+    const r = renderSection(sec, p, tokens);
+    tokens += r.tokens;
+    return r.section;
   });
+  return docOf(p, sections);
+}
 
+const SECTIONS_OPEN = '"sections":[';
+
+/** Exact split: JSON.stringify(doc) === head + sections.join(',') + tail. Throws if that is ever not true. */
+export function docFragments(doc: AgreementDoc): { head: string; sections: string[]; tail: string } {
+  const json = JSON.stringify(doc);
+  const at = json.indexOf(SECTIONS_OPEN);
+  const sections = doc.sections.map((s) => JSON.stringify(s));
+  const head = json.slice(0, at + SECTIONS_OPEN.length);
+  const tail = json.slice(head.length + sections.join(',').length);
+  if (at < 0 || at !== json.lastIndexOf(SECTIONS_OPEN) || !tail.startsWith(']') || head + sections.join(',') + tail !== json)
+    throw new Error(`document ${doc.number}: its text does not split into head, sections and tail`);
+  return { head, sections, tail };
+}
+
+/** head and tail of a mix's document without rendering or joining its sections: cut around "sections":[]. */
+const shellFragments = (p: Prepared): { head: string; tail: string } => {
+  const json = JSON.stringify(docOf(p, []));
+  const at = json.indexOf(`${SECTIONS_OPEN}]`);
+  if (at < 0 || at !== json.lastIndexOf(SECTIONS_OPEN)) throw new Error(`document ${p.facts.number}: no single place for its sections`);
+  return { head: json.slice(0, at + SECTIONS_OPEN.length), tail: json.slice(at + SECTIONS_OPEN.length) };
+};
+
+/**
+ * Every mix of a booking: all subsets of facts.tick_boxes (tick box order) times share, private. Share
+ * mixes first, subsets in binary order of the tick box list (none, 1st, 2nd, 1st+2nd, 3rd, ...), then
+ * the private mixes in the same order. `share` and `private` always exist.
+ */
+export function mixesOf(booked: BookingFacts): { id: string; choice: Choice; extras: string[] }[] {
+  const ids = (booked.tick_boxes ?? []).map((t) => t.id);
+  if (ids.length > 3) throw new Error(`booking ${booked.number}: more than 3 tick boxes`);
+  // Mix ids join the tick box ids with +: only plain, distinct ids give one id per mix.
+  ids.forEach((id, i) => {
+    if (typeof id !== 'string' || !TICK_ID_RE.test(id)) throw new Error(`booking ${booked.number}: tick box ${String(id)}: an id may use only a to z, 0 to 9 and hyphens`);
+    if (ids.indexOf(id) !== i) throw new Error(`booking ${booked.number}: tick box ${id} twice`);
+  });
+  const subsets: string[][] = [];
+  for (let mask = 0; mask < 1 << ids.length; mask += 1) subsets.push(ids.filter((_, i) => (mask & (1 << i)) !== 0));
+  return (['share', 'private'] as const).flatMap((choice) => subsets.map((extras) => ({ id: mixId(choice, extras), choice, extras })));
+}
+
+const hasBookingTable = (sec: SourceSection) => sec.items.some((it) => it.type === 'block' && (it as SourceBlock).name === 'TABLE:BOOKING');
+
+/** The placeholder names used by the clauses (text and bullets) of a section that these tags show, sorted. */
+const visiblePlaceholders = (sec: SourceSection, active: Set<string>): string[] => {
+  const names = new Set<string>();
+  for (const it of sec.items) {
+    if (it.type !== 'clause' || !isVisible(it, active)) continue;
+    for (const s of [it.text, ...it.bullets]) for (const n of placeholderNames(s)) names.add(n);
+  }
+  return [...names].sort();
+};
+
+/**
+ * All finished documents of a booking as a pool of unique fragments (exact JSON text) plus one index
+ * list per mix: f = [head, the 23 sections in document order, tail]. docJsonFromSet(pool, f) gives
+ * exactly JSON.stringify(renderVariant(booked, choice, extras)).
+ * A section is rendered again only when something it is made from changes: the memo key is the section,
+ * the active tags, the sign date tokens before it and the values of the placeholders its visible clauses
+ * use (the deliverables list and the add-on table depend on the package only). A section with the
+ * booking table is rendered for every mix. The memo lives inside this call only. stats.sectionRenders
+ * counts the real section renders.
+ */
+export function buildVariantSet(
+  booked: BookingFacts,
+  stats?: { sectionRenders: number },
+): { pool: string[]; mixes: { id: string; choice: Choice; extras: string[]; f: number[] }[] } {
+  const pool: string[] = [];
+  const at = new Map<string, number>();
+  const intern = (s: string): number => {
+    let i = at.get(s);
+    if (i === undefined) {
+      i = pool.length;
+      pool.push(s);
+      at.set(s, i);
+    }
+    return i;
+  };
+  // Memo key parts: a small id per set of active tags, and the placeholder names per section and tag set.
+  const tagIds = new Map<string, number>();
+  const names = new Map<string, string[]>();
+  const rendered = new Map<string, { at: number; tokens: number }>(); // at = index of the fragment in the pool
+  const render = (sec: SourceSection, p: Prepared, tokensBefore: number) => {
+    if (stats) stats.sectionRenders += 1;
+    const r = renderSection(sec, p, tokensBefore);
+    return { at: intern(JSON.stringify(r.section)), tokens: r.tokens };
+  };
+
+  const mixes = mixesOf(booked).map((m) => {
+    const p = prepare(booked, m.choice, m.extras);
+    const tags = [...p.active].sort().join(' ');
+    let tagId = tagIds.get(tags);
+    if (tagId === undefined) {
+      tagId = tagIds.size;
+      tagIds.set(tags, tagId);
+    }
+    const shell = shellFragments(p);
+    const f = [intern(shell.head)];
+    let tokens = 0;
+    CLAUSES.sections.forEach((sec, index) => {
+      let r: { at: number; tokens: number } | undefined;
+      if (hasBookingTable(sec)) r = render(sec, p, tokens);
+      else {
+        const namesKey = `${index}|${tagId}`;
+        let used = names.get(namesKey);
+        if (!used) {
+          used = visiblePlaceholders(sec, p.active);
+          names.set(namesKey, used);
+        }
+        const key = `${namesKey}|${tokens}|${JSON.stringify(used.map((n) => (Object.hasOwn(p.vals, n) ? p.vals[n] : null)))}`;
+        r = rendered.get(key);
+        if (!r) {
+          r = render(sec, p, tokens);
+          rendered.set(key, r);
+        }
+      }
+      tokens += r.tokens;
+      f.push(r.at);
+    });
+    f.push(intern(shell.tail));
+    return { id: m.id, choice: m.choice, extras: m.extras, f };
+  });
+  return { pool, mixes };
+}
+
+/**
+ * For page.ts (server side, only when the link is made): the package facts the page text of a booking
+ * needs, read live from the data files. The facts are checked against the package as renderVariant does.
+ * secondAdded: second photographer hours added on top of the package (missing for a package without one).
+ * tickPrice: the price text of each offered tick box, its add-on row's priceText filled.
+ */
+export function pageFacts(f: BookingFacts): {
+  ot: Record<string, string>;
+  engagement: Record<string, string>;
+  secondAdded?: number;
+  tickPrice: Record<string, string>;
+  sitePrice: (id: string) => string;
+} {
+  const pkg = packageFacts(f.package_id);
+  feeOf(pkg, f);
+  const ticks = ticksAgree(pkg, f);
+  const tickPrice: Record<string, string> = {};
+  for (const t of f.tick_boxes ?? []) {
+    const row = ticks.find((x) => x.id === t.id)!.row;
+    tickPrice[t.id] = fill(row.priceText, { PRICE: money(t.amount), OT_BLOCK: money(pkg.overtimeBlock) });
+  }
+  const sp = pkg.secondPhotographer;
   return {
-    title: CLAUSES.title,
-    intro: CLAUSES.intro,
-    clause_version: CLAUSES.version,
-    choice,
-    number: facts.number,
-    sections,
-    business_signature: `Signed for ${BUSINESS.legalName}, operating as AD Photography and KashKlicks, on ${shortDate(new Date(facts.created_at))}`,
+    ot: otValues(pkg),
+    engagement: engagementValues(pkg),
+    ...(sp === undefined ? {} : { secondAdded: f.add_ons.find((a) => a.id === sp.addOnId)?.qty ?? 0 }),
+    tickPrice,
+    sitePrice: (id: string) => money(siteAddOn(id).price as number),
   };
 }
 
