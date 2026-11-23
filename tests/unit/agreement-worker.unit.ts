@@ -2887,3 +2887,113 @@ test('copyFields never throws for a record with extras but no tick box list, or 
   expect(fields.email_body.split('Guest camera deposit: $100.00.')).toHaveLength(2);
   expect(JSON.parse(fields.row_json).Notes).toBe('Ticked at signing: Instax guest prints, Guest camera.');
 });
+
+// ------------------------------------------------------------------ no phone, times to be set (spec 2026-11-23, section 6)
+
+test('a wedding without a phone and without times: /new, doc, not yet, sign and the copy, next to the same wedding with them (spec 2026-11-23, section 6)', async () => {
+  const NO_PHONE_NO_TIMES = { ...WEDDING_SECOND_ONLY, client_phone: '', start_time: null, end_time: '   ' };
+  // Two stores, so both bookings get the same number and clock: they may differ only where section 6 says.
+  const a = setup();
+  const b = setup();
+  const withBoth = await a.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY);
+  const putsBefore = b.kv.puts.length;
+  const without = await b.admin(TEST, '/r/agreement/new', NO_PHONE_NO_TIMES);
+  expect(without.status).toBe(200);
+  expect(b.kv.puts.length).toBe(putsBefore + 3); // still three keys per booking
+  // The /new answer has the same fields and amounts (spec 5.5: $3,010.00, 753.00 / 2,257.00 in cash; private 3,085.00 / 772.00).
+  const { token, path: _p, ...answer } = without.body;
+  const { token: tokenA, path: _q, ...answerA } = withBoth.body;
+  expect(answer).toEqual(answerA);
+  expect(answer).toMatchObject({ total: 3010, retainer: 753, balance: 2257, balance_cash: true, private_total: 3085, private_retainer: 772 });
+
+  const rec = b.booking(TEST, token);
+  for (const k of ['client_phone', 'start_time', 'end_time']) expect(rec.facts).not.toHaveProperty(k);
+  expect(JSON.stringify(rec.facts)).toBe(JSON.stringify(buildBookingFacts(NO_PHONE_NO_TIMES, { number: rec.number, createdAt: START })));
+  const recA = a.booking(TEST, tokenA);
+  expect(Object.keys(rec.set.mixes)).toEqual(Object.keys(recA.set.mixes));
+  expect(rec.clause_version).toBe(recA.clause_version);
+  const YOU = '"**You** are Elena Marchetti. Your email is elena@example.com."';
+  const TBD = 'Your start time and end time are not set yet. We set them together, in writing, at the latest when you send your final timeline (section 7).';
+  const COVERAGE = '"Coverage","10 hours in one continuous block. The start and end time are not set yet (section 5)."';
+  for (const m of mixesOf(rec.facts)) {
+    const v = b.variantOf(TEST, token, m.choice, m.extras);
+    expect(v.doc_json, m.id).toBe(JSON.stringify(renderVariant(rec.facts, m.choice, m.extras)));
+    expect(v.hash, m.id).toBe(await sha256Hex(v.doc_json));
+    for (const s of [YOU, TBD, COVERAGE]) expect(v.doc_json, `${m.id} ${s}`).toContain(s);
+    for (const s of ['your phone', '416 555 0177', 'Your start time and end time are in section 1', '12:00 pm']) expect(v.doc_json, `${m.id} ${s}`).not.toContain(s);
+    // The amounts and their wording are those of the same mix with a phone and times.
+    expect(v.summary, m.id).toEqual(a.variantOf(TEST, tokenA, m.choice, m.extras).summary);
+  }
+  expect(rec.page).toEqual(pageContent(rec.facts));
+  expect(rec.page.glance[1]).toEqual({ label: 'Coverage', value: '10 hours, times to be set' });
+  expect(rec.page.parts[0].points[0]).toBe(
+    'Saturday 29 May 2027. 10 hours in one block. We set the start and end time together, in writing, at the latest when you send your final timeline.',
+  );
+
+  // doc v=2: the set and the page; the summary as with a phone and times.
+  const v2 = await v2Doc(b, token);
+  expect(v2.status).toBe(200);
+  expect(v2.body.page).toEqual(rec.page);
+  expect(v2.body.summary).toEqual((await v2Doc(a, tokenA)).body.summary);
+  const plain = await b.doc(TEST, token);
+  expect(plain.status).toBe(200);
+  expect(plain.body.variants.share.doc_json).toContain(YOU);
+
+  // not yet: the owner notice says there is no phone; the one with a phone names it.
+  for (const [t, k, phone] of [
+    [b, token, 'none given'],
+    [a, tokenA, '416 555 0177'],
+  ] as const) {
+    expect(await t.call(TEST, 'POST', '/r/agreement/not-yet', { k, message: FIX }, t.browser(TEST))).toMatchObject({ status: 200 });
+    const body = t.calls[t.calls.length - 1].fields.body.split('\n');
+    expect(body.slice(-2)).toEqual(['Their email: elena@example.com', `Their phone: ${phone}`]);
+  }
+
+  // Sign private with every tick box (spec 5.5: 3,266.25 = 817.00 + 2,449.25 in cash, plus the $100.00 deposit).
+  const sign = { choice: 'private', extras: ALL_WEDDING_TICKS, signed_name: 'Elena Marchetti' };
+  const signed = await b.signOk(TEST, token, sign);
+  expect(signed.status).toBe(200);
+  expect(signed.body.summary).toMatchObject({ total: '$3,266.25', retainer: '$817.00', balance: '$2,449.25', balance_how: 'in cash' });
+  expect(signed.body.signed.final_doc_json).toContain(YOU);
+  const record = b.signedRecord(TEST, token);
+  for (const k of ['client_phone', 'start_time', 'end_time']) expect(record.facts).not.toHaveProperty(k);
+  expect(record.facts).toMatchObject({ total: 3266.25, retainer: 817, balance: 2449.25 });
+  expect(await a.signOk(TEST, tokenA, sign)).toMatchObject({ status: 200 });
+  await a.settle();
+  await b.settle();
+
+  // The copy: the ten fields, the same email as with a phone, the same row keys with Phone ''.
+  const copy = b.calls.find((c) => c.fields.action === 'agreement_signed')!.fields;
+  const copyA = a.calls.find((c) => c.fields.action === 'agreement_signed')!.fields;
+  expect(Object.keys(copy)).toEqual(Object.keys(copyA));
+  expect(copy.email_body).toBe(copyA.email_body);
+  expect(copy.email_body).toContain('send the retainer of $817.00 by Interac e-transfer to kashklicks.ca@gmail.com.');
+  const row = JSON.parse(copy.row_json);
+  const rowA = JSON.parse(copyA.row_json);
+  expect(Object.keys(row)).toEqual(Object.keys(rowA));
+  expect(row.Phone).toBe('');
+  expect(rowA.Phone).toBe('416 555 0177');
+  expect({ ...row, Phone: rowA.Phone, 'Text hash': rowA['Text hash'] }).toEqual(rowA);
+  expect(copyFields(b.env, record)).toEqual(copy);
+  // The signed link opens in its signed state.
+  expect(await b.doc(TEST, token)).toMatchObject({ status: 200, body: { status: 'signed', extras: ALL_WEDDING_TICKS } });
+});
+
+test('one time alone, or a phone that is not a phone, is refused by /new before a number is used (spec 2026-11-23, section 6)', async () => {
+  const t = setup();
+  for (const [over, field, error] of [
+    [{ end_time: null }, 'end_time', 'bad_times'],
+    [{ end_time: '' }, 'end_time', 'bad_times'],
+    [{ start_time: ' ' }, 'start_time', 'bad_times'],
+    [{ start_time: undefined }, 'start_time', 'bad_times'],
+    [{ client_phone: 4165550142 }, 'client_phone', 'bad_phone'],
+    [{ client_phone: '555-01' }, 'client_phone', 'bad_phone'],
+  ] as const) {
+    const r = await t.admin(TEST, '/r/agreement/new', { ...PILOT, ...over });
+    expect(r, JSON.stringify(over)).toMatchObject({ status: 400, body: { ok: false, error, field } });
+  }
+  expect(t.kv.puts).toEqual([]);
+  // Missing, null or blank phone and times make a booking.
+  const ok = await t.admin(TEST, '/r/agreement/new', { ...PILOT, client_phone: null, start_time: '', end_time: undefined });
+  expect(ok).toMatchObject({ status: 200, body: { ok: true, number: 'KK-TEST-2026-001', total: 501.25, retainer: 126, balance: 375.25 } });
+});

@@ -80,7 +80,11 @@ const table = (doc: AgreementDoc, kind: 'booking' | 'addons') => {
 const rowsOf = (doc: AgreementDoc) => Object.fromEntries(table(doc, 'booking').rows);
 
 // The tags a wedding booking has, worked out here on their own (not by the engine).
-const activeTags = (choice: 'share' | 'private', balance: string) =>
+// Re-pinned for spec 2026-11-23, section 6.1: PHONE or NO-PHONE, and TIMES-SET or TIMES-TBD (the booking
+// fixture WEDDING has a phone and times: PHONE and TIMES-SET).
+type Who = { phone: 'PHONE' | 'NO-PHONE'; times: 'TIMES-SET' | 'TIMES-TBD' };
+const WITH_PHONE_AND_TIMES: Who = { phone: 'PHONE', times: 'TIMES-SET' };
+const activeTags = (choice: 'share' | 'private', balance: string, who: Who) =>
   new Set([
     'ALL',
     ...(agreementPackages as Record<string, { tags: string[] }>)['wedding-full'].tags,
@@ -90,12 +94,14 @@ const activeTags = (choice: 'share' | 'private', balance: string) =>
     'RET-USUAL',
     balance,
     ...(business.insured ? ['INSURED'] : []),
+    who.phone,
+    who.times,
   ]);
-const visibleSource = (choice: 'share' | 'private', balance = 'BAL-CASH') =>
-  sourceClauses().filter((c) => c.tags.some((g) => g.every((t) => activeTags(choice, balance).has(t))));
+const visibleSource = (choice: 'share' | 'private', balance = 'BAL-CASH', who = WITH_PHONE_AND_TIMES) =>
+  sourceClauses().filter((c) => c.tags.some((g) => g.every((t) => activeTags(choice, balance, who).has(t))));
 /** Rendered clause id list: each rendered clause paired, in order, with the source clause it must come from. */
-const renderedIds = (doc: AgreementDoc, choice: 'share' | 'private', balance = 'BAL-CASH'): string[] => {
-  const expected = visibleSource(choice, balance);
+const renderedIds = (doc: AgreementDoc, choice: 'share' | 'private', balance = 'BAL-CASH', who = WITH_PHONE_AND_TIMES): string[] => {
+  const expected = visibleSource(choice, balance, who);
   const got = clauses(doc);
   expect(got.map((c) => c.text).length).toBe(expected.length);
   got.forEach((c, k) => expect(matches(expected[k], c.text), `${expected[k].id}: ${c.text}`).toBe(true));
@@ -323,6 +329,74 @@ test('the visible clauses are exactly the ones the wedding tags allow', () => {
       expect(ids).not.toContain('15.2');
     }
   }
+});
+
+test('a wedding without a phone or without times: clause 0.6 or 5.23 takes the place of 0.1 or 5.2 (spec 2026-11-23, section 6)', () => {
+  const noPhone = { client_phone: undefined };
+  const noTimes = { start_time: undefined, end_time: undefined };
+  const cases: [Record<string, unknown>, Who][] = [
+    [{}, { phone: 'PHONE', times: 'TIMES-SET' }],
+    [noPhone, { phone: 'NO-PHONE', times: 'TIMES-SET' }],
+    [noTimes, { phone: 'PHONE', times: 'TIMES-TBD' }],
+    [{ ...noPhone, ...noTimes }, { phone: 'NO-PHONE', times: 'TIMES-TBD' }],
+  ];
+  for (const choice of ['share', 'private'] as const)
+    for (const [over, who] of cases) {
+      const doc = renderVariant(facts(over), choice);
+      // Every rendered clause, in order, is the one the independent tag set allows.
+      const ids = renderedIds(doc, choice, 'BAL-CASH', who);
+      const at = `${choice} ${who.phone} ${who.times}`;
+      expect(ids.includes('0.1'), at).toBe(who.phone === 'PHONE');
+      expect(ids.includes('0.6'), at).toBe(who.phone === 'NO-PHONE');
+      expect(ids.includes('5.2'), at).toBe(who.times === 'TIMES-SET');
+      expect(ids.includes('5.23'), at).toBe(who.times === 'TIMES-TBD');
+      // The same number of clauses: each twin takes the place of the other.
+      expect(ids.length, at).toBe(renderedIds(renderVariant(facts(), choice), choice).length);
+      expect(clauses(doc)[0].text, at).toBe(
+        who.phone === 'PHONE'
+          ? '**You** are Elena Marchetti. Your email is elena@example.com and your phone is 416 555 0177.'
+          : '**You** are Elena Marchetti. Your email is elena@example.com.',
+      );
+      expect(rowsOf(doc)['Coverage'], at).toBe(
+        who.times === 'TIMES-SET'
+          ? '10 hours, from 12:00 pm to 10:00 pm'
+          : '10 hours in one continuous block. The start and end time are not set yet (section 5).',
+      );
+    }
+});
+
+test('the numbers of spec 5.5 hold for a wedding without a phone and without times (spec 2026-11-23, section 6)', () => {
+  // The shape of the contract this was built for: a wedding, no phone, no times, three tick boxes.
+  const f = facts({ client_phone: undefined, start_time: undefined, end_time: undefined, add_ons: [{ id: 'second-photographer', qty: 7 }] });
+  expect(f).not.toHaveProperty('client_phone');
+  expect(f).not.toHaveProperty('start_time');
+  expect(f).not.toHaveProperty('end_time');
+  expect(f.tick_boxes!.map((t) => t.id)).toEqual(['raw-photos-wedding', 'instax-guest-prints', 'guest-camera']);
+  const amounts = (choice: 'share' | 'private', extras: string[] = []) => {
+    const m = factsFor(f, choice, extras);
+    const rows = rowsOf(renderVariant(f, choice, extras));
+    return [m.total, m.retainer, m.balance, rows['Total'], rows['Retainer, due at signing'], rows['Balance, due on your wedding day']];
+  };
+  expect(amounts('share')).toEqual([3010, 753, 2257, '$3,010.00', '$753.00 by e-transfer', '$2,257.00 in cash']);
+  expect(amounts('private')).toEqual([3085, 772, 2313, '$3,085.00', '$772.00 by e-transfer', '$2,313.00 in cash']);
+  const all = ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera'];
+  expect(amounts('private', all)).toEqual([3266.25, 817, 2449.25, '$3,266.25', '$817.00 by e-transfer', '$2,449.25 in cash']);
+  expect(factsFor(f, 'private', all).deposits).toEqual([
+    {
+      id: 'guest-camera',
+      label: 'Guest camera deposit',
+      amount: 100,
+      note: 'Refundable, and not part of your total. Paid together with your balance, on your wedding day. I return it within 7 days after your wedding, when the camera comes back working and undamaged.',
+    },
+  ]);
+  // The amounts are those of the same booking with a phone and times.
+  const withBoth = facts({ add_ons: [{ id: 'second-photographer', qty: 7 }] });
+  for (const choice of ['share', 'private'] as const)
+    for (const extras of [[], all]) {
+      const a = factsFor(f, choice, extras);
+      const b = factsFor(withBoth, choice, extras);
+      expect([a.total, a.retainer, a.balance, a.deposits]).toEqual([b.total, b.retainer, b.balance, b.deposits]);
+    }
 });
 
 test('the engagement session clauses carry its description and value', () => {

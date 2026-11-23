@@ -5,7 +5,7 @@
 import pageJson from '../../data/agreement/page.json' with { type: 'json' };
 import businessJson from '../../data/agreement/business.json' with { type: 'json' };
 import { clockTime, longDate, money } from './format';
-import { BookingError, MARKETING_FEE_LABEL, etransferEmailOf, factsFor, fill, hoursText, laterPaymentRows, pageFacts } from './render';
+import { BookingError, MARKETING_FEE_LABEL, etransferEmailOf, factsFor, fill, hoursText, laterPaymentRows, pageFacts, timesOf } from './render';
 import { PARTS } from './parts';
 import type { BookingFacts, Choice, PageContent, StoredSummary } from './types';
 
@@ -67,6 +67,9 @@ const conditionOf =
     if (when === 'bal:any') return f.balance_cash !== true;
     if (when === 'bal:cash') return f.balance_cash === true;
     if (when === 'fee') return f.private_fee !== undefined;
+    // Spec section 6: the start and end time are in the booking, or still to be set (clauses 5.2 and 5.23).
+    if (when === 'times:set') return timesOf(f) !== null;
+    if (when === 'times:tbd') return timesOf(f) === null;
     if (when.startsWith('tickable:')) return (f.tick_boxes ?? []).some((t) => t.id === when.slice('tickable:'.length));
     if (when.startsWith('booked:')) return f.add_ons.some((a) => a.id === when.slice('booked:'.length));
     // For a "more" line of an add-on that can be booked once only: not offered again once it is booked.
@@ -79,11 +82,13 @@ const keepWhen = <T extends { when?: string }>(lines: T[], holds: (when: string)
 
 /** The placeholders of page text that do not depend on a mix. */
 const valuesOf = (f: BookingFacts, pf: ReturnType<typeof pageFacts>): Record<string, string> => {
+  const times = timesOf(f);
   const vals: Record<string, string | undefined> = {
     EVENT_DATE: longDate(f.event_date),
     HOURS: hoursText(f.hours),
-    START: clockTime(f.start_time),
-    END: clockTime(f.end_time),
+    // Only with times (spec section 6): a line that uses them belongs under "when": "times:set".
+    START: times === null ? undefined : clockTime(times.start),
+    END: times === null ? undefined : clockTime(times.end),
     PLACE: f.place.replace(/\.+$/, ''),
     // The line is "Also agreed: {{NOTES}}": a note typed without an end mark gets a full stop (section 1 keeps it as typed).
     NOTES: f.notes === '' || /[.!?]['")\]]*$/.test(f.notes) ? f.notes : `${f.notes}.`,

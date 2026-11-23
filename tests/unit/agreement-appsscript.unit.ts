@@ -621,10 +621,10 @@ const WEDDING = {
 };
 
 /** A wedding signed as private with every tick box ticked (two priced extras and the guest camera deposit), built the way the sign route builds it. */
-async function weddingTickedSigned(mode: 'live' | 'test'): Promise<SignedRecord> {
+async function weddingTickedSigned(mode: 'live' | 'test', over: Record<string, unknown> = {}): Promise<SignedRecord> {
   const number = mode === 'test' ? 'KK-TEST-2026-001' : 'KK-2026-001';
   const createdAt = new Date('2026-11-10T15:00:00Z');
-  const booked = buildBookingFacts(WEDDING, { number, createdAt });
+  const booked = buildBookingFacts({ ...WEDDING, ...over }, { number, createdAt });
   const extras = ['raw-photos-wedding', 'instax-guest-prints', 'guest-camera'];
   const doc_json = JSON.stringify(renderVariant(booked, 'private', extras));
   const final_doc_json = fillSignDate(doc_json, '10 November 2026');
@@ -680,6 +680,31 @@ test('a wedding signed with ticked extras and a deposit is accepted by the real 
       'Text hash': signed.final_hash,
       Notes: 'Ticked at signing: RAW photos, Instax guest prints, Guest camera.',
     });
+  }
+});
+
+test('a wedding without a phone and without times is accepted by the real script, with an empty Phone cell (spec 2026-11-23, section 6)', async () => {
+  for (const mode of ['test', 'live'] as const) {
+    const signed = await weddingTickedSigned(mode, { client_phone: undefined, start_time: undefined, end_time: undefined });
+    for (const k of ['client_phone', 'start_time', 'end_time']) expect(signed.facts).not.toHaveProperty(k);
+    const fields = copyFields({ FORMS_ADMIN_TOKEN: TOKEN }, signed);
+    expect(Object.keys(fields)).toHaveLength(10);
+    // The same row keys in the same order, Phone sent as an empty string; the same email as with a phone.
+    const withPhone = copyFields({ FORMS_ADMIN_TOKEN: TOKEN }, await weddingTickedSigned(mode));
+    const row = JSON.parse(fields.row_json);
+    expect(Object.keys(row)).toEqual(Object.keys(JSON.parse(withPhone.row_json)));
+    expect(row.Phone).toBe('');
+    expect(JSON.parse(withPhone.row_json).Phone).toBe('416 555 0177');
+    expect(fields.email_body).toBe(withPhone.email_body);
+    const env = makeEnv();
+    const res = env.post(Object.fromEntries(new URLSearchParams(fields)));
+    expect(res, mode).toMatchObject({ ok: true });
+    expect(res.row_error).toBeUndefined();
+    expect(env.sent).toHaveLength(1);
+    const rows = env.sheets.get(mode === 'test' ? 'Contracts TEST' : 'Contracts')!.records();
+    expect(rows).toHaveLength(1);
+    expect(rows[0].Phone).toBe('');
+    expect(rows[0]).toMatchObject({ Client: 'Elena Marchetti', Email: 'elena@example.com', Total: '$3,266.25', Retainer: '$817.00', Balance: '$2,449.25' });
   }
 });
 

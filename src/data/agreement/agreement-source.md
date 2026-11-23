@@ -4,7 +4,9 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 ## Who we are
 
-**0.1** `[ALL]` **You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}} and your phone is {{CLIENT_PHONE}}.
+**0.1** `[PHONE]` **You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}} and your phone is {{CLIENT_PHONE}}.
+
+**0.6** `[NO-PHONE]` **You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}}. ⚑C46
 
 **0.2** `[COUPLE]` You are signing for yourself and for your partner, {{PARTNER_NAME}}.
 
@@ -94,7 +96,9 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 **5.1** `[SHOOT]` Your start time and end time for each day are set in your run of show (section 7). Your booked hours are in section 1.
 
-**5.2** `[EVENT]` Your start time and end time are in section 1. If we change them later, we confirm the new times in writing.
+**5.2** `[EVENT+TIMES-SET]` Your start time and end time are in section 1. If we change them later, we confirm the new times in writing.
+
+**5.23** `[EVENT+TIMES-TBD]` Your start time and end time are not set yet. We set them together, in writing, at the latest when you send your final timeline (section 7). If we change them later, we confirm the new times in writing. ⚑C45
 
 **5.3** `[ALL]` The clock starts at your start time. It runs without stopping until your end time.
 

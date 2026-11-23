@@ -163,8 +163,19 @@ test('pdfDocument output is pinned byte for byte', async () => {
   // for the text stored with the pilot booking made before the change (tests/unit/fixtures/old-bookings.json).
   // Re-pinned for spec 2026-11-23, section 5.8: the clause text of a NEW booking changed again (3.5 and 3.6
   // rounded up to the next dollar, 3.9 any other e-transfer, 16.14 the written reminder; clause version 8f15fd047652).
-  expect(await sha256Hex(pdfDocument(doc(), sig()))).toBe('dc4a88844e05a344a7dedb632c620b22864e3bcf7b66f77321cef8a878fd2aac');
-  expect(await sha256Hex(pdfDocument(doc({}, 'private'), sig({ choice: 'private' })))).toBe('d715954e748a3100dea849788559aa1be82327b601ecb7220177aa83f22e6b03');
+  // Re-pinned for spec 2026-11-23, section 6.1: the clause file got 0.6 (no phone) and 5.23 (times to be
+  // set), so its version changed (24a0a548eab2). This booking has a phone and times, so its text is word
+  // for word the same: with the old version put back, the two PDFs give the pins of section 5.8 again.
+  const share = pdfDocument(doc(), sig());
+  const priv = pdfDocument(doc({}, 'private'), sig({ choice: 'private' }));
+  expect(await sha256Hex(share)).toBe('5b70e2136ca2312933174168f689c7093b04f8a9589321382847602a8faea74d');
+  expect(await sha256Hex(priv)).toBe('5d4e45a645681e832ac490e75c86f58edb670e2d105ff4a711b7738690a43eee');
+  const versionBack = (html: string) => {
+    expect(html.split('24a0a548eab2')).toHaveLength(2);
+    return html.replace('Agreement version 24a0a548eab2', 'Agreement version 8f15fd047652');
+  };
+  expect(await sha256Hex(versionBack(share))).toBe('dc4a88844e05a344a7dedb632c620b22864e3bcf7b66f77321cef8a878fd2aac');
+  expect(await sha256Hex(versionBack(priv))).toBe('d715954e748a3100dea849788559aa1be82327b601ecb7220177aa83f22e6b03');
   const old = unpack((oldBookings as any).records['civil-noset'], oldBookings as any, { strings: true }) as any;
   const stored = (choice: 'share' | 'private') => JSON.parse(old.variants[choice].doc_json) as AgreementDoc;
   expect(await sha256Hex(pdfDocument(stored('share'), sig()))).toBe('c6791bae5119a70760ea900093c1685764248bf5f1975ea7319a1139056b0c23');

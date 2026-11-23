@@ -51,7 +51,30 @@ test('clause 0.3 is word for word', () => {
 test('tag groups', () => {
   expect(clause('14.3').tags).toEqual([['COUPLE'], ['EVENT'], ['PROPOSAL']]);
   expect(clause('8.3').tags).toEqual([['WEDDING', 'FILM']]);
-  expect(clause('5.2').tags).toEqual([['EVENT']]);
+  // Re-pinned for spec 2026-11-23, section 6.1: 5.2 (the times are in section 1) is for a booking with
+  // times; its twin 5.23 is for a booking whose times are still to be set.
+  expect(clause('5.2').tags).toEqual([['EVENT', 'TIMES-SET']]);
+});
+
+test('who you are, with and without a phone, and your times, set or to be set (spec 2026-11-23, section 6.1)', () => {
+  expect(clause('0.1').tags).toEqual([['PHONE']]);
+  expect(clause('0.1').text).toBe('**You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}} and your phone is {{CLIENT_PHONE}}.');
+  expect(clause('0.6').tags).toEqual([['NO-PHONE']]);
+  expect(clause('0.6').text).toBe('**You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}}.');
+  expect(clause('5.2').text).toBe('Your start time and end time are in section 1. If we change them later, we confirm the new times in writing.');
+  expect(clause('5.23').tags).toEqual([['EVENT', 'TIMES-TBD']]);
+  expect(clause('5.23').text).toBe(
+    'Your start time and end time are not set yet. We set them together, in writing, at the latest when you send your final timeline (section 7). If we change them later, we confirm the new times in writing.',
+  );
+  for (const id of ['0.1', '0.6', '5.2', '5.23']) expect(clause(id).bullets, id).toEqual([]);
+  // Each twin sits right after its clause, so it takes the same place (and number) in the document.
+  const order = (num: number) => file.sections[num].items.filter((i): i is SourceClause => i.type === 'clause').map((c) => c.id);
+  expect(order(0).indexOf('0.6')).toBe(order(0).indexOf('0.1') + 1);
+  expect(order(5).indexOf('5.23')).toBe(order(5).indexOf('5.2') + 1);
+  // Only 0.1 names the client's phone, and no clause names a start or an end time as a placeholder.
+  const using = (name: string) => allClauses().filter((c) => [c.text, ...c.bullets].join('\n').includes(`{{${name}}}`)).map((c) => c.id);
+  expect(using('CLIENT_PHONE')).toEqual(['0.1']);
+  expect(JSON.stringify(file)).not.toMatch(/\{\{(START|END)[A-Z_]*\}\}/);
 });
 
 test('the retainer clause has a usual and a set version', () => {

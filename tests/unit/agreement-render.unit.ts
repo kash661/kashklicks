@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { createHash } from 'node:crypto';
 import clausesJson from '../../src/data/agreement/clauses.json' with { type: 'json' };
 import sitePackages from '../../src/data/packages.json' with { type: 'json' };
 import siteAddOns from '../../src/data/add-ons.json' with { type: 'json' };
@@ -17,8 +18,11 @@ import {
   etransferEmailOf,
   RETAINER_PERCENT_BEFORE_2026_11_23,
   ETRANSFER_EMAIL_BEFORE_2026_11_23,
+  factsFor,
+  phoneOf,
+  timesOf,
 } from '../../src/lib/agreement/render';
-import type { AgreementDoc, ClauseFile, SourceClause, DocItem } from '../../src/lib/agreement/types';
+import type { AgreementDoc, BookingFacts, ClauseFile, SourceClause, DocItem } from '../../src/lib/agreement/types';
 
 const file = clausesJson as unknown as ClauseFile;
 
@@ -480,6 +484,8 @@ test('clause visibility for a civil ceremony', () => {
   for (const choice of ['share', 'private'] as const) {
     const doc = renderVariant(facts(), choice);
     expect(shows(doc, '5.2')).toBe(true);
+    // Spec 2026-11-23, section 6.1: with times, not their twin for times to be set.
+    expect(shows(doc, '5.23')).toBe(false);
     expect(shows(doc, '5.1')).toBe(false);
     // Re-pinned (spec 2026-11-23, section 5.1): cash only by default shows 3.17, not 3.10.
     for (const id of ['3.5', '3.17', '3.11', '7.3', '10.1', '11.12', '16.3']) expect(shows(doc, id), id).toBe(true);
@@ -502,16 +508,36 @@ test('visible clause counts match the independent numbers', () => {
   });
 });
 
-test('clause text is the source text, with only placeholders filled', () => {
-  const doc = renderVariant(facts(), 'share');
+// The placeholders whose values the pilot facts give, filled with exactly those values; any other
+// placeholder may be any text, as in `matches`. Spec 2026-11-23, section 6.1: clause 0.6 is clause 0.1
+// without its last words, so if CLIENT_EMAIL could be any text the text of 0.1 would fit 0.6 too.
+const PILOT_VALUES: Record<string, string> = { CLIENT_NAME: PILOT.client_name, CLIENT_EMAIL: PILOT.client_email, CLIENT_PHONE: PILOT.client_phone, PARTNER_NAME: PILOT.partner_name };
+const matchesKnown = (c: SourceClause, text: string) =>
+  new RegExp(
+    '^' +
+      c.text
+        .split(/(\{\{[A-Z0-9_]+\}\})/)
+        .map((part, i) => (i % 2 === 0 ? escRe(part) : Object.hasOwn(PILOT_VALUES, part.slice(2, -2)) ? escRe(PILOT_VALUES[part.slice(2, -2)]) : '[\\s\\S]+?'))
+        .join('') +
+      '$',
+  ).test(text);
+/** Every rendered clause comes from exactly one source clause, word for word but for its placeholders. */
+const expectFromSource = (doc: AgreementDoc) => {
   const sourceTexts = file.sections.flatMap((s) => s.items).filter((i): i is SourceClause => i.type === 'clause');
   for (const c of clauses(doc)) {
     // A word for word match wins over a template that also fits through a placeholder (3.5 and its set-retainer twin).
     const exact = sourceTexts.filter((s) => s.text === c.text);
-    const from = exact.length ? exact : sourceTexts.filter((s) => matches(s, c.text));
+    const from = exact.length ? exact : sourceTexts.filter((s) => matchesKnown(s, c.text));
     expect(from, c.text).toHaveLength(1);
+    // matchesKnown only ever narrows matches.
+    for (const s of from) expect(matches(s, c.text)).toBe(true);
     expect(c.bullets).toEqual(from[0].bullets);
   }
+};
+
+test('clause text is the source text, with only placeholders filled', () => {
+  const doc = renderVariant(facts(), 'share');
+  expectFromSource(doc);
   const all = clauses(doc);
   expect(all[0].text).toBe('**You** are Priya Sharma. Your email is priya@example.com and your phone is 416 555 0142.');
   expect(all[1].text).toBe('You are signing for yourself and for your partner, Arjun Mehta.');
@@ -702,6 +728,167 @@ test('the event date is at most 1096 days ahead', () => {
   expect(codeOf(() => facts({ event_date: '2029-11-10' }))).toBeUndefined();
   expect(codeOf(() => facts({ event_date: '2029-11-11' }))).toBe('bad_date');
   expect(codeOf(() => facts({ event_date: '9999-12-31' }))).toBe('bad_date');
+});
+
+// ------------------------------------------------------------------ no phone, times to be set (spec 2026-11-23, section 6)
+
+const fieldOf = (fn: () => unknown): { code: string; field?: string } | undefined => {
+  try {
+    fn();
+  } catch (e) {
+    if (e instanceof BookingError) return { code: e.code, field: e.field };
+    throw e;
+  }
+  return undefined;
+};
+/** PILOT without these keys at all. */
+const pilotWithout = (...keys: string[]) => Object.fromEntries(Object.entries(PILOT).filter(([k]) => !keys.includes(k)));
+const sha256 = (s: string) => createHash('sha256').update(s, 'utf8').digest('hex');
+const rowsOf = (doc: AgreementDoc) => Object.fromEntries(table(doc, 'booking').rows);
+const WITH_PHONE = '**You** are Priya Sharma. Your email is priya@example.com and your phone is 416 555 0142.';
+const NO_PHONE = '**You** are Priya Sharma. Your email is priya@example.com.';
+const TIMES_SET = 'Your start time and end time are in section 1. If we change them later, we confirm the new times in writing.';
+const TIMES_TBD =
+  'Your start time and end time are not set yet. We set them together, in writing, at the latest when you send your final timeline (section 7). If we change them later, we confirm the new times in writing.';
+const COVERAGE_SET = '2 hours, from 12:00 pm to 2:00 pm';
+const COVERAGE_TBD = '2 hours in one continuous block. The start and end time are not set yet (section 5).';
+const NOT_GIVEN = [undefined, null, '', '   ', '\t \n'];
+
+test('a booking with a phone and times: the facts are byte for byte the ones of before section 6', () => {
+  // sha256 of JSON.stringify of the facts the engine of git ecbecf4 (before spec 2026-11-23, section 6) made
+  // for PILOT with this number and clock, key order included.
+  expect(sha256(JSON.stringify(facts()))).toBe('16aa77b255ab5f1614942019a599fb5ff062b110dff7be024e56bc71c8dd3bcd');
+  expect(Object.keys(facts()).slice(0, 9)).toEqual([
+    'package_id',
+    'client_name',
+    'partner_name',
+    'client_email',
+    'client_phone',
+    'event_date',
+    'start_time',
+    'end_time',
+    'place',
+  ]);
+  // Without them: the same facts, less those keys.
+  const less = Object.fromEntries(Object.entries(facts()).filter(([k]) => !['client_phone', 'start_time', 'end_time'].includes(k)));
+  expect(JSON.stringify(facts({ client_phone: null, start_time: null, end_time: null }))).toBe(JSON.stringify(less));
+  expect(JSON.stringify(buildBookingFacts(pilotWithout('client_phone', 'start_time', 'end_time'), CTX))).toBe(JSON.stringify(less));
+});
+
+test('a phone that is not given (missing, null, empty or blank) is no phone, and the facts leave it out', () => {
+  for (const f of [buildBookingFacts(pilotWithout('client_phone'), CTX), ...NOT_GIVEN.map((client_phone) => facts({ client_phone }))]) {
+    expect(f).not.toHaveProperty('client_phone');
+    expect(phoneOf(f)).toBeUndefined();
+  }
+  // Any other value is checked as before.
+  for (const client_phone of [4165550142, false, 0, ['416 555 0142'], { n: '416 555 0142' }, ' 555-01 ', '-------', '416 555 0142 ext 9'])
+    expect(fieldOf(() => facts({ client_phone })), String(client_phone)).toEqual({ code: 'bad_phone', field: 'client_phone' });
+  expect(facts({ client_phone: '  416 555 0142  ' }).client_phone).toBe('416 555 0142');
+  expect(phoneOf(facts())).toBe('416 555 0142');
+});
+
+test('times: both or neither; one alone is refused, naming the one that is missing; blank counts as missing', () => {
+  // Neither: the times are to be set, and the facts leave both out.
+  const neither = [buildBookingFacts(pilotWithout('start_time', 'end_time'), CTX)];
+  for (const start_time of NOT_GIVEN) for (const end_time of NOT_GIVEN) neither.push(facts({ start_time, end_time }));
+  for (const f of neither) {
+    expect(f).not.toHaveProperty('start_time');
+    expect(f).not.toHaveProperty('end_time');
+    expect(timesOf(f)).toBeNull();
+  }
+  // One alone.
+  for (const missing of NOT_GIVEN) {
+    expect(fieldOf(() => facts({ end_time: missing }))).toEqual({ code: 'bad_times', field: 'end_time' });
+    expect(fieldOf(() => facts({ start_time: missing }))).toEqual({ code: 'bad_times', field: 'start_time' });
+  }
+  expect(fieldOf(() => buildBookingFacts(pilotWithout('end_time'), CTX))).toEqual({ code: 'bad_times', field: 'end_time' });
+  expect(fieldOf(() => buildBookingFacts(pilotWithout('start_time'), CTX))).toEqual({ code: 'bad_times', field: 'start_time' });
+  // Both given: checked as before (a wrong length, a time that is not HH:MM, a number, a space around it).
+  for (const [start_time, end_time] of [['12:00', '13:00'], ['25:00', '27:00'], [1200, 1400], [' 12:00', '14:00'], ['12:00', '14:00 '], ['noon', '14:00']])
+    expect(fieldOf(() => facts({ start_time, end_time })), `${start_time} ${end_time}`).toEqual({ code: 'bad_times', field: 'end_time' });
+  expect(timesOf(facts())).toEqual({ start: '12:00', end: '14:00' });
+  // Hours booked on top need no times either; the Coverage row counts them.
+  const longer = facts({ start_time: null, end_time: null, add_ons: [{ id: 'extra-hours-civil', qty: 1 }] });
+  expect(longer.hours).toBe(3);
+  expect(rowsOf(renderVariant(longer, 'share'))['Coverage']).toBe('3 hours in one continuous block. The start and end time are not set yet (section 5).');
+  // Stored facts with one time and not the other are a data mistake: nothing is rendered from them.
+  const { end_time: _e, ...half } = facts();
+  expect(() => timesOf(half as BookingFacts)).toThrow('a start time and an end time go together');
+  expect(() => renderVariant(half as BookingFacts, 'share')).toThrow('a start time and an end time go together');
+});
+
+test('without a phone: clause 0.6 and not 0.1, and nothing else changes; with a phone: 0.1 and not 0.6', () => {
+  const sec0 = (d: AgreementDoc) => clauses(d).filter((c) => c.sec === 0).map((c) => c.text);
+  for (const choice of ['share', 'private'] as const) {
+    const withPhone = renderVariant(facts(), choice);
+    expect(sec0(withPhone)[0]).toBe(WITH_PHONE);
+    expect(sec0(withPhone)).not.toContain(NO_PHONE);
+    for (const client_phone of NOT_GIVEN) {
+      const without = renderVariant(facts({ client_phone }), choice);
+      expect(sec0(without)[0]).toBe(NO_PHONE);
+      expect(sec0(without)).not.toContain(WITH_PHONE);
+      expect(JSON.stringify(without)).not.toContain('416 555 0142');
+      expect(JSON.stringify(without)).not.toContain('your phone');
+      expectFromSource(without);
+      // Clause 0.1 put back in its place gives the document with the phone, byte for byte.
+      const back = JSON.parse(JSON.stringify(without)) as AgreementDoc;
+      (back.sections[0].items[0] as { text: string }).text = WITH_PHONE;
+      expect(JSON.stringify(back)).toBe(JSON.stringify(withPhone));
+    }
+  }
+});
+
+test('without times: clause 5.23 and not 5.2, and the Coverage row says the times are not set yet; with times: today\'s text', () => {
+  const sec5 = (d: AgreementDoc) => d.sections[5].items.filter((i): i is Extract<DocItem, { type: 'clause' }> => i.type === 'clause');
+  for (const choice of ['share', 'private'] as const) {
+    const withTimes = renderVariant(facts(), choice);
+    const at = sec5(withTimes).findIndex((c) => c.text === TIMES_SET);
+    expect(at).toBeGreaterThanOrEqual(0);
+    expect(sec5(withTimes).map((c) => c.text)).not.toContain(TIMES_TBD);
+    expect(rowsOf(withTimes)['Coverage']).toBe(COVERAGE_SET);
+    const without = renderVariant(facts({ start_time: '', end_time: null }), choice);
+    // 5.23 takes the place and the number of 5.2.
+    expect(sec5(without)[at]).toEqual({ ...sec5(withTimes)[at], text: TIMES_TBD });
+    expect(sec5(without).map((c) => c.text)).not.toContain(TIMES_SET);
+    expect(rowsOf(without)['Coverage']).toBe(COVERAGE_TBD);
+    expect(JSON.stringify(without)).not.toContain('12:00 pm');
+    expectFromSource(without);
+    // 5.2 and the Coverage row put back give the document with times, byte for byte.
+    const back = JSON.parse(JSON.stringify(without)) as AgreementDoc;
+    (back.sections[5].items.filter((i) => i.type === 'clause')[at] as { text: string }).text = TIMES_SET;
+    const row = (back.sections[1].items.find((i) => i.type === 'table') as { rows: string[][] }).rows.find((r) => r[0] === 'Coverage')!;
+    row[1] = COVERAGE_SET;
+    expect(JSON.stringify(back)).toBe(JSON.stringify(withTimes));
+  }
+});
+
+test('no phone and no times together: both twins, the numbers of a booking with them, and only the sign date left to fill', () => {
+  const f = facts({ client_phone: undefined, start_time: undefined, end_time: undefined, price: undefined });
+  for (const choice of ['share', 'private'] as const) {
+    const doc = renderVariant(f, choice);
+    const texts = clauses(doc).map((c) => c.text);
+    expect(texts).toContain(NO_PHONE);
+    expect(texts).toContain(TIMES_TBD);
+    expect(texts).not.toContain(TIMES_SET);
+    expect(rowsOf(doc)['Coverage']).toBe(COVERAGE_TBD);
+    const json = JSON.stringify(doc);
+    expect(json.split(SIGN_DATE_TOKEN)).toHaveLength(2);
+    expect(json.split(SIGN_DATE_TOKEN).join('')).not.toMatch(/\{\{|\}\}|undefined|[–—]/);
+    expectFromSource(doc);
+  }
+  // Spec 5.5, the Civil Ceremony at the site price ($551.25): 138.00 / 413.25 cash; private with every extra 723.00: 181.00 / 542.00.
+  const EVERY = ['drone', 'extra-retouched', 'raw-photos-civil'];
+  const amounts = (b: BookingFacts, choice: 'share' | 'private', extras: string[] = []) => {
+    const m = factsFor(b, choice, extras);
+    const r = rowsOf(renderVariant(b, choice, extras));
+    return [m.total, m.retainer, m.balance, r['Total'], r['Retainer, due at signing'], r['Balance, due on or before the ceremony day']];
+  };
+  expect(amounts(f, 'share')).toEqual([551.25, 138, 413.25, '$551.25', '$138.00 by e-transfer', '$413.25 in cash']);
+  expect(amounts(f, 'private', EVERY)).toEqual([723, 181, 542, '$723.00', '$181.00 by e-transfer', '$542.00 in cash']);
+  // The same as the booking with a phone and times.
+  const withBoth = facts({ price: undefined });
+  expect(amounts(f, 'share')).toEqual(amounts(withBoth, 'share'));
+  expect(amounts(f, 'private', EVERY)).toEqual(amounts(withBoth, 'private', EVERY));
 });
 
 // The engine reads the same data objects the tests import, so a test can bend them briefly to reach the guards.

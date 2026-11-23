@@ -28,10 +28,12 @@ export interface BookingInput {
   client_name: string;
   partner_name: string;
   client_email: string;
-  client_phone: string;
+  // Optional since 2026-11-23 (spec section 6): missing, null or a blank string means no phone.
+  client_phone?: string | null;
   event_date: string;
-  start_time: string;
-  end_time: string;
+  // Both or neither (spec section 6): missing, null or blank means the times are still to be set.
+  start_time?: string | null;
+  end_time?: string | null;
   place: string;
   price?: number;
   retainer?: number;
@@ -39,7 +41,14 @@ export interface BookingInput {
   add_ons?: { id: string; qty: number }[];
   notes?: string;
 }
-export interface BookingFacts extends Required<Omit<BookingInput, 'price' | 'retainer' | 'add_ons' | 'notes'>> {
+export interface BookingFacts
+  extends Required<Omit<BookingInput, 'price' | 'retainer' | 'add_ons' | 'notes' | 'client_phone' | 'start_time' | 'end_time'>> {
+  // Left out of a booking made without them (spec section 6, 2026-11-23); every booking made before has
+  // all three. start_time and end_time ('HH:MM') are both present or both missing (timesOf in render.ts).
+  // Read them through phoneOf and timesOf in render.ts.
+  client_phone?: string;
+  start_time?: string;
+  end_time?: string;
   number: string;
   created_at: string;
   package_name: string;

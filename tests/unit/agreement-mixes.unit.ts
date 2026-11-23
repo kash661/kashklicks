@@ -703,13 +703,29 @@ test('docJsonFromSet refuses an index list that does not fit its pool', () => {
 // rounded up to the next dollar, 3.9 any other e-transfer, 16.14 the written reminder; clause version
 // 8f15fd047652). With those words swapped back and the version 749c631df042, the four texts give the
 // four pins of section 5.6 again (23d26213, 982777cf, 7ca46625, df7ea6da).
+// Re-pinned for spec 2026-11-23, section 6.1: the clause file got 0.6 (no phone) and 5.23 (times to be
+// set), so its version changed (24a0a548eab2). These bookings have a phone and times, so their texts are
+// word for word the same: with the version 8f15fd047652 put back, they give the four pins of section 5.8
+// again (767ae398, dfbf0726, 6a7d8e0f, 5d990338).
+const VERSION_6 = '24a0a548eab2f68c1790e7dd394a2c5b3804af88138a087c785a5dc89ab3be80';
+const VERSION_5_8 = '8f15fd04765241a11b5f447f0b6cfdf70cc8b446d1d18ae6e8a2a2cd4070482d';
+const versionBack = (json: string) => {
+  expect(json.split(VERSION_6)).toHaveLength(2);
+  return json.replace(VERSION_6, VERSION_5_8);
+};
 test('nothing ticked: the documents are byte for byte the ones made before tick boxes', () => {
+  expect((clausesJson as unknown as ClauseFile).version).toBe(VERSION_6);
   const civil = civilFacts();
-  expect(sha256(JSON.stringify(renderVariant(civil, 'share')))).toBe('767ae39806ab19c984b1b87c6924dcbb04fd70a4e6596bd304f60bf593a17cbb');
-  expect(sha256(JSON.stringify(renderVariant(civil, 'private')))).toBe('dfbf0726736e70c741265301aaae32d4d712ab74c15c36bfd6d8507baabb119c');
+  const text = (f: BookingFacts, choice: Choice) => JSON.stringify(renderVariant(f, choice));
+  expect(sha256(text(civil, 'share'))).toBe('f82d07ec37ac353c5e982a99cab2bf5e2f43e86e343d4b1222042d48cff25c23');
+  expect(sha256(text(civil, 'private'))).toBe('d271131de6d2e06d59b0452c15187d5bc8655a6e951e95d28ade1e896ecacf2d');
   const wed = weddingFacts();
-  expect(sha256(JSON.stringify(renderVariant(wed, 'share')))).toBe('6a7d8e0f51c6058c7b9bb74db43290a72efbaa2b3c13933bbf479f2eb0c221eb');
-  expect(sha256(JSON.stringify(renderVariant(wed, 'private')))).toBe('5d990338eeda9af3c25c7cd8697ab36ceb87164f464737509fb6274800340928');
+  expect(sha256(text(wed, 'share'))).toBe('964ef178f4de419529833eb7b9738f603b31977ba668d9b3d80e80c2e1bba73c');
+  expect(sha256(text(wed, 'private'))).toBe('77e09a629234949388a42966708e5a61a3515417fd9cd887abf8f0a0423b909b');
+  expect(sha256(versionBack(text(civil, 'share')))).toBe('767ae39806ab19c984b1b87c6924dcbb04fd70a4e6596bd304f60bf593a17cbb');
+  expect(sha256(versionBack(text(civil, 'private')))).toBe('dfbf0726736e70c741265301aaae32d4d712ab74c15c36bfd6d8507baabb119c');
+  expect(sha256(versionBack(text(wed, 'share')))).toBe('6a7d8e0f51c6058c7b9bb74db43290a72efbaa2b3c13933bbf479f2eb0c221eb');
+  expect(sha256(versionBack(text(wed, 'private')))).toBe('5d990338eeda9af3c25c7cd8697ab36ceb87164f464737509fb6274800340928');
   // The old pins, on the two texts stored with the pilot booking (same number) made by git 20408b9, before the change.
   const old = oldRecord('civil-noset');
   expect(old.number).toBe('KK-TEST-2026-001');

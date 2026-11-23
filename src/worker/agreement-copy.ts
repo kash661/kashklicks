@@ -2,7 +2,7 @@
 // call to Apps Script. Everything is built from the signed record in D1.
 import { longDate, money, torontoStamp } from '../lib/agreement/format';
 import { pdfDocument } from '../lib/agreement/html';
-import { etransferEmailOf } from '../lib/agreement/render';
+import { etransferEmailOf, phoneOf } from '../lib/agreement/render';
 import type { AgreementDoc } from '../lib/agreement/types';
 import { putBookingQuietly, type AgreementEnv, type BookingRecord, type SignedRecord, type Store } from './agreement-store';
 import { callAppsScript } from './shared';
@@ -95,7 +95,9 @@ export function copyFields(env: AgreementEnv, s: SignedRecord): Record<string, s
     Client: f.client_name,
     Partner: f.partner_name,
     Email: f.client_email,
-    Phone: f.client_phone,
+    // A booking made without a phone (spec section 6) sends an empty cell: the key stays, and Apps Script
+    // writes the cell as given (no change there).
+    Phone: phoneOf(f) ?? '',
     Package: f.package_name,
     'Event date': f.event_date,
     Total: money(f.total),

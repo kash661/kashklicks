@@ -8,7 +8,13 @@
 //                   http://localhost:<port> or http://127.0.0.1:<port>     TEST booking (local)
 //                   https://kashklicks.ca                                  LIVE booking, only with --live
 // <booking.json>  the booking facts: package_id, client_name, partner_name, client_email,
-//                 client_phone, event_date, start_time, end_time, place, price, notes, add_ons,
+//                 event_date, place, price, notes, add_ons,
+//                 client_phone (optional; left out, null or blank: no phone, and the agreement
+//                   names only the email),
+//                 start_time and end_time ("HH:MM", both or neither; neither, null or blank:
+//                   the times are still to be set, the agreement says so in section 1 and 5 and
+//                   you set them with the couple in writing, at the latest with their final
+//                   timeline; only one of the two is refused with bad_times),
 //                 retainer (optional; default: 25% of the total, rounded up to the next dollar,
 //                   paid by e-transfer when signing),
 //                 balance_cash (optional; default true: the balance is paid in cash only, on the
@@ -25,6 +31,8 @@
 //                 the couple before you send the link (whether to keep a shorter limit is open).
 //                 A package with tick boxes prints one more line, Extras: what the couple can
 //                 still tick when they sign (an add-on booked here is not offered again).
+//                 Without times it prints "Times    to be set (section 5)", without a phone
+//                 "Phone    none".
 // --live          required for the live origin. Without it the live origin is refused.
 //
 // The admin token is read from the file in admin-access.mjs and sent only in the x-kk-admin
@@ -86,7 +94,13 @@ if (res.status !== 200 || body?.ok !== true) {
 }
 
 const money = (n) => `$${Number(n).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+// The worker's rule (render.ts notGiven): missing, null or only spaces is not given. It accepted the
+// booking, so the times are both given or both not given.
+const notGiven = (v) => v === undefined || v === null || (typeof v === 'string' && v.trim() === '');
 console.log(`Booking  ${body.number}  (mode: ${body.mode})`);
+// Only when they are missing (spec section 6). With them the printout is as before.
+if (notGiven(booking.start_time) && notGiven(booking.end_time)) console.log('Times    to be set (section 5)');
+if (notGiven(booking.client_phone)) console.log('Phone    none');
 console.log(`Total    ${money(body.total)}`);
 console.log(`Retainer ${money(body.retainer)}`);
 console.log(`Balance  ${money(body.balance)}${body.balance_cash === true ? ' (cash only)' : ''}`);

@@ -1167,6 +1167,22 @@ const W2 = v2Booking(
   ),
   { client_first: 'Elena', partner_first: 'Daniel', email: 'elena@example.com' },
 );
+// Build spec section 6: the same wedding made without a phone and without times (three tick boxes left).
+const W_TBD = v2Booking(
+  buildBookingFacts(
+    {
+      package_id: 'wedding-full',
+      client_name: 'Elena Marchetti',
+      partner_name: 'Daniel Okafor',
+      client_email: 'elena@example.com',
+      event_date: '2027-05-29',
+      place: 'St. Example Church, Hamilton. Reception in Burlington',
+      add_ons: [{ id: 'second-photographer', qty: 7 }],
+    },
+    { number: 'KK-TEST-2026-007', createdAt: new Date('2026-11-10T15:00:00Z') },
+  ),
+  { client_first: 'Elena', partner_first: 'Daniel', email: 'elena@example.com' },
+);
 const PRIYA = { client_first: 'Priya', partner_first: 'Arjun', email: 'priya@example.com' };
 const C2 = v2Booking(facts, PRIYA);
 // A set and no page content: the civil ceremony and the wedding (a fee for private work). Both pay in two parts
@@ -1761,6 +1777,76 @@ test.describe('a booking made with the simpler page', () => {
     await expect(rows.locator('dd').nth(5)).toHaveText('$3,266.25');
     await expect(rows.locator('dd').nth(6)).toHaveText('$817.00');
     await expect(rows.locator('dd').nth(7)).toHaveText('$2,449.25, in cash');
+  });
+
+  test('a wedding without a phone and without times: the glance, part 1 and its full wording say the times are to be set', async ({ page }) => {
+    // Build spec section 6.3, typed out here rather than taken from the engine.
+    const TBD_POINT =
+      'Saturday 29 May 2027. 10 hours in one block. We set the start and end time together, in writing, at the latest when you send your final timeline.';
+    const YOU = 'You are Elena Marchetti. Your email is elena@example.com.';
+    const C523 =
+      'Your start time and end time are not set yet. We set them together, in writing, at the latest when you send your final timeline (section 7). If we change them later, we confirm the new times in writing.';
+    const COVERAGE = '10 hours in one continuous block. The start and end time are not set yet (section 5).';
+    const clean = async () => {
+      const view = page.locator('[data-agr-view="ready"]');
+      for (const text of [await view.textContent(), await view.innerText(), await main(page).textContent()]) {
+        expect(text).not.toMatch(/\{\{|\}\}|undefined/);
+        expect(text).not.toMatch(/[–—]/);
+      }
+    };
+    await mockDoc(page, [[200, W_TBD.ready]]);
+    await page.goto(PATH);
+    await expect(main(page)).toHaveAttribute('data-agr-state', 'ready');
+    // The glance: the times to be set, then the photographers and the total.
+    await expect(page.locator('[data-agr-glance] dt')).toHaveText(['Date', 'Coverage', 'Photographers', 'Total']);
+    await expect(page.locator('[data-agr-glance] dd').nth(0)).toHaveText('Saturday 29 May 2027');
+    await expect(page.locator('[data-agr-glance] dd').nth(1)).toHaveText('10 hours, times to be set');
+    await expect(page.locator('[data-agr-glance] dd').nth(3)).toHaveText('$3,010.00');
+    // Part 1: the new point first, and no clock time anywhere in the main points.
+    await expect(page.locator('[data-agr-points="1"] > li').first()).toHaveText(TBD_POINT);
+    expect((await page.locator('[data-agr-points] > li').allTextContents()).filter((t) => /\d:\d\d [ap]m/.test(t))).toEqual([]);
+    await expect(page.locator('[data-agr-extra]')).toHaveCount(3);
+    await clean();
+    // The full wording of part 1 (sections 0, 1 and 5 among them): clause 0.6, the Coverage row, clause 5.23.
+    await page.locator('[data-agr-disc="1"]').click();
+    const full = page.locator('[data-agr-full="1"]');
+    await expect(full).toBeVisible();
+    await expect(page.locator('#sec-0')).toContainText(YOU);
+    await expect(page.locator('#sec-0')).not.toContainText('your phone');
+    const sec1 = page.locator('#sec-1');
+    const rowOf = (label: string) => sec1.locator('tr', { has: page.locator('td.agr-label', { hasText: new RegExp(`^${label}$`) }) }).locator('td');
+    // Every Coverage row (before a sharing choice, section 1 holds the table of each choice).
+    const coverage = async (tables: number) => {
+      await expect(rowOf('Coverage')).toHaveCount(2 * tables);
+      const cells = await rowOf('Coverage').allTextContents();
+      for (let i = 0; i < cells.length; i += 2) expect(cells.slice(i, i + 2)).toEqual(['Coverage', COVERAGE]);
+    };
+    await coverage(2);
+    await expect(page.locator('#sec-5')).toContainText(C523);
+    await expect(page.locator('#sec-5')).not.toContainText('Your start time and end time are in section 1.');
+    await expect(full).not.toContainText(/\d:\d\d [ap]m/);
+    await clean();
+    // After a choice and every tick box: the stored text of that mix on screen, with the amounts of spec 5.5.
+    await page.locator('[data-agr-choice="private"]').check();
+    await setTicks(page, W_TBD, [RAW, INSTAX, CAMERA]);
+    const id = mixId('private', [RAW, INSTAX, CAMERA]);
+    await expectShownText(page, W_TBD.docs[id], id);
+    await expectMix(page, W_TBD, id, PRIVATE_TITLE);
+    await expect(page.locator('[data-agr-glance-total]')).toHaveText('$3,266.25');
+    await expect(page.locator('#sec-0')).toContainText(YOU);
+    await expect(page.locator('#sec-5')).toContainText(C523);
+    await coverage(1);
+    await clean();
+    // The review: nothing missing, nothing left unfilled.
+    await page.locator('[data-agr-name]').fill('Elena Marchetti');
+    await page.locator('[data-agr-agree]').check();
+    await page.locator('[data-agr-review]').click();
+    const rows = page.locator('[data-agr-review-rows] > div');
+    await expect(rows.locator('dt')).toHaveText(['Your name', 'Your partner', 'Package', 'Date', 'Extras', 'Total', 'Retainer', 'Balance on the day', 'Guest camera deposit', 'Sharing']);
+    await expect(rows.locator('dd').nth(5)).toHaveText('$3,266.25');
+    await expect(rows.locator('dd').nth(6)).toHaveText('$817.00');
+    await expect(rows.locator('dd').nth(7)).toHaveText('$2,449.25, in cash');
+    expect(await page.locator('[data-agr-review-rows]').textContent()).not.toMatch(/\{\{|\}\}|undefined/);
   });
 
   test('ticking every box and then unticking every box gives back the plain mix everywhere', async ({ page }) => {

@@ -1,5 +1,5 @@
 {
-  "version": "8f15fd04765241a11b5f447f0b6cfdf70cc8b446d1d18ae6e8a2a2cd4070482d",
+  "version": "24a0a548eab2f68c1790e7dd394a2c5b3804af88138a087c785a5dc89ab3be80",
   "title": "Photography and Film Agreement",
   "intro": "This is the agreement between you and me for your booking. I wrote it in plain English on purpose. Please read all of it. If anything is unclear or wrong, do not sign yet. Message me, and I will fix it or explain it.",
   "sections": [
@@ -12,10 +12,21 @@
           "id": "0.1",
           "tags": [
             [
-              "ALL"
+              "PHONE"
             ]
           ],
           "text": "**You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}} and your phone is {{CLIENT_PHONE}}.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "0.6",
+          "tags": [
+            [
+              "NO-PHONE"
+            ]
+          ],
+          "text": "**You** are {{CLIENT_NAME}}. Your email is {{CLIENT_EMAIL}}.",
           "bullets": []
         },
         {
@@ -463,10 +474,23 @@
           "id": "5.2",
           "tags": [
             [
-              "EVENT"
+              "EVENT",
+              "TIMES-SET"
             ]
           ],
           "text": "Your start time and end time are in section 1. If we change them later, we confirm the new times in writing.",
+          "bullets": []
+        },
+        {
+          "type": "clause",
+          "id": "5.23",
+          "tags": [
+            [
+              "EVENT",
+              "TIMES-TBD"
+            ]
+          ],
+          "text": "Your start time and end time are not set yet. We set them together, in writing, at the latest when you send your final timeline (section 7). If we change them later, we confirm the new times in writing.",
           "bullets": []
         },
         {

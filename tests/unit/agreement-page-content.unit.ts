@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { createHash } from 'node:crypto';
 import clausesJson from '../../src/data/agreement/clauses.json' with { type: 'json' };
 import agreementPackages from '../../src/data/agreement/packages.json' with { type: 'json' };
 import business from '../../src/data/agreement/business.json' with { type: 'json' };
@@ -57,6 +58,10 @@ const SAMPLES: Record<string, () => BookingFacts> = {
   'civil, set retainer equal to the usual share of one mix': () => civilFacts({ price: 551.25, retainer: 157, notes: '' }),
   'civil, everything booked up front': () =>
     civilFacts({ add_ons: [{ id: 'drone', qty: 1 }, { id: 'extra-retouched', qty: 2 }, { id: 'raw-photos-civil', qty: 1 }] }),
+  // Spec 2026-11-23, section 6: no phone, and the times to be set.
+  'wedding, three tick boxes, no phone, times to be set': () =>
+    weddingFacts({ add_ons: SECOND_ONLY, client_phone: undefined, start_time: undefined, end_time: undefined }),
+  'civil, no phone, times to be set': () => civilFacts({ client_phone: '', start_time: null, end_time: '  ' }),
 };
 
 const B = business as { legalName: string; tradeNames: string[]; phone: string; email: string; etransferEmail: string; whoShoots: string };
@@ -467,6 +472,83 @@ test('page text placeholders: an unknown name throws, and nothing may be left', 
     () => expect(() => pageContent(f)).toThrow('no part 8'),
   );
   expect(() => pageContent(f)).not.toThrow();
+});
+
+test('times to be set: the glance and part 1 of both packages say so; with times the page content is unchanged (spec 2026-11-23, section 6)', () => {
+  const sha256 = (s: string) => createHash('sha256').update(s, 'utf8').digest('hex');
+  const TBD_POINT = (date: string, hours: string) =>
+    `${date}. ${hours} in one block. We set the start and end time together, in writing, at the latest when you send your final timeline.`;
+  const wedding = SAMPLES['wedding, three tick boxes']();
+  const weddingTbd = SAMPLES['wedding, three tick boxes, no phone, times to be set']();
+  const civil = SAMPLES['civil, usual retainer']();
+  const civilTbd = SAMPLES['civil, no phone, times to be set']();
+  for (const f of [weddingTbd, civilTbd]) for (const k of ['client_phone', 'start_time', 'end_time']) expect(f).not.toHaveProperty(k);
+
+  // With times: byte for byte the page content and the summaries the engine of git ecbecf4 (before section 6) made.
+  expect(sha256(JSON.stringify(pageContent(civil)))).toBe('49232d37e8d92d7e61e6ce4b7425425e7627970de0b0fb702fe0ac185187decd');
+  expect(sha256(JSON.stringify(pageContent(wedding)))).toBe('d4f2a2dd705e1afdcfd458abadb1d99416a0cf7496309058f5d4f532c991ce59');
+  expect(sha256(JSON.stringify(mixSummaries(civil, mixesOf(civil))))).toBe('29d236903b8fcd0a98403d7d6398a280e4ad61fe11f165d84dc37590dee6ee1b');
+  expect(sha256(JSON.stringify(mixSummaries(wedding, mixesOf(wedding))))).toBe('6e22d73ac7bc387bd5d585129d596f71f1f569d7473b34127ef98491863b0e1a');
+  expect(content(wedding).glance[1]).toEqual({ label: 'Coverage', value: '10 hours, 12:00 pm to 10:00 pm' });
+  expect(pointsOf(content(civil), 1)[0]).toBe('Saturday 12 December 2026. 2 hours in one block, from 12:00 pm to 2:00 pm.');
+
+  // Without times: the glance.
+  expect(content(weddingTbd).glance).toEqual([
+    { label: 'Date', value: 'Saturday 29 May 2027' },
+    { label: 'Coverage', value: '10 hours, times to be set' },
+    { label: 'Photographers', value: `${B.whoShoots}, and a second photographer for all 10 hours` },
+  ]);
+  expect(content(civilTbd).glance).toEqual([
+    { label: 'Date', value: 'Saturday 12 December 2026' },
+    { label: 'Coverage', value: '2 hours, times to be set' },
+    { label: 'Photographer', value: B.whoShoots },
+  ]);
+  // Part 1: the new first point, the rest as with times.
+  expect(pointsOf(content(weddingTbd), 1)[0]).toBe(TBD_POINT('Saturday 29 May 2027', '10 hours'));
+  expect(pointsOf(content(civilTbd), 1)[0]).toBe(TBD_POINT('Saturday 12 December 2026', '2 hours'));
+  // Everything else is the page content of the same booking with times (and a phone: the page text names
+  // no phone of the client), and the summaries of every mix are the same.
+  for (const [tbd, set] of [
+    [weddingTbd, wedding],
+    [civilTbd, civil],
+  ]) {
+    const c = content(tbd);
+    const back = JSON.parse(JSON.stringify(c)) as PageContent;
+    back.glance[1] = content(set).glance[1];
+    back.parts[0].points[0] = pointsOf(content(set), 1)[0];
+    expect(JSON.stringify(back)).toBe(JSON.stringify(content(set)));
+    expect(strings(c).filter((s) => /12:00 pm|10:00 pm|2:00 pm|undefined|\{\{|\}\}/.test(s))).toEqual([]);
+    expect(mixSummaries(tbd, mixesOf(tbd))).toEqual(mixSummaries(set, mixesOf(set)));
+  }
+  // A phone alone changes nothing on the page.
+  expect(content(civilFacts({ client_phone: null }))).toEqual(content(civil));
+
+  // times:set and times:tbd: exactly one holds, judged on the facts as booked.
+  expect([probed(wedding, 'times:set'), probed(wedding, 'times:tbd'), probed(weddingTbd, 'times:set'), probed(weddingTbd, 'times:tbd')]).toEqual([true, false, false, true]);
+  expect([probed(civil, 'times:set'), probed(civil, 'times:tbd'), probed(civilTbd, 'times:set'), probed(civilTbd, 'times:tbd')]).toEqual([true, false, false, true]);
+  // START and END exist only with times: a line that uses them without times throws.
+  for (const pkgId of ['wedding-full', 'civil-ceremony'])
+    for (const name of ['START', 'END'])
+      withChange(
+        () => {
+          const lines = PAGE.packages[pkgId].points['7'];
+          lines.push({ text: `At {{${name}}}.` });
+          return () => lines.pop();
+        },
+        () => {
+          const wed = pkgId === 'wedding-full';
+          expect(() => pageContent(wed ? weddingTbd : civilTbd), `${pkgId} ${name}`).toThrow(`unfilled_placeholder: ${name}`);
+          const shown = name === 'START' ? '12:00 pm' : wed ? '10:00 pm' : '2:00 pm';
+          expect(pointsOf(content(wed ? wedding : civil), 7), `${pkgId} ${name}`).toContain(`At ${shown}.`);
+        },
+      );
+  // Every line that uses START or END sits under times:set, in both packages.
+  type Line = { text: string; when?: string };
+  for (const [pkgId, page] of Object.entries(PAGE.packages as Record<string, any>)) {
+    const lines: Line[] = [...page.glance.map((g: { value: string; when?: string }) => ({ text: g.value, when: g.when })), ...Object.values(page.points as Record<string, Line[]>).flat()];
+    for (const l of lines) if (/\{\{(START|END)\}\}/.test(l.text)) expect(l.when, `${pkgId}: ${l.text}`).toBe('times:set');
+    expect(lines.filter((l) => l.when === 'times:tbd').length, pkgId).toBe(2);
+  }
 });
 
 test('no page text for a package: no page content, and the summary of today', () => {

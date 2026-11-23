@@ -343,6 +343,27 @@ const minutes = (hhmm: unknown): number | null => {
   return h * 60 + m;
 };
 
+/** A /new field that was not given: missing, null, or a string of spaces only (spec section 6). */
+const notGiven = (v: unknown): boolean => v === undefined || v === null || (typeof v === 'string' && v.trim() === '');
+
+/**
+ * The client's phone, or undefined for a booking made without one (spec section 6, 2026-11-23). Every
+ * booking made before has one. Clause 0.1 (PHONE) names it; a booking without one gets clause 0.6 (NO-PHONE).
+ */
+export const phoneOf = (f: BookingFacts): string | undefined => (typeof f.client_phone === 'string' && f.client_phone !== '' ? f.client_phone : undefined);
+
+/**
+ * The start and end time ('HH:MM') of a booking, or null while they are still to be set (spec section 6,
+ * 2026-11-23: clause 5.23, TIMES-TBD, instead of 5.2, TIMES-SET). Every booking made before has both.
+ * One without the other is a data mistake and throws.
+ */
+export const timesOf = (f: BookingFacts): { start: string; end: string } | null => {
+  if (f.start_time === undefined && f.end_time === undefined) return null;
+  if (typeof f.start_time !== 'string' || typeof f.end_time !== 'string')
+    throw new Error(`booking ${f.number}: a start time and an end time go together`);
+  return { start: f.start_time, end: f.end_time };
+};
+
 export function buildBookingFacts(input: unknown, ctx: { number: string; createdAt: Date }): BookingFacts {
   const o = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
   const pkg = packageFacts(o.package_id);
@@ -360,10 +381,14 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const client_email = cleanText(o.client_email, 3, 254, 'bad_email', 'client_email');
   if (!/^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/.test(client_email)) throw new BookingError('bad_email', 'client_email');
 
-  if (typeof o.client_phone !== 'string') throw new BookingError('bad_phone', 'client_phone');
-  const client_phone = o.client_phone.trim();
-  if (!/^[0-9 +().-]{7,20}$/.test(client_phone) || client_phone.replace(/\D/g, '').length < 7)
-    throw new BookingError('bad_phone', 'client_phone');
+  // Optional (spec section 6): not given = no phone, and the facts leave it out. Any other value is checked as before.
+  let client_phone: string | undefined;
+  if (!notGiven(o.client_phone)) {
+    if (typeof o.client_phone !== 'string') throw new BookingError('bad_phone', 'client_phone');
+    client_phone = o.client_phone.trim();
+    if (!/^[0-9 +().-]{7,20}$/.test(client_phone) || client_phone.replace(/\D/g, '').length < 7)
+      throw new BookingError('bad_phone', 'client_phone');
+  }
 
   const event_date = o.event_date;
   const today = torontoIsoDate(ctx.createdAt);
@@ -400,9 +425,15 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   });
 
   const hours = pkg.hours + (add_ons.find((a) => a.id === pkg.extraHoursAddOnId)?.qty ?? 0);
-  const start = minutes(o.start_time);
-  const end = minutes(o.end_time);
-  if (start === null || end === null || end - start !== hours * 60) throw new BookingError('bad_times', 'end_time');
+  // Both times or neither (spec section 6). Neither: the times are still to be set, and the facts leave
+  // both out. One alone is refused, naming the one that is missing. Both are checked as before.
+  const timesSet = !notGiven(o.start_time);
+  if (timesSet === notGiven(o.end_time)) throw new BookingError('bad_times', timesSet ? 'end_time' : 'start_time');
+  if (timesSet) {
+    const start = minutes(o.start_time);
+    const end = minutes(o.end_time);
+    if (start === null || end === null || end - start !== hours * 60) throw new BookingError('bad_times', 'end_time');
+  }
 
   // The second photographer joins for the hours in the package plus any booked on top, never more than the coverage.
   const sp = pkg.secondPhotographer;
@@ -442,10 +473,11 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     client_name,
     partner_name,
     client_email,
-    client_phone,
+    // Left out when not given (spec section 6). With them, the keys keep their place: the facts of a
+    // booking with a phone and times are byte for byte what they were before.
+    ...(client_phone === undefined ? {} : { client_phone }),
     event_date,
-    start_time: o.start_time as string,
-    end_time: o.end_time as string,
+    ...(timesSet ? { start_time: o.start_time as string, end_time: o.end_time as string } : {}),
     place,
     number: ctx.number,
     created_at: ctx.createdAt.toISOString(),
@@ -540,6 +572,11 @@ const activeTags = (pkg: PackageFacts, choice: Choice, booked: BookingFacts): Se
   const balanceTag = booked.balance_cash === true ? 'BAL-CASH' : 'BAL-ANY';
   const tags = new Set(['ALL', ...pkg.tags, ...pkg.sharing[choice].tags, TAX_TAG[BUSINESS.hstMode], retainerTag, balanceTag]);
   if (BUSINESS.insured) tags.add('INSURED');
+  // Spec section 6, for every package, from the booked facts: who you are with or without a phone (clause
+  // 0.1 or 0.6), and the times in section 1 or still to be set (clause 5.2 or 5.23). Every booking made
+  // before has both, so it gets PHONE and TIMES-SET: the clauses it had.
+  tags.add(phoneOf(booked) === undefined ? 'NO-PHONE' : 'PHONE');
+  tags.add(timesOf(booked) === null ? 'TIMES-TBD' : 'TIMES-SET');
   return tags;
 };
 
@@ -592,6 +629,14 @@ const feeValues = (f: BookingFacts): Record<string, string> => (f.private_fee ==
 /** 1 -> '1 hour', 10 -> '10 hours'. page.ts uses it too. */
 export const hoursText = (n: number) => `${n} ${n === 1 ? 'hour' : 'hours'}`;
 
+/** The section 1 Coverage row: the booked hours with their times, or (spec section 6) the times still to be set. */
+const coverageRow = (f: BookingFacts): string => {
+  const times = timesOf(f);
+  return times === null
+    ? `${hoursText(f.hours)} in one continuous block. The start and end time are not set yet (section 5).`
+    : `${hoursText(f.hours)}, from ${clockTime(times.start)} to ${clockTime(times.end)}`;
+};
+
 /** The second photographer row of section 1, after "Who shoots". None for a package without one. */
 const secondPhotographerRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
   const sp = pkg.secondPhotographer;
@@ -628,7 +673,7 @@ const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice, ticks: 
     ...paymentRows(f, pkg),
     ...depositRows(f, ticks),
     [pkg.dateRowLabel, longDate(f.event_date)],
-    ['Coverage', `${hoursText(f.hours)}, from ${clockTime(f.start_time)} to ${clockTime(f.end_time)}`],
+    ['Coverage', coverageRow(f)],
     ['Where', f.place],
     ['Who shoots', BUSINESS.whoShoots],
     ...secondPhotographerRows(f, pkg),
@@ -674,10 +719,12 @@ const prepare = (booked: BookingFacts, choice: Choice, extras: string[]): Prepar
   const facts = factsFor(booked, choice, extras);
   const ticks = ticksAgree(pkg, booked);
   const active = activeTags(pkg, choice, booked);
+  const phone = phoneOf(facts);
   const vals: Record<string, string> = {
     CLIENT_NAME: facts.client_name,
     CLIENT_EMAIL: facts.client_email,
-    CLIENT_PHONE: facts.client_phone,
+    // Only with a phone (spec section 6): a visible clause that names it without one throws.
+    ...(phone === undefined ? {} : { CLIENT_PHONE: phone }),
     PARTNER_NAME: facts.partner_name,
     BUSINESS_LEGAL_NAME: BUSINESS.legalName,
     BOOKING_ID: facts.number,

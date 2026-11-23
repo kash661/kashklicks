@@ -13,6 +13,7 @@ import {
   factsFor,
   fillSignDate,
   laterPaymentRows,
+  phoneOf,
   signLabels,
 } from '../lib/agreement/render';
 import { mixSummaries, pageContent } from '../lib/agreement/page';
@@ -619,7 +620,8 @@ async function notYet(s: Store, env: AgreementEnv, deps: AgreementDeps, body: Re
         '',
         `Nothing is signed. Booking ${bk.number}.`,
         `Their email: ${f.client_email}`,
-        `Their phone: ${f.client_phone}`,
+        // A booking made without a phone (spec section 6) says so.
+        `Their phone: ${phoneOf(f) ?? 'none given'}`,
       ].join('\n'),
     },
     { fetchImpl: deps.fetchImpl },

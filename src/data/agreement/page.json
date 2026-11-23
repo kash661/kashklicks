@@ -9,14 +9,16 @@
       ],
       "glance": [
         { "label": "Date", "value": "{{EVENT_DATE}}" },
-        { "label": "Coverage", "value": "{{HOURS}}, {{START}} to {{END}}" },
+        { "label": "Coverage", "value": "{{HOURS}}, {{START}} to {{END}}", "when": "times:set" },
+        { "label": "Coverage", "value": "{{HOURS}}, times to be set", "when": "times:tbd" },
         { "label": "Photographers", "value": "{{WHO}}, and a second photographer for all {{HOURS}}", "when": "second:all" },
         { "label": "Photographers", "value": "{{WHO}}, and a second photographer for {{SECOND_HOURS}}", "when": "second:base" },
         { "label": "Photographers", "value": "{{WHO}}, and a second photographer for {{SECOND_HOURS}}", "when": "second:part" }
       ],
       "points": {
         "1": [
-          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block, from {{START}} to {{END}}." },
+          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block, from {{START}} to {{END}}.", "when": "times:set" },
+          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block. We set the start and end time together, in writing, at the latest when you send your final timeline.", "when": "times:tbd" },
           { "text": "Where: {{PLACE}}." },
           { "text": "I photograph your day myself. A second photographer is with me for all {{HOURS}}.", "when": "second:all" },
           { "text": "I photograph your day myself. A second photographer joins for {{SECOND_HOURS}}, for the ceremony or the reception. You choose.", "when": "second:base" },
@@ -108,12 +110,14 @@
       ],
       "glance": [
         { "label": "Date", "value": "{{EVENT_DATE}}" },
-        { "label": "Coverage", "value": "{{HOURS}}, {{START}} to {{END}}" },
+        { "label": "Coverage", "value": "{{HOURS}}, {{START}} to {{END}}", "when": "times:set" },
+        { "label": "Coverage", "value": "{{HOURS}}, times to be set", "when": "times:tbd" },
         { "label": "Photographer", "value": "{{WHO}}" }
       ],
       "points": {
         "1": [
-          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block, from {{START}} to {{END}}." },
+          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block, from {{START}} to {{END}}.", "when": "times:set" },
+          { "text": "{{EVENT_DATE}}. {{HOURS}} in one block. We set the start and end time together, in writing, at the latest when you send your final timeline.", "when": "times:tbd" },
           { "text": "Where: {{PLACE}}." },
           { "text": "I photograph your ceremony myself." },
           { "text": "Also agreed: {{NOTES}}", "when": "notes" },
