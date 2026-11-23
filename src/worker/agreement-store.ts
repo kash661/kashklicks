@@ -63,6 +63,8 @@ export interface BookingRecord {
   // Frozen at creation. Missing on bookings made before they were stored: those compute them.
   labels?: StoredLabels;
   summary?: StoredSummary;
+  // Only for a booking with a fee for private work: the summary of the private choice. `summary` is the share one.
+  summary_private?: StoredSummary;
   // notice_sent: unset until a refused copy first tries the owner notice; then whether that notice went out.
   copy: { status: 'none' | 'pending' | 'sent'; attempts: number; last_attempt_at?: string; sent_at?: string; notice_sent?: boolean };
 }

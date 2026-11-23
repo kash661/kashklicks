@@ -59,6 +59,10 @@ export interface BookingFacts extends Required<Omit<BookingInput, 'price' | 'ret
   final_due?: string; // 'YYYY-MM-DD'
   // Only on bookings of a package with a second photographer: the hours they join for.
   second_hours?: number;
+  // Only on bookings of a package with a fee for private work, frozen with the booking. Not in the total.
+  private_fee?: number;
+  // The fee that is inside this total. Only on facts made by factsFor() for the private choice.
+  sharing_fee?: number;
 }
 export type DocItem =
   | { type: 'clause'; n: string; text: string; bullets: string[] } // n is '' in section 0

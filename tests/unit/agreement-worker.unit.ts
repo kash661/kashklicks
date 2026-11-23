@@ -1921,6 +1921,9 @@ test('a wedding booking answers with its three payments, and its summary carries
     balance_cash: false,
     second_payment: 783,
     final_payment: 782.25,
+    private_fee: 75,
+    private_total: 3206.25,
+    private_retainer: 1604,
   });
   const opened = await t.doc(TEST, r.body.token);
   expect(opened.body.summary).toEqual({
@@ -1940,6 +1943,8 @@ test('a wedding booking answers with its three payments, and its summary carries
   expect(civil.body).not.toHaveProperty('second_payment');
   expect(civil.body).not.toHaveProperty('final_payment');
   expect((await t.doc(TEST, civil.body.token)).body.summary).not.toHaveProperty('later_payments');
+  expect(civil.body).not.toHaveProperty('private_fee');
+  expect(await t.doc(TEST, civil.body.token)).not.toHaveProperty('body.summary_private');
 });
 
 test('a wedding the agreement has no clause for is refused before a number is used', async () => {
@@ -1997,4 +2002,100 @@ test('the email after signing a wedding names the second and the final payment',
   expect(row).toMatchObject({ Package: 'The Full Day', 'Event date': '2027-05-29', Total: '$3,131.25', Retainer: '$1,566.00', Balance: '$1,565.25' });
   expect(f.pdf_html).toContain('Second payment');
   expect(f.pdf_html).toContain('Final payment');
+});
+
+// ------------------------------------------------------------------ a wedding: the marketing fee for private work
+
+const WEDDING_SECOND_ONLY = { ...WEDDING, add_ons: [{ id: 'second-photographer', qty: 7 }] };
+
+test('a wedding booking stores the private summary next to the share one', async () => {
+  const t = setup();
+  const r = await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY);
+  expect(r.body).toMatchObject({ total: 3010, retainer: 1505, second_payment: 753, final_payment: 752, private_fee: 75, private_total: 3085, private_retainer: 1543 });
+  const bk = t.booking(TEST, r.body.token);
+  expect(bk.facts.private_fee).toBe(75);
+  expect(bk.facts.total).toBe(3010);
+  expect(bk.summary).toMatchObject({ total: '$3,010.00', retainer: '$1,505.00', balance: '$1,505.00' });
+  expect(bk.summary_private).toEqual({
+    package: 'The Full Day',
+    date: 'Saturday 29 May 2027',
+    total: '$3,085.00',
+    retainer: '$1,543.00',
+    balance: '$1,542.00',
+    balance_how: 'e-transfer or cash',
+    etransfer_email: 'info@kashklicks.ca',
+    later_payments: [
+      {
+        label: 'Second payment',
+        text: '$772.00 by e-transfer. Due 7 days after I deliver your engagement session gallery. If you have not had your engagement session by Tuesday 30 March 2027, it is due on that date.',
+      },
+      { label: 'Final payment', text: '$770.00 by e-transfer. Due by Saturday 15 May 2027, which is 14 days before your wedding.' },
+    ],
+  });
+  const opened = await t.doc(TEST, r.body.token);
+  expect(opened.body.summary).toEqual(bk.summary);
+  expect(opened.body.summary_private).toEqual(bk.summary_private);
+});
+
+const signedWedding = async (choice: 'share' | 'private') => {
+  const t = setup();
+  const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY)).body;
+  const signed = await t.signOk(TEST, token, { signed_name: 'Elena Marchetti', choice });
+  expect(signed.status).toBe(200);
+  await t.settle();
+  expect(t.calls).toHaveLength(1);
+  return { t, token, signed, f: t.calls[0].fields, rec: t.signedRecord(TEST, token) };
+};
+
+test('signing a wedding as private records the private amounts, in the email and the sheet row too', async () => {
+  const { signed, f, rec, t, token } = await signedWedding('private');
+  expect(rec.facts).toMatchObject({ total: 3085, retainer: 1543, balance: 1542, second_payment: 772, final_payment: 770, sharing_fee: 75, private_fee: 75 });
+  expect(rec.summary.retainer).toBe('$1,543.00');
+  expect(rec.summary.total).toBe('$3,085.00');
+  expect(signed.body.summary.retainer).toBe('$1,543.00');
+  // The booking keeps the share facts; the signed record holds the signed choice.
+  expect(t.booking(TEST, token).facts.total).toBe(3010);
+  expect(f.email_body).toContain('send the retainer of $1,543.00 by Interac e-transfer');
+  expect(f.email_body).toContain('The second payment of $772.00 is due 7 days after');
+  expect(f.email_body).toContain('The final payment of $770.00 is due by Saturday 15 May 2027.');
+  expect(f.email_body).not.toMatch(/[–—]/);
+  const row = JSON.parse(f.row_json);
+  expect(row).toMatchObject({ Total: '$3,085.00', Retainer: '$1,543.00', Balance: '$1,542.00', Sharing: 'private' });
+  expect(Object.keys(row)).toEqual([
+    'Signed at', 'Booking number', 'Client', 'Partner', 'Email', 'Phone', 'Package', 'Event date',
+    'Total', 'Retainer', 'Balance', 'Sharing', 'Signed name', 'Text hash', 'Clause version', 'Notes',
+  ]);
+  expect(f.pdf_html).toContain('Marketing fee for private work');
+  // A later visit answers from the signed record.
+  const again = await t.doc(TEST, token);
+  expect(again.body.summary.total).toBe('$3,085.00');
+});
+
+test('signing a wedding as share keeps the amounts without the fee', async () => {
+  const { f, rec } = await signedWedding('share');
+  expect(rec.facts).toMatchObject({ total: 3010, retainer: 1505, second_payment: 753, final_payment: 752 });
+  expect(rec.facts).not.toHaveProperty('sharing_fee');
+  expect(rec.summary.retainer).toBe('$1,505.00');
+  expect(f.email_body).toContain('send the retainer of $1,505.00');
+  expect(f.email_body).toContain('The second payment of $753.00');
+  expect(f.email_body).toContain('The final payment of $752.00');
+  expect(JSON.parse(f.row_json)).toMatchObject({ Total: '$3,010.00', Retainer: '$1,505.00', Balance: '$1,505.00', Sharing: 'share' });
+  expect(f.pdf_html).not.toContain('Marketing fee for private work');
+});
+
+test('a wedding stored before the fee existed signs as before', async () => {
+  const t = setup();
+  const { token } = (await t.admin(TEST, '/r/agreement/new', WEDDING_SECOND_ONLY)).body;
+  const key = `agr:test:bk:${token}`;
+  const old = t.booking(TEST, token);
+  delete old.facts.private_fee;
+  delete old.summary_private;
+  t.kv.store.set(key, { ...t.kv.store.get(key)!, value: JSON.stringify(old) });
+  expect(await t.doc(TEST, token)).not.toHaveProperty('body.summary_private');
+  await t.signOk(TEST, token, { signed_name: 'Elena Marchetti', choice: 'private' });
+  await t.settle();
+  const rec = t.signedRecord(TEST, token);
+  expect(rec.facts.total).toBe(3010);
+  expect(rec.facts).not.toHaveProperty('sharing_fee');
+  expect(rec.summary).toEqual(old.summary);
 });

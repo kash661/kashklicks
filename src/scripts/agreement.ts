@@ -48,6 +48,7 @@ interface Base {
 interface ReadyPayload extends Base {
   status: 'sent' | 'opened';
   today: string;
+  summary_private?: Summary; // only a booking with a fee for private work: the amounts if they choose private
   variants: Record<Choice, { doc_json: string; hash: string }>;
 }
 interface SignedPayload extends Base {
@@ -357,14 +358,16 @@ export function initAgreement(): void {
   function openReview() {
     const p = ready!;
     errorEl.hidden = true;
+    // The amounts of the chosen option: private has its own when it carries a fee.
+    const sum = choice === 'private' && p.summary_private ? p.summary_private : p.summary;
     const rows: [string, string][] = [
       ['Your name', nameInput.value.trim()],
       ['Your partner', p.partner_name],
-      ['Package', p.summary.package],
-      ['Date', p.summary.date],
-      ['Total', p.summary.total],
-      ['Retainer', p.summary.retainer],
-      ...(laterPayments(p.summary) ?? []),
+      ['Package', sum.package],
+      ['Date', sum.date],
+      ['Total', sum.total],
+      ['Retainer', sum.retainer],
+      ...(laterPayments(sum) ?? []),
       ['Sharing', choice === 'private' ? p.labels.private_option : p.labels.share_option],
     ];
     pick('[data-agr-review-rows]', dlg).replaceChildren(...rows.map(([dt, dd]) => dlRow(dt, dd)));

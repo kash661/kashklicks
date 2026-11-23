@@ -52,6 +52,8 @@ interface PackageFacts {
   secondPhotographer?: { includedHours: number; addOnId: string };
   // The engagement session in the package (clauses 10.13 and 16.9, tag ENGAGEMENT).
   engagement?: { desc: string; valuePackageId: string };
+  // A fee added to the total when the couple chooses private (clause 15.2, tag SHARE-B).
+  privateFee?: number;
   addOnRows: AddOnRow[];
   laterCosts: string;
   introBullets: string[];
@@ -113,6 +115,32 @@ const threePart = (pkg: PackageFacts): boolean => {
   return three;
 };
 
+/**
+ * The package's fee for private work, or undefined. The fee goes together with the tag SHARE-B in the
+ * share option (clause 15.2), and for now only a package paid in three parts may have one.
+ */
+const privateFeeOf = (pkg: PackageFacts): number | undefined => {
+  const fee = pkg.privateFee;
+  const shareB = pkg.sharing.share.tags.includes('SHARE-B');
+  if (fee === undefined) {
+    if (shareB) throw new Error(`package ${pkg.name}: the SHARE-B tag needs a privateFee`);
+    return undefined;
+  }
+  if (!shareB) throw new Error(`package ${pkg.name}: a privateFee goes with the SHARE-B tag`);
+  if (typeof fee !== 'number' || !Number.isFinite(fee) || fee < 1 || !wholeCents(fee))
+    throw new Error(`package ${pkg.name}: privateFee must be a whole number of cents, at least 1`);
+  if (!threePart(pkg)) throw new Error(`package ${pkg.name}: a fee for private work on a package paid in two parts is not built yet`);
+  return fee;
+};
+
+/** The fee of these facts, checked against the package: a package with a fee needs facts with one, and the other way round. */
+const feeOf = (pkg: PackageFacts, f: BookingFacts): number | undefined => {
+  const pkgFee = privateFeeOf(pkg);
+  if ((pkgFee === undefined) !== (f.private_fee === undefined))
+    throw new Error(`booking ${f.number}: the package and the booking do not agree on a fee for private work`);
+  return f.private_fee;
+};
+
 const deliveryDate = (pkg: PackageFacts, eventDate: string): string => {
   if (pkg.deliveryMonths !== undefined) return addMonths(eventDate, pkg.deliveryMonths);
   if (pkg.deliveryDays !== undefined) return addDays(eventDate, pkg.deliveryDays);
@@ -165,6 +193,14 @@ const wholeCents = (n: number) => Math.abs(n * 100 - Math.round(n * 100)) < 1e-6
 /** The usual retainer: half of the total, rounded up to the next dollar. */
 const usualRetainer = (total: number) => Math.ceil(total / 2);
 
+/** Three payments (clause 3.6): after the retainer, a quarter of the total rounded up to the next dollar, then the rest. */
+const laterPayments = (total: number, retainer: number) => {
+  const second_payment = Math.ceil(total / 4);
+  const final_payment = cents(total - retainer - second_payment);
+  if (final_payment < 1) throw new BookingError('bad_price', 'price');
+  return { second_payment, final_payment };
+};
+
 const MAX_DAYS_AHEAD = 1096;
 
 const isIsoDate = (s: unknown): s is string => {
@@ -184,6 +220,7 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
   const pkg = packageFacts(o.package_id);
   const package_id = o.package_id as string;
   const three = threePart(pkg);
+  const private_fee = privateFeeOf(pkg);
 
   const client_name = cleanText(o.client_name, 2, 120, 'bad_name', 'client_name');
   const partner_name = cleanText(o.partner_name, 2, 120, 'bad_name', 'partner_name');
@@ -266,12 +303,9 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
 
   // Three payments (clause 3.6): half at signing, a quarter, then the rest. They add up to the total exactly.
   let payments = {};
-  if (three) {
-    const second_payment = Math.ceil(total / 4);
-    const final_payment = cents(total - retainer - second_payment);
-    if (final_payment < 1) throw new BookingError('bad_price', 'price');
-    payments = { second_payment, final_payment, second_due: second_due as string, final_due: addDays(event_date, -14) };
-  }
+  if (three) payments = { ...laterPayments(total, retainer), second_due: second_due as string, final_due: addDays(event_date, -14) };
+  // The private choice must also give sensible payments.
+  if (private_fee !== undefined) laterPayments(cents(total + private_fee), usualRetainer(cents(total + private_fee)));
 
   return {
     package_id,
@@ -297,7 +331,22 @@ export function buildBookingFacts(input: unknown, ctx: { number: string; created
     notes,
     ...payments,
     ...(second_hours === undefined ? {} : { second_hours }),
+    ...(private_fee === undefined ? {} : { private_fee }),
   };
+}
+
+/**
+ * The facts of one sharing choice. Share, or a booking without a fee for private work: the facts as
+ * they are. Private with a fee: the fee is added to the total, and the retainer and the later payments
+ * are worked out again from the new total by the same rules. Facts that already carry the fee throw.
+ */
+export function factsFor(f: BookingFacts, choice: Choice): BookingFacts {
+  if (f.sharing_fee !== undefined) throw new Error(`booking ${f.number}: the fee for private work is already in these facts`);
+  if (choice === 'share' || f.private_fee === undefined) return f;
+  if (f.second_payment === undefined) throw new Error(`booking ${f.number}: a fee for private work needs three payments`);
+  const total = cents(f.total + f.private_fee);
+  const retainer = usualRetainer(total);
+  return { ...f, sharing_fee: f.private_fee, total, retainer, balance: cents(total - retainer), ...laterPayments(total, retainer) };
 }
 
 // ---------------------------------------------------------------- rendering
@@ -345,6 +394,9 @@ const paymentRows = (f: BookingFacts, pkg: PackageFacts): string[][] => {
   return [[pkg.balanceRowLabel, f.balance_cash === true ? `${money(f.balance)} in cash` : `${money(f.balance)} by e-transfer or cash`]];
 };
 
+/** PRIVATE_FEE for the sharing row and the option labels, only for a booking with a fee. */
+const feeValues = (f: BookingFacts): Record<string, string> => (f.private_fee === undefined ? {} : { PRIVATE_FEE: money(f.private_fee) });
+
 const hoursText = (n: number) => `${n} ${n === 1 ? 'hour' : 'hours'}`;
 
 /** The second photographer row of section 1, after "Who shoots". None for a package without one. */
@@ -376,7 +428,8 @@ const bookingRows = (f: BookingFacts, pkg: PackageFacts, choice: Choice): string
     ['Package', f.package_name],
     ['Package price', money(f.package_price)],
     ['Add-ons chosen at booking', addOns],
-    ['Sharing choice (section 15)', pkg.sharing[choice].row],
+    ['Sharing choice (section 15)', fill(pkg.sharing[choice].row, feeValues(f))],
+    ...(f.sharing_fee === undefined ? [] : [['Marketing fee for private work', money(f.sharing_fee)]]),
     ['Total', money(f.total)],
     ['Retainer, due at signing', `${money(f.retainer)} by e-transfer`],
     ...paymentRows(f, pkg),
@@ -409,8 +462,11 @@ const engagementValues = (pkg: PackageFacts): Record<string, string> => {
 
 const hasStrayPlaceholder = (s: string) => s.split(SIGN_DATE_TOKEN).join('').includes('{{');
 
-export function renderVariant(facts: BookingFacts, choice: Choice): AgreementDoc {
-  const pkg = packageFacts(facts.package_id);
+export function renderVariant(booked: BookingFacts, choice: Choice): AgreementDoc {
+  const pkg = packageFacts(booked.package_id);
+  const fee = feeOf(pkg, booked);
+  // The amounts of this choice: with a fee for private work, the private variant has a larger total.
+  const facts = factsFor(booked, choice);
   const active = activeTags(pkg, choice, facts);
   const vals: Record<string, string> = {
     CLIENT_NAME: facts.client_name,
@@ -425,6 +481,7 @@ export function renderVariant(facts: BookingFacts, choice: Choice): AgreementDoc
     RETAINER: money(facts.retainer),
     ...otValues(pkg),
     ...engagementValues(pkg),
+    ...(fee === undefined ? {} : { PRIVACY_FEE: money(fee) }),
   };
 
   let signDateTokens = 0;
@@ -483,8 +540,9 @@ export function signLabels(facts: BookingFacts): {
   after_signing: { title: string; text: string };
 } {
   const pkg = packageFacts(facts.package_id);
+  feeOf(pkg, facts);
   // The only names a label may use. Anything else, or a {{ left over (the sign date), throws.
-  const vals = { CLIENT_FIRST: facts.client_name.trim().split(/\s+/)[0] ?? '', PARTNER_NAME: facts.partner_name };
+  const vals = { CLIENT_FIRST: facts.client_name.trim().split(/\s+/)[0] ?? '', PARTNER_NAME: facts.partner_name, ...feeValues(facts) };
   const label = (template: string) => {
     const s = fill(template, vals);
     if (s.includes('{{')) throw new BookingError('unfilled_placeholder', 'labels');

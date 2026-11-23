@@ -68,9 +68,10 @@
     ],
     "laterCosts": "Overtime at {{OT_RATE}} an hour, in 30 minute blocks of {{OT_BLOCK}} (section 5). Parking at cost (section 6). Travel outside the GTA at $0.75 per km (section 6). A fee of $500.00 for a second change of date (section 11). Any add-on you choose later, at the prices in section 4.",
     "introBullets": ["{{CLIENT_FIRST}} signs for both of you.", "You can download or print a copy before you sign.", "You will get a PDF copy by email the moment you sign."],
+    "privateFee": 75,
     "sharing": {
-      "share": { "tags": ["SHARE", "SHARE-C"], "row": "You allow sharing. It does not change your price.", "option": "Share our work. My price stays the same." },
-      "private": { "tags": ["PRIVATE"], "row": "Private. Your work is not shown in public.", "option": "Keep our work private. My price stays the same." }
+      "share": { "tags": ["SHARE", "SHARE-B"], "row": "You allow sharing. No marketing fee.", "option": "Share our work. No marketing fee." },
+      "private": { "tags": ["PRIVATE"], "row": "Private. Your work is not shown in public. A marketing fee of {{PRIVATE_FEE}} is in your total.", "option": "Keep our work private. This adds a marketing fee of {{PRIVATE_FEE}}." }
     },
     "agreeLabel": "I have read this agreement and I agree to it. I am signing for myself and for {{PARTNER_NAME}}. Signing here is my electronic signature.",
     "afterSigning": { "title": "Your engagement session", "text": "Your package includes an engagement session. Message me when you are ready to plan it. Closer to the wedding, please send me your final timeline, your addresses and your list of family photos, at least 14 days before the day." }

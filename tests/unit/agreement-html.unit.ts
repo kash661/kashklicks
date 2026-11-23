@@ -154,8 +154,9 @@ test('pdf document refuses a booking number that differs from the document', () 
 
 test('pdfDocument output is pinned byte for byte', async () => {
   // Pinned before pdfDraftDocument shared its frame. A change here changes every emailed copy.
-  expect(await sha256Hex(pdfDocument(doc(), sig()))).toBe('d586e131ff48a3b07df3c7df83f4a29afedcd476d1c6be49ac2cab496571eb9e');
-  expect(await sha256Hex(pdfDocument(doc({}, 'private'), sig({ choice: 'private' })))).toBe('c9abf60fe2ab86b34a94826222741be3f3152561e94f3fdd7fa881fadef9d575');
+  // Re-pinned on 2026-11-22 because the clause version changed (15.2 wording: privacy fee became marketing fee).
+  expect(await sha256Hex(pdfDocument(doc(), sig()))).toBe('c6791bae5119a70760ea900093c1685764248bf5f1975ea7319a1139056b0c23');
+  expect(await sha256Hex(pdfDocument(doc({}, 'private'), sig({ choice: 'private' })))).toBe('8d89a6e1bf69d007deb55db69de18215db2bebac598b8368e1298e12232e8921');
 });
 
 test('the unsigned copy says so at the top and at the end, for both choices', () => {

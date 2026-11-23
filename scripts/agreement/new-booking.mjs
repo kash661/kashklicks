@@ -82,4 +82,7 @@ console.log(`Balance  ${money(body.balance)}${body.balance_cash === true ? ' (ca
 // Only a booking paid in three parts (a wedding) has these: the balance is split in two.
 if (body.second_payment !== undefined) console.log(`Second   ${money(body.second_payment)}`);
 if (body.final_payment !== undefined) console.log(`Final    ${money(body.final_payment)}`);
+// Only a booking with a fee for private work: what they pay if they choose private.
+if (body.private_fee !== undefined)
+  console.log(`Private  total ${money(body.private_total)}, retainer ${money(body.private_retainer)} (marketing fee ${money(body.private_fee)})`);
 console.log(`Link     ${target.origin}${body.path}`);

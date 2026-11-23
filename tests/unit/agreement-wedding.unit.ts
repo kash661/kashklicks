@@ -10,6 +10,7 @@ import {
   SIGN_DATE_TOKEN,
   BookingError,
   buildBookingFacts,
+  factsFor,
   fillSignDate,
   laterPaymentRows,
   renderVariant,
@@ -74,7 +75,7 @@ const activeTags = (choice: 'share' | 'private') =>
   new Set([
     'ALL',
     ...(agreementPackages as Record<string, { tags: string[] }>)['wedding-full'].tags,
-    ...(choice === 'share' ? ['SHARE', 'SHARE-C'] : ['PRIVATE']),
+    ...(agreementPackages as Record<string, { sharing: Record<string, { tags: string[] }> }>)['wedding-full'].sharing[choice].tags,
     'HST-NO',
     'RET-HALF',
     'BAL-ANY',
@@ -272,7 +273,14 @@ test('the visible clauses are exactly the ones the wedding tags allow', () => {
     const ids = renderedIds(renderVariant(facts(), choice), choice);
     for (const id of must) expect(ids, id).toContain(id);
     for (const id of mustNot) expect(ids, id).not.toContain(id);
-    expect(ids).toContain(choice === 'share' ? '15.3' : '15.4');
+    // Share: the marketing fee clause (SHARE-B), not the free yes or no (SHARE-C). Private: 15.4 only.
+    if (choice === 'share') {
+      expect(ids).toContain('15.2');
+      expect(ids).not.toContain('15.3');
+    } else {
+      expect(ids).toContain('15.4');
+      expect(ids).not.toContain('15.2');
+    }
   }
 });
 
@@ -304,7 +312,7 @@ test('a missing list price for the engagement session throws', () => {
 });
 
 test('section 1 table is exact for the wedding', () => {
-  const expected = (sharing: string) => [
+  const expected = (sharing: string): string[][] => [
     ['Booking number', 'KK-TEST-2026-007'],
     ['Package', 'The Full Day'],
     ['Package price', '$2,301.25'],
@@ -329,9 +337,18 @@ test('section 1 table is exact for the wedding', () => {
     ],
   ];
   const share = table(renderVariant(facts(), 'share'), 'booking');
-  expect(share.rows).toEqual(expected('You allow sharing. It does not change your price.'));
+  expect(share.rows).toEqual(expected('You allow sharing. No marketing fee.'));
   expect(share.bold).toEqual(['Total']);
-  expect(table(renderVariant(facts(), 'private'), 'booking').rows).toEqual(expected('Private. Your work is not shown in public.'));
+  // Private: the fee row before Total, and every amount worked out again from the new total.
+  const priv = expected('Private. Your work is not shown in public. A marketing fee of $75.00 is in your total.').map((r) => {
+    if (r[0] === 'Total') return ['Total', '$3,206.25'];
+    if (r[0] === 'Retainer, due at signing') return [r[0], '$1,604.00 by e-transfer'];
+    if (r[0] === 'Second payment') return [r[0], r[1].replace('$783.00', '$802.00')];
+    if (r[0] === 'Final payment') return [r[0], r[1].replace('$782.25', '$800.25')];
+    return r;
+  });
+  priv.splice(priv.findIndex((r) => r[0] === 'Total'), 0, ['Marketing fee for private work', '$75.00']);
+  expect(table(renderVariant(facts(), 'private'), 'booking').rows).toEqual(priv);
   const labels = share.rows.map((r) => r[0]);
   expect(labels).not.toContain('Balance, due on or before the ceremony day');
   expect(labels.filter((l) => /balance/i.test(l))).toEqual([]);
@@ -460,6 +477,139 @@ test('a contract-only price on a site add-on, or on a row without an id, is a da
   expect(Object.hasOwn(film, 'price')).toBe(false);
 });
 
+// ------------------------------------------------------------------ the marketing fee for private work
+
+test('share: no fee, and clause 15.2 names the marketing fee', () => {
+  const f = facts({ add_ons: SECOND_ONLY });
+  expect(f.private_fee).toBe(75);
+  expect(f).not.toHaveProperty('sharing_fee');
+  expect(factsFor(f, 'share')).toBe(f);
+  expect([f.total, f.retainer, f.second_payment, f.final_payment]).toEqual([3010, 1505, 753, 752]);
+  const doc = renderVariant(f, 'share');
+  const rows = table(doc, 'booking').rows;
+  expect(rows.map((r) => r[0])).not.toContain('Marketing fee for private work');
+  expect(Object.fromEntries(rows)['Sharing choice (section 15)']).toBe('You allow sharing. No marketing fee.');
+  expect(Object.fromEntries(rows)['Total']).toBe('$3,010.00');
+  const texts = clauses(doc).map((c) => c.text);
+  expect(texts).toContain(
+    'You have chosen to allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign. It adds a marketing fee of $75.00.',
+  );
+  expect(texts.some((t) => matches(src('15.3'), t))).toBe(false);
+});
+
+test('private: the fee is in the total and the three payments are worked out again', () => {
+  const booked = facts({ add_ons: SECOND_ONLY });
+  const p = factsFor(booked, 'private');
+  expect(p).not.toBe(booked);
+  expect(p.sharing_fee).toBe(75);
+  expect([p.total, p.retainer, p.second_payment, p.final_payment, p.balance]).toEqual([3085, 1543, 772, 770, 1542]);
+  expect(Math.round((p.retainer + p.second_payment! + p.final_payment!) * 100)).toBe(308500);
+  // Nothing else moves.
+  const { sharing_fee: _f, total: _t, retainer: _r, balance: _b, second_payment: _s, final_payment: _p, ...restP } = p;
+  const { total: _t2, retainer: _r2, balance: _b2, second_payment: _s2, final_payment: _p2, ...restB } = booked;
+  expect(restP).toEqual(restB);
+  // The booking itself is not changed.
+  expect(booked.total).toBe(3010);
+
+  const doc = renderVariant(booked, 'private');
+  const rows = table(doc, 'booking').rows;
+  const labels = rows.map((r) => r[0]);
+  expect(labels.indexOf('Marketing fee for private work')).toBe(labels.indexOf('Total') - 1);
+  const byLabel = Object.fromEntries(rows);
+  expect(byLabel['Marketing fee for private work']).toBe('$75.00');
+  expect(byLabel['Total']).toBe('$3,085.00');
+  expect(byLabel['Retainer, due at signing']).toBe('$1,543.00 by e-transfer');
+  expect(byLabel['Second payment'].startsWith('$772.00 by e-transfer.')).toBe(true);
+  expect(byLabel['Final payment'].startsWith('$770.00 by e-transfer.')).toBe(true);
+  expect(byLabel['Sharing choice (section 15)']).toBe('Private. Your work is not shown in public. A marketing fee of $75.00 is in your total.');
+  expect(laterPaymentRows(p)!.map((r) => r.text.slice(0, 7))).toEqual(['$772.00', '$770.00']);
+  const texts = clauses(doc).map((c) => c.text);
+  expect(texts.some((t) => matches(src('15.4'), t))).toBe(true);
+  expect(texts.some((t) => matches(src('15.2'), t))).toBe(false);
+  expect(signLabels(booked).share_option).toBe('Share our work. No marketing fee.');
+  expect(signLabels(booked).private_option).toBe('Keep our work private. This adds a marketing fee of $75.00.');
+});
+
+test('factsFor never adds the fee twice, and leaves civil facts alone', () => {
+  const p = factsFor(facts({ add_ons: SECOND_ONLY }), 'private');
+  expect(() => factsFor(p, 'private')).toThrow('already in these facts');
+  expect(() => factsFor(p, 'share')).toThrow('already in these facts');
+  expect(() => renderVariant(p, 'private')).toThrow('already in these facts');
+  const civil = buildBookingFacts(
+    {
+      package_id: 'civil-ceremony',
+      client_name: 'Priya Sharma',
+      partner_name: 'Arjun Mehta',
+      client_email: 'priya@example.com',
+      client_phone: '416 555 0142',
+      event_date: '2026-12-12',
+      start_time: '12:00',
+      end_time: '14:00',
+      place: 'Vaughan City Hall',
+    },
+    { number: 'KK-TEST-2026-001', createdAt: new Date('2026-11-10T15:00:00Z') },
+  );
+  expect(civil).not.toHaveProperty('private_fee');
+  expect(factsFor(civil, 'share')).toBe(civil);
+  expect(factsFor(civil, 'private')).toBe(civil);
+});
+
+test('a fee for private work that does not fit its package is a data mistake', () => {
+  const wed = WEDDING_PKG();
+  const civilPkg = (agreementPackages as Record<string, any>)['civil-ceremony'];
+  const shareTags = [...wed.sharing.share.tags];
+  try {
+    // privateFee without SHARE-B.
+    wed.sharing.share.tags = ['SHARE', 'SHARE-C'];
+    expect(() => facts()).toThrow('a privateFee goes with the SHARE-B tag');
+    wed.sharing.share.tags = shareTags;
+    // SHARE-B without privateFee.
+    delete wed.privateFee;
+    expect(() => facts()).toThrow('the SHARE-B tag needs a privateFee');
+    // Not a whole number of cents.
+    wed.privateFee = 75.005;
+    expect(() => facts()).toThrow('privateFee must be a whole number of cents');
+    wed.privateFee = 0;
+    expect(() => facts()).toThrow('privateFee must be a whole number of cents');
+  } finally {
+    wed.sharing.share.tags = shareTags;
+    wed.privateFee = 75;
+  }
+  const civilShare = civilPkg.sharing.share.tags;
+  try {
+    // A package paid in two parts.
+    civilPkg.privateFee = 75;
+    civilPkg.sharing.share.tags = ['SHARE', 'SHARE-B'];
+    expect(() =>
+      buildBookingFacts(
+        {
+          package_id: 'civil-ceremony',
+          client_name: 'Priya Sharma',
+          partner_name: 'Arjun Mehta',
+          client_email: 'priya@example.com',
+          client_phone: '416 555 0142',
+          event_date: '2026-12-12',
+          start_time: '12:00',
+          end_time: '14:00',
+          place: 'Vaughan City Hall',
+        },
+        { number: 'KK-TEST-2026-001', createdAt: new Date('2026-11-10T15:00:00Z') },
+      ),
+    ).toThrow('not built yet');
+  } finally {
+    delete civilPkg.privateFee;
+    civilPkg.sharing.share.tags = civilShare;
+  }
+  expect(Object.hasOwn(civilPkg, 'privateFee')).toBe(false);
+  expect(() => facts()).not.toThrow();
+});
+
+test('stored wedding facts without a fee do not render against a package that has one', () => {
+  const { private_fee: _drop, ...old } = facts();
+  expect(() => renderVariant(old as BookingFacts, 'share')).toThrow('do not agree on a fee for private work');
+  expect(factsFor(old as BookingFacts, 'private')).toBe(old);
+});
+
 // ------------------------------------------------------------------ the second photographer row
 
 const secondRow = (f: BookingFacts) => rowsOf(renderVariant(f, 'share'))['Second photographer'];
@@ -509,8 +659,8 @@ test('one extra second photographer hour reads "1 is added"', () => {
 
 test('wedding sign labels', () => {
   expect(signLabels(facts())).toEqual({
-    share_option: 'Share our work. My price stays the same.',
-    private_option: 'Keep our work private. My price stays the same.',
+    share_option: 'Share our work. No marketing fee.',
+    private_option: 'Keep our work private. This adds a marketing fee of $75.00.',
     agree_label:
       'I have read this agreement and I agree to it. I am signing for myself and for Daniel Okafor. Signing here is my electronic signature.',
     intro_bullets: ['Elena signs for both of you.', 'You can download or print a copy before you sign.', 'You will get a PDF copy by email the moment you sign.'],
@@ -541,6 +691,9 @@ test('no dash in anything a wedding client reads', () => {
     ...strings(renderVariant(facts({ add_ons: [{ id: 'second-photographer', qty: 7 }, { id: 'instax-guest-prints', qty: 1 }] }), 'private')),
     ...strings(signLabels(facts())),
     ...strings(laterPaymentRows(facts())),
+    ...strings(laterPaymentRows(factsFor(facts({ add_ons: SECOND_ONLY }), 'private'))),
+    ...strings(renderVariant(facts({ add_ons: SECOND_ONLY }), 'private')),
+    ...strings(signLabels(facts({ add_ons: SECOND_ONLY }))),
     secondRow(facts({ add_ons: [{ id: 'second-photographer', qty: 1 }] })),
   ];
   expect(all.length).toBeGreaterThan(100);
@@ -549,13 +702,17 @@ test('no dash in anything a wedding client reads', () => {
 
 // ------------------------------------------------------------------ sample text for review
 
-/** With AGREEMENT_SAMPLE=<path>, writes the whole wedding agreement (share) as plain text there. */
+/** With AGREEMENT_SAMPLE=<path>.txt, writes the whole wedding agreement as plain text: share there, private at <path>-private.txt. */
 test('wedding sample text', () => {
   const out = process.env.AGREEMENT_SAMPLE;
   test.skip(!out, 'set AGREEMENT_SAMPLE to write the sample');
+  for (const choice of ['share', 'private'] as const) writeSample(choice === 'share' ? out! : out!.replace(/\.txt$/, '-private.txt'), choice);
+});
+
+function writeSample(out: string, choice: 'share' | 'private') {
   // Booked as the owner decided: second photographer extra hours only, no RAW photos.
   const booked = facts({ add_ons: [{ id: 'second-photographer', qty: 7 }] });
-  const doc = JSON.parse(fillSignDate(JSON.stringify(renderVariant(booked, 'share')), '22 November 2026')) as AgreementDoc;
+  const doc = JSON.parse(fillSignDate(JSON.stringify(renderVariant(booked, choice)), '22 November 2026')) as AgreementDoc;
   const lines: string[] = [doc.title, '', doc.intro, ''];
   for (const s of doc.sections) {
     lines.push(s.num === 0 ? s.title : `${s.num}. ${s.title}`, '');
@@ -572,5 +729,5 @@ test('wedding sample text', () => {
   const labels = signLabels(booked);
   lines.push('--- around the text on the page ---', ...labels.intro_bullets.map((b) => `* ${b}`), labels.share_option, labels.private_option, labels.agree_label);
   lines.push(`Step 2: ${labels.after_signing.title}. ${labels.after_signing.text}`, '');
-  writeFileSync(out!, lines.join('\n'));
-});
+  writeFileSync(out, lines.join('\n'));
+}

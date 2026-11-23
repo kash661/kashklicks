@@ -4,9 +4,9 @@
 // in D1, whose atomic insert means a link is signed once and never overwritten, and
 // an upstream failure never loses a signature. Live and test data never mix.
 import { longDate, money, shortDate, torontoIsoDate, torontoStamp } from '../lib/agreement/format';
-import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, fillSignDate, laterPaymentRows, renderVariant, signLabels } from '../lib/agreement/render';
+import { BookingError, SIGN_DATE_TOKEN, buildBookingFacts, factsFor, fillSignDate, laterPaymentRows, renderVariant, signLabels } from '../lib/agreement/render';
 import { sha256Hex } from '../lib/agreement/hash';
-import type { BookingFacts } from '../lib/agreement/types';
+import type { BookingFacts, Choice } from '../lib/agreement/types';
 import { BUSINESS, claimAttempt, copyDue, firstWord, sendCopy, signedPdfHtml } from './agreement-copy';
 import { pdfDraftDocument } from '../lib/agreement/html';
 import {
@@ -159,6 +159,14 @@ const summaryOf = (f: BookingFacts): StoredSummary => {
   };
 };
 
+/** The private summary of a booking with a fee for private work, or undefined. Stored ones first. */
+const privateSummaryOf = (bk: BookingRecord): StoredSummary | undefined =>
+  bk.facts.private_fee === undefined ? undefined : (bk.summary_private ?? summaryOf(factsFor(bk.facts, 'private')));
+
+/** The summary of one sharing choice: the private one when the booking has a fee for private work, else the usual one. */
+const summaryFor = (bk: BookingRecord, choice: Choice): StoredSummary =>
+  (choice === 'private' ? privateSummaryOf(bk) : undefined) ?? bk.summary ?? summaryOf(bk.facts);
+
 const labelsOf = (f: BookingFacts): StoredLabels => ({ ...signLabels(f), name_expected: f.client_name });
 
 /** Built from the D1 row. A KV booking that has not caught up yet still reads as pending. */
@@ -241,6 +249,7 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     // Frozen with the text: a later change to the data files never changes this link.
     labels: labelsOf(facts),
     summary: summaryOf(facts),
+    ...(facts.private_fee === undefined ? {} : { summary_private: summaryOf(factsFor(facts, 'private')) }),
   };
   // Booking first, then its number, then the sequence. A crash in between leaves a used
   // number behind, which the next booking skips.
@@ -264,8 +273,15 @@ async function newBooking(s: Store, body: Record<string, unknown>): Promise<Resp
     balance_cash: facts.balance_cash === true,
     // Only for a booking paid in three parts.
     ...(facts.second_payment === undefined ? {} : { second_payment: facts.second_payment, final_payment: facts.final_payment }),
+    // Only for a booking with a fee for private work: the amounts if they choose private.
+    ...(facts.private_fee === undefined ? {} : privateAnswer(facts)),
   });
 }
+
+const privateAnswer = (facts: BookingFacts) => {
+  const p = factsFor(facts, 'private');
+  return { private_fee: facts.private_fee, private_total: p.total, private_retainer: p.retainer };
+};
 
 async function voidBooking(s: Store, body: Record<string, unknown>): Promise<Response> {
   const bk = await mustLoadByNumber(s, body);
@@ -303,6 +319,7 @@ async function readDoc(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDep
     await putBookingQuietly(s, bk);
   }
   const f = bk.facts;
+  const summaryPrivate = privateSummaryOf(bk);
   return json(200, {
     ok: true,
     status: bk.status,
@@ -316,6 +333,8 @@ async function readDoc(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDep
     variants: { share: bk.variants.share, private: bk.variants.private },
     labels: bk.labels ?? labelsOf(f),
     summary: bk.summary ?? summaryOf(f),
+    // Only for a booking with a fee for private work.
+    ...(summaryPrivate ? { summary_private: summaryPrivate } : {}),
   });
 }
 
@@ -437,7 +456,8 @@ async function sign(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, 
     final_doc_json,
     final_hash: await sha256Hex(final_doc_json),
     clause_version: bk.clause_version,
-    facts: bk.facts,
+    // The amounts of the signed choice: with a fee for private work, private has its own total.
+    facts: factsFor(bk.facts, choice),
     link_created_at: bk.created_at,
     ip: header(request, 'cf-connecting-ip', 64),
     user_agent: header(request, 'user-agent'),
@@ -445,7 +465,7 @@ async function sign(s: Store, env: AgreementEnv, ctx: Ctx, deps: AgreementDeps, 
     country: (request as unknown as { cf?: { country?: string } }).cf?.country ?? header(request, 'cf-ipcountry', 8),
     // The wording shown around the text, as the page showed it.
     labels: bk.labels ?? labelsOf(bk.facts),
-    summary: bk.summary ?? summaryOf(bk.facts),
+    summary: summaryFor(bk, choice),
   };
 
   // The one write that makes it signed: an insert that does nothing when a row exists.

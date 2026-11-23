@@ -366,7 +366,7 @@ This is the agreement between you and me for your booking. I wrote it in plain E
 
 **15.1** `[SHARE-A]` Your price in section 1 includes a portfolio credit of {{PORTFOLIO_CREDIT}}. You receive it because you allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign, and your price will be {{PRIVATE_PRICE}}. ⚑N4
 
-**15.2** `[SHARE-B]` You have chosen to allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign. It adds a privacy fee of {{PRIVACY_FEE}}. ⚑N4
+**15.2** `[SHARE-B]` You have chosen to allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign. It adds a marketing fee of {{PRIVACY_FEE}}. ⚑N4
 
 **15.3** `[SHARE-C]` You have chosen to allow me to share your work as described in this section. This is your choice, and it does not change your price. If you would rather keep your work private, choose the private option before you sign. ⚑N4
 

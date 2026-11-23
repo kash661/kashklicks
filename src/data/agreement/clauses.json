@@ -1,5 +1,5 @@
 {
-  "version": "07f9e4172cd544c17ce1ee2090098b23c7e1e8b903bd6c7aa0ca8054dad5e1e6",
+  "version": "89e67a4f871838e201944a62d18f690ac720eedf0d0d6ac41c5cf76af0d90e10",
   "title": "Photography and Film Agreement",
   "intro": "This is the agreement between you and me for your booking. I wrote it in plain English on purpose. Please read all of it. If anything is unclear or wrong, do not sign yet. Message me, and I will fix it or explain it.",
   "sections": [
@@ -1888,7 +1888,7 @@
               "SHARE-B"
             ]
           ],
-          "text": "You have chosen to allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign. It adds a privacy fee of {{PRIVACY_FEE}}.",
+          "text": "You have chosen to allow me to share your work as described in this section. This is your choice. If you would rather keep your work private, choose the private option before you sign. It adds a marketing fee of {{PRIVACY_FEE}}.",
           "bullets": []
         },
         {
